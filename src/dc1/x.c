@@ -4,5 +4,5 @@
  *    DICE-LICENSE.TXT.
  */
 
-long Global1;
-long *Global2 = &Global1;
+int32_t Global1;
+int32_t *Global2 = &Global1;

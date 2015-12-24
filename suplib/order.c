@@ -5,8 +5,8 @@
 
 #ifdef INTELBYTEORDER
 
-unsigned long
-FromMsbOrder(unsigned long n)
+unsigned int
+FromMsbOrder(unsigned int n)
 {
     n = ((n & 0x000000FF) << 24) |
 	((n & 0x0000FF00) << 8) |
@@ -15,8 +15,8 @@ FromMsbOrder(unsigned long n)
     return(n);
 }
 
-unsigned long
-ToMsbOrder(unsigned long n)
+unsigned int
+ToMsbOrder(unsigned int n)
 {
     n = ((n             ) << 24) |
 	((n & 0x0000FF00) << 8) |

@@ -18,13 +18,13 @@
 #endif
 
 Prototype char	*EAToString(EffAddr *);
-Prototype void	syntax(long);
-Prototype void	RegMaskToStr(char *, long);
+Prototype void	syntax(int32_t);
+Prototype void	RegMaskToStr(char *, int32_t);
 Prototype void	cvtstrtolower(char *);
-Prototype int	OnlyOneRegister(long);
+Prototype int	OnlyOneRegister(int32_t);
 Prototype void	cerror(short, ...);
-Prototype long	Align(long, long);
-Prototype long	AlignDelta(long, long);
+Prototype int32_t	Align(int32_t, int32_t);
+Prototype int32_t	AlignDelta(int32_t, int32_t);
 Prototype char	*MakeTmpLabelName(void);
 Prototype char	ExtWordToReg(uword);
 Prototype char *ObtainErrorString(short);
@@ -39,7 +39,7 @@ Local char  *DumpRegs(char *, short, char, char);
 
 char	*ErrorFileName = DCC "config/dice.errors";
 char	*ErrorAry;
-long	ErrorArySize;
+int32_t	ErrorArySize;
 char	ErrBuf[128];
 
 char *
@@ -145,7 +145,7 @@ EffAddr *ea;
 }
 
 void
-syntax(long n)
+syntax(int32_t n)
 {
     cerror(EERROR_SYNTAX);
 }
@@ -175,14 +175,14 @@ DumpRegs(char *ptr, short rbefore, char rs, char re)
 void
 RegMaskToStr(ptr, mask)
 char *ptr;
-long mask;
+int32_t mask;
 {
     char *base = ptr;
     short regno = -1;
     short lastreg = -1;
     short i;
 
-    printf("mask %04lx\n", mask);
+    printf("mask %04x\n", mask);
     for (i = 0; i < 16; ++i) {
 	if (i == 8) {
 	    ptr = DumpRegs(ptr, ptr != base, regno, lastreg);
@@ -224,7 +224,7 @@ char *str;
  */
 
 int
-OnlyOneRegister(long mask)
+OnlyOneRegister(int32_t mask)
 {
     short i;
 
@@ -249,7 +249,7 @@ cerror(short errorId, ...)
 
     if ((errorId & EF_MASK) != EF_VERBOSE) {
     	char *nm;
-    	long line;
+    	int32_t line;
 
     	nm = AsmFileName;
     	line = CurFile->fn_LineNo;
@@ -300,12 +300,12 @@ ExitError(short code)
     exit(ExitCode);
 }
 
-long
+int32_t
 Align(offset, align)
-long offset;
-long align;
+int32_t offset;
+int32_t align;
 {
-    long n;
+    int32_t n;
 
     n = offset & (align - 1);
     if (n)
@@ -313,12 +313,12 @@ long align;
     return(offset + n);
 }
 
-long
+int32_t
 AlignDelta(offset, align)
-long offset;
-long align;
+int32_t offset;
+int32_t align;
 {
-    long n = offset & (align - 1);
+    int32_t n = offset & (align - 1);
     if (n)
 	n = align - n;
     return(n);
@@ -327,12 +327,12 @@ long align;
 char *
 MakeTmpLabelName()
 {
-    static long id;
+    static int32_t id;
     char *buf = malloc(16);
 
     if (buf == NULL)
 	NoMemory();
-    sprintf(buf, "&$%ld", id++);
+    sprintf(buf, "&$%d", id++);
     return(buf);
 }
 
@@ -356,9 +356,14 @@ eprintf(const char *ctl, ...)
 void
 veprintf(const char *ctl, va_list va)
 {
-    vfprintf(stderr, ctl, va);
-    if (ErrorFi)
-	vfprintf(ErrorFi, ctl, va);
+    va_list tmp_va;
+
+    va_copy(tmp_va, va);
+    vfprintf(stderr, ctl, tmp_va);
+    if (ErrorFi) {
+	va_copy(tmp_va, va);
+	vfprintf(ErrorFi, ctl, tmp_va);
+    }
 }
 
 void

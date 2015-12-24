@@ -17,13 +17,13 @@ Prototype char SpecialChar[256];
 Prototype char SymbolChar[256];
 
 Prototype void InitCpp(void);
-Prototype long cpp(long, int, char *, FILE *, char *, long);
-Prototype long SkipCommentLine(char *, long, long);
-Prototype long SkipComment(char *, long, long);
-Prototype long ExtSymbol(char *, long, long);
-Prototype long SkipString(char *, long, long);
-Prototype long SkipSingleSpec(char *, long, long);
-Prototype void Dump(char *, long, long);
+Prototype int32_t cpp(int32_t, int, char *, FILE *, char *, int32_t);
+Prototype int32_t SkipCommentLine(char *, int32_t, int32_t);
+Prototype int32_t SkipComment(char *, int32_t, int32_t);
+Prototype int32_t ExtSymbol(char *, int32_t, int32_t);
+Prototype int32_t SkipString(char *, int32_t, int32_t);
+Prototype int32_t SkipSingleSpec(char *, int32_t, int32_t);
+Prototype void Dump(char *, int32_t, int32_t);
 Prototype void DoLineSpec(void);
 
 Include *PushBase;
@@ -56,18 +56,18 @@ InitCpp()
     SpecialChar['?'] = 1;
 }
 
-long
+int32_t
 cpp(oldi, level, file, fi, xbuf, xbytes)
-long oldi;
+int32_t oldi;
 int level;
 char *file;
 FILE *fi;
 char *xbuf;
-long xbytes;
+int32_t xbytes;
 {
-    long len;
-    long i;
-    long w;
+    int32_t len;
+    int32_t i;
+    int32_t w;
     short ifIndex = IfIndex;
     char *base;
     Include inc;
@@ -224,7 +224,7 @@ long xbytes;
 					    /*	execute directive    */
 		    w = i = HandleDirective(base, i + 1, len);
 		} else if (base[i+1] == '#') {
-		    long si = i + 2;
+		    int32_t si = i + 2;
 		    while (i >= w && WhiteSpace[(ubyte)base[--i]]);
 		    ++i;
 		    Dump(base, w, i);
@@ -265,7 +265,7 @@ long xbytes;
 	     */
 
 	    if (IfEnabled && SymbolChar[(ubyte)c]) {
-		long b = i;
+		int32_t b = i;
 		Sym *node;
 
 	    	nl = 0;	    /*	NOT a directive      */
@@ -352,11 +352,11 @@ long xbytes;
     return(0);
 }
 
-long
+int32_t
 SkipCommentLine(base, i, max)
 char *base;
-long i;
-long max;
+int32_t i;
+int32_t max;
 {
     while (i < max && base[i] != '\n')
 	++i;
@@ -365,11 +365,11 @@ long max;
     return(i);
 }
 
-long
+int32_t
 SkipComment(base, i, max)
 char *base;
-long i;
-long max;
+int32_t i;
+int32_t max;
 {
     char c;
 
@@ -396,14 +396,14 @@ long max;
     return(i);
 }
 
-long
+int32_t
 ExtSymbol(base, i, max)
 char *base;
-long i;
-long max;
+int32_t i;
+int32_t max;
 {
 #ifdef DEBUG
-    long b = i;
+    int32_t b = i;
 #endif
     char *sc = SymbolChar;
 
@@ -424,11 +424,11 @@ long max;
 void
 StripComments(buf, bytes)
 char *buf;
-long bytes;
+int32_t bytes;
 {
     char c;
-    long i;
-    long b;
+    int32_t i;
+    int32_t b;
 
     for (i = 0; i < bytes; ++i) {
 	if (buf[i] == '/' && i + 1 < bytes) {
@@ -456,8 +456,8 @@ long bytes;
 
 #endif
 
-long
-SkipString(char *base, long i, long max)
+int32_t
+SkipString(char *base, int32_t i, int32_t max)
 {
     while (i < max && base[i] != '\"') {
 	/*
@@ -484,8 +484,8 @@ SkipString(char *base, long i, long max)
     return(i);
 }
 
-long
-SkipSingleSpec(char *base, long i, long max)
+int32_t
+SkipSingleSpec(char *base, int32_t i, int32_t max)
 {
     while (i < max && base[i] != '\'') {
 	if (base[i] == '\n') {
@@ -504,13 +504,13 @@ SkipSingleSpec(char *base, long i, long max)
 void
 Dump(base, w, i)
 char *base;
-long w;
-long i;
+int32_t w;
+int32_t i;
 {
     if (w < i) {
 	if (IfEnabled) {
 	    if (GlobalStringize) {
-		long n;
+		int32_t n;
 		for (n = w; n < i; ++n) {
 		    char c = base[n];
 		    if (c < 32 || c == '\"' || c == '\'' /* || c == '\\'*/) {
@@ -535,7 +535,8 @@ long i;
 void
 DoLineSpec()
 {
-    fprintf(Fo, "\n# %ld \"%s\" %ld\n", PushBase->LineNo, PushBase->FileName, PushBase->Level);
+    fprintf(Fo, "\n# %d \"%s\" %d\n",
+	    PushBase->LineNo, PushBase->FileName, PushBase->Level);
     ForceLineSpec = 0;
 }
 

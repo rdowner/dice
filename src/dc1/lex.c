@@ -64,24 +64,24 @@ Prototype short LexCharConst(void);
 Prototype short LexString(void);
 Prototype short LexToken(void);
 
-/*Prototype short LexSymbolRef(short, long);*/
-Prototype short LexOctal(ubyte, long);
-Prototype short LexHex(ubyte, long);
-Prototype short LexFloating(long, long);
+/*Prototype short LexSymbolRef(short, int32_t);*/
+Prototype short LexOctal(ubyte, int32_t);
+Prototype short LexHex(ubyte, int32_t);
+Prototype short LexFloating(int32_t, int32_t);
 
-Prototype void PushLexFile(char *, short, long, long);
+Prototype void PushLexFile(char *, short, int32_t, int32_t);
 Prototype short PopLexFile(void);
 
-Prototype int SpecialChar(long *);
-Prototype long CharToNibble(short);
+Prototype int SpecialChar(int32_t *);
+Prototype int32_t CharToNibble(short);
 Prototype short SkipToken(short, short);
 Prototype char *TokenToStr(short);
-Prototype long	FindLexFileLine(long, char **, long *, long *);
-Prototype short FindLexCharAt(long);
+Prototype int32_t FindLexFileLine(int32_t, char **, int32_t *, int32_t *);
+Prototype short FindLexCharAt(int32_t);
 
-Prototype long	  LexIntConst;
+Prototype int32_t	  LexIntConst;
 Prototype char	  *LexStrConst;   /*  also flt constant   */
-Prototype long	  LexStrLen;
+Prototype int32_t	  LexStrLen;
 Prototype Symbol  *LexSym;
 Prototype void	  *LexData;
 Prototype char	  LexHackColon;
@@ -89,11 +89,11 @@ Prototype char	  LexUnsigned;
 
 Prototype char FileName[128];
 Prototype ubyte SymbolSpace[256];
-Prototype long Depth;
+Prototype int32_t Depth;
 Prototype short ErrorInFileValid;
 
-Prototype   long    LexCacheHits;
-Prototype   long    LexCacheMisses;
+Prototype   int32_t    LexCacheHits;
+Prototype   int32_t    LexCacheMisses;
 Prototype LexFileNode *LFBase;
 
 
@@ -102,9 +102,9 @@ Prototype short (*LexDispatch[256])(void);
 
 LexFileNode *LFBase;
 
-long	LexIntConst;
+int32_t	LexIntConst;
 char	*LexStrConst;	/*  also flt constant	*/
-long	LexStrLen;
+int32_t	LexStrLen;
 Symbol	*LexSym;
 void	*LexData;
 char	LexHackColon;
@@ -112,10 +112,10 @@ char	LexUnsigned;
 
 char FileName[128];
 ubyte SymbolSpace[256];
-long Depth;
+int32_t Depth;
 
-long	LexCacheHits;
-long	LexCacheMisses;
+int32_t	LexCacheHits;
+int32_t	LexCacheMisses;
 
 #ifdef NOTDEF
 xSymbol  *LexSymRefSym[256];
@@ -200,7 +200,7 @@ InitLex(void)
  */
 
 void
-PushLexFile(char *name, short nameLen, long begPos, long bytes)
+PushLexFile(char *name, short nameLen, int32_t begPos, int32_t bytes)
 {
     LexFileNode *lf = zalloc(sizeof(LexFileNode) + nameLen + 1);
 
@@ -245,8 +245,8 @@ PushLexFile(char *name, short nameLen, long begPos, long bytes)
 
         struct {
             void *cfh_Cn;    // dicecache.library descriptor
-            long  cfh_Size;
-            long  cfh_Pos;
+            int32_t  cfh_Size;
+            int32_t  cfh_Pos;
         } *cfh = (void *)ioctl(fileno(lf->lf_Fi), IOC_GETDESC, NULL);
 
 	lf->lf_Buf = DiceCacheSeek(cfh->cfh_Cn, begPos, &lf->lf_Size);
@@ -295,7 +295,7 @@ PopLexFile(void)
 short
 LexToken(void)
 {
-    long i = LFBase->lf_Index;
+    int32_t i = LFBase->lf_Index;
     char *ptr = LFBase->lf_Buf + i;
 
     LFBase->lf_Index = i + 2;
@@ -313,7 +313,7 @@ x    } else
 short
 LexLineFeed(void)
 {
-    long i = LFBase->lf_Index;
+    int32_t i = LFBase->lf_Index;
     char *ptr = LFBase->lf_Buf + i;
     char *base;
 
@@ -368,8 +368,8 @@ LexLineFeed(void)
 #endif
                     }
                 } else if (strncmp(ptr, "precomp", 7) == 0) {
-                    long begPos;
-                    long bytes;
+                    int32_t begPos;
+                    int32_t bytes;
                     char *name;
                     short nameLen;
 
@@ -525,7 +525,7 @@ x
 short
 LexInteger(void)
 {
-    long i = LFBase->lf_Index + 1;
+    int32_t i = LFBase->lf_Index + 1;
     ubyte c = LFBase->lf_Buf[i++];	    /*	second char */
 
     if (c == 'x' || c == 'X')
@@ -534,10 +534,10 @@ LexInteger(void)
 }
 
 short
-LexOctal(ubyte c, long i)
+LexOctal(ubyte c, int32_t i)
 {
-    long v = 0;
-    long b = i - 2;	/*  if flt  */
+    int32_t v = 0;
+    int32_t b = i - 2;	/*  if flt  */
     char *lexBuf = LFBase->lf_Buf;
 
     LexUnsigned = 0;
@@ -565,10 +565,10 @@ short
 LexDecimal(void)
 {
     char *lexBuf = LFBase->lf_Buf;
-    long i = LFBase->lf_Index;
+    int32_t i = LFBase->lf_Index;
     ubyte c = lexBuf[i++];
-    long v = 0;
-    long b = i - 1;	/*  if flt  */
+    int32_t v = 0;
+    int32_t b = i - 1;	/*  if flt  */
 
     LexUnsigned = 0;
     while (c >= '0' && c <= '9') {
@@ -591,9 +591,9 @@ LexDecimal(void)
 }
 
 short
-LexHex(ubyte c, long i)
+LexHex(ubyte c, int32_t i)
 {
-    long v = 0;
+    int32_t v = 0;
     char *lexBuf = LFBase->lf_Buf;
 
     for (;;) {
@@ -617,7 +617,7 @@ LexHex(ubyte c, long i)
 
 short
 LexFloating(b, i)
-long b, i;
+int32_t b, i;
 {
     char *lexBuf = LFBase->lf_Buf;
     ubyte c = lexBuf[i++];
@@ -666,10 +666,10 @@ short
 LexCharConst(void)
 {
     char *lexBuf = LFBase->lf_Buf;
-    long i = LFBase->lf_Index + 1;
+    int32_t i = LFBase->lf_Index + 1;
     ubyte c = lexBuf[i++];
     short cnt = 0;
-    long v = 0;
+    int32_t v = 0;
 
     while (c != '\'') {
 	if (c == 0)
@@ -705,8 +705,8 @@ LexCharConst(void)
 short
 LexString(void)
 {
-    long i;
-    long n;
+    int32_t i;
+    int32_t n;
     ubyte c;
     ubyte nlisc = 0;
     ubyte pass = 0;
@@ -763,12 +763,12 @@ LexString(void)
 xshort
 xLexString(void)
 x{
-x    long i = LexIdx + 1;
+x    int32_t i = LexIdx + 1;
 x    ubyte c;
 x    ubyte nlisc = 0;
-x    long b = i;     /*  base of string frag */
-x    long j = i;     /*  actual write idx    */
-x    long appnl = 0;
+x    int32_t b = i;     /*  base of string frag */
+x    int32_t j = i;     /*  actual write idx    */
+x    int32_t appnl = 0;
 x
 x    for (;;) {
 x	 c = LexBuf[i++];
@@ -936,7 +936,7 @@ LexSimpleToken(void)
 	break;
     case '.':
 	if (*ptr >= '0' && *ptr <= '9') {
-	    long i = (char *)ptr - (char *)LFBase->lf_Buf - 1;
+	    int32_t i = (char *)ptr - (char *)LFBase->lf_Buf - 1;
 	    return(LexFloating(i, i));
 	}
 	if (*ptr == '.' && ptr[1] == '.') {
@@ -1154,9 +1154,9 @@ LexSimpleToken(void)
 
 int
 SpecialChar(pi)
-long *pi;
+int32_t *pi;
 {
-    long i = *pi;
+    int32_t i = *pi;
     int c = LFBase->lf_Buf[i];
     int v = 0;
 
@@ -1229,7 +1229,7 @@ long *pi;
     }
 }
 
-long
+int32_t
 CharToNibble(short c)
 {
     if (c >= '0' && c <= '9')
@@ -1277,22 +1277,23 @@ TokenToStr(short t)
  *  Find the line number associated with a lexical offset
  */
 
-long
+int32_t
 FindLexFileLine(lexIdx, plexFile, plexFileNameLen, plexIdxBeg)
-long lexIdx;
+int32_t lexIdx;
 char **plexFile;
-long *plexFileNameLen;
-long *plexIdxBeg;
+int32_t *plexFileNameLen;
+int32_t *plexIdxBeg;
 {
-    long i;
+    int32_t i;
     char *ptr;
-    long lexLine = -1;
+    int32_t lexLine = -1;
 
-    static long CacheLexIdx = -1;
-    static long CacheLexLine;
+    static int32_t CacheLexIdx = -1;
+    static int32_t CacheLexLine;
     static char *CacheLexFile;
-    static long CacheLexFileNameLen;
+    static int32_t CacheLexFileNameLen;
 
+    printf("FINDLINE lexIdx %d %s\n", lexIdx, CacheLexFile);
 
     /*
      *	find start of line
@@ -1366,7 +1367,7 @@ long *plexIdxBeg;
 
 short
 FindLexCharAt(i)
-long i;
+int32_t i;
 {
     if (LFBase) {
     	if (ftell(LFBase->lf_Fi) != i)

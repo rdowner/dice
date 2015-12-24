@@ -38,16 +38,16 @@
 
 #include "defs.h"
 
-Prototype long	PassC(long addr);
+Prototype int32_t	PassC(int32_t addr);
 
-long
-PassC(long addr)
+int32_t
+PassC(int32_t addr)
 {
     MachCtx **pmc;
     MachCtx *mc;
     OpCod   *oc;
-    long i;
-    long lost = 0;	/*  # bytes of code *deleted* so far */
+    int32_t i;
+    int32_t lost = 0;	/*  # bytes of code *deleted* so far */
     MachCtx *lsb = NULL;
     EffAddr *ea;
 
@@ -78,7 +78,7 @@ PassC(long addr)
 		 */
 		{
 		    MachCtx **ppmc = pmc;
-		    long ii = i;
+		    int32_t ii = i;
 		    while (i >= 0 && ((*ppmc)->OpCode == NULL || (*ppmc)->OpCode->Id == OdDEBUG)) {
 			--ii;
 			--ppmc;
@@ -156,7 +156,7 @@ PassC(long addr)
 	case OpBSR:
 	    if (mc->Oper1.Offset1 == 0) {
 		Label *lab;
-		long cnt = 20;	/*  handle loops */
+		int32_t cnt = 20;	/*  handle loops */
 
 		while ((lab = mc->Oper1.Label1) && lab->l_Type == LT_LOC && lab->Sect == CurSection && cnt--) {
 		    MachCtx **ppmc = lab->MC;
@@ -193,7 +193,7 @@ PassC(long addr)
 		     */
 
 		    if (mc->OpSize == 0) {
-			long range = mc->Oper1.Label1->l_Offset - (addr + 2);
+			int32_t range = mc->Oper1.Label1->l_Offset - (addr + 2);
 
 			if (mc->Oper1.Label1->l_Offset > (addr + 2))
 			    range -= lost;

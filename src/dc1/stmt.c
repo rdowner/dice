@@ -52,9 +52,9 @@
 
 #include "defs.h"
 
-Prototype short CompProcedureArgDeclarators(short, Var ***, long *, long *);
+Prototype short CompProcedureArgDeclarators(short, Var ***, int32_t *, int32_t *);
 Prototype short CompProcedure(short, Var *);
-Prototype short CompStmtDeclExp(short, Stmt **, long);
+Prototype short CompStmtDeclExp(short, Stmt **, int32_t);
 Prototype short CompBlock(short, Stmt **);
 Prototype short CompFor(short, Stmt **);
 Prototype short CompWhile(short, Stmt **);
@@ -85,7 +85,7 @@ Prototype short CompBreakPoint(short, Stmt **);
  */
 
 short
-CompProcedureArgDeclarators(short t, Var ***pvars, long *pargs, long *pflags)
+CompProcedureArgDeclarators(short t, Var ***pvars, int32_t *pargs, int32_t *pflags)
 {
     Var **vars = NULL;
     short i;
@@ -112,8 +112,8 @@ CompProcedureArgDeclarators(short t, Var ***pvars, long *pargs, long *pflags)
 	Type *type;
 	Var *var;
 	Symbol *sym = NULL;
-	long baseFlags;
-	long regFlags;
+	int32_t baseFlags;
+	int32_t regFlags;
 
 	if (n < 0)
 	    n = 0;
@@ -235,9 +235,9 @@ CompProcedureArgDeclarators(short t, Var ***pvars, long *pargs, long *pflags)
 	Type *type;
 	Var *var = NULL;
 	Symbol *sym = NULL;	/*  XXX needed? */
-	long  baseFlags;
-	long  regFlags;
-	long  li = LFBase->lf_Index;
+	int32_t  baseFlags;
+	int32_t  regFlags;
+	int32_t  li = LFBase->lf_Index;
 
 	t = CompType(t, &baseType, &baseFlags, &regFlags);     /*  defaults to int if none */
 
@@ -309,7 +309,7 @@ CompProcedure(short t, Var *var)
 {
     Stmt *stmt;
     short oldState = State;
-    long lexIdx = LFBase->lf_Index;
+    int32_t lexIdx = LFBase->lf_Index;
 
     if (t != TokLBrace)
 	zerror(EERROR_EXPECTED_OCBRACE_PROC);
@@ -350,7 +350,7 @@ CompProcedure(short t, Var *var)
 }
 
 short
-CompStmtDeclExp(short t, Stmt **pstmt, long semiexp)
+CompStmtDeclExp(short t, Stmt **pstmt, int32_t semiexp)
 {
     *pstmt = NULL;
 
@@ -481,7 +481,7 @@ CompStmtDeclExp(short t, Stmt **pstmt, long semiexp)
 	{
 	    Exp *exp = NULL;
 	    ExpStmt *es = AllocTmpStructure(ExpStmt);
-	    long li = LFBase->lf_Index;
+	    int32_t li = LFBase->lf_Index;
 
 	    t = CompExp(t, &exp, 1);
 	    if (semiexp) {
@@ -751,7 +751,7 @@ CompSwitch(short t, Stmt **pstmt)
 		BlockUp();
 	    stmt->CaseAry[stmt->NumCases] = BlockDown(BT_BLOCK);
 	    {
-		long l = AllocLabel();
+		int32_t l = AllocLabel();
 
 		stmt->CaseAry[stmt->NumCases]->LabelTest = l;
 		stmt->Labels[stmt->NumCases] = l;
@@ -884,7 +884,7 @@ CompLabel(short t, Stmt **pstmt)
 {
     LabelStmt *stmt = AllocTmpStructure(LabelStmt);
     SemInfo *sem;
-    long label;
+    int32_t label;
 
     *pstmt = (Stmt *)stmt;
     stmt->st_Func = (void (*)(void *))GenLabel;
@@ -893,11 +893,11 @@ CompLabel(short t, Stmt **pstmt)
 
     if ((sem = FindSymbolId(LexSym, TokLabelId)) == NULL) {
 	label = AllocLabel();
-	SemanticAddTopBlock(LexSym, TokLabelId, (void *)label);
+	SemanticAddTopBlock(LexSym, TokLabelId, (void *)(intptr_t)label);
     } else {
 	/* How can this be... We have to issue an error message because */
 	/* They have defined the label twice...                         */
-	label = (long)sem->Data;
+	label = (int32_t)(intptr_t)sem->Data;
 	if (label)
 	{
 	    zerror(EWARN_DUPLICATE_SYMBOL, LexSym->Len, LexSym->Name);
@@ -905,7 +905,7 @@ CompLabel(short t, Stmt **pstmt)
 	else
 	{
 	    label = AllocLabel();
-	    sem->Data = (void *)label;
+	    sem->Data = (void *)(intptr_t)label;
 	}
     }
     stmt->Label = label;

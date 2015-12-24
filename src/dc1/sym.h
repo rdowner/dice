@@ -11,7 +11,7 @@ typedef struct Symbol {
     struct Symbol *Next;    /*	hash table link 		*/
     void    *SemBase;	    /*	for semantics junk		*/
     const char   *Name;	    /*	pointer to unterminated symbol	*/
-    long    Hv; 	    /*	hash value			*/
+    int32_t    Hv; 	    /*	hash value			*/
     short   Len;	    /*	length of symbol		*/
     short   LexId;	    /*	currently overloaded id 	*/
     void    *Data;	    /*	currently overloaded data	*/
@@ -31,7 +31,7 @@ typedef struct StrNode {
     struct StrNode *sn_Next;
     struct StrNode *sn_Prev;
     char    *sn_Ptr;
-    long    sn_Len;
+    int32_t    sn_Len;
 } StrNode;
 
 /*

@@ -26,12 +26,12 @@
 
 /* #define	BSS_IN_OUTPUT_FILE	// Write zeros to output file for BSS */
 
-long	NumHunks;
-long	FirstHunk;
-long	LastHunk;
+int32_t	NumHunks;
+int32_t	FirstHunk;
+int32_t	LastHunk;
 
-long	CodeStart;
-long	DataStart;
+int32_t	CodeStart;
+int32_t	DataStart;
 short	DataStartAfterCode = 0;
 char	DataStartSpecified;	/*	flag, argument specified */
 char	CodeStartSpecified;	/*	flag, argument specified */
@@ -45,20 +45,20 @@ typedef unsigned char ubyte;
 **	One of these is allocated per hunk in the file.
 */
 typedef struct {
-    long    Type;	/* AmigaDOS hunk type */
-    long    Len;	/* Initialized data length only */
-    long    Pc;
+    int32_t    Type;	/* AmigaDOS hunk type */
+    int32_t    Len;	/* Initialized data length only */
+    int32_t    Pc;
     char    *Data;	/* Allocated memory for hunk */
 } Hunk;
 
 Hunk	*Hunks;
 
-long	fgetl(FILE *);
+int32_t	fgetl(FILE *);
 void	LoadHeaderInfo(FILE *);
 void	ScanHunks(FILE *);
 void	RelocHunks(FILE *);
 void	DumpHunks(FILE *, FILE *);
-int	fwrite_2(int, FILE *, FILE *, char *, long);
+int	fwrite_2(int, FILE *, FILE *, char *, int32_t);
 
 int
 main(int ac, char **av)
@@ -183,7 +183,7 @@ main(int ac, char **av)
     }
     LoadHeaderInfo(fi);
     {
-	long pos = ftell(fi);
+	int32_t pos = ftell(fi);
 	    D(puts("--scan--"));
 
 	ScanHunks(fi);
@@ -228,14 +228,14 @@ FILE *fi;
 	h->Len = fgetl(fi) * 4;
 	h->Data= malloc(h->Len + 1);	/*  +1 so can malloc 0 wo/error    */
 	if (h->Data == NULL) {
-	    printf("malloc failed [hunk %d,length %ld]\n", n, h->Len);
+	    printf("malloc failed [hunk %d,length %d]\n", n, h->Len);
 	    exit(1);
 	}
     }
 }
 
-long	CodePc;
-long	DataPc;
+int32_t	CodePc;
+int32_t	DataPc;
 
 /*
  *  Determine PC start and TYPE.  Read data into preallocated memory.
@@ -251,11 +251,11 @@ FILE *fi;
     n = 0;
     h = Hunks;
     while (n < NumHunks) {
-	long len;
-	long blen;
-	long t = fgetl(fi);
+	int32_t len;
+	int32_t blen;
+	int32_t t = fgetl(fi);
 
-	    D(printf("Header %08lx\n", t));
+	    D(printf("Header %08x\n", t));
 
 	switch(t) {
 	case 0x3E9:	/*  CODE    */
@@ -263,7 +263,7 @@ FILE *fi;
 	    h->Type = t;
 	    len = fgetl(fi) * 4;
 	    if (len > h->Len || len < 0) {
-		printf("Hunk Error: Text len %ld/%ld\n", len, h->Len);
+		printf("Hunk Error: Text len %d/%d\n", len, h->Len);
 		exit(1);
 	    }
 	    h->Len = len;
@@ -277,7 +277,7 @@ FILE *fi;
 	    h->Type = t;
 	    setmem(h->Data, h->Len, 0);
 	    if ((blen=(fgetl(fi)*4)) != h->Len)
-		printf("Size mismatch on BSS hunk #%d: %ld != %ld\n",n,blen,h->Len);
+		printf("Size mismatch on BSS hunk #%d: %d != %d\n",n,blen,h->Len);
 	    break;
 	case 0x3EC:	/*  HUNK_RELOC32    */
 	    while ((len = fgetl(fi) * 4) != 0) {
@@ -325,7 +325,7 @@ FILE *fi;
 	    ++h;
 	    break;
 	default:
-	    printf("Hunk type %08lx unknown\n", (unsigned long)h->Type);
+	    printf("Hunk type %08x unknown\n", (uint32_t)h->Type);
 	    exit(1);
 	}
     }
@@ -390,8 +390,8 @@ FILE *fi;
     h = Hunks;
 
     while (n < NumHunks) {
-	long len;
-	long t;
+	int32_t len;
+	int32_t t;
 
 	t = fgetl(fi);
 	switch(t) {
@@ -411,18 +411,18 @@ FILE *fi;
 	    while ((len = fgetl(fi)) != 0) {
 		dhno = fgetl(fi);	/*  hunk to relocate to */
 		if (dhno < FirstHunk || dhno >= NumHunks + FirstHunk) {
-		    printf("hunk# in reloc32 bad: %d/%ld\n", dhno, NumHunks);
+		    printf("hunk# in reloc32 bad: %d/%d\n", dhno, NumHunks);
 		    exit(1);
 		}
 		dh = Hunks + dhno - FirstHunk;
 		while (len) {		/*  offsets to relocate */
-		    long off = fgetl(fi);
+		    int32_t off = fgetl(fi);
 
 		    if (off < 0 || off > h->Len - 4) {
-			printf("Bad offset: %ld len=%ld\n", off, h->Len);
+			printf("Bad offset: %d len=%d\n", off, h->Len);
 			exit(1);
 		    }
-		    *(long *)(h->Data + off) = ToMsbOrder(FromMsbOrder(*(long *)(h->Data + off)) + dh->Pc);
+		    *(int32_t *)(h->Data + off) = ToMsbOrder(FromMsbOrder(*(int32_t *)(h->Data + off)) + dh->Pc);
 			D(printf("Reloc in %d to %d offset %d add %04x\n", n, dhno, off, dh->Pc));
 		    --len;
 		}
@@ -467,7 +467,7 @@ FILE *fi;
 	    ++h;
 	    break;
 	default:
-	    printf("Hunk type %08lx unknown\n", (unsigned long)h->Type);
+	    printf("Hunk type %08x unknown\n", (uint32_t)h->Type);
 	    exit(1);
 	}
     }
@@ -481,14 +481,14 @@ DumpHunks(fo1, fo2)
 FILE *fo1;
 FILE *fo2;
 {
-    long endpc __unused = CodeStart;
+    int32_t endpc __unused = CodeStart;
     short n;
     short nextIsEven = 1;
     Hunk *h;
 
     for (n = 0, h = Hunks; n < NumHunks; ++n, ++h) {
 	if (h->Type == 0x3E9) {
-		D(printf("$%04x bytes text @ %08lx\n", h->Len, h->Pc));
+		D(printf("$%04x bytes text @ %08x\n", h->Len, h->Pc));
 	    endpc = h->Pc + h->Len;
 	    if (fo2) {
 		nextIsEven = fwrite_2(nextIsEven, fo1, fo2, h->Data, h->Len);
@@ -500,7 +500,7 @@ FILE *fo2;
 
     for (n = 0, h = Hunks; n < NumHunks; ++n, ++h) {
 	if (h->Type == 0x3EA) {
-		D(printf("$%04x bytes data @ %08lx reloc to %08lx\n", h->Len, endpc, h->Pc));
+		D(printf("$%04x bytes data @ %08x reloc to %08x\n", h->Len, endpc, h->Pc));
 	    endpc = h->Pc + h->Len;
 	    if (fo2) {
 		nextIsEven = fwrite_2(nextIsEven, fo1, fo2, h->Data, h->Len);
@@ -513,7 +513,7 @@ FILE *fo2;
 #ifdef	BSS_IN_OUTPUT_FILE
     for (n = 0, h = Hunks; n < NumHunks; ++n, ++h) {
 	if (h->Type == 0x3EB) {
-		D(printf("$%04x bytes bss  @ %08lx reloc to %08lx\n", h->Len, endpc, h->Pc));
+		D(printf("$%04x bytes bss  @ %08x reloc to %08x\n", h->Len, endpc, h->Pc));
 	    endpc = h->Pc + h->Len;
 	    if (fo2) {
 		nextIsEven = fwrite_2(nextIsEven, fo1, fo2, h->Data, h->Len);
@@ -522,17 +522,17 @@ FILE *fo2;
 	    }
 	}
     }
-    D(printf("End at $%08lx\n", endpc));
+    D(printf("End at $%08x\n", endpc));
 #endif
 
 }
 
 
-long
+int32_t
 fgetl(fi)
 FILE *fi;
 {
-    long v;
+    int32_t v;
 
     v = getc(fi) << 24;
     v |= getc(fi) << 16;
@@ -553,7 +553,7 @@ int nextIsEven;
 FILE *fo_even;
 FILE *fo_odd;
 char *ptr;
-long len;
+int32_t len;
 {
     while (len--) {
 	if (nextIsEven)

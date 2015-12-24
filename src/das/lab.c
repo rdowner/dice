@@ -23,7 +23,7 @@ int
 labhash(str)
 char *str;
 {
-    register long hv = 0x1B465D8;
+    register int32_t hv = 0x1B465D8;
 
     while (*str) {
 	hv = (hv >> 23) ^ (hv << 5) ^ (ubyte)*str;
@@ -36,7 +36,7 @@ Label *
 GetLabelByName(name)
 char *name;
 {
-    long i = labhash(name);
+    int32_t i = labhash(name);
     Label **plab;
     Label *lab;
 
@@ -56,7 +56,7 @@ Label *
 FindLabel(name)
 char *name;
 {
-    long i = labhash(name);
+    int32_t i = labhash(name);
     Label *lab;
 
     for (lab = LabHash[i]; lab; lab = lab->HNext) {

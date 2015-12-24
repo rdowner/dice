@@ -19,7 +19,7 @@ Prototype void AddSourceDirInclude(char *);
 Prototype void AddInclude(char *, short);
 Prototype void RemInclude(char *);
 Prototype void RemAllIncludes(void);
-Prototype void do_include(char *, int, long *);
+Prototype void do_include(char *, int, int32_t *);
 
 Prototype short PreCompFlag;
 
@@ -100,11 +100,11 @@ void
 do_include(buf, max, pidx)
 char *buf;
 int max;
-long *pidx;
+int32_t *pidx;
 {
     int i;
     int b;
-    long pos;
+    int32_t pos;
     short done = 0;
     FILE *fi = NULL;
     char *tmp;
@@ -120,7 +120,7 @@ long *pidx;
     if ((i < max) && SymbolChar[(ubyte)buf[i]])
     {
 	/* We have a symbol.  We need to expand it in place in the buffer */
-	long b = i;
+	int32_t b = i;
 	Sym *node;
 
 	i = ExtSymbol(buf, i, max);
@@ -231,7 +231,7 @@ long *pidx;
 		}
 		fi = NULL;
 	    }
-	    dbprintf(("try: %s (%08lx)\n", tmp, (unsigned long)fi));
+	    dbprintf(("try: %s (%08lx)\n", tmp, (uint32_t)(uintptr_t)fi));
 	}
 
 	/*
@@ -288,7 +288,9 @@ long *pidx;
 	    }
 	}
     }
-    if (PushBase)
-	fprintf(Fo, "\n# %ld \"%s\" %ld\n", PushBase->LineNo, PushBase->FileName, PushBase->Level);
+    if (PushBase) {
+	fprintf(Fo, "\n# %d \"%s\" %d\n",
+		PushBase->LineNo, PushBase->FileName, PushBase->Level);
+    }
 }
 

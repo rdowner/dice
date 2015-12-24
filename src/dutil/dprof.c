@@ -31,14 +31,14 @@ ProfSym *ProfData;
 
 void DumpProfInfo(void);
 void DumpProfInfoFrom(ProfSym *);
-void DumpProfTree(long, ProfSym *, short, long);
+void DumpProfTree(int32_t, ProfSym *, short, int32_t);
 void DumpCombineProfTree(ProfSym *);
 void SortProfList(void);
 void help(int);
 char *NameOf(ProfSym *);
 short NoLoop(ProfSym *, ProfSym *);
 
-unsigned long TimeBase;
+uint32_t TimeBase;
 short MaxSymLen;
 short CallTreeOpt;
 char	FileName[256];
@@ -90,7 +90,7 @@ char *av[];
     TimeBase = phdr.ph_TimeBase;
     clrmem(ProfAry, phdr.ph_NumIds * sizeof(ProfSym *));
     {
-	long n;
+	int32_t n;
 	ProfSym *ps;
 
 	n = lseek(fd, 0L, 2);
@@ -105,7 +105,7 @@ char *av[];
 	    exit(20);
 	}
 	for (ps = (ProfSym *)((ProfHdr *)ProfData + 1); (char *)ps < ((char *)ProfData + n); ps = (ProfSym *)((char *)ps + ps->ps_Size)) {
-	    long i = ps->ps_Id;
+	    int32_t i = ps->ps_Id;
 
 	    ps->ps_TimeStamp = 0;
 	    ps->ps_AccumTime = 0;
@@ -130,7 +130,7 @@ char *av[];
 	}
 	for (ps = (ProfSym *)((ProfHdr *)ProfData + 1); (char *)ps < ((char *)ProfData + n); ps = (ProfSym *)((char *)ps + ps->ps_Size)) {
 	    if (ps->ps_Parent)
-		ps->ps_Parent = ProfAry[(long)ps->ps_Parent];
+		ps->ps_Parent = ProfAry[(int32_t)ps->ps_Parent];
 	}
     }
 
@@ -151,7 +151,7 @@ void
 DumpProfInfo()
 {
     ProfSym *ps;
-    unsigned long grandTotal = 0;
+    uint32_t grandTotal = 0;
 
     /*
      *	Id for quick name reference
@@ -175,8 +175,8 @@ DumpProfInfo()
 
     for (ps = ProfList; ps; ps = ps->ps_Link) {
 	ProfSym *ps2;
-	long total = 0;
-	long calls = 0;
+	int32_t total = 0;
+	int32_t calls = 0;
 
 	if (ps->ps_Parent == NULL)
 	    grandTotal += ps->ps_TotalTime;
@@ -215,9 +215,9 @@ DumpProfInfo()
 
     for (ps = ProfList; ps; ps = ps->ps_Link) {
 	ProfSym *ps2;
-	long total = 0;
-	long local = 0;
-	long calls = 0;
+	int32_t total = 0;
+	int32_t local = 0;
+	int32_t calls = 0;
 
 	for (ps2 = ps; ps2; ps2 = ps2->ps_SibLink) {
 	    if (NoLoop(ps, ps2))
@@ -262,8 +262,8 @@ DumpProfInfoFrom(ps)
 ProfSym *ps;
 {
     ProfSym *ps2;
-    long total = 0;
-    long calls = 0;
+    int32_t total = 0;
+    int32_t calls = 0;
 
     for (ps2 = ps; ps2; ps2 = ps2->ps_SibLink) {
 	if (NoLoop(ps, ps2))
@@ -285,10 +285,10 @@ ProfSym *ps;
 
 void
 DumpProfTree(total, ps, tab, limit)
-long total;
+int32_t total;
 ProfSym *ps;
 short tab;
-long limit;
+int32_t limit;
 {
     ProfSym *ps1;
     ProfSym *ps2;
@@ -328,9 +328,9 @@ ProfSym *ps;
 {
     ProfSym *ps2;
     ProfSym *ps3;
-    long total = 0;
-    long local = 0;
-    long calls = 0;
+    int32_t total = 0;
+    int32_t local = 0;
+    int32_t calls = 0;
 
     for (ps2 = ps; ps2; ps2 = ps2->ps_SibLink) {
 	if (NoLoop(ps, ps2))
@@ -355,9 +355,9 @@ ProfSym *ps;
      */
 
     for (ps2 = ProfList; ps2; ps2 = ps2->ps_Link) {
-	long subTotal = 0;
-	long subLocal = 0;
-	long subCalls = 0;
+	int32_t subTotal = 0;
+	int32_t subLocal = 0;
+	int32_t subCalls = 0;
 
 	/*
 	 *  add totals for routines that we (ps) call.	For each ps2 element
@@ -437,7 +437,7 @@ SortProfList()
     ProfSym *ps;
     ProfSym *psnext;
     ProfSym **pp;
-    long total = 0;
+    int32_t total = 0;
 
     for (ps = ProfList, ProfList = NULL; ps; ps = psnext) {
 	psnext = ps->ps_Link;

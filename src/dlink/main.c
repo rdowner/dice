@@ -104,7 +104,7 @@ Prototype short ChipOpt;
 Prototype short DebugOpt;
 Prototype short ErrorOpt;
 Prototype FILE	*ErrorFi;
-Prototype long	WordBaseAddr;
+Prototype int32_t	WordBaseAddr;
 Prototype short NumExtHunks;
 Prototype char	PostFix[64];
 
@@ -142,7 +142,7 @@ short NoLibDirsOpt;
 short DebugOpt;
 short ErrorOpt;
 FILE  *ErrorFi;
-long  WordBaseAddr;
+int32_t  WordBaseAddr;
 short NumExtHunks;
 
 static FILE *Fo;
@@ -420,7 +420,10 @@ main(int ac, char **av)
 			CreateSymbolTable(module);
 		    AddTail(list, &module->Node);
 		} else {
-		    printf("Bad hunk in %-15s $%08lx at offset $%08lx\n", fn->Node.ln_Name, *fn->DPtr, (unsigned long)((char *)fn->DPtr - (char *)fn->Data));
+		    printf("Bad hunk in %-15s $%08x at offset $%08x\n",
+			   fn->Node.ln_Name,
+			   *fn->DPtr,
+			   (uint32_t)((char *)fn->DPtr - (char *)fn->Data));
 		    break;
 		}
 	    }
@@ -430,7 +433,7 @@ main(int ac, char **av)
 	     */
 
 	    if (list == &LList) {
-		long numUndef;		/*  non-zero dummy value */
+		int32_t numUndef;		/*  non-zero dummy value */
 
 		do {
 		    Module *mod;
@@ -591,9 +594,9 @@ main(int ac, char **av)
 	Hunk *hunk;
 
 	for (hn = GetHead(&HList); hn; hn = GetSucc(&hn->Node)) {
-	    hn->ExtReloc32 = zalloc(sizeof(ulong *) * NumExtHunks);
-	    hn->CntReloc32 = zalloc(sizeof(ulong) * NumExtHunks);
-	    hn->CpyReloc32 = zalloc(sizeof(ulong) * NumExtHunks);
+	    hn->ExtReloc32 = zalloc(sizeof(uint32_t *) * NumExtHunks);
+	    hn->CntReloc32 = zalloc(sizeof(uint32_t) * NumExtHunks);
+	    hn->CpyReloc32 = zalloc(sizeof(uint32_t) * NumExtHunks);
 
 	    for (hunk = GetHead(&hn->HunkList); hunk; hunk = GetSucc(&hunk->Node)) {
 		/*
@@ -628,7 +631,7 @@ main(int ac, char **av)
 	    {
 		short i;
 		for (i = 0; i < NumExtHunks; ++i)
-		    hn->ExtReloc32[i] = zalloc(sizeof(ulong) * hn->CntReloc32[i]);
+		    hn->ExtReloc32[i] = zalloc(sizeof(uint32_t) * hn->CntReloc32[i]);
 	    }
 	}
     }
@@ -710,16 +713,16 @@ main(int ac, char **av)
     SanityCheck(8);
 
     if (VerboseOpt) {
-	printf("Memory: %ld+%ld allocated (%ld req %ld recl)\n",
+	printf("Memory: %d+%d allocated (%d req %d recl)\n",
 	    MemMalloced, MemAllocated, MemRequested, MemReclaimed
 	);
-	printf("\t%ld symbols %ld hunks %ld modules (%ld,%ld,%ld)\n",
+	printf("\t%d symbols %d hunks %d modules (%zd,%zd,%zd)\n",
 	    MemNumSyms, MemNumHunks, MemNumModules,
 	    MemNumSyms * sizeof(Sym),
 	    MemNumHunks* sizeof(Hunk),
 	    MemNumModules * sizeof(Module)
 	);
-	printf("\t%ld hunks %ld syms reclaimed from body\n",
+	printf("\t%d hunks %d syms reclaimed from body\n",
 	    MemNumHunksMalReclaim,
 	    MemNumSymsMalReclaim
 	);
@@ -771,7 +774,7 @@ char *name;
 		fn->Node.ln_Pri = 32;
 	    }
 	}
-	dbprintf(0, ("load %-15s %d %ld\n", fn->Node.ln_Name, fn->Node.ln_Type, fn->Bytes));
+	dbprintf(0, ("load %-15s %d %d\n", fn->Node.ln_Name, fn->Node.ln_Type, fn->Bytes));
 	Enqueue(list, &fn->Node);
     }
     close(fd);

@@ -21,14 +21,14 @@
 OpCod	*BaseCod;
 
 Prototype void InitCodeList(void);
-Prototype void DumpCode(FILE *fi, short srcHunk, long begOffset, long endOffset);
-Prototype RelocInfo *RelocAtOffset(long offset, short hunkNo);
+Prototype void DumpCode(FILE *fi, short srcHunk, int32_t begOffset, int32_t endOffset);
+Prototype RelocInfo *RelocAtOffset(int32_t offset, short hunkNo);
 Prototype OpCod *DecodeOpCode(uword opCode, short *pmode1, short *pmode2, short *psiz, short *prs, short *prd);
-Prototype int MatchEa(uword opCode, short ea, short reg, long modes);
+Prototype int MatchEa(uword opCode, short ea, short reg, int32_t modes);
 Prototype int MatchSiz(uword opCode, OpCod *oc);
 Prototype int ExtensionWords(OpCod *oc, short mode, short opsize, uword *oper, FILE *fi);
 Prototype int IndexFormatExtWords(uword ext);
-Prototype char *ModeToStr(long offset, short srcHunk, uword opCode, uword **pwp, short mode, int altMode, short siz, short reg, short special);
+Prototype char *ModeToStr(int32_t offset, short srcHunk, uword opCode, uword **pwp, short mode, int altMode, short siz, short reg, short special);
 
 /*
  *  Reduce search requirements by splitting opcodes into a set of 16
@@ -49,7 +49,7 @@ InitCodeList(void)
 }
 
 void
-DumpCode(FILE *fi, short srcHunk, long begOffset, long endOffset)
+DumpCode(FILE *fi, short srcHunk, int32_t begOffset, int32_t endOffset)
 {
     RelocInfo *r;
 
@@ -67,10 +67,10 @@ DumpCode(FILE *fi, short srcHunk, long begOffset, long endOffset)
 	short	rs;
 	short	rd;
 
-	col = cprintf(" %02x.%08lx ", srcHunk, begOffset + StartPc);
+	col = cprintf(" %02x.%08x ", srcHunk, begOffset + StartPc);
 
 	if ((r = RelocAtOffset(begOffset, srcHunk)) != NULL) {
-	    long data = LoadRelocData(fi, r);
+	    int32_t data = LoadRelocData(fi, r);
 	    col += cprintf(" %s\n", RelocToStr(r, data, 1, 0, -1));
 	    begOffset += r->ri_RelocSize;
 	    continue;
@@ -183,7 +183,7 @@ DumpCode(FILE *fi, short srcHunk, long begOffset, long endOffset)
 }
 
 RelocInfo *
-RelocAtOffset(long offset, short hunkNo)
+RelocAtOffset(int32_t offset, short hunkNo)
 {
     RelocInfo *r = FindRelocOffset(offset, hunkNo);
 
@@ -299,12 +299,12 @@ DecodeOpCode(uword opCode, short *pmode1, short *pmode2, short *psiz, short *prs
 }
 
 int
-MatchEa(uword opCode, short ea, short reg, long modes)
+MatchEa(uword opCode, short ea, short reg, int32_t modes)
 {
     short i = 0;
 
     if (DDebug)
-	printf("matchea %04x %d %d %08lx\n", opCode, ea, reg, modes);
+	printf("matchea %04x %d %d %08x\n", opCode, ea, reg, modes);
     if (ea >= 0) {
 	if (reg >= 0) {
 	    reg = (opCode >> reg) & 7;
@@ -412,7 +412,7 @@ ExtensionWords(OpCod *oc, short mode, short opsize, uword *oper, FILE *fi)
 	else if (oc->Special || (oc->SModes & AF_BBRANCH))
 	    i = 0;
 	else
-	    i = (opsize + 1) >> 1;  /* 1 for bw, 2 for long */
+	    i = (opsize + 1) >> 1;  /* 1 for bw, 2 for int32_t */
 	if (i)
 	    freadl(oper, 2, i, fi);
     } else if (i == -2) {
@@ -465,7 +465,7 @@ IndexFormatExtWords(uword ext)
  */
 
 char *
-ModeToStr(long offset, short srcHunk, uword opCode, uword **pwp, short mode, int altMode, short siz, short reg, short special)
+ModeToStr(int32_t offset, short srcHunk, uword opCode, uword **pwp, short mode, int altMode, short siz, short reg, short special)
 {
     uword *wptr = *pwp;
     RelocInfo *r = NULL;
@@ -553,9 +553,9 @@ ModeToStr(long offset, short srcHunk, uword opCode, uword **pwp, short mode, int
 		    offset += 2;
 		    hda = 1;
 		    break;
-		case 0x0030:	/*  long    */
+		case 0x0030:	/*  int32_t    */
 		    r = RelocAtOffset(offset, srcHunk);
-		    ptr += csprintf(ptr, "%s", RelocToStr(r, *(long *)wptr, 0, 4, (mode == AB_OFFIDXPC) ? srcHunk : -1));
+		    ptr += csprintf(ptr, "%s", RelocToStr(r, *(int32_t *)wptr, 0, 4, (mode == AB_OFFIDXPC) ? srcHunk : -1));
 		    ++wptr;
 		    ++wptr;
 		    offset += 4;
@@ -612,9 +612,9 @@ ModeToStr(long offset, short srcHunk, uword opCode, uword **pwp, short mode, int
 		    ++wptr;
 		    hda = 1;
 		    break;
-		case 0x0003:	/*  long    */
+		case 0x0003:	/*  int32_t    */
 		    r = RelocAtOffset(offset, srcHunk);
-		    ptr += csprintf(ptr, "%s", RelocToStr(r, *(long *)wptr, 0, 4, -1));
+		    ptr += csprintf(ptr, "%s", RelocToStr(r, *(int32_t *)wptr, 0, 4, -1));
 		    ++wptr;
 		    ++wptr;
 		    hda = 1;
@@ -645,7 +645,7 @@ ModeToStr(long offset, short srcHunk, uword opCode, uword **pwp, short mode, int
 	break;
     case AB_OFFPC:
 	{
-	    long addoff;
+	    int32_t addoff;
 
 	    /*
 	     *	Attempt to do the relocation.  If we can get our hands on
@@ -758,7 +758,7 @@ ModeToStr(long offset, short srcHunk, uword opCode, uword **pwp, short mode, int
     case AB_BBRANCH:
     case AB_WBRANCH:
 	{
-	    long addoff;
+	    int32_t addoff;
 
 	    if (opCode & 0xFF) {
 		r = RelocAtOffset(offset - 1, srcHunk);

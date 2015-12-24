@@ -36,16 +36,16 @@
 
 #include "defs.h"
 
-Prototype long	PassB(long addr);
+Prototype int32_t	PassB(int32_t addr);
 
-long
-PassB(long addr)
+int32_t
+PassB(int32_t addr)
 {
     MachCtx **pmc;
     MachCtx *mc;
     OpCod   *oc;
     char    *str;
-    long i;
+    int32_t i;
 
     pmc = CurFile->fn_MBase;
     for (i = 0; i < CurFile->fn_MLines; ++i) {
@@ -90,10 +90,10 @@ PassB(long addr)
 	 */
 
 	{
-	    long mc10= (1 << mc->Oper1.Mode1);
-	    long mc1 = mc10 | (1 << mc->Oper1.Mode2);
-	    long mc20= (1 << mc->Oper2.Mode1);
-	    long mc2 = mc20 | (1 << mc->Oper2.Mode2);
+	    int32_t mc10= (1 << mc->Oper1.Mode1);
+	    int32_t mc1 = mc10 | (1 << mc->Oper1.Mode2);
+	    int32_t mc20= (1 << mc->Oper2.Mode1);
+	    int32_t mc2 = mc20 | (1 << mc->Oper2.Mode2);
 
 	    for (; oc; oc = oc->SibNext) {
 		{

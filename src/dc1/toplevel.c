@@ -80,26 +80,26 @@ static ExtVarNode *ExtBase;
 static ExtStrNode *StrBase;
 
 Prototype short TopLevel(short);
-Prototype short CompDecl(short, Var **, long);
-Prototype short CompType(short, Type **, long *, long *);
-Prototype short CompVar(short, Type *, long, long, Var **);
-Prototype short CompTypeDeclarators(short, Type **, Symbol **, long);
-Prototype short CompStructType(short, Type **, long);
+Prototype short CompDecl(short, Var **, int32_t);
+Prototype short CompType(short, Type **, int32_t *, int32_t *);
+Prototype short CompVar(short, Type *, int32_t, int32_t, Var **);
+Prototype short CompTypeDeclarators(short, Type **, Symbol **, int32_t);
+Prototype short CompStructType(short, Type **, int32_t);
 Prototype short CompEnumType(short, Type **);
 Prototype short CompTypeofType(short, Type **);
 Prototype short ResolveStructUnionType(Type *);
 
 Prototype void AddExternList(Var *);
-Prototype void DumpExternList(long);
-Prototype void AddStrList(char *, long, long, long);
-Prototype void MakeStringConst(long);
-Prototype void DelStrList(long);
+Prototype void DumpExternList(int32_t);
+Prototype void AddStrList(char *, int32_t, int32_t, int32_t);
+Prototype void MakeStringConst(int32_t);
+Prototype void DelStrList(int32_t);
 Prototype void DumpStrList(void);
 
 Local short PointerOpt(Type **, Symbol **, short);
-Local short DirectDeclarator(Type **, Symbol **, short, long);
+Local short DirectDeclarator(Type **, Symbol **, short, int32_t);
 Local void ReverseFeed(Type **, Type *);
-Local int ExplicitRegistersDeclared(Var **vars, long args);
+Local int ExplicitRegistersDeclared(Var **vars, int32_t args);
 
 
 /*
@@ -142,14 +142,14 @@ TopLevel(short t)
 }
 
 short
-CompDecl(short t, Var **pvar, long absorbSemi)
+CompDecl(short t, Var **pvar, int32_t absorbSemi)
 {
     short typeDef = 0;		/*  preceeded by typedef    */
     Var *var = NULL;
     Type *baseType;
-    long  baseFlags;
-    long  regFlags;
-    long li = LFBase->lf_Index;
+    int32_t  baseFlags;
+    int32_t  regFlags;
+    int32_t li = LFBase->lf_Index;
 
     if (t == TokTypeDef) {	/*  opt typedef 	*/
 	t = GetToken();
@@ -218,10 +218,10 @@ CompDecl(short t, Var **pvar, long absorbSemi)
 }
 
 short
-CompType(short t, Type **ptype, long *pflags, long *rflags)
+CompType(short t, Type **ptype, int32_t *pflags, int32_t *rflags)
 {
     Type *type;
-    long  flags = 0;
+    int32_t  flags = 0;
 
     *rflags = 0;
 
@@ -231,25 +231,25 @@ CompType(short t, Type **ptype, long *pflags, long *rflags)
      */
 
     while (t == TokTypeQual) {
-	flags |= (long)LexData;
+	flags |= (int32_t)(intptr_t)LexData;
 	t = GetToken();
     }
     while (t == TokRegQual) {
 	if (*rflags)
 	    zerror(EERROR_ILLEGAL_REGSPEC);
 	else
-	    *rflags = (long)LexData | RF_REGISTER;
+	    *rflags = (int32_t)(intptr_t)LexData | RF_REGISTER;
 	t = GetToken();
     }
     while (t == TokTypeQual) {
-	flags |= (long)LexData;
+	flags |= (int32_t)(intptr_t)LexData;
 	t = GetToken();
     }
     if (t == TokTypeId) {
 	type = (Type *)LexData;
 	t = GetToken();
 	while (t == TokTypeQual) {
-	    flags |= (long)LexData;
+	    flags |= (int32_t)(intptr_t)LexData;
 	    t = GetToken();
 	}
 	if (t == TokTypeId) {
@@ -258,7 +258,7 @@ CompType(short t, Type **ptype, long *pflags, long *rflags)
 		t = GetToken();
 #endif
 	    /*
-	     * handle 'long long'
+	     * handle 'int32_t int32_t'
 	     */
 	    if ((Type *)LexData == &LongType && type == &LongType) {
 		t = GetToken();
@@ -283,14 +283,14 @@ CompType(short t, Type **ptype, long *pflags, long *rflags)
 
     flags |= type->Flags;
 
-    while (t == TokTypeQual && ((long)LexData & TF_STORQUALMASK)) {
+    while (t == TokTypeQual && ((int32_t)(intptr_t)LexData & TF_STORQUALMASK)) {
 	/*
 	 *  Generate warning, but accept type.	Note that the qualifier
 	 *  will apply to ALL declarations in this statement rather then
 	 *  just the first as in SAS/C, thus the warning.
 	 */
 	zerror(EWARN_SASC_QUALIFIER_PLACEMENT);
-	flags |= (long)LexData;
+	flags |= (int32_t)(intptr_t)LexData;
 	t = GetToken();
     }
 
@@ -317,12 +317,12 @@ CompType(short t, Type **ptype, long *pflags, long *rflags)
  */
 
 short
-CompVar(short t, Type *baseType, long storFlags, long regFlags, Var **pvar)
+CompVar(short t, Type *baseType, int32_t storFlags, int32_t regFlags, Var **pvar)
 {
     Var *var = NULL;
     Type *type;
     Symbol *sym = NULL;
-    long extraTypeFlags = 0;	/*  propogated through override */
+    int32_t extraTypeFlags = 0;	/*  propogated through override */
     short protoVoid = 0;
 
     /*
@@ -336,7 +336,7 @@ CompVar(short t, Type *baseType, long storFlags, long regFlags, Var **pvar)
     if (type->Flags & TF_STKCALL) storFlags &= ~TF_REGCALL;
 
     if (t == TokColon) {
-	long bits;
+	int32_t bits;
 	Exp *exp = NULL;
 
 	if (StructLevel == 0)
@@ -374,7 +374,7 @@ CompVar(short t, Type *baseType, long storFlags, long regFlags, Var **pvar)
     }
 
     {
-	long tflags = (type->Flags | storFlags) & ~TF_NOTINTYPE;
+	int32_t tflags = (type->Flags | storFlags) & ~TF_NOTINTYPE;
 
 	if (type->Flags != tflags)
 	    type = TypeToQualdType(type, tflags);
@@ -602,7 +602,7 @@ CompVar(short t, Type *baseType, long storFlags, long regFlags, Var **pvar)
  */
 
 short
-CompTypeDeclarators(short t, Type **ptype, Symbol **psym, long storFlags)
+CompTypeDeclarators(short t, Type **ptype, Symbol **psym, int32_t storFlags)
 {
     Type *head = NULL;
 
@@ -655,7 +655,7 @@ Type *type;
 	    break;
 	case TID_ARY:
 	    {
-		long entries = 0;
+		int32_t entries = 0;
 
 		if (*type->SubType->Size)
 		    entries = *type->Size / *type->SubType->Size;
@@ -677,12 +677,12 @@ short
 PointerOpt(Type **ptype, Symbol **psym, short t)
 {
     while (t == TokStar) {
-	long flags = 0;
+	int32_t flags = 0;
 
 	t = GetToken();
 	*ptype = TypeToPtrType(*ptype);
 	while (t == TokTypeQual) {
-	    flags |= (long)LexData;
+	    flags |= (int32_t)(intptr_t)LexData;
 	    t = GetToken();
 	}
 	if (flags) {
@@ -694,14 +694,14 @@ PointerOpt(Type **ptype, Symbol **psym, short t)
 }
 
 short
-DirectDeclarator(Type **ptype, Symbol **psym, short t, long storFlags)
+DirectDeclarator(Type **ptype, Symbol **psym, short t, int32_t storFlags)
 {
     switch(t) {
     case TokLParen:
 	{
 	    Var **vars;
-	    long args;
-	    long flags;
+	    int32_t args;
+	    int32_t flags;
 	    t = CompProcedureArgDeclarators(GetToken(), &vars, &args, &flags);
 
 	    t = DirectDeclarator(ptype, psym, t, 0);
@@ -769,9 +769,9 @@ DirectDeclarator(Type **ptype, Symbol **psym, short t, long storFlags)
  */
 
 int
-ExplicitRegistersDeclared(Var **vars, long args)
+ExplicitRegistersDeclared(Var **vars, int32_t args)
 {
-    long i;
+    int32_t i;
     int r = 0;
 
     for (i = 0; i < args; ++i, ++vars) {
@@ -790,7 +790,7 @@ ExplicitRegistersDeclared(Var **vars, long args)
  */
 
 short
-CompStructType(short t, Type **ptype, long flags)
+CompStructType(short t, Type **ptype, int32_t flags)
 {
     short isUnion = (t == TokUnion);
     Type *type;
@@ -875,7 +875,7 @@ CompEnumType(short t, Type **ptype)
 	type = MakeEnumType(NULL);
     }
     if (t == TokLBrace) {
-	long eval = 0;
+	int32_t eval = 0;
 	t = GetToken();
 	while (t != TokRBrace) {
 	    Symbol *sym;
@@ -940,7 +940,7 @@ Var *var;
 }
 
 void
-DumpExternList(long procs)
+DumpExternList(int32_t procs)
 {
     ExtVarNode *evn;
     Var *var;
@@ -959,9 +959,9 @@ DumpExternList(long procs)
 void
 AddStrList(name, len, label, iidx)
 char *name;
-long len;
-long label;
-long iidx;
+int32_t len;
+int32_t label;
+int32_t iidx;
 {
     ExtStrNode *esn = AllocStructure(ExtStrNode);
 
@@ -985,7 +985,7 @@ long iidx;
 
 void
 DelStrList(label)
-long label;
+int32_t label;
 {
     ExtStrNode **ep;
 

@@ -53,12 +53,12 @@ typedef struct {
 
 int brk(void);
 int main(short, char **);
-void Scan(long, MLIST *, int, int);
-void Update(long, long, MLIST *);
+void Scan(int32_t, MLIST *, int, int);
+void Update(int32_t, int32_t, MLIST *);
 SNODE *SNodeIn(FIB *, MLIST *, int, int);
 int CheckBroke(void);
 int getyn(char *, char *);
-int CopyFile(long, long, char *, char *, FIB *);
+int CopyFile(int32_t, int32_t, char *, char *, FIB *);
 int DeleteDir(char *);
 NODE *FindNode(LIST *, char *);
 
@@ -76,8 +76,8 @@ main(ac, av)
 short ac;
 char *av[];
 {
-    long slock = 0;
-    long dlock = 0;
+    int32_t slock = 0;
+    int32_t dlock = 0;
     char *sd = NULL;
     char *dd = NULL;
 
@@ -126,7 +126,7 @@ char *av[];
 #ifdef DEBUG
     puts("ScanA");
 #endif
-    slock = (long)Lock(sd, ACCESS_READ);
+    slock = (int32_t)Lock(sd, ACCESS_READ);
     if (slock == NULL) {
 	printf("can't open %s\n", sd);
 	goto fail;
@@ -134,11 +134,11 @@ char *av[];
 #ifdef DEBUG
     puts("ScanB");
 #endif
-    dlock = (long)Lock(dd, ACCESS_READ);
+    dlock = (int32_t)Lock(dd, ACCESS_READ);
     if (dlock == NULL) {
-	if (dlock = (long)CreateDir(dd)) {
+	if (dlock = (int32_t)CreateDir(dd)) {
 	    UnLock(dlock);
-	    dlock = (long)Lock(dd, ACCESS_READ);
+	    dlock = (int32_t)Lock(dd, ACCESS_READ);
 	}
     }
 #ifdef DEBUG
@@ -178,7 +178,7 @@ fail:
 
 void
 Scan(lock, list, side, ignoreNoMatch)
-long lock;
+int32_t lock;
 MLIST *list;
 int side;
 int ignoreNoMatch;
@@ -187,7 +187,7 @@ int ignoreNoMatch;
     SNODE *sn;
     FILE *fi;
     char *distfile;
-    long savlock;
+    int32_t savlock;
     MLIST nolist;
     short onlyFlag = 0;
 
@@ -209,7 +209,7 @@ int ignoreNoMatch;
 #ifdef DEBUG
     puts("CD1");
 #endif
-    savlock = (long)CurrentDir(lock);
+    savlock = (int32_t)CurrentDir(lock);
 #ifdef DEBUG
     puts("CD2");
 #endif
@@ -219,7 +219,7 @@ int ignoreNoMatch;
 #endif
 	while (fgets(Buf, sizeof(Buf), fi)) {
 	    short len = strlen(Buf);
-	    long lock2;
+	    int32_t lock2;
 #ifdef DEBUG
 	    printf("BUF: %s\n", Buf);
 #endif
@@ -242,7 +242,7 @@ int ignoreNoMatch;
 			onlyFlag = 1;
 		}
 	    }
-	    lock2 = (long)Lock(Buf, ACCESS_READ);
+	    lock2 = (int32_t)Lock(Buf, ACCESS_READ);
 	    if (lock2 == NULL)
 		continue;
 	    if (Examine(lock2, fib)) {
@@ -281,8 +281,8 @@ int ignoreNoMatch;
 		sn = SNodeIn(fib, list, side, ignoreNoMatch);
 	    } else if (fib->fib_DirEntryType > 0) { /*	directory   */
 		if (sn = SNodeIn(fib, list, side, ignoreNoMatch)) {
-		    long lock2;
-		    if (lock2 = (long)Lock(fib->fib_FileName, ACCESS_READ)) {
+		    int32_t lock2;
+		    if (lock2 = (int32_t)Lock(fib->fib_FileName, ACCESS_READ)) {
 			Scan(lock2, &sn->List, side, ignoreNoMatch);
 			UnLock(lock2);
 		    }
@@ -313,7 +313,7 @@ short tab = -4;
 
 void
 Update(slock, dlock, list)
-long slock, dlock;
+int32_t slock, dlock;
 MLIST *list;
 {
     SNODE *sn;
@@ -371,16 +371,16 @@ MLIST *list;
 #endif
 
 	    if (sn->Fib[0]->fib_DirEntryType > 0) {
-		long savlock;
-		long locks;
-		long lockd;
+		int32_t savlock;
+		int32_t locks;
+		int32_t lockd;
 
 		if (!Quiet)
 		    puts("");
-		savlock = (long)CurrentDir(slock);
-		locks = (long)Lock(sn->Fib[0]->fib_FileName, ACCESS_READ);
+		savlock = (int32_t)CurrentDir(slock);
+		locks = (int32_t)Lock(sn->Fib[0]->fib_FileName, ACCESS_READ);
 		CurrentDir(dlock);
-		lockd = (long)Lock(sn->Fib[1]->fib_FileName, ACCESS_READ);
+		lockd = (int32_t)Lock(sn->Fib[1]->fib_FileName, ACCESS_READ);
 		CurrentDir(savlock);
 		if (locks && lockd)
 		    Update(locks, lockd, &sn->List);
@@ -428,16 +428,16 @@ MLIST *list;
 			puts("");
 		}
 		if (Force || getyn("Copy Dir  %s ? ", sn->Node.ln_Name)) {
-		    long locks;
-		    long lockd;
-		    long savlock;
+		    int32_t locks;
+		    int32_t lockd;
+		    int32_t savlock;
 
-		    savlock = (long)CurrentDir(slock);
-		    locks = (long)Lock(sn->Fib[0]->fib_FileName, ACCESS_READ);
+		    savlock = (int32_t)CurrentDir(slock);
+		    locks = (int32_t)Lock(sn->Fib[0]->fib_FileName, ACCESS_READ);
 		    CurrentDir(dlock);
-		    if (lockd = (long)CreateDir(sn->Node.ln_Name)) {
+		    if (lockd = (int32_t)CreateDir(sn->Node.ln_Name)) {
 			UnLock(lockd);
-			lockd = (long)Lock(sn->Node.ln_Name, ACCESS_READ);
+			lockd = (int32_t)Lock(sn->Node.ln_Name, ACCESS_READ);
 		    }
 		    CurrentDir(savlock);
 		    if (locks && lockd)
@@ -467,7 +467,7 @@ MLIST *list;
 
 	    if (sn->Fib[1]->fib_DirEntryType < 0) {	/*  file    */
 		if (getyn("File %s not in source tree,\ndelete from dest? ", sn->Node.ln_Name)) {
-		    long savlock = (long)CurrentDir(dlock);
+		    int32_t savlock = (int32_t)CurrentDir(dlock);
 		    if (DeleteFile(sn->Node.ln_Name) == 0) {
 			SetProtection(sn->Node.ln_Name, 0);
 			if (DeleteFile(sn->Node.ln_Name) == 0)
@@ -477,7 +477,7 @@ MLIST *list;
 		}
 	    } else {
 		if (getyn("Dir %s not in source tree,\ndelete from dest? ", sn->Node.ln_Name)) {
-		    long savlock = (long)CurrentDir(dlock);
+		    int32_t savlock = (int32_t)CurrentDir(dlock);
 		    DeleteDir(sn->Node.ln_Name);
 		    CurrentDir(savlock);
 		}
@@ -554,17 +554,17 @@ char *s1, *s2;
 }
 
 CopyFile(sdir, ddir, sname, dname, dfib)
-long sdir, ddir;
+int32_t sdir, ddir;
 char *sname;
 char *dname;
 FIB *dfib;
 {
-    long Fhs = 0;
-    long Fhd = 0;
-    long savlock;
-    long bufsiz;
-    long n;
-    long r;
+    int32_t Fhs = 0;
+    int32_t Fhd = 0;
+    int32_t savlock;
+    int32_t bufsiz;
+    int32_t n;
+    int32_t r;
     char *buf = NULL;
     short error = 0;
 
@@ -572,11 +572,11 @@ FIB *dfib;
     puts("xfile1");
     printf("xfile1 %08lx %08lx %s %s %08lx\n", sdir, ddir, sname, dname, dfib);
 #endif
-    savlock = (long)CurrentDir(sdir);
+    savlock = (int32_t)CurrentDir(sdir);
 #ifdef DEBUG
     puts("xfile2");
 #endif
-    Fhs = (long)Open(sname, 1005);
+    Fhs = (int32_t)Open(sname, 1005);
     if (Fhs == NULL) {
 	printf("unable to open %s for read\n", sname);
 	error = 1;
@@ -589,14 +589,14 @@ FIB *dfib;
 #ifdef DEBUG
     puts("xfile4");
 #endif
-    Fhd = (long)Open(dname, 1006);
+    Fhd = (int32_t)Open(dname, 1006);
 #ifdef DEBUG
     puts("xfile5");
 #endif
     if (Fhd == NULL) {
 	SetProtection(dname, 0);
 	DeleteFile(dname);
-	Fhd = (long)Open(dname, 1006);
+	Fhd = (int32_t)Open(dname, 1006);
 	if (Fhd == NULL) {
 	    printf("Unable to open %s for write\n", dname);
 	    error = 1;
@@ -655,11 +655,11 @@ DeleteDir(name)
 char *name;
 {
     FIB *fib = malloc(sizeof(FIB));
-    long lock = (long)Lock(name, ACCESS_READ);
+    int32_t lock = (int32_t)Lock(name, ACCESS_READ);
 
     if (lock) {
 	if (Examine(lock, fib) && fib->fib_DirEntryType > 0) {
-	    long savdir = (long)CurrentDir(lock);
+	    int32_t savdir = (int32_t)CurrentDir(lock);
 	    while (ExNext(lock, fib))
 		DeleteDir(fib->fib_FileName);
 	    CurrentDir(savdir);

@@ -17,8 +17,8 @@ typedef struct Symbol {
     char    *Name;	    /*	name of symbol	*/
     short   Flags;
     Module  *DefMod;	    /*	ptr to module	    */
-    long    *DefPtr;	    /*	ptr to symbol entry */
-    long    ComSize;	    /*	if common, else 0   */
+    int32_t    *DefPtr;	    /*	ptr to symbol entry */
+    int32_t    ComSize;	    /*	if common, else 0   */
 } Symbol;
 
 extern Symbol *FindSymbol();

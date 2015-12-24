@@ -28,7 +28,7 @@
 #define OPT_SIZE	2   /*	multiply optimizio  */
 #define INT_SIZE	4
 #define PTR_SIZE	4
-#define LGBO_SIZE	16  /*	largest primitive object size (long double) */
+#define LGBO_SIZE	16  /*	largest primitive object size (int32_t double) */
 
 #define SWITCH_SLOP	4
 
@@ -74,27 +74,27 @@
 typedef struct Stor {
     short   st_Type;	    /*	storage type	*/
     short   st_RegNo;	    /*	if register	*/
-    long    st_Size;	    /*	quantity size	*/
-    long    st_Flags;
+    int32_t    st_Size;	    /*	quantity size	*/
+    int32_t    st_Flags;
     short   st_RegNo2;	    /*	ST_RegIndex (data register) */
     char    st_BOffset;     /*	bitfield offset */
     char    st_BSize;	    /*	bitfield size	*/
 
     union {
-	long	    IntConst;	/*  terminating integer constant    */
-	ulong	    UIntConst;
+	int32_t	    IntConst;	/*  terminating integer constant    */
+	uint32_t	    UIntConst;
 	char	    *StrConst;	/*  terminating string constant     */
 	char	    *FltConst;	/*  terminating float constant	    */
-	long	    RegValid;	/*  how much of reg is valid?	    */
-	long	    Label;	/*  label number (local label)      */
+	int32_t	    RegValid;	/*  how much of reg is valid?	    */
+	int32_t	    Label;	/*  label number (local label)      */
 	Symbol	    *Name;	/*  named label 		    */
     } u;
 
     union {
-	long	    StrLen;	/*  length of unterminated string   */
-	long	    FltLen;	/*  length of unterminated fp string*/
-	long	    Offset;	/*  offset relative storage	    */
-	ulong	    UOffset;
+	int32_t	    StrLen;	/*  length of unterminated string   */
+	int32_t	    FltLen;	/*  length of unterminated fp string*/
+	int32_t	    Offset;	/*  offset relative storage	    */
+	uint32_t	    UOffset;
     } v;
 } Stor;
 
@@ -108,7 +108,7 @@ typedef struct Stor {
 #define st_Name 	u.Name
 
 #define st_StrLen	v.StrLen
-#define st_FltLen	v.FltLen	/*  WARNING, assumed to be long */
+#define st_FltLen	v.FltLen	/*  WARNING, assumed to be int32_t */
 #define st_Offset	v.Offset
 
 /*
@@ -125,17 +125,17 @@ typedef struct Frame {
     char    Rsv1;
     short   Rsv2;
 
-    long    ArgsStackUsed;  /*	for top level block	*/
-    long    StackParent;    /*	by  parent		*/
-    long    StackUsed;	    /*	by  me	so far		*/
-    long    DownStackUsed;  /*	by sub-blocks		*/
+    int32_t    ArgsStackUsed;  /*	for top level block	*/
+    int32_t    StackParent;    /*	by  parent		*/
+    int32_t    StackUsed;	    /*	by  me	so far		*/
+    int32_t    DownStackUsed;  /*	by sub-blocks		*/
 
     short   SubARegOver;    /*	# regs over for sub blocks  */
     short   SubDRegOver;
     short   CurARegOver;    /*	# regs over for this block  */
     short   CurDRegOver;
-    long    Reserved2;
-    long    Reserved3;
+    int32_t    Reserved2;
+    int32_t    Reserved3;
 } Frame;
 
 /*
@@ -219,7 +219,7 @@ typedef struct Frame {
 #define CF_UNS		0x10
 
 typedef struct TmpStack {
-    long    ts_Offset;
+    int32_t    ts_Offset;
     short   ts_Size;
     short   ts_Refs;
 } TmpStack;
@@ -227,7 +227,7 @@ typedef struct TmpStack {
 typedef struct TmpAggregate {
     struct TmpAggregate *ta_Next;
     char    *ta_Buf;
-    long    ta_Index;
-    long    ta_Bytes;
+    int32_t    ta_Index;
+    int32_t    ta_Bytes;
 } TmpAggregate;
 

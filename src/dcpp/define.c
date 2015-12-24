@@ -18,11 +18,11 @@
 
 Prototype void InitDefines(char *);
 Prototype void ModifySymbolText(Sym *, short);
-Prototype void do_undef(char *, int, long *);
-Prototype void do_define(char *, int, long *);
-Prototype long PreliminaryReplace(char *, long, char **, short *, short, char **);
-Prototype Include * PrepareSymbolArgs(Sym *, char *, long *, long);
-Prototype long HandleSymbol(Sym *, char *, long, long);
+Prototype void do_undef(char *, int, int32_t *);
+Prototype void do_define(char *, int, int32_t *);
+Prototype int32_t PreliminaryReplace(char *, int32_t, char **, short *, short, char **);
+Prototype Include * PrepareSymbolArgs(Sym *, char *, int32_t *, int32_t);
+Prototype int32_t HandleSymbol(Sym *, char *, int32_t, int32_t);
 
 #define  X_LINE 	    (SF_SPECIAL|0x100)
 #define  X_DATE 	    (SF_SPECIAL|0x200)
@@ -89,7 +89,7 @@ ModifySymbolText(Sym *sym, short type)
 	sym->TextLen = strlen(sym->Text);
 	break;
     case X_LINE:
-	sprintf(SymLineBuf, "%ld", inc->LineNo);
+	sprintf(SymLineBuf, "%d", inc->LineNo);
 	sym->TextLen = strlen(SymLineBuf);
 	break;
     }
@@ -99,9 +99,9 @@ void
 do_undef(buf, max, pu)
 char *buf;
 int max;
-long *pu;   /*	unused	*/
+int32_t *pu;   /*	unused	*/
 {
-    long n = ExtSymbol(buf, 0, max);
+    int32_t n = ExtSymbol(buf, 0, max);
 
     if (n)
 	UndefSymbol(buf, n);
@@ -113,14 +113,14 @@ void
 do_define(buf, max, pu)
 char *buf;
 int max;
-long *pu;   /*	unused	*/
+int32_t *pu;   /*	unused	*/
 {
     int i;
     int b;
     int symLen;
     int numArgs = -1;
     char *repBuf;
-    long repSize;
+    int32_t repSize;
     short alloc = 0;
     static char *Args[MAX_ARGS];
     static short Lens[MAX_ARGS];
@@ -195,25 +195,25 @@ long *pu;   /*	unused	*/
 
 #define TS_SIZE 9
 
-long
+int32_t
 PreliminaryReplace(
     char *src,
-    long max,
+    int32_t max,
     char **args,
     short *lens,
     short n,
     char **pdst
 ) {
-    long i;
-    long di;
-    long bytes;
+    int32_t i;
+    int32_t di;
+    int32_t bytes;
     short j;
     char *dst;
-    static long XId;	/*  replacement id. */
+    static int32_t XId;	/*  replacement id. */
     static char Tmp[MAX_ARGS][16];
 
     for (j = 0; j < n; ++j)
-	sprintf(Tmp[j], "\001%08lx", XId + j);  /*  TS_SIZE */
+	sprintf(Tmp[j], "\001%08x", XId + j);  /*  TS_SIZE */
 
     /*
      *	pass 1 : find symbols to replace and figure out the size of the new
@@ -225,7 +225,7 @@ PreliminaryReplace(
 	ubyte c = (ubyte)src[i];
 
 	if ((c < '0' || c > '9') && SymbolChar[c]) {
-	    long l = ExtSymbol(src, i, max);
+	    int32_t l = ExtSymbol(src, i, max);
 	    short len = l - i;
 
 	    for (j = 0; j < n; ++j) {
@@ -263,7 +263,7 @@ PreliminaryReplace(
 	ubyte c = (ubyte)src[i];
 
 	if ((c < '0' || c > '9') && SymbolChar[c]) {
-	    long l = ExtSymbol(src, i, max);
+	    int32_t l = ExtSymbol(src, i, max);
 	    short len = l - i;
 
 	    for (j = 0; j < n; ++j) {
@@ -283,12 +283,12 @@ PreliminaryReplace(
 		dbprintf(("match len %d (%d/%d)\n", len, j, n));
 	    }
 	} else if (c == '\"') {
-	    long nn = i;
+	    int32_t nn = i;
 	    i = SkipString(src, i + 1, max);
 	    movmem(src + nn, dst + di, i - nn);
 	    di += i - nn;
 	} else if (c == '\'') {
-	    long nn = i;
+	    int32_t nn = i;
 	    i = SkipSingleSpec(src, i + 1, max);
 	    movmem(src + nn, dst + di, i - nn);
 	    di += i - nn;
@@ -314,14 +314,14 @@ PreliminaryReplace(
 Include *PrepareSymbolArgs(sym, base, ip, max)
 Sym *sym;
 char *base;
-long *ip;
-long max;  /* Set it negative to avoid doing any dumps */
+int32_t *ip;
+int32_t max;  /* Set it negative to avoid doing any dumps */
 {
     short oldType = sym->Type;
     Include *push = PushBase;
-    long i  = *ip;
-    /* long oi = i;	**  position in original pushbase (not used)   */
-    long xi = i;	/*  position in followed pushbase   */
+    int32_t i  = *ip;
+    /* int32_t oi = i;	**  position in original pushbase (not used)   */
+    int32_t xi = i;	/*  position in followed pushbase   */
     short candump = 1;
 
     if (max < 0)
@@ -364,7 +364,7 @@ long max;  /* Set it negative to avoid doing any dumps */
 	    xi = i = push->Index;
 	    max = push->MaxIndex;
 	    base = push->Base;
-	    dbprintf(("SKIPBACK %ld/%ld %08lx\n", i, max, (unsigned long)base));
+	    dbprintf(("SKIPBACK %ld/%ld %08lx\n", i, max, (uint32_t)base));
 	}
 
 	/*
@@ -398,7 +398,7 @@ long max;  /* Set it negative to avoid doing any dumps */
 
 	for (j = 0; j < sym->NumArgs; ++j) {
 	    short parens = 0;	/*  paren level 	*/
-	    long b;		/*  base of argument	*/
+	    int32_t b;		/*  base of argument	*/
 
 	    while (i < max && WhiteSpace[(ubyte)base[i]])
 		++i;
@@ -530,12 +530,12 @@ long max;  /* Set it negative to avoid doing any dumps */
  *  regardless of any data it pulls from higher level pushbase's
  */
 
-long
+int32_t
 HandleSymbol(sym, base, i, max)
 Sym *sym;
 char *base;
-long i;
-long max;
+int32_t i;
+int32_t max;
 {
     Include *push;
     short oldType = sym->Type;
@@ -543,7 +543,7 @@ long max;
     short save_fls;
 
     {
-       long it = i;
+       int32_t it = i;
        push = PrepareSymbolArgs(sym, base, &it, max);
        if (push == NULL) return(it);
     }

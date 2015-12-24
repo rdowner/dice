@@ -11,16 +11,16 @@
 
 #include "defs.h"
 
-Prototype long ParseIfExp(char *, short *, long, short);
+Prototype int32_t ParseIfExp(char *, short *, int32_t, short);
 Prototype void PushOp(short, short, short);
 Prototype int TopOfOpStack(void);
 Prototype int SecondOffOpStack(void);
-Prototype void PushAtom(long, short);
+Prototype void PushAtom(int32_t, short);
 
 Local int CombineOp(void);
-Local int GetAtomStack(short *, long *);
-Local int ParseCharConst(char *, long, long, long *);
-Local int ParseInt(char *, long, long, long *);
+Local int GetAtomStack(short *, int32_t *);
+Local int ParseCharConst(char *, int32_t, int32_t, int32_t *);
+Local int ParseInt(char *, int32_t, int32_t, int32_t *);
 Local int HexDig(char);
 Local int OctDig(char);
 
@@ -48,7 +48,7 @@ Local int OctDig(char);
 #define XX	0
 
 typedef struct Atom {
-    long    Value;
+    int32_t    Value;
     short   Undef;
     short   Reserved;
 } Atom;
@@ -67,8 +67,8 @@ static short OperIdx;
 static short BaseAtomIdx;
 static short BaseOperIdx;
 
-long
-ParseIfExp(char *buf, short *pundef, long max, short subsym)
+int32_t
+ParseIfExp(char *buf, short *pundef, int32_t max, short subsym)
 {
     short unary = 1;
     short i = 0;
@@ -101,7 +101,7 @@ ParseIfExp(char *buf, short *pundef, long max, short subsym)
 		break;
 	    default:
 		if (c >= '0' && c <= '9') {
-		    long v;
+		    int32_t v;
 		    /*
 		    printf("%d(%c) ", i - 1, buf[i-1]);
 		    */
@@ -137,7 +137,7 @@ ParseIfExp(char *buf, short *pundef, long max, short subsym)
 
 			if (sym) {
 			    short xundef;
-			    long v;
+			    int32_t v;
 			    if (subsym == 0) {
 				v = 0;
 				xundef = 0;
@@ -151,7 +151,7 @@ ParseIfExp(char *buf, short *pundef, long max, short subsym)
 				short creType = 0;
 
 				{
-				    long it = ni;
+				    int32_t it = ni;
 				    /* The -max is so that we can flag to the */
 				    /* routine to not output anything         */
 				    if (PrepareSymbolArgs(sym, buf, &it, -max) == NULL)
@@ -202,7 +202,7 @@ ParseIfExp(char *buf, short *pundef, long max, short subsym)
 		    break;
 		}
 		if (c == '\'') {
-		    long v;
+		    int32_t v;
 		    i = ParseCharConst(buf, i - 1, max, &v);
 		    PushAtom(v, 0);
 		    unary = 0;
@@ -316,7 +316,7 @@ syntax2:
 	goto syntax;
 
     {
-	long v;
+	int32_t v;
 
 	if (GetAtomStack(pundef, &v) < 0)
 	    goto syntax;
@@ -376,7 +376,7 @@ SecondOffOpStack()
 
 
 void
-PushAtom(long val, short isundef)
+PushAtom(int32_t val, short isundef)
 {
     Atom *atom;
 
@@ -538,7 +538,7 @@ CombineOp()
 int
 GetAtomStack(pundef, pv)
 short *pundef;
-long *pv;
+int32_t *pv;
 {
     Atom *at;
 
@@ -558,12 +558,12 @@ long *pv;
 int
 ParseCharConst(buf, i, max, pv)
 char *buf;
-long i;
-long max;
-long *pv;
+int32_t i;
+int32_t max;
+int32_t *pv;
 {
     ubyte c;
-    long v = 0;
+    int32_t v = 0;
 
     if (buf[i] != '\'')
 	return(0);
@@ -657,12 +657,12 @@ long *pv;
 int
 ParseInt(buf, i, max, pv)
 char *buf;
-long i;
-long max;
-long *pv;
+int32_t i;
+int32_t max;
+int32_t *pv;
 {
     char c;
-    long v = 0;
+    int32_t v = 0;
 
     if (i < max && buf[i] == '0') {
 	++i;

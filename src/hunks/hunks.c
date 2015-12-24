@@ -36,12 +36,11 @@ DCOPYRIGHT;
 
 typedef unsigned char ubyte;
 typedef unsigned short uword;
-typedef unsigned long ulong;
 
 void DumpHunks(char *);
-ulong fgetl(FILE *);
-void fgetname(FILE *, char *, long);
-void zfseek(FILE *, long);
+uint32_t fgetl(FILE *);
+void fgetname(FILE *, char *, int32_t);
+void zfseek(FILE *, int32_t);
 
 short AllOpt;
 
@@ -81,10 +80,10 @@ char *fileName;
     __aligned char buf[256];
 
     if ((fi = fopen(fileName, "r")) != NULL) {
-	ulong type;
-	ulong flags;
-	ulong skip;
-	ulong n;
+	uint32_t type;
+	uint32_t flags;
+	uint32_t skip;
+	uint32_t n;
 
 	while ((type = fgetl(fi)) != 0) {
 	    skip = 0;
@@ -95,7 +94,7 @@ char *fileName;
 	    switch(type) {
 	    case 0x3F3: 	    /*	HUNK_HEADER */
 		{
-		    long hno;
+		    int32_t hno;
 
 		    n = fgetl(fi);
 		    fgetname(fi, buf, n);
@@ -247,11 +246,11 @@ char *fileName;
     }
 }
 
-ulong
+uint32_t
 fgetl(fi)
 FILE *fi;
 {
-    ulong n;
+    uint32_t n;
     short c;
 
     if ((c = getc(fi)) != EOF) {
@@ -274,20 +273,20 @@ void
 fgetname(fi, buf, len)
 FILE *fi;
 char *buf;
-long len;
+int32_t len;
 {
-    long n;
+    int32_t n;
 
     for (n = 0; n < len && n < 255/4; ++n) {
-	*((long *)buf + n) = ToMsbOrder(fgetl(fi));
+	*((int32_t *)buf + n) = ToMsbOrder(fgetl(fi));
     }
-    *((long *)buf + n) = ToMsbOrder(0);
+    *((int32_t *)buf + n) = ToMsbOrder(0);
 }
 
 void
 zfseek(fi, numLongs)
 FILE *fi;
-long numLongs;
+int32_t numLongs;
 {
     if (numLongs < 32) {
 	while (numLongs) {

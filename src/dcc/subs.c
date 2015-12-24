@@ -15,7 +15,7 @@
 
 Prototype int ExtArgsEnv(short, char ***, char *);
 Prototype int ExtArgsFile(short, char ***, char *);
-Prototype int ExtArgsBuf(short, char ***, char *, long);
+Prototype int ExtArgsBuf(short, char ***, char *, int32_t);
 
 Prototype char *skipspace(char *);
 Prototype char *skipnspace(char *);
@@ -34,7 +34,7 @@ extern struct ExecBase *SysBase;
 int
 ExtArgsEnv(short ac, char ***pav, char *envname)
 {
-    long len = -1;
+    int32_t len = -1;
     char *str;
     int nac = 0;
 
@@ -83,7 +83,7 @@ int
 ExtArgsFile(short ac, char ***pav, char *file)
 {
     int fd;
-    long len = -1;
+    int32_t len = -1;
     char *str = NULL;
 
     if ((fd = open(file, O_RDONLY)) >= 0) {
@@ -100,7 +100,7 @@ ExtArgsFile(short ac, char ***pav, char *file)
 }
 
 int
-ExtArgsBuf(short ac, char ***pav, char *str, long len)
+ExtArgsBuf(short ac, char ***pav, char *str, int32_t len)
 {
     char *ptr;
     int nac = 0;

@@ -73,7 +73,7 @@ Exp **pexp;
 		e2->ex_Stor.st_IntConst = 1;
 	    }
 	    if (e1->ex_Type->Flags & TF_UNSIGNED)
-		e1->ex_Stor.st_UIntConst = (ulong)e1->ex_Stor.st_IntConst / (ulong)e2->ex_Stor.st_IntConst;
+		e1->ex_Stor.st_UIntConst = (uint32_t)e1->ex_Stor.st_IntConst / (uint32_t)e2->ex_Stor.st_IntConst;
 	    else
 		e1->ex_Stor.st_IntConst = e1->ex_Stor.st_IntConst / e2->ex_Stor.st_IntConst;
 	    *pexp = e1;
@@ -123,7 +123,7 @@ Exp **pexp;
 		e2->ex_Stor.st_IntConst = 1;
 	    }
 	    if (e1->ex_Type->Flags & TF_UNSIGNED)
-		e1->ex_Stor.st_UIntConst = (ulong)e1->ex_Stor.st_IntConst % (ulong)e2->ex_Stor.st_IntConst;
+		e1->ex_Stor.st_UIntConst = (uint32_t)e1->ex_Stor.st_IntConst % (uint32_t)e2->ex_Stor.st_IntConst;
 	    else
 		e1->ex_Stor.st_IntConst = e1->ex_Stor.st_IntConst % e2->ex_Stor.st_IntConst;
 	    *pexp = e1;
@@ -162,7 +162,7 @@ Exp **pexp;
 
 	if (e1->ex_Stor.st_Type == ST_IntConst && e2->ex_Stor.st_Type == ST_IntConst) {
 	    if (e1->ex_Type->Flags & TF_UNSIGNED)
-		e1->ex_Stor.st_UIntConst = (ulong)e1->ex_Stor.st_IntConst * (ulong)e2->ex_Stor.st_IntConst;
+		e1->ex_Stor.st_UIntConst = (uint32_t)e1->ex_Stor.st_IntConst * (uint32_t)e2->ex_Stor.st_IntConst;
 	    else
 		e1->ex_Stor.st_IntConst = e1->ex_Stor.st_IntConst * e2->ex_Stor.st_IntConst;
 	    *pexp = e1;

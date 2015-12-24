@@ -26,10 +26,10 @@ List *list;
     HunkListNode *hl;
     Hunk *hunk;
     int i;
-    long nhunk_debug = 0;   /*	debug hunks */
-    long nhunk_symd0 = 0;   /*	symbol hunks with no associated debug hunks */
-    long nhunk_symd1 = 0;   /*	symbol hunks with associated debug hunks    */
-    long headdb_seek = 0;
+    int32_t nhunk_debug = 0;   /*	debug hunks */
+    int32_t nhunk_symd0 = 0;   /*	symbol hunks with no associated debug hunks */
+    int32_t nhunk_symd1 = 0;   /*	symbol hunks with associated debug hunks    */
+    int32_t headdb_seek = 0;
 
     putl(fo, 0x3F3);	    /*	hunk_hdr    */
     putl(fo, 0);	    /*	no name     */
@@ -38,7 +38,7 @@ List *list;
     putl(fo, NumExtHunks-1);/*	last hunk   */
 
     for (hl = GetHead(list); hl; hl = GetSucc(&hl->Node)) {
-	long mask = (hl->HunkId & 0xFFFF0000) & ~HUNKIDF_FLAG;
+	int32_t mask = (hl->HunkId & 0xFFFF0000) & ~HUNKIDF_FLAG;
 
 	if (ChipOpt) {
 	    mask &= ~0x80000000;
@@ -56,10 +56,10 @@ List *list;
      */
 
     if (DebugOpt) {
-	long lw = 8 + 3;    /*	8 lw of hdr, 3 lw of sub hdr	*/
-	long nsymd0 = 0;
-	long nsymd1 = 0;
-	long max_array = 0;
+	int32_t lw = 8 + 3;    /*	8 lw of hdr, 3 lw of sub hdr	*/
+	int32_t nsymd0 = 0;
+	int32_t nsymd1 = 0;
+	int32_t max_array = 0;
 
 	for (hl = GetHead(list); hl; hl = GetSucc(&hl->Node)) {
 	    short havesyms = 0;
@@ -119,7 +119,7 @@ List *list;
      */
 
     for (hl = GetHead(list); hl; hl = GetSucc(&hl->Node)) {
-	long mask = (hl->HunkId & 0xFFFF0000) & ~HUNKIDF_FLAG;
+	int32_t mask = (hl->HunkId & 0xFFFF0000) & ~HUNKIDF_FLAG;
 
 	if (ChipOpt) {
 	    mask &= ~0x80000000;
@@ -149,7 +149,7 @@ List *list;
 	 */
 
 	if (hl->Node.ln_Type == NT_DATA || hl->Node.ln_Type == NT_CODE) {
-	    long n = 0;
+	    int32_t n = 0;
 
 	    for (hunk = GetHead(&hl->HunkList); hunk; hunk = GetSucc(&hunk->Node)) {
 		if (hunk->Node.ln_Type == NT_BSS)
@@ -190,7 +190,7 @@ List *list;
 
 	    putl(fo, 0x3EC);		/*  HUNK_RELOC32    */
 	    for (i = 0; i < NumExtHunks; ++i) {
-		long n;
+		int32_t n;
 
 		if ((n = hl->CntReloc32[i]) != 0) {
 		    if (ResOpt && !AbsWordOpt && hl->Node.ln_Type != NT_CODE && hl2->Node.ln_Type != NT_CODE)
@@ -202,13 +202,15 @@ List *list;
 		    putl(fo, i);	/*  hunk # i	    */
 		    fwrite((char *)hl->ExtReloc32[i], 4, n, fo);
 		    if (PIOpt)
-			printf(" 32 bit reloc hunk %ld:$%lx to hunk %d\n", hl->FinalHunkNo, hl->ExtReloc32[i][0], i);
+			printf(" 32 bit reloc hunk %d:$%x to hunk %d\n",
+			       hl->FinalHunkNo, hl->ExtReloc32[i][0], i);
 
 #ifdef DEBUG
 		    if (DDebug > 5) {
-			long j;
+			int32_t j;
 			for (j = 0; j < n; ++j)
-			    printf(" -- reloc h %d offset %08lx\n", i, hl->ExtReloc32[i][j]);
+			    printf(" -- reloc h %d offset %08x\n",
+				   i, hl->ExtReloc32[i][j]);
 		    }
 #endif
 		}
@@ -238,7 +240,7 @@ List *list;
 		for (hunk = GetHead(&hl->HunkList); hunk; hunk = GetSucc(&hunk->Node)) {
 		    for (sym = GetHead(&hunk->SymList); sym; sym = GetSucc((Node *)&sym->Node)) {
 			if (sym->Type == 1 && (SymOpt || (sym->SymLen == 5 && ForceSym(sym)))) {
-			    long sl = (sym->SymLen + 3) >> 2;	/*  # lws   */
+			    int32_t sl = (sym->SymLen + 3) >> 2;	/*  # lws   */
 
 			    putl(fo, sl);
 			    fwrite(sym->SymName, 4, sl, fo);

@@ -45,19 +45,19 @@
 
 Prototype void asm_move(Exp *, Stor *, Stor *);
 Prototype void asm_move_cast(Exp *, Stor *, Stor *);
-Prototype long ReverseOrder(short);
+Prototype int32_t ReverseOrder(short);
 Prototype void asm_cmp(Exp *, Stor *, Stor *, short *);
-Prototype long asm_div(Exp *, Stor *, Stor *, Stor *, short);
-Prototype long asm_mul(Exp *, Stor *, Stor *, Stor *);
-Prototype long asm_mul_requires_call(long);
-Prototype void asm_shift(Exp *, long, Stor *, Stor *, Stor *);
+Prototype int32_t asm_div(Exp *, Stor *, Stor *, Stor *, short);
+Prototype int32_t asm_mul(Exp *, Stor *, Stor *, Stor *);
+Prototype int32_t asm_mul_requires_call(int32_t);
+Prototype void asm_shift(Exp *, int32_t, Stor *, Stor *, Stor *);
 Prototype void CallAsmSupport(Exp *, char *, Stor *, Stor *, Stor *, short);
 Prototype void asm_bfext(Exp *, Stor *, Stor *);
 Prototype void asm_bfsto(Exp *, Stor *, Stor *);
 Prototype void asm_bftst(Exp *, Stor *);
-Prototype void asm_blockfill(Exp *, Stor *, long, char);
+Prototype void asm_blockfill(Exp *, Stor *, int32_t, char);
 Prototype void asm_illegal(void);
-Prototype void asm_moveqAndSwap(long, char, short);
+Prototype void asm_moveqAndSwap(int32_t, char, short);
 
 Local void asm_blockop(Exp *, char *, short, Stor *, Stor *);
 Local void OptimizeBitField(Stor *, Stor *);
@@ -73,12 +73,12 @@ Local void OptimizeBitField(Stor *, Stor *);
 Local void
 asm_blockop(Exp *exp, char *op, short cond, Stor *s, Stor *d)
 {
-    long n = s->st_Size >> 2;
-    long i;
-    long o1 = s->st_Offset;
-    long o2 = d->st_Offset;
-    long label;
-    long breaklabel;
+    int32_t n = s->st_Size >> 2;
+    int32_t i;
+    int32_t o1 = s->st_Offset;
+    int32_t o2 = d->st_Offset;
+    int32_t label;
+    int32_t breaklabel;
     Stor scnt, mcnt, asrc, adst;
     char *dbstr;
     short doRemainder = 1;
@@ -126,7 +126,7 @@ asm_blockop(Exp *exp, char *op, short cond, Stor *s, Stor *d)
 	}
 
 	/*
-	 *  If long aligned we can reuse s and d registers, but if not
+	 *  If int32_t aligned we can reuse s and d registers, but if not
 	 *  we need them!
 	 */
 
@@ -160,11 +160,11 @@ asm_blockop(Exp *exp, char *op, short cond, Stor *s, Stor *d)
 	label = AllocLabel();
 	asm_label(label);
 	printf("\t%s.l\t(A%d)+,(A%d)+\n", op, asrc.st_RegNo - RB_ADDR, adst.st_RegNo - RB_ADDR);
-	printf("\t%s\tD%d,l%ld\n", dbstr, scnt.st_RegNo, label);
+	printf("\t%s\tD%d,l%d\n", dbstr, scnt.st_RegNo, label);
 	if (n > 65534) {
 	    if (cond)
 		asm_condbra(COND_NEQ, breaklabel);
-	    printf("\t%s\tD%d,l%ld\n", dbstr, mcnt.st_RegNo, label);
+	    printf("\t%s\tD%d,l%d\n", dbstr, mcnt.st_RegNo, label);
 	}
 
 	/*
@@ -285,14 +285,14 @@ void
 asm_blockfill(exp, d, n, v)
 Exp *exp;
 Stor *d;
-long n;
+int32_t n;
 char v;
 {
     Stor t;
     Stor r;
     Stor adst;
     Stor dcnt;
-    long label;
+    int32_t label;
 
     asm_getind(&VoidPtrType, d, &t, -1, -1, 0);
 
@@ -334,7 +334,7 @@ char v;
 	asm_movei(exp, n-1, &dcnt);
 	asm_label(label);
 	printf("\tmove.b\tD%d,(A%d)+\n", r.st_RegNo, adst.st_RegNo - RB_ADDR);
-	printf("\tdbf\tD%d,l%ld\n", dcnt.st_RegNo, label);
+	printf("\tdbf\tD%d,l%d\n", dcnt.st_RegNo, label);
 	FreeRegister(&r);
 	FreeRegister(&dcnt);
 	FreeRegister(&adst);
@@ -386,9 +386,9 @@ Stor *d;
 	 *  hex constant is supposed to be unsigned.
 	 */
 
-	if ((ulong)value >= 0x10000 && (long)value < -128 && (long)value > 127) {
+	if ((uint32_t)value >= 0x10000 && (int32_t)value < -128 && (int32_t)value > 127) {
 	    swapit = 1;
-	    value = ((ulong)value >> 16) | ((ulong)value << 16);
+	    value = ((uint32_t)value >> 16) | ((uint32_t)value << 16);
 	}
 	if (value >= -128 && value < 128) {
 	    Stor stor;
@@ -440,9 +440,9 @@ Stor *d;
 	return;
     }
     if (s->st_Type == ST_FltConst) {
-	long fltv[4];
-	long offset = d->st_Offset;
-	long size   = d->st_Size;
+	int32_t fltv[4];
+	int32_t offset = d->st_Offset;
+	int32_t size   = d->st_Size;
 	short i;
 
         /* Make sure that we are not trying to do a move on something that we   */
@@ -469,7 +469,7 @@ Stor *d;
     }
     if (s->st_Size != d->st_Size)
     {
-	dbprintf(("asm_move: size mismatch %ld %ld", s->st_Size, d->st_Size));
+	dbprintf(("asm_move: size mismatch %d %d", s->st_Size, d->st_Size));
 	Assert(0);
     }
 
@@ -527,7 +527,7 @@ Stor *d;
  */
 
 void
-asm_moveqAndSwap(long value, char dregC, short swapit)
+asm_moveqAndSwap(int32_t value, char dregC, short swapit)
 {
     char *ptr = StorBuf[0];
 
@@ -588,8 +588,8 @@ Stor *s;
 Stor *d;
 {
     if (s->st_Size > d->st_Size) {
-	long off = s->st_Offset;
-	long size = s->st_Size;
+	int32_t off = s->st_Offset;
+	int32_t size = s->st_Size;
 
 	switch(s->st_Type) {
 	case ST_PtrConst:
@@ -613,7 +613,7 @@ Stor *d;
     }
     if (SameStorage(s, d)) {
 	if (s->st_Flags & SF_UNSIGNED) {
-	    long val;
+	    int32_t val;
 	    Stor con;
 
 	    if (s->st_Size == 1) {
@@ -674,7 +674,7 @@ Stor *d;
  *  cond = -cond
  */
 
-long
+int32_t
 ReverseOrder(short cond)
 {
     switch(cond) {
@@ -761,7 +761,7 @@ short *pcond;
     }
     if (!(s1->st_Flags & SF_LEA) && s2->st_Type == ST_IntConst) {
 	/*
-	 *  if cmp.l #long and long is in moveq range then use
+	 *  if cmp.l #int32_t and int32_t is in moveq range then use
 	 *  moveq/cmp instead.	But, if the constant is 0 then use
 	 *  a tst instead.  Since we know the branch condition we could
 	 *  also conceivably optimize compares with the constants 1 and
@@ -857,7 +857,7 @@ short *pcond;
  *  returns (1) TRUE if we had to make a call
  */
 
-long
+int32_t
 asm_div(Exp *exp, Stor *s1, Stor *s2, Stor *d, short mod)
 {
     Stor ts1;
@@ -874,8 +874,8 @@ asm_div(Exp *exp, Stor *s1, Stor *s2, Stor *d, short mod)
 
     /*
      *
-     *	procedure call required?  means:    (1) if d long and s1 or s2 long
-     *					    (2) d not long and s2 long
+     *	procedure call required?  means:    (1) if d int32_t and s1 or s2 int32_t
+     *					    (2) d not int32_t and s2 int32_t
      */
 
     /*printf("; s1,s2,d %d %d %d\n", s1->st_Size, s2->st_Size, d->st_Size);*/
@@ -893,7 +893,7 @@ asm_div(Exp *exp, Stor *s1, Stor *s2, Stor *d, short mod)
     ts2 = *s2;
 
     /*
-     *	s1 directly addressable?  means:    (1) long
+     *	s1 directly addressable?  means:    (1) int32_t
      *					    (2) in data reg
      *					    (3) s1 == d
      *
@@ -1023,10 +1023,10 @@ short mod;
 
     /*
      *	note the last condition... if d = s1/s2 where s1's size is not
-     *	a long (divs/divu always take a long for the numerator), we
-     *	must make it a long whether or not it is already in a data reg.
+     *	a int32_t (divs/divu always take a int32_t for the numerator), we
+     *	must make it a int32_t whether or not it is already in a data reg.
      *	We cannot simply truncate the data reg since it might be a
-     *	long register variable.
+     *	int32_t register variable.
      */
 
     if (!SameStorage(s1, d) || d->st_Type != ST_Reg || d->st_RegNo >= RB_ADDR || s1->st_Size == 2) {
@@ -1130,9 +1130,9 @@ short mod;
  *  and then making a call.
  */
 
-long
+int32_t
 asm_mul_requires_call(offset)
-long offset;
+int32_t offset;
 {
     if (offset >= -1 && offset <= 1)
 	return(0);
@@ -1149,7 +1149,7 @@ long offset;
  *  returns (1) TRUE if we had to make a call
  */
 
-long
+int32_t
 asm_mul(exp, s1, s2, d)
 Exp *exp;
 Stor *s1, *s2;
@@ -1180,7 +1180,7 @@ Stor *d;
     ts2 = *s2;
 
     if (s2->st_Type == ST_IntConst) {
-	long n;
+	int32_t n;
 
 	switch (s2->st_IntConst) {
 	case -1:
@@ -1216,7 +1216,7 @@ Stor *d;
     }
 
     /*
-     *	procedure call required?  means:    (1) either source is long
+     *	procedure call required?  means:    (1) either source is int32_t
      */
 
     if (ts1.st_Size == 4 || ts2.st_Size == 4) {
@@ -1418,7 +1418,7 @@ Stor *d;
 void
 asm_shift(exp, dir, s1, s2, d)
 Exp *exp;
-long dir;
+int32_t dir;
 Stor *s1;
 Stor *s2;
 Stor *d;
@@ -1508,7 +1508,7 @@ wc:
  *  (call)
  *  D0->d
  *
- *  handle byte/word cases (ext into long)
+ *  handle byte/word cases (ext into int32_t)
  */
 
 void
@@ -1517,7 +1517,7 @@ CallAsmSupport(Exp *exp,char *mop, Stor *s1, Stor *s2, Stor *d, short orderReq)
     Stor rd0, rd1;
     Stor ss1;
     Stor ss2;
-    ulong mask = 0;
+    uint32_t mask = 0;
 
     GenFlagCallMade();
 
@@ -1536,7 +1536,7 @@ CallAsmSupport(Exp *exp,char *mop, Stor *s1, Stor *s2, Stor *d, short orderReq)
 
     if ((mask = ~mask & GetLockedScratch()) != 0) {
 	asm_save_regs(mask);
-	printf("; Saved locked: %08lx\n", mask);
+	printf("; Saved locked: %08x\n", mask);
     }
 
     AllocDataRegisterAbs(&rd0, 4, RB_D0);
@@ -1545,7 +1545,7 @@ CallAsmSupport(Exp *exp,char *mop, Stor *s1, Stor *s2, Stor *d, short orderReq)
     AddAuxSub(mop);
 
     if (s1 && s1->st_Type == ST_FltConst) {
-	long fpv;
+	int32_t fpv;
 
 	Assert(s1->st_Size == 4);
 	asm_fltconst(exp, s1, &fpv);
@@ -1553,7 +1553,7 @@ CallAsmSupport(Exp *exp,char *mop, Stor *s1, Stor *s2, Stor *d, short orderReq)
 	s1 = &ss1;
     }
     if (s2 && s2->st_Type == ST_FltConst) {
-	long fpv;
+	int32_t fpv;
 
 	Assert(s2->st_Size == 4);
 	asm_fltconst(exp, s2, &fpv);
@@ -1664,7 +1664,7 @@ Stor *d;
 	}
     }
 
-    dbprintf(("BitFieldExt %s[siz=%ld] ->", StorToString(&stmp, NULL), stmp.st_Size));
+    dbprintf(("BitFieldExt %s[siz=%d] ->", StorToString(&stmp, NULL), stmp.st_Size));
     dbprintf(("%s (off=%d, siz=%d)\n", StorToString(&dtmp, NULL), stmp.st_BOffset, stmp.st_BSize));
     Assert(stmp.st_Flags & SF_BITFIELD);
 
@@ -1694,14 +1694,14 @@ Stor *d;
     } else {
 	Stor st;
 	short d_size = dtmp.st_Size;
-	long mask;
+	int32_t mask;
 
 	/*
 	 *  unsigned breakout optimization
 	 */
 
 	dtmp.st_Size = stmp.st_Size;
-	mask = ((ulong)-1 >> (32 - stmp.st_BSize)) << stmp.st_BOffset;
+	mask = ((uint32_t)-1 >> (32 - stmp.st_BSize)) << stmp.st_BOffset;
 
 	/* if (stmp.st_Flags & SF_UNSIGNED) { */
 	    if (dtmp.st_Size != 4)
@@ -1711,7 +1711,7 @@ Stor *d;
 	asm_and(exp, &stmp, &st, &dtmp);
 
 	if (stmp.st_BOffset) {			    /*	shift it	*/
-	    long flags = dtmp.st_Flags;
+	    int32_t flags = dtmp.st_Flags;
 
 	    dtmp.st_Flags |= SF_UNSIGNED;
 	    AllocConstStor(&st, stmp.st_BOffset, t);
@@ -1727,7 +1727,7 @@ Stor *d;
 	 */
 
 	if ((stmp.st_Flags & SF_UNSIGNED) == 0) {
-	    long l1 = AllocLabel();
+	    int32_t l1 = AllocLabel();
 
 	    AllocConstStor(&st, 1 << (stmp.st_BSize - 1), t);
 	    asm_test_and(exp, &st, &dtmp);
@@ -1754,13 +1754,13 @@ Exp *exp;
 Stor *s;
 Stor *d;
 {
-    long mask;
+    int32_t mask;
     Type *t;
     Stor dtmp;
 
     OptimizeBitField(d, &dtmp);
 
-    mask = ((ulong)-1 >> (32 - dtmp.st_BSize)) << dtmp.st_BOffset;
+    mask = ((uint32_t)-1 >> (32 - dtmp.st_BSize)) << dtmp.st_BOffset;
     t = (dtmp.st_Size == 2) ? &UShortType : &ULongType;
 
 
@@ -1773,7 +1773,7 @@ Stor *d;
      */
 
     if (s->st_Type == ST_IntConst) {
-	long valu;
+	int32_t valu;
 	Stor st;
 
 	valu = mask & (s->st_IntConst << dtmp.st_BOffset);
@@ -1797,8 +1797,8 @@ Stor *d;
 	Stor tm;
 
 	if (dtmp.st_BSize == 1) {     /*  test bit 0, bset/bclr   */
-	    long l1 = AllocLabel();
-	    long l2 = AllocLabel();
+	    int32_t l1 = AllocLabel();
+	    int32_t l2 = AllocLabel();
 
 	    AllocConstStor(&st, 1, t);
 	    st.st_Size = s->st_Size;
@@ -1848,7 +1848,7 @@ Stor *s;
 {
     Stor st;
     Stor stmp;
-    long mask;
+    int32_t mask;
     Type *t;
 
     OptimizeBitField(s, &stmp);
@@ -1860,7 +1860,7 @@ Stor *s;
      *	test a bit field.  A 1 bit bitfield is tested with btst
      */
 
-    mask = ((ulong)-1 >> (32 - stmp.st_BSize)) << stmp.st_BOffset;
+    mask = ((uint32_t)-1 >> (32 - stmp.st_BSize)) << stmp.st_BOffset;
     AllocConstStor(&st, mask, t);
     asm_test_and(exp, &stmp, &st);
 }

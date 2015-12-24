@@ -41,7 +41,7 @@ disable_break()
 main(int argc,char *argv[])
 {
 FILE *	fp;
-long	fl;
+int32_t	fl;
 char *	memory;
 char *	filptr;
 int	err;

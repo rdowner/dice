@@ -22,14 +22,14 @@ typedef struct Var {
     struct Type *Type;
     struct Symbol *Sym;
     struct Stor var_Stor;
-    long    Flags;	    /*	mainly storage classes		*/
-    long    LexIdx;	    /*	lexical index of declaration	*/
+    int32_t    Flags;	    /*	mainly storage classes		*/
+    int32_t    LexIdx;	    /*	lexical index of declaration	*/
     short   Refs;	    /*	references to the var	*/
     short   RegFlags;	    /*	register spec / flags	*/
     union {		    /*	procedure block or assigned expression	  */
 	struct BlockStmt *Block;
 	struct Exp *AssExp;
-	long BOffset;	    /*	Offset of bitfield	*/
+	int32_t BOffset;	    /*	Offset of bitfield	*/
     } u;
 } Var;
 
@@ -41,10 +41,10 @@ typedef struct ExtVarNode {
 typedef struct ExtStrNode {
     struct ExtStrNode *Next;
     char *Str;
-    long Len;
-    long Label;
-    long Flags;
-    long IIdx;	/* internationalization index */
+    int32_t Len;
+    int32_t Label;
+    int32_t Flags;
+    int32_t IIdx;	/* internationalization index */
 } ExtStrNode;
 
 
@@ -111,7 +111,7 @@ typedef struct Exp {
     u_short	ex_Token;	/*  generator dependant 	    */
     short	ex_Res2;
     struct Stor ex_Stor;	/*  machine storage for result (code gen)   */
-    long	ex_LexIdx;	/*  line number in input file	    */
+    int32_t	ex_LexIdx;	/*  line number in input file	    */
 
     union {
 	struct Exp *Exp;	/*  left hand side		    */
@@ -122,14 +122,14 @@ typedef struct Exp {
     union {
 	struct Exp *Exp;	/*  right hand side / arglist for p */
 	struct Symbol *Sym;	/*  structure element		    */
-	long	Label;		/*  branch condition		    */
-	long	StrLen;
-	long	Offset; 	/*  structure . ->		    */
-	long	*ConstAry;	/*  linked list of constants	    */
+	int32_t	Label;		/*  branch condition		    */
+	int32_t	StrLen;
+	int32_t	Offset; 	/*  structure . ->		    */
+	int32_t	*ConstAry;	/*  linked list of constants	    */
     } v;
 
-    long ex_LabelT;
-    long ex_LabelF;
+    int32_t ex_LabelT;
+    int32_t ex_LabelF;
     void *ex_Reserved1;
 } Exp;
 

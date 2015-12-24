@@ -46,9 +46,9 @@ FileNode *fn;
 
     mod->ModBeg = (char *)fn->DPtr;
     {
-	ulong *scan = fn->DPtr;
-	ulong *scanEnd = (ulong *)((char *)fn->Data + fn->Bytes);
-	long nl;
+	uint32_t *scan = fn->DPtr;
+	uint32_t *scanEnd = (uint32_t *)((char *)fn->Data + fn->Bytes);
+	int32_t nl;
 
 	/*
 	 *  look for hunk_unit
@@ -76,7 +76,7 @@ FileNode *fn;
 	    }
 
 	    while (FromMsbOrder(*scan) != 0x3F2) { /*  until we get a hunk_end */
-		ulong len;
+		uint32_t len;
 
 		switch((uword)FromMsbOrder(*scan)) {
 		case 0x3E9:		/*  HUNK_CODE	    */
@@ -154,8 +154,8 @@ FileNode *fn;
      */
 
     {
-	ulong *scan = fn->DPtr;
-	ulong *scanEnd = (ulong *)((char *)fn->Data + fn->Bytes);
+	uint32_t *scan = fn->DPtr;
+	uint32_t *scanEnd = (uint32_t *)((char *)fn->Data + fn->Bytes);
 	short hunkNo = 0;
 
 	/*
@@ -190,7 +190,7 @@ FileNode *fn;
 	     */
 
 	    if ((uword)FromMsbOrder(*scan) == 0x3E8) {
-		long nl = FromMsbOrder(scan[1]) * 4;
+		int32_t nl = FromMsbOrder(scan[1]) * 4;
 		hunk->Node.ln_Name = zalloc(nl + 1);
 		movmem(scan + 2, hunk->Node.ln_Name, nl);
 		hunk->Node.ln_Name[nl] = 0;
@@ -204,7 +204,7 @@ FileNode *fn;
             /*  until we get a hunk_end */
 
 	    while ((uword)FromMsbOrder(*scan) != 0x3F2) {  
-		ulong len;
+		uint32_t len;
 
 		switch((uword)FromMsbOrder(*scan)) {
 		case 0x3E9:		/*  HUNK_CODE	    */
@@ -323,7 +323,7 @@ CreateSymbolTable(mod)
 Module *mod;
 {
     short i;
-    long r = 0;
+    int32_t r = 0;
 
     for (i = 0; i < mod->NumHunks; ++i)
 	r += ScanHunkExt(mod->Hunks[i], SCAN_RELOC_SYMIN);

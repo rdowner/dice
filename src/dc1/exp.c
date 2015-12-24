@@ -10,20 +10,20 @@
 
 #include "defs.h"
 
-Prototype long ExpToConstant(Exp *);
+Prototype int32_t ExpToConstant(Exp *);
 Prototype Type *ExpToType(Exp *);
 Prototype void ExpToLValue(Exp *, Stor *, Type *);
 Prototype void InsertCast(Exp **, Type *);
 Prototype void InsertNot(Exp **);
-Prototype void InsertBranch(Exp **, long, long);
+Prototype void InsertBranch(Exp **, int32_t, int32_t);
 Prototype void InsertAssign(Exp **, Var *);
-Prototype long AutoIncDecSize(Exp *);
+Prototype int32_t AutoIncDecSize(Exp *);
 
-long
+int32_t
 ExpToConstant(exp)
 Exp *exp;
 {
-    long value;
+    int32_t value;
     short genPass = GenPass;
 
     Assert(exp);
@@ -157,10 +157,10 @@ Type *type;
 		/* XXX */
 		break;
 	    case 1:
-		e1->ex_Stor.st_IntConst = (long)(char)e1->ex_Stor.st_IntConst;
+		e1->ex_Stor.st_IntConst = (int32_t)(char)e1->ex_Stor.st_IntConst;
 		break;
 	    case 2:
-		e1->ex_Stor.st_IntConst = (long)(short)e1->ex_Stor.st_IntConst;
+		e1->ex_Stor.st_IntConst = (int32_t)(short)e1->ex_Stor.st_IntConst;
 		break;
 	    case 4:
 		break;
@@ -169,10 +169,10 @@ Type *type;
 		e1->ex_Stor.st_IntConst = 0;
 		break;
 	    case 256|1:
-		e1->ex_Stor.st_IntConst = (long)(unsigned char)e1->ex_Stor.st_IntConst;
+		e1->ex_Stor.st_IntConst = (int32_t)(unsigned char)e1->ex_Stor.st_IntConst;
 		break;
 	    case 256|2:
-		e1->ex_Stor.st_IntConst = (long)(unsigned short)e1->ex_Stor.st_IntConst;
+		e1->ex_Stor.st_IntConst = (int32_t)(unsigned short)e1->ex_Stor.st_IntConst;
 		break;
 	    case 256|4:
 		break;
@@ -265,8 +265,8 @@ Exp **pexp;
 void
 InsertBranch(pexp, cond, label)
 Exp **pexp;
-long cond;
-long label;
+int32_t cond;
+int32_t label;
 {
     Exp *exp;
     Exp *e1 = *pexp;
@@ -321,7 +321,7 @@ Var *var;
  *  Determine amount of increment/decrement.
  */
 
-long
+int32_t
 AutoIncDecSize(exp)
 Exp *exp;
 {

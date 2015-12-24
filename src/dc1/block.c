@@ -26,14 +26,14 @@ Prototype BlockStmt *BlockUp(void);
 Prototype Var *BlockAddVar(Var *);
 Prototype void BlockAddStmt(Stmt *);
 Prototype void BlockFlagCallMade(void);
-Prototype long FindContinueLabel(void);
-Prototype long FindBreakLabel(void);
+Prototype int32_t FindContinueLabel(void);
+Prototype int32_t FindBreakLabel(void);
 Prototype void GenPush(BlockStmt *);
 Prototype void GenFlagCallMade(void);
 Prototype void GenPop(BlockStmt *);
 Prototype void BlockAddTop(Var *);
-Prototype Var *BlockRemoveDuplicateVar(long, Symbol *, Type *);
-Prototype int CompareTypes(long, long, Type *, Type *);
+Prototype Var *BlockRemoveDuplicateVar(int32_t, Symbol *, Type *);
+Prototype int CompareTypes(int32_t, int32_t, Type *, Type *);
 
 BlockStmt *
 BlockDown(short bid)
@@ -133,7 +133,7 @@ BlockFlagCallMade()
 }
 
 
-long
+int32_t
 FindContinueLabel()
 {
     BlockStmt *block = CurBlock;
@@ -150,7 +150,7 @@ FindContinueLabel()
     return(0);
 }
 
-long
+int32_t
 FindBreakLabel()
 {
     BlockStmt *block = CurBlock;
@@ -283,7 +283,7 @@ Var *var;
 
 Var *
 BlockRemoveDuplicateVar(storFlags, sym, type)
-long storFlags;
+int32_t storFlags;
 Symbol *sym;
 Type *type;
 {
@@ -331,7 +331,7 @@ Type *type;
 }
 
 int
-CompareTypes(long olexIdx, long lexIdx, Type *tn, Type *to)
+CompareTypes(int32_t olexIdx, int32_t lexIdx, Type *tn, Type *to)
 {
     while (tn != to) {
 	if (tn == NULL || to == NULL)

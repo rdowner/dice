@@ -49,7 +49,7 @@ main(int ac, char **av)
     }
     for (i = 1; error == 0 && (ptr = av[i]); ++i) {
 	int fd;
-	long n;
+	int32_t n;
 
 	if ((fd = open(ptr, O_RDONLY)) < 0) {
 	    fprintf(stderr, "couldn't open %s\n", ptr);

@@ -53,7 +53,7 @@ Prototype void GenCaratEq(Exp **);
 
 Prototype void GenAssEq(Exp **);
 Prototype void GenSpecialAssignment(Exp **, void (*)(Exp **));
-          void PadStructure(int, long *);
+          void PadStructure(int, int32_t *);
 
 /*
  *  Note: to change propogation to rhs, the lhs must still be propogated
@@ -182,7 +182,7 @@ Exp **pexp;
 
 void PadStructure(size, bfhold)
 int size;
-long *bfhold;
+int32_t *bfhold;
 {
    if (size > 4)
    {
@@ -219,14 +219,14 @@ Exp **pexp;
     if (GenPass == 0)
     {
 	Type *type = exp->ex_Type;
-	long index = 0;
+	int32_t index = 0;
 
 	Assert(type);
 
 	if (exp->ex_ConstAry) {
-	    long *captr;
+	    int32_t *captr;
 
-	    for (captr = exp->ex_ConstAry; captr; captr = (long *)captr[0], ++index) {
+	    for (captr = exp->ex_ConstAry; captr; captr = *(int32_t **)captr, ++index) {
 		;
 	    }
 	}
@@ -281,9 +281,9 @@ Exp **pexp;
 	Exp *nextExp;
 	Stor t;
 	Stor c;
-	long index = 0;     /*	index, per char for string, else struct/union */
-	long baseOffset;    /*	bytes accumulated as we go	*/
-	long bfhold = 0;    /*  Used to accumulate bitfield initializations   */
+	int32_t index = 0;     /*	index, per char for string, else struct/union */
+	int32_t baseOffset;    /*	bytes accumulated as we go	*/
+	int32_t bfhold = 0;    /*  Used to accumulate bitfield initializations   */
 	Exp **next;
 
 	/*
@@ -300,9 +300,11 @@ Exp **pexp;
 	baseOffset = 0; 		/*  relative offset		    */
 
 	if (exp->ex_ConstAry) {
-	    long *captr;
+	    int32_t *captr;
 
-	    for (captr = exp->ex_ConstAry; captr; captr = (long *)captr[0], ++index) {
+	    for (captr = exp->ex_ConstAry; captr; captr = *(int32_t **)captr, ++index) {
+		int caval = *(int32_t *)((char *)captr + sizeof(void *));
+
 		if (type->Id == TID_ARY)
 		    actType = type->SubType;
 		else if (type->Id == TID_STRUCT)
@@ -314,7 +316,7 @@ Exp **pexp;
 		Assert(actType);
 
 		if (type->Id == TID_STRUCT) {
-		    long offset = type->Vars[index]->var_Stor.st_Offset;
+		    int32_t offset = type->Vars[index]->var_Stor.st_Offset;
 		    if (offset > baseOffset) {
 			PadStructure(offset - baseOffset, &bfhold);
 			baseOffset = offset;
@@ -323,13 +325,13 @@ Exp **pexp;
 
 		if (actType->Id == TID_BITFIELD)
 		{
-		    long offset = INT_SIZE * 8;
+		    int32_t offset = INT_SIZE * 8;
 		    if (type->Id == TID_STRUCT)
 		        offset = type->Vars[index]->u.BOffset;
 		    else if (type->Id != TID_INT)
 			yerror(exp->ex_LexIdx, EERROR_ILLEGAL_ASSIGNMENT);
 
-                    bfhold |= (captr[1] & ((1 << *actType->Size) - 1)) << offset;
+                    bfhold |= (caval & ((1 << *actType->Size) - 1)) << offset;
 		    /* We don't have the fix baseOffset because we are just */
 		    /* a bitfield and may be putting more into the bitfield */
 		    /* We instead rely upon the structure alignment code to */
@@ -346,19 +348,19 @@ Exp **pexp;
 			break;
 		    case 1:
 			{
-			    char c = captr[1];
+			    char c = caval;
 			    AutoAggregate(&c, 1);
 			}
 			break;
 		    case 2:
 			{
-			    short c = ToMsbOrderShort(captr[1]);
+			    short c = ToMsbOrderShort(caval);
 			    AutoAggregate(&c, 2);
 			}
 			break;
 		    case 4:
 			{
-			    long c = ToMsbOrder(captr[1]);
+			    int32_t c = ToMsbOrder(caval);
 			    AutoAggregate(&c, 4);
 			}
 			break;
@@ -388,7 +390,7 @@ Exp **pexp;
 	     */
 
 	    if (type->Id == TID_STRUCT) {
-		long offset = type->Vars[index]->var_Stor.st_Offset;
+		int32_t offset = type->Vars[index]->var_Stor.st_Offset;
 		if (offset > baseOffset) {
 		    PadStructure(offset - baseOffset, &bfhold);
 		    baseOffset = offset;
@@ -417,7 +419,7 @@ Exp **pexp;
 		 */
 
 		if (exp->ex_Token == TokStrConst && type->Id == TID_ARY && *actType->Size == 1) {
-		    long offset = exp->ex_StrLen;
+		    int32_t offset = exp->ex_StrLen;
 		    AutoAggregate(exp->ex_StrConst, offset);
 
 		    baseOffset += offset;
@@ -435,8 +437,8 @@ Exp **pexp;
 
 		    if (actType->Id == TID_BITFIELD)
 		    {
-			long offset = INT_SIZE * 8;
-			long val    = 0;
+			int32_t offset = INT_SIZE * 8;
+			int32_t val    = 0;
 
 			if (exp->ex_Stor.st_Type == ST_IntConst)
 			    val = exp->ex_Stor.st_IntConst;
@@ -478,7 +480,7 @@ Exp **pexp;
                                 break;
                             case 4:
                                 {
-                                    long c = ToMsbOrder(exp->ex_Stor.st_IntConst);
+                                    int32_t c = ToMsbOrder(exp->ex_Stor.st_IntConst);
                                     AutoAggregate(&c, 4);
                                 }
                                 break;
@@ -489,7 +491,7 @@ Exp **pexp;
                             break;
                         case ST_FltConst:
                             {
-                                long ary[4];
+                                int32_t ary[4];
 
                                 asm_fltconst(exp, &exp->ex_Stor, ary);
                                 AutoAggregate(ary, exp->ex_Stor.st_Size);
@@ -500,36 +502,36 @@ Exp **pexp;
                             if (GenGlobal) {
                                 AutoAggregateSync();
                                 if (AbsData == 0) {
-                                    long l;
+                                    int32_t l;
 
                                     if (PIOpt) {            /*  must relocate period    */
                                         l = AllocLabel();
 
                                         printf(
-                                            "x%ld\tdc.%c\t0\n"
+                                            "x%d\tdc.%c\t0\n"
                                             "\tsection\tautoinit0,code\n"
                                             "\tlea\t%s,A0\n",
                                             l, SizC[*actType->Size],
                                             StorToString(&exp->ex_Stor, NULL)
                                         );
                                         if ((uword)AsmState == ASM_CODE) {
-                                            printf("\tlea\tx%ld(pc),A1\n", l);
+                                            printf("\tlea\tx%d(pc),A1\n", l);
                                             printf("\tmove.%c\tA0,(A1)\n", SizC[*actType->Size]);
                                         } else {
-                                            printf("\tmove.%c\tA0,x%ld(A4)\n", SizC[*actType->Size], l);
+                                            printf("\tmove.%c\tA0,x%d(A4)\n", SizC[*actType->Size], l);
                                         }
                                         puts(LastSectBuf);
                                     } else if (ResOpt && ((uword)AsmState == ASM_DATA || (uword)AsmState == ASM_BSS) && !(exp->ex_Stor.st_Flags & SF_CODE)) {
                                         l = AllocLabel();
 
                                         printf(
-                                            "x%ld\tdc.%c\t0\n"
+                                            "x%d\tdc.%c\t0\n"
                                             "\tsection\tautoinit0,code\n"
                                             "\tlea\t%s,A0\n",
                                             l, SizC[*actType->Size],
                                             StorToString(&exp->ex_Stor, NULL)
                                         );
-                                        printf("\tmove.%c\tA0,x%ld", SizC[*actType->Size], l);
+                                        printf("\tmove.%c\tA0,x%d", SizC[*actType->Size], l);
                                         if (SmallData == 2)
                                             puts(".W");
                                         else
@@ -552,9 +554,9 @@ skip:
                                     if (exp->ex_Stor.st_Type == ST_RelLabel) {
                                         if (exp->ex_Stor.st_Flags & SF_REGARGS)
                                             putc('@', stdout);
-                                        printf("l%ld+%ld\n", exp->ex_Stor.st_Label, exp->ex_Stor.st_Offset);
+                                        printf("l%d+%d\n", exp->ex_Stor.st_Label, exp->ex_Stor.st_Offset);
                                     } else if (exp->ex_Stor.st_Type == ST_RelName) {
-                                        printf("%c%.*s+%ld\n", (
+                                        printf("%c%.*s+%d\n", (
                                             (exp->ex_Stor.st_Flags & SF_REGARGS) ? '@' : '_'),
                                             exp->ex_Stor.st_Name->Len,
                                             exp->ex_Stor.st_Name->Name,
@@ -690,7 +692,7 @@ Exp **pexp;
 void (*genFunc)(Exp **);
 {
     Exp *exp = *pexp;
-    long flags = exp->ex_Flags;
+    int32_t flags = exp->ex_Flags;
 
     exp->ex_Func = genFunc;
     exp->ex_Flags |= EF_ASSEQ;

@@ -18,18 +18,18 @@ Prototype short IfEnabled;
 Prototype short IfIndex;
 
 Prototype void InitDirective(void);
-Prototype long HandleDirective(char *, int, int);
-Prototype void do_if(char *, int, long *);
-Prototype void do_ifndef(char *, int, long *);
-Prototype void do_ifdef(char *, int, long *);
-Prototype void do_else(char *, int, long *);
-Prototype void do_elif(char *, int, long *);
-Prototype void do_endif(char *, int, long *);
-Prototype void do_pragma(char *, int, long *);
-Prototype void do_error(char *, int, long *);
-Prototype void do_line(char *, int, long *);
-Prototype void do_null(char *, int, long *);
-Prototype void do_passthru(char *, int, long *);
+Prototype int32_t HandleDirective(char *, int, int);
+Prototype void do_if(char *, int, int32_t *);
+Prototype void do_ifndef(char *, int, int32_t *);
+Prototype void do_ifdef(char *, int, int32_t *);
+Prototype void do_else(char *, int, int32_t *);
+Prototype void do_elif(char *, int, int32_t *);
+Prototype void do_endif(char *, int, int32_t *);
+Prototype void do_pragma(char *, int, int32_t *);
+Prototype void do_error(char *, int, int32_t *);
+Prototype void do_line(char *, int, int32_t *);
+Prototype void do_null(char *, int, int32_t *);
+Prototype void do_passthru(char *, int, int32_t *);
 
 short IfEnabled = 1;
 short IfIndex;
@@ -41,7 +41,7 @@ static char AutoEndif[MAX_IF_LEVEL];	/*  for #elif	*/
 typedef struct Direct {
     short   Len;
     short   IfFlag;
-    void    (*Func)(char *, int, long *);
+    void    (*Func)(char *, int, int32_t *);
     const char *Name;
 } Direct;
 
@@ -71,15 +71,15 @@ InitDirective()
     InElse[0] = 0;
 }
 
-long
+int32_t
 HandleDirective(base, i, max)
 char *base;
 int i;
 int max;
 {
-    long b = i;
-    long e;
-    long idx;
+    int32_t b = i;
+    int32_t e;
+    int32_t idx;
     Direct *dir;
 
     /*
@@ -89,19 +89,19 @@ int max;
      */
 
     {
-	long n = i;
-	long x = i;
+	int32_t n = i;
+	int32_t x = i;
 
 	while (n < max && base[n] != '\n') {
 	    if (base[n] == '\'') {
-		long n2 = SkipSingleSpec(base, n + 1, max);
+		int32_t n2 = SkipSingleSpec(base, n + 1, max);
 		movmem(base + n, base + x, n2 - n);
 		x += n2 - n;
 		n = n2;
 		continue;
 	    }
 	    if (base[n] == '\"') {
-		long n2 = SkipString(base, n + 1, max);
+		int32_t n2 = SkipString(base, n + 1, max);
 		movmem(base + n, base + x, n2 - n);
 		x += n2 - n;
 		n = n2;
@@ -185,10 +185,10 @@ void
 do_if(buf, max, pu)
 char *buf;
 int max;
-long *pu;   /*	unused */
+int32_t *pu;   /*	unused */
 {
     short undef;
-    long v;
+    int32_t v;
 
     if (IfIndex == MAX_IF_LEVEL)
 	cerror(EFATAL_MAX_IFS, MAX_IF_LEVEL);
@@ -218,7 +218,7 @@ void
 do_ifndef(buf, max, pu)
 char *buf;
 int max;
-long *pu;   /*	unused */
+int32_t *pu;   /*	unused */
 {
     short undef;
 
@@ -233,7 +233,7 @@ void
 do_ifdef(buf, max, pu)
 char *buf;
 int max;
-long *pu;   /*	unused */
+int32_t *pu;   /*	unused */
 {
     short undef;
 
@@ -248,7 +248,7 @@ void
 do_else(buf, max, pu)
 char *buf;
 int max;
-long *pu;   /*	unused */
+int32_t *pu;   /*	unused */
 {
     if (InElse[IfIndex]) {
 	cerror(EERROR_MULTIPLE_ELSE_FOR_IF);
@@ -265,7 +265,7 @@ void
 do_elif(buf, max, pu)
 char *buf;
 int max;
-long *pu;   /*	unused */
+int32_t *pu;   /*	unused */
 {
     do_else(buf, max, NULL);
     AutoEndif[IfIndex] = 1;
@@ -276,7 +276,7 @@ void
 do_endif(buf, max, pu)
 char *buf;
 int max;
-long *pu;   /*	unused */
+int32_t *pu;   /*	unused */
 {
     if (IfIndex == 0) {
 	cerror(EERROR_ENDIF_WITHOUT_IF);
@@ -299,7 +299,7 @@ void
 do_pragma(buf, max, pu)
 char *buf;
 int max;
-long *pu;   /*	unused */
+int32_t *pu;   /*	unused */
 {
     if (strncmp(buf, "DCCOPTS", 7) == 0) {
 #ifdef _DCC
@@ -339,7 +339,7 @@ void
 do_null(buf, max, pu)
 char *buf;
 int max;
-long *pu;   /*	unused	*/
+int32_t *pu;   /*	unused	*/
 {
 
 }
@@ -348,7 +348,7 @@ void
 do_error(buf, max, pu)
 char *buf;
 int max;
-long *pu;   /*	unused */
+int32_t *pu;   /*	unused */
 {
     cerror(EERROR_ERROR_DIRECTIVE, max, buf);
 }
@@ -361,7 +361,7 @@ void
 do_line(buf, max, pu)
 char *buf;
 int max;
-long *pu;   /*	unused */
+int32_t *pu;   /*	unused */
 {
     short len = 0;
     Include *pb = PushBase;
@@ -382,14 +382,14 @@ long *pu;   /*	unused */
 	    strncpy(pb->FileName, buf, len);
 	}
     }
-    fprintf(Fo, "# %ld \"%s\" %ld\n", pb->LineNo, pb->FileName, pb->Level);
+    fprintf(Fo, "# %d \"%s\" %d\n", pb->LineNo, pb->FileName, pb->Level);
 }
 
 void
 do_passthru(buf, max, pu)
 char *buf;
 int max;
-long *pu;   /*	unused */
+int32_t *pu;   /*	unused */
 {
     Dump("##", 0, 2);
     Dump(buf, 0, max);

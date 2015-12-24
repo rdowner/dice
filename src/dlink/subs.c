@@ -43,24 +43,24 @@
 #include "defs.h"
 #include <fcntl.h>
 
-Prototype long	  MemMalloced;
-Prototype long	  MemAllocated;
-Prototype long	  MemRequested;
-Prototype long	  MemReclaimed;
-Prototype long	  MemNumSyms;
-Prototype long	  MemNumHunks;
-Prototype long	  MemNumModules;
-Prototype long	  MemNumHunksMalReclaim;
-Prototype long	  MemNumSymsMalReclaim;
+Prototype int32_t	  MemMalloced;
+Prototype int32_t	  MemAllocated;
+Prototype int32_t	  MemRequested;
+Prototype int32_t	  MemReclaimed;
+Prototype int32_t	  MemNumSyms;
+Prototype int32_t	  MemNumHunks;
+Prototype int32_t	  MemNumModules;
+Prototype int32_t	  MemNumHunksMalReclaim;
+Prototype int32_t	  MemNumSymsMalReclaim;
 
 Prototype void	cerror(short, ...);
 Prototype void	_Assert(char *, int);
-Prototype void	*zalloc(long);
-Prototype void	zfree(void *, long);
-Prototype void	putl(FILE *, long);
+Prototype void	*zalloc(int32_t);
+Prototype void	zfree(void *, int32_t);
+Prototype void	putl(FILE *, int32_t);
 Prototype char	*HunkToStr(Hunk *);
 Prototype void _SanityCheck(int);
-Prototype int  open_lpath(char *, long);
+Prototype int  open_lpath(char *, int32_t);
 Prototype Node *MakeNode(char *);
 Prototype Node *MakeNode2(char *, char *);
 Prototype char *ObtainErrorString(short);
@@ -77,24 +77,24 @@ char	*ErrorFileName1 = DCC_CONFIG "dice.errors";
 char	*ErrorFileName2 = DCC "config/dice.errors";
 #endif
 char	*ErrorAry;
-long	ErrorArySize;
+int32_t	ErrorArySize;
 char	ErrBuf[128];
 
 
-long	MemMalloced;
-long	MemAllocated;
-long	MemRequested;
-long	MemReclaimed;
-long	MemNumSyms;
-long	MemNumHunks;
-long	MemNumModules;
-long	MemNumHunksMalReclaim;
-long	MemNumSymsMalReclaim;
+int32_t	MemMalloced;
+int32_t	MemAllocated;
+int32_t	MemRequested;
+int32_t	MemReclaimed;
+int32_t	MemNumSyms;
+int32_t	MemNumHunks;
+int32_t	MemNumModules;
+int32_t	MemNumHunksMalReclaim;
+int32_t	MemNumSymsMalReclaim;
 
 #define BLOCK_SIZE  4096
 #define MAX_FREE    256
 
-long **FreeList[MAX_FREE/4];
+int32_t *FreeList[MAX_FREE/4];
 
 void
 cerror(short errorId, ...)
@@ -154,9 +154,14 @@ eprintf(const char *ctl, ...)
 void    
 veprintf(const char *ctl, va_list va)
 {   
-    vfprintf(stderr, ctl, va);
-    if (ErrorFi)
-        vfprintf(ErrorFi, ctl, va);
+    va_list tmp_va;
+
+    va_copy(tmp_va, va);
+    vfprintf(stderr, ctl, tmp_va);
+    if (ErrorFi) {
+	va_copy(tmp_va, va);
+        vfprintf(ErrorFi, ctl, tmp_va);
+    }
 }           
 
 void
@@ -178,13 +183,13 @@ int line;
 
 void *
 zalloc(bytes)
-long bytes;
+int32_t bytes;
 {
     void *ptr;
     static char *BufPtr1;
     static char *BufPtr2;
-    static long BufLen1;
-    static long BufLen2;
+    static int32_t BufLen1;
+    static int32_t BufLen2;
 
     if (bytes == 0)
 	return((void *)"");
@@ -192,10 +197,10 @@ long bytes;
     bytes = (bytes + 7) & ~3;
     MemRequested += bytes;
     if (bytes < MAX_FREE) {
-	long index = bytes >> 2;
+	int32_t index = bytes >> 2;
 
 	if ((ptr = FreeList[index]) != NULL) {
-	    FreeList[index] = (long **)*(long *)ptr;
+	    FreeList[index] = *(int32_t **)ptr;
 	    setmem(ptr, bytes, 0);
 	    return(ptr);
 	}
@@ -242,27 +247,27 @@ long bytes;
 void
 zfree(ptr, bytes)
 void *ptr;
-long bytes;
+int32_t bytes;
 {
-    long index = (bytes + 7) >> 2;
+    int32_t index = (bytes + 7) >> 2;
 
     if (bytes == 0) {
 	cerror(EFATAL_MEMORY_FREE_ERROR);
     }
     if (index < MAX_FREE/4) {
-	*(long *)ptr = (long)FreeList[index];
-	FreeList[index] = (long **)ptr;
+	*(int32_t **)ptr = FreeList[index];
+	FreeList[index] = (int32_t *)ptr;
 	MemReclaimed += index << 2;
     }
 }
 
 void
 putl(fo, n)
-long n;
+int32_t n;
 FILE *fo;
 {
     n = ToMsbOrder(n);
-    fwrite((char *)&n, sizeof(long), 1, fo);
+    fwrite((char *)&n, sizeof(int32_t), 1, fo);
 }
 
 char *
@@ -278,7 +283,7 @@ Hunk *hunk;
 	sprintf(ptr, "[NULL]");
 	return(ptr);
     }
-    sprintf(ptr, "[%s:%s hn#%d.%ld off %ld siz %ld]", hunk->Module->FNode->Node.ln_Name, hunk->Module->Node.ln_Name, hunk->HunkNo, hunk->HX->FinalHunkNo, hunk->Offset, hunk->Bytes);
+    sprintf(ptr, "[%s:%s hn#%d.%d off %d siz %d]", hunk->Module->FNode->Node.ln_Name, hunk->Module->Node.ln_Name, hunk->HunkNo, hunk->HX->FinalHunkNo, hunk->Offset, hunk->Bytes);
     return(ptr);
 }
 
@@ -309,7 +314,7 @@ _SanityCheck(n)
 int
 open_lpath(name, modes)
 char *name;
-long modes;
+int32_t modes;
 {
     int fd = -1;
     short fullPath = (strchr(name, ':') ? 1 : 0);

@@ -30,7 +30,7 @@ Prototype Symbol *MakeSymbol(const char *, short, short, void *);
 Prototype Symbol *PragmaSymbol(char *, short);
 Prototype SemInfo *FindSymbolId(Symbol *, short);
 
-Prototype long hash(const char *, short);
+Prototype int32_t hash(const char *, short);
 
 void
 InitSym(int enab)
@@ -145,10 +145,10 @@ InitSym(int enab)
 
 #ifdef NO_ASM
 
-long
+int32_t
 hash(const char *buf, short bytes)
 {
-    long v = 0x12ABE49F;
+    int32_t v = 0x12ABE49F;
 
     while (bytes) {
 	--bytes;
@@ -168,7 +168,7 @@ hash(const char *buf, short bytes)
 Symbol *
 MakeSymbol(const char *name, short len, short lexid, void *lexdata)
 {
-    long hv = hash(name, len);
+    int32_t hv = hash(name, len);
     Symbol **psym = SymHash + (hv & HMASK);
     Symbol *sym;
 
@@ -195,7 +195,7 @@ MakeSymbol(const char *name, short len, short lexid, void *lexdata)
 Symbol *
 PragmaSymbol(char *name, short len)
 {
-    long hv = hash(name, len);
+    int32_t hv = hash(name, len);
     Symbol **psym = SymHashX + (hv & XMASK);
     Symbol *sym;
 

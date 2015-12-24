@@ -52,8 +52,8 @@ OpenFile(const char *fileName)
      *  Allocate a machine context structure for each line
      */
     {
-        long i;
-        long lines = 0;
+        int32_t i;
+        int32_t lines = 0;
 
         for (i = 0; fn->fn_AsBuf[i]; ++i) {
             if (fn->fn_AsBuf[i] == '\n')

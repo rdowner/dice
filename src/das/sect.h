@@ -12,7 +12,7 @@
 
 /*
  *  Relocation and section information.  The section is broken up into
- *  relocation lists for byte, word, and long relocations for local and
+ *  relocation lists for byte, word, and int32_t relocations for local and
  *  external symbols.  Each list itself is kept sorted by the SECTION HUNK THE
  *  LOCAL OR EXTERNAL LABEL BELONGS TO.
  *
@@ -23,13 +23,13 @@
 typedef struct Reloc {
     struct Reloc *RNext;
     Label   *Label;		/*  label we are referencing		    */
-    long    Offset;		/*  offset in section of item to be relocd  */
+    int32_t    Offset;		/*  offset in section of item to be relocd  */
 } Reloc;
 
 typedef struct DBlock {
     struct DBlock *Next;
-    long    Size;
-    long    Max;
+    int32_t    Size;
+    int32_t    Max;
     void    *Data;
 } DBlock;
 
@@ -48,13 +48,13 @@ typedef struct Sect {
     struct Sect *Next;
     short   Hunk;	    /*	starts at 0	    */
     short   Type;	    /*	code, data, bss, abs*/
-    long    HunkMask;
+    int32_t    HunkMask;
     char    *Name;	    /*	section name	    */
-    long    Addr;	    /*	current addr in sect*/
+    int32_t    Addr;	    /*	current addr in sect*/
 
-    long    ObjLen;	    /*	size of generated code/data	    */
-    long    DebugLen;	    /*	debug entries			    */
-    long    DebugIdx;
+    int32_t    ObjLen;	    /*	size of generated code/data	    */
+    int32_t    DebugLen;	    /*	debug entries			    */
+    int32_t    DebugIdx;
     DBlock  *Block;	    /*	linked list of generated code/data. NULL if bss */
     DBlock  *LastBlock;     /*	for appending...		    */
 

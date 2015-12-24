@@ -48,9 +48,6 @@
 
 typedef unsigned char	ubyte;
 typedef unsigned short	uword;
-#ifndef linux
-typedef unsigned long	ulong;
-#endif
 
 typedef struct Node Node;
 typedef struct MinNode MinNode;
@@ -60,11 +57,11 @@ typedef struct MinList MinList;
 typedef struct Include {
     struct Include *Next;
     char    *FileName;
-    long    LineNo;
-    long    Level;
+    int32_t    LineNo;
+    int32_t    Level;
 
-    long    Index;	    /*	set for prev cpp by push    */
-    long    MaxIndex;	    /*	set by cpp() before scan    */
+    int32_t    Index;	    /*	set for prev cpp by push    */
+    int32_t    MaxIndex;	    /*	set by cpp() before scan    */
     char    *Base;	    /*	set by cpp() before scan    */
 
     char    IsFile;	    /*	vs macro replace	    */
@@ -80,9 +77,9 @@ typedef struct PreCompNode {
 } PreCompNode;
 
 typedef struct PreCompHdr {
-    ulong   pc_Magic;
-    long    pc_CppSize;     /*	preprocessed dump file	*/
-    long    pc_SymSize;     /*	symbol table size	*/
+    uint32_t   pc_Magic;
+    int32_t    pc_CppSize;     /*	preprocessed dump file	*/
+    int32_t    pc_SymSize;     /*	symbol table size	*/
     char    pc_Version[32];
 } PreCompHdr;
 
@@ -108,8 +105,8 @@ typedef struct Sym {
     char    **Args;	/*  names of args for replace	*/
     short   *ArgsLen;	/*  lengths of args for replace */
     char    *Text;	/*  contents of symbol		*/
-    long    TextLen;
-    long    SymGroup;	/*  for precompiled headers	*/
+    int32_t    TextLen;
+    int32_t    SymGroup;	/*  for precompiled headers	*/
     short   Hv; 	/*  hash value			*/
 } Sym;
 

@@ -169,11 +169,11 @@ help(int code)
 
 #ifdef NOTDEF
 
-extern long *__MemList;
+extern int32_t *__MemList;
 
 void
 du(ptr)
-long *ptr;
+int32_t *ptr;
 {
     char buf[64];
 

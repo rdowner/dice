@@ -53,13 +53,13 @@
 #include "defs.h"
 #include "asm.h"
 
-Prototype long AsmState;
-Prototype long LabelReturn;
-Prototype long LabelProfBeg;
-Prototype long LabelProfEnd;
-Prototype long LabelRegsUsed;
-Prototype long RegReserved;
-Prototype long GlobalRegReserved;
+Prototype int32_t AsmState;
+Prototype int32_t LabelReturn;
+Prototype int32_t LabelProfBeg;
+Prototype int32_t LabelProfEnd;
+Prototype int32_t LabelRegsUsed;
+Prototype int32_t RegReserved;
+Prototype int32_t GlobalRegReserved;
 Prototype char LastSectBuf[256];
 Prototype char *LastSectName;
 Prototype char *SegNames[];
@@ -69,16 +69,16 @@ Prototype short OutAlign;
 char *SegNames[] = { "text", "data", "fardata", "bss", "farbss", "altdata", "altbss", "altcode", "combss", "farcombss" };
 char *SegTypes[] = { "code", "data", "data",    "bss", "bss"   , "data",    "bss",    "code",    "common", "common" };
 
-long AsmState = 0;	/*  includes msb masking bits	*/
-long  LabelStackUsed;
-long  LabelRegsUsed;
-long  LabelReturn;
-long  LabelRegMaskUsed;
-long  LabelArgsBytes;
-long  LabelProfBeg;
-long  LabelProfEnd;
-long  RegReserved;
-long  GlobalRegReserved = RF_A5|RF_A7;
+int32_t AsmState = 0;	/*  includes msb masking bits	*/
+int32_t  LabelStackUsed;
+int32_t  LabelRegsUsed;
+int32_t  LabelReturn;
+int32_t  LabelRegMaskUsed;
+int32_t  LabelArgsBytes;
+int32_t  LabelProfBeg;
+int32_t  LabelProfEnd;
+int32_t  RegReserved;
+int32_t  GlobalRegReserved = RF_A5|RF_A7;
 char  LastSectBuf[256];
 char *LastSectName;
 
@@ -98,25 +98,25 @@ Prototype void asm_procend(Var *, short);
 Prototype void asm_returnstorage(Exp *);
 Prototype void asm_dynamictag(Var *);	/* XXX */
 Prototype void asm_segment(Var *);
-Prototype void asm_align(long);
-Prototype void asm_ds(Symbol *, long);
-Prototype void asm_string(long, char *, long, long, long);
-Prototype void asm_label(long);
-Prototype void asm_branch(long);
-Prototype void asm_condbra(short, long);
-Prototype long asm_push(Exp *, Type *, Stor *);
-Prototype void asm_push_mask(long);
-Prototype long asm_stackbytes(Type *);
-Prototype void asm_call(Exp *, Stor *, Type *, Stor *, long, short);
-Prototype void asm_pop(long);
-Prototype void asm_pop_mask(long);
-Prototype void asm_ext(Exp *, Stor *, Stor *, long);
+Prototype void asm_align(int32_t);
+Prototype void asm_ds(Symbol *, int32_t);
+Prototype void asm_string(int32_t, char *, int32_t, int32_t, int32_t);
+Prototype void asm_label(int32_t);
+Prototype void asm_branch(int32_t);
+Prototype void asm_condbra(short, int32_t);
+Prototype int32_t asm_push(Exp *, Type *, Stor *);
+Prototype void asm_push_mask(int32_t);
+Prototype int32_t asm_stackbytes(Type *);
+Prototype void asm_call(Exp *, Stor *, Type *, Stor *, int32_t, short);
+Prototype void asm_pop(int32_t);
+Prototype void asm_pop_mask(int32_t);
+Prototype void asm_ext(Exp *, Stor *, Stor *, int32_t);
 Prototype void asm_test(Exp *, Stor *);
-Prototype void asm_test_scc(Exp *, long, Stor *, short, Stor *);
-Prototype void asm_cond_scc(Exp *, long, Stor *, Stor *, short *, Stor *);
+Prototype void asm_test_scc(Exp *, int32_t, Stor *, short, Stor *);
+Prototype void asm_cond_scc(Exp *, int32_t, Stor *, Stor *, short *, Stor *);
 Prototype void asm_sccb(Exp *, Stor *, short, short);
 Prototype void asm_clr(Exp *, Stor *);
-Prototype void asm_movei(Exp *, long, Stor *);
+Prototype void asm_movei(Exp *, int32_t, Stor *);
 Prototype void asm_neg(Exp *, Stor *, Stor *);
 Prototype void ThreeOp(Exp *, Stor *, Stor *, Stor *, void (*)(Exp *, Stor *, Stor *, Stor *));
 Prototype void asm_add(Exp *, Stor *, Stor *, Stor *);
@@ -125,20 +125,20 @@ Prototype void asm_xor(Exp *, Stor *, Stor *, Stor *);
 Prototype void asm_and(Exp *, Stor *, Stor *, Stor *);
 Prototype void asm_or(Exp *, Stor *, Stor *, Stor *);
 Prototype void asm_test_and(Exp *, Stor *, Stor *);
-Prototype void asm_switch(Exp *, long, long *, long *, long);
-Prototype long SizeFit(long);
-Prototype long SizeFitSU(long, Stor *);
+Prototype void asm_switch(Exp *, int32_t, int32_t *, int32_t *, int32_t);
+Prototype int32_t SizeFit(int32_t);
+Prototype int32_t SizeFitSU(int32_t, Stor *);
 Prototype void asm_end(void);
-Prototype long asm_rcomove(Exp *, char *, short, Stor *);
+Prototype int32_t asm_rcomove(Exp *, char *, short, Stor *);
 Prototype void asm_exg(Stor *, Stor *);
 
-Prototype long RegCallOrder(Type *, char *, char *);
+Prototype int32_t RegCallOrder(Type *, char *, char *);
 Prototype void AutoAssignRegisteredArgs(Var **, short);
 
-Local void asm_gen_logic_class(Exp *, char *, char *, long, Stor *, Stor *, Stor *, long);
-Local void SortCases(Exp *, long *, long *, long);
-Local void SubDivideSwitch(Exp *, Stor *, Stor *, long, long, long, long, long *, long *);
-Local void extop(long, long, Stor *);
+Local void asm_gen_logic_class(Exp *, char *, char *, int32_t, Stor *, Stor *, Stor *, int32_t);
+Local void SortCases(Exp *, int32_t *, int32_t *, int32_t);
+Local void SubDivideSwitch(Exp *, Stor *, Stor *, int32_t, int32_t, int32_t, int32_t, int32_t *, int32_t *);
+Local void extop(int32_t, int32_t, Stor *);
 
 void
 asm_extern(var)
@@ -214,7 +214,7 @@ Var *var;
      */
 
     if (ProfOpt && (var->Flags & (TF_NOPROF|TF_INTERRUPT)) == 0) {
-	long l1 = AllocLabel();
+	int32_t l1 = AllocLabel();
 
 	LabelProfBeg = AllocLabel();
 	LabelProfEnd = AllocLabel();
@@ -222,13 +222,13 @@ Var *var;
 	AddAuxSub("ProfInit");      /*  ProfInit(rtname, pcbeg, pcend)  */
 	AddAuxSub("ProfExec");      /*  ProfInit(rtname, pcbeg, pcend)  */
 	printf("\tsection\tautoinit1,code\n");
-	printf("\tlea\tl%ld%s,A0\n", l1, (SmallData) ? "(A4)" : "");
+	printf("\tlea\tl%d%s,A0\n", l1, (SmallData) ? "(A4)" : "");
 	printf("\tjsr\t__ProfInit\n");
 
 	printf("\tsection\tlibdata,data\n");
 	printf("\tds.l\t0\n");
 
-	printf("l%ld\n", l1);
+	printf("l%d\n", l1);
 	printf("\tdc.l\t0\n");      /*  next pointer    */
 	printf("\tdc.l\t0\n");      /*  siblings        */
 	printf("\tdc.l\t0\n");      /*  our parent      */
@@ -238,8 +238,8 @@ Var *var;
 	printf("\tdc.l\t0\n");      /*  accum time      */
 	printf("\tdc.l\t0\n");      /*  total time      */
 	printf("\tdc.l\t0\n");      /*  # of calls      */
-	printf("\tdc.l\tl%ld\n", LabelProfBeg);
-	printf("\tdc.l\tl%ld\n", LabelProfEnd);
+	printf("\tdc.l\tl%d\n", LabelProfBeg);
+	printf("\tdc.l\tl%d\n", LabelProfEnd);
 	printf("\tdc.b\t\'%s%s\',0\n", prefix, SymToString(var->Sym));
 	printf("\tds.l\t0\n");
 
@@ -259,9 +259,9 @@ Var *var;
 
     if (ProfOpt && (var->Flags & (TF_NOPROF|TF_INTERRUPT)) == 0) {
 	printf("\tjsr\t__ProfExec%s\n", (SmallCode) ? "(pc)" : "");
-	printf("l%ld\n", LabelProfBeg);
+	printf("l%d\n", LabelProfBeg);
     }
-    printf("\tmovem.l\tl%ld,-(sp)\n", LabelRegMaskUsed);
+    printf("\tmovem.l\tl%d,-(sp)\n", LabelRegMaskUsed);
 }
 
 /*
@@ -276,7 +276,7 @@ Var *var;
  *  in GenRegArgs)
  */
 
-long
+int32_t
 RegCallOrder(type, ano, prgno)
 Type *type;
 char *ano;
@@ -284,7 +284,7 @@ char *prgno;	/*  prefilled pragma regs or NULL   */
 {
     short i;
     Var *var;
-    long regMask = 0;
+    int32_t regMask = 0;
 
     for (i = 0; i < type->Args && (var = type->Vars[i]); ++i) {
 	short regNo = 0;
@@ -296,7 +296,7 @@ char *prgno;	/*  prefilled pragma regs or NULL   */
 	} else {
 	    dbprintf(("RegFlags %d prgno %08lx prgno[i] %d\n",
 	        var->RegFlags,
-	        (long)prgno,
+	        (int32_t)prgno,
 	        (prgno) ? prgno[i] : -1
 	    ));
 	    Assert(0);
@@ -338,14 +338,14 @@ void
 AutoAssignRegisteredArgs(Var **vars, short args)
 {
     short i;
-    long regMask = 0;
+    int32_t regMask = 0;
     Var *var;
 
     for (i = 0; i < args && (var = vars[i]); ++i) {
 	Assert(i < 16);
 
 	if ((var->RegFlags & RF_REGISTER) == 0) {
-	    long pick = 0;
+	    int32_t pick = 0;
 
 	    if (var->Type->Id == TID_INT) {
 		if ((regMask & RF_D0) == 0)
@@ -381,7 +381,7 @@ AutoAssignRegisteredArgs(Var **vars, short args)
  *  the variable as reservable since it has been effectively modified)
  */
 
-long
+int32_t
 asm_rcomove(Exp *exp, char *ano, short i, Stor *d)
 {
     Stor t;
@@ -438,12 +438,12 @@ Var *var;
 {
     char *nam = SymToString(var->Sym);
 
-    printf("l%ld\teqr\n", LabelRegMaskUsed);
+    printf("l%d\teqr\n", LabelRegMaskUsed);
     printf("\txdef\t@%s\n", nam);
     printf("@%s:\n", nam);
 
     LabelRegMaskUsed= AllocLabel();
-    printf("\tmovem.l\tl%ld,-(sp)\n", LabelRegMaskUsed);
+    printf("\tmovem.l\tl%d,-(sp)\n", LabelRegMaskUsed);
 }
 #endif
 
@@ -484,7 +484,7 @@ Var *var;
      */
 
     if ((GenStackOpt || (var->Flags & TF_STKCHECK)) && !(var->Flags & (TF_INTERRUPT|TF_NOSTKCHECK))) {
-	long l = AllocLabel();
+	int32_t l = AllocLabel();
 
 	AddAuxSub("stk_base");
 	AddAuxSub("stk_alloc");
@@ -493,12 +493,12 @@ Var *var;
 	 *  simulate link instruction but with A5 and A7 swapped
 	 */
 	printf("\tmove.l\tA%d,-(sp)\n", RB_FP - RB_ADDR);
-	printf("\tlea\t-l%ld(sp),A%d\n", LabelStackUsed, RB_FP - RB_ADDR);
+	printf("\tlea\t-l%d(sp),A%d\n", LabelStackUsed, RB_FP - RB_ADDR);
 	printf("\tcmp.l\t__stk_base%s,A%d\n",
 	    ((SmallData) ? "(A4)" : ""),
 	    RB_FP - RB_ADDR
 	);
-	printf("\tbhi\tl%ld\n", l);
+	printf("\tbhi\tl%d\n", l);
 
 	/*
 	 *  Call __stk_alloc() (name changed from __stack_alloc() to avoid
@@ -521,7 +521,7 @@ Var *var;
 
 	{
 	    BlockStmt *block = var->u.Block;
-	    long argBytes = block->Frame.ArgsStackUsed;
+	    int32_t argBytes = block->Frame.ArgsStackUsed;
 
 	    if (var->Flags & TF_PROTOTYPE) {
 		if (var->Flags & TF_DOTDOTDOT)
@@ -530,19 +530,19 @@ Var *var;
 		argBytes += 256;
 	    }
 	    if (argBytes < 32768)
-		printf("\tpea\t%ld.W\n", argBytes);
+		printf("\tpea\t%d.W\n", argBytes);
 	    else
-		printf("\tpea\t%ld\n", argBytes);
+		printf("\tpea\t%d\n", argBytes);
 	}
-	printf("\tpea\tl%ld-8.W\n", LabelRegsUsed);
+	printf("\tpea\tl%d-8.W\n", LabelRegsUsed);
 	printf("\tjsr\t__stk_alloc%s\n", (SmallCode) ? "(pc)" : "");
 
 	/*
 	 *  exg A5, A7 to 'make it right'
 	 */
-	printf("l%ld\texg\tsp,A%d\n", l, RB_FP - RB_ADDR);
+	printf("l%d\texg\tsp,A%d\n", l, RB_FP - RB_ADDR);
     } else {
-	printf("\tlink\tA%d,#-l%ld\n", RB_FP - RB_ADDR, LabelStackUsed);
+	printf("\tlink\tA%d,#-l%d\n", RB_FP - RB_ADDR, LabelStackUsed);
     }
 }
 
@@ -556,8 +556,8 @@ asm_procend(Var *var, short forceLink)
     static short Cntr = (MINIMAXPROCS + 2) * 3;
 #endif
 
-    long stack = Align(block->Frame.DownStackUsed + block->Frame.StackUsed, StackAlign);
-    long mask = GetUsedRegisters() & ~RegReserved;
+    int32_t stack = Align(block->Frame.DownStackUsed + block->Frame.StackUsed, StackAlign);
+    int32_t mask = GetUsedRegisters() & ~RegReserved;
 
     if (var->Flags & (TF_INTERRUPT)) {
 	if (SmallData != 2)
@@ -598,14 +598,14 @@ asm_procend(Var *var, short forceLink)
     } else {
 	if (ProfOpt && (var->Flags & TF_NOPROF) == 0) {
 	    printf("\tjsr\t__ProfExec%s\n", (SmallCode) ? "(pc)" : "");
-	    printf("l%ld\n", LabelProfEnd);
+	    printf("l%d\n", LabelProfEnd);
 	}
 	printf("\trts\n");
     }
 
-    printf("l%ld\treg\t%s\n", LabelRegMaskUsed, RegMaskToString(mask, &dummy));
-    printf("l%ld\tequ\t%d\n", LabelRegsUsed, 8 + count * 4);
-    printf("l%ld\tequ\t%ld\n", LabelStackUsed, stack);
+    printf("l%d\treg\t%s\n", LabelRegMaskUsed, RegMaskToString(mask, &dummy));
+    printf("l%d\tequ\t%d\n", LabelRegsUsed, 8 + count * 4);
+    printf("l%d\tequ\t%d\n", LabelStackUsed, stack);
     printf("\tprocend");
     if (forceLink)
 	printf(" forcelink");
@@ -614,7 +614,7 @@ asm_procend(Var *var, short forceLink)
 
 void
 asm_push_mask(mask)
-long mask;
+int32_t mask;
 {
     if (mask) {
 	short n;
@@ -626,7 +626,7 @@ long mask;
 
 void
 asm_pop_mask(mask)
-long mask;
+int32_t mask;
 {
     if (mask) {
 	short n;
@@ -689,7 +689,7 @@ Exp *exp;
 	AllocDataRegisterAbs(&sd1, 4, RB_D1);
 
 	if (s->st_Type == ST_FltConst) {
-	    long ary[4];
+	    int32_t ary[4];
 
 	    asm_fltconst(exp, s, ary);
 
@@ -760,9 +760,9 @@ void
 asm_dynamictag(var)
 Var *var;
 {
-    long l1 = AllocLabel();
-    long l2 = AllocLabel();
-    long l3 = AllocLabel();
+    int32_t l1 = AllocLabel();
+    int32_t l2 = AllocLabel();
+    int32_t l3 = AllocLabel();
     short isVar = (var->Type->SubType->Id != TID_PROC);
 
     /*
@@ -818,8 +818,8 @@ void
 asm_segment(var)
 Var *var;
 {
-    long mask;
-    long state;
+    int32_t mask;
+    int32_t state;
     char *segName;
     char *segType;
     char *sn;
@@ -845,7 +845,7 @@ Var *var;
 	}
 	state = ASM_CODE;
     } else {
-	long idx;
+	int32_t idx;
 
 	if (var->u.AssExp)
 	    state = ASM_DATA;
@@ -883,7 +883,7 @@ Var *var;
 
     if (AsmState != state || LastSectName != segName) {
 	if (mask)
-	    sprintf(sn, "\tsection %s,%s,$%08lx\n", segName, segType, mask);
+	    sprintf(sn, "\tsection %s,%s,$%08x\n", segName, segType, mask);
 	else
 	    sprintf(sn, "\tsection %s,%s\n", segName, segType);
 	puts(sn);
@@ -894,7 +894,7 @@ Var *var;
 }
 
 void
-asm_align(long size)
+asm_align(int32_t size)
 {
     switch(size) {
     case 1:
@@ -926,11 +926,11 @@ asm_align(long size)
 
 void
 asm_string(label, str, bytes, flags, iidx)
-long label;
+int32_t label;
 char *str;
-long bytes;
-long flags;
-long iidx;
+int32_t bytes;
+int32_t flags;
+int32_t iidx;
 {
     short i = 0;
     char buf[128];
@@ -938,10 +938,10 @@ long iidx;
 
 #ifdef COMMERCIAL
     if (iidx >= 0) {
-	long newLabel = AllocLabel();
+	int32_t newLabel = AllocLabel();
 
 	printf("\tsection\tilocale,data\n");
-	printf("l%ld\tdc.l\tl%ld,%ld\n", label, newLabel, iidx);
+	printf("l%d\tdc.l\tl%d,%d\n", label, newLabel, iidx);
 	puts(LastSectBuf);
 	label = newLabel;
     }
@@ -979,7 +979,7 @@ long iidx;
 
 void
 asm_label(label)
-long label;
+int32_t label;
 {
     char buf[32];
     char *ptr;
@@ -998,13 +998,13 @@ long label;
 
 void
 asm_branch(label)
-long label;
+int32_t label;
 {
-    printf("\tbra\tl%ld\n", label);
+    printf("\tbra\tl%d\n", label);
 }
 
 void
-asm_condbra(short cond, long label)
+asm_condbra(short cond, int32_t label)
 {
     char *str = "bad";
 
@@ -1093,7 +1093,7 @@ asm_condbra(short cond, long label)
 	Assert(0);
 	break;
     }
-    printf("\t%s\tl%ld\n", str, label);
+    printf("\t%s\tl%d\n", str, label);
 }
 
 
@@ -1101,7 +1101,7 @@ asm_condbra(short cond, long label)
  *  push args onto stack, return bytes pushed.
  */
 
-long
+int32_t
 asm_push(exp, type, s)
 Exp *exp;
 Type *type;
@@ -1114,7 +1114,7 @@ Stor *s;
 	    if (s->st_IntConst == 0)
 		printf("\tclr.l\t-(sp)\n");
 	    else
-		printf("\tpea\t%ld.W\n", s->st_IntConst);
+		printf("\tpea\t%d.W\n", s->st_IntConst);
 	} else {
 	    outop("move", 4, s, &SPush);
 	}
@@ -1122,16 +1122,16 @@ Stor *s;
     }
 
     if (s->st_Type == ST_FltConst) {
-	long fval[4];
+	int32_t fval[4];
 	short i;
 
 	asm_fltconst(exp, s, fval);
 	for (i = (s->st_Size >> 2) - 1; i >= 0; --i) {
-	    long v = fval[i];
+	    int32_t v = fval[i];
 	    if (v >= -32768 && v < 32768)
-		printf("\tpea\t$%08lx.W\n", v);
+		printf("\tpea\t$%08x.W\n", v);
 	    else
-		printf("\tpea\t$%08lx\n", v);
+		printf("\tpea\t$%08x\n", v);
 	}
 	return(s->st_Size);
     }
@@ -1146,7 +1146,7 @@ Stor *s;
     }
 
     /*
-     *	pointer, long, 4 byte structure
+     *	pointer, int32_t, 4 byte structure
      */
 
     if (s->st_Size == 4) {
@@ -1160,7 +1160,7 @@ Stor *s;
      */
 
     if (type->Id != TID_INT) {
-	long bytes = s->st_Size;
+	int32_t bytes = s->st_Size;
 
 	if (s->st_Size < 4) {
 	    outop("move", s->st_Size, s, &SPush);
@@ -1173,7 +1173,7 @@ Stor *s;
 	}
 
 	if (bytes <= LGBO_SIZE && s->st_Offset >= -32768 + LGBO_SIZE && s->st_Offset < 32767 - LGBO_SIZE) {
-	    long oldOffset = s->st_Offset;
+	    int32_t oldOffset = s->st_Offset;
 
 	    s->st_Offset += bytes;
 	    while (bytes >= 4) {
@@ -1185,7 +1185,7 @@ Stor *s;
 	    if (bytes)
 		outop("move", bytes, s, &SPush);
 	} else {
-	    long label = AllocLabel();
+	    int32_t label = AllocLabel();
 	    Stor a;
 
 	    if (bytes & 1)
@@ -1227,7 +1227,7 @@ Stor *s;
      */
 
     if (s->st_Type == ST_RelArg || (s->st_RegNo == RB_FP && s->st_Type == ST_RelReg)) {
-	long offset = s->st_Offset + s->st_Size - 4;
+	int32_t offset = s->st_Offset + s->st_Size - 4;
 	if ((offset & 1) == 0) {
 	    s->st_Offset = offset;
 	    outop("move", 4, s, &SPush);
@@ -1251,7 +1251,7 @@ Stor *s;
 	printf("\tsubq.l\t#2,sp\n");
 	break;
     default:
-	dbprintf(("unexpected push size %ld\n", s->st_Size));
+	dbprintf(("unexpected push size %d\n", s->st_Size));
 	Assert(0);
     }
     return(4);
@@ -1266,11 +1266,11 @@ Stor *s;
  *  case we must move D0 into a temporary register before restoring.
  */
 
-long
+int32_t
 asm_stackbytes(rtype)
 Type *rtype;
 {
-    long rtbytes = Align(*rtype->Size, StackAlign);
+    int32_t rtbytes = Align(*rtype->Size, StackAlign);
 
     if (rtbytes > 0 && rtbytes < 4)
 	rtbytes = 4;
@@ -1287,9 +1287,9 @@ Type *rtype;
  */
 
 void
-asm_call(Exp *exp, Stor *s, Type *rtype, Stor *d, long bytes, short autopush)
+asm_call(Exp *exp, Stor *s, Type *rtype, Stor *d, int32_t bytes, short autopush)
 {
-    long rtbytes;
+    int32_t rtbytes;
 
     if (rtype->Id == TID_STRUCT || rtype->Id == TID_UNION) {
 	Stor t;
@@ -1341,7 +1341,7 @@ asm_call(Exp *exp, Stor *s, Type *rtype, Stor *d, long bytes, short autopush)
     if (d) {
 	Stor sd0;
 	Stor sd1;
-	Stor sa0;   /*	long double D0/D1/A0/A1  */
+	Stor sa0;   /*	int32_t double D0/D1/A0/A1  */
 	Stor sa1;
 
 	switch(rtype->Id) {
@@ -1392,18 +1392,18 @@ asm_call(Exp *exp, Stor *s, Type *rtype, Stor *d, long bytes, short autopush)
 
 void
 asm_pop(n)
-long n;
+int32_t n;
 {
     if (n) {
 	if (n <= 8) {
-	    printf("\taddq.l\t#%ld,sp\n", n);
+	    printf("\taddq.l\t#%d,sp\n", n);
 	    return;
 	}
 	if (n < 32768) {
-	    printf("\tlea\t%ld(sp),sp\n", n);
+	    printf("\tlea\t%d(sp),sp\n", n);
 	    return;
 	}
-	printf("\taddi.l\t#%ld,sp\n", n);
+	printf("\taddi.l\t#%d,sp\n", n);
     }
 }
 
@@ -1419,15 +1419,15 @@ void
 asm_ext(exp, s, d, sflags)
 Exp *exp;
 Stor *s, *d;
-long sflags;
+int32_t sflags;
 {
     Stor stor;
     Stor stor2;
-    long saveDSize = d->st_Size;
+    int32_t saveDSize = d->st_Size;
 
     sflags &= SF_UNSIGNED;
     if (s->st_Type == ST_IntConst) {
-	long v = s->st_IntConst;
+	int32_t v = s->st_IntConst;
 	if (d->st_Size == 2)
 	    v &= 0xFFFF;
 	if (d->st_Size == 1)
@@ -1452,7 +1452,7 @@ long sflags;
 	 */
 
 	if (d->st_Type == ST_Reg) {
-	    long saveSSize = s->st_Size;
+	    int32_t saveSSize = s->st_Size;
 
 	    d->st_Size = s->st_Size = 2;
 	    asm_move(exp, s, d);
@@ -1517,7 +1517,7 @@ long sflags;
 	}
     } else if (d->st_Type == ST_Reg && d->st_RegNo < RB_ADDR && !SameRegister(s, d)) {
 	if (sflags) {
-	    long size = d->st_Size;
+	    int32_t size = d->st_Size;
 
 	    LockStorage(s);
 	    asm_movei(exp, 0, d);
@@ -1526,7 +1526,7 @@ long sflags;
 	    asm_move(exp, s, d);
 	    d->st_Size = size;
 	} else {
-	    long size = d->st_Size;
+	    int32_t size = d->st_Size;
 	    d->st_Size = s->st_Size;
 	    asm_move(exp, s, d);
 	    d->st_Size = size;
@@ -1558,8 +1558,8 @@ long sflags;
 
 void
 extop(size1, size2, d)
-long size1;
-long size2;
+int32_t size1;
+int32_t size2;
 Stor *d;
 {
     if (size1 == 1 && size2 > 2) {
@@ -1585,7 +1585,7 @@ Stor *s;
 
     if (s->st_Type == ST_IntConst)
     {
-	dbprintf(("asm_test: integer constant %ld", s->st_IntConst));
+	dbprintf(("asm_test: integer constant %d", s->st_IntConst));
 	Assert(0);
     }
     if ((s->st_Type == ST_Reg && s->st_RegNo >= RB_ADDR) || (s->st_Flags & SF_LEA) || ((s->st_Type == ST_RelLabel || s->st_Type == ST_RelName) && (s->st_Flags & SF_CODE))) {
@@ -1606,7 +1606,7 @@ Stor *s;
  */
 
 void
-asm_test_scc(Exp *exp, long typeid, Stor *s, short cond, Stor *d)
+asm_test_scc(Exp *exp, int32_t typeid, Stor *s, short cond, Stor *d)
 {
     short isfp = (typeid == TID_FLT) ? 1 : 0;
 
@@ -1646,7 +1646,7 @@ asm_test_scc(Exp *exp, long typeid, Stor *s, short cond, Stor *d)
 void
 asm_cond_scc(exp, typeid, s1, s2, pcond, d)
 Exp *exp;
-long typeid;
+int32_t typeid;
 Stor *s1;
 Stor *s2;
 short *pcond;
@@ -1694,7 +1694,7 @@ void
 asm_sccb(Exp *exp, Stor *d, short cond, short negative)
 {
     char *str = "bad";
-    long size;
+    int32_t size;
 
     switch(cond) {
     case COND_LT:
@@ -1801,7 +1801,7 @@ Stor *d;
 void
 asm_movei(exp, val, d)
 Exp *exp;
-long val;
+int32_t val;
 Stor *d;
 {
     Stor stor;
@@ -2092,8 +2092,8 @@ char *bitstr;
 Stor *s1;
 Stor *s2;
 Stor *d;
-long bitinverse;
-long eadnok;
+int32_t bitinverse;
+int32_t eadnok;
 {
     if ((s1->st_Flags & SF_LEA) || (s1->st_Type == ST_Reg && s1->st_RegNo >= RB_ADDR)) {
 	Stor d1;
@@ -2135,12 +2135,12 @@ long eadnok;
 	    short n;
 	    if ((n = PowerOfTwo(s2->st_IntConst ^ bitinverse)) >= 0) {
 		Stor con;
-		long size;
+		int32_t size;
 		AllocConstStor(&con, n, &LongType);
 		if (d->st_Type == ST_Reg && d->st_RegNo < RB_ADDR) {
 		    outop(bitstr, 4, &con, d);
 		} else {
-		    long bits = d->st_Size * 8;
+		    int32_t bits = d->st_Size * 8;
 
 		    con.st_IntConst &= 7;
 		    Assert((d->st_Flags & SF_LEA) == 0);
@@ -2172,7 +2172,7 @@ long eadnok;
 
 	    /*
 	     *	s2 is an integer constant.  If the destination argument is a
-	     *	long and s2 is in the moveq range it is faster and smaller to
+	     *	int32_t and s2 is in the moveq range it is faster and smaller to
 	     *	move the constant into a data register first.
 	     */
 
@@ -2216,7 +2216,7 @@ long eadnok;
     }
 
     /*
-     *	better to load the constant into a register, long operations will
+     *	better to load the constant into a register, int32_t operations will
      *	benefit when we can use moveq.	We have to a move anyway so otherwise
      *	it does not matter whether the constant is moved or the other operand.
      */
@@ -2351,12 +2351,12 @@ Stor *s2;
 void
 asm_switch(exp, num, cases, labels, deflabel)
 Exp *exp;
-long num;
-long *cases;
-long *labels;
-long deflabel;
+int32_t num;
+int32_t *cases;
+int32_t *labels;
+int32_t deflabel;
 {
-    long minBound, maxBound;
+    int32_t minBound, maxBound;
     Stor con;
     Stor dtmp;
     Stor *s = &exp->ex_Stor;
@@ -2392,14 +2392,14 @@ long deflabel;
     SortCases(exp, cases, labels, num);
 
     while (num && cases[0] < minBound) {
-	fprintf(stderr, "A %ld %ld %ld\n", num, cases[0], minBound);
+	fprintf(stderr, "A %d %d %d\n", num, cases[0], minBound);
 	yerror(exp->ex_LexIdx, EWARN_CONSTANT_OUT_OF_RANGE, cases[0]);
 	--num;
 	++cases;
 	++labels;
     }
     while (num && cases[num-1] > maxBound) {
-	fprintf(stderr, "B %ld %ld %ld\n", num, cases[0], minBound);
+	fprintf(stderr, "B %d %d %d\n", num, cases[0], minBound);
 	yerror(exp->ex_LexIdx, EWARN_CONSTANT_OUT_OF_RANGE, cases[num-1]);
 	--num;
     }
@@ -2426,7 +2426,7 @@ long deflabel;
      */
 
     if ((s->st_Flags & SF_UNSIGNED) && s->st_Size != 4) {
-	long i;
+	int32_t i;
 
 	for (i = 0; i < num; ++i) {
 	    if (s->st_Size == 1)
@@ -2440,10 +2440,10 @@ long deflabel;
     minBound = cases[0];	/*  boundry conditions	*/
     maxBound = cases[num-1];
 
-    if (num > 8 && (ulong)(maxBound - minBound) < num * 2) {
-	long label = AllocLabel();
-	long i;
-	long j;
+    if (num > 8 && (uint32_t)(maxBound - minBound) < num * 2) {
+	int32_t label = AllocLabel();
+	int32_t i;
+	int32_t j;
 	short cond;
 
 	AllocDataRegister(&dtmp, s->st_Size);
@@ -2476,25 +2476,25 @@ long deflabel;
 	dtmp.st_Size = 2;
 
 	printf("\tasl.w\t#2,D%c\n", dtmp.st_RegNo + '0');
-	printf("\tjmp\tl%ld(pc,d%d.w)\n", label, dtmp.st_RegNo);
+	printf("\tjmp\tl%d(pc,d%d.w)\n", label, dtmp.st_RegNo);
 
 	asm_label(label);
 	j = 0;
 	for (i = minBound; i <= maxBound; ++i) {
 	    while (cases[j] != i) {
-		printf("\tjmp\tl%ld(pc)\n", deflabel);
+		printf("\tjmp\tl%d(pc)\n", deflabel);
 		if (i == maxBound || j > num)
 		{
-		    dbprintf(("in switch, case [%ld] %ld", j, cases[j]));
+		    dbprintf(("in switch, case [%d] %d", j, cases[j]));
 		    Assert(0);
 		}
 		++i;
 	    }
-	    printf("\tjmp\tl%ld(pc)\n", labels[j++]);
+	    printf("\tjmp\tl%d(pc)\n", labels[j++]);
 	}
 	if (j != num)
 	{
-	    dbprintf(("in switch, aryend %ld/%ld", j, num));
+	    dbprintf(("in switch, aryend %d/%d", j, num));
 	    Assert(0);
 	}
 	FreeRegister(&dtmp);
@@ -2519,7 +2519,7 @@ long deflabel;
      */
 
     if ((s->st_Flags & SF_UNSIGNED) && s->st_Size != 4) {
-	long i;
+	int32_t i;
 
 	for (i = 0; i < num; ++i) {
 	    if (s->st_Size == 1)
@@ -2561,14 +2561,14 @@ SubDivideSwitch(exp, s, c, j, is, ie, deflabel, cases, labels)
 Exp *exp;
 Stor *s;
 Stor *c;
-long j;
-long is, ie, deflabel;
-long *cases;
-long *labels;
+int32_t j;
+int32_t is, ie, deflabel;
+int32_t *cases;
+int32_t *labels;
 {
-    long i;
-    long ic;
-    long v;
+    int32_t i;
+    int32_t ic;
+    int32_t v;
     short high_cond;
 
     if (ie - is <= 4) {
@@ -2601,7 +2601,7 @@ long *labels;
     ic = (is + ie) >> 1;		/*  center point (index)	*/
     v = 1 << ((s->st_Size << 3) - 1);	/*  max pos integer + 1 	*/
 
-    if ((ulong)(cases[ic] - cases[is]) >= (ulong)v || (ulong)(cases[ie-1] - cases[ic]) >= (ulong)v) {
+    if ((uint32_t)(cases[ic] - cases[is]) >= (uint32_t)v || (uint32_t)(cases[ie-1] - cases[ic]) >= (uint32_t)v) {
 	high_cond = COND_GTEQ;
 	c->st_IntConst = cases[ic];
 	asm_cmp(exp, s, c, &high_cond);
@@ -2626,9 +2626,9 @@ long *labels;
 
 #ifdef NOTDEF
     if (high_cond == COND_GTEQ)
-	printf("\tbpl\tl%ld\n", i);
+	printf("\tbpl\tl%d\n", i);
     else
-	printf("\tbmi\tl%ld\n", i);
+	printf("\tbmi\tl%d\n", i);
 #endif
 
     SubDivideSwitch(exp, s, c, j, is, ic, deflabel, cases, labels);
@@ -2636,18 +2636,18 @@ long *labels;
     SubDivideSwitch(exp, s, c, j, ic+1, ie, deflabel, cases, labels);
 }
 
-#define SWAPL(l1,l2)	{ long lt = l1; l1 = l2; l2 = lt; }
+#define SWAPL(l1,l2)	{ int32_t lt = l1; l1 = l2; l2 = lt; }
 
 Local void
 SortCases(exp, cases, labels, num)
 Exp *exp;
-long *cases;
-long *labels;
-long num;
+int32_t *cases;
+int32_t *labels;
+int32_t num;
 {
-    long sv;
-    long si;
-    long sj;
+    int32_t sv;
+    int32_t si;
+    int32_t sj;
 
 loop:
     switch(num) {
@@ -2692,7 +2692,7 @@ loop:
 	SortCases(exp, cases + sj, labels + sj, num - sj);
     }
     {
-	long *cp = cases;
+	int32_t *cp = cases;
 
 	sv = *cp;
 	for (si = num - 2; si >= 0; --si, ++cp) {
@@ -2707,22 +2707,22 @@ loop:
 }
 
 
-long
+int32_t
 SizeFit(v)
-long v;
+int32_t v;
 {
     if (v >= -32768 && v < 32768)
 	return(2);
     return(4);
 }
 
-long
+int32_t
 SizeFitSU(v, s)
-long v;
+int32_t v;
 Stor *s;
 {
     if (s->st_Flags & SF_UNSIGNED) {
-	if ((ulong)v < 65536)
+	if ((uint32_t)v < 65536)
 	    return(2);
     } else {
 	if (v >= -32768 && v < 32768)
@@ -2734,7 +2734,7 @@ Stor *s;
 void
 asm_end()
 {
-    long cp, ep;
+    int32_t cp, ep;
 
     printf("\tEND\n");
     cp = ftell(stdout);

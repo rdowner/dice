@@ -49,10 +49,10 @@
 #endif
 
 #ifdef INTELBYTEORDER
-extern unsigned long FromMsbOrder(unsigned long);
-extern unsigned long ToMsbOrder(unsigned long);
-extern unsigned long FromMsbOrderShort(unsigned long);
-extern unsigned long ToMsbOrderShort(unsigned long);
+extern unsigned int FromMsbOrder(unsigned int);
+extern unsigned int ToMsbOrder(unsigned int);
+extern unsigned short FromMsbOrderShort(unsigned short);
+extern unsigned short ToMsbOrderShort(unsigned short);
 #else
 #define FromMsbOrder(n)		(n)
 #define ToMsbOrder(n)		(n)

@@ -36,7 +36,7 @@ typedef struct StmtHdr {
     short   Tok;
     ubyte   Reserved1;
     ubyte   Reserved2;
-    long    LexIdx;
+    int32_t    LexIdx;
     struct Stmt *Next;
 } StmtHdr;
 
@@ -63,7 +63,7 @@ typedef struct DeclStmt {
 
 typedef struct LabelStmt {
     StmtHdr Hdr;
-    long    Label;
+    int32_t    Label;
     Stmt    *Stmt1;	    /*	a: stmt, stmt is optional   */
 } LabelStmt;
 
@@ -77,7 +77,7 @@ typedef struct ForStmt {
     Stmt    *Stmt3;	/*  stmt    */
     Stmt    *Stmt4;	/*  code    */
 
-    long    LabelBegin;
+    int32_t    LabelBegin;
 } ForStmt;
 
 typedef struct WhileStmt {
@@ -101,9 +101,9 @@ typedef struct IfStmt {
     Stmt    *Stmt1;	/*  cond	    */
     Stmt    *StmtT;	/*  if true	    */
     Stmt    *StmtF;	/*  if false/NULL   */
-    long    LabelIf;
-    long    LabelElse;
-    long    LabelEnd;
+    int32_t    LabelIf;
+    int32_t    LabelElse;
+    int32_t    LabelEnd;
 } IfStmt;
 
 /*
@@ -117,13 +117,13 @@ typedef struct SwitchStmt {
     StmtHdr Hdr;
     struct BlockStmt *Block;
     Stmt    *Stmt1;		/*  switch exp		    */
-    long    NumCases;		/*  number of cases	    */
-    long    DefCaseNo;		/*  default case insertion  */
-    long    *Cases;		/*  switch constants	    */
+    int32_t    NumCases;		/*  number of cases	    */
+    int32_t    DefCaseNo;		/*  default case insertion  */
+    int32_t    *Cases;		/*  switch constants	    */
     struct BlockStmt **CaseAry; /*  cases for switch	    */
     struct BlockStmt *DefBlock; /*  case for default/NULL   */
     struct BlockStmt *BeforeBlock; /*  Code which appears before any case   */
-    long    *Labels;		/*  label id's              */
+    int32_t    *Labels;		/*  label id's              */
 } SwitchStmt;
 
 typedef struct ReturnStmt {
@@ -142,12 +142,12 @@ typedef struct GotoStmt {
 
 typedef struct ContinueStmt {
     StmtHdr Hdr;
-    long    ContLabel;
+    int32_t    ContLabel;
 } ContinueStmt;
 
 typedef struct BreakStmt {
     StmtHdr Hdr;
-    long    BreakLabel;
+    int32_t    BreakLabel;
 } BreakStmt;
 
 #define BT_PROC     1
@@ -168,9 +168,9 @@ typedef struct BlockStmt {
     struct Stmt *Base;	    /*	first statement in list     */
     struct Stmt **Last;     /*	last statement in list	    */
 
-    long    LabelLoop;
-    long    LabelTest;
-    long    LabelBreak;
-    long    LastLexIdx;	    /*  lexical index terminating block */
+    int32_t    LabelLoop;
+    int32_t    LabelTest;
+    int32_t    LabelBreak;
+    int32_t    LastLexIdx;	    /*  lexical index terminating block */
 } BlockStmt;
 

@@ -9,9 +9,6 @@
  */
 
 #include <fcntl.h>
-#ifdef linux
-#define NO_ULONG
-#endif
 #include "defs.h"
 #ifndef AMIGA
 #include <unistd.h>
@@ -28,9 +25,9 @@
 #endif
 
 Prototype void cerror(short, const char *, ...);
-Prototype void vcerror(long, short, const char *, va_list va, short);
+Prototype void vcerror(int32_t, short, const char *, va_list va, short);
 Prototype void zerror(short, ...);
-Prototype void yerror(long, short, ...);
+Prototype void yerror(int32_t, short, ...);
 Prototype char *ObtainErrorString(short);
 Prototype void ExitError(short);
 
@@ -59,7 +56,7 @@ zerror(short errorId, ...)
 }
 
 void
-yerror(long lexIdx, short errorId, ...)
+yerror(int32_t lexIdx, short errorId, ...)
 {
     int etype = errorId & 0x0FFF;
     char *ptr;
@@ -86,20 +83,20 @@ cerror(short etype, const char *buf, ...)
 #endif
 
 void
-vcerror(long lexIdx, short etype, const char *buf, va_list va, short eno)
+vcerror(int32_t lexIdx, short etype, const char *buf, va_list va, short eno)
 {
     static const char *TNames[] = { "?","Warning","Error", "Fatal", "SoftError"
 #ifndef REGISTERED
 	, "Unimplemented"
 #endif
     };
-    long lexIdxBeg;
-    long lexFileNameLen;
-    long lexLine;
+    int32_t lexIdxBeg;
+    int32_t lexFileNameLen;
+    int32_t lexLine;
     char *lexFile;
-    long errcol = 0;
+    int32_t errcol = 0;
     char ebuf[100];
-    long ebufoff = 0;
+    int32_t ebufoff = 0;
 
     lexLine=FindLexFileLine(lexIdx, &lexFile, &lexFileNameLen, &lexIdxBeg);
 
@@ -112,7 +109,7 @@ vcerror(long lexIdx, short etype, const char *buf, va_list va, short eno)
      *  errcol  - The physical column where the error occurred (0 for no line)
      *  ebuf    - The null terminated buffer.  This buffer is at most 80 characters
      *            but will contain the character position that has the error.
-     *  ebufoff - The logical start of the error buffer.  This will be 0 as long as
+     *  ebufoff - The logical start of the error buffer.  This will be 0 as int32_t as
      *            the error occurs in the first 80 columns.  Beyond that, this will
      *            jump by 10.
      * lexFile  - The name of the file containing the error
@@ -123,7 +120,7 @@ vcerror(long lexIdx, short etype, const char *buf, va_list va, short eno)
     if (lexLine && ErrorInFileValid) {
 
 	short c;
-	long i = lexIdxBeg;
+	int32_t i = lexIdxBeg;
 	short pos = 0;
 
 	while ((c = FindLexCharAt(i)) != EOF && c != '\n')

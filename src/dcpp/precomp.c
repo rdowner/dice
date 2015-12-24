@@ -28,7 +28,7 @@ Prototype void InitPrecomp(void);
 Prototype void LoadPrecompiledHeader(char *, PreCompHdr *, int);
 Prototype short PreCompSymbol(char *, short);
 
-/*Prototype void DumpPrecompiledHeader(PreCompNode *, FILE *, long, long);*/
+/*Prototype void DumpPrecompiledHeader(PreCompNode *, FILE *, int32_t, int32_t);*/
 Prototype void DumpPrecompiledPrefix(PreCompNode *);
 Prototype void DumpPrecompiledPostfix(PreCompNode *, FILE *);
 
@@ -110,22 +110,23 @@ int fd;
      */
 
     if (pch->pc_CppSize) {
-	long bufsiz = ((pch->pc_CppSize > 32768) ? 32768 : pch->pc_CppSize);
+	int32_t bufsiz = ((pch->pc_CppSize > 32768) ? 32768 : pch->pc_CppSize);
 	char *buf;
 #if !FASTPRECOMP
-	long bytes = pch->pc_CppSize;
+	int32_t bytes = pch->pc_CppSize;
 #endif
 
 	if ((buf = malloc(bufsiz)) == NULL)
 	    ErrorNoMemory();
 #if FASTPRECOMP
-	fprintf(Fo, "#precomp %ld %ld \"%s\"\n", (long)lseek(fd, 0, 1), pch->pc_CppSize, fileName);
+	fprintf(Fo, "#precomp %d %d \"%s\"\n",
+		(int32_t)lseek(fd, 0, 1), pch->pc_CppSize, fileName);
 	lseek(fd, pch->pc_CppSize, 1);
 #else
 	xxx;
 	bytes -= 4;	/*  don't embed \0's    */
 	while (bytes) {
-	    long n;
+	    int32_t n;
 
 	    n = read(fd, buf, ((bytes > bufsiz) ? bufsiz : bytes));
 	    if (n < 0)
@@ -145,15 +146,15 @@ int fd;
 
     if (pch->pc_SymSize) {
 	char *symData;
-	long i;
-	long j;
+	int32_t i;
+	int32_t j;
 
 	if ((symData = malloc(pch->pc_SymSize)) == NULL)
 	    ErrorNoMemory();
 	if (read(fd, symData, pch->pc_SymSize) != pch->pc_SymSize)
 	    cerror(EFATAL_PARSE_PRECOMP);
 	for (i = pch->pc_SymSize - 4; i > 0; i = j - 8) {
-	    j = i - *(long *)(symData + i);
+	    j = i - *(int32_t *)(symData + i);
 	    DefinePrecompSymbol((Sym *)(symData + j));
 	}
     }
@@ -194,8 +195,8 @@ PreCompNode *pcn;
 FILE *foOrig;
 {
     PreCompHdr pch;
-    long pos1;
-    long pos2;
+    int32_t pos1;
+    int32_t pos2;
 
     fwrite("\0\0\0\0", 4, 1, Fo);   /* terminator for DC1   */
     pos1 = ftell(Fo);
@@ -214,16 +215,16 @@ FILE *foOrig;
     fwrite(&pch, sizeof(pch), 1, Fo);
 
 #if FASTPRECOMP
-    fprintf(foOrig, "#precomp %zd %ld \"%s\"\n",
-	sizeof(pch),
-	pch.pc_CppSize,
-	pcn->pn_OutName
+    fprintf(foOrig, "#precomp %zd %d \"%s\"\n",
+	    sizeof(pch),
+	    pch.pc_CppSize,
+	    pcn->pn_OutName
     );
 #else
     {
 	static char XBuf[2048];
-	long n;
-	long s;
+	int32_t n;
+	int32_t s;
 
 	for (s = pch.pc_CppSize; s; s -= n) {
 	    n = (s < sizeof(XBuf)) ? s : sizeof(XBuf);
@@ -250,14 +251,14 @@ void
 DumpPrecompiledHeader(pcn, fi, begpos, endpos)
 PreCompNode *pcn;
 FILE *fi;
-long begpos;
-long endpos;
+int32_t begpos;
+int32_t endpos;
 {
     PreCompHdr pch;
     FILE *fo;
-    long pos;
+    int32_t pos;
     static char *SymRefPtr[256];
-    static long SymRefLen[256];
+    static int32_t SymRefLen[256];
 #ifdef NOTDEF
     short symRefIdx = 0;
 #endif
@@ -284,8 +285,8 @@ long endpos;
 
     if (endpos != begpos) {
 	char *buf;
-	long bytes = endpos - begpos;
-	long j = 0;
+	int32_t bytes = endpos - begpos;
+	int32_t j = 0;
 	short c;
 	short wsFlag = 0;   /*	remove white space flag */
 
@@ -300,7 +301,7 @@ long endpos;
 
 #ifdef NOTDEF2	    /*	doesn't help enough */
 	while (j < bytes) {
-	    long i;
+	    int32_t i;
 
 	    c = buf[j];
 

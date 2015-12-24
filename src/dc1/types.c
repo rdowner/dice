@@ -54,7 +54,7 @@
 
 #include "defs.h"
 
-Prototype long NumTypesAlloc;
+Prototype int32_t NumTypesAlloc;
 
 Prototype Type VoidType;
 Prototype Type CharType;
@@ -86,7 +86,7 @@ typedef struct SUSym {
     struct Type *Type;
 } SUSym;
 
-long NumTypesAlloc;
+int32_t NumTypesAlloc;
 
 #define HSIZE	256
 #define HMASK	(HSIZE-1)
@@ -154,25 +154,25 @@ Prototype void LooseTypeLink(Type *, Type *);
 Prototype void TypeLink(Type *, Type *);
 Prototype void TypeLinkEnd(Type *, Type *);
 Prototype Type *TypeToPtrType(Type *);
-Prototype Type *TypeToAryType(Type *, Exp *, long);
-Prototype Type *TypeToProcType(Type *, Var **, short, long);
-Prototype Type *TypeToQualdType(Type *, long);
-Prototype Type *FindStructUnionType(Symbol *, long);
+Prototype Type *TypeToAryType(Type *, Exp *, int32_t);
+Prototype Type *TypeToProcType(Type *, Var **, short, int32_t);
+Prototype Type *TypeToQualdType(Type *, int32_t);
+Prototype Type *FindStructUnionType(Symbol *, int32_t);
 Prototype Symbol *FindStructUnionTag(Type *);
-Prototype long FindStructUnionElm(Type *, Exp *, int *);
-Prototype Type *MakeStructUnionType(Symbol *, long);
-Prototype void SetStructUnionType(Type *, Var **, long, long);
-Prototype Type *MakeBitfieldType(long, int);
+Prototype int32_t FindStructUnionElm(Type *, Exp *, int *);
+Prototype Type *MakeStructUnionType(Symbol *, int32_t);
+Prototype void SetStructUnionType(Type *, Var **, int32_t, int32_t);
+Prototype Type *MakeBitfieldType(int32_t, int);
 Prototype Type *FindEnumType(Symbol *);
 Prototype Type *MakeEnumType(Symbol *);
-Prototype void AddEnumIdent(Type *, Symbol *, long);
+Prototype void AddEnumIdent(Type *, Symbol *, int32_t);
 Prototype Type *ActualReturnType(Stmt *, Type *, Type *);
 Prototype Type *ActualPassType(Type *, Type *, int);
 Prototype Type *ActualArgType(Type *);
-Prototype void CheckPointerType(long, long, Type *, Type *);
+Prototype void CheckPointerType(int32_t, int32_t, Type *, Type *);
 Prototype void GenerateRegSpecOutput(Var *);
 Prototype void ScanStructUnionTypes(void (*func)(Type *type, const char *name, int flags));
-Prototype void Undefined_Tag(Type *, Symbol *, long);
+Prototype void Undefined_Tag(Type *, Symbol *, int32_t);
 Prototype int *AllocInt(int n);
 
 int IntConstAry[64];
@@ -202,8 +202,8 @@ InitTypes(int enab)
 	LongDoubleAlign = sizeof(int);
 	PointerSize = sizeof(void *);
 	IntSize = sizeof(int);
-	LongSize = sizeof(long);
-	QuadSize = sizeof(long long);
+	LongSize = sizeof(int32_t);
+	QuadSize = sizeof(int64_t);
 	FloatSize = sizeof(float);
 	DoubleSize = sizeof(double);
 	LongDoubleSize = sizeof(long double);
@@ -300,9 +300,9 @@ Type *
 TypeToAryType(type, exp, entries)
 Type *type;
 Exp *exp;
-long entries;
+int32_t entries;
 {
-    long size;
+    int32_t size;
     Type *t;
 
     if (exp)
@@ -339,7 +339,7 @@ long entries;
  */
 
 Type *
-TypeToProcType(Type *type, Var **vars, short n, long flags)
+TypeToProcType(Type *type, Var **vars, short n, int32_t flags)
 {
     Type *t;
 
@@ -395,7 +395,7 @@ TypeToProcType(Type *type, Var **vars, short n, long flags)
 Type *
 TypeToQualdType(type, flags)
 Type *type;
-long  flags;
+int32_t  flags;
 {
     Type *t;
 
@@ -431,7 +431,7 @@ long  flags;
 
 
 Type *
-FindStructUnionType(Symbol *sym, long isUnion)
+FindStructUnionType(Symbol *sym, int32_t isUnion)
 {
     SUSym *su = SUHash[sym->Hv & HMASK];
 
@@ -459,7 +459,7 @@ Type *type;
     return(NULL);
 }
 
-long
+int32_t
 FindStructUnionElm(type, exp, pbfo)
 Type *type;
 Exp *exp;
@@ -495,7 +495,7 @@ int *pbfo;
 Type *
 MakeStructUnionType(sym, isUnion)
 Symbol *sym;
-long isUnion;
+int32_t isUnion;
 {
     SUSym **psu = &SUHash[(sym) ? (sym->Hv & HMASK) : 0];
     SUSym *su = AllocStructure(SUSym);
@@ -518,10 +518,10 @@ void
 SetStructUnionType(t, vars, nv, flags)
 Type *t;
 Var **vars;
-long nv;
-long flags;
+int32_t nv;
+int32_t flags;
 {
-    long size;
+    int32_t size;
     short boffset;
     short align;
     short i;
@@ -631,7 +631,7 @@ long flags;
 
 Type *
 MakeBitfieldType(flags, bits)
-long flags;
+int32_t flags;
 int bits;
 {
     Type **pt = ((flags & TF_UNSIGNED) ? UBitfieldType : SBitfieldType) + bits;
@@ -669,9 +669,9 @@ void
 AddEnumIdent(type, sym, value)
 Type *type;
 Symbol *sym;
-long value;
+int32_t value;
 {
-    SemanticAdd(sym, TokEnumConst, (void *)value);
+    SemanticAdd(sym, TokEnumConst, (void *)(intptr_t)value);
 }
 
 Type *
@@ -687,7 +687,7 @@ Type *type;
 	if (*type->Size == 0)
 	    return(&VoidType);
 	if (*type->Size < 4)
-	    return(&LongType);	/* XXX 68K C, long == int */
+	    return(&LongType);	/* XXX 68K C, int32_t == int */
 	/* fall through return the actual type */
     case TID_PTR:
 	return(type);
@@ -728,7 +728,7 @@ int afterEnd;
     case TID_BITFIELD:
 	type = &LongType;
 	break;
-    case TID_INT:	/*  automatically cast to long by GenCall   */
+    case TID_INT:	/*  automatically cast to int32_t by GenCall   */
 	if (afterEnd && *type->Size != IntSize) {
 	    type = &LongType;
 	    break;
@@ -784,8 +784,8 @@ Type *type;
  */
 
 void CheckPointerType(olexIdx, lexIdx, t1, t2)
-long olexIdx;
-long lexIdx;
+int32_t olexIdx;
+int32_t lexIdx;
 Type *t1;
 Type *t2;
 {
@@ -892,7 +892,7 @@ ScanStructUnionTypes(void (*func)(Type *type, const char *name, int flags))
 void Undefined_Tag(type, sym, lexIdx)
 Type *type;
 Symbol *sym;
-long lexIdx;
+int32_t lexIdx;
 {
     if (sym == NULL)
 	sym = FindStructUnionTag(type);

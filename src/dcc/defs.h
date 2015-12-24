@@ -68,14 +68,11 @@
 #define Prototype   extern
 #define Local
 
-#define BTOC(bptr,ctype)    ((ctype *)((long)bptr << 2))
-#define CTOB(ptr)           ((long)(ptr) >> 2)
+#define BTOC(bptr,ctype)    ((ctype *)((int32_t)bptr << 2))
+#define CTOB(ptr)           ((int32_t)(ptr) >> 2)
 
 typedef unsigned char	ubyte;
 typedef unsigned short	uword;
-#ifndef linux
-typedef unsigned long	ulong;
-#endif
 typedef struct CommandLineInterface	CLI;
 typedef struct Process	     Process;
 typedef struct List	     List;

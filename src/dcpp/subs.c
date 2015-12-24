@@ -21,8 +21,8 @@
 #endif
 
 Prototype void cerror(short, ...);
-Prototype void *zalloc(long);
-Prototype void *AllocCopy(void *, long);
+Prototype void *zalloc(int32_t);
+Prototype void *AllocCopy(void *, int32_t);
 Prototype Include *GetNominalInclude(int);
 Prototype void ErrorNoMemory(void);
 Prototype void ErrorOpenFailed(char *, short);
@@ -41,7 +41,7 @@ char	*ErrorFileName1 = DCC_CONFIG "dice.errors";
 char	*ErrorFileName2 = DCC "config/dice.errors";
 #endif
 char	*ErrorAry;
-long	ErrorArySize;
+int32_t	ErrorArySize;
 char	ErrBuf[128];
 
 void
@@ -95,10 +95,10 @@ ErrorExit(short code)
 
 void *
 zalloc(bytes)
-long bytes;
+int32_t bytes;
 {
     static char *Buf;
-    static long Bytes;
+    static int32_t Bytes;
     void *ptr;
 
     bytes = (bytes + 3) & ~3;
@@ -121,7 +121,7 @@ long bytes;
 void *
 AllocCopy(buf, bytes)
 void *buf;
-long bytes;
+int32_t bytes;
 {
     void *ptr;
 
@@ -171,9 +171,14 @@ eprintf(const char *ctl, ...)
 void
 veprintf(const char *ctl, va_list va)
 {
-    vfprintf(stderr, ctl, va);
-    if (ErrorFi)
-        vfprintf(ErrorFi, ctl, va);
+    va_list tmp_va;
+
+    va_copy(tmp_va, va);
+    vfprintf(stderr, ctl, tmp_va);
+    if (ErrorFi) {
+	va_copy(tmp_va, va);
+        vfprintf(ErrorFi, ctl, tmp_va);
+    }
 }
 
 void
@@ -276,7 +281,7 @@ ObtainErrorString(short errNum)
 #ifdef LATTICE
 
 int
-cmpmem(ubyte *s1, ubyte *s2, long n)
+cmpmem(ubyte *s1, ubyte *s2, int32_t n)
 {
     while (n) {
 	if (*s1 < *s2)

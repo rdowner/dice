@@ -13,8 +13,8 @@
 
 Prototype void rel_init(void);
 Prototype void ResetReloc(void);
-Prototype void AddRelocInfo(short srcHunk, short dstHunk, long size, short flags, long offset, Symbol *sym);
-Prototype RelocInfo *FindRelocOffset(long offset, short hunkNo);
+Prototype void AddRelocInfo(short srcHunk, short dstHunk, int32_t size, short flags, int32_t offset, Symbol *sym);
+Prototype RelocInfo *FindRelocOffset(int32_t offset, short hunkNo);
 Prototype RelocInfo *FindRelocNext(RelocInfo *rel);
 Prototype int LoadRelocData(FILE *fi, RelocInfo *r);
 
@@ -41,7 +41,7 @@ ResetReloc(void)
 }
 
 void
-AddRelocInfo(short srcHunk, short dstHunk, long size, short flags, long offset, Symbol *sym)
+AddRelocInfo(short srcHunk, short dstHunk, int32_t size, short flags, int32_t offset, Symbol *sym)
 {
     RelocInfo *ri = malloc(sizeof(RelocInfo));
     RelocInfo *r;
@@ -65,7 +65,7 @@ AddRelocInfo(short srcHunk, short dstHunk, long size, short flags, long offset, 
 }
 
 RelocInfo *
-FindRelocOffset(long offset, short hunkNo)
+FindRelocOffset(int32_t offset, short hunkNo)
 {
     RelocInfo *r = RelOffCache;
 
@@ -119,7 +119,7 @@ LoadRelocData(FILE *fi, RelocInfo *r)
 	}
     case 4:
 	{
-	    ulong c;
+	    uint32_t c;
 	    freadl(&c, 4, 1, fi);
 	    return(c);
 	}

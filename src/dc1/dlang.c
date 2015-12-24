@@ -12,7 +12,7 @@ DumpDProtos(Var *var, Type *type, const char *name, int flags)
 {
     int i;
     int error = 0;
-    long off = ftell(stdout);
+    int32_t off = ftell(stdout);
 
     if (flags & SSCAN_TOP) {
 	if (flags & SSCAN_ERROR)
@@ -190,7 +190,7 @@ DumpDStructs(Type *type, const char *name, int flags)
     int i;
     int error = 0;
     int biggest;
-    long off;
+    int32_t off;
 
     if (type->Id != TID_UNION && type->Id != TID_STRUCT)
 	return;

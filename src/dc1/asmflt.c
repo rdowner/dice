@@ -27,7 +27,7 @@
 
 #include "ieee.h"
 
-extern __stkargs long afp(char *);
+extern __stkargs int32_t afp(char *);
 
 typedef struct Library Library;
 
@@ -51,8 +51,8 @@ Prototype void asm_fptest(Exp *, Stor *);
 Prototype void asm_fptoint(Exp *, Stor *, Stor *);
 Prototype void asm_inttofp(Exp *, Stor *, Stor *);
 Prototype void asm_fptofp(Exp *, Stor *, Stor *);
-Prototype void asm_fltconst(Exp *, Stor *, long *);
-Prototype void CallFPSupport(Exp *, long, Stor *, Stor *, Stor *, char *, short);
+Prototype void asm_fltconst(Exp *, Stor *, int32_t *);
+Prototype void CallFPSupport(Exp *, int32_t, Stor *, Stor *, Stor *, char *, short);
 Prototype void asm_layoutfpconst(Exp *, Stor *, Stor *);
 
 Prototype void ConstFpNeg(Exp *, Stor *, Stor *);
@@ -261,7 +261,7 @@ void
 asm_fltconst(exp, s, ary)
 Exp *exp;
 Stor *s;
-long *ary;
+int32_t *ary;
 {
     static int LibsOpen = 0;
 
@@ -343,7 +343,7 @@ long *ary;
 	    if (TmpBuf[0] == -1)
 		acc = IEEESPNeg(acc);
 
-	    ary[0] = ((long *)&acc)[0];
+	    ary[0] = ((int32_t *)&acc)[0];
 	} else {
 	    {				    /*	fix bug in afp()    */
 		char *ptr;
@@ -383,12 +383,12 @@ long *ary;
 	    if (TmpBuf[0] == -1)
 		acc = IEEEDPNeg(acc);
 
-	    ary[0] = ((long *)&acc)[0];
-	    ary[1] = ((long *)&acc)[1];
+	    ary[0] = ((int32_t *)&acc)[0];
+	    ary[1] = ((int32_t *)&acc)[1];
 	}
 	break;
     case 16:
-	dbprintf(("long dbl flt const not implemented"));
+	dbprintf(("int32_t dbl flt const not implemented"));
 	Assert(0);
 	break;
     default:
@@ -404,7 +404,7 @@ void
 asm_fltconst(exp, s, ary)
 Exp *exp;
 Stor *s;
-long *ary;
+int32_t *ary;
 {
     TmpBuf[0] = 0;	/* prevent unused var warning */
     dbprintf(("asm_fltconst: not implemented\n"));
@@ -431,7 +431,7 @@ long *ary;
 void
 CallFPSupport(
     Exp *exp,
-    long prec,
+    int32_t prec,
     Stor *s1,
     Stor *s2,
     Stor *d,
@@ -605,7 +605,7 @@ CallFPSupport(
 #else
 
 void
-CallFPSupport(Exp *exp, long prec, Stor *s1, Stor *s2, Stor *d, char *fnam, short orderReq)
+CallFPSupport(Exp *exp, int32_t prec, Stor *s1, Stor *s2, Stor *d, char *fnam, short orderReq)
 {
     cerror(EUNREG, "asm_fp: floating point");
 }
@@ -618,18 +618,18 @@ Exp *exp;
 Stor *s;
 Stor *d;
 {
-    long fpv[4];
-    long l = AllocLabel();
+    int32_t fpv[4];
+    int32_t l = AllocLabel();
 
     asm_segment(&DummyDataVar);
     asm_fltconst(exp, s, fpv);
     puts("\tds.w\t0");
-    printf("l%ld\tdc.l\t$%08lx", l, fpv[0]);
+    printf("l%d\tdc.l\t$%08x", l, fpv[0]);
     if (s->st_Size >= 8)
-	printf(",$%08lx", fpv[1]);
+	printf(",$%08x", fpv[1]);
     if (s->st_Size >= 16) {
-	printf(",$%08lx", fpv[2]);
-	printf(",$%08lx", fpv[3]);
+	printf(",$%08x", fpv[2]);
+	printf(",$%08x", fpv[3]);
     }
     puts("");
     asm_segment(&DummyCodeVar);
@@ -835,14 +835,14 @@ Stor *s1, *s2, *d;
 	    for (lp = f1.tf_LMantissa + 3, b = 0; lp >= f1.tf_LMantissa; --lp) {
 		v = (*lp << 1) | b;
 		b = 0;
-		if ((long)*lp < 0)
+		if ((int32_t)*lp < 0)
 		    b = 1;
 		*lp = v;
 	    }
 	    for (lp = (uint32_t *)cmp + 3; lp >= (uint32_t *)cmp; --lp) {
 		v = (*lp << 1) | b;
 		b = 0;
-		if ((long)*lp < 0)
+		if ((int32_t)*lp < 0)
 		    b = 1;
 		*lp = v;
 	    }
@@ -881,7 +881,7 @@ Stor *s1, *s2, *d;
 	for (i = 7, b = 0; i >= 0; --i) {
 	    uint32_t v = cmp[i] - f2.tf_WMantissa[i] - b;
 	    b = 0;
-	    if ((long)v < 0)
+	    if ((int32_t)v < 0)
 		b = 1;
 	    cmp[i] = v;
 	}

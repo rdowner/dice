@@ -39,9 +39,6 @@
 
 typedef unsigned char	ubyte;
 typedef unsigned short	uword;
-#ifndef linux
-typedef unsigned long	ulong;
-#endif
 
 #include "ops.h"
 #include "lab.h"
@@ -76,7 +73,7 @@ typedef struct MachCtx {
     Label   *m_XLabel;	    /*	used by directives  */
     Sect    *Sect;	    /*	section I'm in      */
     OpCod   *OpCode;	    /*	opcode or 0	    */
-    long    Bytes;	    /*	used by DS and DC, etc..    */
+    int32_t    Bytes;	    /*	used by DS and DC, etc..    */
     char    *m_Operands;
     EffAddr Oper1;
     EffAddr Oper2;
@@ -85,11 +82,11 @@ typedef struct MachCtx {
 	char	*SaveStr;   		/* DC directive		*/
 	uword	AlignValue; 		/* align directive	*/
 	struct FileNode *FileNode;	/* include directive	*/
-	long    DebugLine;  		/* Line number for debug */
+	int32_t    DebugLine;  		/* Line number for debug */
     } d;
     char    OpSize;	    /*	bwl 0,1,2,4	    */
-    long    LineNo;
-    long    m_Addr;
+    int32_t    LineNo;
+    int32_t    m_Addr;
 } MachCtx;
 
 #define m_EABase    d.EABase
@@ -99,17 +96,17 @@ typedef struct MachCtx {
 #define m_FileNode   d.FileNode
 
 typedef struct DebugNode {
-    long    db_Line;
-    long    db_Offset;
+    int32_t    db_Line;
+    int32_t    db_Offset;
 } DebugNode;
 
 typedef struct FileNode {
     struct FileNode *fn_Parent;
     char	*fn_FileName;
     char	*fn_AsBuf;
-    long	fn_AsLen;
-    long	fn_MLines;
-    long	fn_LineNo;
+    int32_t	fn_AsLen;
+    int32_t	fn_MLines;
+    int32_t	fn_LineNo;
     MachCtx	**fn_MBase;
 } FileNode;
 

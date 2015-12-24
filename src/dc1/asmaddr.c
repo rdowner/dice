@@ -16,10 +16,10 @@
 #include "defs.h"
 #include "asm.h"
 
-Prototype void asm_getindex(Exp *, Type *, Stor *, Stor *, long, Stor *, short, short);
+Prototype void asm_getindex(Exp *, Type *, Stor *, Stor *, int32_t, Stor *, short, short);
 Prototype void asm_getind(Exp *, Type *, Stor *, Stor *, short, short, short);
 Prototype void asm_getlea(Exp *, Stor *, Stor *);
-Prototype void asm_lea(Exp *, Stor *, long, Stor *);
+Prototype void asm_lea(Exp *, Stor *, int32_t, Stor *);
 
 /*
  *  asm_getindex(type, s, off, mpx, d, sign, dexists)
@@ -38,12 +38,12 @@ asm_getindex(
     Type *type,
     Stor *s,
     Stor *soff,
-    long mpx,
+    int32_t mpx,
     Stor *d,
     short sign,
     short dexists	/*  destination exists	*/
 ) {
-    long flags = s->st_Flags | SF_UNSIGNED;
+    int32_t flags = s->st_Flags | SF_UNSIGNED;
     short totmp = 0;	/*  can we modify to?	*/
     Stor toff;
     Stor td;
@@ -52,7 +52,7 @@ asm_getindex(
 	Assert(flags & SF_LEA);
 
     if (soff->st_Type == ST_IntConst) {
-	long newOffset = soff->st_IntConst * mpx * sign;
+	int32_t newOffset = soff->st_IntConst * mpx * sign;
 
 	if (newOffset == 0) {
 	    if (dexists)
@@ -76,7 +76,7 @@ asm_getindex(
 		d->st_Flags = flags;
 	    }
 	    return;
-	case ST_PtrConst:	/*  e.g. *(long *)4	*/
+	case ST_PtrConst:	/*  e.g. *(int32_t *)4	*/
 	    if (s->st_Flags & SF_LEA) {
 		if (dexists) {
 		    ReuseStorage(s, &td);
@@ -208,7 +208,7 @@ asm_getindex(
     LockStorage(s);
 
     /*
-     *	to = offset, guarenteed in register and either long or signed short.
+     *	to = offset, guarenteed in register and either int32_t or signed short.
      */
 
     if (soff->st_Type != ST_Reg || soff->st_Size == 1 || (soff->st_Size == 2 && (soff->st_Flags & SF_UNSIGNED))) {
@@ -328,9 +328,9 @@ asm_getind(
     short bsize,
     short dexists
 ) {
-    long flags = s->st_Flags;
+    int32_t flags = s->st_Flags;
     short subtypeary __unused = 0;
-    long size;
+    int32_t size;
     Type *subType;
     Stor td;
 
@@ -499,7 +499,7 @@ void
 asm_lea(exp, s, offset, d)
 Exp *exp;
 Stor *s, *d;
-long offset;
+int32_t offset;
 {
     if (s->st_Type == ST_RelReg) {
 	Stor t = *s;
@@ -519,8 +519,8 @@ long offset;
 	    /*outop("lea", -1, &t, d);*/
 	}
     } else {
-	long  siz = s->st_Size;
-	long  flg = s->st_Flags;
+	int32_t  siz = s->st_Size;
+	int32_t  flg = s->st_Flags;
 
 	s->st_Flags |= SF_LEA;
 	s->st_Size = PTR_SIZE;

@@ -14,7 +14,7 @@
 Prototype int cprintf(const char *ctl, ...);
 Prototype int csprintf(char *buf, const char *ctl, ...);
 Prototype char * RelocToStr(RelocInfo *r, int offset, int ext, int size, int srcHunk);
-Prototype long FixRelocOffset(RelocInfo *r, long offset);
+Prototype int32_t FixRelocOffset(RelocInfo *r, int32_t offset);
 Prototype void cerror(int code, char *ctl, ...);
 Prototype int freadl(void *buf, int elsize, int nel, FILE *fi);
 
@@ -151,8 +151,8 @@ RelocToStr(RelocInfo *r, int offset, int ext, int size, int srcHunk)
     return(Buf);
 }
 
-long
-FixRelocOffset(RelocInfo *r, long offset)
+int32_t
+FixRelocOffset(RelocInfo *r, int32_t offset)
 {
     if (r == NULL)
 	return(offset);
@@ -202,7 +202,7 @@ freadl(void *buf, int elsize, int nel, FILE *fi)
 	    *bptr = ntohs(*bptr);
 	}
     } else if (elsize == 4) {
-	ulong *bptr;
+	uint32_t *bptr;
 
 	for (bptr = buf, i = n; i > 0; --i, ++bptr) {
 	    *bptr = ntohl(*bptr);

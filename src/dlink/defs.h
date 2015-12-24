@@ -66,9 +66,6 @@
 
 typedef unsigned char	ubyte;
 typedef unsigned short	uword;
-#ifndef linux
-typedef unsigned long	ulong;
-#endif
 
 typedef struct List	List;
 typedef struct Node	Node;
@@ -99,12 +96,12 @@ typedef struct MinNode	MinNode;
 #define HUNKIDF_FLAG	0x10000 /*  flag far data/bss hunks not part of unfragged coag */
 
 typedef struct DBInfo {
-    long    di_HunkId;
-    long    di_Size;	    /*	longwords in hunk not including this field */
-    long    di_Base;	    /*	base offset, 0 in object module 	   */
-    long    di_LINE;	    /*	'LINE'                                     */
-    long    di_NameSize;    /*	longwords of name			   */
-    long    di_Ary[2];	    /*	[N] name, then debug info		   */
+    int32_t    di_HunkId;
+    int32_t    di_Size;	    /*	longwords in hunk not including this field */
+    int32_t    di_Base;	    /*	base offset, 0 in object module 	   */
+    int32_t    di_LINE;	    /*	'LINE'                                     */
+    int32_t    di_NameSize;    /*	longwords of name			   */
+    int32_t    di_Ary[2];	    /*	[N] name, then debug info		   */
 } DBInfo;
 
 typedef struct Hunk {
@@ -113,29 +110,29 @@ typedef struct Hunk {
     struct HunkListNode *HL;/*	base of list		    */
     struct HunkListNode *HX;/*	secondary relocation	    */
     struct Module *Module;  /*	associated module / NULL    */
-    ulong   HunkId;	    /*	hunk-id, including upper bits */
-    ulong   Offset;	    /*	offset in final output	    */
-    ulong   TotalBytes;     /*	extended size includes jump tab (not rounded) */
-    ulong   Bytes;	    /*	size of hunk data	    */
-    ulong   ExtDefs;	    /*	# of exported definitions   */
-    ulong   *Data;	    /*	CODE, DATA		    */
-    ulong   *JmpData;	    /*	more data... for jmp table  */
-    ulong   *Reloc32;	    /*	other object file stuff     */
-    ulong   *Reloc16;	    /*	PC   relative		    */
-    ulong   *Reloc16D;	    /*	DATA relative		    */
-    ulong   *Reloc8;
-    ulong   *Ext;
-    ulong   *Sym;
+    uint32_t   HunkId;	    /*	hunk-id, including upper bits */
+    uint32_t   Offset;	    /*	offset in final output	    */
+    uint32_t   TotalBytes;     /*	extended size includes jump tab (not rounded) */
+    uint32_t   Bytes;	    /*	size of hunk data	    */
+    uint32_t   ExtDefs;	    /*	# of exported definitions   */
+    uint32_t   *Data;	    /*	CODE, DATA		    */
+    uint32_t   *JmpData;	    /*	more data... for jmp table  */
+    uint32_t   *Reloc32;	    /*	other object file stuff     */
+    uint32_t   *Reloc16;	    /*	PC   relative		    */
+    uint32_t   *Reloc16D;	    /*	DATA relative		    */
+    uint32_t   *Reloc8;
+    uint32_t   *Ext;
+    uint32_t   *Sym;
     DBInfo  *DbInfo;	    /*	debug info		    */
     List    SymList;	    /*	linked list of syms (only if SymOpt)	*/
-    ulong   SeekDebug;	    /*	seek in output file of debug hunk   */
+    uint32_t   SeekDebug;	    /*	seek in output file of debug hunk   */
     uword   Flags;	    /*	special flags		    */
 } Hunk;
 
 typedef struct Module {
     Node    Node;	    /*	link node		*/
     uword   Reserved;
-    long    NumHunks;	    /*	# of hunks in module	*/
+    int32_t    NumHunks;	    /*	# of hunks in module	*/
     Hunk    **Hunks;	    /*	hunk list		*/
     struct FileNode *FNode; /*	file node (library)	*/
     char    *ModBeg;	    /*	raw data location	*/
@@ -146,8 +143,8 @@ typedef struct Sym {
     MinNode Node;	    /*	based at hunk (only if SymOpt)	*/
     struct Sym *HNext;	    /*	hash link		    */
     Hunk    *Hunk;	    /*	hunk defined in / can be NULL if type 2 */
-    long    Value;	    /*	value of defined symbol     */
-    long    Refs;	    /*	references		    */
+    int32_t    Value;	    /*	value of defined symbol     */
+    int32_t    Refs;	    /*	references		    */
     char    *SymName;	    /*	name of symbol		    */
     short   SymLen;	    /*	length of symbol	    */
     ubyte   Type;
@@ -159,24 +156,24 @@ typedef struct Sym {
 typedef struct FileNode {
     Node    Node;
     uword   Reserved;
-    ulong   *Data;	    /*	ptr to data	*/
-    ulong   Bytes;	    /*	bytes in file	*/
-    ulong   *DPtr;	    /*	used while scanning */
+    uint32_t   *Data;	    /*	ptr to data	*/
+    uint32_t   Bytes;	    /*	bytes in file	*/
+    uint32_t   *DPtr;	    /*	used while scanning */
 } FileNode;
 
 typedef struct HunkListNode {
     Node    Node;	    /*	list of combined hunks	*/
     uword   Reserved;
-    ulong   HunkId;	    /*	includes upper bits	*/
-    ulong   FinalHunkNo;    /*	final assigned hunk	*/
-    ulong   FinalSize;	    /*	almost final size of hunk	*/
-    ulong   AddSize;	    /*	additional size BSS -r opt adj	*/
-    ulong   FinalExtDefs;   /*	total # of exported definitions */
-    ulong   SeekSym;	    /*	seek in output file of symbol hunk  */
+    uint32_t   HunkId;	    /*	includes upper bits	*/
+    uint32_t   FinalHunkNo;    /*	final assigned hunk	*/
+    uint32_t   FinalSize;	    /*	almost final size of hunk	*/
+    uint32_t   AddSize;	    /*	additional size BSS -r opt adj	*/
+    uint32_t   FinalExtDefs;   /*	total # of exported definitions */
+    uint32_t   SeekSym;	    /*	seek in output file of symbol hunk  */
     List    HunkList;	    /*	list of modules w/ same type [& name]	*/
-    ulong   **ExtReloc32;   /*	final relocation info for hunk	*/
-    ulong   *CntReloc32;    /*	# of relocations for each hunk	*/
-    ulong   *CpyReloc32;    /*	moving index during final copy	*/
+    uint32_t   **ExtReloc32;   /*	final relocation info for hunk	*/
+    uint32_t   *CntReloc32;    /*	# of relocations for each hunk	*/
+    uint32_t   *CpyReloc32;    /*	moving index during final copy	*/
 } HunkListNode;
 
 #include "dlink-protos.h"

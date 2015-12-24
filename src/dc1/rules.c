@@ -122,7 +122,7 @@ Exp *exp;
  *  instruction may be optimized in.
  *
  *  Note that in this case the result type is allowed to be either
- *  a short or a long, but not a char.	This compromise makes code
+ *  a short or a int32_t, but not a char.	This compromise makes code
  *  generation easier.
  */
 
@@ -476,8 +476,8 @@ Exp *exp;
 /*
  *  cast the right side to the left side's type
  *
- *  exception:	if left side is a bitfield right side is cast to a long
- *		if right side is a bitfield it is cast to a long
+ *  exception:	if left side is a bitfield right side is cast to a int32_t
+ *		if right side is a bitfield it is cast to a int32_t
  *
  *		assign takes this into account
  */
@@ -514,8 +514,8 @@ Exp *exp;
 /*
  *  cast the right side to the left side's type
  *
- *  exception:	if left side is a bitfield right side is cast to a long
- *		if right side is a bitfield it is cast to a long
+ *  exception:	if left side is a bitfield right side is cast to a int32_t
+ *		if right side is a bitfield it is cast to a int32_t
  *
  *		assign takes this into account
  */
@@ -677,7 +677,7 @@ Type *t1;
 /*
  *  CompareRules(exp)
  *
- *	If either side is a bit field it is cast into a long/ulong.
+ *	If either side is a bit field it is cast into a int32_t/uint32_t.
  *
  *	Whichever side is the largest type, the other side is promoted.  For
  *	example, if one side is a short and the other a byte then the

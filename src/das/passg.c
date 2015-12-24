@@ -16,18 +16,18 @@
 
 #include "defs.h"
 
-Prototype long	PassG(long addr);
-Prototype long	GenerateInstruction(MachCtx *);
-Prototype long	RegMaskForInst(short, long);
-Prototype long	GenerateEA(short, MachCtx *, OpCod *, EffAddr *, uword *);
+Prototype int32_t	PassG(int32_t addr);
+Prototype int32_t	GenerateInstruction(MachCtx *);
+Prototype int32_t	RegMaskForInst(short, int32_t);
+Prototype int32_t	GenerateEA(short, MachCtx *, OpCod *, EffAddr *, uword *);
 
-long
-PassG(long addr)
+int32_t
+PassG(int32_t addr)
 {
     MachCtx **pmc;
     MachCtx *mc;
     OpCod   *oc;
-    long i;
+    int32_t i;
 
     pmc = CurFile->fn_MBase;
     for (i = 0; i < CurFile->fn_MLines; ++i) {
@@ -50,7 +50,7 @@ PassG(long addr)
 
 static uword Code[16];
 
-long
+int32_t
 GenerateInstruction(mc)
 MachCtx *mc;
 {
@@ -104,7 +104,7 @@ MachCtx *mc;
 
 	/*
 	 *  note, in-instruction immediate data further on in routine.	Also
-	 *  absolute word/long determined below.
+	 *  absolute word/int32_t determined below.
 	 */
     }
 
@@ -119,10 +119,10 @@ MachCtx *mc;
     return(numWords*2);
 }
 
-long
-RegMaskForInst(short mode, long mask)
+int32_t
+RegMaskForInst(short mode, int32_t mask)
 {
-    long rvs = 0;
+    int32_t rvs = 0;
     short i;
 
     if (mode != AB_MMIND)
@@ -139,7 +139,7 @@ RegMaskForInst(short mode, long mask)
  *  returns number of extension words added
  */
 
-long
+int32_t
 GenerateEA(short numWords, MachCtx *mc, OpCod *oc, EffAddr *ea, uword *ext)
 {
     int numBytes = numWords * 2;
@@ -224,7 +224,7 @@ GenerateEA(short numWords, MachCtx *mc, OpCod *oc, EffAddr *ea, uword *ext)
 	    switch(ea->ExtWord & EXTF_BDMASK) {
 	    case EXTF_BDWORD:
 		if (ea->Label2) {
-		    long reloc_type = (ea->Mode1 == AB_OFFIDXPC) ? RELOC_PCREL : ((ea->ISize & ISF_BDDREL) ? RELOC_DATAREL : 0);
+		    int32_t reloc_type = (ea->Mode1 == AB_OFFIDXPC) ? RELOC_PCREL : ((ea->ISize & ISF_BDDREL) ? RELOC_DATAREL : 0);
 
 		    HandleInstReloc(mc->Sect, ea->Label2, mc->m_Addr + numBytes + 2, 2, reloc_type);
 		    /*
@@ -237,7 +237,7 @@ GenerateEA(short numWords, MachCtx *mc, OpCod *oc, EffAddr *ea, uword *ext)
 		break;
 	    case EXTF_BDLONG:
 		if (ea->Label2) {
-		    long reloc_type = (ea->Mode1 == AB_OFFIDXPC) ? RELOC_PCREL : ((ea->ISize & ISF_BDDREL) ? RELOC_DATAREL : 0);
+		    int32_t reloc_type = (ea->Mode1 == AB_OFFIDXPC) ? RELOC_PCREL : ((ea->ISize & ISF_BDDREL) ? RELOC_DATAREL : 0);
 
 		    HandleInstReloc(mc->Sect, ea->Label2, mc->m_Addr + numBytes + 2, 4, reloc_type);
 		    ea->Offset2 += 2;
@@ -249,14 +249,14 @@ GenerateEA(short numWords, MachCtx *mc, OpCod *oc, EffAddr *ea, uword *ext)
 	    switch(ea->ExtWord & EXTF_ODMASK) {
 	    case EXTF_ODWORD:
 		if (ea->Label1) {
-		    long reloc_type = (ea->ISize & ISF_ODDREL) ? RELOC_DATAREL : 0;
+		    int32_t reloc_type = (ea->ISize & ISF_ODDREL) ? RELOC_DATAREL : 0;
 		    HandleInstReloc(mc->Sect, ea->Label1, mc->m_Addr + numBytes + i * 2, 2, reloc_type);
 		}
 		ext[i++] = ToMsbOrderShort(ea->Offset1);
 		break;
 	    case EXTF_ODLONG:
 		if (ea->Label1) {
-		    long reloc_type = (ea->ISize & ISF_ODDREL) ? RELOC_DATAREL : 0;
+		    int32_t reloc_type = (ea->ISize & ISF_ODDREL) ? RELOC_DATAREL : 0;
 		    HandleInstReloc(mc->Sect, ea->Label1, mc->m_Addr + numBytes + i * 2, 4, reloc_type);
 		}
 		ext[i++] = ToMsbOrderShort(ea->Offset1 >> 16);

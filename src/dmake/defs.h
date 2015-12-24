@@ -39,9 +39,6 @@ typedef struct List List;
 
 typedef unsigned char ubyte;
 typedef unsigned short uword;
-#ifndef linux
-typedef unsigned long ulong;
-#endif
 
 #ifdef unix
 #define EXIT_CONTINUE	0

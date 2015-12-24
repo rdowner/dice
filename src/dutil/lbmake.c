@@ -58,7 +58,7 @@ typedef struct CmdNode {
     char    *cn_Name;	    /*	name of command */
     short   cn_Args;	    /*	number of args	*/
     short   cn_Id;
-    int     (*cn_Func)(short, char **, short, long);
+    int     (*cn_Func)(short, char **, short, int32_t);
 } CmdNode;
 
 void	help(int);
@@ -67,13 +67,13 @@ KeyNode *FindOptionNode(KeyNode *, char *);
 int	CompileStuff(KeyNode *);
 int	JoinStuff(KeyNode *, int);
 int	ScanLibDefFile(void);
-int	ProcessCommandLine(int, char *, long);
-int	ProcessFileLine(int, char *, long);
+int	ProcessCommandLine(int, char *, int32_t);
+int	ProcessFileLine(int, char *, int32_t);
 KeyNode* AllocKeyNode(char *, char *, char *, char *);
 
-int	CmdAddKey(short, char **, short, long);
-int	CmdType(short, char **, short, long);
-int	CmdDefTree(short, char **, short, long);
+int	CmdAddKey(short, char **, short, int32_t);
+int	CmdType(short, char **, short, int32_t);
+int	CmdDefTree(short, char **, short, int32_t);
 
 int	Assemble(char *, char *);
 int	AssembleA68(char *, char *);
@@ -450,7 +450,7 @@ int need;
 
 
 	if ((fj = fopen(src, "r")) != NULL) {
-	    long n;
+	    int32_t n;
 	    while ((n = fread(TmpBuf, 1, sizeof(TmpBuf), fj)) > 0) {
 		if (fi) {
 		    if (fwrite(TmpBuf, 1, n, fi) != n) {
@@ -515,7 +515,7 @@ int
 ProcessCommandLine(r, cmd, line)
 int r;
 char *cmd;
-long line;
+int32_t line;
 {
     static char *av[64];
     short ac;
@@ -530,19 +530,19 @@ long line;
 	    ;
 	if (cn) {
 	    if (cn->cn_Args >= 0 && ac != cn->cn_Args) {
-		printf("Expected %d args for %s line %ld\n", cn->cn_Args, cmd, line);
+		printf("Expected %d args for %s line %d\n", cn->cn_Args, cmd, line);
 		r = -1;
 	    } else {
 		if (cn->cn_Func(ac, av, cn->cn_Id, line) < 0)
 		    r = -1;
 	    }
 	} else {
-	    printf("Unknown @ command line %ld (%s)\n", line, cmd);
+	    printf("Unknown @ command line %d (%s)\n", line, cmd);
 	    r = -1;
 
 	}
     } else {
-	printf("Bad @ command line %ld\n", line);
+	printf("Bad @ command line %d\n", line);
 	r = -1;
     }
     return(r);
@@ -552,7 +552,7 @@ int
 ProcessFileLine(r, ptr, line)
 int r;
 char *ptr;
-long line;
+int32_t line;
 {
     KeyNode *kn;
     char *opts;
@@ -623,7 +623,7 @@ long line;
 	if ((p2 = strchr(ptr, ']')) != NULL) {
 	    movmem(p2 + 1, ptr, strlen(p2));
 	} else {
-	    printf("No matching ']' on line %ld\n", line);
+	    printf("No matching ']' on line %d\n", line);
 	    return(-1);
 	}
     }
@@ -647,7 +647,7 @@ long line;
 }
 
 int
-CmdAddKey(short ac, char **av, short id, long line)
+CmdAddKey(short ac, char **av, short id, int32_t line)
 {
     KeyNode *kn = AllocKeyNode(av[0], av[1], NULL, NULL);
     kn->kn_Node.ln_Type = id;
@@ -656,12 +656,12 @@ CmdAddKey(short ac, char **av, short id, long line)
 }
 
 int
-CmdType(short ac, char **av, short id, long line)
+CmdType(short ac, char **av, short id, int32_t line)
 {
     short i;
 
     if (ac == 0) {
-	printf("Expected type designator line %ld\n", line);
+	printf("Expected type designator line %d\n", line);
 	return(-1);
     }
     for (i = 1, TmpBuf[0] = 0; i < ac; ++i) {
@@ -674,7 +674,7 @@ CmdType(short ac, char **av, short id, long line)
 }
 
 int
-CmdDefTree(short ac, char **av, short id, long line)
+CmdDefTree(short ac, char **av, short id, int32_t line)
 {
     strcpy(DefTree, av[0]);
     return(0);
@@ -688,9 +688,9 @@ char *objName;
 char *auxName;
 {
     static char   *AlBuf;
-    static long   AlBytes;
+    static int32_t   AlBytes;
     KeyNode *kn;
-    long bytes = sizeof(KeyNode) + 2 + strlen(name1) + strlen(name2);
+    int32_t bytes = sizeof(KeyNode) + 2 + strlen(name1) + strlen(name2);
     char *fillPtr;
 
     if (objName)
@@ -745,7 +745,7 @@ Assemble(srcFile, objFile)
 char *srcFile;
 char *objFile;
 {
-    long r;
+    int32_t r;
     char buf[256];
 
     sprintf(buf, "%s %s -o %s -c", CompilerName, srcFile, objFile);
@@ -776,7 +776,7 @@ char *srcFile;
 char *objFile;
 char *aux;
 {
-    long r;
+    int32_t r;
     char buf[256];
     char hfile[256];
 
@@ -810,7 +810,7 @@ Compile(srcFile, objFile)
 char *srcFile;
 char *objFile;
 {
-    long r;
+    int32_t r;
     char buf[256];
 
     sprintf(buf, "%s %s -o %s %s -c", CompilerName, srcFile, objFile, FlagsBuf);
@@ -833,7 +833,7 @@ char *name2;
 {
     struct stat stat1;
     struct stat stat2;
-    long r = -1;
+    int32_t r = -1;
 
     if (stat(name1, &stat1) == 0) {
 	if (stat(name2, &stat2) == 0) {
@@ -857,8 +857,8 @@ CompareTimeStamps(name1, name2)
 char *name1;
 char *name2;
 {
-    long lock1;
-    long lock2;
+    int32_t lock1;
+    int32_t lock2;
     __aligned FileInfoBlock fib1;
     __aligned FileInfoBlock fib2;
     int r = -1;
@@ -900,8 +900,8 @@ CompareTimeStamps(name1, name2)
 char *name1;
 char *name2;
 {
-    long lock1;
-    long lock2;
+    int32_t lock1;
+    int32_t lock2;
     FileInfoBlock *fib1 = malloc(sizeof(FileInfoBlock));
     FileInfoBlock *fib2 = malloc(sizeof(FileInfoBlock));
     int r = -1;

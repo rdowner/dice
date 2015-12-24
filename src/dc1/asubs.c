@@ -43,27 +43,27 @@ Prototype char StorBuf[2][1024];
 char SizC[] = { '0', 'b', 'w', '0', 'l', '?' };
 char StorBuf[2][1024];
 
-Prototype char *RegMaskToString(long, short *);
+Prototype char *RegMaskToString(int32_t, short *);
 Prototype char *StorToString(Stor *, short *);
 Prototype char *StorToStringBuf(Stor *, char *);
-Prototype long SameStorage(Stor *, Stor *);
-Prototype long SameRegister(Stor *, Stor *);
-Prototype long RegisterMaskConflict(Stor *, ulong);
-Prototype long ImmStorage(Stor *);
+Prototype int32_t SameStorage(Stor *, Stor *);
+Prototype int32_t SameRegister(Stor *, Stor *);
+Prototype int32_t RegisterMaskConflict(Stor *, uint32_t);
+Prototype int32_t ImmStorage(Stor *);
 Prototype void outop(char *, short, Stor *, Stor *);
 Prototype void GenStaticData(Var *);
 Prototype void GenDataElm(Exp *, Type *);
-Prototype char *itohex(char *, ulong);
-Prototype char *itodec(char *, ulong);
+Prototype char *itohex(char *, uint32_t);
+Prototype char *itodec(char *, uint32_t);
 
 Prototype void AutoAggregateBeg(Stor *, Type *);
-Prototype void AutoAggregate(void *, long);
+Prototype void AutoAggregate(void *, int32_t);
 Prototype void AutoAggregateEnd(void);
 Prototype void AutoAggregateSync(void);
 
 char *
 RegMaskToString(mask, pcnt)
-long mask;
+int32_t mask;
 short *pcnt;
 {
     static char buf[128];
@@ -115,7 +115,7 @@ char *base;
     case ST_PtrConst:
 	*t = '$';
 	t = itohex(t + 1, s->st_PtrConst);
-	if ((long)s->st_PtrConst >= -32768 && (long)s->st_PtrConst < 32768) {
+	if ((int32_t)s->st_PtrConst >= -32768 && (int32_t)s->st_PtrConst < 32768) {
 	    *t = '.'; ++t;
 	    *t = 'W'; ++t;
 	}
@@ -164,7 +164,7 @@ char *base;
 	break;
     case ST_RelArg:
 	{
-	    long offset = s->st_Offset;
+	    int32_t offset = s->st_Offset;
 
 	    *t = 'l'; ++t;
 	    t = itodec(t, LabelRegsUsed);
@@ -362,7 +362,7 @@ char *base;
  *  Same physical storage, possibly different sizes
  */
 
-long
+int32_t
 SameStorage(s1, s2)
 Stor *s1, *s2;
 {
@@ -404,7 +404,7 @@ Stor *s1, *s2;
  *  registers used in another?
  */
 
-long
+int32_t
 SameRegister(s1, s2)
 Stor *s1, *s2;
 {
@@ -440,10 +440,10 @@ Stor *s1, *s2;
     return(0);
 }
 
-long
+int32_t
 RegisterMaskConflict(s1, mask)
 Stor *s1;
-ulong mask;
+uint32_t mask;
 {
     switch(s1->st_Type) {
     case ST_Reg:
@@ -474,7 +474,7 @@ ulong mask;
  *  effective addresses
  */
 
-long
+int32_t
 ImmStorage(stor)
 Stor *stor;
 {
@@ -538,7 +538,7 @@ Var *var;
     if (var->var_Stor.st_Type == ST_RelName)
 	printf("_%s", SymToString(var->var_Stor.st_Name));
     else
-	printf("l%ld", var->var_Stor.st_Label);
+	printf("l%d", var->var_Stor.st_Label);
 
     if (var->u.AssExp == NULL) {
 	printf("\tds.b\t%d\n", *var->Type->Size);
@@ -560,9 +560,9 @@ Var *var;
 	printf("\tsection\tautoconfig,code\n");
 	printf("\tpea\t%s\n", StorToString(&var->var_Stor, NULL));
 	if (var->var_Stor.st_Size < 32768)
-	    printf("\tpea\t%ld.W\n", var->var_Stor.st_Size);
+	    printf("\tpea\t%d.W\n", var->var_Stor.st_Size);
 	else
-	    printf("\tpea\t%ld\n", var->var_Stor.st_Size);
+	    printf("\tpea\t%d\n", var->var_Stor.st_Size);
 	if (SmallCode || PIOpt)
 	    printf("\tjsr\t__DiceConfig(pc)\n");
 	else
@@ -608,7 +608,7 @@ Type *type;
 char *
 itohex(ptr, val)
 char *ptr;
-ulong val;
+uint32_t val;
 {
     static char HA[] = { "0123456789ABCDEF" };
     short dig = 8;
@@ -632,9 +632,9 @@ ulong val;
 char *
 itodec(ptr, val)
 char *ptr;
-ulong val;
+uint32_t val;
 {
-    if ((long)val < 0) {
+    if ((int32_t)val < 0) {
 	val = -val;
 	*ptr++ = '-';
     }
@@ -662,8 +662,8 @@ ulong val;
     return(ptr);
 }
 
-static long AGLabel;
-static long AGIndex;
+static int32_t AGLabel;
+static int32_t AGIndex;
 static TmpAggregate *AGBase;
 static TmpAggregate **AGNext;
 
@@ -689,12 +689,12 @@ Type *type;
 void
 AutoAggregate(ptr, n)
 void *ptr;
-long n;
+int32_t n;
 {
     TmpAggregate *ag = *AGNext;
 
     if (ag == NULL || ag->ta_Bytes - ag->ta_Index < n) {
-	long v = (n > 512) ? n : 512;
+	int32_t v = (n > 512) ? n : 512;
 
 	if (ag)
 	    AGNext = &ag->ta_Next;
@@ -728,11 +728,11 @@ AutoAggregateSync()
     if (GenGlobal == 0 && AGLabel) {
 	asm_segment(&DummyDataVar);
 	printf("\tds.l\t0\n");
-	printf("l%ld\n", AGLabel);
+	printf("l%d\n", AGLabel);
 	AGLabel = 0;
     }
     for (ag = AGBase; ag; ag = agNext) {
-	long i;
+	int32_t i;
 	short col = 0;
 
 	agNext = ag->ta_Next;
@@ -745,7 +745,7 @@ AutoAggregateSync()
 		    putc(',', stdout);
 		    ++col;
 		}
-		col += printf("$%lx", ToMsbOrder(*(unsigned long *)(ag->ta_Buf + i)));
+		col += printf("$%x", ToMsbOrder(*(uint32_t *)(void *)(ag->ta_Buf + i)));
 		if (col > 120)
 		    col = 0;
 	    }
@@ -757,7 +757,8 @@ AutoAggregateSync()
 		    putc(',', stdout);
 		    ++col;
 		}
-		col += printf("$%lx", ToMsbOrderShort(*(unsigned short *)(ag->ta_Buf + i)));
+		col += printf("$%x",
+			ToMsbOrderShort(*(uint16_t *)(void *)(ag->ta_Buf + i)));
 		if (col > 120)
 		    col = 0;
 	    }
@@ -769,7 +770,8 @@ AutoAggregateSync()
 		    putc(',', stdout);
 		    ++col;
 		}
-		col += printf("$%lx", (unsigned long)*(unsigned char *)(ag->ta_Buf + i));
+		col += printf("$%x",
+			(uint32_t)*(unsigned char *)(void *)(ag->ta_Buf + i));
 		if (col > 120)
 		    col = 0;
 	    }
@@ -788,7 +790,7 @@ AutoAggregateEnd()
     if (GenGlobal == 0 && AGLabel) {
 	asm_segment(&DummyDataVar);
 	printf("\tds.l\t0\n");
-	printf("l%ld\n", AGLabel);
+	printf("l%d\n", AGLabel);
 	AGLabel = 0;
     }
     AutoAggregateSync();

@@ -32,26 +32,26 @@
 IDENT("loadabs",".3");
 DCOPYRIGHT;
 
-long	NumHunks;
-long	FirstHunk;
-long	LastHunk;
+int32_t	NumHunks;
+int32_t	FirstHunk;
+int32_t	LastHunk;
 
 short	DDebug;
 
 typedef unsigned char ubyte;
 
 typedef struct {
-    long    Type;
-    long    Len;
-    long    Pc;
+    int32_t    Type;
+    int32_t    Len;
+    int32_t    Pc;
     char    *Data;
 } Hunk;
 
 Hunk	*Hunks;
 
-long	fgetl(FILE *);
+int32_t	fgetl(FILE *);
 void	LoadHeaderInfo(FILE *);
-void	ScanHunks(FILE *, long);
+void	ScanHunks(FILE *, int32_t);
 void	RelocHunks(FILE *);
 void	DumpHunks(FILE *);
 
@@ -63,7 +63,7 @@ char *av[];
     char *outFile= NULL;
     FILE *fi;
     FILE *fo;
-    long scanPc;
+    int32_t scanPc;
 
     if (ac == 1) {
         puts(Ident);
@@ -152,7 +152,7 @@ char *av[];
     }
     LoadHeaderInfo(fi);
     {
-	long pos = ftell(fi);
+	int32_t pos = ftell(fi);
 	if (DDebug)
 	    puts("scan");
 
@@ -198,7 +198,7 @@ FILE *fi;
 void
 ScanHunks(fi, pc)
 FILE *fi;
-long pc;
+int32_t pc;
 {
     int n;
     Hunk *h;
@@ -207,8 +207,8 @@ long pc;
     h = Hunks;
 
     while (n < NumHunks) {
-	long len;
-	long t = fgetl(fi);
+	int32_t len;
+	int32_t t = fgetl(fi);
 
 	if (DDebug)
 	    printf("Header %08lx\n", t);
@@ -306,8 +306,8 @@ FILE *fi;
     h = Hunks;
 
     while (n < NumHunks) {
-	long len;
-	long t;
+	int32_t len;
+	int32_t t;
 
 	t = fgetl(fi);
 	switch(t) {
@@ -328,13 +328,13 @@ FILE *fi;
 		}
 		dh = Hunks + dhno - FirstHunk;
 		while (len) {		/*  offsets to relocate */
-		    long off = fgetl(fi);
+		    int32_t off = fgetl(fi);
 
 		    if (off < 0 || off > h->Len - 4) {
 			printf("Offset out of bounds: %d/%d\n", off, h->Len);
 			exit(1);
 		    }
-		    *(long *)(h->Data + off) += dh->Pc;
+		    *(int32_t *)(h->Data + off) += dh->Pc;
 		    if (DDebug)
 			printf("Reloc in %d to %d offset %d add %04x\n", n, dhno, off, dh->Pc);
 		    --len;
@@ -403,11 +403,11 @@ FILE *fo;
 }
 
 
-long
+int32_t
 fgetl(fi)
 FILE *fi;
 {
-    long v;
+    int32_t v;
 
     v = getc(fi) << 24;
     v |= getc(fi) << 16;

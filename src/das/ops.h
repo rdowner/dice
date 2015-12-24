@@ -229,8 +229,8 @@ typedef struct OpCod {
     char    B_EAd;
     char    B_Siz;
     char    Sizes;
-    long    SModes;
-    long    DModes;
+    int32_t    SModes;
+    int32_t    DModes;
     short   Special;
 
     struct OpCod   *HNext;

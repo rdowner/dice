@@ -18,7 +18,7 @@ Prototype void sym_init(void);
 Prototype void ResetSymbol(void);
 Prototype Symbol *AddSymbol(Symbol *sym);
 Prototype Symbol *FindSymbolName(char *name);
-Prototype Symbol *FindSymbolOffset(long offset, short hunkNo);
+Prototype Symbol *FindSymbolOffset(int32_t offset, short hunkNo);
 Prototype Symbol *FindSymbolNext(Symbol *sym);
 Prototype Symbol *FindSymbolPrev(Symbol *sym);
 
@@ -88,7 +88,7 @@ FindSymbolName(char *name)
  */
 
 Symbol *
-FindSymbolOffset(long offset, short hunkNo)
+FindSymbolOffset(int32_t offset, short hunkNo)
 {
     Symbol *s = SymOffCache;
 

@@ -79,8 +79,8 @@ void	JoinOutput(FILE *, char *);
 char	*RegMaskToStr(uword, short *);
 uword	RegsToMask(short *, short);
 char	*RegToStr(short);
-void	RegsCall(FILE *, char *, long, RSNode *, short *);
-void	StackCall(FILE *, char *, long, short *, short);
+void	RegsCall(FILE *, char *, int32_t, RSNode *, short *);
+void	StackCall(FILE *, char *, int32_t, short *, short);
 short	PushMask(FILE *, uword);
 short	PopMask(FILE *, uword);
 void	AddLVOList(char *, int);
@@ -291,7 +291,7 @@ FILE *fi;
 FILE *fo;
 {
     char *base = NULL;
-    long bias = -1;
+    int32_t bias = -1;
     short end = 0;
     short public = 1;
 
@@ -654,7 +654,7 @@ char *file;
  */
 
 void
-StackCall(FILE *ft, char *base, long bias, short *regs, short args)
+StackCall(FILE *ft, char *base, int32_t bias, short *regs, short args)
 {
     uword mask = (RegsToMask(regs, args) | RF_BP) & ~RF_SCRATCH;
     char *ptr;
@@ -726,7 +726,7 @@ void
 RegsCall(ft, base, bias, rs, regs)
 FILE *ft;
 char *base;
-long bias;
+int32_t bias;
 RSNode *rs;
 short *regs;
 {
@@ -1000,7 +1000,7 @@ char *buf;
 
     if (buf == NULL)
 	buf = Buf;
-    sprintf(buf, "T:%06lx%d", (long)FindTask(NULL) >> 4, Seq++);
+    sprintf(buf, "T:%06lx%d", (int32_t)FindTask(NULL) >> 4, Seq++);
     return(buf);
 }
 

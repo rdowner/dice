@@ -51,24 +51,24 @@
 Prototype   MachCtx *ProcCtx;
 Prototype   short   MC68020;
 Prototype   short   MC68881;
-Prototype   long    DebugLineNo;
+Prototype   int32_t    DebugLineNo;
 
 Prototype   void    BadLabel(Label **);
 Prototype   void    DeleteTrailingSpaces(char *);
 Prototype   void    ExecOpCodeA(MachCtx *);
-Prototype   long    ExecOpCodeB(MachCtx *, long);
-Prototype   long    ExecOpCodeC(MachCtx *, long);
-Prototype   long    ExecOpCodeG(MachCtx *, long);
+Prototype   int32_t    ExecOpCodeB(MachCtx *, int32_t);
+Prototype   int32_t    ExecOpCodeC(MachCtx *, int32_t);
+Prototype   int32_t    ExecOpCodeG(MachCtx *, int32_t);
 Prototype   void    SetForcedLinkFlag(void);
 Prototype   void    SetSubroutineCallFlag(void);
 Prototype   void    SetA5UsedFlag(void);
-Prototype   long    GetFlags(void);
-Prototype   void    StrToAlign(char *, long *, long *, long);
+Prototype   int32_t    GetFlags(void);
+Prototype   void    StrToAlign(char *, int32_t *, int32_t *, int32_t);
 
 MachCtx *ProcCtx;
 short	MC68020;
 short	MC68881;
-long    DebugLineNo;
+int32_t    DebugLineNo;
 
 void
 BadLabel(plab)
@@ -153,7 +153,7 @@ MachCtx *mc;
 	 */
 
 	if (mc->Sect && mc->Sect->Type == SECT_COMMON) {
-	    long value;
+	    int32_t value;
 
 	    if ((value = ParseIntExp(str)) != 0) {
 		if ((lab = mc->Label) != NULL) {
@@ -218,10 +218,10 @@ MachCtx *mc;
  *
  */
 
-long
+int32_t
 ExecOpCodeB(mc, addr)
 MachCtx *mc;
-long addr;
+int32_t addr;
 {
     switch(mc->OpCode->Id) {
     case OdXDEF:
@@ -246,7 +246,7 @@ long addr;
 	break;
     case OdDS:
         {
-	    long t;
+	    int32_t t;
 
 	    if (mc->OpSize == 0)
 		cerror(EERROR_DIRECT_REQUIRES_SIZE);
@@ -259,8 +259,8 @@ long addr;
 	break;
     case OdALIGN:
 	{
-	    long align = 1;
-	    long alignVal = 0;
+	    int32_t align = 1;
+	    int32_t alignVal = 0;
 
 	    if (mc->OpSize == 0)
 		cerror(EERROR_DIRECT_REQUIRES_SIZE);
@@ -276,7 +276,7 @@ long addr;
 	 */
 	{
 	    char *str = mc->m_SaveStr;
-	    long t;
+	    int32_t t;
 
 	    t = 0;
 
@@ -350,7 +350,7 @@ SetA5UsedFlag()
 	ProcCtx->Bytes |= MF_A5USED;
 }
 
-long
+int32_t
 GetFlags()
 {
     if (ProcCtx)
@@ -358,10 +358,10 @@ GetFlags()
     return(MF_CALLMADE|MF_A5USED);
 }
 
-long
+int32_t
 ExecOpCodeC(mc, addr)
 MachCtx *mc;
-long addr;
+int32_t addr;
 {
     switch(mc->OpCode->Id) {
     case OdSECTION:
@@ -374,8 +374,8 @@ long addr;
 	break;
     case OdALIGN:
 	{
-	    long align = 1;
-	    long alignVal = 0;
+	    int32_t align = 1;
+	    int32_t alignVal = 0;
 
 	    StrToAlign(mc->m_SaveStr, &align, &alignVal, mc->OpSize);
 
@@ -413,10 +413,10 @@ long addr;
 }
 
 
-long
+int32_t
 ExecOpCodeG(mc, addr)
 MachCtx *mc;
-long addr;
+int32_t addr;
 {
     switch(mc->OpCode->Id) {
     case OdSECTION:
@@ -431,12 +431,12 @@ long addr;
 	break;
   case OdALIGN:
 	{
-	    long align = 1;
-	    long alignVal = 0;
-	    long i;
+	    int32_t align = 1;
+	    int32_t alignVal = 0;
+	    int32_t i;
 	    char v_char;
 	    short v_short;
-	    long v_long;
+	    int32_t v_long;
 
 	    StrToAlign(mc->m_SaveStr, &align, &alignVal, mc->OpSize);
 
@@ -473,7 +473,7 @@ long addr;
 	{
 	    EffAddr ea;
 	    char *str = mc->m_SaveStr;
-	    long bytes = 0;	/*  bytes double check & offset track */
+	    int32_t bytes = 0;	/*  bytes double check & offset track */
 	    short hacksq = 0;	/*  hack-in-single-quote	      */
 
 	    while (*str) {
@@ -533,7 +533,7 @@ long addr;
 		    break;
 		case 4:
 		    {
-			long c = ToMsbOrder(ea.Offset1);
+			int32_t c = ToMsbOrder(ea.Offset1);
 			DumpSectionData(mc->Sect, &c, 4);
 		    }
 		    break;
@@ -578,9 +578,9 @@ long addr;
 void
 StrToAlign(str, palign, pvalue, size)
 char *str;
-long *palign;
-long *pvalue;
-long size;
+int32_t *palign;
+int32_t *pvalue;
+int32_t size;
 {
     EffAddr ea;
 

@@ -17,23 +17,23 @@ Prototype short Hunks;
 
 Prototype void	InitSect(void);
 Prototype void	ResetSectAddrs(void);
-Prototype void	HandleInstReloc(Sect *, Label *, long, short, long);
-Prototype void	DumpSectionData(Sect *, void *, long);
+Prototype void	HandleInstReloc(Sect *, Label *, int32_t, short, int32_t);
+Prototype void	DumpSectionData(Sect *, void *, int32_t);
 Prototype void	NewSection(char *);
 Prototype void	SectCreateObject(FILE *, char *);
-Prototype void	CreateHunkReloc(FILE *, long, Reloc *);
-Prototype void	DumpRelocs(FILE *, Reloc *, long, long);
+Prototype void	CreateHunkReloc(FILE *, int32_t, Reloc *);
+Prototype void	DumpRelocs(FILE *, Reloc *, int32_t, int32_t);
 Prototype void	CreateExtHunkReloc(FILE *, ubyte, Reloc *);
-Prototype void	DumpExtReloc(FILE *, Reloc *, long, Label *, long);
+Prototype void	DumpExtReloc(FILE *, Reloc *, int32_t, Label *, int32_t);
 Prototype void	CreateExportSDU(FILE *, ubyte, Label *);
 Prototype void	CreateSymbols(FILE *, Label *);
-Prototype void	zwrite(FILE *, long);
+Prototype void	zwrite(FILE *, int32_t);
 
 Sect	*CurSection;
 Sect	*SectBase;
 Sect	**LastSect;
 short	Hunks;
-static long Ary[64];
+static int32_t Ary[64];
 
 void
 InitSect()
@@ -62,9 +62,9 @@ void
 HandleInstReloc(
     Sect *sect, 	/* section this occurs in	*/
     Label *label,	/* label in question		*/
-    long offset, 	/* offset in section sect of info to be relocated */
+    int32_t offset, 	/* offset in section sect of info to be relocated */
     short size, 	/* size of information needing relocation	  */
-    long reloc_type	/* type of relocation		*/
+    int32_t reloc_type	/* type of relocation		*/
 ) {
     Reloc *reloc = AllocStructure(Reloc);
     Reloc **list = sect->RelocAry;
@@ -79,11 +79,11 @@ HandleInstReloc(
 	list += RA_EXT;
 
     switch(size | reloc_type) {
-    case 4 | RELOC_PCREL:	/*  long-pc-relative	    */
+    case 4 | RELOC_PCREL:	/*  int32_t-pc-relative	    */
 	++list;
     case 2 | RELOC_DATAREL:	/*  word-data reloc	    */
 	++list;
-    case 4:			/*  long-absolute	    */
+    case 4:			/*  int32_t-absolute	    */
 	++list;
     case 2:			/*  absolute const reloc    */
     case 2 | RELOC_PCREL:	/*  word-pc relative	    */
@@ -140,7 +140,7 @@ void
 DumpSectionData(sect, buf, bytes)
 Sect *sect;
 void *buf;
-long bytes;
+int32_t bytes;
 {
     DBlock *block = sect->LastBlock;
 
@@ -153,7 +153,7 @@ long bytes;
 #ifdef DEBUG
     if (DDebug) {
 	if (buf) {
-	    long i;
+	    int32_t i;
 	    ubyte *ptr = (ubyte *)buf;
 	    printf("@%04lx dump ", sect->Addr);
 	    for (i = 0; i < bytes; i += 2) {
@@ -249,7 +249,7 @@ char *ops;
     char *maskStr;
     Sect *sect;
     short type;
-    long mask = 0;
+    int32_t mask = 0;
 
     while (*ptr && *ptr != ',')
 	++ptr;
@@ -352,7 +352,7 @@ char *unitName;
 	Ary[1] = ToMsbOrder(len);
 	setmem(Ary + 2, len*4, 0);
 	strcpy((char *)(Ary + 2), unitName);
-	fwrite((char *)Ary, sizeof(long), len + 2, fo);
+	fwrite((char *)Ary, sizeof(int32_t), len + 2, fo);
 	if (i >= 0)
 	    unitName[i] = c;
     }
@@ -371,13 +371,13 @@ char *unitName;
 	    Ary[1] = ToMsbOrder(len);
 	    setmem(Ary + 2, len*4, 0);
 	    strcpy((char *)(Ary + 2), sect->Name);
-	    fwrite((char *)Ary, sizeof(long), len + 2, fo);
+	    fwrite((char *)Ary, sizeof(int32_t), len + 2, fo);
 	}
 	/*
 	 *  hunk_code,data, or bss
 	 */
 	{
-	    static long TConvAry[] = { 0, 0x3E9, 0x3EA, 0x3EB, 0x3EB, 0x3EB };
+	    static int32_t TConvAry[] = { 0, 0x3E9, 0x3EA, 0x3EB, 0x3EB, 0x3EB };
 
 	    Ary[0] = ToMsbOrder(TConvAry[sect->Type] | sect->HunkMask);
 
@@ -386,7 +386,7 @@ char *unitName;
 	    else
 		Ary[1] = ToMsbOrder((sect->ObjLen + 3) >> 2);
 
-	    fwrite((char *)Ary, sizeof(long), 2, fo);
+	    fwrite((char *)Ary, sizeof(int32_t), 2, fo);
 
 	    if (sect->Type != SECT_BSS && sect->Type != SECT_ABS && sect->Type != SECT_COMMON) {   /* if not BSS/COMMON */
 		DBlock *block;
@@ -417,7 +417,7 @@ char *unitName;
 	}
 
 	/*
-	 *  local byte-pc, word-pc, long, and word-data reloc
+	 *  local byte-pc, word-pc, int32_t, and word-data reloc
 	 */
 
 	{
@@ -429,14 +429,14 @@ char *unitName;
 	}
 
 	/*
-	 *  external byte, word-pc, long, and word-data relocation
+	 *  external byte, word-pc, int32_t, and word-data relocation
 	 *
 	 *  symbols
 	 */
 
 	if (sect->r_ExtByteReloc || sect->r_ExtWordRelocPc || sect->r_ExtLongReloc || sect->r_ExtWordDataReloc || sect->r_LongRelocPc || sect->XDefLab) {
 	    Ary[0] = ToMsbOrder(0x3EF);
-	    fwrite((char *)Ary, sizeof(long), 1, fo);
+	    fwrite((char *)Ary, sizeof(int32_t), 1, fo);
 
 	    CreateExtHunkReloc(fo, 134, sect->r_ExtWordDataReloc);
 	    CreateExtHunkReloc(fo, 132, sect->r_ExtByteReloc);
@@ -445,7 +445,7 @@ char *unitName;
 	    CreateExtHunkReloc(fo, 135, sect->r_ExtLongRelocPc);
 	    CreateExportSDU(fo, ((sect->Type == SECT_COMMON) ? 130 : 1), sect->XDefLab);
 	    Ary[0] = ToMsbOrder(0);
-	    fwrite((char *)Ary, sizeof(long), 1, fo);
+	    fwrite((char *)Ary, sizeof(int32_t), 1, fo);
 	}
 
 	if (AddSym)
@@ -469,7 +469,7 @@ char *unitName;
 
 	    Ary[1] = ToMsbOrder(sect->DebugIdx * 2 + 3 + FromMsbOrder(Ary[4]));
 
-	    fwrite((char *)Ary, sizeof(long), 5 + FromMsbOrder(Ary[4]), fo);
+	    fwrite((char *)Ary, sizeof(int32_t), 5 + FromMsbOrder(Ary[4]), fo);
 	    fwrite(sect->DebugAry, sizeof(DebugNode), sect->DebugIdx, fo);
 	}
 
@@ -478,7 +478,7 @@ char *unitName;
 	 */
 	{
 	    Ary[0] = ToMsbOrder(0x3F2);
-	    fwrite((char *)Ary, sizeof(long), 1, fo);
+	    fwrite((char *)Ary, sizeof(int32_t), 1, fo);
 	}
     }
 }
@@ -486,19 +486,19 @@ char *unitName;
 void
 CreateHunkReloc(fo, hunk, reloc)
 FILE *fo;
-long hunk;
+int32_t hunk;
 Reloc *reloc;
 {
-    long n;
-    long t;
-    long baseHunk;
+    int32_t n;
+    int32_t t;
+    int32_t baseHunk;
     Reloc *base;
 
     if (reloc == NULL)
 	return;
 
     t = ToMsbOrder(hunk);
-    fwrite((char *)&t, sizeof(long), 1, fo);
+    fwrite((char *)&t, sizeof(int32_t), 1, fo);
 
     base = reloc;
     baseHunk = reloc->Label->Sect->Hunk;
@@ -518,26 +518,26 @@ Reloc *reloc;
 	DumpRelocs(fo, base, n, baseHunk);
 
     t = ToMsbOrder(0);
-    fwrite((char *)&t, sizeof(long), 1, fo);
+    fwrite((char *)&t, sizeof(int32_t), 1, fo);
 }
 
 void
 DumpRelocs(fo, base, n, baseHunk)
 FILE *fo;
 Reloc *base;
-long n;
-long baseHunk;
+int32_t n;
+int32_t baseHunk;
 {
-    long t;
+    int32_t t;
 
     t = ToMsbOrder(n);
-    fwrite((char *)&t, sizeof(long), 1, fo);
+    fwrite((char *)&t, sizeof(int32_t), 1, fo);
     t = ToMsbOrder(baseHunk);
-    fwrite((char *)&t, sizeof(long), 1, fo);
+    fwrite((char *)&t, sizeof(int32_t), 1, fo);
 
     while (n--) {
         t = ToMsbOrder(base->Offset);
-	fwrite((char *)&t, sizeof(long), 1, fo);
+	fwrite((char *)&t, sizeof(int32_t), 1, fo);
 	base = base->RNext;
     }
 }
@@ -547,7 +547,7 @@ CreateExtHunkReloc(FILE *fo, ubyte type, Reloc *reloc)
 {
     Reloc *base;
     Label *baseLabel;
-    long n;
+    int32_t n;
 
     if (reloc == NULL)
 	return;
@@ -574,9 +574,9 @@ void
 DumpExtReloc(fo, base, n, label, type)
 FILE *fo;
 Reloc *base;
-long n;
+int32_t n;
 Label *label;
-long type;
+int32_t type;
 {
     int len = (strlen(label->Name) + 3) >> 2;
 
@@ -586,10 +586,10 @@ long type;
 
     Ary[1 + len] = ToMsbOrder(n);		/*  # references */
 
-    fwrite((char *)Ary, sizeof(long), len + 2, fo);
+    fwrite((char *)Ary, sizeof(int32_t), len + 2, fo);
     while (n--) {
-        long t = ToMsbOrder(base->Offset);
-	fwrite((char *)&t, sizeof(long), 1, fo);
+        int32_t t = ToMsbOrder(base->Offset);
+	fwrite((char *)&t, sizeof(int32_t), 1, fo);
 	base = base->RNext;
     }
 }
@@ -613,7 +613,7 @@ CreateExportSDU(FILE *fo, ubyte type, Label *label)
 	setmem(Ary + 1, len*4, 0);
 	strcpy((char *)(Ary + 1), label->Name);
 	Ary[1 + len] = ToMsbOrder(label->l_Offset);    /* Offset or Size */
-	fwrite((char *)Ary, sizeof(long), len + 2, fo);
+	fwrite((char *)Ary, sizeof(int32_t), len + 2, fo);
 	label = label->XDefLink;
     }
 }
@@ -632,7 +632,7 @@ CreateSymbols(FILE *fo, Label *label)
 	    if (header == 0)
 	    {
         	Ary[0] = ToMsbOrder(0x3F0);
-        	fwrite((char *)Ary, sizeof(long), 1, fo);
+        	fwrite((char *)Ary, sizeof(int32_t), 1, fo);
         	header = 1;
             }
 
@@ -641,7 +641,7 @@ CreateSymbols(FILE *fo, Label *label)
 	    setmem(Ary + 1, len*4, 0);
 	    strcpy((char *)(Ary + 1), label->Name);
 	    Ary[1 + len] = ToMsbOrder(label->l_Offset);   /* Offset or Size */
-	    fwrite((char *)Ary, sizeof(long), len + 2, fo);
+	    fwrite((char *)Ary, sizeof(int32_t), len + 2, fo);
 	}
 	label = label->XDefLink;
     }
@@ -649,14 +649,14 @@ CreateSymbols(FILE *fo, Label *label)
     if (header)
     {
 	Ary[0] = 0;
-	fwrite((char *)Ary, sizeof(long), 1, fo);
+	fwrite((char *)Ary, sizeof(int32_t), 1, fo);
     }
 }
 
 void
 zwrite(fo, bytes)
 FILE *fo;
-long bytes;
+int32_t bytes;
 {
     static char Zero[512];
 

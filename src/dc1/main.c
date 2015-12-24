@@ -74,13 +74,13 @@ Prototype short DebugOpt;
 Prototype short AsmOnlyOpt;
 Prototype short ErrorOpt;
 Prototype char	*CToDClass;
-Prototype long	ZAllocs;
-Prototype long	TAllocs;
-Prototype long	ZChunks, ZAloneChunks;
-Prototype long	TChunks, TAloneChunks;
-Prototype long	SymAllocs;
-Prototype long	ExitCode;
-Prototype long	RetryCount;
+Prototype int32_t	ZAllocs;
+Prototype int32_t	TAllocs;
+Prototype int32_t	ZChunks, ZAloneChunks;
+Prototype int32_t	TChunks, TAloneChunks;
+Prototype int32_t	SymAllocs;
+Prototype int32_t	ExitCode;
+Prototype int32_t	RetryCount;
 Prototype char	*OutFileName;
 Prototype char	*InFileName;
 Prototype Var	DummyDataVar;
@@ -118,13 +118,13 @@ short	LargeDataModelChosen;	/*  main() use only */
 char	*InFileName;		/*  main() use only */
 char	*ErrorFile;
 
-long	ZAllocs;
-long	TAllocs;
-long	ZChunks, ZAloneChunks;
-long	TChunks, TAloneChunks;
-long	SymAllocs;
-long	ExitCode;
-long	RetryCount;
+int32_t	ZAllocs;
+int32_t	TAllocs;
+int32_t	ZChunks, ZAloneChunks;
+int32_t	TChunks, TAloneChunks;
+int32_t	SymAllocs;
+int32_t	ExitCode;
+int32_t	RetryCount;
 char	*OutFileName;
 Var	DummyDataVar;
 Var	DummyCodeVar;
@@ -133,7 +133,7 @@ FILE	*ErrorFi;
 
 Prototype int main(int, char **);
 Prototype void help(void);
-Prototype void _Assert(const char *, long);
+Prototype void _Assert(const char *, int32_t);
 Prototype void DumpStats(void);
 Prototype void ParseOpts(short, char **, short);
 
@@ -187,7 +187,7 @@ char **av;
 
     SemanticLevelDown();
     {
-	long t = GetToken();
+	int32_t t = GetToken();
 
 	/*  OMD assumes code section is first */
 	if (CToDClass == NULL)
@@ -242,7 +242,7 @@ help()
 void
 _Assert(file, line)
 const char *file;
-long line;
+int32_t line;
 {
 #if defined(DEBUG) && defined(UNIX)
     for (;;) 

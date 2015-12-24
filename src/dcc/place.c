@@ -17,7 +17,7 @@
 #include "rexx.h"
 
 void ClearDiceRexxPort(MsgPort *);
-void RexxReply(void *, long, char *);
+void RexxReply(void *, int32_t, char *);
 
 static MsgPort RexxPort;		    /*	master port	*/
 static char    *RexxPortName = "REXX";      /*  master port name    */
@@ -147,16 +147,16 @@ __dice_rexx_exit()
     }
 }
 
-long
+int32_t
 PlaceRexxCommandDirect(port, remoteName, arg, pres, pec)
 MsgPort *port;
 char *remoteName;
 char *arg;
 char **pres;
-long *pec;
+int32_t *pec;
 {
     char *rpn = RexxPortName;
-    long r;
+    int32_t r;
 
     RexxPortName = remoteName;
     r = PlaceRexxCommand(port, arg, pres, pec);
@@ -164,15 +164,15 @@ long *pec;
     return(r);
 }
 
-long
+int32_t
 PlaceRexxCommand(port, arg, pres, pec)
 MsgPort *port;
 char *arg;
 char **pres;
-long *pec;
+int32_t *pec;
 {
     RexxIPNode rip;
-    long rc = -2;
+    int32_t rc = -2;
 
     if (port == NULL) {
 	if (MasterPortValid == 0)
@@ -234,7 +234,7 @@ long *pec;
 			*pres = strdup((char *)rip.rip_RexxMsg->rm_Result2);
 		} else {
 		    if (pec)
-			*pec = (long)rip.rip_RexxMsg->rm_Result2;
+			*pec = (int32_t)rip.rip_RexxMsg->rm_Result2;
 		}
 	    }
 	    ClearRexxMsg(rip.rip_RexxMsg, 1);
@@ -263,7 +263,7 @@ MsgPort *port;
 	if ((msg->rm_Node.mn_Node.ln_Type == NT_MESSAGE) && IsRexxMsg(msg)) {
 	    RexxIPNode rip;
 	    char *str = NULL;
-	    long rc;
+	    int32_t rc;
 
 	    rip.rip_RexxMsg = msg;
 	    rip.rip_RexxPort = port;
@@ -474,7 +474,7 @@ MsgPort *port;
 void
 RexxReply(vmsg, res1, str)
 void *vmsg;
-long res1;
+int32_t res1;
 char *str;
 {
     RexxMsg *msg = vmsg;
@@ -483,7 +483,7 @@ char *str;
 	msg->rm_Result2 = 0;
     } else {
 	if (str)
-	    msg->rm_Result2 = (long)CreateArgstring(str, strlen(str));
+	    msg->rm_Result2 = (int32_t)CreateArgstring(str, strlen(str));
 	else
 	    msg->rm_Result2 = 0;
     }

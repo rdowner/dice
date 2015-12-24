@@ -30,7 +30,7 @@ Prototype int  StartDo;
 Prototype ProgramUnit *PUAry[MAXUNITS];
 
 void help(void);
-long ScanObjectFile(FILE *fi, long endPos);
+int32_t ScanObjectFile(FILE *fi, int32_t endPos);
 void UnAssembleObjectFile(FILE *fi);
 void ResetHashTables(void);
 
@@ -123,8 +123,8 @@ main(int ac, char **av)
 	    continue;
 
 	if ((fi = fopen(ptr, "r")) != NULL) {
-	    long endPos;
-	    long pos = 0;
+	    int32_t endPos;
+	    int32_t pos = 0;
 
 	    fseek(fi, 0L, 2);
 	    endPos = ftell(fi);
@@ -156,10 +156,10 @@ help(void)
  *  Disassemble a module
  */
 
-long
-ScanObjectFile(FILE *fi, long endPos)
+int32_t
+ScanObjectFile(FILE *fi, int32_t endPos)
 {
-    long unitData[2];
+    int32_t unitData[2];
     short thisHunk = 0;
 
     while (freadl(unitData, 4, 1, fi) == 1) {
@@ -204,9 +204,9 @@ ScanObjectFile(FILE *fi, long endPos)
 		    freadl(&begNo, 4, 1, fi);
 		    freadl(&endNo, 4, 1, fi);
 		    while (begNo <= endNo ) {
-			long value;
+			int32_t value;
 			freadl(&value, 4, 1, fi);
-			printf("    hunk #%d  %ld bytes\n", begNo, value * 4);
+			printf("    hunk #%d  %d bytes\n", begNo, value * 4);
 			++begNo;
 		    }
 		}
@@ -236,12 +236,12 @@ ScanObjectFile(FILE *fi, long endPos)
 
 	while (unitData[0] != 0x3F2) {
 	    if (DDebug)
-		fprintf(stderr, "scan hunk %02x %08lx\n", thisHunk, unitData[0]);
+		fprintf(stderr, "scan hunk %02x %08x\n", thisHunk, unitData[0]);
 
 	    switch((uword)unitData[0]) {
 	    case 0x3E8:     /*	hunk_Name   */
 		{
-		    long bytes;
+		    int32_t bytes;
 		    if (freadl(&bytes, 4, 1, fi) != 1)
 			cerror(EFATAL, "unexpected EOF");
 		    bytes = bytes * 4;
@@ -255,7 +255,7 @@ ScanObjectFile(FILE *fi, long endPos)
 	    case 0x3EA:
 	    case 0x3EB:
 		{
-		    long bytes;
+		    int32_t bytes;
 
 		    unit->pu_Type = unitData[0];
 		    if (freadl(&bytes, 4, 1, fi) != 1)
@@ -274,9 +274,9 @@ ScanObjectFile(FILE *fi, long endPos)
 		{
 		    short size = 4;
 		    short flags= 0;
-		    long numOffsets;
-		    long hunkNo;
-		    long offset;
+		    int32_t numOffsets;
+		    int32_t hunkNo;
+		    int32_t offset;
 
 		    switch((uword)unitData[0]) {
 		    case 0x3ED:
@@ -307,11 +307,11 @@ ScanObjectFile(FILE *fi, long endPos)
 	    case 0x3EF:     /*	hunk_ext    */
 	    case 0x3F0:     /*	hunk_sym    */
 		{
-		    ulong symHdr;
+		    uint32_t symHdr;
 
 		    while (freadl(&symHdr, 4, 1, fi) == 1 && symHdr) {
-			long bytes = (symHdr & 0x00FFFFFF) * 4;
-			long numRefs;
+			int32_t bytes = (symHdr & 0x00FFFFFF) * 4;
+			int32_t numRefs;
 			short size;
 			short flags;
 			Symbol *sym;
@@ -361,7 +361,7 @@ ScanObjectFile(FILE *fi, long endPos)
 			    if (freadl(&numRefs, 4, 1, fi) != 1)
 				cerror(EFATAL, "Unexpected EOF");
 			    while (numRefs) {
-				long offset;
+				int32_t offset;
 				freadl(&offset, 4, 1, fi);
 				AddRelocInfo(thisHunk, -1, size, flags, offset, sym);
 				--numRefs;
@@ -372,7 +372,7 @@ ScanObjectFile(FILE *fi, long endPos)
 		break;
 	    case 0x3F1: /*  hunk_debug	*/
 		{
-		    long bytes;
+		    int32_t bytes;
 		    if (freadl(&bytes, 4, 1, fi) == 1) {
 			bytes = bytes * 4;
 			fseek(fi, bytes, 1);    /*  skip it */
@@ -380,7 +380,7 @@ ScanObjectFile(FILE *fi, long endPos)
 		}
 		break;
 	    default:
-		cerror(EFATAL, "Unknown hunk type 0x%08lx offset 0x%lx", unitData[0], ftell(fi));
+		cerror(EFATAL, "Unknown hunk type 0x%08lx offset 0x%x", unitData[0], ftell(fi));
 		break;
 	    }
 	    if (freadl(unitData, 4, 1, fi) != 1)
@@ -416,10 +416,10 @@ UnAssembleObjectFile(FILE *fi)
 	    printf("HUNK_BSS ");
 	    break;
 	}
-	printf(" #%02d (%-15s) Hunk=%08lx Size=%d bytes\n",
+	printf(" #%02d (%-15s) Hunk=%08x Size=%d bytes\n",
 	    srcHunk,
 	    ((su->pu_Name) ? su->pu_Name : ""),
-	    (long)su->pu_Type,
+	    (int32_t)su->pu_Type,
 	    su->pu_Size
 	);
 
@@ -432,7 +432,7 @@ UnAssembleObjectFile(FILE *fi)
 		symNext = FindSymbolNext(sym);
 
 		if (sym->sm_Type > 1) {
-		    printf(" %02x.%08lx %-20s TYPE %d\n", srcHunk, (long)sym->sm_Value, sym->sm_Name, sym->sm_Type);
+		    printf(" %02x.%08x %-20s TYPE %d\n", srcHunk, (int32_t)sym->sm_Value, sym->sm_Name, sym->sm_Type);
 		    continue;
 		}
 		if (sym->sm_Value != offset) {
@@ -454,14 +454,14 @@ UnAssembleObjectFile(FILE *fi)
 		if ((uword)su->pu_Type == 0x3E9) {
 		    if (NoCode == 0)
 			puts("");
-		    printf("*%02x.%08lx %s:\t(%d bytes)\n",
+		    printf("*%02x.%08x %s:\t(%d bytes)\n",
 			srcHunk,
-			(long)offset,
+			(int32_t)offset,
 			sym->sm_Name,
 			symNext ? symNext->sm_Value - offset : su->pu_Size - offset
 		    );
 		} else {
-		    printf(" %02x.%08lx %s:\n", srcHunk, (long)offset, sym->sm_Name);
+		    printf(" %02x.%08x %s:\n", srcHunk, (int32_t)offset, sym->sm_Name);
 		}
 	    }
 

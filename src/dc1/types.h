@@ -106,7 +106,7 @@
 typedef struct Type {
     short   Id;
     const int    *Align;
-    long    Flags;
+    int32_t    Flags;
     const int    *Size;
 
     struct Type *Next;

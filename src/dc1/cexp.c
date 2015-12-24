@@ -55,7 +55,7 @@
  *
  * Revision 1.7  1994/01/03  13:21:01  jtoebes
  * Fixed BUG10002 - Enforcer hit in DC1.
- * Changed the default for a symbol to be a long instead of a function type.
+ * Changed the default for a symbol to be a int32_t instead of a function type.
  *
  * Revision 1.6  1993/11/22  00:28:36  jtoebes
  * Final cleanup to eliminate all cerror() messages with strings.
@@ -88,18 +88,18 @@
 
 /*static short ExpPrec[64] = EXPPREC;*/
 
-Prototype short CompExp(short, Exp **, long);
+Prototype short CompExp(short, Exp **, int32_t);
 Prototype short CompBracedAssign(short, Type *, Exp **, short, Symbol *);
 Prototype short match_nesting(short);
 
-Local void PushOp(Exp **, Exp **, void (*)(Exp **), long, long);
+Local void PushOp(Exp **, Exp **, void (*)(Exp **), int32_t, int32_t);
 Local void PushAtom(Exp **, Exp **, void (*)(Exp **));
 Local void CombineOp(Exp **, Exp **);
 
 Exp *HackTmpExp;		/*  free expression cache   */
 
 short
-CompExp(short t, Exp **pexp, long commaok)
+CompExp(short t, Exp **pexp, int32_t commaok)
 {
     short unary = 1;		/*  operator state  */
     short notdone = 1;
@@ -149,8 +149,8 @@ CompExp(short t, Exp **pexp, long commaok)
 		    Type *baseType;
 		    Type *type;
 		    Symbol *sym;
-		    long  baseFlags;
-		    long  regFlags;
+		    int32_t  baseFlags;
+		    int32_t  regFlags;
 
 		    t = GetToken();
 
@@ -188,8 +188,8 @@ CompExp(short t, Exp **pexp, long commaok)
 		    Type *baseType;
 		    Type *type;
 		    Symbol *sym;
-		    long  baseFlags;
-		    long  regFlags;
+		    int32_t  baseFlags;
+		    int32_t  regFlags;
 
 		    t = GetToken();
 
@@ -227,7 +227,7 @@ CompExp(short t, Exp **pexp, long commaok)
 		Assert(0);
 				/*  terminator	*/
 	    case TokEnumConst:
-		LexIntConst = (long)LexData;
+		LexIntConst = (int32_t)(intptr_t)LexData;
 		LexUnsigned = 0;
 	    case TokIntConst:
 		PushAtom(&atomStack, &opStack, GenIntConst);
@@ -281,7 +281,7 @@ CompExp(short t, Exp **pexp, long commaok)
 		    if (t != TokLParen)
 		    {
 			zerror(EERROR_UNDEFINED_SYMBOL, SymToString(LexSym));
-			/* default is a long */
+			/* default is a int32_t */
 			var->Type = &LongType;
 		    }
 		    else
@@ -560,8 +560,8 @@ PushOp(patomStack, popStack, genFunc, precedence, order)
 Exp **patomStack;
 Exp **popStack;
 void (*genFunc)(Exp **);
-long precedence;
-long order;
+int32_t precedence;
+int32_t order;
 
 {
     Exp *exp;
@@ -689,8 +689,8 @@ short
 CompBracedAssign(short t, Type *type, Exp **pexp, short lbraced, Symbol *sym)
 {
     Exp *exp;
-    long **caBase;
-    long index = 0;
+    int32_t **caBase;
+    int32_t index = 0;
 
     /*
      *	create downlevel
@@ -814,7 +814,7 @@ CompBracedAssign(short t, Type *type, Exp **pexp, short lbraced, Symbol *sym)
 			 *  force the array to be terminated & zero filled
 			 */
 
-			long newLen = *type->Size - index + sexp->ex_StrLen;
+			int32_t newLen = *type->Size - index + sexp->ex_StrLen;
 			char *new = talloc(newLen);
 			movmem(sexp->ex_StrConst, new, sexp->ex_StrLen);
 
@@ -835,13 +835,14 @@ CompBracedAssign(short t, Type *type, Exp **pexp, short lbraced, Symbol *sym)
 
 		t = CompExp(t, pexp, 0);
 		if (pexp == &exp->ex_ExpL && (*pexp)->ex_Token == TokIntConst) {
-		    long *captr = talloc(sizeof(long) * 2);
+		    int32_t *captr = talloc(sizeof(void *) + sizeof(int32_t));
 		    Exp  *caexp = *pexp;
 
 		    *caBase = captr;
-		    captr[1] = caexp->ex_Stor.st_IntConst;
+		    *(int32_t *)((char *)captr + sizeof(void *)) =
+				caexp->ex_Stor.st_IntConst;
 
-		    caBase = (long **)&captr[0];
+		    caBase = (int32_t **)&captr[0];
 		    HackTmpExp = caexp;
 		    *pexp = NULL;
 		} else {

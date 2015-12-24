@@ -36,9 +36,9 @@ typedef struct Label {
     short   l_Flags;
     union {
 	uword	Mask;		/*  register mask		*/
-	long	Value;		/*  integral value		*/
-	long	Offset; 	/*  offset in section (if def), passB */
-	long	Size;		/*  COMMON def			*/
+	int32_t	Value;		/*  integral value		*/
+	int32_t	Offset; 	/*  offset in section (if def), passB */
+	int32_t	Size;		/*  COMMON def			*/
     } u;
 } Label;
 

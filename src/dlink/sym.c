@@ -14,8 +14,8 @@
 
 Prototype int	hash(char *, short);
 Prototype Sym	*FindSymbol(void *, short);
-Prototype Sym	*CreateSymbol(void *, short, Hunk *, long, long);
-Prototype void	SetSymbol(Sym *, Hunk *, long, long);
+Prototype Sym	*CreateSymbol(void *, short, Hunk *, int32_t, int32_t);
+Prototype void	SetSymbol(Sym *, Hunk *, int32_t, int32_t);
 
 static Sym *SymHash[HSIZE];
 
@@ -25,7 +25,7 @@ static Sym *SymHash[HSIZE];
 int
 hash(char *name, short len)
 {
-    long hv = 0x1234FCB4;
+    int32_t hv = 0x1234FCB4;
 
     while (len) {
 	hv = (hv >> 23) ^ (hv << 5) ^ *name;
@@ -57,7 +57,7 @@ FindSymbol(void *name, short len)
 }
 
 Sym *
-CreateSymbol(void *name, short len, Hunk *hunk, long value, long type)
+CreateSymbol(void *name, short len, Hunk *hunk, int32_t value, int32_t type)
 {
     Sym *sym;
     Sym **ps;
@@ -87,7 +87,7 @@ CreateSymbol(void *name, short len, Hunk *hunk, long value, long type)
 }
 
 void
-SetSymbol(Sym *sym, Hunk *hunk, long value, long type)
+SetSymbol(Sym *sym, Hunk *hunk, int32_t value, int32_t type)
 {
     sym->Hunk = hunk;
     sym->Value = value;

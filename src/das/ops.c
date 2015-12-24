@@ -348,7 +348,7 @@ int
 ophash(str)
 char *str;
 {
-    long hv = 0x1B465D8;
+    int32_t hv = 0x1B465D8;
 
     while (*str) {
 	hv = (hv >> 23) ^ (hv << 5) ^ (ubyte)*str;
@@ -364,7 +364,7 @@ InitOps()
     OpCod *ocn;
 
     for (oc = Codes; oc->OpName; ++oc) {
-	long hv = ophash(oc->OpName);
+	int32_t hv = ophash(oc->OpName);
 
 	oc->HNext = OHash[hv];
 	OHash[hv] = oc;
@@ -383,7 +383,7 @@ GetOpByName(name)
 char *name;
 {
     OpCod *oc;
-    long hv = ophash(name);
+    int32_t hv = ophash(name);
 
     for (oc = OHash[hv]; oc && strcmp(name, oc->OpName) != 0; oc = oc->HNext);
     return(oc);
@@ -420,7 +420,7 @@ MachCtx *mc;
 	else if (mc->OpCode->Special || (mc->OpCode->SModes & AF_BBRANCH))
 	    i = 0;
 	else
-	    i = (opsize + 1) >> 1;  /* 1 for bw, 2 for long */
+	    i = (opsize + 1) >> 1;  /* 1 for bw, 2 for int32_t */
     } else if (i == -2) {   /*  index mode  */
 	i = 1;
 	if (mc->Oper1.ExtWord & EXTF_FULL) {
@@ -446,7 +446,7 @@ MachCtx *mc;
 	else if (mc->OpCode->Special)
 	    j = 0;
 	else
-	    j = (opsize + 1) >> 1;  /* 1 for bw, 2 for long */
+	    j = (opsize + 1) >> 1;  /* 1 for bw, 2 for int32_t */
     } else if (j == -2) {   /*  index mode  */
 	j = 1;
 	if (mc->Oper2.ExtWord & EXTF_FULL) {
@@ -489,7 +489,7 @@ GetSpecDataSize(mc, oc, ea, poff)
 MachCtx *mc;
 OpCod *oc;
 EffAddr *ea;
-long *poff;
+int32_t *poff;
 {
     short opsize;
     *poff = 0;
@@ -548,7 +548,7 @@ long *poff;
     case 2:
 	return(2);          /*  word relocation */
     case 4:
-	return(4);          /*  long relocation */
+	return(4);          /*  int32_t relocation */
     }
     cerror(ESOFTWARN_BAD_OP_SIZE, mc->OpSize);
 }

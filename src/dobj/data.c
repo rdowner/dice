@@ -10,14 +10,14 @@
 
 #include "defs.h"
 
-Prototype void DumpData(FILE *fi, short srcHunk, long begOffset, long endOffset);
-Prototype void DumpHex(FILE *fi, short srcHunk, long begOffset, long endOffset);
+Prototype void DumpData(FILE *fi, short srcHunk, int32_t begOffset, int32_t endOffset);
+Prototype void DumpHex(FILE *fi, short srcHunk, int32_t begOffset, int32_t endOffset);
 
 void
-DumpData(FILE *fi, short srcHunk, long begOffset, long endOffset)
+DumpData(FILE *fi, short srcHunk, int32_t begOffset, int32_t endOffset)
 {
     RelocInfo *r;
-    long data;
+    int32_t data;
 
     for (r = FindRelocOffset(begOffset, srcHunk); r && r->ri_SrcOffset < endOffset; r = FindRelocNext(r)) {
 	DumpHex(fi, srcHunk, begOffset, r->ri_SrcOffset);
@@ -26,7 +26,7 @@ DumpData(FILE *fi, short srcHunk, long begOffset, long endOffset)
 	    cerror(EFATAL, "Software Error, Reloc-Offset");
 
 	data = LoadRelocData(fi, r);
-	printf(" %02x.%08lx  %s\n", srcHunk, (long)(r->ri_SrcOffset + StartDo), RelocToStr(r, data, 1, 0, -1));
+	printf(" %02x.%08x  %s\n", srcHunk, (int32_t)(r->ri_SrcOffset + StartDo), RelocToStr(r, data, 1, 0, -1));
 	begOffset = r->ri_SrcOffset + r->ri_RelocSize;
     }
     if (begOffset != endOffset)
@@ -34,16 +34,16 @@ DumpData(FILE *fi, short srcHunk, long begOffset, long endOffset)
 }
 
 void
-DumpHex(FILE *fi, short srcHunk, long begOffset, long endOffset)
+DumpHex(FILE *fi, short srcHunk, int32_t begOffset, int32_t endOffset)
 {
-    long index = 0;
+    int32_t index = 0;
 
     if (begOffset == endOffset)
 	return;
 
     while (begOffset < endOffset) {
 	if ((index & 15) == 0)
-	    printf(" %02x.%08lx ", srcHunk, (long)(begOffset + StartDo));
+	    printf(" %02x.%08x ", srcHunk, (int32_t)(begOffset + StartDo));
 
 	if (begOffset + 1 == endOffset) {
 	    ubyte c = -1;

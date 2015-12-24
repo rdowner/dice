@@ -65,17 +65,17 @@ short	ARegRecov;
 short	DRegRecov;
 short	ForceLinkFlag;
 Exp	DummyExp;
-long	SaveLastLexIdxBeg;	/*  place marker for retry pass     */
-long	SaveLastLexLine;
-long	LastLexIdxBeg;		/*  place marker for debug output   */
-long	LastLexLine;
+int32_t	SaveLastLexIdxBeg;	/*  place marker for retry pass     */
+int32_t	SaveLastLexLine;
+int32_t	LastLexIdxBeg;		/*  place marker for debug output   */
+int32_t	LastLexLine;
 #ifdef MINIDICE
 int	Cnt = MINIMAXPROCS * 37;
 #endif
 
 
-Prototype long AllocLabel(void);
-Prototype void InitGen(long);
+Prototype int32_t AllocLabel(void);
+Prototype void InitGen(int32_t);
 Prototype void GenerateVar(Var *);
 Prototype void GenBlock(BlockStmt *);
 Prototype void GenFor(ForStmt *);
@@ -91,19 +91,19 @@ Prototype void GenReturn(ReturnStmt *);
 Prototype void GenBreakPoint(BreakPointStmt *);
 Prototype void GenExp(ExpStmt *);
 Prototype void GenExpResult(ExpStmt *);
-Prototype int IsRegCall(long);
-Prototype void DebugLine(long);
+Prototype int IsRegCall(int32_t);
+Prototype void DebugLine(int32_t);
 
-long
+int32_t
 AllocLabel()
 {
-    static long Label = 0;
+    static int32_t Label = 0;
 
     return(++Label);
 }
 
 void
-InitGen(long enab)
+InitGen(int32_t enab)
 {
     static short Refs;
 
@@ -134,7 +134,7 @@ Var *var;
 	if (var->u.Block == NULL) {	/*  reference	*/
 	    ;
 	} else {			/*  definition	*/
-	    long opos;
+	    int32_t opos;
 	    BlockStmt *block = var->u.Block;
 
 	    asm_segment(&DummyCodeVar);
@@ -261,7 +261,7 @@ Var *var;
  */
 
 IsRegCall(flags)
-long flags;
+int32_t flags;
 {
 #ifdef REGISTERED
     if (flags & TF_DOTDOTDOT)
@@ -331,7 +331,7 @@ BlockStmt *block;
 	Var *var;
 	char argno[16];
 	char prgno[16];
-	long argnoMask = 0;
+	int32_t argnoMask = 0;
 	short i;
 	short refcmp;
 	PragNode *pragma_call = TestPragmaCall(ProcVar, prgno);
@@ -404,7 +404,7 @@ BlockStmt *block;
 	    var->var_Stor.st_Type = 0;
 
 	    if ((var->Type->Id == TID_PTR || var->Type->Id == TID_INT || ((var->Flags & VF_ARG) && var->Type->Id == TID_ARY)) && !(var->Flags & (TF_VOLATILE|TF_ALIGNED|VF_ADDR))) {
-		long r;
+		int32_t r;
 
 		if (RefCmpNext > var->Refs && var->Refs > RefCmp)      /*  minimum next    */
 		    RefCmpNext = var->Refs;
@@ -641,7 +641,7 @@ GenSwitch(stmt)
 SwitchStmt *stmt;
 {
     short i;
-    long deflabel;
+    int32_t deflabel;
 
     if (GenPass == 0) {
         SubStmtCall(BeforeBlock);
@@ -651,7 +651,7 @@ SwitchStmt *stmt;
 	}
 	SubStmtCall(DefBlock);
     } else {
-	long i;
+	int32_t i;
 
 	/*
 	 *  note, asm_switch() sorts cases & labels arrays
@@ -699,10 +699,10 @@ void
 GenGoto(stmt)
 GotoStmt *stmt;
 {
-    long labelid;
+    int32_t labelid;
 
     if (GenPass) {
-    	labelid = (long)stmt->GotoLabel->Data;
+    	labelid = (int32_t)(intptr_t)stmt->GotoLabel->Data;
 	if (labelid == 0)
 	{
 	    yerror(stmt->st_LexIdx, EERROR_GOTO_LABEL_NOT_FOUND,
@@ -822,9 +822,9 @@ ExpStmt *stmt;
 
 void
 DebugLine(lexIdx)
-long lexIdx;
+int32_t lexIdx;
 {
-    long lexIdxBeg;
+    int32_t lexIdxBeg;
     char *lexFile;
 
     if (lexIdx == 0)
@@ -832,16 +832,16 @@ long lexIdx;
 
     if (lexIdx >= LastLexIdxBeg) {
 	{
-	    long lexFileNameLen;
-	    long lexLine = FindLexFileLine(lexIdx, &lexFile, &lexFileNameLen, &lexIdxBeg);
+	    int32_t lexFileNameLen;
+	    int32_t lexLine = FindLexFileLine(lexIdx, &lexFile, &lexFileNameLen, &lexIdxBeg);
 	    if (lexLine <= LastLexLine)
 		return;
 	    LastLexLine = lexLine;
-	    printf("\tdebug\t%ld\n", lexLine);
+	    printf("\tdebug\t%d\n", lexLine);
 	}
 
 	if (AsmOnlyOpt) {
-	    long i;
+	    int32_t i;
 	    short c;
 
 	    /*

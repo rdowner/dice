@@ -16,24 +16,24 @@ Prototype Sym *FindSymbol(char *, short);
 Prototype int UndefSymbol(char *, short);
 Prototype void DefineOptSymbol(char *);
 Prototype Sym *DefineSimpleSymbol(char *, char *, short);
-Prototype Sym *DefineSymbol(char *, short, short, short, char **, short *, char *, short, short, long);
+Prototype Sym *DefineSymbol(char *, short, short, short, char **, short *, char *, short, short, int32_t);
 
 Prototype void DumpPrecompSymbols(FILE *);
 Prototype void DefinePrecompSymbol(Sym *);
 
-Prototype long SymGroup;
+Prototype int32_t SymGroup;
 
 static Sym *SymHash[HSIZE];
 static Sym *SymCache;
 
-long	SymGroup;
+int32_t	SymGroup;
 
 #ifdef NO_ASM
 
 int
 hash(char *ptr, short len)
 {
-    long hv = 0x1234FCD1;
+    int32_t hv = 0x1234FCD1;
 
     while (len) {
 	hv = (hv >> 23) ^ (hv << 5) ^ (ubyte)*ptr;
@@ -121,7 +121,7 @@ DefineSymbol(
     char *text,
     short allocName,
     short allocText,
-    long textSize
+    int32_t textSize
 ) {
     short hv = hash(name, len);
     Sym **psym = &SymHash[hv & HMASK];
@@ -177,18 +177,18 @@ Sym *sym;
      *	adjust pointers
      */
 
-    sym->SymName = (long)sym->SymName + (char *)sym;
+    sym->SymName = (int32_t)(intptr_t)sym->SymName + (char *)sym;
     if (sym->Args) {
 	int i;
 
-	sym->Args = (char **)((long)sym->Args + (char *)sym);
-	sym->ArgsLen = (short *)((long)sym->ArgsLen + (char *)sym);
+	sym->Args = (char **)((int32_t)(intptr_t)sym->Args + (char *)sym);
+	sym->ArgsLen = (short *)((int32_t)(intptr_t)sym->ArgsLen + (char *)sym);
 	for (i = 0; i < sym->NumArgs; ++i) {
-	    sym->Args[i] = (long)sym->Args[i] + (char *)sym;
+	    sym->Args[i] = (int32_t)(intptr_t)sym->Args[i] + (char *)sym;
 	}
     }
     if (sym->Text)
-	sym->Text = (long)sym->Text + (char *)sym;
+	sym->Text = (int32_t)(intptr_t)sym->Text + (char *)sym;
 
     /*
      *	enter into hash table
@@ -207,7 +207,7 @@ void
 DumpPrecompSymbols(fo)
 FILE *fo;
 {
-    long i;
+    int32_t i;
     Sym **psym;
 
     for (i = 0, psym = SymHash; i < HSIZE; ++i, ++psym) {
@@ -215,17 +215,17 @@ FILE *fo;
 
 	for (sym = *psym; sym; sym = sym->Next) {
 	    if (sym->SymGroup == SymGroup) {
-		long bytes = sizeof(Sym);
+		int32_t bytes = sizeof(Sym);
 		Sym xsym = *sym;
 
 		/*
 		 *  dump symbol
 		 */
 
-		xsym.SymName = (char *)bytes;
+		xsym.SymName = (char *)(intptr_t)bytes;
 		bytes += sym->SymLen;
 
-		xsym.Text = (char *)bytes;
+		xsym.Text = (char *)(intptr_t)bytes;
 		bytes += sym->TextLen;
 
 		bytes = (bytes + 3) & ~3;   /*	LW-ALIGN    */
@@ -233,10 +233,10 @@ FILE *fo;
 		if (sym->Args) {
 		    int i;
 
-		    xsym.Args = (char **)bytes;
+		    xsym.Args = (char **)(intptr_t)bytes;
 		    bytes += sym->NumArgs * sizeof(char *);
 
-		    xsym.ArgsLen = (short *)bytes;
+		    xsym.ArgsLen = (short *)(intptr_t)bytes;
 		    bytes += sym->NumArgs * sizeof(sym->ArgsLen[0]);
 
 		    for (i = 0; i < sym->NumArgs; ++i)
@@ -245,7 +245,7 @@ FILE *fo;
 
 		bytes = (bytes + 3) & ~3;   /*	LW-ALIGN    */
 
-		fwrite(&bytes, sizeof(long), 1, fo);
+		fwrite(&bytes, sizeof(int32_t), 1, fo);
 
 		bytes = sizeof(Sym) + sym->SymLen + sym->TextLen;
 		fwrite(&xsym, sizeof(Sym), 1, fo);
@@ -264,7 +264,7 @@ FILE *fo;
 		    bytes += sym->NumArgs * sizeof(sym->ArgsLen[0]);
 
 		    for (i = 0; i < sym->NumArgs; ++i) {
-			fwrite(&bytes, sizeof(long), 1, fo);
+			fwrite(&bytes, sizeof(int32_t), 1, fo);
 			bytes += sym->ArgsLen[i];
 		    }
 		    fwrite(sym->ArgsLen, sizeof(*sym->ArgsLen), sym->NumArgs, fo);
@@ -282,7 +282,7 @@ FILE *fo;
 		    ++bytes;
 		}
 
-		fwrite(&bytes, sizeof(long), 1, fo);
+		fwrite(&bytes, sizeof(int32_t), 1, fo);
 	    }
 	}
     }

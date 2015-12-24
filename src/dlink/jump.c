@@ -15,7 +15,7 @@
 #include "defs.h"
 
 Prototype int	HandleJumpTable(List *);
-Prototype int	HunkExtSymJUMP(Hunk *, ubyte, ulong, ulong *);
+Prototype int	HunkExtSymJUMP(Hunk *, ubyte, uint32_t, uint32_t *);
 
 int
 HandleJumpTable(list)
@@ -50,12 +50,12 @@ List *list;
  */
 
 int
-HunkExtSymJUMP(Hunk *hunk, ubyte type, ulong len, ulong *scan)
+HunkExtSymJUMP(Hunk *hunk, ubyte type, uint32_t len, uint32_t *scan)
 {
     Sym *sym;
     Hunk *destHunk;
-    long n;
-    ulong *newScan;
+    int32_t n;
+    uint32_t *newScan;
     short didJmp = 0;
 
     /*
@@ -90,8 +90,8 @@ HunkExtSymJUMP(Hunk *hunk, ubyte type, ulong len, ulong *scan)
 	char *dbase = (char *)hunk->Data;
 
 	for (++newScan; n--; ++newScan) {
-	    ulong doff = FromMsbOrder(*newScan);
-	    long pcrel;
+	    uint32_t doff = FromMsbOrder(*newScan);
+	    int32_t pcrel;
 	    uword dcontents = FromMsbOrderShort(*(uword *)(dbase + doff));
 
 	    if (dcontents) {	/*  XXX  */
@@ -125,8 +125,8 @@ HunkExtSymJUMP(Hunk *hunk, ubyte type, ulong len, ulong *scan)
     n = FromMsbOrder(*newScan);
 
     for (++newScan; n--; ++newScan) {
-	ulong doff = FromMsbOrder(*newScan);	/*  offset in hunk  */
-	long  rv = hunk->TotalBytes - doff;
+	uint32_t doff = FromMsbOrder(*newScan);	/*  offset in hunk  */
+	int32_t  rv = hunk->TotalBytes - doff;
 
 	if (rv < -32768 || rv > 32767)
 	    cerror(EFATAL_PC_REL_RANGE);

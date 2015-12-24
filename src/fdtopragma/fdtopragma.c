@@ -55,16 +55,13 @@ DCOPYRIGHT;
 
 typedef unsigned char  ubyte;
 typedef unsigned short uword;
-#ifndef linux
-typedef unsigned long  ulong;
-#endif
 typedef struct List	List;
 typedef struct Node	Node;
 
 typedef struct FDNode {
     Node    fn_Node;
     short   fn_Args;
-    long    fn_Offset;	    /*	library offset	    */
+    int32_t    fn_Offset;	    /*	library offset	    */
     char    fn_Regs[32];    /*	transfer registers  */
 } FDNode;
 
@@ -73,7 +70,7 @@ void	exiterr(const char *, ...);
 void	ScanFD(FILE *);
 char	*ParseArg(char *, char **);
 void	GenerateOutput(FILE *, char *);
-void	GenerateFunction(char *, long);
+void	GenerateFunction(char *, int32_t);
 void	GeneratePragmas(char *, char *);
 
 List	FDList; 	/*  list of FD files   */
@@ -214,7 +211,7 @@ void
 ScanFD(fi)
 FILE *fi;
 {
-    long bias = -1;
+    int32_t bias = -1;
     short end = 0;
     short public = 1;
 
@@ -296,7 +293,7 @@ FILE *fi;
 void
 GenerateFunction(buf, bias)
 char *buf;
-long bias;
+int32_t bias;
 {
     FDNode *fd = malloc(sizeof(FDNode));
     char *scanPtr = buf;

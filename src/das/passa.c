@@ -25,7 +25,7 @@ PassA()
     char *ptr = CurFile->fn_AsBuf;
     char c;
     MachCtx *mc;
-    long lineno = 0;
+    int32_t lineno = 0;
 
     while ((c = *ptr) != 0) {
 	CurFile->fn_LineNo = ++lineno;

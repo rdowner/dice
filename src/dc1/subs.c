@@ -34,15 +34,12 @@
 
 #include "defs.h"
 
-static long **TBase;
-static char Buf1[256];
-
-Prototype long Align(long, long);
-Prototype long PowerOfTwo(ulong);
-Prototype void *zalloc(long);
-Prototype void *talloc(long);
+Prototype int32_t Align(int32_t, int32_t);
+Prototype int32_t PowerOfTwo(uint32_t);
+Prototype void *zalloc(int32_t);
+Prototype void *talloc(int32_t);
 Prototype void tclear(void);
-Prototype void *zrealloc(void *, long, long, long);
+Prototype void *zrealloc(void *, int32_t, int32_t, int32_t);
 Prototype char *SymToString(Symbol *);
 Prototype char *TypeToString(Type *);
 Prototype char *TypeToProtoStr(Type *, short);
@@ -51,15 +48,15 @@ Prototype void veprintf(short, const char *, va_list);
 Prototype void AddAuxSub(char *);
 Prototype void DumpAuxSubs(void);
 #ifdef NOTDEF
-Prototype void MarkAreaMunged(long, long);
-Prototype int  OffsetMunged(long);
+Prototype void MarkAreaMunged(int32_t, int32_t);
+Prototype int  OffsetMunged(int32_t);
 #endif
 
-Prototype long FPStrToInt(Exp *, char *, int);
-Prototype char *IntToFPStr(long, long, long *);
+Prototype int32_t FPStrToInt(Exp *, char *, int);
+Prototype char *IntToFPStr(int32_t, int32_t, int32_t *);
 Prototype int FltIsZero(Exp *, char *, int);
 Prototype int FltIsNegative(char *, int);
-Prototype long FPrefix(Exp *, char *, int, char *);
+Prototype int32_t FPrefix(Exp *, char *, int, char *);
 Prototype void StorToTmpFlt(Exp *, Stor *, TmpFlt *);
 Prototype void TmpFltToStor(Exp *, TmpFlt *, Stor *);
 Prototype void BalanceTmpFlt(TmpFlt *, TmpFlt *);
@@ -67,23 +64,23 @@ Prototype void NormalizeTmpFlt(TmpFlt *);
 Prototype int  TmpFltMantDiv(uword *, short, uword);
 Prototype int  TmpFltMantMul(uword *, short, uword);
 
-Prototype long Internationalize(char *str, long size);
+Prototype int32_t Internationalize(char *str, int32_t size);
 Prototype int LoadLocaleDefs(char *file);
 
 Prototype void NoMem(void);
 
-long
-Align(long bytes, long align)
+int32_t
+Align(int32_t bytes, int32_t align)
 {
-    long n = align - (bytes & (align - 1));
+    int32_t n = align - (bytes & (align - 1));
     if (n != align)
 	bytes += n;
     return(bytes);
 }
 
-long
+int32_t
 PowerOfTwo(v)
-ulong v;
+uint32_t v;
 {
     short i;
 
@@ -100,14 +97,14 @@ ulong v;
 
 void *
 zalloc(bytes)
-long bytes;
+int32_t bytes;
 {
     static char *Buf;
-    static long Bytes;
+    static int32_t Bytes;
 
     ++ZAllocs;
 
-    bytes = (bytes + 3) & ~3;
+    bytes = (bytes + 7) & ~7;
 
     if (bytes <= 128)
     {
@@ -144,13 +141,15 @@ long bytes;
     }
 }
 
-static char *TBuf;
+static char Buf1[256];
+static void **TBase;
+static void **TBuf;
 static char *TPtr;
-static long TBytes;
+static int32_t TBytes;
 
 void *
 talloc(bytes)
-long bytes;
+int32_t bytes;
 {
     ++TAllocs;
 
@@ -167,19 +166,20 @@ long bytes;
         }
         else
         {
-            void *ptr = malloc(CHUNKSIZE+sizeof(long)*2);
+            void **ptr = malloc(CHUNKSIZE + sizeof(void *) + sizeof(void *));
 
             if (!ptr)
                 NoMem();
 
             if (TBuf) {
-                *(long **)TBuf = (long *)TBase;
-                TBase = (long **)TBuf;
+		*TBuf = (void *)TBase;
+		TBase = (void *)TBuf;
             }
+	    *ptr = NULL;
             TBuf = ptr;
-            ptr = (long *)ptr + 1;
-            *(long *)ptr = CHUNKSIZE;
-            ptr = (long *)ptr + 1;
+	    ++ptr;
+	    *(int32_t *)ptr = CHUNKSIZE;
+	    ++ptr;
 
             ++TChunks;
             setmem((char *)ptr, CHUNKSIZE, 0);
@@ -190,16 +190,16 @@ long bytes;
     }
     else /* bytes > 128 */
     {
-	void *ptr = malloc(bytes+sizeof(long)*2);
+	void **ptr = malloc(bytes + sizeof(void *) + sizeof(void *));
 
 	if (!ptr)
 	    NoMem();
 
-	*(long **)ptr = (long *)TBase;
-	TBase = (long **)ptr;
-	ptr = (long *)ptr + 1;
-	*(long *)ptr = bytes;
-	ptr = (long *)ptr + 1;
+	*ptr = (void *)TBase;
+	TBase = (void *)ptr;
+	++ptr;
+	*(int32_t *)ptr = bytes;
+	++ptr;
 
 	++TAloneChunks;
 	setmem((char *)ptr, bytes, 0);
@@ -210,12 +210,12 @@ long bytes;
 void
 tclear()
 {
-    long *ptr;
+    void **ptr;
 
     /*TBytes = 0;*/
-    while ((ptr = (long *)TBase) != NULL) {
-	TBase = (long **)ptr[0];
-	/*setmem((char *)(ptr + 2), ptr[1], 0x81);*/
+    while ((ptr = TBase) != NULL) {
+	TBase = (void **)*ptr;
+	/*setmem((char *)ptr + sizeof(ptr), ptr[1], 0x81);*/
 	free(ptr);
     }
 }
@@ -223,9 +223,9 @@ tclear()
 void *
 zrealloc(ptr, objsize, oldsize, newsize)
 void *ptr;
-long objsize;
-long oldsize;
-long newsize;
+int32_t objsize;
+int32_t oldsize;
+int32_t newsize;
 {
     void *new;
 
@@ -245,7 +245,7 @@ SymToString(sym)
 Symbol *sym;
 {
     static char *Buf;
-    static long Len;
+    static int32_t Len;
 
     if (sym == NULL)
 	return("<unnamed>");
@@ -288,7 +288,7 @@ TypeToProtoStr(Type *type, short i)
 	    (*type->Size == 0) ? "void" :
 	    (*type->Size == 1) ? "char" :
 	    (*type->Size == 2) ? "short" :
-	    (*type->Size == 4) ? "long" : "iunknown"
+	    (*type->Size == 4) ? "int" : "iunknown"
 	);
 	break;
     case TID_FLT:
@@ -337,13 +337,19 @@ TypeToProtoStr(Type *type, short i)
 void
 veprintf(short asout, const char *str, va_list va)
 {
+    va_list tmp_va;
+
+    va_copy(tmp_va, va);
     if (asout) {
 	printf(";");
-	vprintf(str, va);
+	vprintf(str, tmp_va);
     }
-    vfprintf(stderr, str, va);
-    if (ErrorFi)
-	vfprintf(ErrorFi, str, va);
+    va_copy(tmp_va, va);
+    vfprintf(stderr, str, tmp_va);
+    if (ErrorFi) {
+	va_copy(tmp_va, va);
+	vfprintf(ErrorFi, str, tmp_va);
+    }
 }
 
 void
@@ -398,15 +404,15 @@ DumpAuxSubs()
  *  Convert FP value to integer.  Generate prefix and exponent
  */
 
-long
+int32_t
 FPStrToInt(exp, ptr, len)
 Exp *exp;
 char *ptr;
 int len;
 {
     char *bp = Buf1;
-    long x = FPrefix(exp, ptr, len, bp); /*  convert to prefix and exponent */
-    long v;
+    int32_t x = FPrefix(exp, ptr, len, bp); /*  convert to prefix and exponent */
+    int32_t v;
 
     if (x <= 0) 	    /*	too small   */
 	return(0);
@@ -432,14 +438,14 @@ int len;
 
 char *
 IntToFPStr(v, isuns, plen)
-long v;
-long isuns;
-long *plen;
+int32_t v;
+int32_t isuns;
+int32_t *plen;
 {
     if (isuns)
-	sprintf(Buf1, "%lu", v);
+	sprintf(Buf1, "%u", v);
     else
-	sprintf(Buf1, "%ld", v);
+	sprintf(Buf1, "%d", v);
     *plen = strlen(Buf1);
     return(strdup(Buf1));
 }
@@ -480,14 +486,14 @@ int len;
  */
 
 
-long
+int32_t
 FPrefix(exp, ptr, len, buf)
 Exp *exp;
 char *ptr;
 char *buf;
 int len;
 {
-    long x = 0; 	    /*	exponent of .prefix */
+    int32_t x = 0; 	    /*	exponent of .prefix */
     short sgn = 1;	    /*	sign of prefix	*/
     short zero= 1;
     short blen = sizeof(Buf1) - 1;
@@ -538,7 +544,7 @@ int len;
     *buf = 0;
 
     if (len && (*ptr == 'e' || *ptr == 'E')) {
-	long n = 0;
+	int32_t n = 0;
 	short nsgn = 1;
 	++ptr;
 	--len;
@@ -586,7 +592,7 @@ TmpFlt *f;
     f->tf_Exponent = FPrefix(exp, s->st_FltConst, s->st_FltLen, bp);
     f->tf_Negative = (bp[0] == -1) ? 1 : 0;
     {
-	long z = 0;
+	int32_t z = 0;
 	f->tf_LMantissa[0] = z;
 	f->tf_LMantissa[1] = z;
 	f->tf_LMantissa[2] = z;
@@ -595,8 +601,8 @@ TmpFlt *f;
 
     ++bp;
     while (*bp) {
-	long n = *bp - '0';
-	if (f->tf_LMantissa[0] > (ulong)0xFFFFFFFF / 10 - 10)
+	int32_t n = *bp - '0';
+	if (f->tf_LMantissa[0] > (uint32_t)0xFFFFFFFF / 10 - 10)
 	    break;
 	TmpFltMantMul(f->tf_WMantissa, 8, 10);
 	--f->tf_Exponent;
@@ -667,7 +673,7 @@ TmpFlt *f2;
 	return;
     }
     if (f1->tf_Exponent < f2->tf_Exponent - 40) {
-	long z = 0;
+	int32_t z = 0;
 	f1->tf_Exponent = f2->tf_Exponent;
 	f1->tf_LMantissa[0] = z;
 	f1->tf_LMantissa[1] = z;
@@ -676,7 +682,7 @@ TmpFlt *f2;
 	return;
     }
     if (f2->tf_Exponent < f1->tf_Exponent - 40) {
-	long z = 0;
+	int32_t z = 0;
 	f2->tf_Exponent = f1->tf_Exponent;
 	f2->tf_LMantissa[0] = z;
 	f2->tf_LMantissa[1] = z;
@@ -714,8 +720,8 @@ int
 TmpFltMantDiv(uword *wp, short n, uword v)
 {
     short i;
-    ulong c;
-    ulong r = 0;
+    uint32_t c;
+    uint32_t r = 0;
 
     for (i = 0; i < n; ++i) {
 	r <<= 16;
@@ -730,7 +736,7 @@ int
 TmpFltMantMul(uword *wp, short n, uword v)
 {
     short i;
-    ulong c = 0;
+    uint32_t c = 0;
 
     for (i = n - 1; i >= 0; --i) {
 	c += wp[i] * v;
@@ -757,8 +763,8 @@ NoMem()
 typedef struct MunNode {
     struct MunNode *mn_Next;
     struct MunNode *mn_Prev;
-    long    mn_OffBeg;
-    long    mn_OffEnd;
+    int32_t    mn_OffBeg;
+    int32_t    mn_OffEnd;
 } MunNode;
 
 MunNode *MunBase;
@@ -766,7 +772,7 @@ MunNode **MunTail = &MunBase;
 
 void
 MarkAreaMunged(s, e)
-long s, e;
+int32_t s, e;
 {
     MunNode *mn = zalloc(sizeof(MunNode));
 
@@ -781,7 +787,7 @@ long s, e;
 
 int
 OffsetMunged(i)
-long i;
+int32_t i;
 {
     static MunNode *MunCache;
     MunNode *mn;
@@ -808,7 +814,7 @@ long i;
 #ifdef LATTICE
 
 int
-cmpmem(ubyte *s1, ubyte *s2, long n)
+cmpmem(ubyte *s1, ubyte *s2, int32_t n)
 {
     while (n) {
 	if (*s1 < *s2)
@@ -828,7 +834,7 @@ cmpmem(ubyte *s1, ubyte *s2, long n)
 
 typedef struct INatNode {
     struct INatNode *in_Next;
-    long	in_Id;
+    int32_t	in_Id;
     short	in_Len;
     char	in_Str[4];
 } INatNode;
@@ -840,10 +846,10 @@ INatNode *InBase;
  * The <size> argument includes a terminating \0.
  */
 
-long
-Internationalize(char *str, long size)
+int32_t
+Internationalize(char *str, int32_t size)
 {
-    long iidx;
+    int32_t iidx;
     INatNode *in;
 
     if (str[size-1] == 0)
@@ -887,7 +893,7 @@ LoadLocaleDefs(char *file)
 
 	r = 1;
 	while (fgets(buf, 4096, fi)) {
-	    long id = strtol(buf, &ptr, 10);
+	    int32_t id = strtol(buf, &ptr, 10);
 	    short len;
 
 	    if (*ptr != ':')	/* ignore improperly formatted lines */

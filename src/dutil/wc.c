@@ -26,7 +26,7 @@
 IDENT("wc",".2");
 DCOPYRIGHT;
 
-long t_chars, t_words, t_lines;
+int32_t t_chars, t_words, t_lines;
 
 void wc(FILE *);
 

@@ -42,7 +42,7 @@
 
 #include "defs.h"
 
-Prototype void BoolLabels(Exp *, long, long);
+Prototype void BoolLabels(Exp *, int32_t, int32_t);
 Prototype void GenCondBranch(Exp **);
 Prototype void GenAndAnd(Exp **);
 Prototype void GenOrOr(Exp **);
@@ -61,7 +61,7 @@ Local void TerminateCondition(Exp *, Exp *);
  */
 
 void
-BoolLabels(Exp *exp, long subcond1, long subcond2)
+BoolLabels(Exp *exp, int32_t subcond1, int32_t subcond2)
 {
     if (exp->ex_Flags & EF_COND) {
 	exp->ex_Flags |= EF_CONDACK;
@@ -251,7 +251,7 @@ Exp **pexp;
 		asm_label(exp->ex_LabelF);
 		asm_label(exp->ex_LabelT);
 	    } else {
-		long skip = AllocLabel();
+		int32_t skip = AllocLabel();
 
 		CreateBinaryResultStorage(exp, 0);
 
@@ -348,7 +348,7 @@ Exp **pexp;
 		asm_label(exp->ex_LabelF);
 		asm_label(exp->ex_LabelT);
 	    } else {
-		long skip = AllocLabel();
+		int32_t skip = AllocLabel();
 
 		CreateBinaryResultStorage(exp, 0);
 
@@ -511,22 +511,22 @@ Exp **pexp;
 
 	if (e1->ex_Stor.st_Type == ST_IntConst && e2->ex_Stor.st_Type == ST_IntConst) {
 	    int result = 0;
-	    long v1 = e1->ex_Stor.st_IntConst;
-	    long v2 = e2->ex_Stor.st_IntConst;
+	    int32_t v1 = e1->ex_Stor.st_IntConst;
+	    int32_t v2 = e2->ex_Stor.st_IntConst;
 
 	    if (e1->ex_Type->Flags & TF_UNSIGNED) {
 		switch(exp->ex_Token) {
 		case TokLt:
-		    result = (ulong)v1 < (ulong)v2;
+		    result = (uint32_t)v1 < (uint32_t)v2;
 		    break;
 		case TokLtEq:
-		    result = (ulong)v1 <= (ulong)v2;
+		    result = (uint32_t)v1 <= (uint32_t)v2;
 		    break;
 		case TokGt:
-		    result = (ulong)v1 > (ulong)v2;
+		    result = (uint32_t)v1 > (uint32_t)v2;
 		    break;
 		case TokGtEq:
-		    result = (ulong)v1 >= (ulong)v2;
+		    result = (uint32_t)v1 >= (uint32_t)v2;
 		    break;
 		default:
 		    Assert(0);
@@ -716,8 +716,8 @@ Exp **pexp;
     Exp *e1;
     Exp *e2;
     Exp *e3;
-    long lmiddle;
-    long lend;
+    int32_t lmiddle;
+    int32_t lend;
 
     Assert(exp->ex_ExpL->ex_Token == TokQuestion);
     e1 = exp->ex_ExpL->ex_ExpL;

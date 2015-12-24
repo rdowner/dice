@@ -50,16 +50,13 @@ DCOPYRIGHT;
 
 typedef unsigned char  ubyte;
 typedef unsigned short uword;
-#ifndef linux
-typedef unsigned long  ulong;
-#endif
 typedef struct List	List;
 typedef struct Node	Node;
 
 typedef struct FDNode {
     Node    fn_Node;
     short   fn_Args;
-    long    fn_Offset;	    /*	library offset	    */
+    int32_t    fn_Offset;	    /*	library offset	    */
     char    fn_Regs[32];    /*	transfer registers  */
 } FDNode;
 
@@ -68,7 +65,7 @@ void	exiterr(const char *, ...);
 void	ScanFD(FILE *);
 char	*ParseArg(char *, char **);
 void	GenerateOutput(FILE *, char *);
-void	GenerateFunction(char *, long);
+void	GenerateFunction(char *, int32_t);
 void	GeneratePragmas(char *, char *);
 
 List	FDList; 	/*  list of FD files   */
@@ -209,7 +206,7 @@ void
 ScanFD(fi)
 FILE *fi;
 {
-    long bias = -1;
+    int32_t bias = -1;
     short end = 0;
     short public = 1;
 
@@ -256,7 +253,7 @@ FILE *fi;
 
 		bias = strtol(key, &dummy, 0);
 		if (bias <= 0)
-		    printf("\tError, Illegal ##bias: %ld\n", bias);
+		    printf("\tError, Illegal ##bias: %d\n", bias);
 	    } else {
 		printf("\tError, Illegal ##bias directive\n");
 	    }
@@ -291,7 +288,7 @@ FILE *fi;
 void
 GenerateFunction(buf, bias)
 char *buf;
-long bias;
+int32_t bias;
 {
     FDNode *fd = malloc(sizeof(FDNode));
     char *scanPtr = buf;
@@ -431,7 +428,7 @@ char *outFile;
     {
 	short i;
 
-	fprintf(fo, "#pragma libcall %s %s %lx ", BaseVarPtr,
+	fprintf(fo, "#pragma libcall %s %s %x ", BaseVarPtr,
 	            fd->fn_Node.ln_Name, fd->fn_Offset);
 
 	for (i = fd->fn_Args - 1; i >= 0; --i)

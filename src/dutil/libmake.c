@@ -38,7 +38,7 @@
 typedef struct {
     char *SrcName;
     char *ObjName;
-    long Flags;
+    int32_t Flags;
 } NameNode;
 
 typedef struct Node Node;
@@ -222,7 +222,7 @@ char *av[];
     }
     {
 	FILE *fi = fopen(CtlFile, "r");
-	long siz;
+	int32_t siz;
 
 	if (fi == NULL) {
 	    perror("fopen");
@@ -246,7 +246,7 @@ char *av[];
     {
 	char *namePtr;
 	char *getIdx;
-	long files = 0;
+	int32_t files = 0;
 	NameNode *nn;
 
 	getIdx = nameBuf;
@@ -532,7 +532,7 @@ char *prefix;
     } else {
 	str = malloc(strlen(prefix) + i + strlen(postfix) + 1);
 	strcpy(str, prefix);
-	sprintf(str + strlen(str), "%.*s%s", (long)i, name, postfix);
+	sprintf(str + strlen(str), "%.*s%s", (int32_t)i, name, postfix);
     }
     return(str);
 }
@@ -570,7 +570,7 @@ char *buf;
 #ifdef _DCC
     if (dccExec) {
 	short i;
-	long r;
+	int32_t r;
 
 	for (i = 0; buf[i] && buf[i] != ' '; ++i);
 	if (buf[i] == ' ') {
@@ -595,7 +595,7 @@ char *file;
 DateStamp *ds;
 {
     static struct FileInfoBlock *Fib;
-    long rv = -1;
+    int32_t rv = -1;
     BPTR lock;
 
     if (Fib == NULL)

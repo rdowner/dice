@@ -48,7 +48,7 @@ Prototype   void    HandleCFile(struct NameNode *, int);
 Prototype   void    HandleAFile(struct NameNode *, int);
 Prototype   void    PushTmpFile(char *);
 Prototype   void    PopTmpFile(char *);
-Prototype   long    LoadSegLock(long, char *);
+Prototype   int32_t    LoadSegLock(int32_t, char *);
 Prototype   void    DefaultOutName(void);
 
 Prototype   int     DoCompile(char *, char *);
@@ -139,7 +139,7 @@ short InlineCompOpt;
 short RexxOpt;
 char  *CToDClass;
 
-long	ExitCode;
+int32_t	ExitCode;
 
 char *DLINK;
 char *DAS;
@@ -190,7 +190,7 @@ short	GenLinkOpt;
 short	Verbose;
 short	NoDefaultLibs;
 short	CompilerOpt = DICE_C;
-long	AbsDataStart;	    /*	-mw <addr>  */
+int32_t	AbsDataStart;	    /*	-mw <addr>  */
 char	DebugOpts[64];
 
 NameNode *InlineNode;
@@ -227,7 +227,7 @@ char *xav[];
 
 #ifdef LATTICE
     {
-	long n = (long)Buf;
+	int32_t n = (int32_t)Buf;
 	if (n & 3) {
 	    puts("software error, Buf not aligned");
 	    uexit(25);
@@ -303,7 +303,7 @@ char *xav[];
      */
 
     {
-	long i;
+	int32_t i;
 
 	for (i = 1; i < ac; ++i) {
 	    if (strcmp(av[i], "-no-env") == 0) {
@@ -330,7 +330,7 @@ char *xav[];
     }
 
     {
-	long i;
+	int32_t i;
 	char *dummy;
 
 	for (i = 1; i < ac; ++i) {
@@ -1131,7 +1131,7 @@ char *lfile;
     }
 
     if (AbsData) {
-	sprintf(absdata, " -ma 0x%lx", AbsDataStart);
+	sprintf(absdata, " -ma 0x%x", AbsDataStart);
     } else {
 	absdata[0] = 0;
     }
@@ -1200,9 +1200,13 @@ TmpFileName(tail)
 char *tail;
 {
     char *buf = malloc(strlen(TmpDir) + strlen(tail) + 32);
-    char dummy = 0;
 
-    sprintf(buf, "%s%06lx%s", TmpDir, (long)&dummy >> 8, tail);
+#ifdef AMIGA
+    char dummy = 0;
+    sprintf(buf, "%s%06x%s", TmpDir, (uint32_t)(uintptr_t)&dummy >> 8, tail);
+#else
+    sprintf(buf, "%s%d%s", TmpDir, getpid(), tail);
+#endif
     return(buf);
 }
 
@@ -1364,7 +1368,7 @@ char *cvt;
 
 /*
  *  run_cmd(buf)	buf[-1] is valid for BCPL stuff, buf[-1] is
- *			long word aligned.
+ *			int32_t word aligned.
  */
 
 #ifdef AMIGA
@@ -1394,12 +1398,12 @@ top:
 
 #if INCLUDE_VERSION >= 36
     if (SysBase->lib_Version >= 36) {
-	long seg;
-	long lock = NULL;
+	int32_t seg;
+	int32_t lock = NULL;
 
 	Process *proc = (Process *)FindTask(NULL);
 	CLI *cli = BTOC(proc->pr_CLI, CLI);
-	long oldCommandName;
+	int32_t oldCommandName;
 
 	dbprintf(("cmd-begin\n"));
 
@@ -1410,12 +1414,12 @@ top:
 	CmdName[i+1] = 0;
 
 	if (cli) {
-	    oldCommandName = (long)cli->cli_CommandName;
+	    oldCommandName = (int32_t)cli->cli_CommandName;
 	    cli->cli_CommandName = CTOB(CmdName);
 	}
 
-	if (seg = (long)FindSegment(CmdName + 1, 0L, 0)) {
-	    r = RunCommand(((long *)seg)[2], 16384, buf + i + 1, strlen(buf + i + 1));
+	if (seg = (int32_t)FindSegment(CmdName + 1, 0L, 0)) {
+	    r = RunCommand(((int32_t *)seg)[2], 16384, buf + i + 1, strlen(buf + i + 1));
 	} else if ((lock = _SearchPath(CmdName + 1)) && (seg = LoadSegLock(lock, ""))) {
 	    r = RunCommand(seg, 16384, buf + i + 1, strlen(buf + i + 1));
 	    UnLoadSeg(seg);
@@ -1468,7 +1472,7 @@ top:
     {
 	if (r)
 	{
-	    long rr = HandleErrorRexx(cfile, buf, r);
+	    int32_t rr = HandleErrorRexx(cfile, buf, r);
 	    if (rr == 2)
 		goto top;
 	} else {
@@ -1500,26 +1504,31 @@ run_cmd(cfile, buf)
 char *cfile;	    /* REXX support */
 char *buf;
 {
+    pid_t pid;
     int r;
 
     if (Verbose)
 	printf("%s\n", buf);
 
-    if ((r = vfork()) == 0) {
+    if ((pid = vfork()) == 0) {
 	execlp("/bin/sh", "/bin/sh", "-c", buf, NULL);
 	uexit(30);
     } else {
-#ifdef linux
-	union wait uwait;
-	while (wait(&uwait) != r || WIFEXITED(uwait) == 0)
-	    ;
-	r = uwait.w_retcode;
-#else
 	int status;
-	while (wait(&status) != r || WIFEXITED(status) == 0)
-	    ;
-	r = WEXITSTATUS(status);
-#endif
+	int wr;
+
+	for (;;) {
+		wr = wait(&status);
+		if (wr == pid) {
+			r = WEXITSTATUS(status);
+			break;
+		} else if (wr < 0) {
+			if (errno != EINTR) {
+				r = 1;
+				break;
+			}
+		}
+	}
     }
 
     if (r)
@@ -1715,13 +1724,13 @@ char *name;
 
 #ifdef AMIGA
 
-long
+int32_t
 LoadSegLock(lock, cmd)
-long lock;
+int32_t lock;
 char *cmd;
 {
-    long oldLock;
-    long seg;
+    int32_t oldLock;
+    int32_t seg;
 
     oldLock = CurrentDir(lock);
     seg = LoadSeg(cmd);
@@ -2194,7 +2203,7 @@ int rc;
 		    */
 
 		    if (FindPort(port)) {
-			long ec;
+			int32_t ec;
 
 			Permit();
 			r = PlaceRexxCommandDirect(NULL,port,rexxcmd,NULL,&ec);
@@ -2407,11 +2416,14 @@ void
 eprintf(const char *ctl, ...)
 {
     va_list va;
+    va_list tmp_va;
 
     va_start(va, ctl);
-    vfprintf(stderr, ctl, va);
+    va_copy(tmp_va, va);
+    vfprintf(stderr, ctl, tmp_va);
     if (ErrorFi) {
-	vfprintf(ErrorFi, ctl, va);
+	va_copy(tmp_va, va);
+	vfprintf(ErrorFi, ctl, tmp_va);
     }
     va_end(va);
 }

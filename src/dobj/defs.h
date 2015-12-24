@@ -20,9 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef linux
-#include <netinet/in.h>	/* for ntohs and so forth */
-#endif
+#include <arpa/inet.h>
 
 #define Prototype extern
 
@@ -46,9 +44,6 @@
 
 typedef unsigned char ubyte;
 typedef unsigned short uword;
-#ifndef linux
-typedef unsigned long ulong;
-#endif
 typedef struct MinNode MinNode;
 typedef struct Node Node;
 typedef struct List List;
@@ -91,8 +86,8 @@ typedef struct Symbol {
 #define RF_A4REL    0x0002
 
 extern short NumHunks;
-/*extern long StartDo;*/
-/*extern long StartPc;*/
+/*extern int32_t StartDo;*/
+/*extern int32_t StartPc;*/
 
 #ifdef NOTDEF
 extern void *GetSucc();

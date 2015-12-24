@@ -35,7 +35,7 @@ typedef unsigned short uword;
 #define PERLINE 16
 
 void exiterr (ubyte *);
-void convert (int, FILE *, FILE *, unsigned long);
+void convert (int, FILE *, FILE *, uint32_t);
 uword getwlh (FILE *);
 ubyte puth (ubyte, FILE *);
 
@@ -50,7 +50,7 @@ main(int ac, char **av)
     char *inName=0;
     char *outName=0;
     int  i;
-    unsigned long   org=0;	/* Hex file origin */
+    uint32_t   org=0;	/* Hex file origin */
 
     _fmode = 0x8000;
     if (ac == 1 || ( ac == 2  &&  *av[1]=='?' ) ) {
@@ -155,10 +155,10 @@ convert(format, in, out, org)
 int  format;
 FILE *in;
 FILE *out;
-unsigned long	org;
+uint32_t	org;
 {
 uword		idx;
-unsigned long	len;
+uint32_t	len;
 ubyte		buf[256];
 
   fseek(in, 0L, 2);	      /* Seek to end of file */

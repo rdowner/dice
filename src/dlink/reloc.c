@@ -40,18 +40,18 @@
 
 #include "defs.h"
 
-Prototype void	copy_reloc(ulong *, ulong *, long, long);
-Prototype void	ScanHunkReloc32(Hunk *, long);
-Prototype void	ScanHunkReloc8_16(ulong *, Hunk *, long);
+Prototype void	copy_reloc(uint32_t *, uint32_t *, int32_t, int32_t);
+Prototype void	ScanHunkReloc32(Hunk *, int32_t);
+Prototype void	ScanHunkReloc8_16(uint32_t *, Hunk *, int32_t);
 Prototype void	ScanHunkReloc8(Hunk *);
 Prototype void	ScanHunkReloc16(Hunk *);
 Prototype void	ScanHunkRelocD16(Hunk *);
-Prototype int	ScanHunkExt(Hunk *, long);
-Prototype int	HunkExtSymCK(Hunk *, ubyte, ulong, ulong *);
-Prototype int	HunkExtSymIN(Hunk *, ubyte, ulong, ulong *);
-Prototype int	HunkExtSymCNT(Hunk *, ubyte, ulong, ulong *);
-Prototype int	HunkExtSymRUN(Hunk *, ubyte, ulong, ulong *);
-Prototype int	HunkExtSymComResolve(Hunk *, ubyte, ulong, ulong *);
+Prototype int	ScanHunkExt(Hunk *, int32_t);
+Prototype int	HunkExtSymCK(Hunk *, ubyte, uint32_t, uint32_t *);
+Prototype int	HunkExtSymIN(Hunk *, ubyte, uint32_t, uint32_t *);
+Prototype int	HunkExtSymCNT(Hunk *, ubyte, uint32_t, uint32_t *);
+Prototype int	HunkExtSymRUN(Hunk *, ubyte, uint32_t, uint32_t *);
+Prototype int	HunkExtSymComResolve(Hunk *, ubyte, uint32_t, uint32_t *);
 Prototype void	IllegalHunk(short, Hunk *);
 
 /*
@@ -63,10 +63,10 @@ Prototype void	IllegalHunk(short, Hunk *);
 
 void
 copy_reloc(s, d, nlw, off)
-ulong *s;
-ulong *d;
-long nlw;
-long off;
+uint32_t *s;
+uint32_t *d;
+int32_t nlw;
+int32_t off;
 {
     if (off == 0) {
 	movmem(s, d, nlw * 4);
@@ -82,9 +82,9 @@ long off;
 void
 ScanHunkReloc32(hunk, copy)
 Hunk *hunk;
-long copy;
+int32_t copy;
 {
-    ulong *scan = hunk->Reloc32;
+    uint32_t *scan = hunk->Reloc32;
 
     if (scan == NULL)
 	return;
@@ -93,9 +93,9 @@ long copy;
 
     while (FromMsbOrder(*scan)) {
 	Hunk *destHunk = hunk->Module->Hunks[FromMsbOrder(scan[1])];
-	long hunkNo;
+	int32_t hunkNo;
 
-	if ((ulong)FromMsbOrder(scan[1]) >= hunk->Module->NumHunks)
+	if ((uint32_t)FromMsbOrder(scan[1]) >= hunk->Module->NumHunks)
 	    IllegalHunk(EF_FATAL, NULL);
 	if (destHunk->Node.ln_Type != NT_BSS && destHunk->Node.ln_Type != NT_CODE && destHunk->Node.ln_Type != NT_DATA)
 	    IllegalHunk(EF_FATAL, destHunk);
@@ -111,8 +111,8 @@ long copy;
 	    hunk->HL->CntReloc32[hunkNo] += FromMsbOrder(*scan);
 	} else {				/*  actually copy stuff    */
 	    {
-		long bas = hunk->HL->CpyReloc32[hunkNo];
-		long fnl = bas + FromMsbOrder(*scan);
+		int32_t bas = hunk->HL->CpyReloc32[hunkNo];
+		int32_t fnl = bas + FromMsbOrder(*scan);
 		if (fnl > hunk->HL->CntReloc32[hunkNo])
 		    cerror(EFATAL_RELOC_NOEXIST_HUNK, fnl, hunk->HL->CntReloc32[hunkNo]);
 		copy_reloc(scan + 2, hunk->HL->ExtReloc32[hunkNo] + bas, FromMsbOrder(*scan), hunk->Offset);
@@ -127,13 +127,13 @@ long copy;
 
 	    if (FromMsbOrder(scan[0])) {
 		char *dbase = (char *)hunk->Data;
-		ulong dlen = hunk->Bytes;
+		uint32_t dlen = hunk->Bytes;
 		Hunk *destHunk = hunk->Module->Hunks[FromMsbOrder(scan[1])];
-		long n;
-		long destOff;
-		ulong *newScan;
+		int32_t n;
+		int32_t destOff;
+		uint32_t *newScan;
 
-		if ((ulong)FromMsbOrder(scan[1]) >= hunk->Module->NumHunks)
+		if ((uint32_t)FromMsbOrder(scan[1]) >= hunk->Module->NumHunks)
 		    IllegalHunk(EF_FATAL, NULL);
 		if (destHunk->Node.ln_Type != NT_BSS && destHunk->Node.ln_Type != NT_CODE && destHunk->Node.ln_Type != NT_DATA)
 		    IllegalHunk(EF_FATAL, destHunk);
@@ -149,15 +149,15 @@ long copy;
 		n = FromMsbOrder(*scan);/*  # of offsets    */
 
 		while (n--) {
-		    ulong doff = FromMsbOrder(*newScan);
-		    long rval;
+		    uint32_t doff = FromMsbOrder(*newScan);
+		    int32_t rval;
 
-		    dbprintf(2, ("mod --- reloc32 %s@%ld(%ld) to %s@%ld\n", HunkToStr(hunk), doff, FromMsbOrder(*(ulong *)(dbase + doff)), HunkToStr(destHunk), destOff));
+		    dbprintf(2, ("mod --- reloc32 %s@%ld(%ld) to %s@%ld\n", HunkToStr(hunk), doff, FromMsbOrder(*(uint32_t *)(dbase + doff)), HunkToStr(destHunk), destOff));
 
 		    if (doff >= dlen)
 			cerror(EFATAL_RANGE_HUNK, doff, HunkToStr(hunk));
-		    rval = destOff + FromMsbOrder(*(ulong *)(dbase + doff));
-		    *(ulong *)(dbase + doff) = ToMsbOrder(rval);
+		    rval = destOff + FromMsbOrder(*(uint32_t *)(dbase + doff));
+		    *(uint32_t *)(dbase + doff) = ToMsbOrder(rval);
 		    ++newScan;
 		}
 	    }
@@ -173,12 +173,12 @@ long copy;
 
 void
 ScanHunkReloc8_16(scan, hunk, bits)
-ulong *scan;
+uint32_t *scan;
 Hunk *hunk;
-long bits;
+int32_t bits;
 {
     char *dbase;
-    long dlen;
+    int32_t dlen;
 
     if (scan == NULL)
 	return;
@@ -190,12 +190,12 @@ long bits;
 
     while (FromMsbOrder(*scan)) {
 	Hunk *destHunk = hunk->Module->Hunks[FromMsbOrder(scan[1])];
-	long hunkNo;
-	long n;
-	long destOff;
+	int32_t hunkNo;
+	int32_t n;
+	int32_t destOff;
 	short absWord = 0;
 
-	if ((ulong)FromMsbOrder(scan[1]) >= hunk->Module->NumHunks)
+	if ((uint32_t)FromMsbOrder(scan[1]) >= hunk->Module->NumHunks)
 	    IllegalHunk(EF_FATAL, NULL);
 	if (destHunk->Node.ln_Type != NT_BSS && destHunk->Node.ln_Type != NT_CODE && destHunk->Node.ln_Type != NT_DATA)
 	    IllegalHunk(EF_FATAL, destHunk);
@@ -240,8 +240,8 @@ long bits;
 	scan += 2;  /*	beginning of relocs */
 
 	while (n--) {
-	    ulong doff = FromMsbOrder(*scan); /* offset into this hunk's data */
-	    long pcrel;
+	    uint32_t doff = FromMsbOrder(*scan); /* offset into this hunk's data */
+	    int32_t pcrel;
 
 	    if (doff >= dlen) {
 		cerror(EERROR_RANGE_HUNK, doff);
@@ -315,12 +315,12 @@ Hunk *hunk;
 int
 ScanHunkExt(hunk, cmd)
 Hunk *hunk;
-long cmd;
+int32_t cmd;
 {
-    ulong *scan = hunk->Ext;
+    uint32_t *scan = hunk->Ext;
     ubyte type;
-    ulong len;
-    ulong result = 0;
+    uint32_t len;
+    uint32_t result = 0;
 
     if (scan == NULL)
 	return(0);
@@ -330,7 +330,7 @@ long cmd;
      */
 
     while (FromMsbOrder(*scan)) {
-	ulong *newScan;
+	uint32_t *newScan;
 
 
 	type = FromMsbOrder(*scan) >> 24;
@@ -384,7 +384,7 @@ long cmd;
 	    return(0);
 	}
     }
-    return((long)result);
+    return((int32_t)result);
 }
 
 /*
@@ -402,7 +402,7 @@ long cmd;
  */
 
 int
-HunkExtSymCK(Hunk *hunk, ubyte type, ulong len, ulong *scan)
+HunkExtSymCK(Hunk *hunk, ubyte type, uint32_t len, uint32_t *scan)
 {
     Sym *sym;
 
@@ -430,7 +430,7 @@ HunkExtSymCK(Hunk *hunk, ubyte type, ulong len, ulong *scan)
  */
 
 int
-HunkExtSymIN(Hunk *hunk, ubyte type, ulong len, ulong *scan)
+HunkExtSymIN(Hunk *hunk, ubyte type, uint32_t len, uint32_t *scan)
 {
     Sym *sym;
 
@@ -509,10 +509,10 @@ HunkExtSymIN(Hunk *hunk, ubyte type, ulong len, ulong *scan)
  */
 
 int
-HunkExtSymComResolve(Hunk *hunk, ubyte type, ulong len, ulong *scan)
+HunkExtSymComResolve(Hunk *hunk, ubyte type, uint32_t len, uint32_t *scan)
 {
     Sym *sym;
-    long size;
+    int32_t size;
 
 
     if ((sym = FindSymbol(scan, len)) != NULL) {
@@ -544,14 +544,14 @@ HunkExtSymComResolve(Hunk *hunk, ubyte type, ulong len, ulong *scan)
  */
 
 int
-HunkExtSymCNT(Hunk *hunk, ubyte type, ulong len, ulong *scan)
+HunkExtSymCNT(Hunk *hunk, ubyte type, uint32_t len, uint32_t *scan)
 {
     Sym *sym;
 
     if (type == 129) {
 	if ((sym = FindSymbol(scan, len)) != NULL) {
 	    Hunk *destHunk;
-	    long hunkNo;
+	    int32_t hunkNo;
 
 	    if (sym->Type == 2)
 		return(0);
@@ -569,9 +569,9 @@ HunkExtSymCNT(Hunk *hunk, ubyte type, ulong len, ulong *scan)
     } else if (type == 131 || type == 132 || type == 134 || type == 135) {     /*  16dr,pc 8pc, 32pc	*/
 	if ((sym = FindSymbol(scan, len)) != NULL) {
 	    Hunk *destHunk = sym->Hunk; 	/*  might be NULL	     */
-	    long hunkNo;
-	    long n;
-	    ulong *newScan = scan + len;
+	    int32_t hunkNo;
+	    int32_t n;
+	    uint32_t *newScan = scan + len;
 
 	    if (destHunk) {
 		hunkNo = destHunk->HX->FinalHunkNo;
@@ -579,7 +579,7 @@ HunkExtSymCNT(Hunk *hunk, ubyte type, ulong len, ulong *scan)
 		    cerror(EFATAL_RELOC_NOEXIST_HUNK, hunkNo, NumExtHunks);
 	    }
 	    if (destHunk || sym->Type == 2) {
-		long destOff = 0;
+		int32_t destOff = 0;
 
 		if (sym->Type != 2) {		    /*	DATA symbol */
 		    destOff = destHunk->Offset;
@@ -588,15 +588,15 @@ HunkExtSymCNT(Hunk *hunk, ubyte type, ulong len, ulong *scan)
 		}
 		if ((n = FromMsbOrder(*newScan)) != 0) {
 		    char *dbase = (char *)hunk->Data;
-		    ulong dlen = hunk->Bytes;
+		    uint32_t dlen = hunk->Bytes;
 
 		    /*
 		     *	relocate each 8/16 bit PC relative reference
 		     */
 
 		    for (++newScan; n--; ++newScan) {
-			ulong doff = FromMsbOrder(*newScan);
-			long pcrel = 0;
+			uint32_t doff = FromMsbOrder(*newScan);
+			int32_t pcrel = 0;
 
 			if (doff >= dlen)   /*	illegal or jump table reloc */
 			    continue;
@@ -668,20 +668,20 @@ HunkExtSymCNT(Hunk *hunk, ubyte type, ulong len, ulong *scan)
 			    *(short *)(dbase + doff) = ToMsbOrderShort(pcrel);
 			    break;
 			case 135:   /*	32 bit pc-relative reloc */
-			    dbprintf(2, ("ext sym t=%d reloc32pc %s@%ld(%ld) to %s@%ld\n", sym->Type, HunkToStr(hunk), doff, FromMsbOrder(*(long *)(dbase + doff)), HunkToStr(destHunk), sym->Value));
+			    dbprintf(2, ("ext sym t=%d reloc32pc %s@%ld(%ld) to %s@%ld\n", sym->Type, HunkToStr(hunk), doff, FromMsbOrder(*(int32_t *)(dbase + doff)), HunkToStr(destHunk), sym->Value));
 
 			    switch(sym->Type) {
 			    case 2:	/*  Absolute Symbol	*/
-				pcrel = FromMsbOrder(*(long *)(dbase + doff)) + sym->Value;
+				pcrel = FromMsbOrder(*(int32_t *)(dbase + doff)) + sym->Value;
 				break;
 			    case 1:	/*  std label Symbol	*/
-				pcrel = (destOff + sym->Value + FromMsbOrder(*(long *)(dbase + doff))) - (hunk->Offset + doff);
+				pcrel = (destOff + sym->Value + FromMsbOrder(*(int32_t *)(dbase + doff))) - (hunk->Offset + doff);
 				break;
 			    default:
 				cerror(EERROR_RELOC_ILLEGAL_SYM, sym->Type);
 				break;
 			    }
-			    *(long *)(dbase + doff) = ToMsbOrder(pcrel);
+			    *(int32_t *)(dbase + doff) = ToMsbOrder(pcrel);
 			    break;
 			default:
 			    break;
@@ -695,7 +695,7 @@ HunkExtSymCNT(Hunk *hunk, ubyte type, ulong len, ulong *scan)
     } else if (type == RESERVED_PCJMP_TYPE) {
 	if ((sym = FindSymbol(scan, len)) != NULL) {
 	    Hunk *destHunk;
-	    long hunkNo;
+	    int32_t hunkNo;
 
 	    if ((destHunk = sym->Hunk) != NULL) {
 		hunkNo = destHunk->HX->FinalHunkNo;
@@ -720,11 +720,11 @@ HunkExtSymCNT(Hunk *hunk, ubyte type, ulong len, ulong *scan)
  */
 
 int
-HunkExtSymRUN(Hunk *hunk, ubyte type, ulong len, ulong *scan)
+HunkExtSymRUN(Hunk *hunk, ubyte type, uint32_t len, uint32_t *scan)
 {
     Sym *sym;
     Hunk *destHunk;
-    long hunkNo = 0;
+    int32_t hunkNo = 0;
 
     if (type != 129 && type != RESERVED_PCJMP_TYPE)
 	return(0);
@@ -751,8 +751,8 @@ HunkExtSymRUN(Hunk *hunk, ubyte type, ulong len, ulong *scan)
 	    return(0);
 	SanityCheck(33);
 	if (FromMsbOrder(scan[len])) {		    /*	# of relocs */
-	    long bas = hunk->HL->CpyReloc32[hunkNo];
-	    long n = FromMsbOrder(scan[len+1]) - hunk->Bytes;     /*	first reloc */
+	    int32_t bas = hunk->HL->CpyReloc32[hunkNo];
+	    int32_t n = FromMsbOrder(scan[len+1]) - hunk->Bytes;     /*	first reloc */
 
 	    hunk->HL->ExtReloc32[hunkNo][bas] = ToMsbOrder(hunk->Offset + hunk->Bytes + n);
 	    ++bas;
@@ -761,7 +761,7 @@ HunkExtSymRUN(Hunk *hunk, ubyte type, ulong len, ulong *scan)
 	    if (n < 0 || n >= hunk->TotalBytes - hunk->Bytes)
 		cerror(ESOFT_JUMP_TABLE);
 
-	    *(long *)((char *)hunk->JmpData + n) = ToMsbOrder(destHunk->Offset + sym->Value);
+	    *(int32_t *)((char *)hunk->JmpData + n) = ToMsbOrder(destHunk->Offset + sym->Value);
 	}
 	SanityCheck(34);
 	return(0);
@@ -780,8 +780,8 @@ HunkExtSymRUN(Hunk *hunk, ubyte type, ulong len, ulong *scan)
 
     SanityCheck(35);
     if (sym->Type == 1) {	/*  only if relocatable def    */
-	long bas = hunk->HL->CpyReloc32[hunkNo];
-	long fnl = bas + FromMsbOrder(scan[len]);
+	int32_t bas = hunk->HL->CpyReloc32[hunkNo];
+	int32_t fnl = bas + FromMsbOrder(scan[len]);
 
 #ifdef NOTDEF
 	printf("HUNK %s hunkno %d vs %d NUMEXT %d\n", HunkToStr(hunk), hunk->HunkNo, hunkNo, NumExtHunks);
@@ -802,11 +802,11 @@ HunkExtSymRUN(Hunk *hunk, ubyte type, ulong len, ulong *scan)
      */
 
     if (FromMsbOrder(scan[len])) {
-	ulong n = FromMsbOrder(scan[len]);
-	ulong *newScan;
+	uint32_t n = FromMsbOrder(scan[len]);
+	uint32_t *newScan;
 	char *dbase = (char *)hunk->Data;
-	ulong dlen = hunk->Bytes;
-	ulong destOff = 0;
+	uint32_t dlen = hunk->Bytes;
+	uint32_t destOff = 0;
 
 	if (sym->Type != 2) {
 	    destOff = destHunk->Offset;
@@ -822,8 +822,8 @@ HunkExtSymRUN(Hunk *hunk, ubyte type, ulong len, ulong *scan)
 	}
 
 	for (newScan = scan + len + 1; n--; ++newScan) {
-	    ulong doff = FromMsbOrder(*newScan);
-	    long rval = 0;
+	    uint32_t doff = FromMsbOrder(*newScan);
+	    int32_t rval = 0;
 
 	    dbprintf(3, ("ext sym t=%d reloc32 %s@%ld to %s@%ld (%.*s)\n", sym->Type, HunkToStr(hunk), doff, HunkToStr(destHunk), sym->Value, sym->SymLen, sym->SymName));
 
@@ -837,13 +837,13 @@ HunkExtSymRUN(Hunk *hunk, ubyte type, ulong len, ulong *scan)
 		cerror(EFATAL_RELOC_ILLEGAL_SYM, sym->Type);
 		break;
 	    case 2:	    /*	abs  */
-		rval = FromMsbOrder(*(ulong *)(dbase + doff)) + sym->Value;
+		rval = FromMsbOrder(*(uint32_t *)(dbase + doff)) + sym->Value;
 		break;
 	    case 1:	    /*	def  */
-		rval = destOff + FromMsbOrder(*(ulong *)(dbase + doff)) + sym->Value;
+		rval = destOff + FromMsbOrder(*(uint32_t *)(dbase + doff)) + sym->Value;
 		break;
 	    }
-	    *(ulong *)(dbase + doff) = ToMsbOrder(rval);
+	    *(uint32_t *)(dbase + doff) = ToMsbOrder(rval);
 	}
     }
     SanityCheck(37);

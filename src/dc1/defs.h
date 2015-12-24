@@ -10,9 +10,6 @@
 
 typedef unsigned char	ubyte;
 typedef unsigned short	uword;
-#ifndef linux
-typedef unsigned long	ulong;
-#endif
 
 #include <stdarg.h>			/* standard includes 	*/
 #include <stdio.h>
@@ -49,9 +46,9 @@ typedef struct LexFileNode {
     uword   lf_Index;	    /*	current index	*/
     uword   lf_Size;	    /*	size of file	*/
 #else
-    long    lf_BaseIndex;
-    long    lf_Index;	    /*	current index	*/
-    long    lf_Size;	    /*	size of file	*/
+    int32_t    lf_BaseIndex;
+    int32_t    lf_Index;	    /*	current index	*/
+    int32_t    lf_Size;	    /*	size of file	*/
 #endif
 } LexFileNode;
 

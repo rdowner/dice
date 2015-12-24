@@ -70,13 +70,13 @@ Prototype short   ErrorOpt;
 Prototype FILE	  *ErrorFi;
 Prototype FILE	  *Fo;
 Prototype char	  *FoName;
-Prototype long	  ExitCode;
+Prototype int32_t	  ExitCode;
 Prototype char	  *SrcFileName;
 Prototype char	  *AsmFileName;
 
 Prototype int	main(int, char **);
 Prototype void	DebugPass(char);
-Prototype void	*zalloc(long);
+Prototype void	*zalloc(int32_t);
 Prototype void	help(void);
 Prototype short CToSize(char);
 
@@ -96,7 +96,7 @@ FILE	*Fo;	    /*	used on error exit to close file  */
 char	*FoName;    /*	used on error exit to delete file */
 char	*AsmFileName;
 char	*SrcFileName;
-long	ExitCode;
+int32_t	ExitCode;
 
 int
 main(int ac, char **av)
@@ -226,10 +226,10 @@ char c;
 
 void *
 zalloc(bytes)
-long bytes;
+int32_t bytes;
 {
     static char *Buf;
-    static long Bytes;
+    static int32_t Bytes;
 
     if (bytes <= Bytes) {
 	void *ptr;

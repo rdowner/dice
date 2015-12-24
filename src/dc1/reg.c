@@ -13,28 +13,28 @@
 #include "defs.h"
 
 Prototype   void    ResetRegAlloc(void);
-Prototype   void    AllocExternalStorage(Symbol *, Stor *, Type *, long);
-Prototype   void    AllocStaticStorage(Symbol *, Stor *, Type *, long);
-Prototype   void    AllocConstStor(Stor *, long, Type *);
-Prototype   void    AllocFltConstStor(Stor *, char *, long, Type *);
-Prototype   void    AllocStackStorage(Stor *, Type *, long);
+Prototype   void    AllocExternalStorage(Symbol *, Stor *, Type *, int32_t);
+Prototype   void    AllocStaticStorage(Symbol *, Stor *, Type *, int32_t);
+Prototype   void    AllocConstStor(Stor *, int32_t, Type *);
+Prototype   void    AllocFltConstStor(Stor *, char *, int32_t, Type *);
+Prototype   void    AllocStackStorage(Stor *, Type *, int32_t);
 Prototype   void    FreeStackStorage(Stor *);
 Prototype   void    ReUseStackStorage(Stor *);
-Prototype   void    AllocArgsStorage(Stor *, Type *, int, long);
-Prototype   int     AllocRegVarStorageReq(Var *, short, long);
+Prototype   void    AllocArgsStorage(Stor *, Type *, int, int32_t);
+Prototype   int     AllocRegVarStorageReq(Var *, short, int32_t);
 Prototype   int     AllocRegVarStorage(Var *);
 Prototype   void    AllocAnyRegister(Stor *, Type *, Stor *);
 Prototype   void    AllocTmpStorage(Stor *, Type *, Stor *);
 Prototype   void    ReuseStorage(Stor *, Stor *);
 Prototype   void    FreeStorage(Stor *);
-Prototype   int     AllocDataRegister(Stor *, long);
-Prototype   int     AllocDataRegisterAbs(Stor *, long, int);
+Prototype   int     AllocDataRegister(Stor *, int32_t);
+Prototype   int     AllocDataRegisterAbs(Stor *, int32_t, int);
 Prototype   int     AllocAddrRegister(Stor *);
 Prototype   int     AllocAddrRegisterAbs(Stor *, int);
 Prototype   void    FreeRegister(Stor *);	/*  single registers only */
 Prototype   void    LockStorage(Stor *);
 Prototype   void    UnlockStorage(Stor *);
-Prototype   void    RegDisableRegs(ulong);
+Prototype   void    RegDisableRegs(uint32_t);
 Prototype   void    RegEnableRegs(void);
 Prototype   void    UnscratchStorage(Exp *);
 Prototype   int     RegInUse(short);
@@ -42,27 +42,27 @@ Prototype   int     AllocRegisterAbs(Stor *, short, short);
 Prototype   int     AttemptAllocRegisterAbs(Stor *, short, short);
 /*Prototype   void    TransferRegister(Stor *, short, short);*/
 
-Prototype   ulong   GetAllocatedScratch(void);
-Prototype   ulong   GetLockedScratch(void);
-Prototype   ulong   GetUsedRegisters(void);
-Prototype   ulong   RegCallUseRegister(short);
+Prototype   uint32_t   GetAllocatedScratch(void);
+Prototype   uint32_t   GetLockedScratch(void);
+Prototype   uint32_t   GetUsedRegisters(void);
+Prototype   uint32_t   RegCallUseRegister(short);
 Prototype   int     TooManyRegs(void);
 Prototype   int     CountDRegOver(void);
 Prototype   int     CountARegOver(void);
-Prototype   void    asm_save_regs(ulong);
-Prototype   int     asm_restore_regs(ulong);
+Prototype   void    asm_save_regs(uint32_t);
+Prototype   int     asm_restore_regs(uint32_t);
 Prototype   void    RegFlagTryAgain(void);
 
 Prototype   void    PushStackStorage(void);
 Prototype   void    PopStackStorage(void);
 
-Prototype ulong   RegAlloc;	/*  protos for debugging only	*/
-Prototype ulong   RegLocked;
-Prototype ulong   RegUsed;
+Prototype uint32_t   RegAlloc;	/*  protos for debugging only	*/
+Prototype uint32_t   RegLocked;
+Prototype uint32_t   RegUsed;
 
-ulong	RegAlloc;		/*  mask of allocated registers     */
-ulong	RegLocked;		/*  (should be static)		    */
-ulong	RegUsed;
+uint32_t	RegAlloc;		/*  mask of allocated registers     */
+uint32_t	RegLocked;		/*  (should be static)		    */
+uint32_t	RegUsed;
 
 static TmpStack TmpAry[TMP_STACK_MAX];
 
@@ -112,7 +112,7 @@ AllocExternalStorage(sym, stor, type, flags)
 Symbol *sym;
 Stor *stor;
 Type *type;
-long flags;
+int32_t flags;
 {
     stor->st_Type = ST_RelName;
     stor->st_Name = sym;
@@ -148,7 +148,7 @@ AllocStaticStorage(sym, stor, type, flags)
 Symbol *sym;
 Stor *stor;
 Type *type;
-long flags;
+int32_t flags;
 {
     stor->st_Type = ST_RelLabel;
     stor->st_Label= AllocLabel();
@@ -187,7 +187,7 @@ long flags;
 void
 AllocConstStor(s, val, type)
 Stor *s;
-long val;
+int32_t val;
 Type *type;
 {
     s->st_Type = ST_IntConst;
@@ -203,7 +203,7 @@ void
 AllocFltConstStor(s, ptr, len, type)
 Stor *s;
 char *ptr;
-long len;
+int32_t len;
 Type *type;
 {
     s->st_Type = ST_FltConst;
@@ -218,11 +218,11 @@ Type *type;
  */
 
 void
-AllocArgsStorage(Stor *stor, Type *type, int real, long flags)
+AllocArgsStorage(Stor *stor, Type *type, int real, int32_t flags)
 {
     Frame *frame = &CurGen->Frame;
-    long bytes;
-    long typesize = *type->Size;
+    int32_t bytes;
+    int32_t typesize = *type->Size;
 
     Assert(CurGen);
 
@@ -262,11 +262,11 @@ AllocArgsStorage(Stor *stor, Type *type, int real, long flags)
  */
 
 int
-AllocRegVarStorageReq(Var *var, short reqNo, long skipMask)
+AllocRegVarStorageReq(Var *var, short reqNo, int32_t skipMask)
 {
-    ulong alMask;
-    ulong usMask;
-    long r;
+    uint32_t alMask;
+    uint32_t usMask;
+    int32_t r;
 
     Assert(CurGen);
     alMask = RegAlloc | ~REGREAL;
@@ -337,7 +337,7 @@ int
 AllocRegVarStorage(var)
 Var *var;
 {
-    ulong mask;
+    uint32_t mask;
 
     Assert(CurGen);
     mask = RegAlloc | ~REGREAL;
@@ -479,7 +479,7 @@ Stor *cache;
     }
     {
 	TmpStack *ts;
-	long alignment = *type->Align;
+	int32_t alignment = *type->Align;
 
 	if (type->Flags & TF_ALIGNED)
 	    alignment = 4;
@@ -591,7 +591,7 @@ RegInUse(short regno)
 int
 AllocDataRegister(stor, size)
 Stor *stor;
-long size;
+int32_t size;
 {
     short regno = DataRegCache;
     uword mask = (RegAlloc | RegLocked);
@@ -643,7 +643,7 @@ long size;
 int
 AllocDataRegisterAbs(stor, size, regno)
 Stor *stor;
-long size;
+int32_t size;
 int regno;
 {
     if ((RegUsed & (1 << regno)) == 0) {
@@ -770,7 +770,7 @@ AllocRegisterAbs(Stor *s, short regno, short size)
 int
 AttemptAllocRegisterAbs(Stor *s, short regno, short size)
 {
-    ulong mask = (RegAlloc | RegLocked);
+    uint32_t mask = (RegAlloc | RegLocked);
 
 #ifdef NOTDEF	/* removed, regargs gen handles the case now */
     if (regno >= RB_ADDR && size == 1) {
@@ -823,7 +823,7 @@ Stor *stor;
     case ST_RelReg:
 	{
 	    short regno = stor->st_RegNo;
-	    ulong mask = 1 << regno;
+	    uint32_t mask = 1 << regno;
 
 	    Assert ((unsigned short)regno < 32);
 	    if (--Refs[regno] < 0) {
@@ -915,7 +915,7 @@ Stor *s;
 
 void
 RegDisableRegs(mask)
-ulong mask;
+uint32_t mask;
 {
     DataRegCache = RB_D0;
     AddrRegCache = RB_A0;
@@ -952,19 +952,19 @@ RegFlagTryAgain()
     TryAgainFlag = 1;
 }
 
-ulong
+uint32_t
 GetAllocatedScratch()
 {
     return(RegAlloc & REGSCRATCH);
 }
 
-ulong
+uint32_t
 GetLockedScratch()
 {
     return(RegLocked & REGSCRATCH);
 }
 
-ulong
+uint32_t
 GetUsedRegisters()
 {
     return(RegUsed);
@@ -979,10 +979,10 @@ GetUsedRegisters()
  * XXX
  */
 
-ulong
+uint32_t
 RegCallUseRegister(short rno)
 {
-    long mask = 1 << rno;
+    int32_t mask = 1 << rno;
 
     if ((RegAlloc|RegReserved) & mask)
 	return(mask);
@@ -1003,7 +1003,7 @@ int
 CountDRegOver()
 {
     int cnt = 0;
-    long ru = RegUsed;
+    int32_t ru = RegUsed;
 
     if (ru & 0x0000FF00) {
 	short i;
@@ -1019,7 +1019,7 @@ int
 CountARegOver()
 {
     int cnt = 0;
-    long ru = RegUsed;
+    int32_t ru = RegUsed;
 
     if (ru & 0xFF000000) {
 	short i;
@@ -1039,7 +1039,7 @@ CountARegOver()
 
 void
 asm_save_regs(mask)
-ulong mask;
+uint32_t mask;
 {
     short cnt = 0;
     char *regstr;
@@ -1061,7 +1061,7 @@ ulong mask;
 
 int
 asm_restore_regs(mask)
-ulong mask;
+uint32_t mask;
 {
     short cnt = 0;
     char *regstr;
@@ -1090,7 +1090,7 @@ Exp *exp;
 {
     if (exp->ex_Stor.st_Type == ST_RegIndex) {
 	if ((1 << exp->ex_Stor.st_RegNo) & REGSCRATCH) {
-	    long oldLocked = RegLocked;
+	    int32_t oldLocked = RegLocked;
 	    Stor st;			    /*	new reg */
 	    Stor sd = exp->ex_Stor;	    /*	old reg */
 
@@ -1112,7 +1112,7 @@ Exp *exp;
 	}
 
 	if ((1 << exp->ex_Stor.st_RegNo2) & REGSCRATCH) {
-	    long oldLocked = RegLocked;
+	    int32_t oldLocked = RegLocked;
 	    Stor st;			    /*	new reg */
 	    Stor sd = exp->ex_Stor;	    /*	old reg */
 
@@ -1140,7 +1140,7 @@ Exp *exp;
 
     if (exp->ex_Stor.st_Type == ST_Reg || exp->ex_Stor.st_Type == ST_RelReg) {
 	if ((1 << exp->ex_Stor.st_RegNo) & REGSCRATCH) {
-	    long oldLocked = RegLocked;
+	    int32_t oldLocked = RegLocked;
 	    Stor st;
 	    Stor sd = exp->ex_Stor;
 
@@ -1177,11 +1177,11 @@ void
 AllocStackStorage(stor, type, flags)
 Stor *stor;
 Type *type;
-long flags;
+int32_t flags;
 {
     Frame *frame = &CurGen->Frame;
-    long alignment = *type->Align;
-    long size = *type->Size;
+    int32_t alignment = *type->Align;
+    int32_t size = *type->Size;
 
 
     /*

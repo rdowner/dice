@@ -34,10 +34,10 @@ Prototype void GenBFExt(Exp **);
 Prototype void BitFieldResultExp(Exp *);
 Prototype void BitFieldResultType(Exp **, int);
 
-Local void GenRegArgs(Exp *, char *, char *, ulong, char *, short);
-Local void SaveCopyConflictsRegArgs(Exp *, char *, char *, ulong, short);
+Local void GenRegArgs(Exp *, char *, char *, uint32_t, char *, short);
+Local void SaveCopyConflictsRegArgs(Exp *, char *, char *, uint32_t, short);
 Local void FreeRegArgs(Exp *, char *);
-Local long GenPushArgs(Exp *);
+Local int32_t GenPushArgs(Exp *);
 Local int  PushArgExp(Exp *);
 Local void InMaskPush(Exp *, char *);
 Local void InMaskPop(char *);
@@ -294,7 +294,7 @@ Exp **pexp;
 {
     Exp *exp = *pexp;
     Type *type;
-    long size;
+    int32_t size;
 
     if (GenPass == 0) {
 	if (exp->ex_ExpL) {
@@ -526,14 +526,14 @@ Exp **pexp;
 
     if (GenPass == 0) {
 	Type *type;
-	long value = exp->ex_Stor.st_IntConst;
+	int32_t value = exp->ex_Stor.st_IntConst;
 
 	if (exp->ex_Stor.st_Flags & SF_UNSIGNED) {
 	    type = &ULongType;
 
-	    if ((unsigned long)value < 65536)
+	    if ((uint32_t)value < 65536)
 		type = &UShortType;
-	    if ((unsigned long)value < 256)
+	    if ((uint32_t)value < 256)
 		type = &UCharType;
 	} else {
 	    type = &LongType;
@@ -570,10 +570,10 @@ GenStrConst(pexp)
 Exp **pexp;
 {
     Exp *exp = *pexp;
-    long l;
+    int32_t l;
 
     if (GenPass == 0) {
-	long iidx = -1;		/* internationalization index */
+	int32_t iidx = -1;		/* internationalization index */
 	l = AllocLabel();
 
 	exp->ex_Flags |= EF_CRES;
@@ -870,7 +870,7 @@ Exp **pexp;
 	     */
 
 	    short autop;
-	    long bytes;
+	    int32_t bytes;
 
 	    if (exp->ex_ExpR)
 		bytes = GenPushArgs(exp->ex_ExpR);
@@ -939,8 +939,8 @@ Exp **pexp;
 	     *	    (8) assign result storage
 	     */
 
-	    ulong conMask;	/*  conflict mask		     */
-	    ulong ignMask = -1; /*  conflict save/restore mask	     */
+	    uint32_t conMask;	/*  conflict mask		     */
+	    uint32_t ignMask = -1; /*  conflict save/restore mask	     */
 	    char argno[16];	/*  procedure call register ordering */
 	    char actno[16];	/*  actual regs for initial arg load */
 	    char scReg[5];	/*  scratch registers saved	     */
@@ -1140,7 +1140,7 @@ GenRegArgs(
     Exp *exp,
     char *argno,
     char *actno,
-    ulong mask,
+    uint32_t mask,
     char *scReg,
     short tmpOk
 ) {
@@ -1294,13 +1294,13 @@ SaveCopyConflictsRegArgs(
     Exp *expBase,
     char *argno,
     char *actno,
-    ulong mask,
+    uint32_t mask,
     short restore
 ) {
     Stor t;
     Stor a;
     Exp *exp;
-    long regMask;
+    int32_t regMask;
     short i;
 
     for (i = regMask = 0, exp = expBase; exp; exp = exp->ex_Next, ++i) {
@@ -1364,11 +1364,11 @@ char *actno;
     }
 }
 
-Local long
+Local int32_t
 GenPushArgs(exp)
 Exp *exp;
 {
-    long bytes;
+    int32_t bytes;
 
     if (exp->ex_Next)
 	bytes = GenPushArgs(exp->ex_Next);

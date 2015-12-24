@@ -92,12 +92,9 @@ short Error;
 
 typedef unsigned char ubyte;
 typedef unsigned short uword;
-#ifndef linux
-typedef unsigned long ulong;
-#endif
 
 void InitSyms(void);
-int ScanRelocations(long, long *, ubyte *, long, char *, int);
+int ScanRelocations(int32_t, int32_t *, ubyte *, int32_t, char *, int);
 
 #define MAXHUNKS    32
 
@@ -107,10 +104,10 @@ main(int ac, char **av)
     FILE *fi;
     FILE *fo;
     short hunkno;
-    long *base;
-    long *scan;
-    long *bend;
-    long bytes;
+    int32_t *base;
+    int32_t *scan;
+    int32_t *bend;
+    int32_t bytes;
 
     InitSyms();
     if (ac < 3) {
@@ -140,12 +137,12 @@ main(int ac, char **av)
 
     for (scan = base; scan < bend;) {
 	ubyte *data;
-	long dlen;
+	int32_t dlen;
 	short htype;
 
 	hunkno = 0;
 	if (*scan != 0x3E7) {
-	    printf("Expected hunk_unit, got %08lx\n", *scan);
+	    printf("Expected hunk_unit, got %08x\n", *scan);
 	    exit(1);
 	}
 	scan += scan[1] + 2;
@@ -159,7 +156,7 @@ main(int ac, char **av)
 	htype = 0;
 
 	while (scan < bend && *scan != 0x3E7) {
-	    ulong len;
+	    uint32_t len;
 
 	    switch((uword)*scan) {
 	    case 0x3E8: 	    /*	HUNK_NAME	*/
@@ -197,7 +194,7 @@ main(int ac, char **av)
 		++scan;
 		while ((len = *scan) != 0) {
 		    ubyte type = len >> 24;
-		    long *base = scan;
+		    int32_t *base = scan;
 
 		    len &= 0x00FFFFFF;
 		    if (DDebug)
@@ -242,7 +239,7 @@ main(int ac, char **av)
 		++scan;
 		break;
 	    default:
-		printf("Unknown hunk type $%08lx", *scan);
+		printf("Unknown hunk type $%08x", *scan);
 		exit(1);
 	    }
 	}
@@ -274,15 +271,16 @@ InitSyms()
 
 int
 ScanRelocations(entries, scan, data, dlen, name, len)
-long entries;
-long *scan;
+int32_t entries;
+int32_t *scan;
 ubyte *data;
-long dlen;
+int32_t dlen;
 char *name;
 int len;
 {
 
-    printf("Relocation: %2ld relocations for symbol %-20.*s", entries, len, name);
+    printf("Relocation: %2d relocations for symbol %-20.*s",
+	   entries, len, name);
 
     {
 	short i;
@@ -303,12 +301,12 @@ int len;
     puts("(modifying)");
 
     while (entries) {
-	long index = *scan;
+	int32_t index = *scan;
 	uword *tscan;
 	uword opcode;
 
 	if (index < 0 || index > dlen - 4) {
-	    printf("relocation index out of range: %ld/%ld\n", index, dlen);
+	    printf("relocation index out of range: %d/%d\n", index, dlen);
 	    Error = 1;
 	}
 	tscan = (uword *)(data + index - 2);
