@@ -1,0 +1,26 @@
+
+		;   FFPA_FIX.A
+		;
+		;   D0	floating arg
+		;   result integer in D0
+		;
+		;   D2/D3 also saved and restored because I found a bug
+		;   in LVOIEEEDPFix() (37.1), bug has not been tested for
+		;   this function but I am not taking chances.
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+		section text,code
+
+		xref	_MathBase
+		xref	_LVOSPFix
+		xdef	__ffpfix_a
+
+__ffpfix_a	movem.l D2/D3/A6,-(sp)
+		move.l	_MathBase(A4),A6
+		jsr	_LVOSPFix(A6)
+		movem.l (sp)+,D2/D3/A6
+		rts
+
+		END
+

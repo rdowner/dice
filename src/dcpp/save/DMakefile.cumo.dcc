@@ -1,0 +1,47 @@
+
+#   DMakefile.3
+#
+# (c)Copyright 1992 Obvious Implementations Corp, All Rights Reserved
+# CONFIDENTIAL, This is unpublished proprietary source code owned by Obvious Implementations Corp.
+# This material contains trade secrets of Obvious Implementations Corp.
+
+OD= ram:dcpp3/
+EXE= ram:dcpp
+PEXE= ram:prof_dcpp
+CFLAGS= -r -ms -mRR -I$(OD) -s -proto
+PROTOS= $(OD)protos.h
+
+CCPSRCS= main.c sym.c include.c direct.c define.c cpp.c cexp.c subs.c precomp.c asubs.a
+CCPOBJS = $(CCPSRCS:"*.c":"$(OD)*.o") $(CCPSRCS:"*.a":"$(OD)*.o")
+PCCPOBJS = $(CCPSRCS:"*.c":"$(OD)p_*.o") $(CCPSRCS:"*.a":"$(OD)p_*.o")
+
+all: $(OD) $(PROTOS) $(EXE)
+
+prof: $(PROTOS) $(PEXE)
+
+$(EXE) : $(CCPOBJS)
+    dcc %(right) -o %(left) $(CFLAGS)
+
+$(CCPOBJS) : $(CCPSRCS)
+    dcc %(right) -o %(left) -c $(CFLAGS)
+
+$(PEXE) : $(PCCPOBJS)
+    dcc %(right) -o %(left) $(CFLAGS) -prof3
+
+$(PCCPOBJS) : $(CCPSRCS)
+    dcc %(right) -o %(left) -c $(CFLAGS) -prof3
+
+$(PROTOS) : $(CCPSRCS)
+    -delete %(left)
+    makeproto -o%(left) %(right)
+
+clean:
+    -delete $(CCPOBJS)
+    -delete $(PCCPOBJS)
+
+cleanprof:
+    -delete $(PCCPOBJS)
+
+$(OD) : $(OD)
+    makedir %(left:*/:*)
+

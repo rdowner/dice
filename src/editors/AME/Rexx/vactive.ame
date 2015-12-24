@@ -1,0 +1,10 @@
+/* $VER: VActive 37.1 (21.2.93) Activate V Requesters */
+
+BAR '-1'
+ITEM '-1 "Goto" "rx dcc:rexx/vgoto"'
+ITEM '-1 "Find" "rx dcc:rexx/vfind"'
+ITEM '-1 "Replace" "rx dcc:rexx/vreplace"'
+ITEM '-1 "Set Modes" "rx dcc:rexx/vmodes"'
+ITEM '-1 "Set Prefs" "rx dcc:rexx/vprefs"'
+
+onmenu

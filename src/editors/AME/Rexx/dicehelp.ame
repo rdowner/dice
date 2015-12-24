@@ -1,0 +1,87 @@
+/* $VER: DICEHelp 37.5 (17.2.94)
+**      DICEHelp help system for AME
+**
+**      Rexx script modeled after version by David Joiner
+*/
+
+OPTIONS RESULTS
+
+colnum = 1
+GETCURSORPOS
+if RC = 0 then colnum = subword(RESULT,2,1)+1
+
+GETCHAR
+if ((RC > 0) | ( result = 'a'X ) | (result = " " ) | (length(result) = 0)) then do
+    colnum = 1
+    'Requestline "Enter Help search string:  "'
+    if (RC > 0) then exit
+    end
+else do
+    GETLINE
+end
+
+searchstr = RESULT
+
+
+hostname = address()            /* Source AME window */
+portname = 'DICEHELP'           /* DICEHelp's port name */
+tempname = 't:DICEHelp.temp'    /* Temporary file for passing clips */
+
+if ~show('p',portname) then do
+	address COMMAND 'RUN >NIL: <NIL: DICEHelp REXXSTARTUP'
+
+	do i = 1 to 6
+		if ~show('p',portname) then do
+			address COMMAND 'wait 1'
+		end
+	end
+
+	if ~show('p',portname) then do
+	    'eprint "DICEHelp program not found!"'
+            exit
+	end
+end
+
+address value portname
+
+/* Search for string, return <T>empfile */
+/* T searchstr */
+Z colnum searchstr
+
+if RC=0 then do
+	refline = RESULT
+
+	address value hostname           /* Back to AME */
+
+	if LENGTH(refline) <= 0 then do  /* If a NULL line, bail */
+            'eprint' "Item" searchstr "not found!"
+	    exit
+	end
+
+        if SUBWORD(refline,1,1) = 'E' then do /* error from dicehelp */
+	    'eprint' subword(refline,2)
+            exit
+        end
+
+	POPUP f 1
+        OPEN SUBWORD(refline,2)
+	newport = RESULT			/* get the port						*/
+	if RC > 0 then do			/* if not there, then error			*/
+	    'EPRINT'  "Error: error opening doc file " || "refline"
+		address command "Wait 6"
+		exit
+	end
+        address value newport           /* Address the new window */
+
+	/* Parse var refline '"' docfile '"' docline . refline */
+	exit
+end
+else if RC=1 then do
+    address value hostname
+    'eprint' "Item" searchstr "not found!"
+end
+else do
+    address value hostname
+    'eprint' "Error code" RC "DICEHelp failed!"
+end
+

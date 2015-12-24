@@ -1,0 +1,7 @@
+; Sample use of CatComp
+;
+MSG_HELLO (1//)
+This is a test string for the world to see: HELLO WORLD!
+;
+MSG_BYE (8//)
+This is another test string: BYE!

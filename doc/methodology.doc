@@ -1,0 +1,269 @@
+
+			    methodology.doc
+
+    C is kown as a free-form language, and for good reason.  Theoretically
+    you can take any C program and scrunch it all up into a single line
+    and it will work the same.
+
+    Obviously, scrunching a program into a single line does not make it
+    very readable.  The following document points towards defacto standards
+    in formatting your source code to make it readable.  Keep in mind that
+    these are only conventions and not the only ones at that.  In my
+    experience, however, most programmers with real experience in large
+    projects and having to deal with other people's code use something
+    similar to the descriptions below.
+
+    (1) Procedure Declarations.  Generally one wants to format a procedure
+	declaration with two goals in mind:  (a) the procedure's name
+	should be visible and (b) all code for the procedure should be
+	indented.  Four forms are common:
+
+	| note, this is the left margin
+	|
+	|
+
+	void
+	Fubar(a, b, c)
+	int a;
+	int b;
+	int c;
+	{
+	    .... indented code goes here ....
+	}
+
+	void
+	Fubar(a, b, c)
+	    int a;
+	    int b;
+	    int c;
+	{
+	    .... indented code goes here ....
+	}
+
+	void
+	Fubar(int a, int b, int c)
+	{
+	    .... indented code goes here ....
+	}
+
+	void
+	Fubar(
+	    int a,
+	    int b,
+	    int c
+	){
+	    .... indented code goes here ....
+	}
+
+	The first two forms use old style K&R declarations which many
+	people find less obtuse then the new style ANSI declarations
+	that are shown in the last two forms.  I, myself, use the
+	first form.  Of the last two forms the second to last is generally
+	used when a procedure takes few arguments while the last is
+	generally used when a procedure takes many arguments.
+
+
+    (2) Variable naming
+
+	Generally global variables start with a capital letter with
+	each sub-phrase beginning with a capital.  Originally people
+	used underscores (_) a lot but these days most people use
+	the capitalization scheme to separate sub-phrases.  Static
+	variables are also generally capitalized especially when
+	declared within subroutines.  Auto's (stack variables)
+	are never capitalized.
+
+	Procedure names are normally capitalized when they represent
+	high level routines, sometimes left lower case when they
+	represent very low level routines (many people will always
+	capitalize procedures, period, which is fine too).  Procedure
+	arguments always begin with a lower case letter.  Example:
+
+	char TmpBuf[256];
+
+	int
+	ReadDatabase(fileName)
+	char *fileName;
+	{
+	    char *ptr = fileName;
+	    short i;
+	    short j;
+	    static char XBuf[256];
+
+	    ...
+	}
+
+
+    (3) BLOCK statements
+
+	A block statement is a serious of statements enclosed in an
+	open-brace close-brace { } sequence.  Whenever you introduce
+	a new block level you indent by four.  There is considerable
+	discussion as to what the best format for the braces themselves
+	should be but the following are used in the greatest extent.
+
+	* The contents of a block or looping/condition body is always
+	  indented
+
+	* The open brace occurs after the looping/conditional on the
+	  same line while the close brace occurs by itself flush with
+	  the beginning of the looping/conditional.  Sometimes the open
+	  brace is placed on the line after the looping/conditional
+	  flush with the beginning of the looping/conditional.
+
+
+	int
+	ReadDatabase(fileName)
+	char *fileName;
+	{
+	    char *ptr = fileName;
+	    short i;
+	    short j;
+	    static char XBuf[256];
+
+	    for (i = 0; i < 10; ++i) {
+		if (*ptr == 'a')
+		    puts("found an 'a'!");
+		if (*ptr == 'b') {
+		    puts("found a 'b'!");
+		    puts("I think...");
+		}
+	    }
+	}
+
+	int
+	ReadDatabase(fileName)
+	char *fileName;
+	{
+	    char *ptr = fileName;
+	    short i;
+	    short j;
+	    static char XBuf[256];
+
+	    for (i = 0; i < 10; ++i)
+	    {
+		if (*ptr == 'a')
+		    puts("found an 'a'!");
+		if (*ptr == 'b')
+		{
+		    puts("found a 'b'!");
+		    puts("I think...");
+		}
+	    }
+	}
+
+
+	Personally, I prefer the first form shown above. Note that
+	you do not need to enclose the body of loops/conditionals
+	with braces if they contain only a single statement.  Many
+	people will use the braces anyway, as in this:
+
+		...
+
+		if (*ptr == 'a') {
+		    puts("found an 'a'!");
+		}
+
+	To make things more readable, but experience has shown that they
+	are unecessary and sometimes create two much 'white space' in the
+	source.
+
+    (4) white-space in expressions
+
+	Generally one puts white space into expressions to make them
+	more readable.	Here is an example:
+
+
+	i=j*(k+4)/-23-(i+j)                  /*  icky        */
+
+	i = j * (k + 4) / -23 - (i + j);     /*  readable    */
+
+	The rule is simple -- a single space around binary operators
+	and to the left of a unary operator, unary operators but up
+	against the thing they are unary-ating (joke).  However, one
+	generally does not put white space after an open parenthesis
+	or before a close parenthesis.
+
+	Another exception is related to arrays and structural indirection:
+
+	i=mis->mi_Value+fubar[j];	    /*	icky	    */
+
+	i = mis->mi_Value + fubar[j];	    /*	readable    */
+
+
+	Procedure calls involving multiple arguments are arranged in one
+	of two ways.  Note that in the first method no white space
+	occurs before the comma and one space (at least) occurs after
+	the comma:
+
+	printf("This is a test: %d %d %d\n", 23, i + j, 25);
+
+	printf("This is a test: %d %d %d\n",
+	    23,
+	    i + j,
+	    25
+	);
+
+	The second method shown above is used when you have to give a
+	zillion arguments to a procedure call.
+
+    (5) indent tabing
+
+	People generally indent by 4 or 8 characters.  Some people
+	indent by 3 but this is generally left over from bad habits
+	due to using editors which default to tabs of 3.
+
+	Many older programs and programmers use tabs of 8 but this
+	generally worked well only because said programs generally
+	were not very modular.	Most modern programming techniques
+	make even sections within a subroutine relatively modular
+	and thus use a greater depth of sub-blocks, thus requiring
+	greater indentation.
+
+	Needless to say, you rapidly run out of columns in an editor when
+	you use indents of 8.
+
+    (6) Modularity
+
+	I have mentioned modularity.  This is a huge topic but I can give
+	a few hints:
+
+	* Do NOT declare and use global variables for temporaries.  That
+	  is, if you have a looping variable declare a local variable
+	  to deal with it, like this:
+
+	Fubar()
+	{
+	    short i;	  /* local, NOT global	  */
+
+	    for (i = 0; i < 10; ++i) {
+		...
+	    }
+	}
+
+	The result is a more self contained subroutined.  Also, if a
+	section of a subroutine needs a temporary variable that no
+	other part of the subroutine uses, declare it in a sub-block
+	of the subroutine intead of at the top of the subroutine, like
+	this:
+
+	Fubar()
+	{
+	    ... lots of stuff ...
+
+	    {
+		short i;
+
+		for (i = 0; i < 10; ++i) {
+		    ...
+		}
+	    }
+
+	    ... lots of stuff ...
+	}
+
+	There is no reason to declare 'i' at the top of the subroutine if
+	only a small part of the subroutine actually uses it.  Following
+	this rule can make even huge subroutines relatively readable.
+
+

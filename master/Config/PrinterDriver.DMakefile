@@ -1,0 +1,33 @@
+# $VER: PrinterDriver.DMakefile 3.2 (2.11.94)
+PROTOS= $(OD)$(PROJECT)-protos.h
+EXE= $(EXEDIR)$(PROJECT)
+COMPFLAGS = -no-env $(CFLAGS) $(OD:"*":-I*) $(PRECOMP:"*.h":"-HT:%1.m=%1.h") $(VMAKEPORT:"*":"-R0 *") -l0 -lc -lamiga20 -lauto
+PCOMPFILE = $(PRECOMP:"*.h":"T:*.m")
+
+OBJS= $(SRCS:"*.a":"$(OD)*.o") $(SRCS:"*.c":"$(OD)*.o")
+
+all: $(PCOMPFILE) $(PROTOS) $(EXE)
+
+nopro: $(EXE)
+
+$(EXE): $(OBJS)
+    fwrite $(OD)$(PROJECT).lnktmp $(OBJS)
+    dcc $(COMPFLAGS) @$(OD)$(PROJECT).lnktmp -o %(left)
+
+$(OBJS) : $(SRCS)
+    dcc %(right) -o %(left) -c $(COMPFLAGS)
+
+$(PROTOS) : $(SRCS)
+    -delete %(left)
+    makeproto -o %(left) %(right)
+
+$(PCOMPFILE:"":"CANT.EXIST.RULE") : $(HDRS)
+    -delete %(left)
+
+clean:
+    -delete $(OBJS) $(PROTOS) $(PCOMPFILE)
+
+relink: rmexe $(EXE)
+
+rmexe:
+    -delete $(EXE)

@@ -1,0 +1,272 @@
+
+beginner/help						beginner/help
+beginner/beginner					beginner/beginner
+beginner/beginner_readme				beginner/beginner_readme
+
+			   BEGINNER'S DOCUMENT FOR DICE
+
+    (I)     The C Language
+
+    (II)    Your first program, from start to end
+
+
+				     (I)
+			       THE C LANGUAGE
+
+    It is not possible to describe the entirety of the C language in a
+    simple document file.  If you have no experience with the C language
+    and are trying to learn it the best thing to do is go to your local
+    bookstore (that has a computer section hopefully) and buy TWO different
+    ANSI C language books.  Really, TWO.  Look for a tutorial style book
+    and for a reference style book.  The tutorial style book will have many
+    self contained source examples that you can simply type in and run...
+    and figure things out by hacking on the examples and seeing the
+    results. The reference style book will have a comprehensive description
+    of all the standard calls available.  BE SURE YOU GET BOOKS THAT
+    DESCRIBE ANSI C rather than the original K&R C.  DICE is nearly 100% an
+    ANSI C compiler including nearly all the standard ANSI C functions.
+
+    DME, the editor that comes with DICE, has a quick-reference capability
+    that allows you to place the cursor over a function name, hit a key, and
+    have the manual page for that function brought up in a separate window.
+    As you get familiar with DME please try out this function.	The key
+    sequence is control-right_bracket from DME.  If you have your own editor
+    that is able to generate standard ascii files you may use that in lieu of
+    DME.  However, note that DME was designed with programming in mind and
+    *does* have that quick-reference capability, and so once learned will
+    probably be more efficient for your purposes.
+
+    As I have said, I cannot really *teach* you C in these flimsy manual
+    pages.  I can, however, give you some of the formatting methodolgy
+    to make your programs more readable to yourself and to others.
+    Unfortunately, bad habits tend to stick, so learning the right way
+    to do things from day 1 will go a long way.  The file METHODOLOGY.DOC
+    contains this information and assumes you already know C basics.
+
+				     (II)
+			 FIRST PROGRAM FROM START TO END
+
+    After installing DICE boot your system.  If you run from the workbench
+    you must open a CLI or Shell window to fool around with DICE.
+
+    NOTE:   From workbench the path might not be properly set up.  If
+    you:
+
+	1> DCC
+
+    and it comes back command not found, and DCC *does* exist on the floppy
+    or in-memory, then the path may not be properly set up.
+
+
+    (1) Creating the source code.  CD into some scratch directory... I use
+	T: here.
+
+	1> CD T:
+
+    (2) Edit a new file.  You do not have to RUN the editor, but it is always
+	nice because you can run the compiler without exiting the editor. This
+	tutorial expects you to RUN the editor:
+
+	1> RUN DME test.c
+
+    (3) DME brings up an editor window on the workbench.  Pressing the
+	right mouse button should bring up a menu (assuming you are not
+	already familiar with DME and installed it from the DICE disks).
+	IF DME DOES NOT HAVE A MENU then the right mouse button will
+	probably iconify the window instead.  This means you forgot to
+	copy DCC:S/.EDRC into S: ... again, this file already exists if
+	you simply booted with a copy of the distribution disk so you should
+	see a menu.
+
+	Um, that was just to make sure DME is configured right... you can let
+	go of the RMB (right mouse button) now.  If you flip through the
+	menu items available you will note that many options have keyboard
+	equivalents.  For further information on mapping keys to your own
+	macros read the DCC2:MAN/DME.DOC document.  You can read the
+	document by putting the DCC2: floppy into DF0: and selecting the
+	Project/Open-NewWin menu option (this brings up a new window so
+	you now have two, though the first one is covered.  To use the
+	same window use the Project/Open-Replace menu option).
+
+    (4) Type in your program.  The cursor keys may be used to move
+	around.  control-cursor_key skips multiple lines while
+	shift-cursor_key skips to the top or bottom of the file.
+	Typing RETURN on the last line adds a new line to the file.
+	Typing RETURN in general inserts a new line after the current
+	line.
+
+	     BASIC DME KEY COMMANDS, REFER TO DCC2:MAN/DME.DOC FOR MORE
+	     INFORMATION.  These comprise only a few of the many commands
+	     available.  You can construct your own key macros and menu
+	     options to your whim as you get better.
+
+	<cursor-key>	    move the cursor around.
+
+	ctl-<cursor-key>    skip around
+
+	shift-<cursor-key>  move to top of text, bottom of text, first column,
+			    or end-of-line
+
+	<del>		    delete a character.  Experiment with <del> and
+			    <backspace> to determine the differences between
+			    the two.
+
+	shift-<del>	    delete a LINE
+
+	ctl-i		    control-i, go into insert mode
+	ctl-o		    control-o, go into overwrite mode
+
+	alt-i		    ICONIFY WINDOW.  Window becomes iconified (very,
+			    very small)... unclutters the workbench screen.
+			    You may uniconify by selecting the iconified
+			    window and hitting the right mouse button.
+
+	help		    brings up a new window (as in <f3>) with
+			    DCC2:MAN/DME.DOC in it.
+
+
+			    FILE LOAD, SAVE
+		All of these have equivalent Menu options
+
+	<f1>		    Insert a file.  The current filename and file
+			    in the window stays, but some other file is
+			    inserted into the current text... experiment
+			    with this with a few small text files.
+
+	<f2>		    Edit a new file... replaces the current window
+			    with a new file.  The old file is gone (not
+			    deleted, just not being edited any more).  If
+			    you made modifications to the current file a
+			    requester will pop up asking you if you want
+			    to really throw it away.
+
+	<f3>		    Edit a new file... opens up a new window for the
+			    new file after you type in the file name, the
+			    previous file window is still there though
+			    probably obscured... you can move and resize
+			    the windows however you wish.
+
+	<f9>		    save file
+
+	<f10>		    save file and close window (exits DME if this is
+			    the last window)
+
+	c-q		    Quit - same as the close window gadget.
+
+
+    (4A)    PROGRAM?  What Program?  This program:
+
+	-------- top of file (this line not part of file) --------
+
+	#include <stdio.h>
+	#include <stdlib.h>
+
+	main()
+	{
+	    puts("Hello World!");
+	    return(0);
+	}
+
+	-------- bottom of file (this line not part of file) -----
+
+    (5) COMPILING THE PROGRAM
+
+	Write out the file with F9
+
+	You can either quit out of the editor or simply bring your CLI
+	window forward to compile the program.	Better, iconify the editor
+	window to unclutter your workbench screen!  To compile the program,
+	enter this line:
+
+	1> dcc test.c -o test
+
+	This tells DICE to compile and link test.c into an executable.	DICE
+	should grind on the file and then return another CLI prompt.  If any
+	requester comes up you are missing an assignment or two:
+
+	DINCLUDE:	you are missing the DINCLUDE: assignment which
+			should be set to DCC:INCLUDE.
+
+	DLIB:		you are missing the DLIB: assignment which should
+			be set to DCC:DLIB.
+
+	"Unable to open dlib:Amigas13.lib or dlib:dlib:amigas13.lib"
+
+	    Means that you do not have amigas.lib installed in DLIB: ...
+	    Amigas13.LIB is Amiga.LIB after being put through the LIBTOS
+	    program and comes with the registered version of DICE.
+
+	    Double check that you have 'SETENV DCCOPTS -1.3' and that DLIB:
+	    is assigned and amigas13.lib is in it, as well as other DICE
+	    libraries.
+
+    (6) RUN THE PROGRAM
+
+	1> test
+	Hello World!
+	1>
+
+	You can make the program residentable by compiling with the -r
+	option. A -r compiled program's executable will have the PURE bit
+	set automatically and may optionally be made resident.	Programs
+	not compiled with the -r option will not have the Pure bit set and
+	may not be made resident.
+
+	1> dcc test.c -o test -r
+	1> test
+	Hello World!
+	1> resident test
+	1> test
+	Hello World!			    <- much faster response!
+
+    (7) ***** WARNING ***** ABOUT RESIDENTED EXECUTABLES
+
+	It is a COMMON mistake when a programmer is making modifications
+	and recompiling a program to forget to REMOVE the program from
+	the resident list if it was placed on it.  I.E.
+
+	1> resident test REMOVE
+
+	The reason is simple... you make a change and recompile your
+	program.  But, you have already been the program resident. If you
+	run the program the 'old' version will be run.  Thus, you want to
+	either remove it from the resident list or re-resident the
+	executable.
+
+	You can also force a program to be loaded from disk by providing a
+	full path to it.  I.E.
+
+	1> resident test
+	1> test
+	Hello World!		<- uses resident version
+
+	1> DF0:test		(or wherever you compiled test to)
+	Hello World!		<- uses disk version
+
+
+    (8)     PROGRAM EXAMPLES
+
+	The registered DICE distribution comes with a large number of program
+	examples that should prove invaluable to a beginner.  Additionally,
+	every manual page includes a self-contained program example for
+	the particular function the page describes and this also should
+	prove invaluable when confusion arises.
+
+	Please refer to the README for an overview, and also browse the
+	DICE disks from a CLI.	Unfortunately, due to space packing I
+	sometimes move things around and forget to update the
+	documentation.	The DME example is the best of the lot and is
+	on DCC3:, readme the README file on DCC3 for unpacking instructions.
+
+	To run a DMakefile type the DMAKE command on the directory
+	containing the DMakefile.  I'm afraid the DMake is a huge
+	hack and not much good documentation is available for it, but
+	what documentation there is is in DCC3:MAN/DMAKE.DOC
+
+    (9)
+	That terminates the tutorial.  Refer to the DCC:DOC and DCC2:MAN
+	directories for documents describing other executables (use DME
+	to bring these files up and browse through them).  Note that the
+	top few lines of each file contain a keyword that gives DME it's
+	quick-reference capability to the file.
+

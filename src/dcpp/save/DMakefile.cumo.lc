@@ -1,0 +1,38 @@
+
+#   DMakefile.1
+#
+# (c)Copyright 1992 Obvious Implementations Corp, All Rights Reserved
+# CONFIDENTIAL, This is unpublished proprietary source code owned by Obvious Implementations Corp.
+# This material contains trade secrets of Obvious Implementations Corp.
+
+OD= ram:dcpp1/
+EXE= ram:lc_dcpp
+CFLAGS= -iinclude: -idinclude: -i$(OD) -v
+PROTOS= $(OD)protos.h
+
+CSRCS= main.c sym.c include.c direct.c define.c cpp.c cexp.c subs.c precomp.c
+COBJS = $(CSRCS:"*.c":"$(OD)*.o")
+
+ASRCS= asubs.a
+AOBJS= $(ASRCS:"*.a":"$(OD)*.o")
+
+all: $(OD) $(PROTOS) $(EXE)
+
+$(EXE) : $(COBJS) $(AOBJS)
+    cd $(OD)
+    blink FROM LIB:c.o %(right:"$(OD)*.o":"*.o") LIB lib:lc.lib lib:amiga.lib TO %(left) BATCH
+    cd
+
+$(COBJS) : $(CSRCS)
+    lc $(CFLAGS) -o%(left) %(right)
+
+$(AOBJS) : $(ASRCS)
+    asm -o%(left) %(right)
+
+$(PROTOS) : $(CSRCS) $(ASRCS)
+    -delete %(left)
+    lc_makeproto -o%(left) %(right)
+
+$(OD) : $(OD)
+    makedir %(left:*/:*)
+

@@ -1,0 +1,34 @@
+The following changes have been made between VMake versions 2.8 and 2.9
+
+The behavior of icons has been refined slightly.  If you READ a project and
+then SAVE it, the icon (.info file) will not be changed, ie any tooltypes
+will not be modified.  If you create a new project or save an existing
+project under a new name, a new icon will be created from the default,
+dcc:config/Default_Project.info.
+
+The SAVE command has been modified.  If you save a project under a new name,
+the new name becomes the current name for the project.  The old project entry
+in the VMake window Project Files list (eg oldproj.DICE) will be removed and
+a new entry added to the list (eg newproj.DICE).  Any command using the %f
+parameter will then be expanded to use the new project name. 
+
+The VMake .config file has been modified significantly for version 2.9.
+Every TEXT, CONFIG and SUBRTN entry must now have two strings.  The first
+string is the position or slot number for the entry, and the second is the
+text to be saved at that position.  With this change, we anticipate that
+future changes to VMake will normally be compatible with with older versions
+of VMake.config files that were created in the VMake 2.9 format.  This is
+intended to simplify use of project specific config files.  Note that it is
+no longer necessary for the entries to be in any specific order.  You can
+keep any entries that you might modify after the rest of the entries, which
+might simplify the job of applying updates to your .config files.  For 
+example, CONFIG slot 7 holds the command to invoke your editor, and you may
+not want to use the entry for this slot that is released with DICE.
+
+Here is an example of an entry in the new format:
+
+CONFIG "7"  "RUN >nil: AME %s HUNT %(_PORT_)"
+
+If you use an older version of a config file, then any features that depend
+on new TEXT or CONFIG entries won't work, but things that depend on the
+older entries should work correctly.

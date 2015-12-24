@@ -1,0 +1,65 @@
+
+#   DMakefile for recomplilation two,	use dcc to compile itself
+#
+
+OD= dtmp:comp3/c1/
+EXE= dcc:bin/amiga/bin3/dc1
+PEXE= dcc:bin/amiga/binp/dc1
+
+CFLAGS= -ms -mRR -r -DREGISTERED -DCOMMERCIAL -proto -I$(OD)
+LFLAGS= -ms -mRR -r -proto
+
+SRCS= asm1.c asm2.c asmaddr.c asmflt.c asubs.c block.c cexp.c exp.c gen.c \
+ genarith.c genass.c genbool.c genlogic.c genmisc.c lex.c main.c reg.c \
+ rules.c sem.c stmt.c subs.c sym.c toplevel.c types.c error.c pragma.c \
+ hash.a
+
+NOBJS= $(SRCS:"*.?":"*.o")
+OBJS = $(SRCS:"*.?":"$(OD)*.o")
+
+POBJS= $(SRCS:"*.?":"$(OD)p_*.o")
+PNOBJS= $(SRCS:"*.?":"p_*.o")
+
+PROTOS= $(OD)protos.h
+
+all: $(OD) $(PROTOS) $(EXE)
+
+nomkp: $(EXE)
+
+quick: $(EXE)
+
+prof: $(PEXE)
+
+$(EXE) : $(OBJS)
+    cd $(OD)
+    xc_dcc -l0 $(LFLAGS) dlib:c.o $(NOBJS) dlib:csr.lib dlib:amiga20sr.lib dlib:amiga20s.lib dlib:autos.lib -o %(left) -v
+    cd
+
+$(PEXE) : $(PROTOS) $(POBJS)
+    cd $(OD)
+    xc_dcc -l0 $(LFLAGS) dlib:c.o $(PNOBJS) dlib:csrp.lib dlib:amiga20srp.lib dlib:amiga20s.lib dlib:autos.lib -o %(left) -v -prof3
+    cd
+
+$(OBJS) : $(SRCS)
+    xc_dcc $(CFLAGS) %(right) -o %(left) -c
+
+$(POBJS) : $(SRCS)
+    xc_dcc $(CFLAGS) %(right) -o %(left) -c -prof3
+
+
+$(PROTOS) : $(SRCS)
+    xc_makeproto -o%(left) %(right)
+
+clean :
+    cd $(OD)
+    delete $(NOBJS)
+    delete $(PNOBJS)
+    cd
+
+cleanprof:
+    cd $(OD)
+    delete $(PNOBJS)
+    cd
+
+$(OD) : $(OD)
+    makedir %(left:*/:*)

@@ -1,0 +1,110 @@
+From tlm@newton.physics.purdue.edu  Thu Dec  8 09:53:55 1988
+Received: by postgres.Berkeley.EDU (5.57/1.26)
+	id AA15642; Thu, 8 Dec 88 09:53:55 PST
+Received: by newton.physics.purdue.edu (5.54/2.2)
+	id AA19181; Thu, 8 Dec 88 12:52:30 EST
+From: tlm@newton.physics.purdue.edu (Timothy Lee Meisenheimer)
+Message-Id: <8812081752.AA19181@newton.physics.purdue.edu>
+To: dillon@postgres.Berkeley.EDU (Matt Dillon)
+Cc: tlm@newton.physics.purdue.edu
+Subject: Re: dme & programing objectively 
+In-Reply-To: Your message of Sun, 27 Nov 88 14:59:27 PST.
+             <8811272259.AA10886@postgres.Berkeley.EDU> 
+Date: Thu, 08 Dec 88 12:52:29 EST
+
+Well, I'm a few days older and a little wiser. I finally figured out
+that DME looks for it's icon (dme.info) to get some tooltype arguments
+when it starts up. The original code barfed and exited when it couldn't
+find "dme.info" which is the first argument passed to it be the workbench.
+(Of course since BROWSER "does" the same thing as the WORKBENCH I had similar
+results) I just added some code to account for the case when there might
+not be a dme.info file around and it all works correctly. I've included
+a comparison from old to new code:
+(this is from main.c)
+************** old code *************
+    if (mac == 0) {             /*  WORKBENCH STARTUP           */
+	long oldlock;
+
+	Wdisable = 0;		/*  allow icon save		*/
+	Wbs = (WBS *)mav;
+	if (!openlibs(ICON_LIB))
+	    exiterr("unable to open icon library");
+	oldlock = CurrentDir(Wbs->sm_ArgList[0].wa_Lock);   /* Tool */
+	Do = GetDiskObject(Wbs->sm_ArgList[0].wa_Name);
+	CurrentDir(oldlock);
+	if (Do == NULL)
+	    exiterr("unable to get disk object");
+	mac = 99;
+    }
+
+    resethash();
+
+    if (Do) {
+	ops(Do->do_ToolTypes, 1);
+	nf = Wbs->sm_NumArgs - 1;
+	Dirlock = Wbs->sm_ArgList[0].wa_Lock;
+    } else {
+	nf = ops(mav+1, 0);
+    }
+
+    for (ni = 0, i = 1; i < mac; ++i) {
+************** old code *************
+************** new code *************
+    if (mac == 0) {             /*  WORKBENCH STARTUP           */
+	long oldlock;
+
+	Wdisable = 0;		/*  allow icon save		*/
+	Wbs = (WBS *)mav;
+	if (!openlibs(ICON_LIB))
+	    exiterr("unable to open icon library");
+	Do = GetDiskObject(Wbs->sm_ArgList[0].wa_Name);
+	if(Do != NULL){
+	    oldlock = CurrentDir(Wbs->sm_ArgList[0].wa_Lock);   /* Tool */
+	    CurrentDir(oldlock);
+	}
+
+/* let it be ok not to find dnet.info !!! */
+/*	  if (Do == NULL)
+	    exiterr("unable to get disk object"); */
+
+	mac = 99;
+    }
+
+    resethash();
+
+    if (Do != NULL) {
+	ops(Do->do_ToolTypes, 1);
+	nf = Wbs->sm_NumArgs - 1;
+	Dirlock = Wbs->sm_ArgList[0].wa_Lock;
+
+    /* check that it might still be a workbench startup */
+
+    } else if(Wdisable == 0){
+	nf = Wbs->sm_NumArgs - 1;
+
+    /* this is for CLI startup */
+
+    } else {
+	nf = ops(mav+1, 0);
+    }
+
+    for (ni = 0, i = 1; i < mac; ++i) {
+************** new code *************
+
+Anyway, wasn't much but it did force me to learn how the workbench
+startup stuff should go.
+
+On a slightly different topic. I'd like to try to automate dnet a little
+more - have it dial up and transfer files automatically using Amicron. Would
+you suggest putting a scripting fascility in dnet itself - or put in
+some type of IPC port with which you could send and receive from
+the serial line (to dial out and login etc.) and maybe give a few informative
+things like the CLI # for dnet etc. Of course once dnet is up and running on
+both ends, one could just us the usual client and server program (or make
+new ones). I think the versatility of the latter would be preferable.
+
+Guess I'm looking for enlightened comments, suggestions and "permission"
+to hack at your code.
+
+tim.
+

@@ -1,0 +1,2453 @@
+
+    STDIO.DOC (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+TABLE OF CONTENTS
+
+c.lib/stdio/clearerr
+c.lib/stdio/fclose
+c.lib/stdio/fdopen
+c.lib/stdio/feof
+c.lib/stdio/ferror
+c.lib/stdio/fflush
+c.lib/stdio/fgetc
+c.lib/stdio/fgetpos
+c.lib/stdio/fgets
+c.lib/stdio/filbuf
+c.lib/stdio/fileno
+c.lib/stdio/fopen
+c.lib/stdio/fprintf
+c.lib/stdio/fputc
+c.lib/stdio/fputs
+c.lib/stdio/fread
+c.lib/stdio/freopen
+c.lib/stdio/fscanf
+c.lib/stdio/fseek
+c.lib/stdio/fsetpos
+c.lib/stdio/ftell
+c.lib/stdio/fwrite
+c.lib/stdio/getc
+c.lib/stdio/getchar
+c.lib/stdio/gets
+c.lib/stdio/perror
+c.lib/stdio/pfmt
+c.lib/stdio/printf
+c.lib/stdio/putc
+c.lib/stdio/putchar
+c.lib/stdio/puts
+c.lib/stdio/remove
+c.lib/stdio/rename
+c.lib/stdio/rewind
+c.lib/stdio/scanf
+c.lib/stdio/setbuf
+c.lib/stdio/setvbuf
+c.lib/stdio/sprintf
+c.lib/stdio/sscanf
+c.lib/stdio/stdin
+c.lib/stdio/stdout
+c.lib/stdio/stderr
+c.lib/stdio/tmpfile
+c.lib/stdio/tmpnam
+c.lib/stdio/ungetc
+c.lib/stdio/vfprintf
+c.lib/stdio/vprintf
+c.lib/stdio/vsprintf
+
+
+stdio/file_pointer					    stdio/file_pointer
+
+    A file pointer is the basis for STDIO, a standard file buffering
+    package across all versions of C.
+
+    The specific Amiga implementation uses file descriptors (see
+    the file_descriptor manual page) as its interface to the
+    filesystem.
+
+    Remember that a stdio file pointer is NOT a file descriptor nor
+    an AmigaDOS file handle.  You may call only stdio routines (fopen,
+    fclose, fread, fwrite, etc...) with file pointers.
+
+    Some C implementations flush stdout whenever stdin is read.  DICE
+    does not do this.
+
+
+
+stdio/clearerr						stdio/clearerr
+
+   NAME
+	clearerr - clear error associated with a file pointer
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	void clearerr(fp);              (MACRO)
+	FILE *fp;
+
+   FUNCTION
+	The clearerr() macro clears both the EOF flag and the ERROR
+	flag associated with a file pointer.  When an ERROR occurs on
+	a file pointer further fread, fwrite, and some other calls will
+	not work (i.e. fail) until the ERROR indicator is cleared.
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   INPUTS
+	FILE *fp;	file pointer to clear the error on.
+
+   RESULTS
+	none,	the error and EOF indicators are cleared
+
+   SEE ALSO
+	feof, ferror, rewind, fseek
+
+
+stdio/fclose						stdio/fclose
+
+   NAME
+	fclose - close a file pointer
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int error = fclose(fp);
+	FILE *fp;
+
+   FUNCTION
+	fclose flushes any data remaining in the file pointer's
+	output buffer to the file and then closes the file.  The
+	file pointer is no longer valid.
+
+	fclose returns any error condition that occured while flushing
+	the buffered data to the file.	The file is still closed even
+	if an error occurs.
+
+   NOTE
+	You can fclose(stdin), fclose(stdout), and fclose(stderr) as
+	you wish to save space and/or detach your process from the
+	console (i.e. allow the console window to be closed).
+
+   WARNING
+	If you fclose stdin, stdout, and stderr with the intension of
+	removing all references to the console window there is still
+	one more thing you have to do, and that is put a NULL in
+	your processes pr_ConsoleTask field.  Otherwise, while the
+	console window will be able to close, your process will still
+	have a reference to the now non existant window if it attempts
+	to spawn or Execute() other processes.
+
+	refer to the file_pointer manual page for general information
+
+   INPUTS
+	FILE *fp;	file pointer
+
+   RESULTS
+	int error;	error on fclose, or 0 if none
+
+   SEE ALSO
+	fopen, fread, fwrite, fgets, fputs
+
+
+stdio/fdopen						stdio/fdopen
+
+   NAME
+	fdopen - associate a file pointer with an already open file
+		 descriptor
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	FILE *fp = fdopen(fd, modes);
+	int fd;
+	char *modes;
+
+   FUNCTION
+	fdopen associates an already open file descriptor with a file
+	pointer.  Note that fclose()ing the file pointer will also
+	close() the file descriptor.
+
+	Refer to the fopen manual page for a description of available
+	modes.	Note that when you use fdopen the file will not be
+	truncated and if you specify mode 'a' for append, the file
+	descriptor MUST have been open()'d with the O_APPEND flag.
+
+	That is, the mode string should be similar to the open flags
+	that were used to open the file descriptor.
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   INPUTS
+	int fd; 	file descriptor to associated with a new file pointer
+	char *modes;	modes string, such as "r+".
+
+   RESULTS
+	FILE *fp;	new file pointer or NULL if an error occured
+
+   SEE ALSO
+	fopen, fread, fwrite, fgets, fputs
+
+
+stdio/feof						stdio/feof
+
+   NAME
+	feof   - return EOF condition for file pointer
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int r = feof(fp);                   (MACRO)
+	FILE *fp;
+
+   FUNCTION
+	feof returns the EOF status of a file pointer.	The status is
+	not changed by this macro.  0 is returned if no EOF condition
+	exists, non-zero if an EOF condition exists (NOT necessarily
+	1 or -1, just non-zero).
+
+	use clearerr() to clear the EOF condition.  Also, fseek() and
+	rewind() also clear an EOF condition.
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   INPUTS
+	FILE *fp;	file pointer
+
+   RESULTS
+	int r;		0 if no EOF condition exists, != 0 if an EOF
+			condition exists (not necessarily 1 or -1).
+
+   SEE ALSO
+	fopen, fclose, fread, fwrite, fgets, fputs
+
+
+stdio/ferror						stdio/ferror
+
+   NAME
+	ferror - return ERROR condition for file pointer
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int r = ferror(fp);                 (MACRO)
+	FILE *fp;
+
+   FUNCTION
+	ferror returns the ERROR status of a file pointer.  The status is
+	not changed by this macro.  0 is returned if no ERROR condition
+	exists, non-zero if an ERROR condition exists (NOT necessarily 1 or
+	-1, just non-zero).
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   INPUTS
+	FILE *fp;	file pointer
+
+   RESULTS
+	int r;		0 if no ERROR condition exists, != 0 if an ERROR
+			condition exists (not necessarily 1 or -1).
+
+   SEE ALSO
+	fopen, fclose, fread, fwrite, fgets, fputs
+
+
+stdio/fflush						stdio/fflush
+
+   NAME
+	fflush - flush buffers to file
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int error = fflush(fp);
+	FILE *fp;
+
+   FUNCTION
+	fflush writes out any buffered data out to the file descriptor
+	associated with the file pointer.
+
+	Normally a file is either unbuffered, line buffered, or fully
+	buffered.  fflush is useful in the later two cases as is shown
+	by the example.
+
+	fflush will return -1 if a write error occured, 0 if no error
+	occured.
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   EXAMPLE
+	/*
+	 *  Since text to stdout is normally line buffered, if we do not
+	 *  write out a newline '\n' then the line is still buffered in
+	 *  memory and we have to fflush() to write it out.
+	 */
+
+	#include <stdio.h>
+
+	main()
+	{
+	    char buf[256];
+
+	    printf("Enter a number -");
+	    fflush(stdout);
+	    gets(buf);
+	    printf("Munch Munch...");
+	    fflush(stdout);
+	    sleep(1);
+	    puts("Thanks!");
+	}
+
+   INPUTS
+	FILE *fp;	file pointer
+
+   RESULTS
+	int error;	0 if no error, -1 on error.
+
+   SEE ALSO
+	fopen, fclose, fread, fwrite, fgets, fputs
+
+
+stdio/fgetc						stdio/fgetc
+stdio/getc						stdio/getc
+
+   NAME
+	fgetc - get a single character from a file pointer
+	getc  - get a single character from a file pointer (MACRO)
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int c = fgetc(fp);
+	int c = getc(fp);                   (MACRO)
+	FILE *fp;
+
+   FUNCTION
+	[f]getc() reads a single character from a file pointer.  The value
+	returned is actually an int because EOF (-1) must be differentiated
+	from a 255.
+
+	[f]getc() returns an integer 0-255 or EOF (-1) if an end of file
+	occurs.
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   EXAMPLE
+	/*
+	 *  copy stdin to stdout using getc/putc.  Normally one uses
+	 *  fread/fwrite, but I'll save that for the fread manual page.
+	 *
+	 *  note that I output the initial message to stderr so it does
+	 *  not get stuck into stdout in case the user has redirected
+	 *  stdout.
+	 */
+
+	#include <stdio.h>
+
+	main()
+	{
+	    int c;
+
+	    fputs("Type a couple of lines, then ^\ (EOF)\n", stderr);
+	    while ((c = getc(stdin)) != EOF) {
+		putc(c, stdout);
+	    }
+	    return(0);
+	}
+
+   INPUTS
+	FILE *fp;	file pointer
+
+   RESULTS
+	int c;		character 0 to 255, or EOF (-1).
+
+   SEE ALSO
+	putc, fputc, fread, fwrite
+
+
+stdio/fgetpos						stdio/fgetpos
+
+   NAME
+	fgetpos - get current file position
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int error = fgetpos(fp, &pos);
+	fpos_t pos;
+
+   FUNCTION
+	fgetpos() returns the current seek position and is roughly equivalent
+	to ftell().  fgetpos() is a new ANSI call to better support C
+	compilers that use 16 bit integers.  DICE uses 32 bit integers so
+	fgetpos() is not so useful.
+
+	fgetpos() takes a file pointer and the address of a fpos_t type
+	(a long).  It fills the fpos_t variable with the current file
+	position and returns 0 if all went well, non-zero if an error
+	occured.
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   EXAMPLE
+	/*
+	 *  return the length of the file specified on the command line.
+	 *  P.S. it is more efficient to use open/lseek/close instead
+	 *  of fopen/fseek/fgetpos/fclose
+	 */
+
+	#include <stdio.h>
+
+	main(ac, av)
+	int ac;
+	char **av;
+	{
+	    FILE *fp;
+	    fpos_t off;
+
+	    if (ac == 1) {
+		puts("Expected a filename argument");
+		exit(1);
+	    }
+	    fp = fopen(av[1], "r");
+	    if (fp == NULL) {
+		printf("Unable to open %s\n", av[1]);
+		exit(10);
+	    }
+	    fseek(fp, 0L, SEEK_END);
+	    if (fgetpos(fp, &off)) {
+		puts("Error getting file position");
+		exit(20);
+	    }
+	    fclose(fp);
+	    printf("File %s is %d bytes\n", av[1], off);
+	    return(0);
+	}
+
+   INPUTS
+	FILE *fp;	file pointer
+
+	fpos_t *pos;	pointer to an fpos_t type that the position is
+			loaded into.
+
+   RESULTS
+	int error;	0 if no error, non-zero on error
+
+   SEE ALSO
+	ftell, rewind, fseek, rewind
+
+
+stdio/fgets						stdio/fgets
+
+   NAME
+	fgets - get a line from a file pointer
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	char *ptr = fgets(buf, maxlen, fp);
+	char *buf;
+	int maxlen;
+	FILE *fp;
+
+   FUNCTION
+	fgets() gets a line from the specified file pointer, returning
+	the first argument (buf) or NULL if an error or EOF occurs.
+
+	fgets() stores the line in buf, up to maxlen characters.  This
+	maximum includes a terminating newline '\n' and nul '\0'.
+
+	It is common to get confused between gets(), fgets(), puts(), and
+	fputs().  gets() strips off any newline '\n' and puts() adds one
+	while fgets() keeps the newline at the end of the line and fputs()
+	does NOT add one.   gets() and puts() work on stdin and stdout
+	while fgets() and fputs() work on arbitrary file pointers.
+
+	If more than maxlen - 1 characters are in the line fgets will
+	terminate operation and put a nul as the last character (so the
+	buffer is still a valid string).
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   EXAMPLE
+	#include <stdio.h>
+
+	main()
+	{
+	    unsigned char buf[128];
+	    short i;
+
+	    printf("Enter a line - ");
+	    fflush(stdout);
+	    if (fgets(buf, sizeof(buf), stdin) == NULL)
+		exit(1);
+
+	    printf("In Hex: ");
+	    for (i = 0; buf[i]; ++i)
+		printf(" %02x", buf[i]);
+	    puts("");
+	    return(0);
+	}
+
+   INPUTS
+	char *buf;	buffer
+	int maxlen;	maximum buffer size
+	FILE *fp;	file pointer
+
+   RESULTS
+	char *ptr;	buf if all is well, or NULL if error or EOF
+
+   SEE ALSO
+	gets, puts, fputs, fread, getc, fgetc
+
+
+stdio/fileno						stdio/fileno
+
+   NAME
+	fileno - return file descriptor given a file pointer
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int fd = fileno(fp);                (MACRO)
+	FILE *fp;
+
+   FUNCTION
+	The fileno() macro returns the file descriptor (open, close, read,
+	write) associated with the file pointer (fopen, fclose, fread,
+	fwrite).
+
+	This is still not the AmigaDOS file handle... to get that you must
+	use the fdtofh() call.
+
+   WARNING
+	If you use the file descriptor of a file pointer the file pointer
+	will get its seek position confused.  Additionally, there might
+	be unflushed data in the file pointer's buffers that has not
+	been written out to the file descriptor yet.  There also might
+	be unread input on the file pointer's input buffers already
+	read from the file descriptor.
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   EXAMPLE
+	/*
+	 *  stdin defaults to file descriptor 0
+	 *  stdout defaults to file descriptor 1
+	 *  stderr defaults to file descriptor 2
+	 */
+
+	#include <stdio.h>
+	#include <assert.h>
+
+	main()
+	{
+	    assert(fileno(stdin) == 0);
+	    assert(fileno(stdout) == 1);
+	    assert(fileno(stderr) == 2);
+	    return(0);
+	}
+
+   INPUTS
+	FILE *fp;	file pointer
+
+   RESULTS
+	int fd; 	associated file descriptor
+
+   SEE ALSO
+	fdopen, fopen, fclose, open, close
+
+
+stdio/fopen						stdio/fopen
+
+   NAME
+	fopen - open a file and create a file pointer for it
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	FILE *fp = fopen(filename, modes)
+	char *filename;
+	char *modes;
+
+   FUNCTION
+	fopen is the grand master of stdio; It opens and possibly creates a
+	file and returns a new file pointer for use by the program.
+
+	The first argument is the file to open, the second is a string
+	containing one or mode characters defined as follows:
+
+	r   open for reading, the file must already exist
+
+	w   open for writing, the file is created if it does not exist,
+	    truncated if it does
+
+	a   open for append, writes always append to the file.	If 'a' is
+	    ever specified, the file starts out positioned at the end
+	    instead of at the beginning.  This mode also creates the
+	    file but only if it does not already exist.
+
+	+   along with 'r' this also allows writing to the file
+	    along with 'w' this also allows reading from the file
+
+	b   open for binary read/write, else the file is assumed to contain
+	    text (this is ignored by DICE since there is no difference on
+	    the Amiga).
+
+	All combinations except "rw" are allowed.  One uses "r+" or "w+"
+	instead of "rw".  By the above description "r+" is used to update
+	an existing file while "w+" is used to create a new file and then
+	allow reads as well as writes to it.
+
+	"wa" is equivalent to creating a new file and then appending to
+	it.  "r+a" is equivalent to appending to an already existing
+	file.
+
+	Other examples of valid modes combinations: "r+b", "w+b", "rb", "wb",
+	"ab", "w", "r", "r+", "a", etc...
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   EXAMPLE
+	/*
+	 *  create a new file and write some text to it
+	 */
+
+	#include <stdio.h>
+	#include <assert.h>
+
+	main()
+	{
+	    FILE *fp = fopen("T:xx", "w");
+	    char buf[256];
+
+	    assert(fp);
+
+	    puts("Enter a line");
+	    if (fgets(buf, sizeof(buf), stdin)) {
+		fputs(buf, fp);
+		puts("The line has been written to T:xx");
+	    }
+	    fclose(fp);
+
+	    return(0);
+	}
+
+   INPUTS
+	char *filename;     file name to open
+	char *modes;	    open modes string
+
+   RESULTS
+	FILE *fp;	    new file pointer
+
+   SEE ALSO
+	fdopen, fopen, fclose, open, close
+
+
+stdio/printf						stdio/printf
+stdio/fprintf						stdio/fprintf
+stdio/sprintf						stdio/sprintf
+stdio/vprintf						stdio/vprintf
+stdio/vfprintf						stdio/vfprintf
+stdio/vsprintf						stdio/vsprintf
+
+   NAME
+	printf - formatted output to stdout, file pointer, or buffer
+
+   SYNOPSIS
+	#include <stdio.h>
+	#include <stdarg.h>	/*  v[f/s]printf() only */
+
+	int n = printf(fmt, ...);
+	int n = fprintf(fp, fmt, ...);
+	int n = sprintf(buf, fmt, ...);
+	int n = vprintf(fmt, argvect);
+	int n = vfprintf(fp, fmt, argvect);
+	int n = vsprintf(buf, fmt, argvect);
+
+	FILE *fp;
+	char *fmt;
+	char *buf;
+	va_list argvect;
+
+   FUNCTION
+	These various connotations offer formatted printing.  printf and
+	vprintf output to stdout; fprintf and vfprintf output to a
+	file pointer (fp); sprintf and vsprintf output to a character
+	buffer.
+
+	All routines return the number of characters written if successful,
+	a negative number if not.  Only sprintf and vsprintf is limited
+	in terms of output size (it cannot exceed the buffer you give it).
+
+	The common argument to all routines is the format specifier.  The
+	format specifier is scanned to determine how to handle the arguments
+	to the call (or the arglist for v*printf connotations).  Characters
+	are copied to the output until a % is encountered.  %% indicates a
+	literal '%' character.  Otherwise, the % is followed by a control
+	sequence that tells printf how to output an argument quantity.	The
+	quantity is output and the scan continues until the end of the
+	format string.
+
+	The % format is as follows:
+
+	    %[flags][#[.#]][modifier]<conversion-specifier>
+
+	Items in brackets are option.  After the % zero or more flags may
+	be specified.  Then, an optional integer which represents the
+	minimum field width for the object.  If an integer is specified
+	it may be followed by a period and another integer that represents
+	that precision with which a number is printed.	Zero or more
+	modifiers may then be specified followed by a mandatory conversion
+	specifier.
+
+	Either or both integers (#[.#]) may be specified as a '*', as in
+	"%*d", specifying that the minimum field width and/or precision
+	is specified as an integer in the argument that occurs before
+	the conversion object.	For example, printf("x%*dx\n", 10, 23);
+	would print the number 23 right justified in a field 10 characters
+	wide.
+
+    FLAGS:
+	-     left justify text within its field, otherwise output is right
+	      justified
+
+	+     precede a signed number with a plus sign if it is positive
+	      (negative numbers are always preceeded with a minus sign)
+
+      <space> precede a positive signed number with a space so the number's
+	      width matches that of itself if it were negative.
+
+	#     forces numeric data items to be formatted such that their type
+	      is known.  The following effects occur given a conversion
+	      specifier:
+
+		    e, E, f, F	    always retains decimal point
+
+		    g, G	    always retains decimal point
+				    and trailing zeros are kept
+
+		    x, X	    prints '0x' and '0X' respectively
+				    before the number
+
+	      (current not implemented by DICE)
+
+	0     pad with zeros instead of spaces.  Ignored if a precision
+	      is specified or if the '-' flag is specified.
+
+	      (currently partially implemented by DICE)
+
+    MODIFIERS
+
+	h     Indicates the corresponding integer argument is a short or
+	      an unsigned short.
+
+	      under DICE, this has no effect since integers are 32 bits
+
+	l     Indicates the corresponding integer argument is a long or
+	      unsigned long.  Indicates floating point argument is a
+	      double (else is a float)
+
+	      under DICE, for integers, this is superfluous, but for
+	      portability reasons you want to specify it when an argument
+	      is explicitly a long.
+
+	L     Indicates the corresponding floating point argument is a
+	      long double (16 byte quantity)  (currently not implemented
+	      by DICE)
+
+    CONVRSION SPECIFIER
+
+	c     Output the character represented by the integer quantity
+
+	d     Output a signed integer
+
+	e     Output a double quantity in exponential form, the format:
+	      The precision specifies the number of digits beyond the
+	      decimal point to print
+
+			[-]d.dddddde+/-dd
+
+	E     e conversion but use upper case E in exponent:  E+/-dd
+
+	f     Output a double quantity in the form:  The precision specifies
+	      the number of digits beyond the decimal point to print
+
+			[-]d.dddddd
+
+	g     Output a double quantity using either the 'e' or 'f' form,
+	      depending on the exponent.
+
+	G     Output a double quantity using either the 'E' or 'f' form,
+	      depending on the exponent.
+
+	i     same as 'd'
+
+	n     The argument is a pointer to an integer which is used to
+	      set the integer to the bytes written out so far.	This is
+	      especially useful with sprintf to determine where a particular
+	      part of the format begins in the output buffer.
+
+	o     The unsigned integer quantity is converted to ascii-octal
+
+	p     The pointer is printed (basically the address is printed)
+
+	s     The string represented by the character pointer is printed
+
+	u     The unsigned integer quantity is converted to ascii-decimal
+
+	x     The unsigned integer quantity is converted to ascii-hex using
+	      '0'-'9', 'a'-'f'.
+
+	X     The unsigned integer quantity is converted to ascii-hex using
+	      upper case A-F instead of lower case.
+
+   EXAMPLE
+	/*
+	 *  Example use of most conversion specifiers.	Compile -lm to
+	 *  get the math pfmt.
+	 */
+
+	#include <stdio.h>
+	#include <stdarg.h>
+
+	void gagprint();
+
+	main()
+	{
+	    char buf[256];
+	    int i;
+	    int n;
+
+	    n = printf("ab%c %03d %le %lf %2.2lf %n%o %p %sXX %u %x %X %08lx\n",
+		'c',                /*  %c      -> 'c'      */
+		43,		    /*	%03d	-> '043'    */
+		1.23E-2,
+		1.23E-2,
+		1.257,		    /*	%2.2lf	-> 1.26     */
+		&i,
+		11,		    /*	%o	-> '13'     */
+		buf,		    /*	%p	-> <hex-ptr-addr>   */
+		"FuBar",
+		32094,		    /*	%u	-> 32094    */
+		4095,		    /*	%x		    */
+		4095,		    /*	%X		    */
+		4095		    /*	%08lx		    */
+	    );
+	    printf("%d chars written\n", n);
+
+	    n = printf("%*s%s\n", i, "", "^Octal Number");
+	    printf("%d chars written\n", n);
+
+	    n = sprintf(buf, "FuBar%s", "Bletch");
+	    puts(buf);
+	    printf("%d chars written\n", n);
+
+	    n = fprintf(stdout, "This is an fprintf\n");
+	    printf("%d chars written\n", n);
+
+	    gagprint("%d %d %d\n", 1, 2, 3);
+	    return(0);
+	}
+
+	void
+	gagprint(ctl, ...)
+	char *ctl;
+	{
+	    va_list va;
+	    int n;
+
+	    va_start(va, ctl);
+	    n = vprintf(ctl, va);
+	    printf("%d chars written\n", n);
+	    va_end(va);
+	}
+
+   INPUTS
+	FILE *fp;	    file pointer (fprintf, vfprintf)
+	char *fmt;	    format string, e.g. "Answer is %d\n"
+	char *buf;	    buffer (sprintf, vsprintf)
+	va_list argvect;    arg list (vprintf, vfprintf, vsprintf)
+
+   RESULTS
+	int n;		    number of characters written if successful,
+			    a negative number if not.  for sprintf and
+			    vsprintf the nul character at the end of the
+			    string is NOT included in the count.
+
+   SEE ALSO
+	puts, fputs, fwrite
+
+
+stdio/fputc						stdio/fputc
+stdio/putc						stdio/putc
+
+   NAME
+	fputc - write a single character to a file pointer
+	putc  - write a single character to a file pointer (MACRO)
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int c = fputc(c, fp);
+	int c = putc(c, fp);
+	FILE *fp;
+
+   FUNCTION
+	[f]putc() writes a single character to a file pointer.  If all
+	goes well the character is returned, else EOF is returned.
+
+	fputc() is a function call while putc() is a macro
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   EXAMPLE
+	/*
+	 *  copy stdin to stdout using fgetc/fputc.  Normally one uses
+	 *  fread/fwrite, but I'll save that for the fread manual page.
+	 *
+	 *  note that I output the initial message to stderr so it does
+	 *  not get stuck into stdout in case the user has redirected
+	 *  stdout.
+	 */
+
+	#include <stdio.h>
+
+	main()
+	{
+	    int c;
+
+	    fputs("Type a couple of lines, then ^\ (EOF)\n", stderr);
+	    while ((c = fgetc(stdin)) != EOF) {
+		fputc(c, stdout);
+	    }
+	    return(0);
+	}
+
+   INPUTS
+	int c;		character to write
+	FILE *fp;	file pointer
+
+   RESULTS
+	int c;		character written (same as first argument) or EOF
+			if error.
+
+   SEE ALSO
+	getc, putc, fputc, fread, fwrite, puts, fputs, gets, fgets
+
+
+stdio/fputs						stdio/fputs
+stdio/puts						stdio/puts
+
+   NAME
+	fputs - write a string to a file pointer
+	puts  - write a string to stdout and also write a newline
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int error = fputs(s, fp);
+	int error = puts(s);
+
+	const char *s;
+	FILE *fp;
+
+   FUNCTION
+	fputs writes a string to a file pointer all the way up to, but not
+	including, the nul.  puts does the same thing but to stdout, and
+	puts additionally writes a newline out.
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+	It is common to get confused between fputs and puts.  Remember that
+	puts adds a newline to the output while fputs does not.  gets strips
+	the newline from an input line while fgets does not.
+
+   EXAMPLE
+
+	#include <stdio.h>
+
+	main()
+	{
+	    fputs("This is a test of fputs\n", stdout); /* note newline    */
+	    puts("This is a test of puts");             /*  note lack of   */
+	    puts("That's it!");
+	    return(0);
+	}
+
+   INPUTS
+	char *s;	string to write
+	FILE *fp;	file pointer
+
+   RESULTS
+	int error;	0 or positive if all went ok, else negative.  Note
+			that unlike *printf() routines the number of chars
+			written out is NOT returned.
+
+   SEE ALSO
+	getc, putc, fputc, fread, fwrite, gets, fgets
+
+
+stdio/fread						stdio/fread
+
+   NAME
+	fread - read data from a file pointer
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	size_t robjs = fread(buf, objsize, nobjs, fp);
+	void *buf;
+	size_t objsize;
+	size_t nobjs;
+	FILE *fp;
+
+   FUNCTION
+	fread() reads an arbitrary number of objects from a file pointer
+	into the specified buffer and returns the actual number of objects
+	read.
+
+	If the return value robjs is not equal to nobjs then fread() was
+	unable to read the requested number of objects due to either a
+	read error or EOF condition.  If the file is already completely
+	exhausted fread() simply returns 0.
+
+	Having two size arguments, an object size and number of objects,
+	simplifies the reading of structure arrays off disk.
+
+   NOTE
+	To use fread to read an arbitrary number of bytes one normally
+	uses the form:	r = fread(buf, 1, n, fp); ... i.e. n objects
+	of size 1.
+
+	fread() will attempt to read objsize * nobjs bytes into the
+	specified buffer.
+
+   EXAMPLE
+	/*
+	 *  NOTE:   run fwrite() example before running this example
+	 *	    to create the dummy file.
+	 */
+
+	#include <stdio.h>
+
+	#define NOBJS	10
+
+	typedef struct {
+	    short   a, b, c, d;
+	} MyObj;
+
+	main()
+	{
+	    FILE *fp;
+	    static MyObj Obj[NOBJS];
+
+	    if (fp = fopen("T:fwrite_tmp", "rb")) {
+		short n;
+		while ((n = fread(Obj, sizeof(MyObj), NOBJS, fp)) > 0) {
+		    short i;
+		    for (i = 0; i < n; ++i) {
+			printf("a = %-5d b = %-5d c = %-5d d = %-5d\n",
+			    Obj[i].a, Obj[i].b, Obj[i].c, Obj[i].d
+			);
+		    }
+		}
+		fclose(fp);
+	    } else {
+		puts("Unable to open T:fwrite_tmp, run fwrite example first");
+		exit(1);
+	    }
+	    return(0);
+	}
+
+   INPUTS
+	void *buf;	    buffer to load data into
+	size_t objsize;     size of one object
+	size_t nobjs;	    number of objects to read
+	FILE *fp;	    file pointer to read objects from
+
+   RESULTS
+	size_t robjs;	    number of objects actually read or 0 if EOF or
+			    ERROR.
+
+   SEE ALSO
+	fwrite, fopen, fclose, fseek, ftell, rewind
+
+
+stdio/freopen						stdio/freopen
+
+   NAME
+	freopen - reopen a new file using an existing file pointer,
+		  the existing file is closed before it is reused.
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	FILE *fp = freopen(filename, modes, ofp)
+	char *filename;
+	char *modes;
+	FILE *ofp;
+
+   FUNCTION
+	freopen works exactly like fopen but takes an additional argument...
+	A file pointer to reuse.  This file pointer, ofp, must be reference
+	a valid open file.  freopen() will close out ofp then reuse the
+	descriptor to open the new file, returning ofp (fp == ofp) on
+	success, NULL on failure.
+
+	If the freopen fails NULL is returned and the original file
+	pointer is still closed, but not free()d so you may call
+	freopen again with the same ofp, even though it has already
+	been closed.
+
+	refer to the fopen() manual page for information on the modes
+	string.
+
+	freopen is often used to change a program's stdin, stdout, or
+	stderr though to be frank, using a separate file pointer is
+	normally much more modular.
+
+   WARNING
+	ANSI does not specify that the ofp can be used in a second freopen
+	if the first freopen using ofp fails (returns NULL).  Many
+	implementations free the file pointer.	This just might be
+	the proper way of doing things but I dunno.  I suggest you do
+	not use DICE's feature in that respect as I might have to
+	change it back to free ofp if the new file is unopenable.
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   EXAMPLE
+	/*
+	 *  re-open stdin to an Amiga console device
+	 */
+
+	#include <stdio.h>
+	#include <assert.h>
+
+	main()
+	{
+	    char buf[256];
+
+	    assert(freopen("CON:0/0/320/100/freopen-in", "r", stdin));
+	    assert(freopen("CON:320/0/320/100/freopen-out", "w", stdout));
+
+	    /*
+	     *	set to line buffered
+	     */
+	    setvbuf(stdin, NULL, _IOLBF, 0);
+	    setvbuf(stdout, NULL, _IOLBF, 0);
+
+	    puts("Type a line in the second window");
+	    gets(buf);
+	    fclose(stdin);
+	    fclose(stdout);
+	    fprintf(stderr, "Your line was: %s\n", buf);
+
+	    return(0);
+	}
+
+   INPUTS
+	char *filename;     file name to open
+	char *modes;	    open modes string
+	FILE *ofp;	    open file pointer to reuse
+
+   RESULTS
+	FILE *fp;	    same as ofp if the new open worked, NULL
+			    otherwise
+
+   SEE ALSO
+	fdopen, fopen, fclose, open, close
+
+
+stdio/fseek						stdio/fseek
+
+   NAME
+	fseek - seek within a file pointer.
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int error = fseek(fp, offset, how);
+	FILE *fp;
+	long offset;
+	int how;
+
+   FUNCTION
+	fseek changes the current seek position within a file.	Offset is
+	interpreted according to the how argument:
+
+	how		offset
+
+	SEEK_SET (0)    skip to position relative to beginning of file
+	SEEK_CUR (1)    skip to position relative to current position in file
+	SEEK_END (2)    skip to position relative to end of file
+
+	So, for example, one may seek to the beginning of a file by
+	fseek(fp, 0L, SEEK_SET);, to the end of the file by
+	fseek(fp, 0L, SEEK_END); (i.e. calling getc() at this time would
+	return an immediate EOF).  You can skip characters in a file
+	with something like fseek(fp, 5L, SEEK_CUR); which skips 5 characters.
+
+	Note that when seeking relative to the end of the file, negative
+	offsets are used.  For example, to seek to the very last character
+	in the file you would use fseek(fp, -1L, SEEK_END);
+
+	fseek returns 0 on success, a negative number on ERROR.  A common
+	mistake is to expect fseek to return the new position of the file
+	but this is not what is returned.  Use ftell() or fgetpos() to
+	determine the current offset into a file.
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+	fseek flushes any buffered write data before seeking.
+
+   EXAMPLE
+	/*
+	 *  print a file backwards
+	 */
+
+	#include <stdio.h>
+
+	char Buf[4096];
+
+	main(ac, av)
+	int ac;
+	char **av;
+	{
+	    FILE *fp;
+	    long pos;
+
+	    if (ac == 1) {
+		puts("Expected textfile argument");
+		exit(1);
+	    }
+	    fp = fopen(av[1], "r");
+	    if (fp == NULL) {
+		printf("Unable to open %s\n", av[1]);
+		exit(1);
+	    }
+	    fseek(fp, 0L, SEEK_END);        /*  seek to end     */
+	    pos = ftell(fp);                /*  size of file    */
+
+	    while (pos > 0) {
+		long bytes = ((pos > sizeof(Buf)) ? sizeof(Buf) : pos);
+		long n;
+
+		fseek(fp, pos - bytes, SEEK_SET);
+		n = fread(Buf, 1, bytes, fp);
+		if (n != bytes) {
+		    puts("read error");
+		    exit(1);
+		}
+		while (--n >= 0)        /*  dump buffer backwords to stdout */
+		    putc(Buf[n], stdout);
+
+		pos -= bytes;
+	    }
+	    fclose(fp);
+	    return(0);
+	}
+
+   INPUTS
+	FILE *fp;	    file pointer to seek
+	long offset;	    offset relative to how
+	int how;	    0, 1, or 2 (absolute, relative, end-relative)
+
+   RESULTS
+	int error;
+
+   SEE ALSO
+	ftell, fgetpos, fsetpos, rewind
+
+
+stdio/fsetpos						stdio/fsetpos
+
+   NAME
+	fsetpos - set position within file pointer (nearly equivalent to
+	fseek absolute)
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int error = fsetpos(fp, &pos);
+	FILE *fp;
+	fpos_t pos;
+
+   FUNCTION
+	fsetpos() is a nearly useless call that is essentially the same
+	as fseek(fp, (long)pos, 0);  fsetpos() seeks within a file pointer
+	to the absolute position specified by an fpos_t type.  The
+	address of an fpos_t object is passed to fsetpos().
+
+	Normally one saves the current seek position into an fpos_t
+	type using the fgetpos() function, then seeks back using
+	the fsetpos() function.  In this way the programmer need not make
+	any direct reference to the contents of the fpos_t type.
+
+   EXAMPLE
+	/*
+	 *  get a line, save current position, get rest of file, go back
+	 *  to saved position, retrieve line again and print again.
+	 */
+
+	#include <stdio.h>
+
+	main(ac, av)
+	int ac;
+	char **av;
+	{
+	    FILE *fp;
+	    fpos_t save_pos;
+	    int count;
+	    char buf[256];
+
+	    if (ac == 1) {
+		puts("Expected textfile argument");
+		exit(1);
+	    }
+	    fp = fopen(av[1], "r");
+	    if (fp == NULL) {
+		printf("Unable to open %s\n", av[1]);
+		exit(1);
+	    }
+	    for (count = 0; fgets(buf, sizeof(buf), fp); ++count) {
+		if (count == 0)             /*  just before second line */
+		    fgetpos(fp, &save_pos);
+		fprintf(stdout, "%-3d: %s", count + 1, buf);
+	    }
+	    if (count < 2) {
+		puts("not enough lines in file for example!");
+		exit(1);
+	    }
+	    puts("--end of file, now seeking back to line 2--");
+	    fsetpos(fp, &save_pos);
+	    if (fgets(buf, sizeof(buf), fp) == NULL) {
+		puts("error!");
+		exit(1);
+	    }
+	    fprintf(stdout, "%-3d: %s", 2, buf);
+	    fclose(fp);
+	    return(0);
+	}
+
+   INPUTS
+	FILE *fp;	    file pointer to seek
+	fpos_t *pos;	    pointer to fpos_t type previously initialized
+			    by a fgetpos() call.
+
+   RESULTS
+	int error;	    0 if no error, < 0 if error
+
+   SEE ALSO
+	ftell, fsetpos, fseek, rewind
+
+
+stdio/ftell						stdio/ftell
+
+   NAME
+	ftell - return current position within file pointer
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	long pos = ftell(fp);
+	FILE *fp;
+
+   FUNCTION
+	ftell() returns the current absolute seek offset within a file
+	pointer.
+
+   EXAMPLE
+	/*
+	 *  get a line, save current position, get rest of file, go back
+	 *  to saved position, retrieve line again and print again.
+	 *
+	 *  like fsetpos() example but uses ftell()/fseek() instead
+	 */
+
+	#include <stdio.h>
+
+	main(ac, av)
+	int ac;
+	char **av;
+	{
+	    FILE *fp;
+	    long save_pos;
+	    int count;
+	    char buf[256];
+
+	    if (ac == 1) {
+		puts("Expected textfile argument");
+		exit(1);
+	    }
+	    fp = fopen(av[1], "r");
+	    if (fp == NULL) {
+		printf("Unable to open %s\n", av[1]);
+		exit(1);
+	    }
+	    for (count = 0; fgets(buf, sizeof(buf), fp); ++count) {
+		if (count == 0)             /*  just before second line */
+		    save_pos = ftell(fp);
+		fprintf(stdout, "%-3d: %s", count + 1, buf);
+	    }
+	    if (count < 2) {
+		puts("not enough lines in file for example!");
+		exit(1);
+	    }
+	    puts("--end of file, now seeking back to line 2--");
+	    fseek(fp, save_pos, SEEK_SET);
+	    if (fgets(buf, sizeof(buf), fp) == NULL) {
+		puts("error!");
+		exit(1);
+	    }
+	    fprintf(stdout, "%-3d: %s", 2, buf);
+	    fclose(fp);
+	    return(0);
+	}
+
+   INPUTS
+	FILE *fp;	    file pointer retrieve seek position from
+
+
+   RESULTS
+	long pos;	    current absolute seek position in file
+
+   SEE ALSO
+	ftell, fgetpos, fsetpos, fseek, rewind
+
+
+stdio/fwrite						stdio/fwrite
+
+   NAME
+	fwrite - write data to a file pointer
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	size_t robjs = fwrite(buf, objsize, nobjs, fp);
+	const void *buf;
+	size_t objsize;
+	size_t nobjs;
+	FILE *fp;
+
+   FUNCTION
+	fwrite() writes the specified number of objects to a file pointer
+	from the specified buffer and returns the actual number of objects
+	written or 0 or -1 depending on the error.
+
+	If the return value robjs is not equal to nobjs then a write error
+	occured.
+
+	Having two size arguments, an object size and number of objects,
+	simplifies the reading of structure arrays off disk.
+
+   NOTE
+	To use fwrite to read an arbitrary number of bytes one normally
+	uses the form:	r = fwrite(buf, 1, n, fp); ... i.e. n objects
+	of size 1.
+
+   EXAMPLE
+	/*
+	 *  NOTE:   run fread() example after this one to read data back
+	 *	    from the file
+	 */
+
+	#include <stdio.h>
+
+	#define NOBJS	15
+
+	typedef struct {
+	    short   a, b, c, d;
+	} MyObj;
+
+	main()
+	{
+	    FILE *fp;
+	    MyObj O;
+
+	    if (fp = fopen("T:fwrite_tmp", "wb")) {
+		short n;
+		for (n = 0; n < NOBJS; ++n) {
+		    O.a = n;
+		    O.b = n * 2;
+		    O.c = n * 3;
+		    O.d = n * 4;
+		    if (fwrite(&O, sizeof(MyObj), 1, fp) != 1) {
+			puts("write error");
+			exit(1);
+		    }
+		}
+		fclose(fp);
+	    } else {
+		puts("Unable to create T:fwrite_tmp");
+		exit(1);
+	    }
+	    return(0);
+	}
+
+   INPUTS
+	void *buf;	    buffer to copy data from
+	size_t objsize;     size of one object
+	size_t nobjs;	    number of objects to write
+	FILE *fp;	    file pointer to read objects from
+
+   RESULTS
+	size_t robjs;	    number of objects actually written (0 or EOF on
+			    error)
+
+   SEE ALSO
+	fread, fopen, fclose, fseek, ftell, rewind
+
+
+stdio/getchar						stdio/getchar
+
+   NAME
+	getchar - get character from stdin (MACRO)
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int c = getchar();
+
+   FUNCTION
+	getchar() returns the next available character on stdin or EOF if
+	no more characters are available.  getchar() is equivalent to
+	getc(stdin).
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   EXAMPLE
+	/*
+	 *  copy stdin to stdout using getchar/putchar.  Normally one uses
+	 *  fread/fwrite, but I'll save that for the fread manual page.
+	 *
+	 *  note that I output the initial message to stderr so it does
+	 *  not get stuck into stdout in case the user has redirected
+	 *  stdout.
+	 *
+	 *  See getc manual page for equivalent example using getc/putc
+	 */
+
+	#include <stdio.h>
+
+	main()
+	{
+	    int c;
+
+	    fputs("Type a couple of lines, then ^\ (EOF)\n", stderr);
+	    while ((c = getchar()) != EOF) {
+		putchar(c);
+	    }
+	    return(0);
+	}
+
+   INPUTS
+	none
+
+   RESULTS
+	int c;		character 0 to 255, or EOF (-1) returned from stdin
+
+   SEE ALSO
+	putc, putchar, fputc, fread, fwrite, getc
+
+
+stdio/gets						stdio/gets
+
+   NAME
+	gets - get a line from stdin
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	char *ptr = gets(buf);
+	char *buf;
+
+   FUNCTION
+	gets() gets a line from stdin returning its first argument (buf)
+	if all went well, NULL if an error or EOF occurs.
+
+	gets() stores the line into the specified buffer up to a maximum
+	of 256 characters (includes \0).
+
+	It is common to get confused between gets(), fgets(), puts(), and
+	fputs().  gets() strips off any newline '\n' and puts() adds one
+	while fgets() keeps the newline at the end of the line and fputs()
+	does NOT add one.   gets() and puts() work on stdin and stdout
+	while fgets() and fputs() work on arbitrary file pointers.
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   EXAMPLE
+	#include <stdio.h>
+
+	main()
+	{
+	    char buf[256];
+
+	    printf("Enter a line - ");
+	    fflush(stdout);
+	    if (gets(buf) == NULL)
+		exit(1);
+	    printf("Your line was: %s\n", buf);
+	    return(0);
+	}
+
+   INPUTS
+	char *buf;	buffer, must be able to hold 256 characters.
+
+   RESULTS
+	char *ptr;	buf if all is well, or NULL if error or EOF
+
+   SEE ALSO
+	gets, puts, fputs, fread, getc, fgetc
+
+
+stdio/perror						stdio/perror
+
+   NAME
+	perror - output error message associated with errno and text
+		 to stderr.
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	void perror(str);
+	const char *str;
+
+   FUNCTION
+	perror outputs the specified string, a colon, and the error number
+	and error message associated with the current value of errno to
+	stderr, ending with a newline.	perror is a common way to generate
+	error messages due to IO failures.
+
+   EXAMPLE
+	#include <stdio.h>
+
+	main()
+	{
+	    FILE *fp = fopen("T:DoesNotExist", "r");
+
+	    if (fp) {
+		puts("T:DoesNotExist isn't supposed to exist!");
+		exit(1);
+	    }
+	    perror("fopen");
+	    return(0);
+	}
+
+   INPUTS
+	char *str;	string message to include in error output
+
+   RESULTS
+	none
+
+   SEE ALSO
+
+
+stdio/putchar						stdio/putchar
+
+   NAME
+	putchar - output character to stdout (MACRO)
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int r = putchar(c);
+
+   FUNCTION
+	putchar() outputs a character to stdout, returning the output
+	character unless an error occured.  If an error occured then
+	EOF is returned.
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   EXAMPLE
+	/*
+	 *  copy stdin to stdout using getchar/putchar.  Normally one uses
+	 *  fread/fwrite, but I'll save that for the fread manual page.
+	 *
+	 *  note that I output the initial message to stderr so it does
+	 *  not get stuck into stdout in case the user has redirected
+	 *  stdout.
+	 *
+	 *  See getc manual page for equivalent example using getc/putc
+	 */
+
+	#include <stdio.h>
+
+	main()
+	{
+	    int c;
+
+	    fputs("Type a couple of lines, then ^\ (EOF)\n", stderr);
+	    while ((c = getchar()) != EOF) {
+		putchar(c);
+	    }
+	    return(0);
+	}
+
+   INPUTS
+	int c;		character to output, 0 to 255
+
+   RESULTS
+	int r;		same as c unless error occured in which case EOF.
+
+   SEE ALSO
+	putc, fputc, fread, fwrite, getc, getchar
+
+
+stdio/remove						stdio/remove
+
+   NAME
+	remove - delete a file
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int error = remove(filename);
+	const char *filename;
+
+   FUNCTION
+	remove() deletes the specified file path returning 0 on success,
+	a negative number on failure.
+
+	On the Amiga, an error will occur if you try to delete a file
+	currently openned by yourself or any other process.
+
+	remove() is an ANSI function.  unlink() does the same thing but
+	is a UNIX compatible function.
+
+   EXAMPLE
+	/*
+	 *  delete the file 'T:xxx'
+	 */
+
+	#include <stdio.h>
+
+	main()
+	{
+	    int error = remove("T:XXX");
+
+	    if (error < 0) {
+		perror("remove(\"T:XXX\") failed");
+		exit(1);
+	    }
+	    puts("T:XXX has been deleted");
+	    return(0);
+	}
+
+   INPUTS
+	char *filename;     filename to delete
+
+   RESULTS
+	int error;	    0 on success, a negative number on failure
+
+   SEE ALSO
+	unlink
+
+
+stdio/rename						stdio/rename
+
+   NAME
+	rename - rename a file, also is able to move a file from one
+		 directory to another on the same filesystem.
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int error = rename(origname, newname);
+	const char *origname;
+	const char *newname;
+
+   FUNCTION
+	rename() renames a file.  You may also use rename() to move a file
+	(& rename at the same time) to another directory on the same
+	filesystem.
+
+	rename returns 0 on success, a negative number on failure.
+
+   EXAMPLE
+	/*
+	 *  create the file T:xxjunk and the directory T:junkdir then
+	 *  move T:xxjunk into T:junkdir and rename to T:yyjunk at the
+	 *  same time.
+	 *
+	 *  As is aptly demonstrated by this example, some errors are not
+	 *  really errors.  For example, mkdir where the dir already exists
+	 *  is not usually an error.
+	 */
+
+	#include <stdio.h>
+	#include <assert.h>
+	#include <errno.h>
+
+	main()
+	{
+	    FILE *fp;
+	    int error;
+
+	    error = mkdir("T:junkdir");
+	    if (error < 0 && errno != EEXISTS)
+		perror("mkdir");
+	    fp = fopen("T:xxjunk", "w");
+	    if (fp == NULL) {
+		perror("fopen");
+		exit(1);
+	    }
+	    fprintf(fp, "This file was originally T:xxjunk!\n");
+	    fclose(fp);
+
+	    /*
+	     * now rename
+	     */
+
+	    error = rename("T:xxjunk", "T:junkdir/yyjunk");
+	    if (error < 0)
+		perror("rename T:xxjunk to T:junkdir/yyjunk");
+	    else
+		puts("rename succeeded, look in T:junkdir");
+	    return(0);
+	}
+
+   INPUTS
+	const char *origname;	    existing file
+	const char *newname;	    new filename and/or path
+
+   RESULTS
+	int error;	    0 on success, a negative number on failure
+
+   SEE ALSO
+
+
+stdio/rewind						stdio/rewind
+
+   NAME
+	rewind - seek filepointer to beginning of file
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	void rewind(fp);
+	FILE *fp;
+
+   FUNCTION
+	rewind() rewinds the file to the beginning, equivalent to
+	fseek(fp, 0L, 0);.
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+   EXAMPLE
+	/*
+	 *  print a file 3 times
+	 */
+
+	#include <stdio.h>
+
+	main(ac, av)
+	int ac;
+	char **av;
+	{
+	    FILE *fp;
+	    int i;
+	    char buf[256];
+
+	    if (ac == 1) {
+		puts("Expected textfile argument");
+		exit(1);
+	    }
+	    fp = fopen(av[1], "r");
+	    if (fp == NULL) {
+		printf("Unable to open %s\n", av[1]);
+		exit(1);
+	    }
+	    for (i = 1; i <= 3; ++i) {
+		rewind(fp);
+		printf("PRINTING #%d\n", i);
+		while (fgets(buf, sizeof(buf), fp))
+		    fputs(buf, stdout);
+	    }
+	    return(0);
+	}
+
+   INPUTS
+	FILE *fp;	    file pointer to rewind
+
+   RESULTS
+	none
+
+   SEE ALSO
+	fseek, fgetpos, fsetpos
+
+
+stdio/scanf						stdio/scanf
+stdio/fscanf						stdio/fscanf
+stdio/sscanf						stdio/sscanf
+
+   NAME
+	scanf	- scan formatted text from stdin
+	fscanf	- scan formatted text from a specified file pointer
+	sscanf	- scan formatted text from a string buffer
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int n = scanf(ctl, ...);
+	int n = fscanf(fp, ctl, ...);
+	int n = sscanf(str, ctl, ...);
+
+	const char *ctl;
+	FILE *fp;
+	char *str;
+
+   FUNCTION
+	*scanf() routines scan the specified input file or buffer for fields
+	matching those specified in the ctl field.
+
+	The ctl field contains % constructions that relate an argument
+	pointer to the scanned text.  The ctl field may also contain other
+	characters which must match the scanned text exactly, except for a
+	white space character which matches one or more white space
+	characters the scanned text.
+
+	A % construction in the ctl string is formatted as follows:
+
+	    %[*][nnn][h/l/L]<conversion-specifier>
+
+	(1) An optional * that tells scanf to skip the specified
+	    convresion (i.e. you specify no argument for this conversion).
+	    Skipped conversions are not included in the return count.
+
+	(2) An optional integer that specifies the maximum field width.
+
+	(3) An optional modifier h, l, or L:
+
+	    h	when used with d,i,n,o,u,x,X specifies the argument
+		is a pointer to a short int rather than an int
+
+	    l	when used with d,i,o,u,x,X specifies the argument is
+		a pointer to a long int rather than an int
+
+	    L	when used with e,E,f,F,G specifies the argument is
+		a pointer to a long double rather than a double
+
+	(4) A conversion specifier
+
+	    c	Convert the number of characters specified by the field
+		width (default 1) into an array.  The expected argument
+		is a pointer to an array of characters.
+
+	    d	Convert a decimal (base 10) number.  The expected argument
+		is a pointer to an int.
+
+	    e/E/f/g
+		scans a floating point number.	If the 'L' modifier is used
+		a long double pointer is expected (NOT IMPLEMENTED IN DICE
+		YET).  Otherwise a double is expected.
+
+	    i	Convert a number to an integer.  The format should be
+		equivalent to that expected by strtol with a base argument
+		of 0 (i.e. allows any base construction).
+
+	    n	This does not read any text, but stores the number of
+		characters *scanf() has read up to this point into the
+		integer argument.
+
+	    o	Convert a number to an octal integer
+
+	    p	Read a sequence of characters in the same format as
+		printf's %p specifier and store into a pointer.  The
+		corresponding argument is passed as a void **
+
+	    s	Read a string of non-white space characters and copy
+		into the array specified by the argument.  The argument
+		should be of type (char *) and have enough space to
+		handle the string plus a nul terminator
+
+	    x	Read a base 16 number (hex) and copy into the passed
+		integer.  This is equivalent to calling strtol with
+		a base of 16.
+
+	    %	(i.e. %%) matches a single %
+
+	    [/] Scan a scanset.  Scan the input stream and place the
+		characters into a char * buffer until a character is read
+		that does not match the scanset.
+
+		If a scan set begins with ^ (as in [^abcd]) then all
+		characters are allowed EXCEPT those specified in the
+		scanset.  If a scanset begins as []abcd] or [^]abcd] then
+		the ']' character is included in the scan set and the
+		set is terminated by the next ']' character.
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+	all pointers to floating point storage MUST be pointers to
+	doubles.
+
+   EXAMPLE
+	/*
+	 *  NOTE:   unscanned arguments are NOT cleared and will print out
+	 *	    as garbage.
+	 */
+
+	#include <stdio.h>
+
+	main(ac, av)
+	int ac;
+	char *av[];
+	{
+	    short a[4];
+	    int b[2];
+	    char buf1[32];
+	    char buf2[32];
+	    int n;
+
+	    if (ac != 2) {
+		puts("Expected string to format!");
+		exit(1);
+	    }
+	    n = sscanf(av[1], "%hd %ho %hi %*hn%d %X %10c%10c",
+		a + 0, a + 1, a + 2, b + 0, b + 1,
+		buf1, buf2
+	    );
+	    printf("n = %d\n", n);
+	    printf("a: %d %d %d %d\n", a[0], a[1], a[2], a[3]);
+	    printf("b: %d %d\n", b[0], b[1]);
+	    printf("buf1: %s\n", buf1);
+	    printf("buf2: %s\n", buf2);
+	    return(0);
+	}
+
+	1> t:x "123 23 01000 22 0xFF abcdefghijklm as ds sd "
+	n = 7
+	a: 123 19 512 12
+	b: 22 255
+	buf1: abcdefghij
+	buf2: klm as ds
+
+	1>
+
+   INPUTS
+	char *ctl;	    format control string
+	FILE *fp;	    (fscanf) file pointer, (read to obtain text to format)
+	char *str;	    (sscanf) string pointer, text to format
+
+   RESULTS
+	int n;		    # of conversions that occured, -1 if no conversions
+			    could be done (usually means EOF).  May return
+			    less than the number requested and this value does
+			    not reflect any %* forms.
+
+   SEE ALSO
+	sprintf, printf, fprintf
+
+
+stdio/setbuf						stdio/setbuf
+
+   NAME
+	setbuf - set alternative stream buffer
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	void setbuf(fp, buf);
+	FILE *fp;
+	char *buf;
+
+   FUNCTION
+	setbuf() changes the internal buffer used by stdio.  The buffer you
+	pass it must be BUFSIZ bytes in size.  You can set a file pointer
+	to unbuffered by passing NULL for your buffer.
+
+	setvbuf() superceeds this call and is, in general, a better routine.
+
+   NOTE
+	refer to the file_pointer manual page for general information
+
+				    !!
+
+	if buffering is turned off for a file pointer representing a
+	console device, the console device is set to unbuffered as well.
+
+   EXAMPLE
+	#include <stdio.h>
+
+	main()
+	{
+	    setbuf(stdout, NULL);
+
+	    printf("This will print immediately because");
+	    sleep(1);
+	    printf(" we are unbuffered");
+	    sleep(1);
+	    puts("");
+	    return(0);
+	}
+
+   INPUTS
+	FILE *fp;	    file pointer to rewind
+
+	char *buf;	    buffer the file pointer uses instead of its
+			    own or NULL to make the file pointer unbuffered.
+
+   RESULTS
+	none
+
+   SEE ALSO
+	setvbuf
+
+
+stdio/setvbuf						stdio/setvbuf
+
+   NAME
+	setvbuf - change file pointer's buffering
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int error = setvbuf(fp, buf, mode, size);
+	FILE *fp;
+	char *buf;
+	int mode;
+	size_t size;
+
+   FUNCTION
+	setvbuf() changes the internal buffer used by stdio.  You may specify
+	a new buffer of any size, change the buffering mode of the file
+	pointer to fully buffered, line buffered, or unbuffered.
+
+	mode:
+	    _IOFBF  fully buffered (output flushed only if buffer full)
+	    _IOLBF  line buffered (output flushed every newline)
+	    _IONBF  unbuffered (no buffering at all)
+
+	For _IOFBF and _IOLBF, buf should point to the buffer you wish the
+	file pointer to use and size should be the size of that buffer (any
+	size other than 0 is valid).
+
+	For_IONBF the buf and size arguments should be passed as NULL
+
+   NOTE
+				    !!
+
+	If buffering is turned off for a file pointer representing a
+	console device, the console device is set to unbuffered as well.
+
+	If buffering is turned on for a file pointer representing a
+	console device, the console device is set to buffered as well.
+
+   EXAMPLE
+	#include <stdio.h>
+
+	main()
+	{
+	    int c;
+	    static char iobuf[128];
+	    char buf[256];
+
+	    setvbuf(stdin, NULL, _IONBF, 0);
+
+	    printf("Type a character: ");
+	    fflush(stdout);
+	    c = getchar();
+	    printf("c = %d\n", c);
+
+	    setvbuf(stdin, iobuf, _IOLBF, sizeof(iobuf));
+
+	    printf("Type a line: ");
+	    fflush(stdout);
+	    gets(buf);
+	    printf("You said: %s\n", buf);
+
+	    return(0);
+	}
+
+   INPUTS
+	FILE *fp;	    file pointer to change buffering options on
+	char *buf;	    new buffer or NULL (_IONBF)
+	int mode;	    buffering mode
+	size_t size;	    size of new buffer if not NULL, else 0
+
+   RESULTS
+	int error;	    0 on success, a negative number on error
+			    (such as illegal arguments)
+
+   SEE ALSO
+	setbuf
+
+
+stdio/stdin						stdio/stdin
+stdio/stdout						stdio/stdout
+stdio/stderr						stdio/stderr
+
+   NAME
+	stdin  - standard input channel (file pointer - MACRO)
+	stdout - standard output channel (file pointer - MACRO)
+	stderr - standard error channel (file pointer - MACRO)
+
+   SYNOPSIS
+	#include <stdio.h>
+
+
+   FUNCTION
+	stdin is a FILE * type that represents the program's standard
+	input stream.  This can be redirected via command line redirection
+	when the program is run.
+
+	stdout is a FILE * type that represents the program's standard
+	output stream.	This can also be redirected via command line
+	redirection when the program is run.
+
+	stderr is a FILE * type that represents the program's standard
+	error stream.  Currently stderr is openned by _main and represents
+	the console device associated with the program regardless of
+	standard redirections.
+
+	These file pointers may be fclose()d or freopen()d at any time.
+	The stdio macros getchar() and putchar() and stdio library
+	routines gets() and puts() deal with stdin and stdout
+	respectively while other library routines such as perror() output
+	to stderr.
+
+   SEE ALSO
+	gets, puts, getchar, putchar, perror
+
+
+stdio/tmpfile						stdio/tmpfile
+
+   NAME
+	tmpfile - create a temporary file
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	FILE *fp = tmpfile(void);
+
+   FUNCTION
+	The tmpfile() call creates a temporary file and returns a
+	file pointer.  The name of the file is not accessable.	The
+	file pointer is available or reading, writing, and seeking (as in
+	rewind, fseek).  The file is initially empty.
+
+	This call may be used to create a temporary file that will
+	automatically be remove()d when you fclose() it.  tmpfile() returns
+	a FILE * pointer or NULL if it was unable to create the file.
+
+   EXAMPLE
+	#include <stdio.h>
+	#include <assert.h>
+
+	main()
+	{
+	    FILE *fp = tmpfile();
+	    char buf[256];
+
+	    assert(fp);
+
+	    fputs("This is a test of\n"
+		  "a temporary file\n"
+		  "fubar bletch\n",
+		  fp
+	    );
+	    rewind(fp);
+	    while (fgets(buf, sizeof(buf), fp)) {
+		fputs(buf, stdout);
+	    }
+	    fclose(fp);     /*  close and delete the file   */
+	    return(0);
+	}
+
+   INPUTS
+	none
+
+   RESULTS
+	FILE *fp;	    openned temporary file
+
+   SEE ALSO
+	tmpnam, fopen, fclose
+
+
+stdio/tmpnam						stdio/tmpnam
+
+   NAME
+	tmpnam - create a unique, temporary file name
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	char *filename = tmpnam(buf);
+	char *buf;
+
+   FUNCTION
+	tmpnam() creates a unique temporary file name meant to never
+	be seen by the user.  The filename tmpnam() creates will be
+	no more than L_tmpnam bytes long (L_tmpnam is a macro in <stdio.h>),
+	including the nul so you can simply declare a buffer:
+
+	    char buf[L_tmpnam];
+
+	tmpnam() returns the buffer into which it created the temporary
+	file name.  If you specify a non-NULL buffer it returns its first
+	argument.
+
+	If you pass NULL to tmpnam() then tmpnam() will use its down internal
+	static buffer (overwritting any previous name that was stored in
+	said buffer) and return a pointer to that.
+
+   EXAMPLE
+	#include <stdio.h>
+	#include <assert.h>
+
+	main()
+	{
+	    char buf[L_tmpnam];
+	    char *ptr;
+
+	    ptr = tmpnam(NULL);
+	    puts(ptr);
+
+	    assert(tmpnam(buf) == buf);     /*  returns argument */
+	    puts(buf);
+
+					    /*	haven't overwritten it yet */
+	    printf("%s (same as first)\n", ptr);
+
+	    assert(tmpnam(NULL) == ptr);    /*  that will overwrite it!    */
+	    puts(ptr);
+
+	    return(0);
+	}
+
+   INPUTS
+	char *buf;	    optional buffer of at least L_tmpnam bytes to
+			    hold the temporary file name or NULL to have
+			    tmpnam() use its own internal buffer.
+
+   RESULTS
+	char *ptr;	    pointer to buffer (buf if buf != NULL)
+
+   SEE ALSO
+	tmpfile
+
+
+stdio/ungetc						stdio/ungetc
+
+   NAME
+	ungetc - push a character back onto a file pointer's input stream
+
+   SYNOPSIS
+	#include <stdio.h>
+
+	int r = ungetc(c, fp);
+	int c;
+	FILE *fp;
+
+   FUNCTION
+	ungetc() pushes the specified character back onto the input stream,
+	as if it had not been read.  Only ONE character may be pushed back
+	onto an input stream at a time.  If all went well, the return value
+	r is equal to c.  Else EOF is returned if too many characters were
+	pushed back.
+
+	Some implementations of C allow multiple characters to be pushed
+	back.  The majority, including DICE, allows only one.
+
+	ungetc() is useful when, in scanning an input stream, you overshoot
+	the 'last' character you wanted a particular routine to retrieve.
+	This routine can push the character back onto the input stream
+	with ungetc() so another routine's getc() (getchar(), fread(), fgetc(),
+	etc...) will get that character back.
+
+   EXAMPLE
+	#include <stdio.h>
+	#include <ctype.h>
+
+	main()
+	{
+	    char buf[256];
+	    void scan_number();
+	    void scan_alpha();
+
+	    puts("Enter nnnaaannn where n=digit a=alpha.  Example:   1234abcd99");
+	    printf("? ");
+	    fflush(stdout);
+	    scan_number();
+	    puts("--");
+	    scan_alpha();
+	    puts("--");
+	    scan_number();
+	    return(0);
+	}
+
+	static void
+	scan_number()
+	{
+	    short c;
+
+	    for (c = getchar(); c >= '0' && c <= '9'; c = getchar()) {
+		printf("digit: %c\n", c);
+	    }
+	    if (c != EOF)
+		ungetc(c, stdin);
+	}
+
+	static void
+	scan_alpha()
+	{
+	    short c;
+
+	    for (c = getchar(); tolower(c) >= 'a' && tolower(c) <= 'z'; c = getchar()) {
+		printf("alpha: %c\n", c);
+	    }
+	    if (c != EOF)
+		ungetc(c, stdin);
+	}
+
+
+	1> testprg
+	Enter nnnaaannn where n=digit a=alpha.	Example:   1234abcd99
+	? 98charlie55
+	digit: 9
+	digit: 8
+	--
+	alpha: c
+	alpha: h
+	alpha: a
+	alpha: r
+	alpha: l
+	alpha: i
+	alpha: e
+	--
+	digit: 5
+	digit: 5
+
+	1>
+
+
+   INPUTS
+	int c;		    character to push back onto input stream
+	FILE *fp;	    file pointer stream to push character on to.
+
+   RESULTS
+	int r;		    pushed character (c) if no error, EOF if error
+
+   SEE ALSO
+	getc, getchar, fread, fgetc
+
+

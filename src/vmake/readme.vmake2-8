@@ -1,0 +1,70 @@
+Vmake version 2.8 adds command line handling and makes some changes to the
+format of the config file.
+
+The template for VMake is "PROJECT,REXX/K,CONFIG/K,BUILD/S".  All parameters
+are optional.
+
+PROJECT is just the name of the .dice file to be opened for the VMake session
+This parameter is not used if VMake failed to read a config file.
+
+The REXX keyword is followed by the name of an AREXX script to be executed at
+startup.  The script will be executed after the config file has been
+processed and the project read in (if any).  There are two parameters, the
+name of the REXX port for this VMake window and the name of the project file,
+or null if VMake did not successfully open a project.  This parameter is not
+processed if VMake failed to read a config file.
+
+The CONFIG keyword is followed by the name of a configuration (.config) file
+to use in place of the default, DCC:config/vmake.config.  If this parameter
+is present, it will be processed at startup before the project file is
+processed.
+
+The BUILD switch is intended to build the entire project when VMake starts
+up.  In fact, it executes the string at CONFIG slot 9, so it can be made to
+do whatever you want at startup.  The command will not be executed if VMake
+failed to process the config or project file.
+
+All of these commands can also be specified as tooltypes in a VMake project
+icon for use from the workbench.  The formats are as follows:
+
+FILE=project.dice
+
+Note that it is not necessary to specify this tooltype.  The default project
+is the name of the icon.  However, by using this paramenter you can provide 
+several icons with different tooltype commands that work on the same project
+file. 
+
+REXX=script.rexx
+
+CONFIG=path/to/alternate.config
+
+BUILD
+
+The ToolTypes are processed exactly the same as the corresponding command
+line options.
+
+
+The config file has been reorganized to use a new type of string, SUBRTN in
+addition to the TEXT and CONFIG strings.  
+
+The TEXT strings include labels for some of the gadgets and for error
+requesters. 
+
+The CONFIG strings include commands and strings that are used in a
+predefined way by VMake, such as slot 5 which contains the command that will
+be executed when you double click on a list entry.
+
+The SUBRTN strings are user definable, and exist to make it easy to define
+actions for menu items and buttons.  There are twelve SUBRTN slots
+available.  Only the first four are defined in the standard config file
+provided with DICE.  (They were CONFIG slots 8 through 11 in the original
+DICE document and became slots 9 through 12 with VMake version 2.7)
+
+The CALL command has been changed so that it now calls the SUBRTN slots
+instead of the CONFIG slots.  This means that future additions to the CONFIG
+table will not force extensive editing of all CALL commands in the config
+file.  It should make it easier for you to use project specific
+configuration files by reducing the impact of adding new features.
+
+The config file for VMake version 2.8 has been revised to conform to these
+changes. 

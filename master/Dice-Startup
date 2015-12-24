@@ -1,0 +1,7 @@
+RUN >NIL: <NIL: Dice_3.0:l/fsovl-handler >NIL: <NIL:
+ASSIGN DCC: arch:Dice_3.0
+ASSIGN DTMP: dcc:dtmp
+ASSIGN DINCLUDE: dcc:include
+ASSIGN DLIB: dcc:dlib
+PATH ADD DCC:Bin
+SETENV DCCOPTS -1.3 -// -f -R

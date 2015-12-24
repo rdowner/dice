@@ -1,0 +1,8 @@
+
+	reglist 4(sp),D0/D1 ... regmask is always immediate next word
+
+	error if generate out of section
+
+	allow '.' and '@' in label names
+
+	add support for remaining 68K instructions

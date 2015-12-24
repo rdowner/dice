@@ -1,0 +1,23 @@
+
+		;   DPA_NEG.A
+		;
+		;   D0 = arg1
+		;   result in D0/D1
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+		section text,code
+
+		xref	_MathIeeeDoubBasBase
+		xref	_LVOIEEEDPNeg
+		xdef	__dpneg_a
+
+__dpneg_a	move.l	A6,-(sp)
+		movem.l (A0),D0/D1
+		move.l	_MathIeeeDoubBasBase(A4),A6
+		jsr	_LVOIEEEDPNeg(A6)
+		move.l	(sp)+,A6
+		rts
+
+		END
+

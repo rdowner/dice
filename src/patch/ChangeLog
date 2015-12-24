@@ -1,0 +1,60 @@
+Sun Jan 20 20:18:58 1991  David J. MacKenzie  (djm at geech.ai.mit.edu)
+
+	* Makefile.SH (all): Don't make a dummy `all' file.
+
+	* patchlevel.h: PATCHLEVEL 12u3.
+
+	* patch.c (nextarg): New function.
+	(get_some_switches): Use it, to prevent dereferencing a null
+	pointer if an option that takes an arg is not given one (is last
+	on the command line).  From Paul Eggert.
+
+	* pch.c (another_hunk): Fix from Wayne Davison to recognize
+	single-line hunks in unified diffs (with a single line number
+	instead of a range).
+
+	* inp.c (rev_in_string): Don't use `s' before defining it.  From
+	Wayne Davison.
+
+Mon Jan  7 06:25:11 1991  David J. MacKenzie  (djm at geech.ai.mit.edu)
+
+	* patchlevel.h: PATCHLEVEL 12u2.
+
+	* pch.c (intuit_diff_type): Recognize `+++' in diff headers, for
+	unified diff format.  From unidiff patch 1.
+
+Mon Dec  3 00:14:25 1990  David J. MacKenzie  (djm at albert.ai.mit.edu)
+
+	* patch.c (get_some_switches): Make the usage message more
+	informative. 
+
+Sun Dec  2 23:20:18 1990  David J. MacKenzie  (djm at albert.ai.mit.edu)
+
+	* Configure: When checking for C preprocessor, look for 'abc.*xyz'
+	instead of 'abc.xyz', so ANSI C preprocessors work.
+
+	* Apply fix for -D from ksb@mentor.cc.purdue.edu (Kevin Braunsdorf).
+
+	* Apply unidiff patches from davison@dri.com (Wayne Davison).
+
+Wed Mar  7 23:47:25 1990  Jim Kingdon  (kingdon at pogo.ai.mit.edu)
+
+	* pch.c: Call malformed instead of goto malformed
+	(just allows easier debugging).
+
+Tue Jan 23 21:27:00 1990  Jim Kingdon  (kingdon at pogo.ai.mit.edu)
+
+	* common.h (TMP*NAME): Make these char *, not char [].
+	patch.c (main): Use TMPDIR (if present) to set TMP*NAME.
+	common.h: Declare getenv.
+
+Sun Dec 17 17:29:48 1989  Jim Kingdon  (kingdon at hobbes.ai.mit.edu)
+
+	# patch.c (reverse_flag_specified): New variable.
+	(get_some_switches, reinitialize_almost_everything): Use it.
+
+# in place of * means change has been sent to Wall.
+
+Local Variables:
+version-control: never
+end:

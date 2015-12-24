@@ -1,0 +1,2 @@
+#!/bin/csh -f
+dmake -f DMakefile.next $argv

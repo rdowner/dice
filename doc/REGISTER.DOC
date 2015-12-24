@@ -1,0 +1,185 @@
+
+register/register					    register/register
+register/registration					    register/registration
+register/REGISTER					    register/REGISTER
+
+				REGISTER.DOC
+
+    If you are currently using the FREEWARE version of DICE, you may want
+    to register.
+
+    Registration is $50 through 1992
+    Registration will be $60 starting January 1 1993
+
+
+    The registered DICE dist consists of:
+
+	*   The DICE C compiler system, fully self contained system that
+	    includes the full compiler, editor, utilities, commodore 1.3
+	    AND 2.0 includes and amiga.lib, numerous example code, on-disk
+	    documentation for most ANSI functions, and library source code
+	    with the ability to reconstruct any library from scratch.
+
+	*   An initial mailing of 3 disks.  I provide the disks.
+
+	*   Future updates -- the first update is FREE but you must request
+	    it specifically.  You are welcome to request a list of changes
+	    up to the latest version to help you decide.
+
+	    The second update and beyond costs $10 through 1992 and will
+	    cost $15 beginning January 1993.
+
+	*   When DICE goes commercial -- and it's going to happen,
+	    registered users will be able to update to the commercial
+	    release for the cost of the commercial release minus what they
+	    have already paid for the registered release.  That is, it
+	    doesn't hurt your upgrade path to register.  Note that when you
+	    switch over to the commercial dist any pending free update will
+	    be lost (i.e. not count).
+
+	*   A commercial dist is in the works, there will be an announcement
+	    when it is ready (guessing 4-6 months).
+
+    The registered version does NOT contain:
+
+	*   There is NO bound manual, documentation is on-disk.  The
+	    registered distribution consists of 3 disks.
+
+	*   The autodocs are NOT included (Commodore provides no license
+	    to do so, the autodocs are commodore's disk-based amiga
+	    documentation)
+
+			    Additional Compiler Features
+
+    The following features exist in the registered release and do not exist
+    in the freeware (or net) release.
+
+	*   automatic and explicit registerized procedure calls
+
+	*   __chip and __geta4 storage qualifiers (__near, __far, __aligned,
+	    and other keywords exist in both releaes).
+
+	*   single and double precision floating point.  No quad precision
+	    yet.  Direct 881/882 support is forthcomming but not ready yet.
+
+	*   Manual pages for nearly all the ANSI functions (c*.lib).  Each
+	    manual page includes a fully compilable example.
+
+	*   Source to the c*.lib and other DICE link libraries including
+	    the means to remake any library (though you need a lot of
+	    HD space to recompile the link libraries).
+
+	*   Access to registered updates.  First one free (on request),
+	    after that at a low fee.  Updates are via SNail mail or BIX
+	    and available to everyone.
+
+	*   Bitfields
+
+	*   020/030/881/882 support as I add it in.
+
+
+			      HOW TO REGISTER
+
+    U.S. ORDERS: To register for DICE from the U.S. send a check or money
+    order to me (my address is at the bottom of this document). If you do
+    not have a checking account note that you can obtain a money order from
+    your local post office for a very low fee.	Cash is accepted and being
+    U.S. mail would probably make it to me, but I strongly recommend a
+    check or money order.
+
+    CANADIAN ORDERS:  Canadians can obtain a CANADIAN POSTAL MONEY ORDER
+    from their local post office drawn in U.S. funds (that's important! It
+    must be drawn in U.S. funds!).  This costs very little and is the
+    easiest way to register from Canada.  I CANNOT ACCEPT CHECKS DRAWN ON
+    CANADIAN BANKS.
+
+    INTERNATIONAL ORDERS:  To register for DICE from a foreign country you
+    need to obtain an international money order drawn in U.S. funds. The
+    international money order must have the address of a U.S. bank on the
+    face.  Usually a foreign bank will have an account with an associate
+    bank in the U.S. and be able to provide such money orders.	In some
+    countries you can obtain an International Postal Money order from your
+    post office for a smaller fee.  Note that international money orders
+    can be costly.  You can also obtain U.S. currency and send that but
+    there is no guarentee it will make it through the postal system.
+
+    INTERNATIONAL DISTRIBUTORS:  There are several distributors of DICE
+    through which you can register without having to deal with obtaining
+    an international money order (which can be difficult and costly).
+
+    Germany/Europe: Stephan Becker (see GERMAN_DISTRIBUTOR.DOC).  Direct
+    bank transfer or EuroCheck (made out to Stefan), 85,- DM or equivalent.
+
+	     Stefan Becker
+	     Holsteinstrasse 9
+	5100 Aachen
+	     Germany
+
+    Sweden: If you are a member of NPD you can register for DICE through
+    them.
+
+    DO NOT SEND EUROCHECKS TO ME.  To register with a EuroCheck you should
+    go through Stefan Becker and make sure the check is made out in his
+    name.
+
+    YOU DO NOT NEED TO SEND ANY EXTRA MONEY FOR RETURN POSTAGE, POSTAGE
+    IS INCLUDED IN THE REGISTRATION FEE.  YOU DO NOT NEED TO SEND DISKS,
+    I PROVIDE THE DISKS -- THEY ARE PART OF THE REGISTRATION FEE AS WELL.
+
+    MY ADDRESS:
+
+	Matthew Dillon
+	891 Regal Rd.
+	Berkeley, CA. 94708
+	USA
+
+    PLEASE include a short letter for my records indicating that you wish
+    to register for DICE and with your return address on the letter. Please
+    write clearly or type.  PLEASE WRITE CLEARLY OR TYPE.  There have been
+    several cases where I have been unable to fill a registration request
+    due to unreadable addresses.
+
+    IF YOU SEND AN INTERNATIONAL MONEY ORDER VIA YOUR BANK YOU SHOULD ALSO
+    SEND ME A SHORT LETTER VIA THE POST, THE SENDERS ADDRESS ON THE
+    INTERNATIONAL MONEY ORDER IS USUALLY INCOMPLETE.
+
+    If you have an EMAIL address, please include that in addition to your
+    postal address.  I cannot send distributions via email, but you have
+    any questions, feel free to write me via USMail or email (email is
+    prefered).	My email address is:
+
+	dillon@Overload.Berkeley.CA.US
+
+    Please allow four weeks for delivery (three for a US address).
+
+				 COPYRIGHTS
+
+    DICE is copyright (c)1990-92 by Matthew Dillon, All Rights Reserved.
+    DICE has been written completely from scratch by myself and, except for
+    the Commodore support programs and includes, no parts of any other work
+    exists in DICE.  The distributed DICE executables were compiled under
+    DICE as well with the original C bootstrap via Lattice C (r).
+
+    Please Refer to COPYRIGHT.DOC for info on all copyrights, trademarks, and
+    other items
+
+    my EMAIL address is:    uunet.uu.net!overload!dillon
+
+					or
+
+			    dillon@overload.Berkeley.CA.US
+
+    My BIX username is: mdillon
+
+    Both addresses go through uunet to get to me.  My USMail address is:
+
+	Matthew Dillon
+	891 Regal Rd.
+	Berkeley, CA. 94708
+	USA
+
+					Thank You for trying out DICE!
+
+					-Matt
+
+

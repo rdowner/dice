@@ -1,0 +1,8 @@
+; Sample use of CatComp
+;
+MSG_HELLO (7//)
+Hello world
+;
+MSG_BYE (5//)
+This is a test
+;

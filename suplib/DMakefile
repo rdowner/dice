@@ -1,0 +1,36 @@
+
+.include ../DMakefile.inc
+
+SRCS= addhead.c addtail.c newlist.c remhead.c \
+	gethead.c strdup.c getsucc.c gettail.c \
+	getpred.c remove.c strnicmp.c getcwd.c \
+	findname.c stricmp.c enqueue.c strins.c \
+	locatepath.c insert.c order.c
+
+OBJS= $(SRCS:"*.c":"$(OD)suplib_*.o")
+
+LIBNAME= libamiga.a
+LIB= $(OD)$(LIBNAME)
+
+all: $(LIB)
+
+$(LIB) : $(OBJS)
+	rm -f %(left) %(left).new
+	ar cr %(left).new $(OBJS)
+	ranlib %(left).new
+	mv -f %(left).new %(left)
+
+$(OBJS) : $(SRCS)
+	cc $(CFLAGS) %(right) -o %(left) -c
+
+$(OBJS) : $(OD)
+
+$(OD) : $(OD)
+	mkdir %(left)
+
+clean:
+	rm -f $(OBJS) $(LIB) $(ULIB)$(LIBNAME)
+
+install:
+	cp $(LIB) $(ULIB)$(LIBNAME)
+

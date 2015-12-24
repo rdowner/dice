@@ -1,0 +1,45 @@
+
+LHEX 40.5  LHA/LZH archive extraction Utility
+=============================================
+Freely redistributable
+
+Changes:
+
+LHEX 40.5 should now abort when it encounters a compression table it
+doesn't understand or which is corrupt, rather than potentially
+crashing.
+
+LHEX 40.4 gets rid of the "cannot extract" complaint
+when extracting empty directories.
+
+LHEX 40.3 uses a SAS option to get a 20000 stack for itself
+if it finds itself running with a smaller stack.  I do not know how
+deep an archive this will cover, but a default 4000 stack definitely
+wasn't enough for this Unix source code.
+
+Bugs: Does not extract file comments
+      Error messages say "LhA: ..." as in original Unix sources
+
+
+Please mail any bugs/comments to carolyn@commodore.com
+
+
+Usage and Info
+==============
+LHEX     for Amiga V 40.4  LHA/LZH Extraction Utility
+
+Based on Freely Redistributable V 1.00 Unix sources attributed to:
+LHarc    for UNIX  V 1.02  Copyright(C) 1989  Y.Tagawa
+LHx      for MSDOS V C2.01 Copyright(C) 1990  H.Yoshizaki
+LHx(arc) for OSK   V 2.01  Modified     1990  Momozou
+LHa      for UNIX  V 1.00  Copyright(C) 1992  Masaru Oki
+
+usage: lhex [-qvnfiw=<destdir>] {xelvpt} archive_file [file...]
+commands (use one):                  -options: (may combine, w must be last)
+ x,e EXtract from archive            q  quiet
+ l,v List / Verbose List             v  verbose
+ p   Print to STDOUT from archive    n  not execute
+ t   Test file CRC in archive        f  force (over write at extract)
+                                     i  ignore directory path (x/e)
+                                     w=<dir> specify extract directory (x/e)
+

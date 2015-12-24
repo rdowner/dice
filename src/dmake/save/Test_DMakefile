@@ -1,0 +1,4 @@
+SYM = this is a test
+SYM1 =
+a:
+   echo $(SYM) $(SYM1::Hello)

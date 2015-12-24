@@ -1,0 +1,52 @@
+
+		;   slow.a	-slow (small) memory routines, used by
+		;		 startup code to keep it small
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+		section text,code
+
+		;   bcopy s,d,n
+		;	  4 8 12
+		;
+		;   bzero(d,n)
+
+		xdef	__slow_bcopy
+		xdef	__slow_bzero
+		xdef	__slow_bset
+
+		xdef	_hyper__slow_bcopy
+		xdef	_hyper__slow_bzero
+		xdef	_hyper__slow_bset
+
+_hyper__slow_bcopy:
+__slow_bcopy:
+		move.l	4(sp),A0
+		move.l	8(sp),A1
+		move.l	12(sp),D0
+		beq	l10
+l1		move.b	(A0)+,(A1)+
+		subq.l	#1,D0
+		bne	l1
+l10		move.l	8(sp),D0
+		rts
+
+_hyper__slow_bset:
+__slow_bset:	move.b	12+3(sp),D1
+		bra	lxgo
+
+_hyper__slow_bzero:
+__slow_bzero:
+		moveq.l #0,D1
+lxgo		move.l	4(sp),A0
+		move.l	8(sp),D0
+		beq	lx2
+lx1		move.b	D1,(A0)+
+		subq.l	#1,D0
+		bne	lx1
+lx2		move.l	4(sp),D0
+		rts
+
+
+		END
+

@@ -1,0 +1,585 @@
+
+    CTYPE.DOC (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+TABLE OF CONTENTS
+
+c.lib/ctype/isalnum
+c.lib/ctype/isalpha
+c.lib/ctype/iscntrl
+c.lib/ctype/isdigit
+c.lib/ctype/isgraph
+c.lib/ctype/islower
+c.lib/ctype/isprint
+c.lib/ctype/ispunct
+c.lib/ctype/isspace
+c.lib/ctype/isupper
+c.lib/ctype/isxdigit
+c.lib/ctype/tolower
+c.lib/ctype/toupper
+
+
+ctype/isalnum						ctype/isalnum
+
+   NAME
+	isalnum - check that a character is in the alpha numeric domain
+
+   SYNOPSIS
+	int r = isalnum(c);
+	int c;
+
+	This is a MACRO if you #include <ctype.h>, a subroutine call if
+	you do not.
+
+   FUNCTION
+	Returns non-zero if the character is an alpha numeric (a-z, A-Z, 0-9),
+	zero if it is not.
+
+   NOTE
+	When a non-zero value is returned, this value can be *anything*
+	other than zero.  It is not necessarily a 1.  It is guarenteed to
+	fit in a short, however, and still remain non-zero.
+
+	characters in the 128-255 range are valid inputs.  characters
+	less than -1 or larger than 255 are ILLEGAL and the results will
+	be random.  If you are passing a CHAR, you must cast it to an
+	UNSIGNED CHAR first.
+
+	EOF is a valid input an always returns false
+
+   EXAMPLE
+	#include <ctype.h>
+	#include <assert.h>
+
+	main()
+	{
+	    assert(isalnum('a'));
+	    assert(isalnum('Z'));
+	    assert(isalnum('1'));
+	    assert(!isalnum('%'));
+	}
+
+   INPUTS
+	int c;		character that we are checking
+
+   RESULTS
+	int r;		0 if the check failed, non-zero if the check is true
+
+   SEE ALSO
+	isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint,
+	ispunct, isspace, isupper, isxdigit, tolower, toupper
+
+
+ctype/isalpha						ctype/isalpha
+
+   NAME
+	isalpha - check that a character is in the alphabetic domain
+
+   SYNOPSIS
+	int r = isalpha(c);
+	int c;
+
+	This is a MACRO if you #include <ctype.h>, a subroutine call if
+	you do not.
+
+   FUNCTION
+	Returns non-zero if the character is a letter in the alphabet
+	(a-z, A-Z), zero if it is not.
+
+   NOTE
+	When a non-zero value is returned, this value can be *anything*
+	other than zero.  It is not necessarily a 1.  It is guarenteed to
+	fit in a short, however, and still remain non-zero.
+
+	characters in the 128-255 range are valid inputs.  characters
+	less than -1 or larger than 255 are ILLEGAL and the results will
+	be random.  If you are passing a CHAR, you must cast it to an
+	UNSIGNED CHAR first.
+
+	EOF is a valid input an always returns false
+
+   EXAMPLE
+	#include <ctype.h>
+	#include <assert.h>
+
+	main()
+	{
+	    assert(isalpha('a'));
+	    assert(isalpha('Z'));
+	    assert(!isalpha('1'));
+	    assert(!isalpha('%'));
+	}
+
+   INPUTS
+	int c;		character that we are checking
+
+   RESULTS
+	int r;		0 if the check failed, non-zero if the check is true
+
+   SEE ALSO
+	isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint,
+	ispunct, isspace, isupper, isxdigit, tolower, toupper
+
+
+ctype/iscntrl						ctype/iscntrl
+
+   NAME
+	iscntrl - check for a control character
+
+   SYNOPSIS
+	int r = iscntrl(c);
+	int c;
+
+	This is a MACRO if you #include <ctype.h>, a subroutine call if
+	you do not.
+
+   FUNCTION
+	Returns non-zero if the character is a control character (0-31),
+	zero if it is not.
+
+   NOTE
+	When a non-zero value is returned, this value can be *anything*
+	other than zero.  It is not necessarily a 1.  It is guarenteed to
+	fit in a short, however, and still remain non-zero.
+
+	characters in the 128-255 range are valid inputs.  characters
+	less than -1 or larger than 255 are ILLEGAL and the results will
+	be random.  If you are passing a CHAR, you must cast it to an
+	UNSIGNED CHAR first.
+
+	EOF is a valid input an always returns false
+
+   EXAMPLE
+	#include <ctype.h>
+	#include <assert.h>
+
+	main()
+	{
+	    assert(iscntrl(10));
+	    assert(iscntrl(8));
+	    assert(!iscntrl('1'));
+	    assert(!iscntrl('%'));
+	}
+
+   INPUTS
+	int c;		character that we are checking
+
+   RESULTS
+	int r;		0 if the check failed, non-zero if the check is true
+
+   SEE ALSO
+	isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint,
+	ispunct, isspace, isupper, isxdigit, tolower, toupper
+
+
+ctype/isdigit						ctype/isdigit
+
+   NAME
+	isdigit - check for a numeric character
+
+   SYNOPSIS
+	int r = isdigit(c);
+	int c;
+
+	This is a MACRO if you #include <ctype.h>, a subroutine call if
+	you do not.
+
+   FUNCTION
+	Returns non-zero if the character is a digit ('0' through '9'),
+	zero if it is not.
+
+   NOTE
+	When a non-zero value is returned, this value can be *anything*
+	other than zero.  It is not necessarily a 1.  It is guarenteed to
+	fit in a short, however, and still remain non-zero.
+
+	characters in the 128-255 range are valid inputs.  characters
+	less than -1 or larger than 255 are ILLEGAL and the results will
+	be random.  If you are passing a CHAR, you must cast it to an
+	UNSIGNED CHAR first.
+
+	EOF is a valid input an always returns false
+
+   EXAMPLE
+	#include <ctype.h>
+	#include <assert.h>
+
+	main()
+	{
+	    assert(isdigit('9'));
+	    assert(isdigit('0'));
+	    assert(!isdigit('x'));
+	    assert(!isdigit(7));
+	}
+
+   INPUTS
+	int c;		character that we are checking
+
+   RESULTS
+	int r;		0 if the check failed, non-zero if the check is true
+
+   SEE ALSO
+	isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint,
+	ispunct, isspace, isupper, isxdigit, tolower, toupper
+
+
+ctype/isgraph						ctype/isgraph
+
+   NAME
+	isgraph - check for a printable character, excludes the space character
+
+   SYNOPSIS
+	int r = isgraph(c);
+	int c;
+
+	This is a MACRO if you #include <ctype.h>, a subroutine call if
+	you do not.
+
+   FUNCTION
+	Returns non-zero if the character is printable and not a space,
+	zero otherwise.
+
+	This function is the isprint() function but with space character
+	excluded from the printable set.
+
+   NOTE
+	When a non-zero value is returned, this value can be *anything*
+	other than zero.  It is not necessarily a 1.  It is guarenteed to
+	fit in a short, however, and still remain non-zero.
+
+	characters in the 128-255 range are valid inputs.  characters
+	less than -1 or larger than 255 are ILLEGAL and the results will
+	be random.  If you are passing a CHAR, you must cast it to an
+	UNSIGNED CHAR first.
+
+	EOF is a valid input an always returns false
+
+   EXAMPLE
+	#include <ctype.h>
+	#include <assert.h>
+
+	main()
+	{
+	    assert(isgraph('^'));
+	    assert(isgraph('$'));
+	    assert(!isgraph(' '));
+	    assert(!isgraph(127));
+	}
+
+   INPUTS
+	int c;		character that we are checking
+
+   RESULTS
+	int r;		0 if the check failed, non-zero if the check is true
+
+   SEE ALSO
+	isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint,
+	ispunct, isspace, isupper, isxdigit, tolower, toupper
+
+
+ctype/islower						ctype/islower
+
+   NAME
+	islower - check for a lower case alphabetic character
+
+   SYNOPSIS
+	int r = islower(c);
+	int c;
+
+	This is a MACRO if you #include <ctype.h>, a subroutine call if
+	you do not.
+
+   FUNCTION
+	Returns non-zero if the character is a lower case letter 'a' - 'z',
+	zero otherwise.
+
+   NOTE
+	When a non-zero value is returned, this value can be *anything*
+	other than zero.  It is not necessarily a 1.  It is guarenteed to
+	fit in a short, however, and still remain non-zero.
+
+	characters in the 128-255 range are valid inputs.  characters
+	less than -1 or larger than 255 are ILLEGAL and the results will
+	be random.  If you are passing a CHAR, you must cast it to an
+	UNSIGNED CHAR first.
+
+	EOF is a valid input an always returns false
+
+   EXAMPLE
+	#include <ctype.h>
+	#include <assert.h>
+
+	main()
+	{
+	    assert(islower('a'));
+	    assert(islower('g'));
+	    assert(!islower('Z'));
+	    assert(!islower(127));
+	}
+
+   INPUTS
+	int c;		character that we are checking
+
+   RESULTS
+	int r;		0 if the check failed, non-zero if the check is true
+
+   SEE ALSO
+	isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint,
+	ispunct, isspace, isupper, isxdigit, tolower, toupper
+
+
+ctype/isprint						ctype/isprint
+
+   NAME
+	isprint - check for a printable character, includes the space character
+
+   SYNOPSIS
+	int r = isprint(c);
+	int c;
+
+	This is a MACRO if you #include <ctype.h>, a subroutine call if
+	you do not.
+
+   FUNCTION
+	Returns non-zero if the character is printable, zero otherwise.
+
+	This function is the isgraph() function but with space character
+	included in the printable set.
+
+   NOTE
+	When a non-zero value is returned, this value can be *anything*
+	other than zero.  It is not necessarily a 1.  It is guarenteed to
+	fit in a short, however, and still remain non-zero.
+
+	characters in the 128-255 range are valid inputs.  characters
+	less than -1 or larger than 255 are ILLEGAL and the results will
+	be random.  If you are passing a CHAR, you must cast it to an
+	UNSIGNED CHAR first.
+
+	EOF is a valid input an always returns false
+
+   EXAMPLE
+	#include <ctype.h>
+	#include <assert.h>
+
+	main()
+	{
+	    assert(isprint(' '));
+	    assert(isprint('^'));
+	    assert(!isprint(23));
+	    assert(!isprint(127));
+	}
+
+   INPUTS
+	int c;		character that we are checking
+
+   RESULTS
+	int r;		0 if the check failed, non-zero if the check is true
+
+   SEE ALSO
+	isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint,
+	ispunct, isspace, isupper, isxdigit, tolower, toupper
+
+
+ctype/isupper						ctype/isupper
+
+   NAME
+	isupper - check for an upper case alphabetic character
+
+   SYNOPSIS
+	int r = isupper(c);
+	int c;
+
+	This is a MACRO if you #include <ctype.h>, a subroutine call if
+	you do not.
+
+   FUNCTION
+	Returns non-zero if the character is an upper case letter 'A' - 'Z',
+	zero otherwise.
+
+   NOTE
+	When a non-zero value is returned, this value can be *anything*
+	other than zero.  It is not necessarily a 1.  It is guarenteed to
+	fit in a short, however, and still remain non-zero.
+
+	characters in the 128-255 range are valid inputs.  characters
+	less than -1 or larger than 255 are ILLEGAL and the results will
+	be random.  If you are passing a CHAR, you must cast it to an
+	UNSIGNED CHAR first.
+
+	EOF is a valid input an always returns false
+
+   EXAMPLE
+	#include <ctype.h>
+	#include <assert.h>
+
+	main()
+	{
+	    assert(isupper('A'));
+	    assert(isupper('G'));
+	    assert(!isupper('z'));
+	    assert(!isupper(127));
+	}
+
+   INPUTS
+	int c;		character that we are checking
+
+   RESULTS
+	int r;		0 if the check failed, non-zero if the check is true
+
+   SEE ALSO
+	isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint,
+	ispunct, isspace, isupper, isxdigit, tolower, toupper
+
+
+ctype/isxdigit						ctype/isxdigit
+
+   NAME
+	isxdigit - check for a character representable as a hexadecimal digit
+
+   SYNOPSIS
+	int r = isxdigit(c);
+	int c;
+
+	This is a MACRO if you #include <ctype.h>, a subroutine call if
+	you do not.
+
+   FUNCTION
+	Returns non-zero if the character represents a hexadecimal digit
+	'0' - '9', 'a' - 'f', or 'A' - 'F', zero otherwise.
+
+   NOTE
+	When a non-zero value is returned, this value can be *anything*
+	other than zero.  It is not necessarily a 1.  It is guarenteed to
+	fit in a short, however, and still remain non-zero.
+
+	characters in the 128-255 range are valid inputs.  characters
+	less than -1 or larger than 255 are ILLEGAL and the results will
+	be random.  If you are passing a CHAR, you must cast it to an
+	UNSIGNED CHAR first.
+
+	EOF is a valid input an always returns false
+
+   EXAMPLE
+	#include <ctype.h>
+	#include <assert.h>
+
+	main()
+	{
+	    assert(isxdigit('9'));
+	    assert(isxdigit('0'));
+	    assert(isxdigit('A'));
+	    assert(isxdigit('d'));
+	    assert(!isxdigit('x'));
+	    assert(!isxdigit(27));
+	}
+
+   INPUTS
+	int c;		character that we are checking
+
+   RESULTS
+	int r;		0 if the check failed, non-zero if the check is true
+
+   SEE ALSO
+	isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint,
+	ispunct, isspace, isupper, isxdigit, tolower, toupper
+
+
+ctype/tolower						ctype/tolower
+
+   NAME
+	tolower - converts a character into lower case
+
+   SYNOPSIS
+	int lc = tolower(c);
+	int c;
+
+	This is a MACRO if you #include <ctype.h>, a subroutine call if
+	you do not.
+
+   FUNCTION
+	If the character is in upper case the equivalent lower case
+	character is returned, else the argument is returned (i.e. no
+	change)
+
+   NOTE
+	When a non-zero value is returned, this value can be *anything*
+	other than zero.  It is not necessarily a 1.  It is guarenteed to
+	fit in a short, however, and still remain non-zero.
+
+	characters in the 128-255 range are valid inputs.  characters
+	less than -1 or larger than 255 are ILLEGAL and the results will
+	be random.  If you are passing a CHAR, you must cast it to an
+	UNSIGNED CHAR first.
+
+	EOF is a valid input an always returns false
+
+   EXAMPLE
+	#include <stdio.h>
+	#include <ctype.h>
+
+
+	main()
+	{
+	    printf("%c%c%c%c", tolower('a'), tolower('B'), tolower('%'), tolower('Q'));
+	}
+
+   INPUTS
+	int c;		character that we are checking
+
+   RESULTS
+	int r;		converted character
+
+   SEE ALSO
+	isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint,
+	ispunct, isspace, isupper, isxdigit, tolower, toupper
+
+
+ctype/toupper						ctype/toupper
+
+   NAME
+	toupper - converts a character into upper case
+
+   SYNOPSIS
+	int lc = toupper(c);
+	int c;
+
+	This is a MACRO if you #include <ctype.h>, a subroutine call if
+	you do not.
+
+   FUNCTION
+	If the character is in lower case the equivalent upper case
+	character is returned, else the argument is returned (i.e. no
+	change)
+
+   NOTE
+	When a non-zero value is returned, this value can be *anything*
+	other than zero.  It is not necessarily a 1.  It is guarenteed to
+	fit in a short, however, and still remain non-zero.
+
+	characters in the 128-255 range are valid inputs.  characters
+	less than -1 or larger than 255 are ILLEGAL and the results will
+	be random.  If you are passing a CHAR, you must cast it to an
+	UNSIGNED CHAR first.
+
+	EOF is a valid input an always returns false
+
+   EXAMPLE
+	#include <stdio.h>
+	#include <ctype.h>
+
+
+	main()
+	{
+	    printf("%c%c%c%c", toupper('a'), toupper('B'), toupper('%'), toupper('Q'));
+	}
+
+   INPUTS
+	int c;		character that we are checking
+
+   RESULTS
+	int r;		converted character
+
+   SEE ALSO
+	isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint,
+	ispunct, isspace, isupper, isxdigit, tolower, toupper
+

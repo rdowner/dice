@@ -1,0 +1,169 @@
+/*   $VER: VReplace 37.1 (21.2.93) */
+/*   This program brings up a Find/Change Requester for AME */
+
+if show("l", "rexxarplib.library") = 0 then do
+   check = addlib('rexxsupport.library', 0, -30, 0)
+   check = addlib('rexxarplib.library',  0, -30, 0)
+end
+
+options results
+
+/*
+*   The following sequence determines both AME's screen and port name,
+*   and also gets the number screen rows and columns.
+*/
+
+ameport = address()
+cols = ScreenCols(ameport)
+if cols == -1 then do
+   amescreen = ""
+   cols = ScreenCols()
+   rows = ScreenRows()
+end
+else do
+   amescreen = ameport
+   rows = ScreenRows(amescreen)
+end
+/*
+ *   Set up a host. This time, send all messages to our own port.
+ */
+
+address AREXX "'x = CreateHost(AMEREPLACE, REPLACEPORT, "amescreen")'"
+/*
+ *   Wait until it is ready.
+ */
+do i = 1
+   if showlist('p', AMEREPLACE) ~= 0 then leave
+   call delay 30
+end
+
+/*
+ *   Open the window
+ */
+
+idcmp = 'CLOSEWINDOW+GADGETUP'
+flags = 'WINDOWCLOSE+WINDOWDRAG+WINDOWDEPTH+ACTIVATE'
+
+call OpenWindow(AMEREPLACE, (cols - 640)/2, rows - 190, 600, 120, idcmp,   ,
+                flags, "Replace...")
+
+/*
+ *   Open the port that messages will come to
+ */
+mp = openport(REPLACEPORT)
+
+
+/*
+ *   Read the current search settings
+ */
+'getlastpattern'
+findstring = result
+"getprefs" "case"
+caseflag = result
+"getprefs" "regex"
+regexflag = result
+
+replacestring = ""
+
+/*
+ *   Add the gadgets
+ */
+
+call AddGadget(AMEREPLACE, 50,   28, 2, findstring, "%d%1%g", 160, RIDGEBORDER)
+call AddGadget(AMEREPLACE, 360,  28, 0, "  ", "%d")
+call AddGadget(AMEREPLACE, 360,  46, 1, "  ", "%d")
+call AddGadget(AMEREPLACE, 50,   46, 5, "", "%d%1%g", 160, RIDGEBORDER)
+call AddGadget(AMEREPLACE, 110,  64, 4, "Again", "%d")
+
+Call Move(AMEREPLACE,220,34)
+Call Text(AMEREPLACE,"Search String")
+Call Move(AMEREPLACE,220,52)
+Call Text(AMEREPLACE,"Replace String")
+
+Call Move(AMEREPLACE,400,34)
+call Text(AMEREPLACE, "Case Sensitive")
+Call Move(AMEREPLACE,400,52)
+call Text(AMEREPLACE, "Regular Expression")
+
+call AddGadget(AMEREPLACE, 50, 84, "USE",   "\    OK    \  ", "USE")
+call AddGadget(AMEREPLACE,450, 84, "CLOSE", "\   Cancel  \  ", "CANCEL")
+
+/* set things up for the cancel */
+
+uncase = 'unsetprefs'
+unregex = 'unsetprefs'
+
+/*
+ *   set gadgets that should be on
+ */
+
+if compare(caseflag,"CASE") = 0 then do
+	res = SetGadget(AMEREPLACE, 0, "ON")
+	uncase = 'setprefs'
+	end
+
+if compare(regexflag,"REGEX") = 0 then do
+	res = SetGadget(AMEREPLACE, 1, "ON")
+	unregex = 'setprefs'
+	end
+
+/*
+ *   Main event loop
+ */
+quitflag  = 0
+
+
+do forever
+    if quitflag = 1 then leave
+    t = waitpkt(REPLACEPORT)
+    do forever
+        p = getpkt(REPLACEPORT)
+      	if c2d(p) = 0 then leave
+      	cmd = getarg(p)
+      	if cmd = "2" then findstring = getarg(p,1)
+      	if cmd = "5" then replacestring = getarg(p,1)
+      	t = reply(p, 0)
+
+      	/* process the command */
+
+      	if cmd = "CANCEL" then do
+            call CloseWindow(AMEREPLACE)
+	    uncase "CASE"
+	    unregex "REGEX"
+            quitflag = 1
+            end
+      	else if cmd = "USE" | cmd = "CLOSEWINDOW" then do
+            call CloseWindow(AMEREPLACE)
+            quitflag = 1
+            end
+      	else if cmd = "5" | cmd = "4" then do
+	    'findchange' '-f' 1 '-n' 1 findstring || '*N' || replacestring || '*N'
+            end
+        else if cmd = "0" then do
+	    if compare(caseflag,"CASE") = 0 then do
+	    	call SetGadget(AMEREPLACE, cmd, "OFF")
+	    	'unsetprefs' "CASE"
+	    	end
+	    else do
+	    	call SetGadget(AMEREPLACE, cmd, "ON")
+	    	'setprefs' "CASE"
+	    	end
+	    'getprefs' "CASE"
+	    caseflag = result
+            end
+      	else if cmd = "1" then do
+	    if compare(regexflag,"REGEX") = 0 then do
+	    	call SetGadget(AMEREPLACE, cmd, "OFF")
+	    	'unsetprefs' "REGEX"
+	    	end
+	    else do
+	    	call SetGadget(AMEREPLACE, cmd, "ON")
+	    	'setprefs' "REGEX"
+	    	end
+	    'getprefs' "REGEX"
+	    regexflag = result
+            end
+        end
+   end
+
+exit

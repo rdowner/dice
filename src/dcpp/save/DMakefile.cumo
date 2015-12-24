@@ -1,0 +1,12 @@
+
+#   Compile the preprocessor
+#
+
+all:	dice
+
+lattice:
+    dmake -f dmakefile.lc
+
+dice:
+    dmake -f dmakefile.dcc
+

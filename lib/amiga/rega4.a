@@ -1,0 +1,14 @@
+
+		;   REGA4.A
+		;
+		;   retrieves current contents of A4
+
+		section text,code
+
+		xdef	_rega4
+
+_rega4		move.l	A4,D0
+		rts
+
+		END
+

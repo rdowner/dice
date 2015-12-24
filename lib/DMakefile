@@ -1,0 +1,220 @@
+#
+#  DMakefile
+#
+#  this file contains all library combinations allowed
+
+.include ../DMakefile.inc
+
+start:
+	cat lib.help
+
+#all:	startup autos.lib c uc m rom
+all:	startup autos.lib m rom
+
+c:	cs.lib cl.lib csp.lib csr.lib cpl.lib crl.lib csrp.lib crpl.lib
+
+uc:	ucs.lib ucsr.lib
+
+m:	ms.lib ml.lib msp.lib msr.lib mpl.lib mrl.lib msrp.lib mrpl.lib
+
+rom:	roms.lib romsr.lib roml.lib romrl.lib
+
+#amiga13:    amiga13l.lib amiga13s.lib amiga13sp.lib amiga13pl.lib
+#
+#amiga20:    amiga20l.lib amiga20s.lib amiga20sp.lib amiga20sr.lib \
+#	amiga20pl.lib amiga20rl.lib amiga20srp.lib amiga20rpl.lib
+
+amiga13:	amiga13sp.lib amiga13pl.lib
+
+amiga20:	amiga20sp.lib amiga20sr.lib amiga20pl.lib \
+		amiga20rl.lib amiga20srp.lib amiga20rpl.lib
+
+startup:
+    $(ENV) $(UBIN)lbmake startup
+
+autos.lib:
+    $(ENV) $(UBIN)lbmake auto s
+
+autol.lib:
+    $(ENV) $(UBIN)lbmake auto l
+
+cs.lib:
+    $(ENV) $(UBIN)lbmake clib s
+
+cl.lib:
+    $(ENV) $(UBIN)lbmake clib l
+
+csp.lib:
+    $(ENV) $(UBIN)lbmake clib s p
+
+csr.lib:
+    $(ENV) $(UBIN)lbmake clib s r
+
+cpl.lib:
+    $(ENV) $(UBIN)lbmake clib p l
+
+crl.lib:
+    $(ENV) $(UBIN)lbmake clib r l
+
+csrp.lib:
+    $(ENV) $(UBIN)lbmake clib s r p
+
+crpl.lib:
+    $(ENV) $(UBIN)lbmake clib r p l
+
+#   UNIX compatible C library (automatically converts UNIX style paths to
+#	 amiga style)
+
+ucs.lib:
+    $(ENV) $(UBIN)lbmake uclib s
+
+ucsr.lib:
+    $(ENV) $(UBIN)lbmake uclib s r
+
+
+#   M[model].LIB
+#
+
+ms.lib:
+    $(ENV) $(UBIN)lbmake mlib s
+
+ml.lib:
+    $(ENV) $(UBIN)lbmake mlib l
+
+msp.lib:
+    $(ENV) $(UBIN)lbmake mlib s p
+
+msr.lib:
+    $(ENV) $(UBIN)lbmake mlib s r
+
+mpl.lib:
+    $(ENV) $(UBIN)lbmake mlib p l
+
+mrl.lib:
+    $(ENV) $(UBIN)lbmake mlib r l
+
+msrp.lib:
+    $(ENV) $(UBIN)lbmake mlib s r p
+
+mrpl.lib:
+    $(ENV) $(UBIN)lbmake mlib r p l
+
+
+#   ROM[model].LIB
+#
+
+roms.lib:
+    $(ENV) $(UBIN)lbmake rom s
+
+romsr.lib:
+    $(ENV) $(UBIN)lbmake rom s r
+
+roml.lib:
+    $(ENV) $(UBIN)lbmake rom l
+
+romrl.lib:
+    $(ENV) $(UBIN)lbmake rom r l
+
+#   AMIGA13[model].lib:
+
+amiga13l.lib:	$(DLIB)amiga13l.lib
+
+$(DLIB)amiga13l.lib : $(DLIB)/dlib.orig/amiga13l.lib
+    cp %(right) %(left)
+
+amiga13s.lib:	$(DLIB)amiga13s.lib
+
+$(DLIB)amiga13s.lib : $(DLIB)amiga13l.lib
+    libtos $(DLIB)amiga13l.lib $(DLIB)amiga13s.lib
+
+amiga13sp.lib:
+    $(ENV) $(UBIN)lbmake amiga13 s p
+
+amiga13pl.lib:
+    $(ENV) $(UBIN)lbmake amiga13 p l
+
+
+#   AMIGA20[model].lib
+#
+#   The amiga20l.lib from commodore has some incorrect tags, this stuff
+#   here fixes that.  dlib.orig/amiga20l.lib contains the actual, original
+#   Commodore library.	The amiga20l.lib provided with DICE is exactly
+#   that plus bug fixes to the Commodore library.
+
+amiga20l.lib:	$(DLIB)amiga20l.lib
+
+$(DLIB)amiga20l.lib : $(DLIB)/dlib.orig/amiga20l.lib amiga20_func_l.lib
+    join $(DLIB)amiga20_func_l.lib $(DLIB)/dlib.orig/amiga20l.lib AS %(left)
+
+amiga20s.lib:	$(DLIB)amiga20s.lib
+
+$(DLIB)amiga20s.lib : $(DLIB)amiga20l.lib
+    libtos $(DLIB)amiga20l.lib $(DLIB)amiga20s.lib
+
+amiga20sp.lib:
+    $(ENV) $(UBIN)lbmake amiga20 s p
+
+amiga20sr.lib:
+    $(ENV) $(UBIN)lbmake amiga20 s r
+
+amiga20pl.lib:
+    $(ENV) $(UBIN)lbmake amiga20 p l
+
+amiga20rl.lib:
+    $(ENV) $(UBIN)lbmake amiga20 r l
+
+amiga20srp.lib:
+    $(ENV) $(UBIN)lbmake amiga20 s r p
+
+amiga20rpl.lib:
+    $(ENV) $(UBIN)lbmake amiga20 r p l
+
+amiga20_func_l.lib:
+    $(ENV) $(UBIN)lbmake a20func l
+
+FD20FILES= asl battclock battmem cia commodities console diskfont \
+	 dos exec expansion gadtools graphics icon iffparse \
+	input misc intuition keymap layers mathffp mathieeedoubbas \
+	mathieeedoubtrans mathieeesingbas mathieeesingtrans mathtrans \
+	potgo ramdrive timer translator utility wb disk rexxsyslib
+
+FD30FILES= asl battclock battmem cia commodities console diskfont \
+	 dos exec expansion gadtools graphics icon iffparse \
+	input misc intuition keymap layers mathffp mathieeedoubbas \
+	mathieeedoubtrans mathieeesingbas mathieeesingtrans mathtrans \
+	potgo ramdrive timer utility wb disk rexxsyslib
+
+INLINE20FD=	$(FD20FILES:"*":"$(INCLUDE)amiga20/fd/*_lib.fd")
+INLINE20PROTOS= $(FD20FILES:"*":"$(INCLUDE)xclib/*_protos.h")
+INLINE30FD=	$(FD30FILES:"*":"$(INCLUDE)amiga30/fd/*_lib.fd")
+
+inline20:  $(INLINE20PROTOS)
+
+$(INLINE20PROTOS) : $(INLINE20FD)
+    cd $(INCLUDE)
+    fdtopragma %(right) -o %(left)
+    cd
+
+INLINE30PRAGMAS= $(FD30FILES:"*":"$(INCLUDE)pragmas/*_pragmas.h")
+
+pragma30:  $(INLINE30PRAGMAS)
+
+$(INLINE30PRAGMAS) : $(INLINE30FD)
+    cd $(INCLUDE)
+    fdtopragma %(right) -o %(left)
+    cd
+
+#    fdtopragma %(right) %(right:"*/fd/*_lib.fd":"amiga20/clib/%2_protos.h") -o %(left)
+#    cd
+
+install: $(INSTDIR)dlib
+    (cd $(DLIB); tar cf - .) | (cd $(INSTDIR)dlib; tar xvpf -)
+
+clean:
+    -rm -rf obj1 obj2 obj3
+
+cleaninline:
+    -rm $(INLINE20PROTOS)
+
+$(INSTDIR)dlib : $(INSTDIR)dlib
+    mkdir %(left)

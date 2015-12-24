@@ -1,0 +1,26 @@
+;
+;	$Id: Make-Floppies,v 30.0 1994/06/10 17:55:05 dice Exp $
+;
+;	Copy prepared RAD: disks to floppies
+;
+;	Dest:           5 Blank floppies
+;       Intermediate:   ram:makework
+;       Source:         RD0:, RD1:, RD2:, RD3:, RD5:
+;
+
+lab again
+echo		"Insert blank #1 in DF1:"
+diskcopy	rd1:	to	df1:
+
+echo		"Insert blank #2 in DF1:"
+diskcopy	rd2:	to	df1:
+
+echo		"Insert blank #3 in DF1:"
+diskcopy	rd3:	to	df1:
+
+echo		"Insert blank #4 in DF1:"
+diskcopy	rd4:	to	df1:
+
+echo		"Insert blank #5 in DF1:"
+diskcopy	rd5:	to	df1:
+skip back again

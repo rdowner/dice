@@ -1,0 +1,20 @@
+/* $VER: Runbuf 37.1 (21.2.93) : run external program on a buffer */
+
+options results
+
+'getfilepath'
+oldname = result
+name = "T:" || address() || ".tmp"
+
+saveas name
+parse arg program line
+if program = "" then do
+    requeststring "Program: "
+	if rc ~= 0 then exit
+    program = result
+    end
+
+    address command program || ' ' || name || ' ' || line
+
+address command 'delete >NIL: ' || name
+setfilepath oldname

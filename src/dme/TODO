@@ -1,0 +1,55 @@
+
+    NOTE: removed Refs in favor of DiceHelp, but if make another PD
+    release should put them back in (see defs.h)
+
+    opens console device but doesn't close it?
+
+    autotime <interval> <command>
+
+    menu spacing due to font size!
+
+    * incorporate REXX.C.MMW into REXX.C
+
+    * $fname, $fpath should determine actual file name and path.
+
+:
+:Hi
+:
+:Constructive criticism of DME 1.38.
+:
+:- when moving the cursor rapidly down the screen, the scrolling lags behind the
+:  cursor so that it continues to scroll after you release the button. This is
+:  very annoying! (In Interlace mode, this is)
+:
+:- The ARP requestors have two small problems. The current (or last) path is
+:  not displayed in the DIR gadget when the requestor is opened, and couldn't
+:  you put the volume names alongside the device names in the VOLUMES listing?
+:  (like: DF0:Workbench1.3
+:	  DF1:TextFiles
+:	  RAM:scratch
+:	  etc..)
+:
+:- And (finally, but my biggest gripe!) is the block mark facility. I like being
+:  able to mark a whole line with two keypresses, BUT couldn't you include a
+:  character marker too, so that small portions of lines could be cut/copied, as
+:  well as whole lines? What about a UN*X-like CHR-WORD-LINE-PARA multi-step
+:  marking system? I'm sure that would be possible. What about if I was to
+:  attempt to implement this myself? (I would be better doing it in Assembly
+:  than C, but I am learning C so it would be a good project for me!) Would you
+:  be interested in the modifications? Or has someone else already done this?
+:
+:OTHERWISE, thanks a bunch for the brilliant code you keep producing. I don't
+:know where I'd be without DMouse (Just downloaded the latest version today),
+:and I have only used DME for a couple of months now, but I like it a lot! Your
+:shell was great too, but I have moved on to ARP now!
+:
+:Keep up the good work!
+:
+:Andy Willetts
+:
+:(WILLETTSAC@UK.AC.ASTON.KIRK or
+: "          "  "  "    .SPOCK
+:			      on JANET)
+:
+
+

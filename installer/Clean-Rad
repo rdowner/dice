@@ -1,0 +1,18 @@
+;
+;       Prepare RAM floppy images, using the floppy emulator.
+;
+set echo on 
+failat  21
+mount   rd1: >nil:
+mount   rd2: >nil:
+mount   rd3: >nil:
+mount   rd4: >nil:
+delete  rd1:#? all force quiet >nil:
+delete  rd2:#? all force quiet >nil:
+delete  rd3:#? all force quiet >nil:
+delete  rd4:#? all force quiet >nil:
+failat 1
+relabel rd1: name "Dice1_Beta4"
+relabel rd2: name "Dice2_Beta4"
+relabel rd3: name "Dice3_Beta4"
+relabel rd4: name "Dice4_Beta4"

@@ -1,0 +1,83 @@
+/*
+**      $Id: VMake.ced,v 30.0 1994/06/10 18:06:06 dice Exp $
+**
+**      VMake integration.  Script for ASDG CygnusED Professional (tm).
+**
+*/
+PARSE UPPER ARG COMMAND /* Build Run Debug Front Open Compile */
+
+OPTIONS RESULTS
+
+/* Note that CED does not allow us to track a variable against the file */
+/* so we must assume only one copy of VMake is running at a time        */
+VPort = 'VMAKE.01'
+
+'SAVE ALL CHANGES'
+
+IF show('p','DICE_ERROR_PARSER') THEN
+   ADDRESS DICE_ERROR_PARSER Clear
+
+'DM Running Vmake to' command
+
+ADDRESS VALUE VPort
+
+SELECT
+   WHEN COMMAND = 'COMPILE' THEN
+      DO
+         ADDRESS
+         'Status FILENAME'
+         file = RESULT
+         ADDRESS
+
+         'Select' file
+         IF RC = 0 THEN
+            'CALL 1'
+      END
+
+   WHEN COMMAND = 'BUILD' THEN
+      DO
+         'CALL 2'
+         CRC = RC
+      END
+   WHEN COMMAND = 'RUN'   THEN
+      DO
+         'CALL 2'
+         IF RC = 0 THEN
+            'CALL 4'
+         CRC = RC
+      END
+   WHEN COMMAND = 'DEBUG' THEN
+      DO
+         'CALL 2'
+         IF RC = 0 THEN
+            'CALL 5'
+         CRC = RC
+      END
+   WHEN COMMAND = 'FRONT' THEN
+      DO
+         'FRONT'
+         CRC = RC
+      END
+   WHEN COMMAND = 'OPEN' THEN
+      DO
+         'FRONT'
+         CRC = RC
+      END
+   OTHERWISE
+      DO
+         address
+         'DM Unknown Command:' COMMAND
+         exit 5
+      END
+END
+
+ADDRESS
+
+IF CRC ~= 0 THEN
+DO
+   'DM' COMMAND 'Failed:' RESULT
+END
+ELSE
+DO
+   'DM' COMMAND 'Successful'
+END

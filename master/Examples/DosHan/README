@@ -1,0 +1,58 @@
+
+				DOSHAN
+
+    Example of a DOS handler under DICE.  This handler doesn't do diddly
+    but you can see how such a beast is supposed to work.
+
+    No limitations in terms of models, etc.. since _main() is used along
+    with the standard C startup.
+
+    Note that by compiling the handler resident it is possible to do what
+    the CON: handler does -- CreateProc() several copies of itself to
+    handle each console.  If you do NOT compile it resident, then the
+    device cannot fork itself off (but otherwise works fine -- multiple
+    filehandle references simply reference the same handler, that's all)
+
+    This example may be compiled under 1.3 or 2.0.  To compile,
+    create a directory for the objects DTMP:DOSHAN/ and then run
+    dmake:
+
+    1> dmake
+
+    You may mount the test handler with (without changing directories):
+
+    1> mount test: from mountlist.local
+
+    And use it like this:
+
+    1> echo "fubar" >test:x
+    1> echo "xxxx" >test:x
+    1> type test:x
+    fubar
+    xxxx
+    1>
+
+
+    NOTE:  DO NOT USE THIS HANDLER FOR ANYTHING REAL.  It does no
+    optimization of any kind and its sole purpose is as an example
+
+			   DOS HANDLER LIMITATIONS
+
+    There is one major limitation to most dos handler implementations, this
+    one included.  Basically, if you use the handler's process message port
+    to handle incomming requests you may NOT make any DOS calls from within
+    the handler itself.  This is due to the design of the DOS packet
+    interface which precludes a message port being usable for other
+    purposes simultanious with a DOS packet.  Since the DOS packet's
+    message is never effectively ReplyMsg()d (instead it is PutMsg()d
+    back to the reply port), there is no easy way to tell whether it
+    has been replied or not without a WaitPort(), but that assumes the
+    first message sent to the port will be the DOS packet reply.
+
+    Any MOUNT'd DOS handler automatically defaults to using the process
+    message port and there is no easy way to switch ports so the handler
+    may use DOS calls itself.  One solution is to run the handler manually
+    (make it a CLI runable program) and have it manually create the
+    appropriate DOS node when it starts up with a message port pointing
+    to a custom port instead of the process port.
+

@@ -1,0 +1,23 @@
+
+		;   DSIN.A
+		;
+		;   D0/D1 = sin(D0/D1)
+		;		4(sp)
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+		section text,code
+
+		xref	_MathIeeeDoubTransBase
+		xref	_LVOIEEEDPSin
+		xdef	_sin
+
+_sin		movem.l 4(sp),D0/D1
+		move.l	A6,-(sp)
+		move.l	_MathIeeeDoubTransBase(A4),A6
+		jsr	_LVOIEEEDPSin(A6)
+		move.l	(sp)+,A6
+		rts
+
+		END
+

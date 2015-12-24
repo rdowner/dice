@@ -1,0 +1,10 @@
+## version $VER: XX.catalog XX.XX (XX.XX.XX)
+## codeset 0
+## language english
+;
+MSG_HELLO
+Hello world in english
+;
+MSG_BYE
+This is a test in english
+;

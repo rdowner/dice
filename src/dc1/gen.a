@@ -1,0 +1,91 @@
+	section text,code
+
+	section data,data
+
+	ds.w	0
+l1
+	dc.l	l2+0
+
+	section text,code
+
+	debug	2170
+	section data,data
+
+	ds.w	0
+l4
+
+	dc.l	$0
+
+	section text,code
+
+	ds.l 0
+	procstart
+	ds.w	0
+	xdef	_AllocLabel
+_AllocLabel:
+	movem.l	l9,-(sp)
+	link	A5,#-l6
+	debug	2175
+	addq.l	#$01,l4(A4)
+	move.l	l4(A4),D0
+	bra	l7
+l7
+	unlk	A5
+	rts
+l9	reg	
+l8	equ	8
+l6	equ	0
+	procend
+	debug	2176
+	debug	2178
+	section bss,bss
+
+	ds.w	0
+l17	ds.b	2
+	section text,code
+
+	ds.l 0
+	procstart
+	ds.w	0
+	xdef	@InitGen
+@InitGen:
+	movem.l	l21,-(sp)
+	link	A5,#-l18
+	debug	2183
+	moveq.l	#1,D1
+	cmp.l	D0,D1
+	bne	l12
+l24
+	move.w	l17(A4),D1
+	addq.w	#$01,l17(A4)
+	tst.w	D1
+	bne	l12
+l25
+l23
+l11
+l12
+l13
+	debug	2186
+	tst.l	D0
+	bne	l15
+l27
+	subq.w	#$01,l17(A4)
+	tst.w	l17(A4)
+	bne	l15
+l28
+l26
+l14
+l15
+l16
+l19
+	unlk	A5
+	rts
+l21	reg	
+l20	equ	8
+l18	equ	0
+	procend
+	debug	2189
+l2
+
+	dc.b	$67,$65,$6E,$2E,$63,$00
+	END

@@ -1,0 +1,73 @@
+;       Distribute prepared archives among virtual disks
+;
+;       Intermediate:   ar:m
+;       Dest:           RD0:, RD1:, RD2:, RD3:, RD4:
+;
+
+
+;
+;       Prepare RAM floppy images, using the floppy emulator.
+;
+set echo on
+failat  21
+mount   rd1: >nil:
+mount   rd2: >nil:
+mount   rd3: >nil:
+mount   rd4: >nil:
+mount   rd5: >nil:
+
+format drive rd1: name "Dice1_3" NOICONS <nil:
+copy    Install-DICE            rd1:    com
+copy    Install-DICE.info       rd1:    com
+copy    Install-Floppy          rd1:    com
+copy    Install-Floppy.info     rd1:    com
+copy    Install-Freeware        rd1:    com
+copy    Install-Freeware.info   rd1:    com
+copy    Installer               rd1:    com
+copy    Disk1.info              rd1:Disk.info    com
+format drive rd2: name "Dice2_3" NOICONS <nil:
+copy    Disk2.info              rd2:Disk.info    com
+format drive rd3: name "Dice3_3" NOICONS <nil:
+copy    Disk3.info              rd3:Disk.info    com
+format drive rd4: name "Dice4_3" NOICONS <nil:
+copy    Disk4.info              rd4:Disk.info    com
+format drive rd5: name "Dice5_3" NOICONS <nil:
+copy    Disk5.info              rd5:Disk.info    com
+
+failat 1
+relabel rd1: name "Dice1_3"
+diskchange RD1:
+relabel rd2: name "Dice2_3"
+diskchange RD2:
+relabel rd3: name "Dice3_3"
+diskchange RD3:
+relabel rd4: name "Dice4_3"
+diskchange RD4:
+relabel rd5: name "Dice5_3"
+diskchange RD5:
+
+assign ar: Oi:Archives
+;
+;       Disk 1
+;
+
+makedir                         rd1:l
+makedir                         rd1:bin
+makedir                         rd1:config
+makedir                         rd1:rexx
+makedir                         rd1:s
+makedir                         rd1:libs
+
+copy    dcc.master:bin/lhex                    rd1:bin com
+copy    dcc.master:bin/more                    rd1:bin com
+
+copy    dcc.master:l/fsovl-handler             rd1:l   com
+
+copy    dcc.master:About_Dice                  rd1:    com
+copy    dcc.master:About_Dice.info             rd1:    com
+copy    dcc.master:Copyright_Information       rd1:    com
+copy    dcc.master:Copyright_Information.info  rd1:    com
+copy    dcc.master:Release_Notes               rd1:    com
+copy    dcc.master:Release_Notes.info          rd1:    com
+copy    dcc.master:Known_Buglist               rd1:    com
+copy    dcc.master:Known_Buglist.info          rd1:    com

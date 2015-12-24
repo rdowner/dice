@@ -1,0 +1,172 @@
+
+		;   C_PI.A
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+		;
+		;   Amiga startup code for PI (position independant)
+		;   programs.
+		;
+		;   REFER TO C.A, THE ONLY DIFFERENCE IS THAT __DATA_BAS
+		;   IS A (PC) RELATIVE ACCESS.  NOTE THAT -pi PROGRAMS
+		;   MAY NOT BE RESIDENT
+		;
+		;   this startup code is used by DCC when the -pi option is
+		;   used to link
+
+		section text,code
+
+		xref	__BSS_LEN	    ; (dlink), length of BSS
+		xref	__DATA_BAS	    ; (dlink), base of initialized data
+		xref	__DATA_LEN	    ; (dlink), length of data
+
+		xref	__main		    ; we call _main()
+
+		xref	_LVOSetSignal
+		xref	_LVOAllocMem
+		xref	_LVOFreeMem
+		xref	_LVOForbid
+		xref	_LVOReplyMsg
+
+		xdef	__exit		    ; we are _exit()
+		xdef	start
+		xdef	_SysBase	    ; we export _SysBase
+		xdef	__WBMsg
+
+MEMF_CLEAR	equ	$00000001
+MEMF_PUBLIC	equ	$00010000
+
+start:
+		movem.l D2-D7/A2-A6,-(sp)
+
+		move.l	4,A6		    ; EXEC base
+
+		move.l	sp,A2
+		move.l	A0,-(sp)            ; save arg for _main() call
+		move.l	D0,-(sp)            ; save arglen for _main() call
+
+		;   NEVER RESIDENTABLE
+
+		lea	__DATA_BAS(pc),A4
+		lea	32766(A4),A4
+		sub.l	A3,A3
+
+clrbss
+		;   CLEAR BSS	&-32766(A4) + __DATA_LEN*4
+
+		lea	-32766(A4),A0
+		move.l	#__DATA_LEN,D0
+		asl.l	#2,D0
+		add.l	D0,A0
+
+		move.l	#__BSS_LEN,D0	    ; longwords of bss
+		moveq.l #0,D1
+		bra	clrent
+clrlop		move.l	D1,(A0)+
+clrent		dbf	D0,clrlop
+		sub.l	#$10000,D0
+		bcc	clrlop
+
+		move.l	A3,___MemList(A4)   ; memlist entry (if resident)
+		move.l	A2,__ExitSP(A4)     ; sp to restore
+
+		moveq.l #0,D0		    ; new signals
+		move.l	#$1000,D1	    ; signal mask
+		jsr	_LVOSetSignal(A6)   ; clear ^C
+
+		move.l	A6,_SysBase(A4)     ; resident segment.
+
+		;   Return value of 0 indicates succcess.  Flags
+		;   have been set.
+
+		jsr	__AutoInit0(pc)     ; A6 has SYSBase
+		bne	xfail
+		jsr	__AutoInit1(pc)     ; A6 has SYSBase
+		bne	xfail
+		jsr	__main(PC)
+
+		;   fall through to low level exit... this avoids referencing
+		;   exit() if the user overides _main().
+
+xfail
+		pea	0
+		pea	0
+
+		;   _EXIT()
+		;
+		;   since entry uses malloc we must free any incidental memory
+		;   at __exit instead of _exit.
+		;
+		;   ReplyMsg(_WBMsg) just before returning
+
+__exit:
+		move.l	_SysBase(A4),A6
+		jsr	__AutoExit1(pc)     ; A6 has SysBase
+		jsr	__AutoExit0(pc)     ; A6 has SysBase
+
+		move.l	__ExitSP(A4),A5     ; get sp... because we might free
+					    ; the space taken by the variable!
+
+		move.l	__WBMsg(A4),D6      ; D6 = WBMsg if it exists
+
+		move.l	___MemList(A4),D0   ; free memory
+		beq	ex20
+ex10		move.l	D0,A2
+		move.l	(A2),A3             ; next...
+
+		move.l	4(A2),D0            ; bytes
+		move.l	A2,A1		    ; ptr
+		jsr	_LVOFreeMem(A6)
+
+		move.l	A3,D0		    ; next...
+		bne	ex10
+ex20
+
+		move.l	4(sp),D0            ; get exit code
+		move.l	A5,sp		    ; restore sp
+
+		tst.l	D6		    ; reply to workbench msg if it
+		beq	ex30		    ; exists
+		jsr	_LVOForbid(A6)      ; forbid through exit
+		move.l	D6,A1
+		jsr	_LVOReplyMsg(A6)
+
+ex30
+		;   FINIS, poof.
+
+exfail
+		movem.l (sp)+,D2-D7/A2-A6
+		rts
+
+
+		;   Base of autoinit section
+
+		section autoinit0,code
+__AutoInit0:
+		section autoinit1,code
+__AutoInit1:
+		section autoexit0,code
+__AutoExit0:
+		section autoexit1,code
+__AutoExit1:
+
+		;   All library C code is compiled with the -S option
+		;   which uses 'libdata' and 'libbss' section names,
+		;   forcing library data to come before program data
+		;   and library bss to come before program bss (because
+		;   library data/bss sections are declared here first
+		;   and sections of like name are coagulated).
+
+		section libdata,data
+_Reserved	dc.l	0		; force section to exist (dummy)
+
+		section libbss,bss
+
+		xdef	___MemList	; used by malloc/free
+
+_SysBase	ds.l	1
+__ExitSP	ds.l	1
+__WBMsg 	ds.l	1
+___MemList	ds.l	1
+
+		END
+

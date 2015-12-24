@@ -1,0 +1,23 @@
+dice/operater precedence                                 dice/operater precedence
+dice/precedence                                                   dice/precedence
+dice/c_quickref                                                   dice/c_quickref
+
+        -----------------------------------------------------------------
+        ()  {}  ->  .                                       Left-to-right
+        !   ~   ++  --  +  -  *  &  (type)  sizeof()        Right-to-Left *
+        *   /   %                                           Left-to-right
+        +   -                                               Left-to-right
+        <<  >>                                              Left-to-right
+        <   <=  >   >=                                      Left-to-right
+        ==  !=                                              Left-to-right
+        &                                                   Left-to-right
+        ^                                                   Left-to-right
+        |                                                   Left-to-right
+        &&                                                  Left-to-right
+        ||                                                  Left-to-right
+        ?:                                                  Left-to-right
+        =   +=  -=  *=  /=  %=  &=  ^=  |=  <<=  >>=        Right-to-left **
+        ,                                                   Left-to-right
+        -----------------------------------------------------------------
+        *  The higher precidence +, - and * are unary operators
+        ** Warning: = is a low priority operator; parenthesis often required!

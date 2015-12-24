@@ -1,0 +1,3 @@
+Note that even though the source here says DError all over the place,
+TTXSAME and DERROR are one and the same program.  The functionality of
+the two have been combined into one more powerful program.

@@ -1,0 +1,14 @@
+/* $VER: RXBuf 37.1 (21.2.93) : rx a buffer */
+
+options results
+'getfilepath'
+oldname = result
+name = "T:" || address() || ".tmp"
+
+saveas name
+args = ""
+parse arg args
+rx name args
+
+address command 'delete >NIL: ' || name
+setfilepath oldname

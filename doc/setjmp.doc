@@ -1,0 +1,119 @@
+
+    SETJMP.DOC (c)Copyright 1990-91, Matthew Dillon, All Rights Reserved
+
+TABLE OF CONTENTS
+
+c.lib/setjmp/setjmp
+c.lib/setjmp/longjmp
+
+
+setjmp/setjmp						setjmp/setjmp
+setjmp/longjmp						setjmp/longjmp
+
+   NAME
+	setjmp	- save procedure context for future long jump
+	longjmp - jump to a previously saved procedure context
+
+   SYNOPSIS
+	#include <setjmp.h>
+
+	int r = setjmp(enviro);
+	(void) longjmp(enviro, rval)
+
+	jmp_buf enviro;
+	int rval;
+
+   FUNCTION
+	setjmp stores the current procedure context into an enviroment
+	array whos type is jmp_buf.  When called by a procedure it
+	saves the enviroment and returns 0.
+
+	longjmp jumps to a previously saved enviroment causing execution
+	to begin at the setjmp call that saved that enviroment, but instead
+	of returning 0 the 'resumed' setjmp returns a return value set
+	by the longjmp call.
+
+	jmp_buf is a typedef of an array, thus passing a jmp_buf structure
+	really passes the address of it.
+
+	setjmp()/longjmp() is fully compatible with dynamic stacks (-gs
+	option to DCC).
+
+   WARNING
+	You can only longjmp to a previously saved enviroment that has not
+	been unstacked.  In the example below main() is still stacked when
+	the longjmp occurs and is thus valid.
+
+	It would be illegal to, say, call a subroutine which does a
+	setjmp and RETURNS to you, then longjmp back to that subroutine.
+
+	The contents of the jmp_buf structure is private and may not
+	be modified by the program.
+
+    WARNING WARNING
+	setjmp saves the current state of the registers, but not any registers
+	that get modified between the setjmp and the longjmp!!!  Thus, auto
+	variables placed in registers (which is done so automatically under
+	DICE) may contain 'old' values after a longjmp() if they were modified
+	after the setjmp().  To prevent this such variables must, by ANSI
+	convention, be made volatile.  The volatile qualifier forces an auto
+	variable to be placed on the stack instead of in a register.
+
+   EXAMPLE
+	/*
+	 *  run the program 1> sampleprg, it will print "Break Me With..."
+	 *  continuously until you type ^C to break the program.  The
+	 *  onbreak() vector takes over and longjmp's back to main.
+	 */
+
+	#include <stdio.h>
+	#include <setjmp.h>
+
+	jmp_buf x;
+
+	/*
+	 *  even though the onbreak call is supposed to return, we can
+	 *  longjmp out of it as well.
+	 */
+
+	int brk(void);
+	void breakme(void);
+
+	main()
+	{
+	    int r;
+
+	    onbreak(brk);
+	    r = setjmp(x);      /*  returns 0 when called by main */
+	    if (r == 0) {
+		for (;;)
+		    breakme();
+	    }
+				/*  returns rval when longjmp'd to */
+	    printf("Broke and jumped, r = %d\n", r);
+	    return(0);
+	}
+
+	int
+	brk()
+	{
+	    longjmp(x, 23);
+	}
+
+	void
+	breakme()
+	{
+	    puts("Break Me With ^C!");
+	}
+
+   INPUTS
+	jmp_buf enviro;     enviroment structure
+	int	rval;	    return value (longjmp call)
+
+   RESULTS (setjmp)
+	int	r;	    0 when called directly, rval when enviroment
+			    restored by a longjmp
+
+   SEE ALSO
+	onbreak, signal
+

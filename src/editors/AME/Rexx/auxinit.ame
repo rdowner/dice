@@ -1,0 +1,10 @@
+/* $VER: Auxinit 37.1 (21.2.93) */ 
+/* Setup for AUX use - does setup for use of AME remotely, */
+/* to a VT100 via AUX: or a network */
+
+
+/* Bind an Arexx script to handle VT100 keypad escape sequences and
+   send the code to put the keypad into application mode */
+
+bindkey 'rx ESCO "dcc:rexx/vtkeypad.ame" '
+directwrite '"="'

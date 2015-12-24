@@ -1,0 +1,10 @@
+/* */
+'SET EXEDIR oi:Bin/amiga/bincom1/'
+'SET OD dtmp:compc1/dc1/'
+'SET TYPE OI:Config/Self3.DMAKEFILE'
+'LOG Running Level 2'
+'LOG    Exe Directory: %(EXEDIR)'
+'LOG Output Directory: %(OD)'
+'LOG     Project Type: %(TYPE)'
+'SAVE'
+'READ'

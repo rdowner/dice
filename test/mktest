@@ -1,0 +1,26 @@
+
+date
+echo "dcc x.c -o t:xs -md -s"
+dcc x.c -o t:xs -md -s
+
+echo "dcc x.c -o t:xl -mD -s"
+dcc x.c -o t:xl -mD -s
+
+echo "dcc x.c -o t:xsp -md -prof3 -s"
+dcc x.c -o t:xsp -md -prof3 -s
+
+echo "dcc x.c -o t:xlp -mD -prof3 -s"
+dcc x.c -o t:xlp -mD -prof3 -s
+
+echo "dcc x.c -o t:xsr -mRR -md -s"
+dcc x.c -o t:xsr -mRR -md -s
+
+echo "dcc x.c -o t:xrl -mRR -mD -s"
+dcc x.c -o t:xrl -mRR -mD -s
+
+echo "dcc x.c -o t:xsrp -mRR -md -prof3 -s"
+dcc x.c -o t:xsrp -mRR -md -prof3 -s
+
+echo "dcc x.c -o t:xrpl -mRR -mD -prof3 -s"
+dcc x.c -o t:xrpl -mRR -mD -prof3 -s
+date

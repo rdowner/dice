@@ -1,0 +1,23 @@
+
+		;   FCOS.A
+		;
+		;   D0 = fcos(D0)
+		;	      4(sp)
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+		section text,code
+
+		xref	_MathIeeeSingTransBase
+		xref	_LVOIEEESPCos
+		xdef	__spcos
+
+__spcos 	move.l	4(sp),D0
+		move.l	A6,-(sp)
+		move.l	_MathIeeeSingTransBase(A4),A6
+		jsr	_LVOIEEESPCos(A6)
+		move.l	(sp)+,A6
+		rts
+
+		END
+

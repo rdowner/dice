@@ -1,0 +1,26 @@
+
+		;   FFPA_CMP.A
+		;
+		;   D0	arg1	(4 bytes)
+		;   D1	arg2	(4 bytes)
+		;
+		;   result -> D0
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+		section text,code
+
+		xref	_MathBase
+		xref	_LVOSPCmp
+		xdef	__ffpcmp_a
+
+__ffpcmp_a	move.l	A6,-(sp)
+		move.l	_MathBase(A4),A6
+		exg	D0,D1		; for TST, result reversed!
+		jsr	_LVOSPCmp(A6)
+		move.l	(sp)+,A6
+		tst.l	D0
+		rts
+
+		END
+

@@ -1,0 +1,39 @@
+/* $VER: NextError 37.1 (21.2.93) : AME script to find DICE errors */
+/* and move to correct source line. */
+
+options results
+
+buffername = 0
+getbuffername
+if (RC = 0 ) then do
+   parse var RESULT buffername .
+end
+
+popbuffer "huntbuf"
+find ':'
+
+if (rc = 0) then do
+    'getline'
+    parse var result ':' file . ':' line ':'
+    movebol
+    unsetprefs READ
+    delete
+    text "*"
+    setprefs READ
+    movedown
+/*
+	    if (buffername = 0) then prevwindow
+	    else popbuffer "buffername"
+*/
+    prevwindow
+    visit ""file""
+    gotoidline line
+    end
+else do
+/*
+    if (buffername = 0) then prevwindow
+    else popbuffer "buffername"
+*/
+    prevwindow
+    eprint "No more errors."
+end

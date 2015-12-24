@@ -1,0 +1,45 @@
+
+				DICE-LICENSE
+			      9 September 1997
+
+    Copyright (C) 1997, Matthew Dillon and Obvious Implementations Corporation.
+			dillon@backplane.com
+
+    (1) The DICE source is available free of charge.  This and all derived 
+	sources must be distributed free of charge with two exceptions: 
+	(a) When distributed on hard media, the media containing this 
+	distribution may be sold at cost, or (b) when included as part 
+	of a freeware compendum where this distribution is not the primary 
+	focus of the hard media (e.g. CDRom) being sold.
+
+	When redistributing DICE, all copyright information in the files 
+	must be left intact and the Obvious Implementations Corp Copyright
+	message displayed by dcc, dc1, dcpp, das, dlink, and dobj when run 
+	with no arguments must be left intact.  This license file must also
+	be included.
+
+    (2) You may compile your own source code into libraries and binaries 
+	using DICE and then utilize those binaries however you wish, including
+	selling the binaries/libraries compiled with DICE commercially.
+	You may link your own projects with DICE-supplied libraries (e.g.
+	the rom*.lib, c*.lib, etc...) and use the resulting binaries however
+	you wish, including selling them commercially.
+
+    (3) You may NOT distribute DICE source code as part of a commercial
+	product and you may not sell any compiler, linker, or assembler
+	programs derived from the DICE compiler/linker/assembler source with
+	this license.  You may not sell any programs derived from the DICE
+	source code.  Commercial resale licenses are available.
+
+    (4) THIS SOFTWARE IS PROVIDED BY OIC AND CONTRIBUTORS ``AS IS'' AND
+	ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+	IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+	PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL OIC OR CONTRIBUTORS BE 
+	LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+	CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+	WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+	OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+	IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+

@@ -1,0 +1,21 @@
+/* $VER: Starterror 37.3 (3.1.94) : Error Initialization */
+options results
+bindkey "stringrx Mouse" '"options results;dottomouse;getbuffername;if (RC = 0 ) then do;parse var RESULT name .;if name = ''huntbuf'' then do; getline;if(RC = 0) then do;line = RESULT;parse var line '': '' file x ''L:'' lineno .;prevwindow;visit file;gotoidline lineno;end;end;else mouseclick;end"'
+nextwindow
+setbuffername "huntbuf"
+setprefs READ TEMP
+prevwindow
+
+buffername = 0; getbuffername
+if (RC = 0 ) then do; parse var RESULT buffername . ;end
+
+popbuffer "huntbuf";find ':'
+
+if (rc = 0) then do
+    'getline'; parse var result ':' file . ':' line ':'; movebol
+    unsetprefs READ; delete; text "*"; setprefs READ; movedown; prevwindow
+    visit ""file""; gotoidline line
+    end
+else do
+    prevwindow; eprint "No more errors."
+end

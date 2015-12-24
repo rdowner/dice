@@ -1,0 +1,243 @@
+
+
+extensions/regargs					extensions/regargs
+extensions/REGARGS					extensions/REGARGS
+
+			  USING REGISTERIZED ARGUMENTS
+
+    Using registerized arguments will make your code smaller and faster,
+    but there are some restrictions and various other things you must be
+    sure to do before you can use the feature reliably.
+
+    RESTRICTIONS WITH 1.3
+
+	No standard prototype headers exist for the Amiga includes under
+	1.3.  Since REGARGS depends on the programmer using the same
+	prototypes as were used to generate the regargs library, no
+	regargs library (would be amigasr.lib) exists for 1.3
+
+	Under 2.0, the prototypes do exist in the directory
+	CLIB/#?_protos.h , and a 2.0 version of amiga.lib does
+	exist (AMIGASR20.LIB).
+
+	Thus, under 1.3 you cannot use REGARGS for system calls, though
+	you can use it for all the functions within your program.  To
+	prevent DICE from attempting to make regargs system calls (if
+	this occurs you will get undefined symbol errors in link showing
+	symbols that begin with an '@'), you must either not prototype
+	the arguments to the system calls, or prototype them with
+	__stkargs.  Example:
+
+	    void *AllocMem();                           /*  OK  */
+	    __stkargs void *AllocMem(long, long)        /*  OK  */
+
+	    void *AllocMem(long, long)                  /*  WRONG */
+
+	The second method is the one of choise (using __stkargs) because it
+	allows you to do strict prototype checking (-proto option to DCC)
+	and mix non-registered amiga.lib calls with registered calls
+
+    RESTRICTIONS IN AMIGASR20.LIB, (GENERAL)
+
+	The registerized version of amiga.lib does not contain all
+	amiga.lib functions.  Of major import: CreateTask() and
+	DeleteTask() are missing.  The single precision FFP routines
+	do not exist either.
+
+    PROTOTYPING IS MANDATORY
+
+	You MUST supply prototypes for all procedure calls, this is how
+	DICE determines what registers to put things into.  The prototypes
+	must match the actual function declarations.
+
+	When making amiga library calls, such as Open(), FindTask(),
+	OpenWindow(), etc..., you must include the appropriate amiga
+	prototype file in dinclude:amiga/clib/ .. for example,
+
+	    #include <clib/intuition_protos.h>
+
+	It is STRONGLY SUGGESTED that you use the -proto option to DCC
+	to ensure all your calls have been prototyped.	For c.lib
+	functions the appropriate #includes must be made, such as
+	<stdio.h>, <stdlib.h>, <fcntl.h>, and <string.h>
+
+    ANSI MAIN() ENTRY POINT
+
+	main() MUST be declared in the following manner, even if you do not
+	use either argc and argv.  Be sure to either exit() out of main
+	or return() an exit value
+
+	    int
+	    main(ac, av)
+	    int ac;	    /*	can specify short here */
+	    char **av;
+	    {
+
+		return(0);
+	    }
+
+    WHAT GETS REGISTERIZED, FORMAL ENTRY POINTS
+
+	DICE generates an @symbol entry point for registerized procedures,
+	a _symbol entry point for non-registerized procedures.
+
+	* procedures taking no arguments are not registerized (nothing
+	  to registerize)
+
+	* unprototyped procedures are not registerized
+
+	* currently, procedures with greater than 4 arguments will not
+	  be registerized
+
+    INDIRECT FUNCTION POINTERS
+
+	DICE handles function pointers according to the -mr, -mR, -mRR
+	option specified:
+
+	-mr
+	    function pointers are assigned the unregistered entry point
+	    for procedures only, all calls through function pointers
+	    use stack based arguments.
+
+	    DICE generates both types of entry points for each procedure
+	    definition.
+
+	-mR
+	    function pointers are assigned the unregistered entry point
+	    for procedures only, all calls through function pointers
+	    use stack based arguments.
+
+	    DICE generates only the registered (@) entry point for a
+	    procedure definition.
+
+	-mRR
+	    function pointers are assigned the unregistered entry point
+	    if they are not prototyped (see below), the registered entry
+	    point if they are.	However, if the procedure was defined
+	    with __stkargs, then the unregistered entry point will be
+	    used.
+
+	    calls through function pointers use stack args for unprototyped
+	    function pointers, reg-args for prototyped function pointers.
+
+	    WARNING:	Any procedure assigned to a function pointer must
+	    be declared in the same manner as the function pointer.
+
+	EXAMPLE, function table array:
+
+	    struct entry {
+		char *funcName;
+		void (*funcPtr)(char *);
+	    } *En;
+
+	    extern void fubar(char *);
+		...
+
+
+	    En->funcPtr = fubar;
+	    En->funcPtr("this is a test");
+
+	Note how the function pointer in the entry structure is declared.
+	It is PROTOTYPED in of itself as taking a (char *).  Any procedure,
+	such as fubar, that you might assign to this variable MUST BE
+	DECLARED IN THE SAME MANNER.  In this case, it is:
+
+	    extern void fubar(char *);
+
+	Which exactly matches the specification for the function pointer.
+	When you use the -mRR option matching the table with the functions
+	it is assigned with is IMPARATIVE.  If you make a mistake, at
+	best DICE will warn you with a failed link (looking for an entry
+	point that does not exist).  At worst it will not warn you and
+	the program will operate improperly.  It is suggested that you
+	use the -mr or -mR options until you get up to speed.
+
+    FORCING STACK BASED PROCEDURES
+
+	Here is an example of a prototype and its procedure definition
+	to force stack based arguments:
+
+	    extern __stkargs void fubar(char *);
+
+	    __stkargs void
+	    fubar(char *ptr)
+	    {
+		...
+	    }
+
+	Note that BOTH THE PROTOTYPE AND THE PROCEDURE ITSELF MUST
+	specify the __stkargs flag.  Assigning any procedure qualified
+	with only __stkargs (rather than both __stkargs and __stkregs)
+	always assigns the stack based entry point rather than the
+	(possibly non-existant) register based entry point.
+
+	Any call-back procedure you pass to the Amiga OS or any library
+	must be prototyped and defined like this because the library will
+	always call it back with stack based arguments unless otherwise
+	specified by the library.
+
+    FORCING STACK BASED INDIRECT FUNCTION POINTERS
+
+	Lets go back to that structure.. lets say you want any procedures
+	called through the indirect function pointer to be called using
+	stack based arguments.	You would then specify:
+
+	    struct entry {
+		char *funcName;
+		__stkargs void (*funcPtr)(char *);
+	    } *En;
+
+	But BE CAREFUL.  Any function assigned to this structure entry
+	must also be __stkargs:
+
+	    extern __stkargs void fubar(char *);    /*  RIGHT   */
+	    extern void fubar(char *);              /*  WRONG   */
+
+		...
+
+	    En->funcPtr = fubar;
+
+	If you do NOT match the argument type properly, DICE will
+	generate incorrect code.  Again, this is when you use the -mRR
+	option.  If you use only -mr or -mR (and specify __stkargs for
+	the procedures in question), this kind of problem will not
+	crop up.
+
+    CALL-BACKS (C.LIB, AMIGA.LIB)
+
+	C.LIB and AMIGA.LIB handle call-backs differently.  With C.LIB,
+	if you link without -m[r,R,RR] then everything uses stack based
+	arguments.  However, if you link with -mr, -mR, or -mRR then
+	CR.LIB is linked in instead of C.LIB, and any call-back functions
+	you supply to it (for example, qsort()) must use the registerized
+	entry point.
+
+	Therefore, if you use C.LIB call-backs you cannot use -mr or -mR
+	... you MUST use -mRR or not use registerization at all.  This is
+	because, if you remember, -mr and -mR always pass the
+	unregisterized entry point for anything but a direct call to the
+	routine (-mR exists to make porting code easier)
+
+	AMIGA.LIB works the flip-side.	Since these are commodore-standard
+	routines any call-backs will be using stack-based arguments.  Thus,
+	any procedure you pass to an AMIGA.LIB routine must be declared
+	__stkargs.  This is a special case:
+
+
+	    int ben(int (*)(int));
+
+	    __stkargs int fubar(int x)
+	    {
+		ben(fubar);
+	    }
+
+	Even though ben() is fully prototyped to take a function pointer
+	that is fully prototyped, since fubar has been declared as a
+	stack-only routine, _fubar will be passed to ben instead of
+	@fubar.
+
+	Thus, Amiga.Lib routines may be fully prototyped but as long as
+	you pass a stack-args only routine to them, the stack-args entry
+	point will be passed instead of the reg-args entry point.
+
+

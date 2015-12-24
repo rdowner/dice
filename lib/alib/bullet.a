@@ -1,0 +1,41 @@
+
+			;   autoinit if you ever reference BULLET
+			;
+			;   (c)Copyright 1994, OIC, All Rights Reserved
+			;
+			;   Note:   das automatically pads code sections with
+			;	    NOPs.
+
+			xdef	_BulletBase
+			xref	__AutoFail0
+
+_LVOOpenLibrary 	equ	-552
+_LVOCloseLibrary	equ	-414
+
+			section autoinit0,code
+
+			moveq.l #0,D0
+			lea	bullname(pc),A1
+			jsr	_LVOOpenLibrary(A6)
+			move.l	D0,_BulletBase(A4)
+			beq	__AutoFail0
+			bra	i10
+bullname 		dc.b	'bullet.library',0
+			ds.w	0
+i10
+
+			section autoexit0,code
+
+			move.l	_BulletBase(A4),D0
+			beq	l10
+			move.l	D0,A1
+			jsr	_LVOCloseLibrary(A6)
+l10
+
+
+			section libbss,bss
+
+_BulletBase		ds.l	1
+
+			END
+

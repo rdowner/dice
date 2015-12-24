@@ -1,0 +1,39 @@
+
+bintohex/bintohex                                             bintohex/bintohex
+
+
+        bintohex <inFile> [outFile] -s[1,2,3] [-i]
+
+
+        /Bintohex/ converts a binary file into Motorola S-Record or Intel
+        Hex format files.  Hex format files are used by many brands of
+        EPROM or Flash EPROM programming devices, and are accepted by
+        by most vendors of mask ROM.
+
+            inFile      Binary input file.
+
+            outFile     Output file.  If no output file is specified,
+                        /bintohex/ writes to the console.
+
+            -s[1,2,3]   Specify Motorola S-Record format.
+
+                                SXnn[addr]DD..DDcc
+
+                        SX      = File type, S1, S2 or S3.
+                        nn      = Number of bytes, not including nn
+                        [addr]  = Address.  S1=4 bytes, 64K limit
+                                            S2=6 bytes, 16MB limit
+                                            S3=8 bytes, 4GB limit
+                        DD..DD  = Data
+                        cc      = Checksum, 0xff-Sum of bytes on line
+
+
+            -i          Specify Intel Hex format.  64K bytes maximum.
+
+                                :xxaaaarrDD..DDcc
+
+                        xx   = Number of bytes on line
+                        aaaa = Address
+                        rr   = Record type, 00=normal, 01=end
+                        DD   = Data (xx bytes worth)
+                        cc   = Checksum, 0-Sum of bytes on line

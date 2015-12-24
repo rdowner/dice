@@ -1,0 +1,521 @@
+
+    UNIX.DOC (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+TABLE OF CONTENTS
+
+c.lib/unix/access
+c.lib/unix/chdir
+c.lib/unix/dir
+c.lib/unix/fstat
+c.lib/unix/getcwd
+c.lib/unix/getenv
+c.lib/unix/sleep
+c.lib/unix/stat
+c.lib/unix/unlink
+
+
+unix/access						unix/access
+
+   NAME
+	access	- determine whether file is accessable
+
+   SYNOPSIS
+	int r = access(filename, mode);
+	const char *filename;
+	int mode;
+
+	UNIX call
+
+   FUNCTION
+	Returns 0 on success, -1 if no access with the requested modes
+	may be gained.	filename is a pointer to a string that is
+	the filename we wish to check, modes is a set of modes we
+	expect the file to be able to do.
+
+	the modes may be one or more of the following OR'd together.
+
+	0   check for existance of file only
+	1   check execute permission for file
+	2   check write permission for file
+	4   check read permission for file
+
+   EXAMPLE
+	/*
+	 *  P.S. this is a dumb, slow, inefficient example
+	 */
+
+	#include <stdio.h>
+
+	main(ac, av)
+	char *av[];
+	{
+	    char *name;
+
+	    if (ac == 1) {
+		puts("Expected a file argument");
+		exit(1);
+	    }
+	    name = av[1];
+
+	    if (access(name, 0) == 0) {
+		puts("it exists");
+		if (access(name, 1) == 0)
+		    puts("it is executable");
+		if (access(name, 2) == 0)
+		    puts("I can write to it!");
+		if (access(name, 4) == 0)
+		    puts("and even read from it!");
+	    } else {
+		puts("Hmmm, that file does not exist");
+	    }
+	    return(0);
+	}
+
+   INPUTS
+	char *filename;     file to check
+	int mode;	    modes as specified above
+
+   RESULTS
+	int r;		    0 if modes available, -1 if not
+
+   SEE ALSO
+	open, fopen
+
+
+unix/chdir						unix/chdir
+
+   NAME
+	chdir - change current directory
+
+   SYNOPSIS
+	int r = chdir(path);
+	const char *path;
+
+	UNIX call
+
+   FUNCTION
+	Changes the current directory to the specified path returning 0 on
+	success and -1 on failure.
+
+   NOTE
+	when a program exits, the original directory will be restored.
+
+   EXAMPLE
+	#include <stdio.h>
+
+	char buf[512];
+
+	main(ac, av)
+	int ac;
+	char *av[];
+	{
+	    getcwd(buf, sizeof(buf));
+	    if (chdir("RAM:")) {
+		puts("Couldn't chdir into RAM:");
+		exit(1);
+	    }
+	    {
+		FILE *fp;
+		if (fp = fopen("yy", "w")) {
+		    fclose(fp);
+		    puts("created file yy in RAM:");
+		}
+	    }
+	    if (chdir(buf)) {
+		printf("Unable to chdir back into %s\n", buf);
+	    }
+	    return(0);
+	}
+
+   INPUTS
+	char *path;	path to chdir into
+
+   RESULTS
+	int r;		return value, 0 if ok, -1 if error
+
+   SEE ALSO
+	getcwd
+
+
+unix/dir						unix/dir
+
+   NAME
+	dir - directory scanning routines
+
+   SYNOPSIS
+	#include <sys/dir.h>
+
+	DIR *dirhan = opendir(path);
+	struct direct *entry = readdir(dirhan);
+	(void) rewinddir(dirhan);
+	void closedir(dirhan);
+
+	const char *path;
+	DIR *dirhan;
+
+   FUNCTION
+	These are UNIX compatible directory scanning calls.  After openning
+	a directory with opendir(), you may scan it with successive
+	calls to readdir() until NULL is returned, then either
+	rewinddir() it for a rescan, or closedir() it when done.
+
+	The DIR structure is private to the library.  Valid fields within
+	struct direct are d_name (the file name), and d_namlen (the length
+	of the file name, not usually needed).
+
+	You can chdir() into the directory and stat() each entry to obtain
+	additional information.  Note that the UNIX directory scanning
+	routines will not be as efficient as the Amiga directory scanning
+	routines, but are portable.
+
+   NOTE
+	Unlike the amiga directory scanning routines that use Lock()s,
+	these calls will automatically deallocate resources if the program
+	terminates.
+
+	rewinddir()'s prototype returns an int .. this is for internal
+	use only, you should never use rewinddir()'s return value
+	yourself.
+
+   EXAMPLE
+	#include <stdio.h>
+	#include <sys/dir.h>
+
+	main(ac, av)
+	int ac;
+	char *av[];
+	{
+	    DIR *dir;
+
+	    if (ac == 1) {
+		puts("test dir");
+		exit(1);
+	    }
+	    if (dir = opendir(av[1])) {
+		struct direct *entry;
+		while (entry = readdir(dir)) {
+		    printf("%s\n", entry->d_name);
+		}
+		closedir(dir);
+	    }
+	    return(0);
+	}
+
+   SEE ALSO
+	chdir
+
+
+unix/fstat						unix/fstat
+
+   NAME
+	fstat - stat a file descriptor
+
+   SYNOPSIS
+	#include <sys/stat.h>
+
+	int error = fstat(fd, &stat_buf);
+	struct stat stat_buf;
+
+   FUNCTION
+	fstat() is a unix compatible call that returns information
+	pertaining to the file represented by an open file descriptor.
+
+	see stat() for information on the struct stat fields.
+
+   NOTE
+	fstat() works just like stat except you provide a UNIX file
+	descriptor (*NOT* an amigaDOS File Handle).  Under 2.0,
+	ExamineFH() will be used.  Under 1.3, the original path used to
+	open the file will be stat()'d, which ends up scanning the
+	directory if the file was open for exclusive access.
+
+   INPUTS
+	int fd; 	    file descriptor to stat
+
+	struct stat *sbuf;  address of stat structure that will be filled in
+
+   RESULTS
+	int error;	    0 on success, < 0 on error
+	none
+
+   EXAMPLE
+	#include <stdio.h>
+	#include <fcntl.h>
+	#include <sys/stat.h>
+
+	main(ac, av)
+	int ac;
+	char *av[];
+	{
+	    int fd;
+	    int r;
+	    struct stat stat_buf;
+
+	    if (ac == 1) {
+		puts("test scratch_file");
+		exit(1);
+	    }
+	    fd = open(av[1], O_WRONLY | O_CREAT);
+	    if (fd >= 0) {
+		r = fstat(fd, &stat_buf);
+		if (r < 0)
+		    printf("Can't stat fd=%d\n", fd);
+		else
+		    printf("File is %d bytes long\n", stat_buf.st_size);
+		close(fd);
+	    }
+	    return(0);
+	}
+
+   SEE ALSO
+	chdir
+
+
+unix/getcwd						unix/getcwd
+
+   NAME
+	getcwd - get current working directory
+
+   SYNOPSIS
+	char *path = getcwd(buf, max);
+
+	non-standard call
+
+   FUNCTION
+	Gets the current working directory and puts it into the specified
+	buffer buf.  If buf is NULL it will be malloc()d automatically.
+	buf is returned (or the malloced buffer if you passed NULL for buf).
+
+	max specifies the maximum length of the path including the terminating
+	nul character.
+
+	NULL is returned if any error occurs (such as malloc failing)
+
+   EXAMPLE
+	#include <stdio.h>
+
+	char buf[512];
+
+	main(ac, av)
+	int ac;
+	char *av[];
+	{
+	    getcwd(buf, sizeof(buf));
+	    printf("Current directory is: %s\n", buf);
+	    return(0);
+	}
+
+   INPUTS
+	char *buf;	buffer to place current directory path into or
+			NULL if you want getcwd to allocate one
+
+	int max;	maximum size of buffer
+
+   RESULTS
+	char *path;	returns allocated buffer if you passed NULL for
+			buf, else returns the first argument.  Returns
+			NULL on error.
+
+   SEE ALSO
+	chdir
+
+
+unix/getenv						unix/getenv
+
+   NAME
+	getenv - get enviroment variable
+
+   SYNOPSIS
+	char *var = getenv(const char *name);
+
+   FUNCTION
+	getenv() searches for and returns the ENV: enviroment variable
+	requested.  getenv() will cache variables so that requesting
+	the same variable repetitously does not allocate a new memory
+	buffer.
+
+	getenv() allocates a buffer for each variable returned, so you
+	do not have to copy the return value from getenv().  This memory
+	is freed on program exit.  Do not attempt to free() a getenv()'d
+	variable!!
+
+   EXAMPLE
+	#include <stdio.h>
+	#include <stdlib.h>
+
+	main(ac, av)
+	int ac;
+	char *av[];
+	{
+	    char *dccopts = getenv("DCCOPTS");
+	    if (dccopts)
+		printf("DCCOPTS = %s\n", dccopts);
+	    else
+		printf("You do not have a DCCOPTS enviroment variable!\n");
+	    return(0);
+	}
+
+   INPUTS
+	char *name;	Name of enviroment variable, on the amiga this
+			is not case sensitive.	On UNIX systems it is.
+
+
+   RESULTS
+	char *var;	contents of enviroment variable or NULL if the
+			variable could not be found.
+
+   SEE ALSO
+
+
+
+unix/sleep						unix/sleep
+
+   NAME
+	sleep - sleep for a period of time
+
+   SYNOPSIS
+	sleep(n);
+	int n;
+
+   FUNCTION
+	The sleep() function waits for a period of time specified in seconds.
+	sleep() can be interrupted by a ^C.
+
+	NOTE: sleep's timekeeping is not very accurate.  On the Amiga,
+	sleep() is implemented with a loop of Delay(50); calls.
+
+   EXAMPLE
+	#include <stdio.h>
+
+	main(ac, av)
+	char *av[];
+	{
+	    puts("Sleeping for 10 seconds");
+	    sleep(10);
+	    puts("That was a good rest");
+	    return(0);
+	}
+
+   INPUTS
+	int n;		number of seconds to sleep
+
+   RESULTS
+	none
+
+   SEE ALSO
+
+
+unix/stat						unix/stat
+
+   NAME
+	stat - stat a file by name
+
+   SYNOPSIS
+	#include <sys/stat.h>
+
+	int error = stat(name, &stat_buf);
+	const char *name;
+	struct stat stat_buf;
+
+   FUNCTION
+	stat() is a unix compatible call that returns information
+	pertaining to the file represented by its name.
+
+	If 0 is returned, the call succeeded and the fields will be
+	filled in as follows:
+
+	    st_mode	    flags:  S_IFDIR	if directory
+				    S_IFREG	if regular file
+				    S_IREAD	if readable
+				    S_IWRITE	if writable
+				    S_IEXEC	if executable
+
+	    st_size	    size of the file, in bytes
+
+	    st_blksize	    512 (for now)
+
+	    st_blocks	    a guess at the number of actual blocks the
+			    file takes up, including headers & side sectors
+
+	    st_ctime	    time the file was last modified
+
+	    st_mtime	    same as st_ctime
+
+	    st_dev	    physical device ID (do not try to interpret this
+			    field, but it does represent the dos handler)
+
+	    st_ino	    inode ID (usually a file block number on the
+			    amiga)
+
+
+   NOTE
+	On the amiga one normally cannot directly examine a file that
+	is exclusively locked.	If this case occurs, stat() will attempt
+	to scan the parent directory for the file and if *that* doesn't
+	work, returns -1.
+
+
+   INPUTS
+	char *name;	    name of file to stat
+
+	struct stat *sbuf;  address of stat structure that will be filled in
+
+   RESULTS
+	int error;	    0 on success, < 0 on error
+	none
+
+   EXAMPLE
+	#include <stdio.h>
+	#include <fcntl.h>
+	#include <sys/stat.h>
+
+	main(ac, av)
+	int ac;
+	char *av[];
+	{
+	    int r;
+	    struct stat stat_buf;
+
+	    if (ac == 1) {
+		puts("test scratch_file");
+		exit(1);
+	    }
+	    r = stat(av[1], &stat_buf);
+	    if (r < 0)
+		printf("Can't stat %s\n", av[1]);
+	    else
+		printf("File is %d bytes long\n", stat_buf.st_size);
+	    return(0);
+	}
+
+   SEE ALSO
+	chdir
+
+
+unix/unlink						unix/unlink
+
+   NAME
+	unlink - delete a file
+
+   SYNOPSIS
+	int error = unlink(file);
+	char *file;
+
+   FUNCTION
+	unlink() is *EXACTLY* remove().  unlink() exists for UNIX compatibility
+	only.
+
+   NOTE
+	use rmdir() to delete a directory if you wish to maintain portability.
+
+   EXAMPLE
+	Refer to the remove() manual page for an example
+
+   INPUTS
+	char *file;	    file name to delete
+
+   RESULTS
+	int error;	    0 on success, < 0 on failure
+
+   SEE ALSO
+

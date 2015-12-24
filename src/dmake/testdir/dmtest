@@ -1,0 +1,11 @@
+
+SRCS= a b c
+OBJS= $(SRCS:"*")
+
+all: $(OBJS)
+	echo %(right)
+
+$(OBJS) : $(SRCS)
+	echo %(right) %(left)
+
+

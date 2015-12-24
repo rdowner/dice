@@ -1,0 +1,523 @@
+#   ULIB.DEF - LIB.DEF FOR UNIX
+#
+#   LBMAKE definition file, use LBMAKE to generate *any* DICE link library
+#   you wish.  To use, DTMP: must be assigned to a lot of semi-temporary
+#   space.  The generated libraries will be placed in DLIB:
+#
+#   Flag	Description
+#
+#    s		generate small-data library
+#    r		generate registered-args library
+#    p		generate profiled library
+#    l		generate large-data library
+#
+#   Combinations Allowed:  (note that registered args may not be generated
+#   for the 1.3 amiga.lib, simply use the reg-args 2.0 amiga.lib instead)
+#
+#    s		small-data
+#    s p
+#    s r
+#    s r p
+#    l
+#    l p
+#    l r
+#    l r p
+#
+#   Libraries:
+#
+#    startup	generate DLIB:c.o, c_pi.o, c_pr.o, x.o	(specify no flags)
+#    auto	generate DLIB:auto[model].lib  (only 's'mall data supported)
+#    mlib	generate DLIB:m[model].lib
+#    clib	generate DLIB:c[model].lib
+#    uclib	generate DLIB:uc[model].lib (UNIX C compat library)
+#    rom	generate DLIB:rom[model].lib
+#    amiga13	generate DLIB:amiga13[model].lib
+#    amiga20	generate DLIB:amiga20[model].lib
+#
+#   EXAMPLE:
+#
+#   1> LbMake clib l		    generate a large-data cl.lib
+#
+#   1> LbMake amiga20 s p	    generate a small-data profiled 2.0 amiga
+#				    library (amigasp20.lib)
+#
+
+@Type	s    -ms -r -pr
+@Type	r    -mRR -proto -mi
+@Type	p    -prof -mi0
+
+# the type for the large-data model MUST be 'l' to handle +lconvert
+#
+@Type	l    -mD
+
+@Objects    startup	../dlib/%s
+
+@Library    clib	../dlib/c%s.lib
+@Library    uclib	../dlib/uc%s.lib
+@Library    rom 	../dlib/rom%s.lib
+@Library    amiga13	../dlib/amiga13%s.lib
+@Library    amiga20	../dlib/amiga20%s.lib
+@Library    mlib	../dlib/m%s.lib
+@Library    auto	../dlib/auto%s.lib
+
+@DefTree    obj3/lib_%s/
+
+@AltTree    pass1	obj1/lib_%s/
+@AltTree    pass2	obj2/lib_%s/
+@AltTree    pass3	obj3/lib_%s/
+
+[../include/amiga20/fd/]mathieeesingbas_lib.fd		+clib +uclib -pass2
+[../include/amiga20/fd/]mathieeesingtrans_lib.fd	+clib +uclib -pass2
+
+assert/assert.c 	+clib +uclib
+assert/abort.c		+clib +uclib
+amiga/exit.c		+clib +uclib
+amiga/main.c		+clib +uclib
+amiga/wbmain.c		+clib +uclib
+amiga/c.a		+startup
+amiga/c_pi.a		+startup
+amiga/c_pr.a		+startup
+amiga/x.a		+startup
+amiga/config.a		+clib +uclib
+amiga/muls.a		+clib +uclib     +rom
+amiga/mods.a		+clib +uclib     +rom
+amiga/h_mods.a					+hyper
+amiga/modu.a		+clib +uclib     +rom
+amiga/h_modu.a					+hyper
+amiga/divs.a		+clib +uclib     +rom
+amiga/divu.a		+clib +uclib     +rom
+amiga/parseargs.c	+clib +uclib
+amiga/chkabort.c	+clib +uclib
+amiga/ablck.c		+clib +uclib
+amiga/resident.c	+clib +uclib
+amiga/path.c		+clib +uclib
+amiga/exec_dcc.c	+clib +uclib
+amiga/execseg.a 	+clib +uclib
+amiga/stack.a		+clib +uclib
+amiga/cstack.c		+clib +uclib
+amiga/stk_base.c	+clib +uclib
+amiga/stk_chunk.c	+clib +uclib
+amiga/stk_fudge.c	+clib +uclib
+amiga/stack_abort.c	+clib +uclib
+amiga/alloca.a		+clib +uclib
+amiga/rega4.a		+clib +uclib
+#amiga/dynamic.c	+clib +uclib
+amiga/aprof.a		+clib +uclib     -pass2
+amiga/profile.c 	+clib +uclib     -pass2
+
+rexx/place.c		+clib +uclib
+
+memory/malloc.c 	+clib +uclib
+memory/calloc.c 	+clib +uclib
+memory/realloc.c	+clib +uclib
+memory/free.c		+clib +uclib
+memory/slow.a		+clib +uclib     +rom
+memory/movmem.a 	+clib +uclib     +rom
+memory/setmem.a 	+clib +uclib     +rom
+memory/cmpmem.a 	+clib +uclib     +rom
+memory/memcpy.a 	+clib +uclib     +rom
+memory/memset.a 	+clib +uclib     +rom
+
+stdio/vprintf.c 	+clib +uclib
+stdio/vfprintf.c	+clib +uclib
+stdio/vsprintf.c	+clib +uclib     +rom
+stdio/fprintf.c 	+clib +uclib
+stdio/fputc.c		+clib +uclib
+stdio/fputs.c		+clib +uclib
+stdio/printf.c		+clib +uclib
+stdio/puts.c		+clib +uclib
+stdio/fclose.c		+clib +uclib
+stdio/fflush.c		+clib +uclib
+stdio/fgetc.c		+clib +uclib
+stdio/fgets.c		+clib +uclib
+stdio/filbuf.c		+clib +uclib
+stdio/finitdesc.c	+clib +uclib
+stdio/fopen.c		+clib +uclib
+stdio/fread.c		+clib +uclib
+stdio/fscanf.c		+clib +uclib
+stdio/fseek.c		+clib +uclib
+stdio/fgetpos.c 	+clib +uclib
+stdio/fsetpos.c 	+clib +uclib
+stdio/ftell.c		+clib +uclib
+stdio/fwrite.c		+clib +uclib
+stdio/gets.c		+clib +uclib
+stdio/perror.c		+clib +uclib
+stdio/remove.c		+clib
+stdio/rename.c		+clib +uclib
+stdio/rewind.c		+clib +uclib
+stdio/scanf.c		+clib +uclib
+stdio/sscanf.c		+clib +uclib	 +rom
+stdio/setvbuf.c 	+clib +uclib
+stdio/setbuf.c		+clib +uclib
+stdio/sglob.c		+clib +uclib
+stdio/sprintf.c 	+clib +uclib     +rom
+stdio/ungetc.c		+clib +uclib
+stdio/tmpnam.c		+clib +uclib
+stdio/tmpfile.c 	+clib +uclib
+stdio/pfmt.c		+clib +uclib     +rom
+stdio/sfmt.c		+clib +uclib     +rom
+stdio/bufsiz.c		+clib +uclib
+stdio/unix_remove.c	+uclib
+
+
+stdlib/atexit.c 	+clib +uclib
+stdlib/abs.c		+clib +uclib     +rom
+stdlib/labs.c		+clib +uclib     +rom
+stdlib/lglob.c		+clib +uclib
+stdlib/s1glob.c 	+clib +uclib
+stdlib/s2glob.c 	+clib +uclib
+stdlib/atol.c		+clib +uclib     +rom
+stdlib/atoi.c		+clib +uclib     +rom
+stdlib/system.c 	+clib +uclib
+stdlib/atof.c		+clib +uclib
+stdlib/qsort.c		+clib +uclib     +rom
+stdlib/bsearch.c	+clib +uclib     +rom
+stdlib/rand.c		+clib +uclib     +rom
+
+string/strcmp.c 	+clib +uclib     +rom
+string/strlen.c 	+clib +uclib     +rom
+string/strncmp.c	+clib +uclib     +rom
+string/strcat.c 	+clib +uclib     +rom
+string/strcpy.c 	+clib +uclib     +rom
+string/stpcpy.c 	+clib +uclib     +rom
+string/strncat.c	+clib +uclib     +rom
+string/strncpy.c	+clib +uclib     +rom
+string/strbpl.c 	+clib +uclib     +rom
+string/strpbrk.c	+clib +uclib     +rom
+string/strrchr.c	+clib +uclib     +rom
+string/strchr.c 	+clib +uclib     +rom
+string/strtok.c 	+clib +uclib
+string/strins.c 	+clib +uclib     +rom
+string/strdup.c 	+clib +uclib
+string/strcspn.c	+clib +uclib     +rom
+string/strspn.c 	+clib +uclib     +rom
+string/strerror.c	+clib +uclib
+string/strstr.c 	+clib +uclib     +rom
+string/stpchr.c 	+clib +uclib     +rom
+string/strcasecmp.c	+clib +uclib	 +rom
+string/strncasecmp.c	+clib +uclib	 +rom
+
+# stricmp() must occur before ctype stuff
+
+string/stricmp.c	+clib +uclib     +rom
+string/strnicmp.c	+clib +uclib     +rom
+# 
+# string/strtod.c 	+clib +uclib			       -pass2
+string/strtol.c 	+clib +uclib     +rom
+string/strtoul.c	+clib +uclib     +rom
+
+fd/close.c		+clib +uclib
+fd/getfh.c		+clib +uclib
+fd/isatty.c		+clib +uclib
+fd/lseek.c		+clib +uclib
+fd/open.c		+clib
+fd/read.c		+clib +uclib
+fd/write.c		+clib +uclib
+fd/unlink.c		+clib +uclib
+fd/rmdir.c		+clib +uclib
+fd/makefd.c		+clib +uclib
+fd/ioctl.c		+clib +uclib
+fd/fcntl.c		+clib +uclib
+fd/creat.c		+clib
+fd/mkdir.c		+clib
+fd/fdtofh.c		+clib +uclib
+fd/cache.c		+clib +uclib
+fd/cacheen.c		+clib +uclib
+fd/unix_creat.c 	+uclib
+fd/unix_open.c		+uclib
+fd/unix_mkdir.c 	+uclib
+
+
+#   Ordering of ctype stuff important due to __near reference
+
+ctype/isalnum.c 	+clib +uclib     +rom
+ctype/isalpha.c 	+clib +uclib     +rom
+ctype/iscntrl.c 	+clib +uclib     +rom
+ctype/isdigit.c 	+clib +uclib     +rom
+ctype/isgraph.c 	+clib +uclib     +rom
+ctype/islower.c 	+clib +uclib     +rom
+ctype/isspace.c 	+clib +uclib     +rom
+ctype/isupper.c 	+clib +uclib     +rom
+ctype/ispunct.c 	+clib +uclib     +rom
+ctype/isxdigit.c	+clib +uclib     +rom
+ctype/isprint.c 	+clib +uclib     +rom
+ctype/tolower.c 	+clib +uclib     +rom
+ctype/toupper.c 	+clib +uclib     +rom
+ctype/carya.c		+clib +uclib     +rom
+ctype/caryb.c		+clib +uclib     +rom
+ctype/cltou.c		+clib +uclib     +rom
+ctype/cutol.c		+clib +uclib     +rom
+
+compat/bpf.a		+clib +uclib
+
+extra/gethead.a 	+clib +uclib
+extra/getpred.a 	+clib +uclib
+extra/gettail.a 	+clib +uclib
+extra/lock.a		+clib +uclib
+extra/muldiv.a		+clib +uclib     +rom
+extra/resource.a	+clib +uclib
+extra/strupper.c	+clib +uclib     +rom
+extra/strlower.c	+clib +uclib     +rom
+extra/os20.c		+clib +uclib
+extra/getfnl.c		+clib +uclib
+extra/wildcard.c	+clib +uclib
+extra/expand_args.c	+clib +uclib
+extra/setfiledate.c	+clib +uclib
+extra/requestfh.c	+clib +uclib
+extra/waitmsg.c 	+clib +uclib
+extra/fhprintf.c	+clib +uclib
+extra/vfhprintf.c	+clib +uclib
+extra/unixpath.c	+clib +uclib
+extra/console.c 	+clib +uclib
+extra/system13.c	+clib +uclib
+extra/system13ex.a	+clib +uclib
+
+#
+#   setjmp/vfork.a must occur within pc-rel jmp range of vfork
+
+setjmp/setjmp.a 	+clib +uclib
+setjmp/vfork.a		+clib +uclib
+
+unix/sleep.c		+clib +uclib
+unix/getcwd.c		+clib +uclib
+unix/getwd.c		+clib +uclib
+unix/chdir.c		+clib
+unix/access.c		+clib
+unix/stat.c		+clib
+unix/lstat.c		+clib
+unix/fstat.c		+clib +uclib
+unix/getenv.c		+clib +uclib
+unix/setenv.c		+clib +uclib
+unix/vfork.c		+clib
+unix/select.c		+clib +uclib
+unix/pipe.c		+clib +uclib
+unix/dir.c		+clib
+unix/symlink.c		+clib
+unix/utimes.c		+clib
+unix/mktemp.c		+clib +uclib
+
+unix/unix_vfork.c	+uclib
+unix/unix_chdir.c	+uclib
+unix/unix_access.c	+uclib
+unix/unix_stat.c	+uclib
+unix/unix_lstat.c	+uclib
+unix/unix_dir.c 	+uclib
+unix/unix_symlink.c	+uclib
+unix/unix_utimes.c	+uclib
+
+unix/index.c		+uclib
+unix/rindex.c		+uclib
+
+
+signal/signal.c 	+clib +uclib
+signal/sigmask.c	+clib +uclib
+
+
+time/ctime.c		+clib +uclib
+time/asctime.c		+clib +uclib
+time/localtime.c	+clib +uclib
+time/mktime.c		+clib +uclib
+time/strftime.c 	+clib +uclib
+time/time.c		+clib +uclib
+time/clock.c		+clib +uclib
+time/comp.c		+clib +uclib
+
+float/cva_dptoffp.a	+clib +uclib  -pass2 +lconvert
+float/cva_dptosp.a	+clib +uclib  -pass2 +lconvert
+float/cva_ffptodp.a	+clib +uclib  -pass2 +lconvert
+float/cva_sptodp.a	+clib +uclib  -pass2 +lconvert
+
+float/ffpa_add.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_sub.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_mul.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_div.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_cmp.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_tst.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_fix.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_flt.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_neg.a	+clib +uclib  -pass2 +lconvert
+
+float/ffpa_acos.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_atan.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_asin.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_exp.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_log.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_pow.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_sqrt.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_cos.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_abs.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_log10.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_sin.a	+clib +uclib  -pass2 +lconvert
+float/ffpa_tan.a	+clib +uclib  -pass2 +lconvert
+#float/ffpa_modf.c	+clib +uclib  -pass2 +lconvert
+
+float/spa_add.a 	+clib +uclib  -pass2 +lconvert
+float/spa_sub.a 	+clib +uclib  -pass2 +lconvert
+float/spa_mul.a 	+clib +uclib  -pass2 +lconvert
+float/spa_div.a 	+clib +uclib  -pass2 +lconvert
+float/spa_cmp.a 	+clib +uclib  -pass2 +lconvert
+float/spa_tst.a 	+clib +uclib  -pass2 +lconvert
+float/spa_fix.a 	+clib +uclib  -pass2 +lconvert
+float/spa_flt.a 	+clib +uclib  -pass2 +lconvert
+float/spa_neg.a 	+clib +uclib  -pass2 +lconvert
+
+float/spa_acos.a	+clib +uclib  -pass2 +lconvert
+float/spa_atan.a	+clib +uclib  -pass2 +lconvert
+float/spa_asin.a	+clib +uclib  -pass2 +lconvert
+float/spa_exp.a 	+clib +uclib  -pass2 +lconvert
+float/spa_log.a 	+clib +uclib  -pass2 +lconvert
+float/spa_pow.a 	+clib +uclib  -pass2 +lconvert
+float/spa_sqrt.a	+clib +uclib  -pass2 +lconvert
+float/spa_cos.a 	+clib +uclib  -pass2 +lconvert
+float/spa_abs.a 	+clib +uclib   pass2 +lconvert
+float/spa_log10.a	+clib +uclib  -pass2 +lconvert
+float/spa_floor.a	+clib +uclib  -pass2 +lconvert
+float/spa_ceil.a	+clib +uclib  -pass2 +lconvert
+float/spa_sin.a 	+clib +uclib  -pass2 +lconvert
+float/spa_tan.a 	+clib +uclib  -pass2 +lconvert
+#float/spa_modf.c	+clib +uclib  -pass2 +lconvert
+
+float/dpa_add.a 	+clib +uclib  -pass2 +lconvert
+float/dpa_sub.a 	+clib +uclib  -pass2 +lconvert
+float/dpa_mul.a 	+clib +uclib  -pass2 +lconvert
+float/dpa_div.a 	+clib +uclib  -pass2 +lconvert
+float/dpa_cmp.a 	+clib +uclib  -pass2 +lconvert
+float/dpa_tst.a 	+clib +uclib  -pass2 +lconvert
+float/dpa_fix.a 	+clib +uclib  -pass2 +lconvert
+float/dpa_flt.a 	+clib +uclib  -pass2 +lconvert
+float/dpa_neg.a 	+clib +uclib  -pass2 +lconvert
+
+float/dpa_acos.a	+clib +uclib  -pass2 +lconvert
+float/dpa_asin.a	+clib +uclib  -pass2 +lconvert
+float/dpa_atan.a	+clib +uclib  -pass2 +lconvert
+float/dpa_sin.a 	+clib +uclib  -pass2 +lconvert
+float/dpa_exp.a 	+clib +uclib  -pass2 +lconvert
+float/dpa_cos.a 	+clib +uclib  -pass2 +lconvert
+float/dpa_tan.a 	+clib +uclib  -pass2 +lconvert
+float/dpa_pow.a 	+clib +uclib  -pass2 +lconvert
+float/dpa_log.a 	+clib +uclib  -pass2 +lconvert
+float/dpa_log10.a	+clib +uclib  -pass2 +lconvert
+float/dpa_floor.a	+clib +uclib  -pass2 +lconvert
+float/dpa_ceil.a	+clib +uclib  -pass2 +lconvert
+float/dpa_abs.a 	+clib +uclib  -pass2 +lconvert
+float/dpa_sqrt.a	+clib +uclib  -pass2 +lconvert
+#float/dpa_modf.c	+clib +uclib  -pass2 +lconvert
+#float/dpa_atan2.c	+clib +uclib  -pass2 +lconvert
+
+amigalib/systemtags.c			    +amiga20		+a20func20
+amigalib/aslreqtags.c			    +amiga20		+a20func20
+amigalib/allocasltags.c 		    +amiga20		+a20func20
+amigalib/newloadsegtags.c		    +amiga20		+a20func20
+amigalib/openscreentags.c		    +amiga20		+a20func20
+amigalib/openwindowtags.c		    +amiga20		+a20func20
+amigalib/allocdosobjtags.c		    +amiga20		+a20func20
+amigalib/createnewproctags.c		    +amiga20		+a20func20
+amigalib/easyreq.c			    +amiga20		+a20func20
+amigalib/printf.c			    +amiga20		+a20func20
+amigalib/createtask.c			    +amiga13 +amiga20	+a20func20
+amigalib/createextio.c			    +amiga13 +amiga20	+a20func20
+amigalib/createport.c			    +amiga13 +amiga20	+a20func20
+amigalib/createstdio.c			    +amiga13 +amiga20	+a20func20
+amigalib/newlist.c			    +amiga13 +amiga20	+a20func20
+amigalib/system.c			    +amiga13 +amiga20	+a20func20
+amigalib/beginio.a			    +amiga13 +amiga20	+a20func20
+amigalib/custom.a			    +amiga13 +amiga20	+a20func20
+amigalib/icrlvo.a			    +amiga13 +amiga20	+a20func20
+
+[../include/]amiga13/fd/mathffp_lib.fd		  +amiga13
+[../include/]amiga13/fd/mathtrans_lib.fd	  +amiga13
+[../include/]amiga13/fd/mathieeedoubbas_lib.fd	  +amiga13
+[../include/]amiga13/fd/clist_lib.fd		  +amiga13
+[../include/]amiga13/fd/dos_lib.fd		  +amiga13
+[../include/]amiga13/fd/expansion_lib.fd	  +amiga13
+[../include/]amiga13/fd/potgo_lib.fd		  +amiga13
+[../include/]amiga13/fd/diskfont_lib.fd		  +amiga13
+[../include/]amiga13/fd/timer_lib.fd		  +amiga13
+[../include/]amiga13/fd/intuition_lib.fd	  +amiga13
+[../include/]amiga13/fd/console_lib.fd		  +amiga13
+[../include/]amiga13/fd/translator_lib.fd 	  +amiga13
+[../include/]amiga13/fd/graphics_lib.fd		  +amiga13
+[../include/]amiga13/fd/exec_lib.fd		  +amiga13
+[../include/]amiga13/fd/layers_lib.fd		  +amiga13
+[../include/]amiga13/fd/mathieeedoubtrans_lib.fd  +amiga13
+[../include/]amiga13/fd/icon_lib.fd		  +amiga13
+[../include/]amiga13/fd/romboot_lib.fd		  +amiga13
+
+[../include/]amiga20/fd/asl_lib.fd		  +amiga2020
+[../include/]amiga20/fd/battclock_lib.fd	  +amiga2020
+[../include/]amiga20/fd/battmem_lib.fd		  +amiga2020
+[../include/]amiga20/fd/cia_lib.fd		  +amiga2020
+[../include/]amiga20/fd/commodities_lib.fd	  +amiga2020
+[../include/]amiga20/fd/console_lib.fd		  +amiga2020
+[../include/]amiga20/fd/diskfont_lib.fd		  +amiga2020
+[../include/]amiga20/fd/dos_lib.fd		  +amiga2020
+[../include/]amiga20/fd/exec_lib.fd		  +amiga2020
+[../include/]amiga20/fd/expansion_lib.fd	  +amiga2020
+[../include/]amiga20/fd/gadtools_lib.fd		  +amiga2020
+[../include/]amiga20/fd/graphics_lib.fd		  +amiga2020
+[../include/]amiga20/fd/icon_lib.fd		  +amiga2020
+[../include/]amiga20/fd/iffparse_lib.fd		  +amiga2020
+[../include/]amiga20/fd/input_lib.fd		  +amiga2020
+[../include/]amiga20/fd/misc_lib.fd		  +amiga2020
+[../include/]amiga20/fd/intuition_lib.fd	  +amiga2020
+[../include/]amiga20/fd/keymap_lib.fd		  +amiga2020
+[../include/]amiga20/fd/layers_lib.fd		  +amiga2020
+[../include/]amiga20/fd/mathffp_lib.fd		  +amiga2020
+[../include/]amiga20/fd/mathieeedoubbas_lib.fd	  +amiga2020
+[../include/]amiga20/fd/mathieeedoubtrans_lib.fd  +amiga2020
+[../include/]amiga20/fd/mathieeesingbas_lib.fd	  +amiga2020
+[../include/]amiga20/fd/mathieeesingtrans_lib.fd  +amiga2020
+[../include/]amiga20/fd/mathtrans_lib.fd	  +amiga2020
+[../include/]amiga20/fd/potgo_lib.fd		  +amiga2020
+[../include/]amiga20/fd/ramdrive_lib.fd		  +amiga2020
+[../include/]amiga20/fd/timer_lib.fd		  +amiga2020
+[../include/]amiga20/fd/translator_lib.fd 	  +amiga2020
+[../include/]amiga20/fd/utility_lib.fd		  +amiga2020
+[../include/]amiga20/fd/wb_lib.fd 		  +amiga2020
+[../include/]amiga20/fd/disk_lib.fd		  +amiga2020
+[../include/]amiga20/fd/rexxsyslib_lib.fd 	  +amiga20 +amiga1320
+
+[../include/fd/]dicecache_lib.fd	     +clib +uclib
+
+alib/wbmain.a		+auto +lconvert
+alib/doslib.a		+auto +lconvert
+alib/intlib.a		+auto +lconvert
+alib/iconlib.a		+auto +lconvert
+alib/gfxlib.a		+auto +lconvert
+alib/fifolib.a		+auto +lconvert
+alib/mathlib.a		+auto +lconvert
+alib/mathtranlib.a	+auto +lconvert
+alib/ieeeslib.a 	+auto +lconvert
+alib/ieeestranlib.a	+auto +lconvert
+alib/ieeedlib.a 	+auto +lconvert
+alib/ieeedtranlib.a	+auto +lconvert
+alib/utillib.a		+auto +lconvert
+alib/system.a		+auto +lconvert
+alib/readeclock.a	+auto +lconvert
+alib/gadtools.a 	+auto +lconvert
+alib/diskfont.a 	+auto +lconvert
+alib/asl.a		+auto +lconvert
+alib/layer.a		+auto +lconvert
+alib/timer.a		+auto +lconvert
+alib/rexx.a		+auto +lconvert
+alib/translator.a	+auto +lconvert
+alib/dicecache.a	+auto +lconvert
+alib/aguide.a		+auto +lconvert
+alib/bullet.a		+auto +lconvert
+alib/commodities.a	+auto +lconvert
+alib/datatypes.a	+auto +lconvert
+alib/iffparse.a 	+auto +lconvert
+alib/wbenchlib.a	+auto +lconvert
+alib/locale.a		+auto +lconvert
+
+math/printf.c		+mlib
+math/sprintf.c		+mlib
+math/fprintf.c		+mlib
+math/vprintf.c		+mlib
+math/vfprintf.c 	+mlib
+math/vsprintf.c 	+mlib
+math/scanf.c		+mlib
+math/sscanf.c		+mlib
+math/fscanf.c		+mlib
+#math/pfmt.c		+mlib
+math/sfmt.c		+mlib

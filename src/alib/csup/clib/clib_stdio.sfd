@@ -1,0 +1,23 @@
+==id $Id: clib_stdio.sfd,v 30.0 1994/06/10 18:09:54 dice Exp $
+==base _None
+==bias 30
+==public
+==include <exec/types.h>
+
+*
+* stdio functions that duplicate those in a typical C library
+*
+==varargs
+LONG printf(STRPTR fmt, ...)			(A0)
+==varargs
+LONG sprintf(STRPTR buffer, STRPTR fmt, ...)	(A0,A1)
+LONG fclose(LONG stream)			(D0)
+LONG fgetc(LONG stream)				(D0)
+==varargs
+LONG fprintf(LONG stream, STRPTR fmt, ...)	(D0,A0)
+LONG fputc(BYTE c, LONG stream)			(D0,D1)
+LONG fputs(UBYTE *s, LONG stream)		(A0,D0)
+LONG getchar()					()
+LONG putchar(BYTE c)				(D0)
+LONG puts(BYTE *s)				(A0)
+==end

@@ -1,0 +1,32 @@
+#   DMakefile
+
+OD	    = ram:
+SRCS	    = test anothertest
+IBOX_SRCS   = expandibox.a setibox.a sectibox.a
+IBOX_OBJS   = $(IBOX_SRCS:"*.a":"$(OD)*.o")
+IBOX_LIB    = ibox.lib
+
+CSRCS       = $(SRCS:"*.c")
+COBJS       = $(SRCS:"*.c":"$(OD)*.o")
+
+ASRCS       = $(SRCS:"*.a")
+AOBJS       = $(SRCS:"*.a":"$(OD)*.o")
+
+SRCS        = $(IBOX_SRCS)
+OBJS        = $(IBOX_OBJS)
+
+CFLAGS      =
+
+all: $(IBOX_LIB)
+
+#$(AOBJS) : $(ASRCS)
+#    hx68 FROM %(right) TO %(left) INCDIR "Include:asm2.0+Include:include.supp"mk
+
+
+#$(COBJS) : $(CSRCS)
+#    dcc $(CFLAGS) -o %(left) %(right) -c -r
+
+$(IBOX_LIB) : $(IBOX_OBJS) dmake.test
+	echo "asrcs is $(ASRCS)"
+	echo "AOBJS is $(AOBJS)"
+    join $(IBOX_OBJS) as $(IBOX_LIB)

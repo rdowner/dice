@@ -1,0 +1,43 @@
+* "utility.library"
+##base _UtilityBase
+##bias 30
+##public
+* *** TagItem FUNCTIONS ***
+FindTagItem(tagVal,tagList)(d0/a0)
+GetTagData(tagVal,defaultVal,tagList)(d0/d1/a0)
+PackBoolTags(initialFlags,tagList,boolMap)(d0/a0/a1)
+NextTagItem(tagListPtr)(a0)
+FilterTagChanges(newTagList,oldTagList,apply)(a0/a1,d0)
+MapTags(tagList,mapList,includeMiss)(a0/a1,d0)
+AllocateTagItems(numItems)(d0)
+CloneTagItems(tagList)(a0)
+FreeTagItems(tagList)(a0)
+RefreshTagItemClones(cloneList,origList)(a0/a1)
+TagInArray(tagVal,tagArray)(d0/a0)
+FilterTagItems(tagList,filterArray,logic)(a0/a1,d0)
+*
+* *** HOOK FUNCTIONS *** *
+CallHookPkt(hook,object,paramPacket)(a0/a2,a1)
+*--- (1 function slot reserved here) ---
+##bias 114
+*
+* *** DATE FUNCTIONS *** *
+*--- (1 function slot reserved here) ---
+##bias 120
+Amiga2Date(amigaTime,date)(d0/a0)
+Date2Amiga(date)(a0)
+CheckDate(date)(a0)
+*
+* *** 32 BIT MATH FUNCTIONS *** *
+SMult32(factor1,factor2)(d0/d1)
+UMult32(factor1,factor2)(d0/d1)
+* NOTE: Quotient:Remainder returned in d0:d1
+SDivMod32(dividend,divisor)(d0/d1)
+UDivMod32(dividend,divisor)(d0/d1)
+*
+* *** International string routines ***
+Stricmp(string1,string2)(a0/a1)
+Strnicmp(string1,string2,length)(a0/a1,d0)
+ToUpper(character)(d0)
+ToLower(character)(d0)
+##end

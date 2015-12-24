@@ -1,0 +1,6 @@
+
+failat 20
+makedir ram:dlink-dist
+copycat src:comp/dlink/dist.cpycat ram:dlink-dist/
+protect ram:dlink-dist/#? +rwed ALL >nil:
+

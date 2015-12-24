@@ -1,0 +1,24 @@
+
+#
+#
+
+OD=   dtmp:fms/
+CFLAGS= -mRR -ms -s -I$(OD) -l0 -lcsr -lamiga20sr -lautos -proto
+EXE= devs:fmsdisk.device
+SRCS= tag.a fms.c
+OBJS= $(OD)tag.o $(OD)fms.o
+
+all: $(OD) $(EXE)
+
+$(EXE) : $(OD)tag.o $(OD)fms.o
+    dcc $(CFLAGS) %(right) -o %(left)
+
+$(OBJS) : $(SRCS)
+    dcc $(CFLAGS) %(right) -o %(left) -c
+
+$(OD) : $(OD)
+    makedir %(left:*/:*)
+
+clean:
+    -delete $(OBJS)
+

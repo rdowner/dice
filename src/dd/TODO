@@ -1,0 +1,302 @@
+
+
+
+MYKES
+
+				DONE BY MYKES
+
+    *	Fixed 1-plane workbench support
+    *	Fixed dcc:config/dbug.prefs.  Now, you type saveprefs at the
+    	command line, and the prefs for that window are saved.  I want
+    	DBug to open its windows in the center of my SHR workbench...
+    *	Fixed the hang bug when last window is killed.  You called
+    	CheckCloseDisplay() then did a WaitPort() on the killed
+    	window.
+    *	Merged the DBugDisp (display.h) file into defs.h.
+    *	Added general purpose list routines.  With these routines,
+    	you can easily generate an arbitrarily long list of text
+    	lines with a printf-like routine.  Each list node has the
+    	ln_Type field set to a unique value that can be "switch"ed
+    	on in the mousebutton code.
+    *	Using the new list routines, I implemented several DOS and
+    	ExecBase structure dump commands.  Those that need to evaluate
+    	parameters DON'T as of yet - PROCESS uses ExecBase->ThisTask.
+    *	Enhanced the help display - alphabetical order now, and added
+    	notes.
+    *	Got rid of hx68 assembly source and switched to a68K.  The _asm.asm
+    	files are now just .asm.
+
+    				TODO
+
+    *	The list routines don't do UP/DOWN yet.
+    *	The help feature should be implemented using the list routines.
+    *	The help feature should be MUCH MUCH MUCH more informative.  Spend
+    	the time needed to make HELP really awesome, in plain english,
+    	and interactive.
+    *	Windows should be iconifiable.
+    *	ARexx desparately needs to be added.  Any startup script that
+    	DBug executes should be written in ARexx and not some custom
+    	home-brewed non-standard scripting language.  One ascii config
+    	file is acceptable for those who don't have ARexx (1.3).
+    *	All windows should update every time I step.  If I have one
+    	window showing a hex dump of memory somewhere, I want to see
+    	it change dynamically as I step!
+    *	Hex mode also needs to have the ESC key implemented.  When
+    	you hit ESC, the cursor jumps from command line to the
+    	hex dump and lets you edit values there.  You should be
+    	able to click with the mouse to move the cursor in this
+    	mode.
+    *	AddMenu command needed so I can make custom menus.  These
+    	can be executed en-mass...
+    *	OBEY command needs to be implemented.  Executes commands
+    	from a "batch" file.
+    *	Step should optionally print registers to STDOUT window.
+    	As you step, you get a history-like display of your
+    	registers.  It can be turned ON/OFF with a toggle.
+    *	EnhanceDism() routine needs to be merged into DBug
+    	from MykesBug - it knows about A6, A4, etc., and
+    	makes disassembly smarter.  This is also a great place
+    	to hook into for annotations.
+    *	l? w? and b? commands need to be implemented.  Display
+    	long, word, or byte at expression - in hex, decimal,
+    	and ascii.  The value is displayed in the STATUS line.
+    	Good for looking at byte-wide hardware, or just seeing
+    	the contents of a variable quickly.
+    *	In general, up/down scrolling needs to be implemented.
+    	Pageup/Pagedown, too!
+    *	TITLE command should allow me to set the DBug windows'
+    	titles to unique values.  OPEN should open a window
+    	with the title "Copy of previous-window".
+    *	NEXTWINDOW command should bring the next window in
+    	the display list to the front and activate it.  There
+    	should be a prev-window, also.
+    *	It would be nice if DICEHELP worked from inside of
+    	DBug... :)
+    *	More source oriented features.  How about GREP, search,
+    	cut/paste/clipboard, find-function, find-variable,
+    	and so on.
+    *	Function keys should be bindable.  Also, shifted
+    	FKeys would be nice to display at the bottom, too.
+    *	Structure dump support for intuition and graphics
+    	library structs.  These are going to make the
+    	program BIG :)
+    *	Debugger should have ability to catch tasks added
+    	by the program being debugged (or its children tree).
+    *	The CurDisplay global variable should be eliminated.
+    	If we have some routines that use it and others that
+    	get passed pointer to it, then the routines are
+    	less general and can confuse the display.  Needed
+    	especially if you do dynamic updating of windows
+    	after single step...
+    *	Remote/serial debugging capability.  With and without
+    	the OS running on the target machine.  CBM really needs
+    	to build in ability to have multiple CPU boards in
+    	the same Amiga.  An A500 on a zorro II board would
+    	be killer as a testbed - makes the A3000 crash a
+    	lot less often :)
+    *	DBug needs to be able to open its own custom screen or
+    	to run on already open public screens.  The screen it
+    	opens should be public under 2.0...
+
+
+MATTD
+				DONE LIST
+
+    *	Screen redraw doesn't get confused
+    *	EVAL command added, read access to regs by name D0-D7/A0-A7/PC/SP
+    *	Indirection added to the expression parser, e.g. eval *4
+    *	Infinite newline loop in mixed.c fixed, found a maxLines++
+	that was supposed to be maxLines--
+    *	Size910 in DASM.ASM does not chop D2 before branching to DSize
+	which uses it as an array index.  This was the cause of my
+	disassembly crash.  NOTE:  Fixed in dasm_a68.asm but not dasm.asm
+    *	DISM did a full refresh when you cursored up or down
+
+    *	MOST COMMANDS, *Refresh() now takes additional arguments specifying
+	the start refresh address (instead of the refresh routine getting
+	it from CurDisplay->ds_WindowTop).   This allows the cursor up
+	and down routines to do piecemeal refresh without having to
+	duplicate the refresh code
+
+    *	MOST COMMANDS, the fullRefresh boolean for the *Refresh() routines
+	can now take on three values: -1, 0, or 1.  -1 is used by the
+	piecemeal refresh routines to prevent the first status line from
+	being displayed, amoung other things (refer to mixed.c for an
+	example)
+
+    *	MULTIPLE WINDOWS supported.  ALL variables associated with a
+	display have been moved into a display structure (see display.h).
+
+	Additionally, the low level console/window IO has been rewritten to
+	use a single, common message port and the synchronous signal bit.
+
+    *	ADDED OffsetAddressBuf() to DBUG.C.  Works like PrintAddress()
+	but loads the result into a buffer instead of outputting to
+	the current window.
+
+    *	MOST COMMANDS, cursor up and down now work.  MIXED MODE refresh
+	has been almost completely rewritten.
+
+    *	ScrScroll*() routines now position the cursor to the appropriate
+	place.	Cursor positioning after ScrScroll*() calls have been
+	removed.
+
+    *	MOUSE ACTION ADDED.  CONSOLE IS NOW LOCALLY MAPPED.  Hitting the
+	mouse button now does extremely useful things, see help for
+	more info.  Console IO routines have been modified in major
+	ways to support this cleanly.  For example, CSI sequences must
+	bypass the local array map.
+
+    *	Fixed bug in StepOver(), it was running StepTarget() for reverse
+	branches instead of forward branches.
+
+    *	ScrRowCol() routine was being called with column=0 in
+	RefreshPrompt() instead of col=1
+
+    *	I've made an extra line available near the bottom of the window
+	for future use -- e.g. more function key defs or simply keywords
+	that you can click on with the mouse.
+
+    *	For some unknown reason the debugger was not passing the arguments
+	to the program being debugged... the initial state of D0 was not
+	set to the length of the argument line.  Don't know how this
+	happenned, I seem to remember it working before.  In anycase,
+	fixed.
+
+				TODO LIST
+
+    *	When in offsets mode the disassembly output should display in
+	label+N form instead of as an absolute address
+
+    *	SOURCE-ONLY mode does not work yet
+
+    *	ASYNCHRONOUS ENTRY / SEPARATE TASK.  It's OK for an instance of
+	the debugger to debug only one task at a time, but we need to
+	separate the tasks out -- really make the debugger a separate
+	task, and allow asynchronous entry (debug an already running
+	task and be able to break into a task running under the debugger
+	for which no break points were explicitly set)
+
+	Question is... how to do?
+
+From uunet!ub-gate.UB.com!zorch!amiga0!mykes Thu, 16 Jul 92 04:16:58 PST
+Received: by overload.Berkeley.CA.US (V1.16/Amiga)
+	id AA00000; Thu, 16 Jul 92 04:16:58 PST
+Received: from uunet.uu.net (via LOCALHOST.UU.NET) by relay1.UU.NET with SMTP 
+	(5.61/UUNET-internet-primary) id AA22897; Thu, 16 Jul 92 04:48:11 -0400
+Received: from ub-gate.UUCP by uunet.uu.net with UUCP/RMAIL
+	(queueing-rmail) id 044739.5206; Thu, 16 Jul 1992 04:47:39 EDT
+Received: from zorch.UUCP by ub-gate.UB.com (4.1/SMI-4.1[UB-1.8])
+	id AA29096; Thu, 16 Jul 92 01:39:07 PDT
+Received: by zorch.SF-Bay.ORG (/\==/\ Smail3.1.22.1 #22.2)
+	id <m0m8Qww-000HUqC@zorch.SF-Bay.ORG>; Thu, 16 Jul 92 01:12 PDT
+Received: by amiga0.SF-Bay.ORG (V1.16/Amiga)
+	id AA00970; Thu, 16 Jul 92 01:07:56 PST
+Date: Thu, 16 Jul 92 01:07:56 PST
+Message-Id: <9207160907.AA0096z@amiga0.SF-Bay.ORG>
+From: uunet!ub-gate.UB.com!amiga0.SF-Bay.ORG!mykes (Mike Schwartz)
+To: overload!dillon
+Subject: DBug feature idea
+
+DBug should compare your SP with your SPUpper and SPLower when
+it does Refresh() so it can alert you to stack under/overflow
+conditions (each step, breakpoint, etc.).
+
+
+Author of Amiga GRn, MailMinder, Budokan, Beyond Dark Castle, Dark Castle,
+and Genesis Dick Tracy and Marble Madness.
+Mike Schwartz  (ames!zorch!amiga0!mykes or mykes@amiga0.sf-bay.org)
+1124 Fremont Ave.
+Los Altos, CA 94024
+
+From uunet!ub-gate.UB.com!zorch!amiga0!mykes Thu, 16 Jul 92 04:16:55 PST
+Received: by overload.Berkeley.CA.US (V1.16/Amiga)
+	id AA00000; Thu, 16 Jul 92 04:16:55 PST
+Received: from uunet.uu.net (via LOCALHOST.UU.NET) by relay2.UU.NET with SMTP 
+	(5.61/UUNET-internet-primary) id AA22222; Thu, 16 Jul 92 04:48:07 -0400
+Received: from ub-gate.UUCP by uunet.uu.net with UUCP/RMAIL
+	(queueing-rmail) id 044740.5211; Thu, 16 Jul 1992 04:47:40 EDT
+Received: from zorch.UUCP by ub-gate.UB.com (4.1/SMI-4.1[UB-1.8])
+	id AA29104; Thu, 16 Jul 92 01:39:12 PDT
+Received: by zorch.SF-Bay.ORG (/\==/\ Smail3.1.22.1 #22.2)
+	id <m0m8R4g-000HUqC@zorch.SF-Bay.ORG>; Thu, 16 Jul 92 01:20 PDT
+Received: by amiga0.SF-Bay.ORG (V1.16/Amiga)
+	id AA00975; Thu, 16 Jul 92 01:15:11 PST
+Date: Thu, 16 Jul 92 01:15:11 PST
+Message-Id: <9207160915.AA00974@amiga0.SF-Bay.ORG>
+From: uunet!ub-gate.UB.com!amiga0.SF-Bay.ORG!mykes (Mike Schwartz)
+To: overload!dillon
+Subject: DBug feature idea
+
+DBug should do something about the case when you GO with no breakpoints,
+and your program goes into infinite loop.  We can use Signal Exception
+to deal with ^C (or other system sigbit...).
+
+
+Author of Amiga GRn, MailMinder, Budokan, Beyond Dark Castle, Dark Castle,
+and Genesis Dick Tracy and Marble Madness.
+Mike Schwartz  (ames!zorch!amiga0!mykes or mykes@amiga0.sf-bay.org)
+1124 Fremont Ave.
+Los Altos, CA 94024
+
+From uunet!ub-gate.UB.com!zorch!amiga0!mykes Thu, 16 Jul 92 04:16:52 PST
+Received: by overload.Berkeley.CA.US (V1.16/Amiga)
+	id AA00000; Thu, 16 Jul 92 04:16:52 PST
+Received: from uunet.uu.net (via LOCALHOST.UU.NET) by relay2.UU.NET with SMTP 
+	(5.61/UUNET-internet-primary) id AA27494; Thu, 16 Jul 92 05:40:03 -0400
+Received: from ub-gate.UUCP by uunet.uu.net with UUCP/RMAIL
+	(queueing-rmail) id 053845.11079; Thu, 16 Jul 1992 05:38:45 EDT
+Received: from zorch.UUCP by ub-gate.UB.com (4.1/SMI-4.1[UB-1.8])
+	id AA01043; Thu, 16 Jul 92 02:24:57 PDT
+Received: by zorch.SF-Bay.ORG (/\==/\ Smail3.1.22.1 #22.2)
+	id <m0m8Rjg-000HUsC@zorch.SF-Bay.ORG>; Thu, 16 Jul 92 02:02 PDT
+Received: by amiga0.SF-Bay.ORG (V1.16/Amiga)
+	id AA0097f; Thu, 16 Jul 92 01:59:28 PST
+Date: Thu, 16 Jul 92 01:59:28 PST
+Message-Id: <9207160959.AA0097e@amiga0.SF-Bay.ORG>
+From: uunet!ub-gate.UB.com!amiga0.SF-Bay.ORG!mykes (Mike Schwartz)
+To: overload!dillon
+Subject: more dbug stuff
+
+sorry to send so many messages, don't reply to any of them..
+
+Source and Mixed mode appear to be the same thing.
+
+
+Author of Amiga GRn, MailMinder, Budokan, Beyond Dark Castle, Dark Castle,
+and Genesis Dick Tracy and Marble Madness.
+Mike Schwartz  (ames!zorch!amiga0!mykes or mykes@amiga0.sf-bay.org)
+1124 Fremont Ave.
+Los Altos, CA 94024
+
+From uunet!ub-gate.UB.com!zorch!amiga0!mykes Thu, 16 Jul 92 04:16:47 PST
+Received: by overload.Berkeley.CA.US (V1.16/Amiga)
+	id AA00000; Thu, 16 Jul 92 04:16:47 PST
+Received: from uunet.uu.net (via LOCALHOST.UU.NET) by relay2.UU.NET with SMTP 
+	(5.61/UUNET-internet-primary) id AA27481; Thu, 16 Jul 92 05:40:02 -0400
+Received: from ub-gate.UUCP by uunet.uu.net with UUCP/RMAIL
+	(queueing-rmail) id 053844.11073; Thu, 16 Jul 1992 05:38:44 EDT
+Received: from zorch.UUCP by ub-gate.UB.com (4.1/SMI-4.1[UB-1.8])
+	id AA01035; Thu, 16 Jul 92 02:24:55 PDT
+Received: by zorch.SF-Bay.ORG (/\==/\ Smail3.1.22.1 #22.2)
+	id <m0m8Rjf-000HUqC@zorch.SF-Bay.ORG>; Thu, 16 Jul 92 02:02 PDT
+Received: by amiga0.SF-Bay.ORG (V1.16/Amiga)
+	id AA0097a; Thu, 16 Jul 92 01:56:59 PST
+Date: Thu, 16 Jul 92 01:56:59 PST
+Message-Id: <9207160956.AA00979@amiga0.SF-Bay.ORG>
+From: uunet!ub-gate.UB.com!amiga0.SF-Bay.ORG!mykes (Mike Schwartz)
+To: overload!dillon
+Subject: DBug bug report
+
+I found a bug in DBug that needs to be fixed before you send it out.
+When you open two or more windows and quit any one of them, all are
+closed and the program exits.  I didn't track down why, because I
+am busy with the docs.  Note the late hour :(
+
+
+Author of Amiga GRn, MailMinder, Budokan, Beyond Dark Castle, Dark Castle,
+and Genesis Dick Tracy and Marble Madness.
+Mike Schwartz  (ames!zorch!amiga0!mykes or mykes@amiga0.sf-bay.org)
+1124 Fremont Ave.
+Los Altos, CA 94024
+

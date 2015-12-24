@@ -1,0 +1,2011 @@
+dice/C1:001,C1:002,C1:003,C1:004,C1:006
+
+    __autoinit, __autoexit, __geta4, __chip, floating point
+    -------------------------------------------------------
+	These error messages should only occur if you are using the freeware
+	release, and attempt to use features not supported in that limited
+	version.
+
+dice/C1:009                                                      dice/C1:009
+
+    Unexpected EOF
+    --------------
+	The source or header file ended abruptly, for example ending in the
+	middle of a quoted string or macro.
+
+dice/C1:010                                                      dice/C1:010
+
+    Char Const Too Large!
+    ---------------------
+	Only 4 characters are allowed within a character constant, more than
+	four, such as 'abcde' will generate this error.
+
+dice/C1:011                                                      dice/C1:011
+
+    NewLine in string constant
+    --------------------------
+	A newline occurs within a string constant, such as the next two
+	lines:
+
+	"abcd
+	efgh"
+
+	This is not legal under ANSI C. Instead, you can create a single
+	large string using "string1" "string2" ... two sets of quoted strings
+	with no delimiter, putting them side by side or on separate lines as
+	you like.
+
+dice/C1:012                                                      dice/C1:012
+
+    Illegal character '%c' $%02x
+    ----------------------------
+	Certain characters are illegal. One example is '#', when not part of
+	a preprocessor directive:  int x= 43#.
+
+dice/C1:013                                                      dice/C1:013
+
+    Unexpected Token '%s' expected '%s'
+    -----------------------------------
+	The expected token wasn't the one we got! The error message tells you
+	what the character was and what was expected.  This is normally
+	indicative of mismatched parenthesis or a semi-colon inside a
+	subroutine call that expected commas or a close parenthesis.  Most
+	full featured prograzmmer's editors can match braces (ie. find a
+	matching } for every {) to help track these errors down.
+
+dice/C1:014                                                      dice/C1:014
+
+    __geta4 keyword does NOT work with residentable executables!
+    ------------------------------------------------------------
+	__geta4 requires the base of the data to be at a known absolute
+	relocatable location. You cannot use __geta4 in conjunction with -r
+	because residentable code allocates its data segment at run time.
+	Keep in mind that in the most common situation where you might get
+	such an error -- writing shared libraries and devices, making the
+	program resident would not buy you anything anyway.  The other common
+	situation where you would need to use __geta4 -- Amiga shared library
+	callbacks, currently requires you to not make such executables
+	residentable.
+
+dice/C1:015                                                      dice/C1:015
+
+    More than 32K of auto variables!
+    --------------------------------
+	DICE accesses all stack variables using word-register-relative, thus
+	no more than 32KBytes worth of stack variables may be declared.
+
+dice/C1:016                                                      dice/C1:016
+
+    Unsupported return type
+    -----------------------
+	You attempted to return a type that is currently unsupported.  Since
+	all return types including structural returns are now supported, you
+	should not get this error message.  Getting this error message would
+	most likely be due to a bug in DICE.
+
+dice/C1:017                                                      dice/C1:017
+
+    constant does not fit storage: %d
+    ---------------------------------
+	DICE will, in some cases, catch the use of constants that are out of
+	range in a particular situation. For example, specifying the constant
+	'128' in relation to a signed character (-128 to 127).
+
+	DICE checks constant-fit only in hazzardous situations such as in a
+	switch().
+
+dice/C1:018                                                      dice/C1:018
+
+    size mismatch: %d, %d
+    ---------------------
+	This is a code generation error which can occur when you compare or
+	run operations on incompatible types.  This error occurs when high
+	level routines in the compiler fail to detect a problem with your
+	source.
+
+dice/C1:019                                                      dice/C1:019
+
+    repeated case: %d (0x%08lx)
+    ---------------------------
+	The specified case, given in both decimal and hex, occurs more than
+	once within a switch statement.
+
+dice/C1:020,C1:021                                        dice/C1:020,C1:021
+
+    block operation error in source, block operation error in dest
+    --------------------------------------------------------------
+	Generally means that either the source or the destination of a
+	block-op, such as a structure assignment, are incompatible. For
+	example:
+
+	foo = bar;
+
+	where foo has a different structure type than bar. Generally this
+	error is preceeded by an "illegal assignment" error.
+
+dice/C1:022                                                      dice/C1:022
+
+    dest not lvalue
+    ---------------
+	Generally occurs if the object of an assignment is not assignable
+	("lvalue means modifiable value). However, note that DICE is notably
+	weak in this area. It will cheerfully allow you to do things like (a
+	+ b) = c + d;, obviously illegal.
+
+dice/C1:023                                                      dice/C1:023
+
+    syntax error in expression
+    --------------------------
+	A General syntax error in an expression occured. Usually occurs due
+	to an illegally constructed expression, such as:
+
+	a ] b;
+
+	can also occur due to too few parenthesis.
+
+dice/C1:024                                                      dice/C1:024
+
+    expected expression
+    -------------------
+	An expression was expected when, instead, either nothing or a
+	statement was found. This can also occur due to a syntax error in the
+	expression.
+
+dice/C1:025                                                      dice/C1:025
+
+    expected '}'
+    ------------
+	A close brace was expected, for example, a global declaration such
+	as:
+
+	int a[] = { 1, 2, 3;
+
+dice/C1:026                                                      dice/C1:026
+
+    expected %d close parens
+    ------------------------
+	Expected one or more close parenthesis in an expression.
+
+dice/C1:027                                                      dice/C1:027
+
+    expected close bracket
+    ----------------------
+	Expected a close bracket ']', generally caused by an incomplete array
+	index such as a[i = 4;
+
+dice/C1:028                                                      dice/C1:028
+
+    expected identifer after . or ->
+    --------------------------------
+	A structure indirection via '.' or '->' requires a structure member
+	to be specified. i.e. a field MAJOR HEADING.
+
+dice/C1:029                                                      dice/C1:029
+
+    expected ',' or ')' in function call
+    ------------------------------------
+	Expected a delimiter in a function call. Either comma if another
+	argument is to be given, or a close parenthesis to end the function
+	call.
+
+dice/C1:030                                                      dice/C1:030
+
+    undefined symbol: %s
+    --------------------
+	The given symbol is not defined. For example, referencing a variable
+	that was not defined or extern'd.
+
+dice/C1:031                                                      dice/C1:031
+
+    expected integer constant
+    -------------------------
+	An integer constant was expected, generally occurs when you declare
+	an array. For example, the following is illegal: int i[j];
+
+dice/C1:032                                                      dice/C1:032
+
+    not an lvalue
+    -------------
+	Occurs when an lvalue was expected, usually in an assignment. An
+	lvalue is an expression which exists in real storage, for example:
+
+	*ptr = 4;
+
+	the expression '*ptr' points to real storage where as the expression
+	(a + b) in;
+
+	(a + b) = 4;
+
+	does NOT.  Note that DICE is not very good at catching lvalues errors
+	yet.
+
+dice/C1:033                                                      dice/C1:033
+
+    goto label not found: %.*s
+    --------------------------
+	The label that was given as a target for a goto statement was not
+	found anywhere in the procedure.
+
+dice/C1:034                                                      dice/C1:034
+
+    constant div/mod by 0
+    ---------------------
+	You attempted to use the '/' or '%' operator with the constant value
+	0 on the right hand side. Division/Modulus by 0 is illegal.
+
+dice/C1:035                                                      dice/C1:035
+
+    ptr-ptr mismatch: type %s
+    -------------------------
+	Generally occurs in a pointer comparison or assignment. The two
+	pointers do not point to the same type. Example,
+
+	char *a; long *b; if (a < b);
+
+	The error message indicates the type of the pointer that you are
+	attempting to use.  This is typically followed by an error C1:115
+	which contains the type that was expected.
+
+dice/C1:036                                                      dice/C1:036
+
+    unexpected void type
+    --------------------
+	Occurs due to an illegally constructed expression where the result
+	storage is void.
+
+dice/C1:037                                                      dice/C1:037
+
+    result not used
+    ---------------
+	This warning occurs in some cases where an expression has been
+	calculated but the result ends up not being used.  For example:
+
+	a <= 4;
+
+dice/C1:039                                                      dice/C1:039
+
+    & of bitfield illegal
+    ---------------------
+	It is not legal to take the address of a bitfield element in a
+	structure since no pointer representation is possible.
+
+dice/C1:040                                                      dice/C1:040
+
+    indirection through non-ptr
+    ---------------------------
+	Example: int a; *a = 4; ... i.e. where 'a' wasn't a pointer. Will
+	also occur if you attempt to index a variable which is not an array
+	or pointer, i.e. a[4] = 4; where 'a' is an integer instead of an
+	array/pointer.
+
+dice/C1:041                                                      dice/C1:041
+
+    must #include <alloca.h> for alloca
+    -----------------------------------
+	DICE requires a special alloca. To obtain it any modules that use
+	alloca() must #include <alloca.h> which redefines it properly.
+
+dice/C1:042                                                      dice/C1:042
+
+    left hand side of assignment is not a procedure
+    -----------------------------------------------
+	You attempted to make a procedure call, such as foo(23); where foo is
+	not a procedure. Example:
+
+	int foo;
+	...
+	foo(23);
+
+	This can occur if you accidently declare a variable whos MAJOR
+	HEADING is the same as a procedure you attempt to call.
+
+dice/C1:043                                                      dice/C1:043
+
+    unprototyped call
+    -----------------
+	When the -proto option to DCC is used, any procedure call which is
+	not prototyped will generate this error.
+
+dice/C1:044, C1:045
+
+    too few parameters in call, too many parameters in call
+    -------------------------------------------------------
+	For prototyped procedures, the number of arguments is generally
+	known. DICE will print these warnings if you make a procedure call
+	with too few or too many arguments.
+
+dice/C1:046                                                      dice/C1:046
+
+    not structure or union type
+    ---------------------------
+	An attempt was made to indirect through a structure or union where
+	the left hand side was not a structure or union type.
+
+dice/C1:047                                                      dice/C1:047
+
+    maximum auto storage for temporaries exceeded
+    ---------------------------------------------
+	DICE tracks stack temporaries, mainly for floating point. If DICE's
+	maximum number of temporaries is exceeded due to an overly complex
+	expression, this error will be given.  You should try breaking up the
+	code into smaller chunks.
+
+dice/C1:048                                                      dice/C1:048
+
+    register not allocated: %d
+    --------------------------
+	This is generally an indication of a software error within DC1 if not
+	preceeded by other error messages.
+
+dice/C1:049                                                      dice/C1:049
+
+    expected integer type
+    ---------------------
+	An integer type was expected but instead a non-integer type was
+	found. For example, trying to use a float to index an array.
+
+dice/C1:050                                                      dice/C1:050
+
+    illegal ptr arithmatic
+    ----------------------
+	This error generally occurs when you do something illegal with a
+	pointer. For example, while 'ptr - i' is valid, 'i - ptr' is not.
+	While you can subtract two pointers 'p1 - p2', you cannot add two
+	pointers 'p1 + p2'.
+
+dice/C1:051,C1:052
+
+    illegal ptr conversion, illegal structure conversion
+    ----------------------------------------------------
+	These errors generally occurs when you attempt to cast a structure to
+	a pointer or vise versa.
+
+dice/C1:053                                                      dice/C1:053
+
+    illegal cast
+    ------------
+	A catch all for casts that DICE does not understand, such as
+	converting integers into arrays.
+
+dice/C1:054                                                      dice/C1:054
+
+    ptr-int conversion
+    ------------------
+	Generally occurs when DICE is forced to convert a pointer to an
+	integer, for example when making a procedure call and passing a
+	pointer when the procedure expected an integer.
+
+dice/C1:055                                                      dice/C1:055
+
+    illegal int conversion
+    ----------------------
+	It is illegal to convert an integer to a structure or vice-versa,
+	generally the error occurs through an explicit cast.
+
+dice/C1:056                                                      dice/C1:056
+
+    int-ptr conversion
+    ------------------
+	Generally occurs when DICE is forced to convert an integer to a
+	pointer, for example when making a procedure call and passing an
+	integer when the procedure expected a pointer.	The most common
+	problem related to this is not having #include'd the appropriate
+	prototypes for various Amiga library calls or for your own routines.
+
+dice/C1:057                                                      dice/C1:057
+
+    int/ptr mismatch
+    ----------------
+	Generally occurs when you compare two unlike types (an integer and a
+	pointer).
+
+dice/C1:058                                                      dice/C1:058
+
+    illegal or incompatible structure operation
+    -------------------------------------------
+	When you assign structures to each other they must be of the same
+	type and size. May also occur if you accidently assign a structure to
+	a non-structure or vice-versa.
+
+dice/C1:059                                                      dice/C1:059
+
+    illegal assignment
+    ------------------
+	The assignment is illegal. Usually occurs if you attempt to assign a
+	field in a structure in the structure definition, like:
+
+	struct foo {
+	    int x = 4; /* huh ?? */
+	};
+
+dice/C1:060                                                      dice/C1:060
+
+    illegal ptr-int or int-ptr conversion, int-size != ptr-size
+    -----------------------------------------------------------
+	This is catch-all for programs that convert between pointers and
+	integers and vice-versa. You can only convert an int or long to a
+	pointer and back in DICE. Converting to or from a short is illegal.
+
+dice/C1:061                                                      dice/C1:061
+
+    illegal bit-field operation
+    ---------------------------
+	The bitfield operation is not legal. Generally occurs when you
+	attempt to declare a bitfield not part of a structure or union.
+
+dice/C1:062                                                      dice/C1:062
+
+    illegal compare
+    ---------------
+	Generally occurs when you attempt to compare two structures. You can
+	only use == and != when comparing structures.
+
+dice/C1:063                                                      dice/C1:063
+
+    undefined structure tag: %s
+    ---------------------------
+	Generally occurs when you attempt to reference a field in a structure
+	which has yet to be defined.  Note that it is perfectly legal to
+	declare pointers to undefined structures as long as you do not
+	attempt to reference a field in the structure.
+
+	The error message indicates the structure tag that was not found.
+
+dice/C1:064                                                      dice/C1:064
+
+    undefined struct/union field: %s
+    --------------------------------
+	The specified field does not exist in the structure definition.
+
+dice/C1:065                                                      dice/C1:065
+
+    ran out of memory
+    -----------------
+	DICE ran out of memory. The README file outlines possible steps to
+	take ranging from making fewer things resident to specifying a
+	temporary directory on your HD instead of in T: (usually assigned to
+	RAM:). The best work around is to split up large source files into
+	smaller ones.
+
+dice/C1:066                                                      dice/C1:066
+
+    fp constant string too long!
+    ----------------------------
+	A floating point constant is too long (> 128 digits). DICE can only
+	handle so much.
+
+dice/C1:067                                                      dice/C1:067
+
+    fp constant too large to convert to int
+    ---------------------------------------
+	The fp constant is less than -0x80000000 or larger than 0x7FFFFFFF
+	and thus cannot be converted to an integer.
+
+dice/C1:068                                                      dice/C1:068
+
+    expected semicolon
+    ------------------
+	A semicolon was expected. For example:
+
+	int a<--- oops
+	int b;
+
+	Generally occurs when something unexpected happens, a semicolon is
+	not always the correct solution. For example, can occur if you have
+	too many close braces.
+
+dice/C1:069                                                      dice/C1:069
+
+    illegal type/storage qualifier for variable
+    -------------------------------------------
+	The type or storage qualifier is illegal for this variable
+	declaration.
+
+dice/C1:070                                                      dice/C1:070
+
+    illegal typedef
+    ---------------
+	The typedef is illegal.
+
+dice/C1:071                                                      dice/C1:071
+
+    multiply defined procedure
+    --------------------------
+	You have defined a procedure (definition means procedure declaration
+	with { ... code ... }) more than once in the same source file.
+
+dice/C1:072                                                      dice/C1:072
+
+    type too complex
+    ----------------
+	Occurs if a type is too complex for DICE to handle. For example, DICE
+	cannot deal with an array with 32 dimensions.
+
+dice/C1:073                                                      dice/C1:073
+
+    syntax error in declaration
+    ---------------------------
+	This is a very general error that indicates that DICE no longer
+	understood what you were trying to compile.  If there are any other
+	previous errors, they could have cascaded to the point of confusion.
+	Otherwise, the problem should be at the error position or immediately
+	before it.  Note that sometimes an error in a #include file sometimes
+	does not show up until immediately after the end of the file.
+
+dice/C1:074                                                      dice/C1:074
+
+    enum identifier overides variable/type
+    --------------------------------------
+	Occurs if you create an enum identifier that overides an existing
+	typedef or variable.  While enum's are supposed to be in a separate
+	domain, this is one of the areas in which DICE is not totally ANSI.
+
+dice/C1:075                                                      dice/C1:075
+
+    id missing in procedure declaration
+    -----------------------------------
+	You have made a procedure definition, probably using the ANSI
+	procedure definition style, but forgotten to specify an identifier
+	for one of the arguments.  Only procedure REFERENCES may leave off
+	the identifier.
+
+	void fubar(int) {...} /* not ok in definition	 */
+
+	void fubar(int);	  /*  ok in prototype */
+
+dice/C1:076                                                      dice/C1:076
+
+    procedure id decl not in id list
+    --------------------------------
+	This occurs if you declare a procedure with arguments old style and
+	mistakenly declare a variable that wasn't specified in the identifier
+	list.
+
+	int fubar(a,b,c)
+	int a, b, c, d;
+	{
+	}
+
+	Note that the variable 'd' did not exist in the id list.
+
+dice/C1:077                                                      dice/C1:077
+
+    statement's condition must be an expression
+    -------------------------------------------
+	RETURN, IF, DO and WHILE require an expression or nothing. The middle
+	argument for FOR() requires an expression. Whatever you gave the
+	compiler, it wasn't an expression.
+
+dice/C1:078                                                      dice/C1:078
+
+    duplicate default: in switch
+    ----------------------------
+	You have more than one default: statement in a switch.
+
+dice/C1:080                                                      dice/C1:080
+
+    expected '{' or '}' for procedure def
+    -------------------------------------
+	Just a more specific error message to the general syntax error. There
+	is something wrong with your procedure definition, DICE expected an
+	open brace and then the procedure but didn't see an open brace.
+
+dice/C1:081                                                      dice/C1:081
+
+    case/default outside switch
+    ---------------------------
+	with DICE, the case and default statements must be on the same
+	semantic level as the switch() { ... } even though ANSI says they can
+	be in lower levels. At least for now. The other common cause is if
+	you really do have a case or default statement outside of the switch
+	statement.
+
+dice/C1:082                                                      dice/C1:082
+
+    else without if
+    ---------------
+	You have an ELSE statement not associated with any IF statement. The
+	most common mistake is when you accidently put two statements in
+	between an IF and an ELSE without using braces, like this:
+
+	if (i == 0)
+	    i = 1; j = 2; /* wrong, need braces if */
+			  /* more than one stmt    */
+	else
+	i = 3;
+
+	Which more commonly occurs if you use #define macros heavily.
+
+dice/C1:083                                                      dice/C1:083
+
+    too many initializers
+    ---------------------
+	This error will occur if you specify more initializers in a structure
+	assignment then the structure has fields.  For example:
+
+	struct { int a, b; } Fu = { 1, 2, 3 };
+	/* where's the 3 go? */
+
+dice/C1:084                                                      dice/C1:084
+
+    array cannot hold string
+    ------------------------
+	This error will occur if you declare an array and initialize it to a
+	string that is larger then the array.  Note that the special case
+	where the string's nil terminator is just outside the array is
+	allowed (the nil terminator is ignored).
+
+	char Fu[3] = { "abcd" };
+
+dice/C1:085                                                      dice/C1:085
+
+    illegal register specification
+    ------------------------------
+	This error occurs if you specify more then one register for a
+	procedure argument.  E.G.  void fubar(__D0 __D1 int a) { ... }
+
+dice/C1:086                                                      dice/C1:086
+
+    Variable not used: %*.*s
+    ------------------------
+	This warning informs you of variables which you have declared but not
+	referenced.
+
+dice/C1:087                                                      dice/C1:087
+
+    Illegal return type
+    -------------------
+	This error indicates that you have attempted to return a type which
+	is incompatible with the return type of the procedure.	For example,
+	returning an integer from a procedure which is supposed to return
+	void.
+
+dice/C1:088                                                      dice/C1:088
+
+    Warning, SAS/C __qualifier placement
+    ------------------------------------
+	DICE attempts to be somewhat SAS/C compatible in terms of type
+	qualifier placement but, frankly, SAS/C is too wierd in some
+	respects.  With DICE, extensions normally occur BEFORE the type MAJOR
+	HEADING while in SAS/C they normally occur AFTER the type MAJOR
+	HEADING.  DICE will accept SAS/C qualifier placement and issue this
+	warning, but note that in this particular case multiple declarators
+	separated by commas will not work using SAS/C qualifier placement:
+
+	int __chip a, b; /*DOESN'T WORK, ONLY A in CHIP*/
+
+	__chip int a, b; /*OK,	BOTH A & B ARE IN CHIP	*/
+
+	You should also note that DICE accepts __asm, simply ignoring it, and
+	also ignores the register qualifier with explicit register
+	specifications.  That is:
+
+	long fubar(__D0 int a) ...   /* DICE METHOD  */
+
+	long fubar(a)		     /* DICE METHOD  */ __D0 int a;
+	{
+	...
+	long __asm fubar(register __d0 int a)
+	... /* SAS/C */
+
+	DICE will accept the SAS/C registered args procedure format in the
+	MAJOR HEADING of portability but it's unreadable.
+
+dice/C1:089                                                      dice/C1:089
+
+    BREAK outside of loop/switch
+    ----------------------------
+	The BREAK statement normally breaks out of the nearest switch, do,
+	for, or while statement.  If you are not within any of those
+	constructs there is nowhere to BREAK to and this error message will
+	occur.
+
+dice/C1:090                                                      dice/C1:090
+
+    CONTINUE outside of loop
+    ------------------------
+	The CONTINUE statement normally continue's to the nearest do, for, or
+	while statement (note that switch() statements are skipped).  If you
+	are not within a loop statement then CONTINUE has nowhere to go and
+	this error message occurs.
+
+dice/C1:091                                                      dice/C1:091
+
+    Cannot take the address of a constant
+    -------------------------------------
+	You cannot take the address of a constant.  E.G. int *a = &4;  ...
+	what is that supposed to mean?	If you code structures to constant
+	addresses remember to cast the constant addresses as pointers.
+
+dice/C1:092                                                      dice/C1:092
+
+    Cannot passed unaligned structs by value
+    ----------------------------------------
+	The __unaligned storage qualifier is meant for certain very rare
+	situations where you do not want structures to be word aligned.
+	Unfortunately, DICE is not able to perform all possible operations on
+	such structures and passing them by value is one of those operations.
+	You can pass a pointer to the structure just fine, just not by value.
+
+dice/C1:093                                                      dice/C1:093
+
+    Prototype required for inline call
+    ----------------------------------
+	Inline library calls are generally implemented by #include'ing the
+	appropriate prototype file.  The DICE method is to #include the
+	appropriate file in clib/, e.g. <clib/exec_protos.h>.  DICE will find
+	"dinclude:clib/exec_protos.h" first which then declares the #pragma's
+	and finally includes the commodore protos,
+	"dinclude:amiga20/clib/exec_protos.h".  This error occurs if a
+	#pragma has been found for a routine but no ANSI prototype.  DICE
+	requires an ANSI prototype as well as a #pragma to be able to make an
+	inline library call.
+
+dice/C1:094                                                      dice/C1:094
+
+    Input must be a seekable file
+    -----------------------------
+	DICE must be able to seek around the input file.  This error occurs
+	if, for example, you specify a pipe as the input file instead of a
+	disk file.
+
+dice/C1:095                                                      dice/C1:095
+
+    Can't open %s
+    -------------
+	DICE is unable to open the specified file
+
+dice/C1:096                                                      dice/C1:096
+
+    Read failed
+    -----------
+	DICE is able to open the file but Read() failed unexpectedly.
+
+dice/C1:097                                                      dice/C1:097
+
+    Can't open output %s
+    --------------------
+	DICE is unable to create either a temporary output file or your
+	specified output file, depending on what it is doing.  For example,
+	if you compile a source file into an object DICE can give this error
+	while attempting to create the temporary assembly (.a) file before
+	assembling it into your object.
+
+dice/C1:098                                                      dice/C1:098
+
+    Incorrect type for indirection
+    ------------------------------
+	You can only indirect (the unary '*' operator) through a pointer.
+
+dice/C1:099                                                      dice/C1:099
+
+    Base variable (%.*s) for pragma is undefined
+    --------------------------------------------
+	DICE has found a subroutine call for which a #pragma statement is
+	present, but the library base for the #pragma statement is missing.
+	Typically this will occur when you #include the pragma file directly
+	without including the prototypes or library definition as in:
+
+	#include <pragmas/exec_pragmas.h>
+	...
+	Disable();
+
+	To solve the problem, you should #include the corresponding clib file
+	like:
+
+	#include <clib/exec_protos.h>
+
+dice/C1:100                                                      dice/C1:100
+
+    sizeof(type) is 0
+    -----------------
+	The size of the type passed to sizeof is zero bytes long.  Typically
+	this occurs when you take the size of an undefined structure tag or
+	the sizeof a void.
+
+dice/C1:101                                                      dice/C1:101
+
+    Duplicate variable/symbol in same {} block: %.*s
+    ------------------------------------------------
+	This occurs when you have two variables in the same block which have
+	the exact same MAJOR HEADING (usually as the result of a cut/paste
+	operation).  Simply reMAJOR HEADING one of the variables (or delete
+	the duplicated line).
+
+dice/C1:102                                                      dice/C1:102
+
+    Variable declared but not used: %.*s
+    ------------------------------------
+	This warning identifies a variable which is not referenced within the
+	scope of a subroutine.	Often this is the result of code that has
+	been #ifdefed out.  DICE will continue to compile the code.
+
+dice/C1:103                                                      dice/C1:103
+
+    Variable overides procedure argument: %.*s
+    ------------------------------------------
+	You have declared a local variable which is the same MAJOR HEADING as
+	one of the parameters to the current procedure as in:
+
+	void foo(int i)
+	{
+	   int i;
+	...
+
+	Since there would be no way to access the parameter, DICE issues the
+	error.	You need to reMAJOR HEADING either the parameter or the local
+	variable.  This is often the result of a cut/paste operation within
+	the editor.
+
+dice/C1:104                                                      dice/C1:104
+
+    Pragma argument count conflict with prototype: %.*s
+    ---------------------------------------------------
+	This error indicates that there is a difference of opinion as to the
+	number of parameters that an inline function takes.  The #pragma
+	statement for the function codes the number of parameters while the
+	prototype explicitely lists them.  If you encounter this error, you
+	will have to examine the two in order to determine which is right.
+
+dice/C1:105                                                      dice/C1:105
+
+    Only D0 supported as a return register for pragmas: %.*s
+    --------------------------------------------------------
+	The #pragma statement had a value other than 0 in the next to the
+	last character of the register specification.  Since all Amiga
+	functions return the result in D0, you need to correct the prototype.
+
+dice/C1:106                                                      dice/C1:106
+
+    Attempt to indirect through void pointer
+    ----------------------------------------
+	DICE detected an attempt to use a void pointer to reference memory.
+	Since a void pointer can not point to anything real, you must cast
+	the pointer to the correct type before using it.
+
+	void *vp;
+	char c;
+	...
+	c = *vp;  /* Not allowed */
+	c = *(char *)vp;  /* This eliminates the error */
+
+dice/C1:107                                                      dice/C1:107
+
+    Structure/Union %s has no members
+    ---------------------------------
+	After parsing the structure, there turned out to be no members in it.
+	You need to correct the declaration of the structure.  Often this is
+	the result of a macro expansion.
+
+dice/C1:108                                                      dice/C1:108
+
+    Missing comma in initialization expression
+    ------------------------------------------
+	When initializing an array, DICE did not find a comma between two
+	elements in the array.	Often DICE is correct about assuming you
+	needed the comma, but you should check it to be certain.
+
+	char foo[10] = { 1, 2, 3 /* oops */ 4, 5 };
+
+dice/C1:109                                                      dice/C1:109
+
+    Return type for procedures do not match from: %s
+    ------------------------------------------------
+	The procedure that you are declaring OR assigning (in the case of a
+	function pointer) returns a different type than what it is being
+	matched to.  This will be followed by an C1:115 error message which
+	indicates the type that was expected.  To correct this, you will need
+	to either insert a cast (only as a last resort) or correct the
+	declarations.
+
+dice/C1:110                                                      dice/C1:110
+
+    Number of args mismatch with prototype
+    --------------------------------------
+	The procedure being declared does not have the same number of
+	arguments as a prototype previously encountered for this procedure.
+	You will need to correct one or the other.
+
+dice/C1:111                                                      dice/C1:111
+
+    Prototype into Non-Prototype
+    ----------------------------
+	A function that was previously declared as a prototype style function
+	is now being redeclared as a non-prototype style function in a manner
+	which causes the types to be incompatible.  You need to correct one
+	or the other.
+
+dice/C1:112                                                      dice/C1:112
+
+    Incompatible procedure Argument #%d type: %s
+    --------------------------------------------
+	This can occur in one of two places:  During the declaration of a
+	function or during the assignment of a function pointer.  In both
+	cases, one of the parameters of the two types (the original prototype
+	or the left hand side of the assignment) doesn't match.  This will be
+	followed by a C1:115 error message which indicates the type that was
+	expected.  To correct this, you will need to fix the declarations.
+
+dice/C1:113                                                      dice/C1:113
+
+    Argument #%d is in a different register
+    ---------------------------------------
+	This is usually the result of matching __STKARGS function with a
+	__REGARGS function.  In rare cases it can be seen when you actually
+	declare the parameters to be in specific registers.  You will need to
+	correct the declarations to make them match.
+
+dice/C1:114                                                      dice/C1:114
+
+    Structure Types do not match: %s
+    --------------------------------
+	Two Structure/Union/Bitfield types are not equivalent.	You will need
+	to either insert a cast or correct the declarations.  This will be
+	followed by a C1:115 error message to indicate the type that was
+	expected.
+
+dice/C1:115                                                      dice/C1:115
+
+    Does not match original declaration type: %s
+    --------------------------------------------
+	This is always paired up with another error message (C1:035, C1:109,
+	C1:112, or C1:114) to provide more information about a type that was
+	mismatched.  This message simply tells you what was expected.  You
+	will never see this message by itself and any corrective action will
+	be based on the immediately previous error message.
+
+dice/C1:116                                                      dice/C1:116
+
+    Subroutine too complex to generate code for
+    -------------------------------------------
+	In rare cases, DICE will run out of registers (or get itself into an
+	impossible situation).	Instead of generating bad code, DICE issues
+	this error message and aborts.	You can report the problem to us
+	(with the sample code of course), but in the meantime you can
+	continue to compile your code by breaking it up into smaller
+	subroutines.
+
+dice/C1:117                                                      dice/C1:117
+
+    Internal Compiler error %d: %s
+    ------------------------------
+	In an even rarer caes where the compiler has detected some impossible
+	state, it will issue this error message.  Unfortunately there is no
+	cookbook way to get around this, but as a first stab, you should
+	clean up all other error messages which you have gotten in your code.
+	In order for us to fix this, we would need a complete compilable
+	sample.
+
+dice/C1:118                                                      dice/C1:118
+
+    Can not read locale library file: %s
+    ------------------------------------
+	When attemping to build a locale based program, the compiler was
+	unable to open up the file that was specified on the command line.
+	Please check the options to the compiler and run it again.
+	Additional problems could be related to the version of locale, but
+	this would be a rare case.
+
+dice/C1:119                                                      dice/C1:119
+
+    unrelocatable data reference in const storage
+    ---------------------------------------------
+	This occurs when you attempt to put a relocatable pointer into const
+	storage. Since by definition const is position independent, you will
+	need to change the declarations which are causing the problem or
+	compile with a different option.
+
+dice/C1:120                                                      dice/C1:120
+
+    Can not open needed math library: %s
+    ------------------------------------
+	When attempting to compile a code which uses floating point math,
+	DICE needs to open up the Amiga supplied math libraries.  You will
+	either need to compile with a different math option or locate the
+	appropriate libraries on your system disks.
+
+dice/CP:001                                                      dice/CP:001
+
+    No input file specified
+    -----------------------
+	DCPP was run without any input file specification
+
+dice/CP:002                                                      dice/CP:002
+
+    Unable to create %s
+    -------------------
+	DCPP Was unable to create the requested output file.  This is
+	normally a temporary file.
+
+dice/CP:003                                                      dice/CP:003
+
+    Unknown directive
+    -----------------
+	DCPP has encountered a # directive which is unknown to it.
+
+dice/CP:004                                                      dice/CP:004
+
+    Maximum number of #if levels (%d) exceeded
+    ------------------------------------------
+	You may only have up to 256 levels of #if nesting
+
+dice/CP:006                                                      dice/CP:006
+
+    Multiple #else's for an #if, suggest #elif
+    ------------------------------------------
+	This normally indicates a mistake in constructing complex
+	#if/#elif/#else/#endif sequences.
+
+dice/CP:007                                                      dice/CP:007
+
+    #endif without associated #if
+    -----------------------------
+	Occurs when you have an #endif without a matching #if.
+
+dice/CP:009                                                      dice/CP:009
+
+    #error directive: %.*s
+    ----------------------
+	The #error directive has been encountered.  This directive is defined
+	to generate an error on purpose and used by programmers for that
+	express purpose.
+
+dice/CP:010                                                      dice/CP:010
+
+    Maximum number of #include/macro levels (%d) exceeded
+    -----------------------------------------------------
+	DCPP can handle up to 32 levels of includes and macro nestings.
+
+dice/CP:011                                                      dice/CP:011
+
+    File Size mismatch %s (%d)
+    --------------------------
+	This error should never occur and, if it does, is probably indicative
+	of problems elsewhere in the system.  Essentially, DCPP uses Seek()
+	to determine the size of the file then Read()s it in.  If the numbers
+	don't match you get this error.
+
+dice/CP:012                                                      dice/CP:012
+
+    Ran out of memory!
+    ------------------
+	DCPP has run out of memory.  This does not normally occur as DCPP
+	uses the least memory of all the main compiler executables.  This can
+	occur if you do not have much memory in the system, though.  There
+	are a number of things that can be done to fix the situation... try
+	using precompiled includes, try specifying a temporary directory (-T
+	option to DCC) that is not in RAM:
+
+dice/CP:013                                                      dice/CP:013
+
+    Read Error from %s
+    ------------------
+	A read error occured while DCPP was attempting to read a file.
+
+dice/CP:014                                                      dice/CP:014
+
+    stringtize '#' valid only before macro argument in a #define
+    ------------------------------------------------------------
+	You may only stringtize a macro argument as in:
+
+	#define stringof(fubar) #fubar
+
+	Attempting to stringtize other tokens is illegal
+
+dice/CP:015                                                      dice/CP:015
+
+    unterminated #if's left over from include after EOF: %d/%d
+    ----------------------------------------------------------
+	One or more #if's was left unclosed (i.e. no matching #endif) at the
+	end of a file. While you can nest #include's in #if's you cannot
+	start an #if in an #include and #endif it outside that #include.
+
+dice/CP:016                                                      dice/CP:016
+
+    Unexpected EOF (unterminated comment?)
+    --------------------------------------
+	A comment was left unterminated when the file EOF occured.  This can
+	also occur if you forget an end quote.
+
+dice/CP:017                                                      dice/CP:017
+
+    Software Error line 177
+    -----------------------
+	This an other software errors generally indicate a bug in DCPP.  It
+	is possible to get software errors from illegal files tha generate
+	situations which confuse DCPP.
+
+dice/CP:018,CP:019                                         dice/CP:018,CP:019
+
+    Unterminated double quoted string, Unterminated single quoted character constant
+    --------------------------------------------------------------------------------
+	Unterminated string and/or character constants were detected.
+
+dice/CP:020                                                      dice/CP:020
+
+    Read Error on precompiled header file
+    -------------------------------------
+	A read error occured reading a precompiled header file.
+
+dice/CP:021                                                      dice/CP:021
+
+    Error parsing precompiled header file
+    -------------------------------------
+	This indicates a software error of some sort with the precompiled
+	header routines.  DICE automatically discards precompiled headers
+	that do not match the version of the compiler in use so this error
+	message will only be generated if DCPP really gets confused somehow.
+
+dice/CP:022                                                      dice/CP:022
+
+    Can't seek in output file
+    -------------------------
+	You must specify a disk file as the output file for DCPP.  DCPP must
+	often seek in the output file.
+
+dice/CP:023                                                      dice/CP:023
+
+    No symbol specified for #undef
+    ------------------------------
+	You have an #undef directive which specifies no symbol to undef
+
+dice/CP:024                                                      dice/CP:024
+
+    Illegal NULL symbol in defined macro
+    ------------------------------------
+	You have somehow managed to define a 0 length symbol.	This is
+	usually indicative of a syntax error somewhere.
+
+dice/CP:025                                                      dice/CP:025
+
+    Maximum number of macro arguments (%d) exceeded
+    -----------------------------------------------
+	Macros cannot deal with more then 256 arguments.  There is no limit
+	on the size of a macro.
+
+dice/CP:026,CP:027                                        dice/CP:026,CP:027
+
+    Expected comma
+Expected closing paren
+    -------------------------------------
+	Generally occurs when parsing macros, a comma or closing paren was
+	expected.
+
+dice/CP:028                                                      dice/CP:028
+
+    Software error in macro replace: %d/%d %d/%d
+    --------------------------------------------
+	Again, this indicates a software error somewhere in the routine that
+	handles argument substitution.	While it is most likely due to an
+	illegal macro it could also be due to problem with DCPP.
+
+dice/CP:029                                                      dice/CP:029
+
+    Recursive use of macro <macroMAJOR HEADING>
+    -------------------------------------------
+	You called a macro recursively, this would lead to an infinite loop.
+
+dice/CP:030                                                      dice/CP:030
+
+    Unexpected EOF in macro %s
+    --------------------------
+	This can occur if a macro contains an unterminated comment or string.
+
+dice/CP:031                                                      dice/CP:031
+
+    Macro crosses #include boundary
+    -------------------------------
+	A weird error you should never get.  There are a few situations where
+	DCPP is not ANSI compatible (due to the way DCPP recurses through
+	macros) which will generate this error message.
+
+dice/CP:033                                                      dice/CP:033
+
+    Not enough arguments to macro: %d/%d
+    ------------------------------------
+	You referenced a macro which needs more arguments then you supplied!
+
+dice/CP:034                                                      dice/CP:034
+
+    Expected closing paren, got '%c' in macro %s (too many args?)
+    -------------------------------------------------------------
+	You have most likely specified more arguments then the macro takes.
+	This can also occur if unexpected characters are encountered when
+	processing a macro.
+
+dice/CP:035                                                      dice/CP:035
+
+    Software Error (Creator)
+    ------------------------
+	DCPP has gotten confused
+
+dice/CP:036                                                      dice/CP:036
+
+    Software Error in macro %s symbol %s
+    ------------------------------------
+	DCPP has gotten confused
+
+dice/CP:037                                                      dice/CP:037
+
+    Software Error in allocator %d
+    ------------------------------
+	DCPP has gotten very confused
+
+dice/CP:038                                                      dice/CP:038
+
+    GetNominalInclude() failed
+    --------------------------
+	This indicates a problem openning an #include file.  Normally you
+	should get a 'Can't open file' and not this message.
+
+dice/CP:039,CP:040,CP:041                          dice/CP:039,CP:040,CP:041
+
+    Syntax error, Too many close parens, Expression too complex
+    -----------------------------------------------------------
+	These occur during DCPP expression parsing for #if's and are
+	indicative of problems in your expression
+
+dice/CP:042                                                      dice/CP:042
+
+    Error parsing expression
+    ------------------------
+	This is similar to a syntax error and indicates an improperly
+	constructed expression.
+
+dice/CP:043                                                      dice/CP:043
+
+    Error in #include line
+    ----------------------
+	DCPP was unable to parse the specified #include directive.  There are
+	a few ANSI constructs, such as using macros in an #include directive,
+	that DCPP has yet to support.
+
+dice/CP:044                                                      dice/CP:044
+
+    Can't seek in precompiled header file
+    -------------------------------------
+	Indicates a general problem accessing a precompiled header file.
+
+dice/CP:045                                                      dice/CP:045
+
+    Expected comma or close paren
+    -----------------------------
+	Another expression parsing error.  DCPP was expecting one thing and
+	got something else.
+
+dice/CP:046                                                      dice/CP:046
+
+    Expected close paren for macro %s
+    ---------------------------------
+	DCPP had a problem parsing the specified macro, looking for a close
+	parenthesis and not finding one.
+
+dice/CP:047                                                      dice/CP:047
+
+    Can't open file %.*s
+    --------------------
+	DCPP was unable to open the specified file.
+
+dice/AS:001                                                      dice/AS:001
+
+    No input file specified
+    -----------------------
+	You ran DAS without specifying the assembly file to assemble!
+
+dice/AS:002                                                      dice/AS:002
+
+    Unable to open %s
+    -----------------
+	DAS was unable to open the assembly file you specified
+
+dice/AS:003                                                      dice/AS:003
+
+    Empty File or Unable to Seek
+    ----------------------------
+	DAS cannot assemble empty files.  This error can also occur if you
+	specify a device or pipe instead of a file (DAS must be able to seek
+	within the file).
+
+dice/AS:004                                                      dice/AS:004
+
+    Ran out of memory, you may have to break up your source files
+    -------------------------------------------------------------
+	DAS is a known memory hog, if you get this error message the most
+	effective work around is to breakup the source file in question into
+	two or more pieces.
+
+dice/AS:005                                                      dice/AS:005
+
+    Error reading input
+    -------------------
+	DAS has problems reading the assembly file you specified
+
+dice/AS:006                                                      dice/AS:006
+
+    Unable to create %s
+    -------------------
+	DAS was unable to create the object file you specified.  This could
+	be due to specifying a path for which some sub directories do not
+	exist, for example.
+
+dice/AS:009                                                      dice/AS:009
+
+    Syntax error
+    ------------
+	A syntax error occured attempting to parse the specified line of
+	assembly
+
+dice/AS:010                                                      dice/AS:010
+
+    Illegal Label: %s
+    -----------------
+	The specified label is illegal. DAS only accepts alpha-numerics, '_',
+	and @.
+
+dice/AS:011                                                      dice/AS:011
+
+    Expected an operator, got: %c
+    -----------------------------
+	This generally indicates a syntax error in an expression.
+
+dice/AS:012                                                      dice/AS:012
+
+    Expected an expression
+    ----------------------
+	This generally indicates a syntax error in an expression.
+
+dice/AS:013                                                      dice/AS:013
+
+    Bad register specification
+    --------------------------
+	An illegal register specification was given, such as:
+		movem.l D0-D2/A5:,-(sp)
+
+dice/AS:014                                                      dice/AS:014
+
+    Expected no operands for %s
+    ---------------------------
+	The pseudoop on the specified line does not take any operands
+
+dice/AS:015                                                      dice/AS:015
+
+    Bad internal id
+    ---------------
+	This indicates a software error within DAS.
+
+dice/AS:016                                                      dice/AS:016
+
+    extension of .%c is illegal
+    ---------------------------
+	The most common occurance of this error message is when the main
+	compiler tries to cast an integer into a void or vise versa and
+	doesn't catch the problem, passing an instruction to DAS with a .0
+	extension.
+
+dice/AS:017                                                      dice/AS:017
+
+    bad operand size: %d
+    --------------------
+	This normally indicates a software error within DAS.
+
+dice/AS:018                                                      dice/AS:018
+
+    Removed branch to next location
+    -------------------------------
+	This occurs if the verbose option is given.  DAS is indicating that
+	it has removed a branch instruction.
+
+dice/AS:019                                                      dice/AS:019
+
+    Branch Optimization Module
+    --------------------------
+	A software error occured in the branch optimization module.
+
+dice/AS:020                                                      dice/AS:020
+
+    Bad l_Mask/l_RegNo %d 0x%04x
+    ----------------------------
+	Generally indicates a software error in the MOVEM/MOVE optimization
+	module.
+
+dice/AS:021                                                      dice/AS:021
+
+    Optimized Bxx - BRA
+    -------------------
+	This occurs if the verbose option is given and indicates that DAS has
+	been able to optimize a 'branch to a branch' into a single branch.
+
+dice/AS:022                                                      dice/AS:022
+
+    Illegal relocation
+    ------------------
+	This occurs if the assembly attempts to do a relocation for which
+	there is no analog in the amiga object module format.
+
+dice/AS:023                                                      dice/AS:023
+
+    Negative Section length: %d
+    ---------------------------
+	This occurs if, somehow, you've managed to confuse DAS into thinking
+	the length of a section is less then 0!
+
+dice/AS:024                                                      dice/AS:024
+
+    Bad section directive, format is [MAJOR HEADING],type
+    -----------------------------------------------------
+	Generally indicates a syntax error parsing the section directive.
+
+dice/AS:025                                                      dice/AS:025
+
+    Illegal section type, must be one of: code,data,bss,abs
+    -------------------------------------------------------
+	You have specified an illegal section directive.  The section type
+	may be one of DATA, BSS, CODE, or ABS.	ABS sections are used to
+	export absolute labels such as _LVO* style labels.
+
+dice/AS:026                                                      dice/AS:026
+
+    Conflict in section MAJOR HEADING, previous section exists with different type
+    ------------------------------------------------------------------------------
+	When specifying section MAJOR HEADINGs you may not specify the same
+	MAJOR HEADING for two different section types.	You can specify the
+	same section MAJOR HEADING for the same section type as many times as
+	you wish, and DICE relies on this feature heavily to switch between
+	the code, data and other sections.
+
+dice/AS:027                                                      dice/AS:027
+
+    Only positive label offsets for relocation purposes
+    ---------------------------------------------------
+	DAS can only deal with positive label offsets.	That is, it cannot
+	deal with subtraction of address labels.
+
+dice/AS:028                                                      dice/AS:028
+
+    Must specify .W or .L for relocatable outer displacement
+    --------------------------------------------------------
+	This generally indicates a syntax error in a 68020 instruction.  The
+	outer displacement must be explicitly specified as word or long.
+
+dice/AS:029                                                      dice/AS:029
+
+    Cannot have outer displacement if no brackets [] in pseudoop
+    ------------------------------------------------------------
+	This generally indicates a syntax error in a 68020 instruction.
+
+dice/AS:030                                                      dice/AS:030
+
+    This is a 68020 opcode, use 'mc68020' directive
+    -----------------------------------------------
+	You have specified a 68020 (or greater) opcode without specifying the
+	'mc68020' directive.
+
+dice/AS:031                                                      dice/AS:031
+
+    Undefined Label: %s
+    -------------------
+	The specified label is referenced in the assembly but not defined
+	anywhere.
+
+dice/AS:032                                                      dice/AS:032
+
+    Expected terminating %c in string
+    ---------------------------------
+	A string beginning with a double quote must be terminated by a double
+	quote. A string beginning with a single quote must be terminated by a
+	single quote.
+
+dice/AS:033                                                      dice/AS:033
+
+    Extranious garbage ignored: %s
+    ------------------------------
+	DAS has completed processing a line of assembly but there is extra,
+	unexpected junk on the line.
+
+dice/AS:034                                                      dice/AS:034
+
+    Illegal Addressing mode(s) %d %d opcode %s
+    ------------------------------------------
+	The specified opcode does not have the capability to use the
+	specified addressing modes (refer to the specific line of assembly,
+	the addressing mode codes are cryptic).
+
+dice/AS:035                                                      dice/AS:035
+
+    Directive requires a label
+    --------------------------
+	The directive on the specified line requires a label beginning in the
+	left hand column.  E.G. an EQU without no label.
+
+dice/AS:036                                                      dice/AS:036
+
+    Directive requires a size extension
+    -----------------------------------
+	The directive, probably a DS or DC directive, requires a .B, .W, or
+	.L extension.
+
+dice/AS:037                                                      dice/AS:037
+
+    Expected comma, got %c (ascii %d)
+    ---------------------------------
+	This generally indicates a syntax error in an expression
+
+dice/AS:038                                                      dice/AS:038
+
+    Data generation from directive different size between passes %d - %d
+    --------------------------------------------------------------------
+	This generally indicates something wierd with the arguments to a DC
+	or DS directive... the number of bytes the directive specifies has
+	changed between passes!
+
+dice/AS:039                                                      dice/AS:039
+
+    internal error handling debug directive
+    ---------------------------------------
+	This generally indicates a software error in the handling of the
+	debug directive, which is used by the compiler to include -d1 line
+	debug information.
+
+dice/AS:040                                                      dice/AS:040
+
+    Label multiply defined: %s
+    --------------------------
+	The given label is defined in more then one place in the assembly.
+
+dice/AS:041                                                      dice/AS:041
+
+    Unknown Directive: %s
+    ---------------------
+	The specified directive is not implemented in DAS.
+
+dice/AS:042                                                      dice/AS:042
+
+    Label address mismatch between passes %s %d - %d
+    ------------------------------------------------
+	A phase error between passes has occured.  This can occur due to an
+	instruction changing size unexpectedly between passes or due to a bug
+	in DAS's internal optimizations.
+
+dice/AS:043                                                      dice/AS:043
+
+    Address mismatch between passes %d - %d
+    ---------------------------------------
+	See AS:042
+
+dice/AS:044                                                      dice/AS:044
+
+    Word offset out of range: %d
+    ----------------------------
+	Indicates a word offset is beyond the -32768 to 32767 range of values
+	it is allowed to take on.
+
+dice/AS:045                                                      dice/AS:045
+
+    Byte offset out of range: %d
+    ----------------------------
+	Indicates a byte offset is beyond the -128 to 127 range of values it
+	is allowed to take on.
+
+dice/AS:046                                                      dice/AS:046
+
+    offset out of range: %d (0-7 only)
+    ----------------------------------
+	Indicates a bit field offset is beyond the 0-7 allowed for it.
+
+dice/AS:047                                                      dice/AS:047
+
+    offset out of range: %d (1-8 only)
+    ----------------------------------
+	Indicates a bit field offset is beyond the 1-8 allowed for it (ADDQ,
+	etc..)
+
+dice/AS:048                                                      dice/AS:048
+
+    offset out of range: %d (0-15 only)
+    -----------------------------------
+	Indicates a bit field offset is beyond the 0-15 allowed for it (TRAP,
+	etc..)
+
+dice/AS:049                                                      dice/AS:049
+
+    short branch to next instruction illegal
+    ----------------------------------------
+	It is illegal to have a short (byte offset) branch to the next
+	instruction because this instruction format is reserved for word
+	offset branches.
+
+dice/AS:050                                                      dice/AS:050
+
+    byte branch is out of range
+    ---------------------------
+	The destination of the branch cannot be reached with a byte offset.
+	This normally occurs if you force the branch to use a byte offset.
+	Note that if you specify a branch with NO extension, DAS will
+	automatically optimize the branch to use a byte offset if possible.
+
+dice/AS:051                                                      dice/AS:051
+
+    internal instruction id error: %d
+    ---------------------------------
+	Generally indicates a software error within DAS.
+
+dice/LK:001                                                      dice/LK:001
+
+    Can't create JMP for PC-rel offset greater then +/-32K, hunk too large
+    ----------------------------------------------------------------------
+	DLink cannot handle PC-relative jumps that are greater then +/-32K if
+	jumping within the same module.  DLink has no problem with
+	PC-relative jumps to outside the module (it create a jump table at
+	the end of the module for that).  This error indicates you must
+	either use the large-code model or split up the source file in
+	question.
+
+dice/LK:002                                                      dice/LK:002
+
+    Relocation error, range (%d) falls outside hunk (%s)
+    ----------------------------------------------------
+	DLink has detected a relocation entry in an object or library module
+	that specifies a relocation outside the program being linked.
+
+dice/LK:003                                                      dice/LK:003
+
+    Ran out of memory during linking
+    --------------------------------
+	DLink has run out of memory.  DLink can take a large amount of memory
+	to run, especially when compiling with the 2.0 amiga libraries.  On a
+	small machine you may have to compile with -1.3 instead of -2.0.
+
+dice/LK:004                                                      dice/LK:004
+
+    Relocation error, relocation to non-existant hunk %d of %d
+    ----------------------------------------------------------
+	DLink has detected a relocation entry in an object module that points
+	to a non-existant hunk.
+
+dice/LK:005                                                      dice/LK:005
+
+    No relocation info allowed for BSS data!
+    ----------------------------------------
+	It is illegal to have relocations for BSS data.  You can relocate an
+	address in BSS to some other hunk but cannot relocate information IN
+	a BSS hunk.  The BSS hunk must remain zero'd out.
+
+dice/LK:006                                                      dice/LK:006
+
+    PC relative access to illegal symbol (type %d)
+    ----------------------------------------------
+	DLink has detected a PC relative access to a symbol which is not
+	PC-relative accessible... that is, not in a code hunk or not in the
+	same code hunk if -frag is enabled.
+
+dice/LK:007                                                      dice/LK:007
+
+    Internal Error in jump table creation
+    -------------------------------------
+	This indicates a software error in DLink relating to the creation of
+	jump tables.  This should never occur, but if it does you should be
+	able to work around it by using the large code model.
+
+dice/LK:008                                                      dice/LK:008
+
+    External symbol relocation error, relocation to non-existant hunk
+    -----------------------------------------------------------------
+	DLink has detected a symbol relocation to a hunk that does not exist.
+
+dice/LK:009                                                      dice/LK:009
+
+    Relocation error, offset not word aligned
+    -----------------------------------------
+	DLink has detected a word or long relocation to a byte-aligned
+	address. word and long relocations may only be made to word-aligned
+	addresses.
+
+dice/LK:010                                                      dice/LK:010
+
+    Relocation to illegal symbol (type %d)
+    --------------------------------------
+	DLink has detected a relocation to an illegal symbol.  For example,
+	an A4-relative relocation to a symbol in the code hunk instead of the
+	data hunk.
+
+dice/LK:011                                                      dice/LK:011
+
+    Error parsing object module %s offset %d
+    ----------------------------------------
+	DLink has detected what is most likely a corrupt object module.
+
+dice/LK:012                                                      dice/LK:012
+
+    Unknown symbol type %d in file %s
+    ---------------------------------
+	DLink has come across a symbol type which it does not understand.
+
+dice/LK:013                                                      dice/LK:013
+
+    Unknown hunk type 0x%08lx in %s
+    -------------------------------
+	DLink has come across a hunk type that it does not understand,
+	possibly indicating a corrupted object module.
+
+dice/LK:014                                                      dice/LK:014
+
+    Software Error 146
+    ------------------
+	This indicates a software error within DLink, we would appreciate it
+	if you reported the error.
+
+dice/LK:015                                                      dice/LK:015
+
+    object format error, more hunks then expected
+    ---------------------------------------------
+	DLink has come across more hunks in an object module then the object
+	module's header has specified.
+
+dice/LK:016                                                      dice/LK:016
+
+    object format error, fewer hunks then expected
+    ----------------------------------------------
+	DLink has come across fewer hunks in an object module then the object
+	module's header has specified.
+
+dice/LK:017,LK:018,LK:019                          dice/LK:017,LK:018,LK:019
+
+    Error 556, Error 562, Error 571
+    -------------------------------
+	These indicate a software error within DLink, we would appreciate it
+	if you reported the error.
+
+dice/LK:020                                                      dice/LK:020
+
+    Cannot deal with empty data hunks!
+    ----------------------------------
+	DLink cannot deal with 0 length data hunks.
+
+dice/LK:021                                                      dice/LK:021
+
+    final size mismatch %d/%d
+    -------------------------
+	DLink carefully calculates the size of a module incrementally and
+	through an algorithm.  If these sizes mismatch it generally indicates
+	a bug somewhere within dlink.  We would appreciate it if these and
+	other software errors were reported.
+
+dice/LK:022                                                      dice/LK:022
+
+    internal reloc array mismatch %d/%d
+    -----------------------------------
+	This is another software error relating to the internal self checks
+	DLink makes.
+
+dice/LK:023,LK:024                                        dice/LK:023,LK:024
+
+    Assertion failed line %d %s, Error freeing memory
+    -------------------------------------------------
+	DLink is really confused if you ever get these.  We would appreciate
+	it if you report this error when you get it.
+
+dice/LK:025                                                      dice/LK:025
+
+    PC relative relocation to data symbol! %s:%s sym=%.*s
+    -----------------------------------------------------
+	You cannot make a PC-relative relocation to a data symbol.  This
+	message could indicate incorrect usage of the const storage
+	qualifier.
+
+dice/LK:026                                                      dice/LK:026
+
+    32 bit relocations illegal for -pi/-pr: %s:%s
+    ---------------------------------------------
+	DLink will check the relocations it generates against the compilation
+	options you gave it.  In this case, DLink has found that it must do
+	32 bit relocations which is in direct conflict with the purpose of
+	the -pi or -pr options to DCC.
+
+dice/LK:027                                                      dice/LK:027
+
+    32 bit DATA/BSS relocations illegal for -r: %s:%s
+    -------------------------------------------------
+	DLink will check the relocations it generates against the compilation
+	options you gave it.  In this case, DLink has found that it must do
+	32 bit data/bss relocations which are in direct conflict with the
+	purpose of the -r options to DCC.... pure code would not be
+	generated.  Note that DICE still allows you to statically initialize
+	pointers to addresses of variables or routines through the generation
+	of autoinit code.
+
+dice/LK:028                                                      dice/LK:028
+
+    Relocation scan, hunk out of range: %d/%d
+    -----------------------------------------
+	This message is similar to LK:002
+
+dice/LK:029                                                      dice/LK:029
+
+    PC relative relocations for BSS data is illegal
+    -----------------------------------------------
+	This message is similar to LK:025 but indicates a PC relative
+	relocation into BSS instead of initialized DATA.
+
+dice/LK:030                                                      dice/LK:030
+
+    Illegal PC relative relocation: %s:%s to %s:%s
+    ----------------------------------------------
+	This message is a catch-all for other illegal PC-relative relocations
+	such as between code hunks of different MAJOR HEADINGs when -frag is
+	eanbled.
+
+dice/LK:031                                                      dice/LK:031
+
+    label(An) relocation to code section is illegal
+    -----------------------------------------------
+	DLink has come across a small-data model relocation into a code hunk
+	instead of into a data or bss hunk.
+
+dice/LK:032                                                      dice/LK:032
+
+    8 bit relocation out of range (%d) in %s
+    ----------------------------------------
+	DLink is unable to perform an 8 bit relocation due to it being out of
+	the valid -128 to +127 range.
+
+dice/LK:033                                                      dice/LK:033
+
+    16 bit inter-hunk relocation out of range (%d) in %s
+    ----------------------------------------------------
+	DLink is unable to perform a 16 bit relocation due to it being out of
+	the valid -32768 to +32767 range.
+
+dice/LK:034                                                      dice/LK:034
+
+    Multiply defined symbol: %.*s (%s & %s)
+    ---------------------------------------
+	DLink has come across two definitions for the same symbol between
+	object modules.  This can also occur when porting UNIX code which
+	expects a common variable linking model.  DICE has the capability to
+	generate common variables, please refer to the -mu option to DCC for
+	more information.
+
+dice/LK:035                                                      dice/LK:035
+
+    Multiply defined symbol in same library! %.*s
+    ---------------------------------------------
+	DLink has come across two definitions for the same symbol IN THE SAME
+	LIBRARY MODULE.
+
+dice/LK:036                                                      dice/LK:036
+
+    Undefined Symbol: %.*s (%s)
+    ---------------------------
+	DLink has come across references to a symbol but is unable to find a
+	definition for the symbol.
+
+dice/LK:037                                                      dice/LK:037
+
+    Illegal A4-rel to far object: %.*s %s from %s
+    ---------------------------------------------
+	DLink has come across an attempt to make a small-data model reference
+	to an object only accessible through the absolute long addressing
+	mode.  This can occur if you declare a variable as __far in one
+	module but not in another. Such extern's are better placed in a
+	header file so this type of confusion cannot occur.
+
+	It is illegal to make small-data accesses to objects declared as
+	__far or compiled with -mD. This can occur, for example, if you
+	compile a module -mD and declare a library base variable, say,
+	IntuitionBase, which is then referenced by the OpenScreen() tag as
+	small-data due to the use of the small-data amiga.lib
+
+	The solution is to either not compile the module __far or to leave
+	the -mD option in and declare IntuitionBase as __near, as in:
+
+	__near long IntuitionBase;
+
+	These types of problems normally occur only when you attempt to mix
+	models.. that is, compile some modules with the small data model and
+	others with the large data model.
+
+dice/LK:038                                                      dice/LK:038
+
+    Absolute refs to BSS/DATA illegal with -r/-p* sym=%.*s
+    ------------------------------------------------------
+	32 bit references to a BSS/DATA symbol are illegal when you generate
+	residentable or position independant code.  DICE will automatically
+	work around these restrictions so the error is most likely due to
+	either mixed up memory models (compiling some files with -r and
+	others wiethout -r) or custom assembly of your own that makes an
+	illegal reference for the memory model chosen.
+
+dice/LK:039                                                      dice/LK:039
+
+    Hunk has no CODE, DATA or BSS! %s in %s
+    ---------------------------------------
+	DLink has come across a hunk with no CODE, DATA, or BSS subsections.
+
+dice/LK:040                                                      dice/LK:040
+
+    32 bit data-data relocations are illegal when using -r
+    ------------------------------------------------------
+	This error message is similar to LK:038 and LK:037 and indicates a
+	problem relating to the following type of declaration:
+
+	long a, *b = &a;
+
+	Note that DICE should work around the restriction AUTOMATICALLY when
+	you use the -r option, so unless you have mixed memory models up
+	while compiling you should not get this error.
+
+dice/LK:041                                                      dice/LK:041
+
+    Unable to find %s model <%s>
+    ----------------------------
+	DLink is unable to find the specified object module or library.
+	DLink will attempt to find the library verbatim and with a suffix
+	based on the current memory model.
+
+dice/LK:042                                                      dice/LK:042
+
+    Cannot frag when using -r
+    -------------------------
+	DLink must use the small-data and small-code models when generating
+	residentable code.
+
+dice/LK:043                                                      dice/LK:043
+
+    Bad option: %s
+    --------------
+	DLink has been given a bad command line option
+
+dice/LK:044                                                      dice/LK:044
+
+    Unable to open %s
+    -----------------
+	DLink was unable to open the specified file or, if a library, the
+	file plus an appropriate suffix based on the memory model.
+
+dice/LK:045                                                      dice/LK:045
+
+    Error 253 (%d)
+    --------------
+	Indicates a software error within DLink.
+
+dice/LK:046                                                      dice/LK:046
+
+    Unable to create %s
+    -------------------
+	DLink was unable to create the specified file.
+
+dice/LK:047                                                      dice/LK:047
+
+    Read error on %s
+    ----------------
+	DLink got an error while reading the specified file.
+
+dice/LK:051                                                      dice/LK:051
+
+    Illegal Hunk addr=%08lx type=%08lx MAJOR HEADING=%s
+    ---------------------------------------------------
+	DLink has come across an illegal hunk, usually due to internal memory
+	corruption (i.e. a software error of some sort)
+
+dice/LK:052                                                      dice/LK:052
+
+    Object size mismatch in %s
+    --------------------------
+	This normally indicates a corrupted object module or library.  The
+	module or library is shorter then expected.
+
+dice/LK:053                                                      dice/LK:053
+
+    Unknown symbol type %d sym=%.*s
+    -------------------------------
+	DLink has come across a symbol of unknown type.  This message is
+	pretty much the same as LK:013.
+
+dice/LK:054                                                      dice/LK:054
+
+    16 bit data relocation out of range (%d) sym=%.*s in %s
+    -------------------------------------------------------
+	DLink is unable to relocate a small-data reference due to there being
+	more then 64KBytes of data.  You may have to switch to using the
+	large data model or to qualifying some of your declarations as __far.
+

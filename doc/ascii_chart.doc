@@ -1,0 +1,34 @@
+dice/ascii_chart                                            dice/ascii_chart
+
+ 00= NUL   20= ' '   40= @     60= `     80= NUL   a0= ' '   c0= À     e0= à
+ 01= SOH   21= !     41= A     61= a     81= SOH   a1= NBSP  c1= Á     e1= á
+ 02= STX   22= "     42= B     62= b     82= STX   a2= ¢     c2= Â     e2= â
+ 03= ETX   23= #     43= C     63= c     83= ETX   a3= £     c3= Ã     e3= ã
+ 04= EOT   24= $     44= D     64= d     84= EOT   a4= ¤     c4= Ä     e4= ä
+ 05= ENQ   25= %     45= E     65= e     85= ENQ   a5= ¥     c5= Å     e5= å
+ 06= ACK   26= &     46= F     66= f     86= ACK   a6= ¦     c6= Æ     e6= æ
+ 07= BEL   27= '     47= G     67= g     87= BEL   a7= §     c7= Ç     e7= ç
+ 08= BS    28= (     48= H     68= h     88= BS    a8= ¨     c8= È     e8= è
+ 09= HT    29= )     49= I     69= i     89= HT    a9= ©     c9= É     e9= é
+ 0a= NL    2a= *     4a= J     6a= j     8a= NL    aa= ª     ca= Ê     ea= ê
+ 0b= VT    2b= +     4b= K     6b= k     8b= VT    ab= «     cb= Ë     eb= ë
+ 0c= NP    2c= ,     4c= L     6c= l     8c= NP    ac= ¬     cc= Ì     ec= ì
+ 0d= CR    2d= -     4d= M     6d= m     8d= CR    ad= SHY   cd= Í     ed= í
+ 0e= SO    2e= .     4e= N     6e= n     8e= SO    ae= ®     ce= Î     ee= î
+ 0f= SI    2f= /     4f= O     6f= o     8f= SI    af= ¯     cf= Ï     ef= ï
+ 10= DLE   30= 0     50= P     70= p     90= DLE   b0= °     d0= Ð     f0= ð
+ 11= DC1   31= 1     51= Q     71= q     91= DC1   b1= ±     d1= Ñ     f1= ñ
+ 12= DC2   32= 2     52= R     72= r     92= DC2   b2= ²     d2= Ò     f2= ò
+ 13= DC3   33= 3     53= S     73= s     93= DC3   b3= ³     d3= Ó     f3= ó
+ 14= DC4   34= 4     54= T     74= t     94= DC4   b4= ´     d4= Ô     f4= ô
+ 15= NAK   35= 5     55= U     75= u     95= NAK   b5= µ     d5= Õ     f5= õ
+ 16= SYN   36= 6     56= V     76= v     96= SYN   b6= ¶     d6= Ö     f6= ö
+ 17= ETB   37= 7     57= W     77= w     97= ETB   b7= ·     d7= ×     f7= ÷
+ 18= CAN   38= 8     58= X     78= x     98= CAN   b8= ¸     d8= Ø     f8= ø
+ 19= EM    39= 9     59= Y     79= y     99= EM    b9= ¹     d9= Ù     f9= ù
+ 1a= SUB   3a= :     5a= Z     7a= z     9a= SUB   ba= º     da= Ú     fa= ú
+ 1b= ESC   3b= ;     5b= [     7b= {     9b= ESC   bb= »     db= Û     fb= û
+ 1c= FS    3c= <     5c= \     7c= |     9c= FS    bc= ¼     dc= Ü     fc= ü
+ 1d= GS    3d= =     5d= ]     7d= }     9d= GS    bd= ½     dd= Ý     fd= ý
+ 1e= RS    3e= >     5e= ^     7e= ~     9e= RS    be= ¾     de= Þ     fe= þ
+ 1f= US    3f= ?     5f= _     7f= DEL   9f= US    bf= ¿     df= ß     ff= ÿ

@@ -1,0 +1,107 @@
+
+		section text,code
+
+		;WILDCMP(wild:D0, name:D1)
+		;
+		;   Handles * and ?
+		;
+		;result:  D0, 0 = no match, 1 = match
+		;
+		;auto:
+		;   D2	bi
+		;   A2	wildcard string
+		;   A3	name	 string
+		;   A4	back-array (of size MAXB * 2 * 4)
+
+MAXB		EQU	8
+MAXB28		EQU	128	/*  MAXB*2*8	*/
+
+		xdef	_WildCmp
+
+_WildCmp:	movem.l 4(sp),D0/D1
+		movem.l D2/A2-A4,-(sp)
+		move.l	D0,A2
+		move.l	D1,A3
+		sub.l	#MAXB28,sp
+		move.l	sp,A4
+
+		moveq.l #0,D2
+
+xwcloop 	moveq.l #1,D0
+		move.b	(A2),D1
+		bne	xw1
+		tst.b	(A3)
+		beq	xwcdone
+
+xw1		cmp.b	#$2A,D1 	; '*'
+		bne	xw10
+		cmp.w	#MAXB,D2
+		bne	xw2
+		moveq.l #-1,D0		; error
+		bra	xwcdone
+xw2		move.w	D2,D0		; back[bi][0] = w  i.e. back+bi*8
+		asl.w	#3,D0		; back[bi][1] = n
+		move.l	A2,0(A4,D0.w)
+		move.l	A3,4(A4,D0.w)
+		addq.w	#1,D2
+		addq.l	#1,A2
+		bra	xwcloop
+
+xwgoback	subq.w	#1,D2
+		bmi	xw5
+		move.w	D2,D0
+		asl.w	#3,D0
+		move.l	4(A4,D0.w),A0
+		tst.b	(A0)
+		beq	xwgoback
+xw5		tst.w	D2
+		bmi	xwcret0
+		move.w	D2,D0
+		asl.w	#3,D0
+		move.l	0(A4,D0.w),A2
+		addq.l	#1,A2
+		add.l	#1,4(A4,D0.w)
+		move.l	4(A4,D0.w),A3
+		addq.l	#1,D2
+		bra	xwcloop
+
+xw10		cmp.b	#$3F,D1 	; '?'
+		bne	xw20
+		tst.b	(A3)
+		bne	xwcbreak
+		tst.w	D2
+		bne	xwgoback
+		bra	xwcret0
+
+xw20		move.b	(A3),D0
+		cmp.b	#$51,D0
+		bcs	xw21
+		cmp.b	#$5A,D0
+		bhi	xw21
+		or.b	#$20,D0
+xw21		move.b	(A2),D1
+		cmp.b	#$41,D1
+		bcs	xw22
+		cmp.b	#$5A,D1
+		bhi	xw22
+		or.b	#$20,D1
+xw22		cmp.b	D0,D1
+		beq	xwcbreak
+		tst.w	D2
+		bne	xwgoback
+		bra	xwcret0
+
+xwcbreak	tst.b	(A2)+
+		bne	xwcb1
+		subq.l	#1,A2
+xwcb1		tst.b	(A3)+
+		bne	xwcb2
+		subq.l	#1,A3
+xwcb2		bra	xwcloop
+
+xwcret0 	moveq.l #0,D0
+xwcdone 	add.l	#MAXB28,sp
+		movem.l (sp)+,D2/A2-A4
+		rts
+
+		END

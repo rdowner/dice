@@ -1,0 +1,44 @@
+/*
+**      $Id: ErrorFirst.ttx,v 30.0 1994/06/10 18:05:15 dice Exp $
+**
+**      DICE Error Parsing system.  Script for Oxxi TurboText (tm).
+**
+**  Notes: This assumes that your DCC:Config/DCC.Config file contains the
+**         following line:
+**  cmd= rx DCC:Rexx/TTX_ErrorParse.rexx %e "%c" "%f" "%0"
+*/
+
+OPTIONS RESULTS
+
+IF ~show('p','DICE_ERROR_PARSER') THEN
+   DO
+      'SetStatusBar Error Parsing Not Active'
+      EXIT 0
+   END
+
+ADDRESS DICE_ERROR_PARSER First E
+IF rc ~= 0 THEN
+   DO
+      'SetStatusBar No More Errors'
+      exit 0
+   END
+
+ADDRESS DICE_ERROR_PARSER TTXSAME E.FPATH E.ARGS
+IF RC ~= 0 THEN
+   DO
+      'SetStatusBar Unable to open' E.FPATH
+      exit 0
+   END
+
+Port = RESULT
+ADDRESS Value Port
+'MoveBookMark' 1000+E.line
+IF RC ~= 0 THEN
+   'Move FOLDS' E.Line E.Col
+ELSE
+   DO
+      'MoveSOL'
+      'MoveRight' E.col-1
+   END
+
+'SetStatusBar' E.STRING

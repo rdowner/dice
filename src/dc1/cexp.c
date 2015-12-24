@@ -1,0 +1,891 @@
+/*
+ *    (c)Copyright 1992-1997 Obvious Implementations Corp.  Redistribution and
+ *    use is allowed under the terms of the DICE-LICENSE FILE,
+ *    DICE-LICENSE.TXT.
+ */
+
+/*
+ *  CEXP.C
+ *
+ *  Expression Parser.	These routines generate an expression tree.
+ *
+ *  unary: ! ~ & * ++ -- [exp] (..,..)
+ *
+ *  binary: % %= & && &= * *= + += , - -= -> . / /= << <<= =
+ *	    >> >>= ^ ^= | || |=
+ *							precedence
+ *  boolean:	< <= == >= > !=
+ *					     postf: () [] -> .
+ *  special:	exp ? exp : exp 	     unary: ! ~ ++ -- - * & sizeof
+ *					     bin:   * / %
+ *  terminator: (exp)				    + -
+ *		varid				    << >>
+ *		tokid (procedure call?) 	    < <= > >=
+ *		constant			    == !=
+ *						    &
+ *						    ^
+ *						    |
+ *						    &&
+ *						    ||
+ *						    ?:
+ *						    = += -= *= /= %= |= &= ^= >>= <<=
+ *						    ,
+ */
+
+/*
+**      $Filename: cexp.c $
+**      $Author: dice $
+**      $Revision: 30.325 $
+**      $Date: 1995/12/24 05:38:04 $
+**      $Log: cexp.c,v $
+ * Revision 30.325  1995/12/24  05:38:04  dice
+ * .
+ *
+ * Revision 30.156  1995/01/11  05:04:40  dice
+ * .
+ *
+ * Revision 30.5  1994/06/13  18:37:24  dice
+ * .
+ *
+ * Revision 30.0  1994/06/10  18:04:47  dice
+ * .
+ *
+ * Revision 1.8  1994/04/15  20:41:18  jtoebes
+ * Handle trailing commas more properly.
+ *
+ * Revision 1.7  1994/01/03  13:21:01  jtoebes
+ * Fixed BUG10002 - Enforcer hit in DC1.
+ * Changed the default for a symbol to be a long instead of a function type.
+ *
+ * Revision 1.6  1993/11/22  00:28:36  jtoebes
+ * Final cleanup to eliminate all cerror() messages with strings.
+ *
+ * Revision 1.5  1993/10/16  14:59:48  jtoebes
+ * Allowed optional comma after last element in an array initialization.
+ *
+ * Revision 1.4  1993/09/11  23:24:17  jtoebes
+ * Fixed BUG00047 - DC1 failes to warn about missing , in initialized expression.
+ * Changed logic for comma search to be more rigerous.  All old code should
+ * continue to compile.
+ *
+ * Revision 1.3  1993/09/05  23:56:22  jtoebes
+ * Fixed BUG06045 - Enforcer hit for invalid structure definitions.
+ * Added code to skip over current level of nesting when too many
+ * initializers are given for a structure.
+ * Created match_nesting subroutine for general usage to do this.
+ *
+**/
+
+#include "defs.h"
+
+#define LR	1	    /*	left to right, else	    */
+#define RL	2	    /*	right to left		    */
+#define QBIN	4	    /*	binary operator, else unary */
+#define BLR	(LR|QBIN)
+#define BRL	(RL|QBIN)
+
+#define XX	0	/*  don't care (situation never comes up)   */
+
+/*static short ExpPrec[64] = EXPPREC;*/
+
+Prototype short CompExp(short, Exp **, long);
+Prototype short CompBracedAssign(short, Type *, Exp **, short, Symbol *);
+Prototype short match_nesting(short);
+
+Local void PushOp(Exp **, Exp **, void (*)(Exp **), long, long);
+Local void PushAtom(Exp **, Exp **, void (*)(Exp **));
+Local void CombineOp(Exp **, Exp **);
+
+Exp *HackTmpExp;		/*  free expression cache   */
+
+short
+CompExp(short t, Exp **pexp, long commaok)
+{
+    short unary = 1;		/*  operator state  */
+    short notdone = 1;
+    short parens = 0;
+    short quests = 0;		/*  # of question marks for colons */
+    Exp   *opStack = NULL;	/*  operator stack  */
+    Exp   *atomStack = NULL;	/*  atom stack	    */
+
+
+    if (t == TokSemi)
+	zerror(EFATAL_EXPECTED_EXP);
+
+    *pexp = NULL;
+
+    for (;;) {
+	if (unary) {	    /*	construct quantity  */
+	    switch(t) {
+	    case TokNot:	/*  !exp    */
+		PushOp(&atomStack, &opStack, GenNot, 140, RL);
+		break;
+	    case TokAnd:	/*  &exp    */
+		PushOp(&atomStack, &opStack, GenAddr, 140, RL);
+		opStack->ex_Token = TokAddr;
+		break;
+	    case TokStar:	/*  *exp    */
+		PushOp(&atomStack, &opStack, GenInd, 140, RL);
+		break;
+	    case TokPlPl:	/*  ++exp   */
+		PushOp(&atomStack, &opStack, GenPreInc, 140, RL);
+		opStack->ex_Token = TokPreInc;
+		break;
+	    case TokMiMi:	/*  --exp   */
+		PushOp(&atomStack, &opStack, GenPreDec, 140, RL);
+		opStack->ex_Token = TokPreDec;
+		break;
+	    case TokPl: 	/*  +exp    */
+		break;
+	    case TokMi: 	/*  -exp    */
+		PushOp(&atomStack, &opStack, GenNeg, 140, RL);
+		break;
+	    case TokTilde:	/*  ~exp    */
+		PushOp(&atomStack, &opStack, GenCompl, 140, RL);
+		break;
+	    case TokSizeof:	/*  sizeof exp	*/
+		t = GetToken();
+		if (t == TokLParen) {	/*  check sizeof(type)	*/
+		    Type *baseType;
+		    Type *type;
+		    Symbol *sym;
+		    long  baseFlags;
+		    long  regFlags;
+
+		    t = GetToken();
+
+		    switch(t) {
+		    case TokStruct:
+		    case TokEnum:
+		    case TokUnion:
+		    case TokTypeQual:
+		    case TokRegQual:
+		    case TokTypeId:
+		    case TokTypeof:
+			t = CompType(t, &baseType, &baseFlags, &regFlags);
+			type = baseType;
+			t = CompTypeDeclarators(t, &type, &sym, baseFlags);
+			if (t != TokRParen)
+			    zerror(EFATAL_SYNTAX_ERROR_EXP);
+			t = GetToken();
+			PushAtom(&atomStack, &opStack, GenSizeof);
+			atomStack->ex_Type = type;
+			unary = 0;
+			continue;
+		    default:
+			PushOp(&atomStack, &opStack, GenSizeof, 140, RL);
+			++parens;
+			PushOp(&atomStack, &opStack, GenParen, 0, XX);
+			opStack->ex_Token = TokLParen;
+			continue;   /*	already have next token after paren */
+		    }
+		}
+		PushOp(&atomStack, &opStack, GenSizeof, 140, RL);
+		continue;	/*  already have next token */
+
+	    case TokLParen:	/*  (exp)  or (type) or ()  */
+		{
+		    Type *baseType;
+		    Type *type;
+		    Symbol *sym;
+		    long  baseFlags;
+		    long  regFlags;
+
+		    t = GetToken();
+
+		    switch(t) { 	/*  (typecast)	*/
+		    case TokStruct:
+		    case TokEnum:
+		    case TokUnion:
+		    case TokTypeQual:
+		    case TokRegQual:
+		    case TokTypeId:
+		    case TokTypeof:
+			t = CompType(t, &baseType, &baseFlags, &regFlags);
+			type = baseType;
+			t = CompTypeDeclarators(t, &type, &sym, baseFlags);
+			if (t != TokRParen)
+			    zerror(EFATAL_SYNTAX_ERROR_EXP);
+			t = GetToken();
+			PushOp(&atomStack, &opStack, GenCast, 140, RL);
+			opStack->ex_Type = type;
+			opStack->ex_Token = TokCast;
+			continue;
+		    case TokRParen:
+			PushAtom(&atomStack, &opStack, GenParen);
+			unary = 0;
+			t = GetToken();
+			continue;
+		    default:		/*  (exp)   */
+			++parens;
+			PushOp(&atomStack, &opStack, GenParen, 0, XX);
+			opStack->ex_Token = TokLParen;
+			continue;   /*	already have next symbol  */
+		    }
+		}
+		/* not reached */
+		Assert(0);
+				/*  terminator	*/
+	    case TokEnumConst:
+		LexIntConst = (long)LexData;
+		LexUnsigned = 0;
+	    case TokIntConst:
+		PushAtom(&atomStack, &opStack, GenIntConst);
+		atomStack->ex_Stor.st_IntConst = LexIntConst;
+		atomStack->ex_Token = t;
+		if (LexUnsigned)
+		    atomStack->ex_Stor.st_Flags |= SF_UNSIGNED;
+		unary = 0;
+		break;
+	    case TokStrConst:
+		PushAtom(&atomStack, &opStack, GenStrConst);
+		atomStack->ex_StrConst = LexStrConst;
+		atomStack->ex_StrLen   = LexStrLen;
+		atomStack->ex_Token = t;
+		unary = 0;
+		break;
+	    case TokFltConst:
+		PushAtom(&atomStack, &opStack, GenFltConst);
+		atomStack->ex_Stor.st_FltConst = LexStrConst;
+		atomStack->ex_Stor.st_FltLen   = LexStrLen;
+		atomStack->ex_Token = t;
+		atomStack->ex_Type  = LexData;
+		unary = 0;
+		break;
+	    case TokVarId:
+		/*
+		 *  If this is a global or external variable, NOT a procedure,
+		 *  and not already dummied, then add a dummy semantic entry
+		 *  and var structure to the highest block in the procedure.
+		 *
+		 *  we can't put it in lower blocks due to the possibility
+		 *  of goto past the lea in case it's lea is stuck into a
+		 *  register.
+		 */
+		{
+		    Var *var = (Var *)LexData;
+
+		    PushAtom(&atomStack, &opStack, GenVarRef);
+		    atomStack->ex_Token = TokVarRef;
+		    atomStack->ex_Symbol = LexSym;
+		    atomStack->ex_Var  = var;
+		    atomStack->ex_Var->Refs += BlockCost + 1;
+		    unary = 0;
+		}
+		break;
+	    case TokId: 	/*  possible subroutine?    */
+		t = GetToken();
+		{
+		    Var *var = AllocStructure(Var);
+
+		    if (t != TokLParen)
+		    {
+			zerror(EERROR_UNDEFINED_SYMBOL, SymToString(LexSym));
+			/* default is a long */
+			var->Type = &LongType;
+		    }
+		    else
+		    {
+			/* They used it as a procedure */
+			/*
+			 *  create a variable as a reference to the procedure
+			 *  specified returning an int.
+			 */
+			var->Type = &DefaultProcType;
+		    }
+
+
+		    var->Sym  = LexSym;
+		    var->Flags = TF_EXTERN;
+		    var->LexIdx= LFBase->lf_Index;  /* XXX */
+
+		    BlockAddTop(var);
+		    SemanticAddTop(LexSym, TokVarId, var); /* XXX */
+
+		    PushAtom(&atomStack, &opStack, GenVarRef);
+		    atomStack->ex_Token = TokVarRef;
+		    atomStack->ex_Symbol= LexSym;
+		    atomStack->ex_Var	= var;
+		    ++atomStack->ex_Var->Refs;
+		}
+		unary = 0;
+		continue;	/*  have token */
+	    default:
+		notdone = 0;
+		break;
+	    }
+	} else {
+	    unary = 1;
+
+	    switch(t) {
+	    case TokNotEq:	/*  boolean	*/
+	    case TokEqEq:
+		PushOp(&atomStack, &opStack, GenBoolCompareSame, 90, BLR);
+		opStack->ex_Token = t;
+		break;
+	    case TokLt:
+	    case TokLtEq:
+	    case TokGtEq:
+	    case TokGt:
+		PushOp(&atomStack, &opStack, GenBoolCompare, 100, BLR);
+		opStack->ex_Token = t;
+		break;
+	    case TokPercentEq:
+		PushOp(&atomStack, &opStack, GenPercentEq, 20, BRL);
+		break;
+	    case TokAndEq:
+		PushOp(&atomStack, &opStack, GenAndEq, 20, BRL);
+		break;
+	    case TokStarEq:
+		PushOp(&atomStack, &opStack, GenStarEq, 20, BRL);
+		break;
+	    case TokMiEq:
+		PushOp(&atomStack, &opStack, GenMiEq, 20, BRL);
+		break;
+	    case TokDivEq:
+		PushOp(&atomStack, &opStack, GenDivEq, 20, BRL);
+		break;
+	    case TokLtLtEq:
+		PushOp(&atomStack, &opStack, GenLtLtEq, 20, BRL);
+		break;
+	    case TokGtGtEq:
+		PushOp(&atomStack, &opStack, GenGtGtEq, 20, BRL);
+		break;
+	    case TokPlEq:
+		PushOp(&atomStack, &opStack, GenPlEq, 20, BRL);
+		break;
+	    case TokEq:
+		PushOp(&atomStack, &opStack, GenEq, 20, BRL);
+		break;
+	    case TokOrEq:
+		PushOp(&atomStack, &opStack, GenOrEq, 20, BRL);
+		break;
+	    case TokCaratEq:
+		PushOp(&atomStack, &opStack, GenCaratEq, 20, BRL);
+		break;
+
+	    case TokAndAnd:
+		PushOp(&atomStack, &opStack, GenAndAnd, 50, BLR);
+		break;
+	    case TokOrOr:
+		PushOp(&atomStack, &opStack, GenOrOr, 40, BLR);
+		break;
+
+	    case TokDiv:
+		PushOp(&atomStack, &opStack, GenDiv, 130, BLR);
+		break;
+	    case TokPercent:
+		PushOp(&atomStack, &opStack, GenPercent, 130, BLR);
+		break;
+	    case TokStar:
+		PushOp(&atomStack, &opStack, GenStar, 130, BLR);
+		break;
+	    case TokMi:
+		PushOp(&atomStack, &opStack, GenMi, 120, BLR);
+		opStack->ex_Token = TokMi;
+		break;
+	    case TokPl:
+		PushOp(&atomStack, &opStack, GenPl, 120, BLR);
+		opStack->ex_Token = TokPl;
+		break;
+
+	    case TokAnd:
+		PushOp(&atomStack, &opStack, GenAnd, 80, BLR);
+		break;
+	    case TokOr:
+		PushOp(&atomStack, &opStack, GenOr, 60, BLR);
+		break;
+	    case TokCarat:
+		PushOp(&atomStack, &opStack, GenXor, 70, BLR);
+		break;
+	    case TokLtLt:
+		PushOp(&atomStack, &opStack, GenLShf, 110, BLR);
+		break;
+	    case TokGtGt:
+		PushOp(&atomStack, &opStack, GenRShf, 110, BLR);
+		break;
+
+	    case TokQuestion:
+		PushOp(&atomStack, &opStack, GenQuestion, 30, BRL);
+		opStack->ex_Token = TokQuestion;
+		opStack->ex_Precedence = 0;
+		++quests;
+		break;
+
+	    case TokColon:
+		if (quests == 0) {
+		    notdone = 0;
+		    break;
+		}
+		--quests;
+		/*
+		 *  Combine opstack until the op is GenQuestion.  After
+		 *  all is said and done the tree looks like:	    :
+		 *						   / \
+		 *			a ? b : c		  ?   c
+		 *						 a b
+		 */
+		while (opStack && opStack->ex_Token != TokQuestion)
+		    CombineOp(&atomStack, &opStack);
+		if (opStack == NULL)
+		    zerror(EFATAL, EFATAL_SYNTAX_ERROR_EXP);
+		CombineOp(&atomStack, &opStack);    /*	atom for a ? b	*/
+		PushOp(&atomStack, &opStack, GenColon, 30, BRL);
+		break;
+
+	    /*
+	     *	postfix operators, we stay in binary mode
+	     */
+
+	    case TokLParen:
+		/*
+		 *  Subroutine call.
+		 */
+
+		unary = 0;
+		t = GetToken();
+		{
+		    Exp *exp = NULL;
+		    Exp **pe = &exp;
+
+		    while (t && t != TokRParen) {
+			Exp *e;
+
+			t = CompExp(t, pe, 0);
+			e = *pe;
+			pe = &e->ex_Next;
+			if (t != TokComma && t != TokRParen) {
+			    zerror(EFATAL_EXPECTED_COMMACLOSE);
+			    break;
+			}
+			if (t == TokComma)
+			    t = GetToken();
+		    }
+		    PushOp(&atomStack, &opStack, GenCall, 150, LR);
+		    opStack->ex_ExpR = exp;
+		    opStack->ex_Token= TokCall;
+		}
+		break;
+	    case TokRParen:
+		unary = 0;
+		if (parens == 0) {
+		    notdone = 0;
+		    break;
+		}
+		--parens;
+		/*
+		 *  Combine until we find the GenParen
+		 */
+		while (opStack && opStack->ex_Token != TokLParen)
+		    CombineOp(&atomStack, &opStack);
+		if (opStack == NULL)
+		    zerror(EFATAL_SYNTAX_ERROR_EXP);
+		CombineOp(&atomStack, &opStack);	/*  now have atom for (exp) */
+		break;
+	    case TokComma:
+		unary = 1;
+		if (parens == 0 && commaok == 0) {
+		    notdone = 0;
+		    break;
+		}
+		PushOp(&atomStack, &opStack, GenComma, 10, BLR);
+		break;
+	    case TokPlPl:   /*	exp++	*/
+		unary = 0;
+		PushOp(&atomStack, &opStack, GenPosInc, 150, LR);
+		opStack->ex_Token = TokPosInc;
+		break;
+	    case TokMiMi:
+		unary = 0;
+		PushOp(&atomStack, &opStack, GenPosDec, 150, LR);
+		opStack->ex_Token = TokPosDec;
+		break;
+	    case TokStrInd:
+	    case TokStrElm:
+		unary = 0;
+		{
+		    void (*func)(Exp **) = ((t == TokStrInd) ? GenStructInd : GenStructElm);
+
+		    PushOp(&atomStack, &opStack, GenStructInd, 150, LR);
+		    t = GetToken();
+		    if (t != TokId && /* t != TokLabelId && */ t != TokVarId && t != TokTypeId && t != TokEnumConst)
+			zerror(EFATAL_EXPECTED_STRUCT_TAG);
+		    opStack->ex_Func = func;
+		    opStack->ex_Symbol = LexSym;
+		}
+		break;
+	    case TokLBracket:
+		unary = 0;
+		{
+		    Exp *exp;
+
+		    t = CompExp(GetToken(), &exp, 1);
+		    if (t != TokRBracket)
+			zerror(EERROR_EXPECTED_CLOSE_BRACKET);
+		    PushOp(&atomStack, &opStack, GenArray, 150, LR);
+		    opStack->ex_ExpR = exp;
+		}
+		break;
+	    default:
+		notdone = 0;
+		break;
+	    }
+	}
+	if (notdone) {
+	    t = GetToken();
+	    continue;
+	}
+	break;
+    }
+    while (opStack)
+	CombineOp(&atomStack, &opStack);
+    if (atomStack == NULL)
+	zerror(EFATAL_SYNTAX_ERROR_EXP);
+    if (parens)
+	zerror(EFATAL_EXPECTED_CLOSE_PARENS, parens);
+    if (atomStack->ex_Next)
+	zerror(EFATAL_SYNTAX_ERROR_EXP);
+    atomStack->ex_Next = NULL;
+    *pexp = atomStack;
+
+    return(t);
+}
+
+/*
+ *  precedence of 0 is for parenthesized expressions and never combines.
+ */
+
+Local  void
+PushOp(patomStack, popStack, genFunc, precedence, order)
+Exp **patomStack;
+Exp **popStack;
+void (*genFunc)(Exp **);
+long precedence;
+long order;
+
+{
+    Exp *exp;
+
+    /*
+     *	If precedence then pop stack until get entry with lower precedence,
+     *	equal precedence breaks out only for left-to-right operations.
+     *	Parsing : in a ?: expression ignores precedence until ? is found
+     *	again.
+     */
+
+    if (precedence) {
+	for (exp = *popStack; exp; exp = *popStack) {
+	    if (precedence > exp->ex_Precedence)
+		break;
+	    if (precedence == exp->ex_Precedence && (order & RL))
+		break;
+	    CombineOp(patomStack, popStack);
+	}
+    }
+    exp = AllocTmpStructure(Exp);
+    exp->ex_Precedence = precedence;
+    exp->ex_Order = order;
+    exp->ex_Func = genFunc;
+    exp->ex_Next = *popStack;
+    exp->ex_LexIdx = LFBase->lf_Index;
+    *popStack = exp;
+}
+
+Local  void
+PushAtom(patomStack, popStack, genFunc)
+Exp **patomStack;
+Exp **popStack;
+void (*genFunc)(Exp **);
+{
+    Exp *exp;
+
+    if (HackTmpExp) {
+	exp = HackTmpExp;
+	setmem(exp, sizeof(Exp), 0);
+	HackTmpExp = NULL;
+    } else {
+	exp = AllocTmpStructure(Exp);
+    }
+
+    exp->ex_Func = genFunc;
+    exp->ex_Next = *patomStack;
+    exp->ex_LexIdx = LFBase->lf_Index;
+    exp->ex_Flags= 0;
+    *patomStack = exp;
+}
+
+Local  void
+CombineOp(patomStack, popStack)
+Exp **patomStack;
+Exp **popStack;
+{
+    Exp *exp = *popStack;	/*  get op  */
+    Exp *e1;
+    Exp *e2;
+
+    if (exp == NULL)
+	zerror(EFATAL_SYNTAX_ERROR_EXP);
+    if ((e1 = *patomStack) == NULL)
+	zerror(EFATAL_SYNTAX_ERROR_EXP);
+
+    if (exp->ex_Order & QBIN) {
+	e2 = e1->ex_Next;
+	if (e2 == NULL)
+	    zerror(EFATAL_SYNTAX_ERROR_EXP);
+	*patomStack = e2->ex_Next;
+	exp->ex_ExpL = e2;
+	exp->ex_ExpR = e1;
+	exp->ex_Flags = 0;
+	/*exp->ex_Flags = (e1->ex_Flags | e2->ex_Flags) & EF_CALL;*/
+
+    } else {
+	*patomStack = e1->ex_Next;
+	exp->ex_ExpL = e1;
+	exp->ex_Flags = 0;
+
+	if (exp->ex_Token == TokCall && e1->ex_Token == TokVarRef) {
+	    char prgno[16];
+	    PragNode *pragma_call;
+
+	    if ((pragma_call = TestPragmaCall(e1->ex_Var, prgno)) != NULL) {
+		/*
+		 *  Append base variable reference - A6 to end of
+		 *  argument list.
+		 */
+		Exp *ex = zalloc(sizeof(Exp));
+		Exp **pexp;
+		Symbol *sym = MakeSymbol(pragma_call->pn_Sym->Name, pragma_call->pn_Sym->Len, TokId, NULL);
+
+		if (sym->LexId != TokVarId)
+		    yerror(exp->ex_LexIdx, EFATAL_PRAGMA_BASE_UNDEF, sym->Len, sym->Name);
+
+		for (pexp = &exp->ex_ExpR; (e1 = *pexp) != NULL; pexp = &e1->ex_Next)
+		    ;
+		ex->ex_Func = GenVarRef;
+		ex->ex_Token = TokVarRef;
+		ex->ex_Symbol = sym;
+		ex->ex_Var = sym->Data;
+		ex->ex_Flags |= EF_SPECIAL;
+		++ex->ex_Var->Refs;
+		*pexp = ex;
+	    }
+	}
+    }
+    *popStack = exp->ex_Next;
+    exp->ex_Next = *patomStack;
+    *patomStack = exp;
+}
+
+/*
+ *  Parse a braced expression.	An open brace refers to an explcit
+ *  downlevel while an expression may cause zero or more implicit
+ *  downlevel's.
+ *
+ *  exp->ex_Token is set to TokExpAssBlock for downlevel exp's
+ *  exp->ex_ExpL is the base of a list of expressions linked via ex_Next
+ */
+
+short
+CompBracedAssign(short t, Type *type, Exp **pexp, short lbraced, Symbol *sym)
+{
+    Exp *exp;
+    long **caBase;
+    long index = 0;
+
+    /*
+     *	create downlevel
+     */
+
+    *pexp = exp = AllocTmpStructure(Exp);
+    pexp = &exp->ex_ExpL;
+    exp->ex_Type = type;
+    exp->ex_Token = TokExpAssBlock;
+    exp->ex_LexIdx = LFBase->lf_Index;
+    exp->ex_Func  = GenBracedAssign;
+    caBase = &exp->ex_ConstAry;
+
+    for (;;) {
+	Type *subType;
+	int wantcomma = 0;
+
+	if (type->Id == TID_STRUCT) {
+	    if (index >= type->Args)		/* break condition */
+		break;
+	    subType = type->Vars[index]->Type;	/* sub type	   */
+	    if (index) 
+		wantcomma = 1;
+	} else if (type->Id == TID_UNION) {
+	    if (index)
+		break;
+	    subType = type->Vars[0]->Type;
+	} else if (type->Id == TID_ARY) {
+	    subType = type->SubType;
+	    if (*type->Size && index >= *type->Size / *subType->Size)
+		break;
+	    if (index) 
+		wantcomma = 1;
+	} else {
+	    subType = type;
+	}
+	if (subType->Id == TID_UNION || 
+	    subType->Id == TID_STRUCT || 
+	    subType->Id == TID_ARY
+	) {
+	    /*
+	     *	level-down
+	     */
+
+	    if (t == TokComma) {
+		if (wantcomma == 0)
+		    zerror(EFATAL_SYNTAX_ERROR_EXP);
+		wantcomma = 0;
+		t = GetToken();
+	    }
+
+	    if (t == TokRBrace)
+		break;
+
+            if (wantcomma) {
+		zerror(EWARN_MISSING_COMMA);
+            }
+
+	    if (t == TokLBrace) {
+		t = CompBracedAssign(GetToken(), subType, pexp, 1, NULL);
+		if (t != TokRBrace)
+		{
+		    zerror(EERROR_TOO_MANY_INITIALIZERS);
+		    t = match_nesting(t);
+		}
+		t = GetToken();
+	    } else {
+		t = CompBracedAssign(t, subType, pexp, 0, NULL);
+	    }
+	    ++index;
+	    pexp = &(*pexp)->ex_Next;
+	    if (t == TokRBrace || t == TokSemi)
+		break;
+	} else {
+	    /*
+	     *	terminal case for subType
+	     *
+	     *	A right-brace here may terminate the sequence, possible
+	     *	unto multiple levels.
+	     */
+
+	    if (t == TokComma) {
+		wantcomma = 0;
+		t = GetToken();
+	    }
+
+	    if (t == TokRBrace || t == TokSemi)
+		break;
+
+            if (wantcomma) {
+		zerror(EWARN_MISSING_COMMA);
+            }
+
+	    if (t == TokStrConst && type->Id == TID_ARY && *subType->Size == 1) {
+		Exp *sexp;
+
+		t = CompExp(t, pexp, 0);
+		sexp = *pexp;
+		Assert(sexp->ex_Token == TokStrConst);
+		index += sexp->ex_StrLen;
+
+		/*
+		 *  quietly delete the terminating \0 if string
+		 *  overruns array.
+		 */
+
+		if (*type->Size) {
+		    if (index > *type->Size) {
+			if (index - 1 == *type->Size) {
+			    --index;
+			    --sexp->ex_StrLen;
+			} else {
+			    sexp->ex_StrLen -= (index - *type->Size);
+			    index = *type->Size;
+			    zerror(EERROR_ARRAY_CANNOT_HOLD_STRING);
+			}
+		    } else if (index < *type->Size && lbraced == 0) {
+			/*
+			 *  If no { } was used to explicitly specify
+ 			 *  initializers for this array, the string will
+			 *  force the array to be terminated & zero filled
+			 */
+
+			long newLen = *type->Size - index + sexp->ex_StrLen;
+			char *new = talloc(newLen);
+			movmem(sexp->ex_StrConst, new, sexp->ex_StrLen);
+
+			sexp->ex_StrConst = new;
+			sexp->ex_StrLen = newLen;
+			index = *type->Size;
+		    }
+		}
+		pexp = &(*pexp)->ex_Next;
+		break;
+	    } else {
+		/*
+		 *  This is the nominal core, and where all the memory is
+		 *  eaten up for statically initialized arrays.  Simple
+		 *  integer constants are optimized (so we do not allocate
+		 *  an entire Exp structure for each constant).
+		 */
+
+		t = CompExp(t, pexp, 0);
+		if (pexp == &exp->ex_ExpL && (*pexp)->ex_Token == TokIntConst) {
+		    long *captr = talloc(sizeof(long) * 2);
+		    Exp  *caexp = *pexp;
+
+		    *caBase = captr;
+		    captr[1] = caexp->ex_Stor.st_IntConst;
+
+		    caBase = (long **)&captr[0];
+		    HackTmpExp = caexp;
+		    *pexp = NULL;
+		} else {
+		    pexp = &(*pexp)->ex_Next;
+		}
+		++index;
+	    }
+
+	}
+	if (subType == type) break;
+    }
+    *pexp = NULL;
+    *caBase = NULL;
+    HackTmpExp = NULL;	    /*	don't leave stale cache */
+
+    if (type->Id == TID_ARY && lbraced)
+    {
+       if (t == TokComma)
+          t = GetToken();
+    }
+    if (*type->Size == 0)
+    {
+	if (type->Id == TID_ARY)
+	    type->Size = AllocInt(index * *type->SubType->Size);
+	else if (type->Id == TID_UNION || type->Id == TID_STRUCT)
+	{
+	    Undefined_Tag(type, sym, exp->ex_LexIdx);
+	    t = match_nesting(t);
+	}
+    }
+    return(t);
+}
+
+short match_nesting(short t)
+{
+    int nesting = 1;
+    /* We now want to eat up all of the outstanding tokens to avoid a */
+    /* cascade of errors.                                             */
+    while(nesting)
+    {
+	if (t == TokRBrace) nesting--;
+	else if (t == TokLBrace) nesting++;
+	else if (t == 0) break;
+	if (nesting) t = GetToken();
+    }
+    return(t);
+}

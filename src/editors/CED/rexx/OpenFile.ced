@@ -1,0 +1,22 @@
+/*
+**      $Id: OpenFile.ced,v 30.0 1994/06/10 18:06:06 dice Exp $
+**
+**      VMake integration.  Script for ASDG CygnusED Professional (tm).
+**
+*/
+OPTIONS RESULTS
+'STATUS PUBSCREENNAME'
+Screen = Result
+
+/* Note that CED does not allow us to track a variable against the file */
+/* so we must assume only one copy of VMake is running at a time        */
+VPort = 'VMAKE.01'
+
+IF ~show('p',vport) THEN
+   DO
+      'DM VMake is not currently active'
+      EXIT 0
+   END
+
+ADDRESS VALUE vport
+'Jump' Screen

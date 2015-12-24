@@ -1,0 +1,24 @@
+
+		;   FFPA_MUL.A
+		;
+		;   D0	arg1	(4 bytes)
+		;   D1	arg2	(4 bytes)
+		;
+		;   result -> D0
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+		section text,code
+
+		xref	_MathBase
+		xref	_LVOSPMul
+		xdef	__ffpmul_a
+
+__ffpmul_a	move.l	A6,-(sp)
+		move.l	_MathBase(A4),A6
+		jsr	_LVOSPMul(A6)
+		move.l	(sp)+,A6
+		rts
+
+		END
+

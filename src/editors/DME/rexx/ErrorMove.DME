@@ -1,0 +1,60 @@
+/*
+**	$Id: ErrorMove.DME,v 30.0 1994/06/10 18:06:11 dice Exp $
+**
+**	DICE Error Parsing system.  Script for DME.
+**
+**  Notes: This assumes that your DCC:Config/DCC.Config file contains the
+**	   following line:
+**
+**  cmd= rx DCC:Rexx/DME_ErrorParse.rexx %e "%c" "%f" "%0"
+*/
+
+PARSE UPPER ARG COMMAND  /* Valid commands: Current First Next Prev */
+
+OPTIONS RESULTS
+
+IF ~show('p','DICE_ERROR_PARSER') THEN
+   DO
+      title "( Error Parsing Not Active )"
+      EXIT 0
+   END
+
+IF E == "Title" THEN
+   DO
+      title E.STRING
+      EXIT 0
+   END
+
+ADDRESS DICE_ERROR_PARSER COMMAND E
+
+IF rc ~= 0 THEN
+   DO
+      title "( No More Errors )"
+      EXIT 0
+   END
+
+
+IF E.LINE = 0 THEN
+   DO
+   IF LEFT(E.TEXT, 5) = 'DLINK' THEN
+      DO
+	 TT = TRANSLATE(E.STRING, '-', '"')
+	 /* This is a DLINK error, we need to handle it special */
+	 title "( DLINK ERROR: " TT ")"
+	 EXIT 0
+      END
+   END
+
+/*SAY "E.LINE=" E.LINE "E.TEXT=" E.TEXT "E.FPATH=" E.FPATH "E.ARGS=" E.ARGS*/
+
+IF RC ~= 0 THEN
+   DO
+      title "( Unable to open" E.FPATH ")"
+      EXIT 0
+   END
+
+window "("E.FPATH")"
+goto E.Line
+col E.Col
+title "(" E.STRING ")"
+

@@ -1,0 +1,61 @@
+PROJECT= DAS
+DIR= 
+SRCS= direct.c exp.c lab.c main.c ops.c passa.c passb.c passc.c passg.c \
+sect.c subs.c file.c
+HDRS= DAS_rev.h defs.h error.h exp.h lab.h ops.h reg.h sect.h
+EXTRAS= TODO version.doc
+PDEFAULT= 
+EXEDIR= oi:bin/amiga/bincom1/
+OD= dtmp:compc1/DAS/
+PRECOMP= 
+TYPE= OI:Config/Self3x.DMAKEFILE
+RUN= 
+CLIARGS= test.a -Nxxx.c -E2 * -s
+CFLAGS= -ms -r -mRR -proto -DREGISTERED -DCOMMERCIAL
+CLI= 
+
+#### AUTOMATICALLY GENERATED - DO NOT EDIT BELOW THIS LINE
+EP=OI:BIN/Amiga/BinCom/
+PROTOS= $(OD)protos.h
+EXE= $(EXEDIR)$(PROJECT)
+COMPFLAGS = $(CFLAGS) -I$(OD) $(PRECOMP:"*.h":"T:*.m")
+
+OBJS= $(SRCS:"*.c":"$(OD)*.o") $(SRCS:"*.a":"$(OD)*.o")
+
+all: DoResi $(PRECOMP) $(PROTOS) $(EXE)
+
+nopro: $(EXE)
+
+$(EXE): $(OBJS)
+    fwrite $(OD)$(PROJECT).lnktmp $(OBJS)
+    dcc $(COMPFLAGS) @$(OD)$(PROJECT).lnktmp -o %(left)
+
+$(OBJS) : $(SRCS)
+    dcc %(right) -o %(left) -c $(COMPFLAGS)
+
+$(PROTOS) : $(SRCS)
+    -delete %(left)
+    makeproto -o %(left) %(right)
+
+$(PRECOMP:"":"CANT.EXIST.RULE") : $(HDRS)
+    -delete %(left)
+
+clean:
+    -delete $(OBJS) $(PROTOS) $(PRECOMP)
+
+relink: rmexe $(EXE)
+
+rmexe:
+    -delete $(EXE)
+
+DoResi:
+    -resident dlink remove
+    -resident das   remove
+    -resident dc1   remove
+    -resident dcpp  remove
+    -resident dcc   remove
+    resident dlink $(EP)dlink
+    resident das   $(EP)das
+    resident dc1   $(EP)dc1
+    resident dcpp  $(EP)dcpp
+    resident dcc   $(EP)dcc

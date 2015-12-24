@@ -1,0 +1,17 @@
+
+		    ;	SYSTEM13EX.A
+		    ;
+		    ;	exception entry for system13()
+
+		    section text,code
+
+		    xdef    @_sys13SoftIntA
+		    xref    __sys13SoftIntC
+
+@_sys13SoftIntA     move.l  A4,-(sp)
+		    move.l  A1,A4
+		    jsr     __sys13SoftIntC(pc)
+		    move.l  (sp)+,A4
+		    rts
+
+		    END

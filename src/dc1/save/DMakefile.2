@@ -1,0 +1,42 @@
+
+#   DMakefile for recomplilation two,	use dcc to compile itself
+#
+
+OD= dtmp:comp2/c1/
+EXE= dcc:bin/amiga/bin2/xc_dc1
+
+CFLAGS= -r -DREGISTERED -DCOMMERCIAL -DDEBUG -ms -proto -I$(OD)
+LFLAGS= -r -ms -2.0
+
+SRCS= asm1.c asm2.c asmaddr.c asmflt.c asubs.c block.c cexp.c exp.c gen.c \
+ genarith.c genass.c genbool.c genlogic.c genmisc.c lex.c main.c reg.c \
+ rules.c sem.c stmt.c subs.c sym.c toplevel.c types.c error.c pragma.c \
+ hash.a
+
+NOBJS= $(SRCS:"*.?":"*.o")
+OBJS = $(SRCS:"*.?":"$(OD)*.o")
+XOBJS= $(SRCS:"*.?":"junk_*.o")
+
+PROTOS= $(OD)protos.h
+
+all: $(PROTOS) $(EXE)
+
+quick: $(EXE)
+
+$(EXE) : obj_del $(XOBJS) $(OBJS)
+    cd $(OD)
+    lc_dcc $(LFLAGS) @t:c12o -o %(left) -v
+    cd
+
+$(OBJS) : $(SRCS)
+    lc_dcc $(CFLAGS) %(right) -o %(left) -c
+
+$(PROTOS) : $(SRCS)
+    xc_makeproto -o%(left) %(right)
+
+obj_del:
+    delete t:c12o
+
+$(XOBJS) : $(OBJS)
+    echo %(right) >>t:c12o
+

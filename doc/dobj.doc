@@ -1,0 +1,50 @@
+
+dobj/dobj							    dobj/dobj
+
+			       DOBJ.DOC
+
+			      Matthew Dillon
+			      891 Regal Rd.
+			      Berkeley, Ca. 94708
+			      USA
+
+			      uunet.uu.net!overload!dillon
+
+    DOBJ <object_files> [-o outfile] [-nd] [-nc] [-d#]
+
+    DOBJ disassembles object modules AND LIBRARIES into assembly.  DOBJ is
+    useful for, say, finding bugs in an assembler.  Most DICE users will
+    use DOBJ to browse through libraries and object modules, and perhaps to
+    check DAS optimizations... for example, branch optimizations will show
+    up in disassembled object modules that are not otherwise apparent by
+    looking at assembly output (DCC -a).
+
+    DOBJ generates output to the console unless the -o option is used.	The
+    -d option is for debugging the DOBJ program itself and not normally
+    used.
+
+	-o filename	redirect output
+
+	-d[#]		set debug level
+
+	-nd		do not show actual data, only display symbol
+			names
+
+	-nc		do not disassemble actual code, only display symbol
+			names
+
+    DOBJ will replace hunk/offset references with symbol names when possible
+    to yield a more readable output, and interprets each hunk according to
+    its type (CODE, DATA, or BSS).
+
+    There is NO limit to the size of the object file that may be
+    disassembled, but it should be noted that DOBJ can take a while to
+    resolve a large object file's symbols so be patient.  DOBJ does not
+    take up much memory run-time, even when disassembling large object
+    modules.
+
+WARNING
+    DOBJ does not understand all 68000 instructions.  It does not
+    understand any 68020/030 instructions yet.
+
+

@@ -1,0 +1,9 @@
+/* $VER: CO 37.1 (21.2.93) : Check Out & Reread file */
+options results
+unsetprefs read
+'getfilename'
+if rc = 0 then do
+    name = result
+    address command 'co -l ' || name
+    rc = read name
+    end

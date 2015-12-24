@@ -1,0 +1,18 @@
+/*
+**      $Id: ErrorClear.ced,v 30.0 1994/06/10 18:06:06 dice Exp $
+**
+**      DICE Error Parsing system.  Script for ASDG CygnusEd Professional (tm).
+**
+**  Notes: This assumes that your DCC:Config/DCC.Config file contains the
+**         following line:
+**  cmd= rx DCC:Rexx/CED_ErrorParse.rexx %e "%c" "%f" "%0"
+*/
+
+OPTIONS RESULTS
+
+IF ~show('p','DICE_ERROR_PARSER') THEN
+   EXIT 0
+
+ADDRESS DICE_ERROR_PARSER Clear
+
+'SetStatusBar All Errors Cleared'

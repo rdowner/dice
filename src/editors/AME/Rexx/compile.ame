@@ -1,0 +1,19 @@
+/* $VER: Compile 37.2 (23.11.93 ) : Compile with DMAKE */
+
+options results
+
+savemodified
+setprefs 'project qwe'
+address command dmake
+if rc = 0 then do; 
+    eprint "[Compile done]"; 
+    onlywindow; 
+    bindkey "mouseclick Mouse"
+end;
+else do
+    /* check if mouse is bound yet */
+    describekey Mouse
+    parse var result a b c d e f .
+    if (f = "mouseclick") then bindkey "stringrx Mouse" '"options results;dottomouse;getbuffername;if (RC = 0 ) then do;parse var RESULT name .;if name = ''huntbuf'' then do; getline;if(RC = 0) then do;line = RESULT;parse var line a b c d lineno file .;if(d = ''Line'') then do;prevwindow;visit file;gotoidline lineno;end;end;end;else mouseclick;end"'
+    rx "dcc:rexx/nexterror.ame"	/* goto first window */
+end;

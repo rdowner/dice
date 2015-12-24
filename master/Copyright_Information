@@ -1,0 +1,140 @@
+$VER: Copyright_Information 3.0 (17.4.93)
+
+copyright/copyright					copyright/copyright
+
+    DICE is a trademark of Obvious Implementations Corporation
+    Lattice (R) is a registered trademark of Lattice, Incorporated
+    Amiga (R)  is a registered trademark of Commodore-Amiga Inc.
+    AmigaDOS (tm) is a registered trademark of Commodore-Amiga, Inc.
+    Commodore is a registered trademark of Commodore Electronics Limited.
+    Workbench (tm) is a trademark of Commodore-Amiga, Inc.
+    Intuition (tm) is a trademark of Commodore-Amiga, Inc.
+    UNIX (R) is a registered trademark of AT&T
+    XENIX (R) is a registered trademark of Microsoft Corp.
+
+
+			  LICENSE FOR DICE
+
+
+    1.	COPYRIGHT:	These programs and the related documentation
+	are copyrighted.  You may not use, copy, modify, or transfer the
+	programs or documentation or any copy except as expressly provided
+	in this agreement
+
+    2.	LICENSE:	You have the non-exclusive right to use any
+	enclosed program only on a single computer.  You may load the
+	program into your computer's temporary memory (RAM).  You may
+	physically transfer the program from one computer to another
+	provided that the program is used on only one computer at a time.
+	You may not electronically transfer the program or accompanying
+	documentation to another person over a network.  You may not
+	distribute copies of the program or accompanying documentation to
+	others. You may not decompile, disassemble, reverse engineer,
+	modify or translate the program.
+
+	All other rights and uses not specifically granted in this license
+	relating to items created by the author of DICE are reserved by the
+	author of DICE.  All other rights and uses not specifically granted
+	in this license relating to items created by Commodore are reserved
+	by Commodore.	Where clarification is required of the above
+	paragraph, the author of DICE shall decide the clarification. Where
+	such clarification is deemed illegal, the latter sentence will be
+	withdrawn from this license.
+
+    3.	BACKUP-UP AND TRANSFER: You may make any number of physical backups
+	of the program and documentation provided the backups remain in your
+	immediate possession.  You must reproduce and include the copyright
+	notice on any backup copy.  You may transfer and license the product
+	to another party only if the other party agrees to the terms and
+	conditions of this Agreement and completes and returns a registration
+	card to the author of DICE.  If you transfer the program you must at
+	the same time transfer the documentation and back-up copies or
+	transfer the documentation and destroy the backup copies.
+
+    4.	TERMS:	This license is effective until terminated.  You may
+	terminate it by destroying the program and documentation and all
+	copies thereof.  This license will also terminate if you fail to
+	comply with any term or condition of this Agreement.  You agree
+	upon such termination to destroy all copies of the program and
+	documentation.
+
+    5.	EXCEPTIONS:  Exceptions to the LICENSE (2) exist ONLY for the
+	FreeWare version of DICE released by the author to public
+	networks.  THE VERSIONS OF DICE SENT TO USERS BY PHYSICAL MAIL OR
+	RELEASED THROUGH A DISTRIBUTOR ARE NOT FREEWARE AND ALL CONTRACT
+	PROVISIONS APPLY!  In plain english, you cannot redistribute any
+	DICE received through the mail unless my explicit, written
+	permission is given (and will be given only if I am sending you
+	the FreeWare version via normal mail).
+
+	For the FREEWARE VERSION, obtained via public networks ONLY, and
+	not containing ANY COMMODORE CREATED FILES, the distribution may be
+	redistributed to other public networks or individuals only in
+	whole.
+
+    6.	PROGRAM DISCLAIMER: THE PROGRAMS ARE PROVIDED "AS IS" WITHOUT
+	WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
+	BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+	FITNESS FOR A PARTICULAR PURPOSE.  THE ENTIRE RISK AS TO THE
+	RESULTS AND PERFORMANCE OF ANY PROGRAM IS ASSUMED BY YOU.  Should
+	the program prove defective, you (and not Commodore or its dealers
+	or the author of DICE) assume the entire cost of all necessary
+	servicing, repair, or correction.  Further, neither Commodore nor
+	the author of DICE warrants, guarantees, or makes any
+	representations regarding the use of, or the results of the use of,
+	the program in terms of corrections, accuracy, reliability,
+	currentness, or otherwise; and you rely on the program and results
+	solely at your own risk.
+
+    7.	DISKETTE LIMITED WARRANTY:  The author of DICE warrents to the
+	original license that the diskette(s) on which the program is
+	recorded shall be free from defects in material and workmanship
+	only for a period of one 6 months from the date of original
+	purchase.  If a defect covered by this warranty occurs during
+	this 6 month warranty period, and it is returned to the dealer
+	from whom it was purchased not later than five (5) days of the end
+	of such 6 month period, the dealer shall, at the dealer's option,
+	either repair or replace the diskette.
+
+	The above warranty is exclusive and in lieu of all other
+	warranties, express or implied (other than those warranties implied
+	by state law).	All state statutory implied warranties, including,
+	but not limited to implied warranties of merchantability or fitness
+	for a particular purpose shall be limited to a period of 6 months
+	from the date of your original purchase.  No warranties, either
+	express or implied, will apply after this period.
+
+    8.	LIMITATION OF LIABILITY:  COMMODORE AND THE AUTHOR OF DICE's LIABILITY
+	IS LIMITED SOLELY TO THE REPAIR OR REPLACEMENT OF THE DEFECTIVE
+	PRODUCT, IN ITS SOLE DISCRETION, AND SHALL NOT IN ANY EVENT INCLUDE
+	DAMAGES FOR LOSS OF USE OR LOSS OF ANTICIPATED PROFITS OR BENEFITS OR
+	OTHER INCIDENTAL OR CONSEQUENTIAL COSTS, EXPENSES OR DAMAGES,
+	INCLUDING WITHOUT LIMITATION ANY DATA OR INFORMATION WHICH MAY BE
+	LOST OR RENDERED INACCURATE, EVEN IF THE AUTHOR OF DICE AND/OR
+	COMMODORE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+	Some states do now allow a limitation on how long an implied
+	warranty lasts, or limitation of incidental or consequential
+	damages, so the above limitations or exclusions may not apply to
+	you. This warranty gives you specific legal rights, and you may
+	also have other rights which vary from state to state.
+
+    9.	MISCELLANEOUS:	This agreement represents the entire understanding
+	regarding the programs and related documentation, and supersedes
+	any prior purchase order, communications or representations.  This
+	agreement may only be modified by a written amendment signed by an
+	officer of Commodore (when related to Commodore specific files in
+	the distribution) or by a written amendment signed by the author of
+	DICE (when related to all other files in the distribution).  If any
+	provision of the agreement shall be deemed unlawful, void, or for
+	any reason, unenforceable it shall be deemed separate from, and
+	shall in no way affect the validity and enforceability of the
+	remaining provisions of the agreement.
+
+	This license agreement shall be governed by the laws of the United
+	States of America.
+
+    10. The program License Agreement shall inure to the benefit of
+	Commodore-Amiga, Inc, its parent, and all affiliated companies
+	thereof with exception to DICE specific programs and documentation,
+	which shall inure to the benefit of the author of DICE.

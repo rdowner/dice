@@ -1,0 +1,142 @@
+Tstat v37.10 (C) Copyright 1990-1993 Commodore-Amiga, Inc.  All Rights Reserved
+Usage: tstat [CliNum1-n|ExecTaskName|CliCommandName] [NOCTRL] [-tickdelay]
+More options: [SHOWSTACK] [SHOWPC] [SHOWHUNK] [SHOWHUNKCODE] [SERIAL|REMOTE]
+Use NOCTRL option when redirecting output to a file
+Example: tstat Workbench -10
+
+Changes:
+37.9  - SERIAL (aka REMOTE) and Segtracker support
+37.10 - Fix to display PC/regs properly for 68EC020
+
+TSTAT
+=====
+
+TSTAT is a tool that allows you to snoop on the activity of other tasks.
+
+Tstat prints out information from the specified named task or CLI number's
+Task control block, including processor stack frame information containing
+the PC and registers the task had when it was last switched out.
+Optionally, TSTAT can show the contents of the top of the stack (SHOWSTACK),
+the instructions (in hex) at the PC (SHOWPC), and if SegTracker is
+running, the seglist/hunk/offset of the PC or an address on the stack
+found in a seglist (SHOWHUNK), and a hex dump of 16 longwords starting
+with the longword prior to that hunk and offset.
+
+Who to Watch
+============
+
+The first command arg to TSTAT tells TSTAT who to watch.
+
+This can be specified in one of the following ways:
+
+- CLI number				Example: TSTAT 4
+  TSTAT will watch CLI 4 and all commands that run as part of CLI 4
+
+- Exec task name or CLI command name	Example: TSTAT myprogram
+  TSTAT will watch any exec task or CLI command named "myprogram",
+  waiting for it to appear when no task/command is present with that name.
+ 
+-tickdelay
+==========
+TSTAT can be told to loop via the -tickdelay option (Example -10).
+When looping, by default, TSTAT will use console escape sequences to
+present a non-scrolling updating-in-place display (as long as the CON
+window it's in is big enough for ithe TSTAT display).
+
+Example: TSTAT myprogram -10
+
+REMOTE/SERIAL option
+====================
+The new REMOTE option (aka SERIAL) sends the TSTAT output out via kprintf
+so the updating display can be watched in a VT100-compatible terminal
+package on a remote machine connected via a null modem cable.
+
+Example: TSTAT myprogram -10 SERIAL
+      or TSTAT myprogram -10 REMOTE
+
+NOCTRL
+======
+If you would prefer TSTAT's output to have no escape sequences,
+use the NOCTRL option.  This is useful when capturing or
+redirecting TSTAT's output.
+
+Example: TSTAT >ram:capture myprogram -50 NOCTRL
+
+SHOWSTACK
+=========
+Show the top 16 longwords on the stack.  These longwords are displayed
+on the @SP lines.
+
+SHOWPC
+======
+Show the 16 longwords at the PC (usually within exec.library Wait()
+unless task was swapped out while READY).  These longwords are
+displayed on the @PC lines.
+
+SHOWHUNK
+========
+Requires SegTracker (distributed with latest Enforcer).
+Show the seglist name, hunk, and offset for the first of the
+following which is also in a seglist:  PC, OR an address on stack
+whose memory location follows a processor JMP or JSR instruction,
+OR any address on stack.  Note - TSTAT only serahces back through
+72 longwords on the stack.  If nothing in a seglist is found within
+those 72 longwords, TSTAT will report no seglist found.
+
+SHOWHUNKCODE
+============
+Requires SegTracker (distributed with latest Enforcer).
+Does SHOWHUNK (above) plus shows a hex dump of 16 longwords
+at the reported seglist/hunk/offset, starting with the longword
+before the offset  This may allow you to see the JMP or JSR that
+took the task to a Wait().  These longwords are displayed on the
+"@HC" lines.
+
+Example: TSTAT more -10 SHOWSTCK SHOWPC SHOWHUNKCODE
+
+Sample Output
+=============
+ CLI=13  Taskname=Shell Process  @$5eb470  Type=PROCESS  State=WAIT    
+ Sig: Alloc=$0000ffff Wait=$00000100  Recvd=$80000004 Except=$00000000
+ Priority= 0   TDNest= 0  IDNest=-1   TCode=$002b63b8  ECode=$00202ee0     
+ SP=$004a29a4  tc_SPLower=$004a03c8   tc_SPUpper=$004a2ad8     
+ PC=$002009f0  StkSize=10000  StkUse=308 HiUse=308 LastHi=0       
+ Chip:910136  Fast:342632  Command: more                   
+d0-7:002809ac 000000ff 00000014 00030d40 00000002 0000000c 0017b4c7 005eb4cc 
+a0-6:004a2a00 005eb470 005eb4cc 00000000 005eb470 002807ce 00280804 
+@SP: 00216856 00000002 0028099a 005eb4cc 00280804 00215ef0 005ed72c 005ed728
+@SP: 056d004a 29d00202 02020202 004a29bc 005eb4cc 00000014 00000000 00000000
+@PC: 4e75007c 07002f3c 00000008 6000ff2c 48e70030 20780010 2478002c 43fa0096
+@PC: 21c90010 21c9002c 224f7000 4e7b0801 08c00000 223c0000 0a094e7b 10024e7a
+On stack $49eae0: seglist "more" Hunk $0001 Offset $00000d80
+@HC: 4eaeff34 4a80663c 7000223c 00001000 2c780004 4eaefece 0800000c 67d270ff
+@HC: 27400044 222b0014 2c79002e be344eae ff344a80 67082f0b 610010b6 584f7000
+
+
+Explanation of output
+=====================
+CLI number (if any)   Exec Taskname   Process Address, Type, and State
+Signals: allocated, waiting for, received, exception
+Task Priority, Forbid count (TDNest), Disable count (IDNest) \
+    task trapcode pointer, task exception code pointer
+Stack pointer (SP) adjusted for procesor stack frame; task tc_Upper/Lower
+Program counter (PC), Stack size and amount used
+Available memory, CLI command name (if any)
+Data registers d0-d7
+Address registers a0-a6
+Optional SHOWSTACK @SP longwords
+Optional SHOWPC @PC longwords
+Optional SHOWHUNK seglist/hunk/offset, if any
+Optional SHOWHUNKCODE @HC longwords
+
+Notes
+=====
+TDNest and IDNest - generally, for both of these, -1 means none in
+effect (i.e. no forbids, no disables).  However, currently, when
+a Task is on the WAIT list it also has the appearance of having one
+Forbid in effect (i.e. TDNest=0).  SO, when you re watching a task
+whose State=WAIT, TDNest=0 IDNest=-1 should be correct for a task
+that has no Forbids or Disables in effect.  When a task State=READY,
+the TDNest and IDnest should both show as -1 if teh task has no
+Forbids or Disables in effect.
+

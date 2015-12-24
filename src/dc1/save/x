@@ -1,0 +1,163 @@
+
+# DMakefile
+#
+# (c)Copyright 1992 Obvious Implementations Corp, All Rights Reserved
+# CONFIDENTIAL, This is unpublished proprietary source code owned by
+# Obvious Implementations Corp.  This material contains trade secrets of
+# Obvious Implementations Corp.
+
+SRCS= asm1.c asm2.c asmaddr.c asmflt.c asubs.c block.c cexp.c exp.c gen.c \
+ genarith.c genass.c genbool.c genlogic.c genmisc.c lex.c main.c reg.c \
+ rules.c sem.c stmt.c subs.c sym.c toplevel.c types.c error.c pragma.c \
+ hash.a
+
+MODULE= dc1
+EXE= dc1
+
+OD1= dtmp:comp1/$(MODULE)/
+OD2= dtmp:comp2/$(MODULE)/
+ODC= dtmp:compc/$(MODULE)/
+ODR= dtmp:compr/$(MODULE)/
+ODF= dtmp:compf/$(MODULE)/
+ODN= /tmp/comp/$(MODULE)/
+
+ODIRS= $(OD1) $(OD2) $(ODC) $(ODR) $(ODF)
+
+EXE1= dcc:bin/amiga/bin1/lc_$(EXE)
+EXE2= dcc:bin/amiga/bin2/$(EXE)
+EXEC= oi:bin/amiga/bincom/$(EXE)
+EXER= dcc:bin/amiga/binreg/$(EXE)
+EXEF= dcc:bin/amiga/binfree/$(EXE)
+EXEN= ../bin/next/$(EXE)
+
+LFLAGSC= -ms -r -mRR -proto
+
+CFLAGS1= -iinclude: -idinclude: -i$(OD1) -v -dDEBUG -dNO_ASM -dREGISTERED
+CFLAGS2= -ms -r -I$(OD2) -DDEBUG -DREGISTERED -DCOMMERCIAL
+CFLAGSC= $(LFLAGSC) -I$(ODC) -Idinclude:amiga20 -Idinclude:amiga30 -DREGISTERED -DCOMMERCIAL
+CFLAGSR= -ms -r -mRR -I$(ODR) -proto -DREGISTERED
+CFLAGSF= -ms -r -mRR -I$(ODF) -proto -DFREEWARE
+CFLAGSN= -O2 -I.. -I$(ODN) -L../suplib -DREGISTERED -DCOMMERCIAL -DNO_ASM
+
+PROTOS1= $(OD1)protos.h
+PROTOS2= $(OD2)protos.h
+PROTOSC= $(ODC)protos.h
+PROTOSR= $(ODR)protos.h
+PROTOSF= $(ODF)protos.h
+PROTOSN= $(ODN)protos.h
+
+OBJS1 = $(SRCS:"*.c":"$(OD1)*.o")
+OBJS2 = $(SRCS:"*.?":"$(OD2)*.o")
+OBJSC = $(SRCS:"*.?":"$(ODC)*.o")
+OBJSR = $(SRCS:"*.?":"$(ODR)*.o")
+OBJSF = $(SRCS:"*.?":"$(ODF)*.o")
+OBJSN = $(SRCS:"*.?":"$(ODN)*.o")
+
+default:
+
+pass1: $(OD1:"*/$(MODULE)/":"*") $(OD1) $(PROTOS1) $(EXE1)
+
+pass2: $(OD2:"*/$(MODULE)/":"*") $(OD2) $(PROTOS2) $(EXE2)
+
+com: $(ODC:"*/$(MODULE)/":"*") $(ODC) $(PROTOSC) $(EXEC)
+
+reg: $(ODR:"*/$(MODULE)/":"*") $(ODR) $(PROTOSR) $(EXER)
+
+free: $(ODF:"*/$(MODULE)/":"*") $(ODF) $(PROTOSF) $(EXEF)
+
+next: $(ODN) $(PROTOSN) $(EXEN)
+
+$(EXE1) : $(OBJS1)
+    join link.1 AS $(OD1)link.1
+    cd $(OD1:*/:*)
+    blink FROM LIB:c.o WITH link.1 LIB lib:lc.lib lib:amiga20.lib TO %(left) BATCH
+    cd
+
+$(EXE2) : $(OBJS2)
+    join link.1 AS $(OD2)link.1
+    cd $(OD2:*/:*)
+    lc_dcc $(CFLAGS2) @link.1 hash.o -o %(left)
+    cd
+
+$(EXEC) : $(OBJSC)
+    join link.1 AS $(ODC)link.1
+    cd $(ODC:*/:*)
+    dcc -l0 $(LFLAGSC) dlib:c.o @link.1 hash.o dlib:csr.lib dlib:amiga20sr.lib dlib:amiga20s.lib dlib:amiga30sr.lib dlib:autos.lib -o %(left)
+    cd
+#    dcc $(LFLAGSC) @link.1 hash.o -o %(left)
+
+$(EXER) : $(OBJSR)
+    join link.1 AS $(ODR)link.1
+    cd $(ODR:*/:*)
+    dcc -l0 $(CFLAGSR) dlib:c.o @link.1 hash.o dlib:csr.lib dlib:amiga20sr.lib dlib:amiga20s.lib dlib:autos.lib -o %(left)
+    cd
+#    dcc $(CFLAGSR) @link.1 hash.o -o %(left)
+
+$(EXEF) : $(OBJSF)
+    join link.1 AS $(ODF)link.1
+    cd $(ODF:*/:*)
+    dcc $(CFLAGSF) @link.1 hash.o -o %(left)
+    cd
+
+$(EXEN) : $(OBJSN)
+    cc $(CFLAGSN) %(right) -o %(left) -lamiga
+    strip %(left)
+
+$(OBJS1) : $(SRCS:"*.c")
+    lc $(CFLAGS1) -o%(left) %(right)
+
+$(OBJS2) : $(SRCS)
+    lc_dcc $(CFLAGS2) %(right) -o %(left) -c
+
+$(OBJSC) : $(SRCS)
+    dcc $(CFLAGSC) %(right) -o %(left) -c
+
+$(OBJSR) : $(SRCS)
+    dcc $(CFLAGSR) %(right) -o %(left) -c
+
+$(OBJSF) : $(SRCS)
+    dcc $(CFLAGSF) %(right) -o %(left) -c
+
+$(OBJSN) : $(SRCS)
+    cc $(CFLAGSN) %(right) -o %(left) -c
+
+$(PROTOS1) : $(SRCS)
+    -delete %(left)
+    lc_makeproto -o%(left) %(right)
+
+$(PROTOS2) : $(SRCS)
+    -delete %(left)
+    lc_makeproto -o%(left) %(right)
+
+$(PROTOSC) : $(SRCS)
+    -delete %(left)
+    makeproto -o%(left) %(right)
+
+$(PROTOSR) : $(SRCS)
+    -delete %(left)
+    makeproto -o%(left) %(right)
+
+$(PROTOSF) : $(SRCS)
+    -delete %(left)
+    makeproto -o%(left) %(right)
+
+$(PROTOSN) : $(SRCS)
+    -rm %(left)
+    makeproto -o%(left) %(right)
+
+clean:
+    -delete $(ODIRS:*/:*) ALL
+
+$(ODIRS:"*/$(MODULE)/":"*") : $(ODIRS:"*/$(MODULE)/":"*")
+    makedir %(left)
+
+$(ODIRS) : $(ODIRS)
+    makedir %(left:*/:*)
+
+$(ODN) : $(ODN)
+    mkdir %(left:*/:*)
+
+clean_next:
+    -rm -rf $(OBJSN)
+
+

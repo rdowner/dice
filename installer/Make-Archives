@@ -1,0 +1,88 @@
+.bra {
+.key action
+.ket }
+;
+;
+;       $Id: Make-Archives,v 30.0 1994/06/10 17:55:04 dice Exp $
+;
+;       Compress DICE files into archives.
+;
+;       Source:         A complete hard disk install, in DCC.MASTER:
+;       Intermediate:   ar:m
+;
+
+;;;;;;;;;;;;;;;;        Setup
+assign from{$$}: ""
+assign ar: Oi:Archives
+setdate DCC.Master:#?     01-FEB-94 12:00 ALL
+setdate OI:Src/Editors/#? 01-FEB-94 12:00 ALL
+setdate OI:Src/Freeware   01-FEB-94 12:00 ALL
+
+changetaskpri   -2
+
+;;;;;;;;;;;;;;;;        Cleanup
+failat 20
+echo "Cleaning up Archives"
+delete  >NIL: ar:#? quiet all force
+failat 1
+
+;;;;;;;;;;;;;;;;        Protection bits
+if {action} EQ "FULL"
+        echo "Fixing protection bits in dcc.master:"
+        protect dcc.master:    rd  all quiet
+        protect dcc.master:bin pred all quiet
+        protect dcc.master:bin/#?.info r all quiet
+endif
+
+;;;;;;;;;;;;;;;;        Make archives
+cd dcc.master:bin
+lha -ax  a ar:basic_tools       dmake dcc dcpp dc1 das dlink
+lha -ax  a ar:source_control    co ci diff3 rcs rcsdiff rlog ident rcsclean rcsmerge merge diff
+lha -ax  a ar:extended_tools    vmake vmake.info vopts vopts.info cat wc dprof du fdtolib head dicecache dobj dsearch dupdate expand fdtopragma flush hunks istrip lbmake libtos makeproto touch uprev wbrun
+lha -ax  a ar:rom_tools         loadabs romable bintohex loadfile
+
+cd dcc.master:include
+lha -ax  a ar:include_common    #?.h clib sys lib fd pd devices proto
+lha -axr a ar:include_20        amiga20
+lha -axr a ar:include_30        amiga30
+lha -axr a ar:include_13        amiga13
+
+cd dcc.master:
+lha -ax  a ar:dice_linklibs     dlib/~(amiga#?)
+lha -ax  a ar:mmu_tools         tools/#?
+lha -ax  a ar:amiga12_linklibs  dlib/amiga1#?.lib dlib/amiga2#?.lib
+lha -ax  a ar:amiga30_linklibs  dlib/amiga3#?.lib
+lha -arx a ar:library_source    lib
+lha -arx a ar:example_source    examples
+lha -ax  a ar:online_help1      doc/dice_commands.doc doc/dice_libraries.doc doc/dice_extras.doc doc/dice_errors.doc
+lha -ax  a ar:online_help2      bin/DICEHelp#? bin/MakeIndex
+lha -ax  a ar:debugger          doc/dice_debugger.doc bin/dd
+lha -ax  a ar:dice_startup      Dice-Startup Dice-Startup.info
+;Note exclusions for files shipped uncompressed
+;
+lha -arx a ar:miscellaneous     REXX s libs config bin/derror
+
+cd oi:src/editors/TurboText
+lha -arx a ar:ttx_config        config bin rexx s
+cd oi:src/editors/DME
+lha -arx a ar:dme_config        config bin rexx s
+cd oi:src/editors/CED
+lha -arx a ar:ced_config        config bin rexx s
+cd oi:src/editors/AME
+lha -arx a ar:ame_config        config bin rexx s
+cd oi:src/FreeWare
+lha -arx a ar:Freeware          #?
+
+;;;;;;;;;;;;;;;;        Statistics
+failat 20
+cd      from{$$}:
+assign  from{$$}:
+
+delete >NIL: Make-Disks.Save force
+rename Make-Disks Make-Disks.Save
+rx Create-Make-Disks >Make-Disks
+Diff Make-Disks.Save Make-Disks
+Protect Make-Disks rs
+
+;;;;;;;;;;;;;;;;        Endgame
+changetaskpri   0

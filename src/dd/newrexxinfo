@@ -1,0 +1,35 @@
+    I'll add a subroutine call to return the number and optional pointer to
+    the fully qualified name for any given port (supplying NULL to obtain
+    the name/slotnumber for the DICE-automatic port).
+
+    For now, you can work around the problem by leaving the host name NULL
+    and creating the application port with a call to:
+    CreateDiceRexxPort(NULL, "APPNAME"), which creates a public application
+    port "APPNAME.xx" and returns the selected id number (an integer).
+    Since you passed NULL as the message port, DICE's Rexx subsystem will
+    initialize its internal message port (basically, the autoinit code
+    calls the above function if RexxHostName is non-NULL on startup).
+
+    P.S. andy, I can't keep on emailing whole c*.lib sets with the fixes,
+    so instead I'm mailing the updated source code and object modules to be
+    PREPENDED to the appropriate c*.lib files (in order to override the one
+    in the library).  That'l be in the next message.
+
+                                        -Matt
+
+    Matthew Dillon              dillon@Overload.Berkeley.CA.US
+    1005 Apollo Way             uunet.uu.net!overload!dillon
+    Incline Village, NV. 89451  ham: KC6LVW (no mail drop)
+    USA                         Sandel-Avery Engineering (702)831-8000
+
+
+& pre
+&
+Message 218:
+From uunet!overload!dillon Fri Dec 11 06:15:15 1992
+Date: Thu, 10 Dec 92 20:47:44 PST
+To: cbmvax!andy, oichq!jtoebes
+Subject: new REXX objects / source
+
+    Try this.
+

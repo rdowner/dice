@@ -1,0 +1,89 @@
+##base _None
+##bias 30
+##public
+*
+*  Exec support functions
+*
+BeginIO(ioReq)(a0)
+CreateExtIO(port,ioSize)(a0,d0)
+CreatePort(name,pri)(a0,d0)
+CreateStdIO(port)(a0)
+CreateTask(name,pri,initPC,stackSize)(a0,d0/a1,d1)
+DeleteExtIO(ioReq)(a0)
+DeletePort(ioReq)(a0)
+DeleteStdIO(ioReq)(a0)
+DeleteTask(task)(a0)
+NewList(list)(a0)
+LibAllocPooled(poolHeader,memSize)(a0,d0)
+LibCreatePool(memFlags,puddleSize,threshSize)(d0/d1/d2)
+LibDeletePool(poolHeader)(a0)
+LibFreePooled(poolHeader,memory,memSize)(a0/a1,d0)
+*
+* Assorted functions in amiga.lib
+*
+FastRand(seed)(d0)
+RangeRand(maxValue)(d0)
+*
+* Graphics support functions in amiga.lib
+*
+AddTOF(i,p,a)(a0/a1,d0)
+RemTOF(i)(a0)
+waitbeam(b)(d0)
+*
+* math support functions in amiga.lib
+*
+afp(string)(a0)
+arnd(place,exp,string)(d0/d1/a0)
+dbf(exp,mant)(d0/d1)
+fpa(fnum,string)(d0/a0)
+fpbcd(fnum,string)(d0/a0)
+*
+* Timer support functions in amiga.lib (V36 and higher only)
+*
+TimeDelay(unit,secs,microsecs)(d0/d1/d2)
+DoTimer(*,unit,command)(a0,d0/d1)
+*
+*  Commodities functions in amiga.lib (V36 and higher only)
+*
+ArgArrayDone()()
+ArgArrayInit(argc,argv)(a0/a1)
+ArgInt(tt,entry,defaultval)(a0/a1,d0)
+ArgString(tt,entry,defaulstring)(a0/a1/a2)
+HotKey(description,port,id)(a0/a1,d0)
+InvertString(str,km)(a0/a1)
+FreeIEvents(events)(a0)
+*
+* Commodities Macros
+*
+* CxObj *CxCustom(LONG(*)(),LONG id)(A0,D0)
+* CxObj *CxDebug(LONG id)(D0)
+* CxObj *CxFilter(STRPTR description)(A0)
+* CxObj *CxSender(struct MsgPort *port,LONG id)(A0,D0)
+* CxObj *CxSignal(struct Task *task,LONG signal)(A0,D0)
+* CxObj *CxTranslate(struct InputEvent *ie)(A0)
+*
+*  ARexx support functions in amiga.lib
+*
+CheckRexxMsg(rexxmsg)(a0)
+GetRexxVar(rexxmsg,name,result)(a0/a1,d0)
+SetRexxVar(rexxmsg,name,value,length)(a0/a1,d0/d1)
+*
+*  Intuition hook and boopsi support functions in amiga.lib.
+*  These functions do not require any particular ROM revision
+*  to operate correctly, though they deal with concepts first introduced
+*  in V36.  These functions would work with compatibly-implemented
+*  hooks or objects under V34.
+*
+CallHookA(hookPtr,obj,message)(a0/a2,a1)
+DoMethodA(obj,message)(a2,a1)
+DoSuperMethodA(cl,obj,message)(a0/a2,a1)
+CoerceMethodA(cl,obj,message)(a0/a2,a1)
+##private
+##public
+*
+*  Network-support functions in amiga.lib.
+*  ACrypt() first appeared in later V39 versions of amiga.lib, but
+*  operates correctly under V37 and up.
+*
+ACrypt(buffer,password,username)(a0/a1/a2)
+##end

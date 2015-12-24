@@ -1,0 +1,1 @@
+dcc fail.c -Ht:fail.m=fail.h

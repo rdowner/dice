@@ -1,0 +1,18 @@
+/*
+**      $Id: ErrorClear.ttx,v 30.0 1994/06/10 18:06:16 dice Exp $
+**
+**      DICE Error Parsing system.  Script for Oxxi TurboText (tm).
+**
+**  Notes: This assumes that your DCC:Config/DCC.Config file contains the
+**         following line:
+**  cmd= rx DCC:Rexx/TTX_ErrorParse.rexx %e "%c" "%f" "%0"
+*/
+
+OPTIONS RESULTS
+
+IF ~show('p','DICE_ERROR_PARSER') THEN
+   EXIT 0
+
+ADDRESS DICE_ERROR_PARSER Clear
+
+'SetStatusBar All Errors Cleared'

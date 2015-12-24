@@ -1,0 +1,2036 @@
+AME Documentation						Andy Finkel
+
+
+
+
+	AME (pronounced 'amy') is a full screen text editor, based on 
+the public domain MicroEmacs code by David Conway, ported to the Amiga and 
+enhanced to take advantage of the special features of the Amiga.  
+You may be familiar with the older versions of MicroEmacs on the Amiga...
+AME is much more advanced.  Some special features of note are:
+
+	Full Arexx Support
+	Programmable Menus
+	Programmable Functon keys
+	Better mouse support
+	Undo
+	EUC character support
+	complete keybord programmability
+	clipboard support
+	Scrollbar on window
+	2.0 look and feel
+	Public screen support
+	Incremental search
+	Pattern match search and replace
+	Command completion
+	Integrated with DICE
+	Shell variable support
+	AppWindow Support	
+	Locale Library Support
+	Iconification (AppIcon support)
+
+INVOKING AME:
+	AME can be started from the Shell or from Workbench.  
+
+Shell Use
+AME uses the 2.0 ReadArgs function for parsing its arguments.  It's template 
+is as follows:
+
+
+FROM/M,GOTO/K/N,SEARCH/K,WITH/K,PUBSCREEN/K,BASENAME/K,SCREEN/S,X/K/N,Y/K/N,
+WIDTH/K/N,HEIGHT/K/N,DEPTH/K/N,HUNT/K,NOSTART/S,WINDOW/K,NOBAR/S,DEFINE/K,AS/K: 
+
+If started with no arguments, AME will automatically load the last file
+edited in that Shell, and place the cursor on the line where the cursor
+was located when the file was edited.  The last name and last line number
+are stored in local shell variables called AME_FILE and AME_LINE.  If these
+do not exist, AME searches for global environment variables with the same names.
+If those do not exist and no files are specified on the command line,
+AME comes up displaying an empty buffer named Main.  (The reason AME looks
+for the global environment variables is to handle the Workbench and the
+RUN AME case;  where there is no Shell environment to store the variables
+from one invocation of AME to the next).
+
+AME supports loading multiple files.  Each file is loaded into its own buffer.
+A maximum of four buffers are displayed initially.  If more files are specified
+they are loaded, but they are not immediately visible.  AME also supports
+wild cards in file names, using the standard AmigaDOS wildcard routines.
+
+The GOTO keyword allows you to specify a line number to 
+The AME window is normally divided into three parts:  The display window, 
+the mode line, and the echo line.  The display window is the area where most
+of the editing action takes place.   The mode line shows current status 
+information, such as file name, mode information, and so on.  The echo line 
+is the bottom line of the window, and can be used to enter extended commands 
+and parameters for commands.
+
+The SEARCH keyword allows you so specify a search string.  On startup, AME
+will search the first buffer for that string;  if found, the cursor will
+be positioned at that point in the buffer.
+
+After all files are loaded, AME runs its startup file(s).  These files must
+be Arexx scripts.  The standard startup file is S:AME_PRO.ame, and is executed
+first.  Then, if the WITH keyword is specified, that file is executed.
+
+The NOSTART keyword will cause AME to not execute the S:AME_PRO.AME file on
+startup.  Any file specified by the WITH keyword will still be executed.
+
+The PUBSCREEN option allows you to give the name of a public screen for AME to
+open its window on.
+
+The BASENAME keyword allows you to specify a different basename for AME.  AME
+will use this as the basis for names for its Arexx port, and (if AME opens
+its own screen) as the name for its public screen.
+
+The SCREEN keyword specifies that AME open its own screen, rather than opening
+on the Workbench screen.  By default, this will be a one bitplane screen.
+There will be no scroll bar, or scroll arrow gadgets;  instead, as much
+space as available will be used for the editing area.
+
+The X and Y keywords allow you to specify the initial upper left corner location
+of  the intuition window that AME opens on the Workbench screen.
+The WIDTH and HEIGHT keywords allow you to specify the initial width and height
+for the Window; otherwise it defaults to what I think is a reasonable size
+for your current Workbench size.
+
+The DEPTH keyword is used n conjunction with the SCREEN keyword to specify the
+number of bitplanes used by AME.  One bitplane is fastest.  Two give
+more color possibilities for mode line and cursor. 
+
+The WINDOW keyword is used to tell AME to open in a CON: or AUX: (or even
+NIL:) window.  Instead of opening its own Intuition window, with menus,
+mouse support, and so on, the WINDOW keyword allows you to open AME
+in the current shell window (WINDOW *), in a new con: window (like
+WINDOW con:0/0/640/100/Hithere/Close), in a Newshell over the AUX: handler
+(use WINDOW * ) or even in background mode (WINDOW NIL:).  In background
+mode, no window is opened.  You can issue ARexx commands;  this allows
+you to quietly programatically edit files.  When the WINDOW keyword is
+used, the AME jump command can be used to switch from background
+to opening a CON: window, as well as to move to other public screens)
+All requesters automatically default to off when the WINDOW keyword
+is used (for remote use).  If for some reason you are using
+the WINDOW keyword while at the Amiga itself, you can turn on 
+the file requester (or all requesters) by using the SETPREFS command.
+
+The NOBAR allows you to supress the scrollbar and scroll arrows.
+
+The DEFINE and AS keywords work together to allow you to define a single
+local DOS variable when AME starts.  This would allow you to set a 
+variable containing a project name, an Arexx port name, whatever.  AME expands
+local variables in its echo command line, in menus, as arguments to commands,
+and so on. (AME uses the $ convention, like the Shell).  Both the DEFINE
+keyword (which specifies the variable name to set) and the AS (which specifies
+the value to set) are required.
+
+Finally, AME supports a HUNT operation.  The HUNT keyword allows you to specify
+a project name.  AME will ask all other AMEs running on your system at that time
+for any AME with that project name.  If it finds one, it passes the file names
+specified in the command line to that AME for loading and/or display.  Otherwise,
+AME sets its own project name to the name specified by the HUNT keyword,
+and loads the specified files.  If HUNT and its keyword is specified, but no 
+filename, if the hunt fails, AME will automatically set the default project
+name for itself to what you were hunting for, and also try to load a file with
+the same name as the project name.
+
+
+AME Window layout
+-----------------
+
+AME allows you to have more than one display window at the same time.  
+Basically, you can split the display window into two smaller display windows.  
+Each display window has its own mode line, and can be editing the same window 
+or different windows.
+
+
+TERMS
+-----
+
+There are some terms used in the rest of the AME documentation that should
+be explained.  They are defined as follows:
+
+The Display window		
+	You are probably familiar with the standard Intuition window.  AME 
+divides this window into several areas called display windows.  A display window
+consists of a set of lines.  These lines contain an image of the text you are
+editing.  At first you will probably only use one display window;  however,
+AME can subdivide the Intuition window into a number of display windows.  Each
+display window can edit a different file, or more than one display window
+can edit the same file.
+
+Buffer
+	Text in AME is stored in Buffers.  Each display window has an associated
+buffer.  However, there is no rule that a buffer must be associated with
+a display window.  Buffers associated with a display window are visible.
+Buffers not associated with a display window are not visible, but can be made
+so by associated it with a display window.
+
+Mode Line
+	At the bottom of each display window is the Mode Line associated with
+that display window.  The mode line is used to display useful information
+related to the text in the display window.  A * appears in the first column of 
+the mode line to indicate that the text in the buffer associated with that
+display window has been changed since it was last saved.  Next, the mode line
+contains the Arexx port name for that invocation of AME. Next comes the name of
+the buffer associated with the display window, followed by the file name
+associated with that buffer.  Finally are the mode letters, indicating
+C mode, Overwrite mode (as opposed to the normal insert mode), Wrap mode
+(wrap words at the right margin), Multibyte mode (which supports
+the EUC extended character set), Read only mode (the buffer cannot be
+changed) and Temporary (AME will replace the contents without asking,
+and you can exit with this buffer unsaved).
+
+Echo line
+	The echo line is used by AME for user input for the various commands.
+The echo line supports command completion;  so only enough character to
+specify a unique command are required.  Pressing Space and ESC will cause AME
+to attempt to complete the command.  If the characters typed so far do not
+specify a unique command, AME fills in as many characters as it can, then
+calls the system screenbeep routine.  If the REQ AME variable is set, AME will
+bring up a requester to collect user input instead.  However, in that case,
+command completion is not available.
+
+Current Cursor Location	(also known as the dot, or point)
+	The Current Cursor Location is the position in the buffer where text will
+be entered.
+
+Bookmark		(also known as the mark)
+	The bookmark is used to define one of the endpoints of a range for
+the AME commands that operate on a range within the buffer.
+
+Intuition Window
+	The Intuition window is the standard Intuition window that AME opens.
+This window can be opened on the Workbench screen, or on AME's own custom
+screen.
+
+MOUSE SUPPORT
+
+	The right mouse button brings up the menu system.  A single click
+of the left mouse button will move the cursor to that location and 
+make that buffer the current buffer).  A double click of the mouse button will 
+set the bookmark for the current buffer at that location.  All other mouse
+operations are not bound to any function.  Like other 'keys' the left mouse
+click and the double click, the shifted mouse click, etc. can be bound to any AME
+function, or to Arexx scripts.
+
+When there is more than one display window in the AME window, each display window
+can be expanded or shrunk by clicking on the mode line, and dragging the
+window larger or smaller.  Naturally, this has no effect if there
+is only one display window.   NOTE:  the 'Mouse click on mode line' function
+can be bound to some other AME operation;  however, the drag operation
+only functions for display window resizing.
+
+
+WINDOW GADGETS
+	The scroller indicates the position within the file.  The scroll
+arrows allow you to move the cursor up or down within the file.  (the arrows
+do repeat).   The close gadget performs a quit operation.
+
+
+ICON SUPPORT (AppWindow support)
+	When AME has an Intuition window (has menus, scrollbar, etc) opened on 
+the Workbench screen, you can also load files by dragging and dropping 
+Workbench icons on the AME window.  AME will create a new buffer and
+load your file into the current display window.
+
+SPECIAL KEYS 
+
+The following are the special keys bound to functions by default.  You are
+not limited to these choices.  You are free to rebind the keys to any function
+(or Arexx program) you wish.
+
+KEY NAME		FUNCTION
+-----------------	-------------------------------------------
+cursor left 		move left one character
+cursor right		move right one character
+cursor up		move up one line
+cursor down		move down one line
+shift-cursor left	move to start of current line
+shift-cursor right	move to end of current line
+shift-cursor up		move to top of current display window
+shift-cursor down	move to bottom of current display window
+Delete			delete next character
+Help			apropos
+
+Keypad shift-.		Delete next character
+Keypad shift-0		Insert a space at the current cursor location
+Keypad shift-1		Move to end of current buffer
+Keypad shift-2		Move to next line
+Keypad shift-3		Move down one page
+Keypad shift-4		Move left one character
+Keypad shift-6		Move right one character
+Keypad shift-7		Move to top of buffer
+Keypad shift-8		Move up one line
+Keypad shift-9		Move up one page
+ENTER			Insert line
+
+
+Getting help
+
+	AME has three useful help functions.  The first, APROPOS, is
+bound by default to the HELp key (as well as to the ESC ? key combination.)  
+This functon allows you to specify a string; AME searches through all the 
+command and variable names.  If any of those names contain the string, it 
+is added to the list being built by AME.  When the search is complete, AME
+displays all the commands found (along with the current key bindings
+for that function) in the popup buffer. 
+	The second help function is bound to the ^X-? key combination, 
+and is called describekey.  When the HELP key is pressed, AME will ask what
+key to describe.  You enter this normally, ie ESC X or ^XE , whatever
+key or key combination you want.  AME will display the command the key
+is bound to, or let you know the key is unbound, and does nothing.
+Even the regular alphanumeric keys are bound to a function (called
+selfinsert). 
+	The third help function is called describebindings.  It will
+produce a chart of all keys currently bound to commands other than
+selfinsert) and the functions the keys are bound to.  This chart will
+be put in the popup buffer, and can be saved and printed for reference
+if desired. 
+
+Customizing AME
+	AME is fully customizable.  The menus are fully reprogrammable,
+all the keys can be rebound, new commands added, and a number of
+startup options are available. 
+
+Most of the general customization commands will be put in the
+S:AME_PRO.AME file, which is automatically executed when AME starts.
+This file will contain mode settings, function key definitions, menu
+definitions, and so on, to make your copy of AME easier to use.  (the
+NOSTART keyword allows you to not execute the S:AME_PRO.AME file on
+startup.  The WITH keyword allows you to execute an additional file
+after the AME_PRO.AME file is (or isn't) executed.  AME looks in the
+REXX: directory by default for its script files.
+
+	The files are (of course) Arexx script files; so they must
+start with an Arexx command (/* */ ) and can be quite complex. 
+	The bindkey command is used to assign or change what each key
+does; for instance, the bindkey command sets the functions of the
+function key.  The following is an example of setting the unshifted
+function keys. 
+
+
+The shifted function keys can also be set.  (Their names are shift-F1
+to shift-F10.  Remember, you can always use the describekey command to
+find out the name of any key). 
+
+The settings of the AME variables can be changed with the setprefs and
+unsetprefs commands.  For instance, to make Arexx go to the Shell
+where AME was started, rather than to NIL: (the default), the
+following command is used:
+
+setprefs rxcom '*'
+
+The menu commands can be used to change a couple of the default menu items, add a few extra menu items, or replace the entire default menus.  The menutitle command is used to define a menu tile.  The bar command is used to add a seperator bar.  The item command is used to add another menu item.  And the subitem command is used to add a subitem to a menu item.
+Each of the menu commands take a menu slot number.  If the menu slot number is -1, AME will append the menu to the current set of menus.
+
+For instance, this adds additional
+menus:
+
+menutitle '-1 Dice'
+item '-1 Dicehelp dcc:arexx/dicehelp.ame'
+item '-1 Compile dcc:arexx/compile.ame E' 
+item '-1 "Next Error" scc:arexx/nexterror.ame N'
+bar -1
+item '-1 "Delete paragraph" deleteparagraph'
+item '-1 "Justify paragraph" justifyparagraph
+
+
+AME AREXX Support
+
+	AME has a full Arexx port, with the ability to execute both
+Arexx commands and Arexx string files, and to execute commands
+received through its Arexx port.  All results from AME execution of
+commands received through the port are returned through the Arexx RC
+variable and the Arexx RESULT variable.  OPTIONS RESULT should be
+placed in any Arexx program talking to AME that expects to receive
+results. 
+
+The AME result variable can grow to fit whatever output that AME wants
+to pass back to the calling Arexx program. 
+
+AME uses ReadArgs internally to parse the arguments to its commands.
+Because of this, it is best to surround arguments with the '" "'
+combination if you have an argument containing spaces.  You have two
+goals: keep an argument with spaces as a single unit, and stop Arexx
+from capitalizing everything.  The '" combination effectively solves
+both problems.  The argument string keyword is -a and is a final
+argument (/F).  So you could also specify that name explicitly,
+to avoid problems with ReadArgs removal of double quotes.
+
+You can pass a numeric argument to one of the AME internal commands
+by specifying it with the -n keyword.  
+
+The default stdio for Arexx programs started from AME is NIL: This can
+be changed by changing the value of the internal AME variable RXCON.
+You can change it to * or to something like CON:////REXX/AUTO .
+Otherwise you will not see Arexx output that goes to stdio.  Unsetting
+this variable returns it to the default state of NIL:
+
+
+The ADDRESS internal AME variable allows you to change the port name
+that AME sends Arexx commands to.  This portname is usually REXX.
+However, you can change it to the port name of another Arexx capable
+program, if you want the two programs to communicate directly.
+Unsetting this variable returns it to the default state of REXX.
+Remember, case is important for port names. 
+
+
+COMMAND SUMMARY
+
+	The following is a short summary of the commands and variables supported
+by AME, and the default bindings for those functions.  Some functions are
+unbound, not assigned to any key.  Most of these (with the exception of
+the paragraph functions) are mainly for use by Arexx programs, however, they
+can be bound to keys if you wish, or used in menus.  Even if a command isn't
+bound to a key it may still be invoked by using the 'cmdshell' command and
+entering its name.
+
+
+Command Name: 	setbookmark
+Default Key: 	^@  ESC--
+Description: 	Puts the bookmark for this buffer at the current cursor location.
+
+Command Name:	movebol
+Default Key:	^A
+Description:	Move the current cursor location to the beginning of the
+		current line.
+
+Command Name:	moveleft
+Default Key:	^B
+Description:	Move the current cursor location back one character.
+		(End of line and tabs count each count as one character)
+
+Command Name:	quit
+Default Key:	^C   ESC-^C  ^X-^C           
+Description:	Check to see if there are any modified buffers.  If there
+		are, give the user the option to not exit.  Otherwise exit
+		AME.  An argument given to this function indicates a
+		"FORCED" quit, and modified buffers will be ignored.
+	
+Command Name:	delete
+Default Key:	^D
+Description:	Delete the character under the cursor
+
+Command Name:	moveeol
+Default Key:	^E
+Description:	Move the current cursor location to the end of the current line.
+
+Command Name:	moveright
+Default Key:	^F
+Description:	Move the current cursor location forward one character.
+		(End of line and tabs count each count as one character)
+
+Command Name:	abort
+Default Key:	^G  ESC-^G
+Description:	Abort the current operation
+
+Command Name:	deleteprev
+Default Key:	^H
+Description:	Delete the character to the left of the current cursor location.
+		Deleting a newline character will merge two lines.
+
+Command Name:	tab
+Default Key:	^I
+Description:	Insert a tab character at the current cursor location.
+
+Command Name:	indent
+Default Key:	^J
+Description:	Insert a newline, then on the next line, insert enough tabs
+		and spaces to move the cursor to the correct indentation level.
+		In CMODE this involves checking brace indentation.
+
+Command Name:	killline
+Default Key:	^K
+Description:	Deletes characters from the current cursor location to the
+		end of the line.  If the cursor is at the end of line,
+		the newline will be deleted.  Characters deleted by the killine
+		command is placed in the kill buffer, and can be retrieved
+		by the yank command.  Kills are cumulative;  the first killline
+		clears the kill buffer.  As long as only kill commands are
+		issued, the text killed is appended to the kill buffer.
+
+Command Name:	refresh
+Default Key:	^L
+Description:	Clears and redraws the window.
+
+Command Name:	insertline
+Default Key:	^M (RETURN)
+Description:	Enter a newline character at the current cursor position.
+		The newline character is the end of line marker.  The cursor
+		advances to the character position after the newline.
+
+Command Name:	movedown
+Default Key:	^N
+Description:	Move the current cursor location down one line.  An attempt is
+		made to keep the cursor in the same column as it started; This
+		may not be possible, since the cursor location must be centered
+		on a character.
+
+Command Name:	openline
+Default Key:	^O
+Description:	Inserts a newline at the current cursor location.  The current
+		cursor location is left positioned at the start of the just
+		opened space.
+
+Command Name:	moveup
+Default Key:	^P
+Description:	Move the current cursor location up one line.  An attempt is
+		made to keep the cursor in the same column as it started; This
+		may not be possible, since the cursor location must be centered
+		on a character.
+
+Command Name:	quote
+Default Key:	^Q
+Description:	Enter the next character into the document literally;  
+		do not attempt interpret it as an AME command.
+
+Command Name:	ifindprev
+Default Key:	^R
+Description:	Incremental backward search.
+
+Command Name:	ifindnext
+Default Key:	^S
+Description:	Incremental forward search.
+		Incremental Search is modeled after the incremental search
+		mechanism in ITS EMACS.  Incremental search is different from
+		the usual search method in that it begins to search before you
+		have finished typing the search string.  As the search string is
+		entered, AME will show you where in the buffer the string is 
+		found.  As soon as you have entered enough characters to 
+		identify the place you want, you can stop. 
+		
+		When incremental search mode is entered, AME will prompt for
+		characters; as you type, AME will move the cursor to the first
+		occurance of those characters.  If you make a mistake, you can 
+		use the delete key...AME will move the cursor back to the 
+		previous match of the pattern. 
+
+		Entering RETURN will exit incremenal search mode, as does
+		entering any command not meaningful during a search (in
+		other word, any command other than ^S or ^R).  Typing ^E,
+		for instance would exit search mode, and move the cursor to
+		the end of the line, as normally. 
+
+		When in incremental search mode, typing another ^S will move
+		you to the next occurance of the current pattern you
+		entered.  ^R will move you back to the previou ocurance of
+		the pattern.  You can repeat the previous pattern after
+		exiting and reentering incremental search mode by typing a
+		^S immediately on entry to the mode.  ^G cancels the entire 
+		search, putting the cursor to where it was before the search 
+		began.
+
+Command Name:	twiddle
+Default Key:	^T
+Description:	Transpose the two characters immediately preceeding the
+		current cursor location.
+
+Command Name:	universalargument
+Default Key:	^U
+Description:	Set an argument number  (negative or positive) for use by the
+		next AME command entered.
+
+Command Name:	movenextpage
+Default Key:	^V
+Description:	Move down one page, so the next page of the buffer is visible
+		in the window.
+
+Command Name:	deleteblock
+		(also known as erase)
+Default Key:	^W              
+Description:	Kill (wipe) all characters between the current cursor position
+		and the bookmark.  The deleted text is moved to the kill buffer.
+
+Command Name:	yank
+Default Key:	^Y              
+Description:	Take the contents of the kill buffer and insert it at the
+		current cursor location in the current buffer.  The cursor is
+		positioned after the inserted text.
+
+Command Name:	scrollwindowup
+Default Key:	^Z              
+Description:	Reposition the current window on the current buffer up one line.
+
+Command Name:	spawn
+Default Key:	^_              
+Description:	Open a new Shell.  If AME is operating on its own screen,
+		the new Shell will open on the AME window;  otherwise it
+		will open on the Workbench window.
+
+Command Name:	reposition
+Default Key:	ESC-!           
+Description:	Repositions the current buffer in the display window.  By default,
+		it acts as a 'recenter with current line to top of display window'
+		function.  If given a 0 argument, it centers the current line
+		in the display window;  if given a positive argument, it positions
+		the current line that many lines from the top of the current
+		display window;  if given a negative argument, it positions
+		the current line that many lines from the bottom of the current
+		display window.  (Its purely a visual effect; the text in the
+		current buffer is not changed)
+
+Command Name:	movebow
+Default Key:	ESC-,           
+Description:	Move the curent cursor location to the beginning of the
+		display window, to the top left corner.
+
+Command Name:	moveeow
+Default Key:	ESC-.           
+Description:	Move the curent cursor location to the beginning of the
+		display window, to the bottom left corner.
+
+Command Name:	movebob
+Default Key:	ESC-<
+Description:	Move the current cursor location to the beginning of the
+		current buffer.
+
+Command Name:	moveeob
+Default Key:	ESC->           
+Description:	Move the current cursor location to the end of the
+		current buffer.
+
+Command Name:	apropos
+		(also known as help)
+Default Key:	ESC-?  or HELP         
+Description:	Apropos requests a search string, then scans through all of the
+		AME command names for all occurances of your string.  This is
+		useful to find all the commands containing move (or window)
+		for example.  This scan does not support wildcards;  but will
+		find the search string in a command name if the search string
+		appears anywhere within the command name.
+
+Command Name: 	stringrx
+Default Key: 	ESC-A           
+Description:	This command will execute an Arexx string file.  The entire
+		argument is passed to Arexx, which attempts to interpret it
+		as an Arexx program.  Note:  Unless the RXCON variable is
+		set to something other than NIL:, you will not see any 
+		console output from the AREXX program.
+
+Command Name: 	moveprevword
+Default Key: 	ESC-B
+Description:	Move the current cursor location to the beginning of the
+		previous word.  If already within a word, moves to the start
+		of the word.
+
+Command Name: 	capital
+Default Key: 	ESC-C
+Description:	Capitalize the current character under the cursor and move to
+		the next word.  By using it with an argument, you can
+		capitalize more than one word at a time.
+
+Command Name: 	deletenextword
+Default Key: 	ESC-D
+Description:	Delete characters from the current cursor position to the end of
+		the word.  This command lets you kill multiple words
+		and stop in a reasonable way when it hits the end of the buffer.
+		Words deleted are placed in the kill buffer.
+
+Command Name: 	rx
+Default Key: 	ESC-E
+Description:	This command executes an Arexx file.  The default extention
+		for Arexx files for AME is (of course) .ame .  The rx command
+		prompts for the file name.  Arguments given on the echo line 
+		with the file name will be passed to the Arexx program as
+		its arguments.
+
+Command Name: 	movenextword
+Default Key: 	ESC-F
+Description:	Move the current cursor location to the end of next word in the
+		buffer.
+
+Command Name: 	deleteprevword
+Default Key: 	ESC-H
+Description:	Delete characters from the current cursor position to the 
+		beginning of the word.  The cursor is left on its current
+		position.  The character under the cursor is not deleted.
+		This command lets you kill multiple words and stop in a 
+		reasonable way when it hits the end of the buffer.
+		Words deleted are placed in the kill buffer.
+
+Command Name: 	justifyparagraph          
+Default Key:    ESC-J
+Description:	Reformat the current paragraph according to the current
+		left margin, right margin, indent, and wrap mode.
+
+Command Name:	deleteparagraph
+Default Key: 	ESC-K
+Description:	This command will delete characters in the current paragraph 
+		from the current cursor location to the end of the paragraph.
+		Characters deleted will be placed in the kill buffer, and may
+		be retrieved by the yank command.
+
+Command Name: 	lowercase
+Default Key: 	ESC-L
+Description:	Change from the current character under the cursor to the
+		end of word to lower case.  The current cursor location is
+		moved to the end of the word.  By using it with an argument, 
+		you can change more than one word at a time to lower case.
+
+Command Name: 	findchange
+Default Key: 	ESC-Q           
+Description:	Changes all occurances of one string to another string, starting
+		at the current cursor location and ending at the end of the
+		buffer.  AME prompts for the string to find and the string
+		to change it to.  If the REGEX variable is set, the search
+		string can be a regular expression;  otherwise it is a literal
+		string.  The quote command (^Q) can be used in both the search 
+		string and the replacement string to search or replace
+		control characters.  AME remembers the search string from
+		one search to the next. For each occurance of the string found,
+		AME allows the user to determine if the change should be made
+		(space), don't change and continue the search (n), change
+		this occurance and all others without asking further (c),
+		change this one and stop (. or ESC), stop immediately 
+		(without changing this one) (^G), anything else will list 
+		the options available.  Because the regular expression search
+		is slower than the standard search, findchange will automatically
+		switch to the standard search if no wild cards are used in the
+		search string.
+
+Command Name: 	findreplace
+Default Key: 	ESC-R
+Description:	Changes all occurances of one string to another string, starting
+		at the current cursor location and ending at the end of the
+		buffer.  AME prompts for the string to find and the string
+		to change it to.  If the REGEX variable is set, the search
+		string can be a regular expression;  otherwise it is a literal
+		string.  The quote command (^Q) can be used in both the search 
+		string and the replacement string to search or replace
+		control characters.  AME remembers the search string from
+		one search to the next. AME changes each occurance of the 
+		search string to the replacement string.  Because the regular 
+		expression search is slower than the standard search, findreplace
+		will automatically switch to the standard search if no wild 
+		cards are used in the search string.
+
+Command Name: 	setprefs
+Default Key: 	ESC-S
+Description:	This command is used to set one or more of the internal AME
+		variables which controls the behavior of some of the commands.
+		The variables supported are:
+
+		ADDRESS	BACKUP	BEEP	CASE	CHECK	CMODE   CONWAIT 
+		EOL	FOLDS 	FREQ	ICONS	INDENT	LEFT    MBYTE
+		MODE	OVER	PROJECT	READ	REGEX	REQ	RIGHT
+	 	RXCON 	SCORE	TAB	TEMP	UNDO	USTEPS	WRAP	 
+		VAR
+
+		See the AME Variables section for additional information on
+		the variables and functions.
+
+Command Name: 	uppercase
+Default Key: 	ESC-U
+Description:	Change from the current character under the cursor to the
+		end of word to upper case.  The current cursor location is
+		moved to the end of the word.  By using it with an argument, 
+		you can change more than one word at a time to upper case.
+
+Command Name: 	moveprevpage
+Default Key: 	ESC-V
+Description:	Move up one page, so the previous page of the buffer is visible
+		in the window.
+
+Command Name: 	copyblock
+Default Key: 	ESC-W
+Description:	Copy all characters from the bookmark set in the current
+		buffer to the current cursor location in the buffer to 
+		the Amiga clipboard.device.
+
+Command Name: 	scrollwindowdown
+Default Key: 	ESC-Z
+Description:	Reposition the current window on the current buffer down one line.
+
+Command Name: 	swapcase
+Default Key: 	ESC-^
+Description:	Invert the case of all characters between the current cursor
+		location and the end of the current word.
+
+Command Name: 	deleteprevword
+Default Key: 	ESC-Del
+Description:	Delete characters from the current cursor position to
+		the beginning of the current word.	
+
+Command Name: 	bindkey
+Default Key: 	ESC-^B
+Description:	This command allows the user to change the current key bindings;
+		key bindings are which command is executed when each key is hit.
+		The bindkey command prompts for the function to bind (with
+		command completion), the key to bind, and any optional 
+		arguments for the function.  If you already have the function 
+		bound, this new binding is in addition to the old binding;  
+		the old binding is still in effect.  Only the key you are binding
+		is affected.  Almost all keys can be bound, as well as the mouse,
+		with a variety of qualifiers.  The keypad can be bound seperately.
+
+		When binding keys in a script file, you must use the
+		key names.  Do not use the quote (^Q) function to
+		enter the ESC or ^X.  Instead, spell it out, ie
+		use ESC-  or ^X-  (or ESC or ^X).  The same goes for
+		control characters.  For example, to rebind the search
+		and incremental search commands in your ame_pro.ame file,
+		you would include the following statements:
+
+		bindkey "find ^S"
+		bindkey "findprev ^R"
+		bindkey "ifindnext ^XS"
+		bindkey "ifindprev ^X-R"
+
+		In general, you should use the same information displayed 
+		when you use describekey on a bound key or in the chart
+		producted by the describebindings command.
+
+
+		The bindable keys are as follows:
+
+	KEYNAME			Keys available to bind		AME qualifiers
+	-------			----------------------		--------------
+	F1-F10			unshifted, shifted
+	HELP			unshifted
+	DEL			unshifted
+	SPACE			unshifted, alt
+	CURSOR KEYS		unshifted, shifted
+	TAB			unshifted (same as ^I)		 ^X, ESC	
+	BACKSPACE		unshifted (same as ^H)		 ^X, ESC	
+	All keys on keypad	unshifted, shifted		 ^X, ESC
+	All alphanumeric keys	unshifted, shifted, alt, ctrl	 ^X, ESC
+	Mouse Click		on mode line :
+				    unshifted, shifted, alt, ctrl
+				on echo line:
+				    unshifted, shifted, alt, ctrl
+				in display window
+				    unshifted, shifted, alt, ctrl
+
+
+Command Name: 	movematchbkt
+Default Key: 	ESC-^F
+Description:	Moves the cursor to the matching brace, bracket, or parenthesis.
+		When searching for a member of a pair ({} or () or <> or [])
+		search direction is automatic.  This command can also be used 
+		to find matching quotes. In this case, the command defaults to 
+		searching forward;  to search backwards, a negative argument 
+		is used.
+
+Command Name: 	lowercaseblock
+Default Key: 	ESC-^L
+Description:	Changes all the characters from the bookmark set in the current
+		buffer to the current cursor position to lower case.  
+		The cursor position is left unchanged.
+
+Command Name: 	unsetprefs
+Default Key: 	ESC-^S
+Description:	This command is used to unset any of the internal AME variables
+		that can be set by the setprefs command.  In the case of the
+		RXCON and ADDRESS variables, unset means return to default
+		values of NIL: and AREXX.
+
+Command Name: 	uppercaseblock
+Default Key: 	ESC-^U
+Description:	Changes all the characters from the bookmark set in the current
+		buffer to the current cursor position to upper case.  
+		The cursor position is left unchanged.
+
+
+Command Name: 	moveothernextpage
+Default Key: 	ESC-^V
+Description:	Move the next window down one page, so the next page of that 
+		buffer is visible in that window.
+
+Command Name: 	writeblock
+Default Key: 	ESC-^W
+Description:	Write the characters from the bookmark set in the current
+		buffer to the current cursor position to a file.  AME will
+		prompt for the file name.  If the REQFLAG or FREQ variables
+		are set, the asl.library file requester will appear;  otherwise
+		the file name must be entered in the echo line.
+		
+Command Name: 	cmdshell
+Default Key: 	ESC-ESC  or ESC-^[
+Description:	This command will execute an extended command.  The command
+		is entered in the echo line with command completion.  You can
+		enter ESC or space to invoke the command completer.
+
+Command Name: 	spawncommand
+Default Key: 	^X-!
+Description:	Spawncommand prompts for a command to execute.  This is passed
+		to AmigaDOS to execute.  Normal output from the command will be
+		placed in the popup buffer.  (Error output will appear in
+		the Shell AME was invoked from).
+
+Command Name: 	startmacro
+Default Key: 	^X-(
+Description:	All the keys entered following this command will be stored
+		in the keyboard macro buffer, for later use.
+		Incremental search cannot be executed as a macro, due to
+		limitations in the macro processor that may be removed
+		in a later version of AME.  If a search is required, the
+		non-incremental search must be used.
+
+Command Name: 	stopmacro
+Default Key: 	^X-)
+Description:	Stop storing keys in the keyboard macro buffer.
+
+Command Name: 	onlywindow
+Default Key: 	^X-1
+Description:	Remove all display windows except the current display
+		window, which becomes full size.
+
+Command Name:	splitwindow
+Default Key: 	^X-2
+Description:	Split the current display window into two display windows,
+		dividing the space available between the two display windows.
+
+Command Name: 	describekey
+Default Key: 	^X-?
+Description:	AME will ask for the key to describe.  The key (or key 
+		combination) should be typed in exactly as it would be
+		typed to execute it.  AME will then display the current
+		command binding of that key, or say the key is not
+		bound.  To find out the current binding of ^XD, invoke
+		the discribekey command, then type control X D.  AME will
+		display the current binding.  This function works for all
+		bindable keys, including mouse clicks.
+
+Command Name: 	displayposition
+Default Key: 	^X-=
+Description:	This command will display information about the current
+		cursor location including the current character under the
+		cursor, the line number within the buffer, the original
+		line number (the ID) of the line as it was loaded from a file
+		(unaffected by later line additions or deletions), The row 
+		within the current display window, the column within the 
+		current display window, and the position within the buffer, as 
+		a percentage of total number of characters in the buffer.
+		This string is also copied to the Arexx result string.
+
+Command Name:	findagain
+Default Key: 	^X-A
+Description:	This command will repeat the last find operation.
+
+Command Name: 	usebuffer
+Default Key: 	^X-B            
+Description:	Ask for the name of the buffer, and link it to the current
+		display window.  The old buffer is merely unlinked from
+		the display window.  It is not erased or changed in any way.
+		If the requested buffer does not exist, a new buffer with that
+		name will be created.
+
+Command Name:	vcopyblock
+Default Key:	^X-C
+Description:	This command copies a block in the vertical current column
+		defined by the mark and the current cursor position and puts
+		it into the kill buffer.  A vertical column should be
+		pasted into a document with the vyank command to keep
+		it in a column.
+
+Command Name: 	deletewindow
+Default Key: 	^X-D
+Description:	Delete the current display window, and enlarge either the 
+		display window below or the display window above the current 
+		display window to fill in the space.  If there is only one 
+		display window, nothing happens.
+
+Command Name: 	executemacro
+Default Key: 	^X-E
+Description:	This command takes the keys stored with the startmacro command
+		and treats them as if they were typed again.
+		Incremental search commands cannot be executed from a keyboard
+		macro.
+
+Command Name: 	setfilepath
+Default Key: 	^X-F
+Description: 	Change the name of the file associated with the current buffer.
+		This is the name that will be used when the current buffer 
+		is saved.
+
+Command Name: 	gotoidline
+Default Key: 	^X-G
+Description:	Prompt for the line ID to go to, and move the current cursor 
+		location to that line.  Line IDs are sequentially assigned 
+		to each line as the file is loaded.  This ID represents the
+		original line number, before any insertions or deletions.
+
+Command Name:	insertbuffer
+Default Key:	^X-I
+Description:	This command will prompt for the name of the buffer to insert,
+		then inserts it at the current cursor location in the current
+		buffer.
+
+Command Name: 	jump
+Default Key: 	^X-J
+Description:	AME will ask for the name of the public screen to jump the
+		Intuition window.  Just pressing return will cause the AME
+		window to jump to the next public screen.  If there is only
+		one public screen (and AME is on it) nothing will happen.
+		If a public screen name is given, AME will jump to that screen.
+		If the screen name is mistyped or doesn't exist an error
+		will be reported.
+
+Command Name:	killbuffer
+Default Key:	^X-K            
+Description:	Prompt for a buffer name, and delete that buffer.  All the
+		text in that buffer will be erased.  This command
+		will fail if the buffer is being displayed.
+
+Command Name:	nextwindow
+Default Key: 	^X-N
+Description:	Switch to the display window below the current display window.
+		If the current display window is the lowest, the top display
+		window will be made active.
+
+Command Name: 	useoldbuffer
+Default Key: 	^X-O   
+Description:	Ask for the name of the old buffer and link it to the current
+		window.  The old buffer linked to the window is not affected
+		in any way.  The buffer to be displayed must already exist.
+
+Command Name: 	prevwindow
+Default Key: 	^X-P
+Description:	Switch to the display window above the current display window.
+		If the current display window is the highest, the bottom display
+		window will be made active.
+
+Command Name:	vdeleteblock
+Default Key:	^X-W
+Description:	This command cuts a block in the vertical current column
+		defined by the mark and the current cursor position and puts
+		it into the kill buffer.  A vertical column should be
+		pasted into a document with the vyank command to keep
+		it in a column.
+
+Command Name:	vyank
+Default Key:	^X-Y
+Description:	This command is used to enter the text from the kill buffer
+		into the current buffer at the current cursor position
+		in a column.
+
+Command Name: 	findprev
+Default Key: 	ESC-^R
+Description:	Search backwards for the next occurance of a string.  AME
+		prompts for the string to search for;  if the REGEX flag is
+		set, regular expressions may be used;  otherwise the text
+		is treated literally.  The quote command (^Q) may be used
+		to enter control characters into the search string;  this
+		allows end of line to be searched (end of line is ^J).
+		AME remembers the search string from one search to the next,
+		and displays it in the prompt.  Hitting the return key will 
+		retain the same search string.
+		
+Command Name: 	find
+Default Key: 	ESC-^S
+Description:	Search forwards for the next occurance of a string.  AME
+		prompts for the string to search for;  if the REGEX flag is
+		set, regular expressions may be used;  otherwise the text
+		is treated literally.  The quote command (^Q) may be used
+		to enter control characters into the search string;  this
+		allows end of line to be searched (end of line is ^J).
+		AME remembers the search string from one search to the next,
+		and displays it in the prompt.  Hitting the return key will 
+		retain the same search string.
+		The regular expressions are the standard AmigaDOS regular
+		expressions, with one addition:  The ^ character can be used
+		to anchor the search to either the beginning and/or to the end
+		of lines.  The ^ character only has this special meaning
+		when used at the beginning or end of the search string.  
+		A leading or trailing space will allow you to use a ^ as a ^
+		at the beginning or end of the search string.
+		The regular expression search is limited to lines shorter
+		than 2048 bytes;  only the first 2048 bytes will be
+		searched.  If you have lines longer than 2048 bytes, you
+		should turn REGEX off.
+		Regular expression search is noticably slower than
+		standard search.  This is especially noticable in
+		findchange, and findreplace.
+		Amiga regular expression give powerful search capabilities 
+		to the find commands.  The following regular expression tokens 
+		are supported:
+
+		? 	matches a single character # matches the next 
+			expression 0 or more times 
+		(ab|cd) matches any one of the items seperated by the | character 
+		~ 	negates the sense of the next token or expression 
+		[abc]	matches any of the characters defined in the character 
+			class.  
+		a-z	defines a character range, to use within a character 
+			class definition.
+		% 	matches 0 characters (for example, (ab|cd|%) 
+		^ 	anchor to beginning or end of line. 
+
+		Expressions can be combined.  The most commonly used expression 
+		is #?, which matches any number of characters. 
+		
+Command Name: 	togglewindow
+Default Key: 	^X-T
+Description:	Toggle between an AME window on the Workbench screen, and
+		AME opening its own public screen and putting its window
+		there.  Only when AME is open on the Workbench screen does
+		it have a scroll bar.
+
+Command Name: 	moveothernextpage
+Default Key: 	^X-V
+Description:	Move the next window up one page, so the previous page of that 
+		buffer is visible in that window.
+
+Command Name: 	deletewhitespace
+Default Key: 	^X-W
+Description:	Delete all the white space (spaces and tabs) surrounding the
+		current cursor location.
+
+Command Name: 	enlargewindow
+Default Key: 	^X-Z
+Description:	Make the current display window one line larger and the 
+		display window below one line shorter.  If there is no 
+		display window below, a line is taken from the window above.
+
+Command Name: 	movebop
+Default Key: 	^X-[
+Description:	Move the current cursor location to the beginning of the
+		current paragraph.
+
+Command Name: 	moveeop
+Default Key: 	^X-]           
+Description:	Move the current cursor location to the end of the
+		current paragraph.
+
+Command Name: 	displaybuffers
+Default Key: 	^X-^B           
+Description:	Pop up the information about currently active buffers in the
+		temporary popup display window.  For each buffer currently
+		in use, AME will display a line containing the name of the
+		buffer, its size, what file the buffer is associated with,
+		and whether the buffer has been changed since loading.
+
+Command Name: 	deleteline
+Default Key: 	^X-^D
+Description:	Delete the current line and close up the space it occupied.
+		The current cursor location will be moved to the beginning
+		of the next line.  The text deleted is placed in the kill
+		buffer.
+
+Command Name: 	quickexit
+Default Key: 	^X-^F
+Description:	Save all modified buffers and exit AME.
+
+Command Name: 	gotoline
+Default Key: 	^X-^G
+Description:	Ask for a line number, and move the current cursor location 
+		to the beginning of that line if it exists.
+
+Command Name: 	insertfile
+Default Key: 	^X-^I
+Description:	Ask for the name of a file to insert, and insert the contents
+		of the file at the current cursor location.  If either the FREQ
+		or REQ variable is set, then the asl library file requester
+		will be brought up for file selection.
+
+Command Name: 	savemodified
+Default Key: 	^X-^M
+Description:	Save all modified buffers under the file names associated with
+		each changed buffer.
+
+Command Name: 	deleteblanklines
+Default Key: 	^X-^O
+Description:	Delete all blank lines above and below the current blank line.
+		If the current line is not blank, nothing is deleted.
+
+Command Name: 	popbuffer  
+Default Key: 	^X-^P
+Description:	AME will ask for the name of the buffer;  that buffer
+		will appear in one of the current display window. If there
+		is only one display window, it will be split to make room.
+
+Command Name:	open
+Default Key:	^X-^R
+Description:	Asks for a file name, then read the file into the current
+		buffer.  If the current buffer contains unsaved, modified
+		text, then AME asks if the changes should be discarded and
+		the file loaded.  If the REQ variable or the FREQ variable is
+		set, the asl file requester is used to select the file to
+		load.  Otherwise AME asks for the name of the file to load in
+		the echo line.
+
+Command Name: 	save
+Default Key: 	^X-^S
+Description:	Save the current buffer (if it has been modified) under the
+		file name currently associated with the buffer.  If the
+		buffer has no name, AME will complain.
+
+Command Name: 	undo
+Default Key: 	^X-^U
+Description:	If the UNDO variable is set, this command will undo the last
+		change made to the buffer.
+		NOTE: this function does not work completely at this time;
+		it does not correctly undo deleted blank lines.
+
+Command Name: 	visit
+Default Key: 	^X-^V
+Description:	Ask for the name of a file, then switch to the the buffer
+		which contains it.  If no buffer contains a file with that
+		name, AME will switch to a new buffer (named the same as
+		the file name), and load the file.  If there is already a 
+		buffer with that name that does not contain the correct
+		file AME will ask if the buffer should be overwritten
+		before loading.  Like other file I/O commands, visit
+		uses the asl file requester if either the REQ variable or
+		the FREQ variable is set.
+
+Command Name: 	saveas
+Default Key: 	^X-^W
+Description:	Asks for the name to use, then saves the current buffer
+		to that name.  The file name associated with the current
+		buffer is automatically changed to the name used to save
+		under.  Like other file I/O commands, saveas
+		uses the asl file requester if either the REQ variable or
+		the FREQ variable is set.
+
+Command Name: 	gotobookmark
+Default Key: 	^X-^X
+Description:	Moves the current cursor location to the bookmark
+		set in the current buffer, and moves the bookmark to
+		the where the cursor position was.
+
+Command Name: 	shrinkwindow
+Default Key: 	^X-^Z
+Description:	Make the current display window one line smaller and the 
+		display window below one line larger.  If there is no 
+		display window below, a line is given to the display window above.
+
+Command Name:	insertcharacter
+Default Key:	KEYPAD 0
+Description:	Insert a space at the current character position.  This is
+		especially useful when editing a document in OVERWRITE mode.
+
+Command Name:	spaceinsert
+Default Key:	Shift-KP0
+Description:	Insert a space at the current cursor position.  This is
+		useful when in overstrike mode, to allow you to insert
+		characters without leaving the mode.
+
+
+
+
+Command Name:	activatewindow
+Default Key: 	UNBOUND
+Description:	Activate the AME Intuition Window
+
+Command Name: 	bar
+Default Key: 	UNBOUND
+Description:	Put a menu bar into the menu.  AME will ask for the menu slot
+		where the menu bar should be placed.  Menus are automatically
+		disabled when this command is used.  (This speeds up adding
+		multiple menu items and bars to the menu). The onmenu command 
+		is used to activate the menu system.  If -1 is used for the
+		menu slot, the bar is appended to the end of the current menu
+		list.  
+
+Command Name: 	bindsymbol
+Default Key: 	UNBOUND
+Description:	This command is used to create a new AME command.  The command
+		is either an Arexx script file or an Arexx string command.  AME
+		will prompt for the name for the new symbol, the type
+		(string or file), and the arguments.  In the case of a string
+		file, this will be the entire command to execute.  In the case
+		of an Arexx script file, the argument will be the name of the
+		file to execute, as well as any arguments that must be passed
+		to the script. 
+
+Command Name: 	beepscreen
+Default Key: 	UNBOUND
+Description:	Flash the screen.
+
+Command Name: 	clear      
+Default Key: 	UNBOUND
+Description:	This command will clear the current buffer.  If there are 
+		unsaved changes, AME will ask for verification before
+		proceeding.
+
+Command Name:	closewindow
+Default Key:	CloseGadget
+Description:	This command will bring up a 'changed' requester if the document
+		has changed.  If the user clicks OK, the command attempts
+		to quit the program.
+
+Command Name: 	copy
+Default Key: 	UNBOUND         
+Description:	This command will copy the characters from the bookmark set
+		in the current buffer to the current cursor position into
+		unit 0 of the Amiga clipboard.device.  This command is usually
+		placed in the EDIT menu, with its shortcut key set to C,
+		following the style guide.
+
+Command Name: 	copykill
+Default Key: 	UNBOUND         
+Description:	This command will copy the characters from kill buffer into
+		unit 0 of the Amiga clipboard.device.
+
+Command Name: 	cut
+Default Key: 	UNBOUND
+Description:	This command will delete the characters from the bookmark set
+		in the current buffer to the current cursor position and place
+		those characters into unit 0 of the Amiga clipboard.device.  
+		This command is usually placed in the EDIT menu, with its 
+		shortcut key set to X, following the style guide.
+
+Command Name: 	describebindings
+Default Key: 	UNBOUND         
+Description:	This command will produce a listing of all current key bindings
+		in the popup buffer.  This list can be saved and printed
+		as a reference.
+
+Command Name: 	displayversion
+Default Key: 	UNBOUND
+Description:	This command will display the version information for AME.
+
+Command Name: 	dottomouse
+Default Key: 	UNBOUND
+Description:	This command calculate the position where the mouse
+		was when the left button was last clicked and attempt
+		to move the current cursor location to that position,
+		if the button was clicked when the mouse cursor was
+		over the display window area.  This could result in a different
+		display window becoming active, or the cursor moving within
+		a display window.  This command is usually used by Arexx programs
+		bound to the mouse which need to move the cursor or select
+		a display window before further operations.
+
+Command Name: 	endmenu
+Default Key: 	UNBOUND
+Description:	AME will ask where to place the end of menu marker.  This
+		marker indcates the end slot of the current AME menus.  An
+		end marker must be present for the menus to appear.
+		Use of this command automatically disables the AME menus.
+		They must be reactivated with the onmenu command.
+
+Command Name:	font
+Default Key:	UNBOUND
+Description:	Set the font for the text.  If either REQ or FREQ is set
+		(and you are using V38 or higher) the asl.library font
+		requester will be used;  otherwise the font name
+		and size is entered in the echo line.
+
+Command Name: 	fenceinsert
+Default Key: 	UNBOUND    
+Description:	This command inserts the fence character passed to it
+		with appropriate fence matching.  Fence matching is
+		normally done automatically, in CMODE, when a close
+		brace, parenthesis, or bracket is typed.  You can bind
+		any key to fenceinsert, however.  If the key
+		is a member of a bracket pair, the match will
+		be with the other member of the pair;  otherwise
+		it will match with itself.  The fenceinsert command
+		is a selfinsert like command; it inserts the key struck.
+		To override that, the -k argument must be used.
+		For instance, a useful 	binding would be to bind F10 to the 
+		fenceinsert function, with an argument of -k 34  .  Every time 
+		the F10 key is hit, it would do a fenceinsert on the character
+		number 34 (the double quotes).  
+		
+Command Name:	foldblock
+Default Key:	UNBOUND
+Description:	This command folds (removes from view) the currently
+		selected block.  The lines folded are still present,
+		and may be temporarily displayed with the show command.
+		The unfold command undo the effects of the fold command.
+		The first line of the block is not folded;  instead, it
+		is displayed with a leading @ sign.  If a fold is folded in
+		another fold block, the folds nest.  If mark (which defines
+		a block) is at the current cursor position, AME will fold
+		all lines with a greater indentation than the current line.
+		Folds are saved on a file by file basis when the FOLDS flag 
+		is set, in a  file with the extension .FLD  .  If a file 
+		contains no folds, no .FLD file is created.
+
+Command Name:	foldfunction
+Default Key:	UNBOUND
+Description:	This command folds a C function.  It looks at the indentation
+		level of the next line containing a { (including the initial
+		line), and folds lines until a line with the same or less
+		indentation level is encountered.  If a fold is folded into 
+		another block, the folds nest.
+
+Command Name:	getblockinfo
+Default Key: 	UNBOUND
+Description:	This command will return the currently selected
+		region in the Arexx result string.  The region is defined by
+		the bookmark set in the current buffer and the current
+		cursor position.  If the bookmark is set, the row, column,
+		and number of characters in the region is returned.
+
+Command Name: 	getbuffername
+Default Key: 	UNBOUND
+Description:	This command will return the name of the current buffer
+		in the Arexx result string.
+
+Command Name: 	getchar
+Default Key: 	UNBOUND
+Description:	This command will return the character under the cursor in
+		the Arexx result string.
+
+Command Name: 	getcurrentdir
+Default Key: 	UNBOUND
+Description:	This command returns the full path name of the current
+		directory associated with the current buffer in the 
+		Arexx result string.
+
+Command Name: 	getcursorpos
+Default Key: 	UNBOUND
+Description:	This command returns the row and column of the current
+		cursor position, and a YES if the line is first line
+		of a fold or a NO otherwise, in the Arexx result string.
+
+Command Name:	getdwinfo
+Default Key:	UNBOUND
+Description:	This command returns the number of display windows currently
+		open, and the buffer names associated with each window.  The
+		buffers are in order, from the top buffer in the window, to
+		the lowest.
+
+Command Name: 	getfilename              
+Default Key: 	UNBOUND         
+Description:	This command returns the file name associated with the
+		current buffer in the Arexx result string.
+
+Command Name: 	getfilepath              
+Default Key: 	UNBOUND         
+Description:	This command returns the file path, including the file name,
+		associated with the current buffer in the Arexx result string.
+		This file path can be relative to the current directory
+		set in AME.
+
+Command Name: 	getfullpath
+Default Key: 	UNBOUND
+Description:	This command returns the fully qualified file path, including
+		the file name, associated with the current buffer in the
+		Arexx result string.
+
+Command Name: 	getline
+Default Key: 	UNBOUND
+Description:	This command returns the contents of the current line in the
+		Arexx result string.
+
+Command Name: 	getmousepos
+Default Key: 	UNBOUND
+Description:	This command returns the row and column of the last position
+		the left mouse button was clicked in the Arexx result string.
+
+Command NameL	getlastpattern
+Default Key:	UNBOUND
+Description:	This command returns the last pattern used in a search
+		routine.
+
+Command Name:	getprefs
+Default Key:	UNBOUND
+Description:	This command is used to get the current values of
+		the internal AME variables.  The requested values are printed
+		in the echo line as well as returned in the Arexx result string.
+
+Command Name:	getrxkey
+Default Key:	UNBOUND
+Description:	This command is used to get the hexadecimal value of the key that
+		invoked an Arexx script.  This is used if the macro
+		needs to know what key was used to start it.  The key returned
+		as a number in the Arexx result string.  The following table
+		can be used to decode the value:
+
+		MASK		Description
+		----		------------------------
+		0x000-0x0FF	The basic character code for normal characters
+		0x100-0x1FF	Special Characters
+				0x100	Special No Key
+				0x101	Cursor Up
+				0x102	Cursor Down
+				0x103	Cursor left
+				0x104	Cursor right
+				0x105	Shift cursor up
+				0x106	Shift cursor down
+				0x107	Shift cursor left
+				0x108	Shift cursor right
+				0x109	HELP
+				0x10A	MENU event
+				0x10B	Resize event
+				0x10C	F1
+				0x10D	F2
+				0x10E	F3
+				0x10F	F4
+				0x110	F5
+				0x111	F6
+				0x112	F7
+				0x113	F8
+				0x114	F9
+				0x115	F10
+				0x116	Shift F1
+				0x117	Shift F2
+				0x118	Shift F3
+				0x119	Shift F4
+				0x11A	Shift F5
+				0x11B	Shift F6
+				0x11C	Shift F7
+				0x11D	Shift F8
+				0x11E	Shift F9
+				0x11F	Shift F10
+				0x120	Mouse Click
+				0x121	Control Mouse Click
+				0x122	Shift Mouse Click
+				0x123	Control Shift Mouse Click
+				0x124	ALT Mouse Click
+				0x125	Control ALT Mouse Click
+				0x126	Shift ALT Mouse Click
+				0x127	Control Shift ALT Mouse Click
+
+				0x128	Mouse Click on mode line
+				0x129	Control Mouse Click on mode line
+				0x12A	Shift Mouse Click on mode line
+				0x12B	Control Shift Mouse Click on mode line
+				0x12C	ALT Mouse Click on mode line
+				0x12D	Control ALT Mouse Click on mode line
+				0x12E	Shift ALT Mouse Click on mode line
+				0x12F	Control Shift ALT Mouse Click on mode line
+
+				0x130	Mouse Click on echo line
+				0x131	Control Mouse Click on echo line
+				0x132	Shift Mouse Click on echo line
+				0x133	Control Shift Mouse Click on echo line
+				0x134	ALT Mouse Click on echo line
+				0x135	Control ALT Mouse Click on echo line
+				0x136	Shift ALT Mouse Click on echo line
+				0x137	Control Shift ALT Mouse Click on echo line
+
+				0x140	Mouse Click at display window top
+				0x141	Control Mouse Click at display window top
+				0x142	Shift Mouse Click at display window top
+				0x143	Control Shift Mouse Click at 
+					display window top
+				0x144	ALT Mouse Click at display window top
+				0x145	Control ALT Mouse Click at display
+					window top
+				0x146	Shift ALT Mouse Click at top of 
+					display window
+				0x147	Control Shift ALT Mouse Click at top 
+					of display window
+				0x148	Keypad Left Parenthesis
+				0x149	Keypad Right Parenthesis
+				0x14A	Keypad Asterisk
+				0x14B	Keypad Plus
+				0x14C	Keypad ENTER
+				0x14D	Keypad Minus
+				0x14E	Keypad Period
+				0x14F	Keypad Slash
+				0x150	Keypad 0
+				0x151	Keypad 1
+				0x152	Keypad 2
+				0x153	Keypad 3
+				0x154	Keypad 4
+				0x155	Keypad 5
+				0x156	Keypad 6
+				0x157	Keypad 7
+				0x158	Keypad 8
+				0x159	Keypad 9
+
+				0x15A	Shift Keypad Left Parenthesis
+				0x15B	Shift Keypad Right Parenthesis
+				0x15C	Shift Keypad Asterisk
+				0x15D	Shift Keypad Plus
+				0x15E	Shift Keypad ENTER
+				0x15F	Shift Keypad Minus
+				0x160	Shift Keypad Period
+				0x161	Shift Keypad Slash
+				0x162	Shift Keypad 0
+				0x163	Shift Keypad 1
+				0x164	Shift Keypad 2
+				0x165	Shift Keypad 3
+				0x166	Shift Keypad 4
+				0x167	Shift Keypad 5
+				0x168	Shift Keypad 6
+				0x169	Shift Keypad 7
+				0x16A	Shift Keypad 8
+				0x16B	Shift Keypad 9
+				0x16C	CloseGadget
+
+			0x0200	Control key flag
+			0x0400	Meta (ESCAPE) flag
+			0x0800	Control X flag
+
+
+Command Name:	getrxmacro
+Default Key:	UNBOUND
+Description:	This command gets the contents of the current macro stored 
+		in the keyboard macro buffer, converts it to a simple Arexx
+		program, and returns it in the Arexx result string.  Because
+		this program can be fairly long, it can result in the amount
+		of memory used by AME for its Arexx result strings growing.
+
+Command Name: 	getword
+Default Key: 	UNBOUND     
+Description:	This command gets the current word at the current cursor
+		location and returns it in the Arexx result variable.  
+		If there is no word under the cursor, the next word is returned.
+
+Command Name: 	getwindowsize
+Default Key: 	UNBOUND
+Description:	This command returns the size of the area of the Intuition
+		window available for use as display window area in the Arexx
+		result variable.  The dimensions are returned as number of
+		character rows, followed by number of character columns.
+
+Command Name: 	globalrx
+Default Key: 	UNBOUND         
+Description:	AME will ask for the Arexx command, then it executes it, then
+		sends it to all other AMEs running on that Amiga at that time,
+		with instructions to execute the command as well.  The results
+		of the command execution are returned in the Arexx result
+		variable, in the form:
+
+		.arexx port extention YES|NO
+
+		so, for example, if there are three AMEs active (with
+		Arexx port names AME.01  AME.03 and AME.04) you would get
+		the following result, assuming the command succeeded on
+		AME.01 and AME.04, and failed on AME.03
+
+		.01 YES .03 NO .04 YES
+
+		A null command can also be sent to just find out all
+		the active AME Arexx port names.
+		
+Command Name:	hide
+Default key:	UNBOUND
+Description:	This command will rehide folds temporarily revealed
+		by the show command.
+
+Command Name:	hideall
+Default key:	UNBOUND
+Description:	This command will rehide all folds temporarily revealed
+		by the show command.
+
+Command Name:	hideblock
+Default key:	UNBOUND
+Description:	This command will rehide folds temporarily revealed
+		by the show command in the current block.
+
+Command Name: 	hunt
+Default Key: 	UNBOUND
+Description:	AME asks for the project name to hunt for and a filename;  
+		if that version on AME is not associated with that project name
+		it sends messages to all other active AMEs, inquiring if
+		any of them are associated with that project name,
+		If any of the AMEs contacted is associated with that project
+		name it VISITs the filename, then moves its
+		Intuition window to the front.
+
+Command Name:	iconify
+Default Key:	UNBOUND
+Description:	This command closes the AME window, and creates an AppIcon
+		on the Workbench window.  The AME icon can be moved
+		like any other Workbench icon.  Double clicking
+		on the icon will reopen the AME window.  Dropping
+		files on the icon will reopen the AME window, loading
+		those files.  Sending any AREXX command will also
+		reopen the AME window.  (sending a BREAK signal will
+		reopen the AME window momentarily;  AME will immediately
+		exit).
+
+Command Name: 	insert
+Default Key: 	UNBOUND
+Description:	This command takes characters as an argument;  all characters
+		sent are treated as if they were typed from the keyboard.
+		For almost all purposes, the text command is prefered.
+
+Command Name: 	item
+Default Key: 	UNBOUND
+Description:	This command is used to enter a menu item into the AME menu.
+		AME wiill ask for a slot number (-1 can be used for an
+		append to current menu strip operation), then asks for
+		the label to be used in the menu, the command to be executed
+		when that menu is selected, and the optional shortcut key.
+		Menus are automatically disabled when this command is used,
+		to speed entry of multiple menu items, and must be reenabled
+		with the onmenu command.
+
+Command Name: 	lockdisplay
+Default Key: 	UNBOUND         
+Description:	This command locks the display window.  No changes appear to take
+		place until the unlockdisplay command is received.  The modeline
+		is not locked.  Input is still received, so any characters
+		typed are actually placed in the buffer;  they are merely not
+		displayed.
+
+Command Name: 	lockmodeline
+Default Key: 	UNBOUND
+Description:	This command locks the mode and echo lines.  However, if AME 
+		really wants to ask you something, it will.  The lockmodeline
+		command can best be viewed as a request to AME to keep
+		requests to a minimum.  It can be useful during script execution,
+		to stop commands from displaying options in the mode line during
+		execution.
+
+Command Name: 	menutitle
+Default Key: 	UNBOUND
+Description:	AME will ask for the slot number (-1 for an append operation),
+		and a label, then sets a menu title to that label.  Menus
+		are automatically diisabled when this command is executed,
+		and must be turned on with the onmenu command.
+
+Command Name: 	new
+Default Key: 	UNBOUND
+Description:	AME will ask for the name of the new buffer, then
+		create it.  If a name is given that already exists, AME
+		will modify the name to be unique, by appending a number
+		to it.
+
+Command Name: 	nop
+Default Key: 	UNBOUND
+Description:	This command does nothing.  It is useful, for example, to
+		bind to a key to make that key do nothing.
+
+Command Name: 	onmenu
+Default Key: 	UNBOUND
+Description:	This command activates the AME menus.
+
+Command Name: 	paste
+Default Key: 	UNBOUND
+Description:	This command will copy the characters from unit 0 of the 
+		Amiga clipboard.device to the current cursor location.  
+		This command is usually placed in the EDIT menu, with its 
+		shortcut key set to V, following the style guide.
+		You can paste into the mode line, by the way.
+
+Command Name: 	pastekill
+Default Key: 	UNBOUND
+Description:	This command will copy the characters from unit 0 of the 
+		Amiga clipboard.device to the kill buffer.
+
+Command Name: 	popup
+Default Key: 	UNBOUND
+Description:	This command will cause the popup buffer to appear and
+		be made the current buffer.  If called
+		with an argument, the buffer will be cleared;  otherwise
+		it will contain whatever information it contained when it was 
+		last used.  This command makes it easy for external programs 
+		to feed popup information to AME.
+
+Command Name: 	requestfile
+Default Key: 	UNBOUND
+Description:	This command causes AME to request a file name from the user.
+		If the REQ or FREQ variables are set, the asl library file
+		requester will be used; otherwise the file name will be 
+		requested in the mode line.  The file name selected is returned
+		in the Arexx result variable.
+
+Command Name:	requestkey
+Default Key:	UNBOUND
+Description:	Get a key from the keyboard; the value of the key is
+		returned as a hexadecimal number.  See the getrxkey for
+		key table.
+
+Command Name: 	requestline
+Default Key: 	UNBOUND         
+Description:	This command causes AME to request a line of input from the
+		user.  If the REQ variable is set, AME will bring up a
+		string requester for the input;  otherwise the line
+		is expected to be typed in the echo line.  The requestline
+		command takes an argument for the prompt to use when
+		requesting user input.  The line typed is returned in the
+		Arexx result variable.
+
+Command Name: 	requestresponse
+Default Key: 	UNBOUND
+Description:	This command causes AME to request yes or no response from the
+		user.  If the REQ variable is set, AME will bring up an
+		easy requester for the input, with two buttons marked
+		OK anbd CANCEL;  otherwise the response is expected in the 
+		echo line.  The requestresponse
+		command takes an argument for the prompt to use when
+		requesting user input.  The response (OK or CANCEL) is returned
+		in the Arexx result variable.
+
+Command Name: 	setcurrentdir
+Default Key: 	UNBOUND
+Description:	This command sets the current directory associated with
+		AME.
+
+Command Name: 	settitle
+Default Key: 	UNBOUND
+Description:	AME will ask for a new title.  This title is used as the
+		window title for the AME Intuition window.
+
+Command Name:	show
+Default Key:	UNBOUND
+Description:	This command will temporarily reveal all folded lines.
+		on each side of the current cursor position.  AME will scan
+		the file in each direction and reveal folded lines, stopping
+		at the first unfolded line. The lines will stay revealed until 
+		hidden.  Revealed lines are indicated by a leading | symbol.
+
+Command Name:	showall
+Default Key:	UNBOUND
+Description:	This command will temporarily reveal all folded lines.
+		The lines will stay revealed until hidden. 
+		Revealed lines are indicated by a leading | symbol.
+
+Command Name:	showblock
+Default Key:	UNBOUND
+Description:	This command will temporarily reveal all folded lines in the
+		current block.  The lines will stay revealed until hidden.
+		Revealed lines are indicated by a leading | symbol.
+
+Command Name: 	sleep
+Default Key: 	UNBOUND
+Description:	AME will use the universal argument and wait for that many
+		seconds.  If given a negative argument, it will wait for that
+		many 50ths of a second.
+
+
+Command Name: 	subitem
+Default Key: 	UNBOUND
+Description:	This command is used to enter a menu sub item into the AME menu.
+		AME wiill ask for a slot number (-1 can be used for an
+		append to current menu strip operation), then asks for
+		the label to be used in the menu, the command to be executed
+		when that menu is selected, and the optional shortcut key.
+		The subitem is automatically attached to the nearest previous
+		menu item, so a menu item can have the normal multiple
+		collection sub items.	Menus are automatically disabled when this command 
+		is used, to speed entry of multiple items, and must be reenabled
+		with the onmenu command.
+
+Command Name: 	text
+Default Key: 	UNBOUND
+Description:	AME will insert the character string passed as an argument
+		to the text command at the current cursor location.
+
+Command Name: 	undoboundary
+Default Key: 	UNBOUND
+Description:	This command inserts an undo boundary character into the
+		undo buffer.  It is normally used to seperate undoable
+		operations, and is automatically called when undo
+		is active.
+
+Command Name: 	undomore
+Default Key: 	UNBOUND
+Description:	This command will undo an additional operation, up to the
+		next boundary.  It is not normally called directly.  It is
+		automatically called when undo is active.
+
+Command Name: 	undostart
+Default Key: 	UNBOUND
+Description:	Begin a new undo operation.  This command is not normally
+		called directly.
+
+Command Name: 	unlockdisplay
+Default Key: 	UNBOUND
+Description:	Unlock the display window so changes made appear.
+
+Command Name: 	unlockmodeline
+Default Key: 	UNBOUND
+Description:	Unlock the mode and echo lines, so normal output appears.
+
+Command Name:	unfold
+Default Key:	UNBOUND
+Description:	This command unfolds an entire fold, by scanning forwards
+		and back from the current line, unfolding one level
+		of folds, until an unfolded line is encountered.
+
+Command Name:	unfoldall
+Default Key:	UNBOUND
+Description:	This command unfolds all folds.  If you just want to
+		unfold one level of folds, set a block that covers
+		the entire file, and use unfoldblock.
+
+Command Name:	unfoldblock
+Default Key:	UNBOUND
+Description:	This command unfolds the current block by one fold 
+		level.
+
+Command Name: 	windowtoback
+Default Key: 	UNBOUND
+Description:	Send the AME Intuition window to the back.
+
+Command Name: 	windowtofront
+Default Key: 	UNBOUND
+Description:	Bring the AME Intuition window to the front.
+
+
+
+
+
+AME VARIABLES
+
+Variable Name:	ADDRESS
+Description:	Default port to send Arexx messages.
+Variable Type:	string
+Initial value:	REXX
+
+Variable Name:	BACKUP
+Description:	create a backup file whenever a save operation
+		is performed.
+Variable type:	boolean
+Initial value:	unset
+
+Variable Name:	BEEP
+Description:	Whether AME will beep on error, on searches not found, etc.
+Variable Type:	boolean
+Initial value:	set
+
+Variable Name:	CASE
+Description:	Case sensitive search
+Variable type:	boolean
+Initial value:  unset
+
+Variable Name:	CHECK
+Description:	Positive numeric value for number of keys hit
+		between creation of checkpoint file.  If this value is
+		0 no checkpoint files will be saved.
+Variable type:	numeric
+Initial value:	0
+
+Variable Name:	CMODE
+Description:	C mode (brace checking, C style indent).  This mode is 
+		automatically turned on for a buffer when a file with a C ending
+		is loaded (.c or .h)
+Variable type:	boolean
+Initial value:	unset
+
+Variable Name:	COLOR
+Description:	Color for text line. (from 0 to 7).
+Variable type:	numeric
+Initial value:	3
+
+Variable Name:	CONWAIT
+Description:	Wait factor for con-handler I/O.   This variable is used
+		to increase the amount of time AME will wait for a character
+		from the terminal before looking for other events.  This
+		value must be increased for use on a terminal less
+		than 300 baud (5000 suggested).  If escape sequences seem
+		to be broken up the CONWAIT value should be increased.
+Variable type:	numeric
+Initial value:	2500
+
+Variable Name:	EOL
+Description:	Whether to track the ends of lines on up/down cursor movement, 
+		or attempt to stay in the same column.
+Variable type:	boolean
+Initial value:	unset
+
+Variable Name:	FOLDS
+Description:	Global flag controlling whether folds are allowed
+Variable type:	boolean
+Initial value:	set
+
+Variable Name:	FREQ
+Description:	Use the ASL library  file requester
+Variable type:	boolean
+Initial value:	set (unless the WINDOW keyword is specified)
+
+Variable Name:	ICONS
+Description:	save default project icons with files
+Variable type:	boolean
+Initial value:	unset
+
+Variable Name:	INDENT
+Description:	positive numeric column to indent to when indent
+		function is called
+Variable type:	numeric
+Initial value:	4
+
+Variable Name:	LEFT
+Description:	positive numeric value for the left margin
+Variable type:	numeric
+Initial value:	0
+
+Variable Name:	MBYTE
+Description:	Follow EUC rules for the extended 16 bit character set
+Variable type:	boolean
+Initial value:	unset
+
+Variable Name:	MODE
+Description:	all mode variables
+Variable type:	boolean
+Initial value:	unset
+
+Variable Name:	MCOLOR
+Description:	Background color for mode line. (from 0 to 7;  0 indicates 
+		a special mode, in which AME uses normal background color, but 
+		uses the - character for the mode line.)  If the mode line
+		background color is set to the same color as the text color,
+		the mode line background color is set to the highlight	
+		color, and the modeline forground color is set to
+		background color.
+
+Variable type:	numeric
+Initial value:	3
+
+Variable Name:	OVER
+Description:	overwrite mode
+Variable type:	boolean
+Initial value:	unset
+
+Variable Name:	PROJECT
+Description:	Name of project
+Variable Type:	string
+Initial value:	<NONE>
+
+Variable Name:	READ
+Description:	Make the buffer readonly.  The text in the buffer cannot be
+		changed when in readonly mode.  This mode is automatically
+		set when a write protected file is read into a new buffer.
+Variable Type:	boolean
+Initial value:	unset
+
+Variable Name:	REGEX
+Description:	Regular expression search
+Variable type:	boolean
+Initial value:  set
+
+Variable Name:	REQ
+Description:	Turn on all requesters (including file requester)
+Variable type:	boolean
+Initial value:	unset
+
+Variable Name:	RIGHT
+Description:	positive numeric value for the right margin
+Variable type:	numeric
+Initial value:	70
+
+Variable Name:	RXCON
+Description:	Default console for Arexx standard input/output.
+Variable Type:	string
+Initial value:	NIL:
+
+Variable Name:	SCORE
+Description:	Special update mode, optimized for large
+		windows (like when using AME on the A2024 Workbench)
+Variable type:	boolean
+Initial value:  unset
+
+Variable Name:	TAB
+Description:	positive numeric value for the number of spaces
+		inserted when the tab key is hit.  If TAB is 0,
+		a real tab is inserted.  (A real tab is always 8).
+Variable type:	numeric
+Initial value:	0
+
+Variable Name:	TEMP
+Description:	Whether this buffer has to be saved before exiting, and whether
+		AME will ask before replacing this buffer.
+Variable Type:	boolean
+Initial value:	unset
+
+Variable Name:	UNDO
+Description:	Record changes for undo operations.
+Variable type:	boolean
+Initial value:  unset
+
+Variable Name:	USTEPS
+Description:	Number of records allocated for undo operations.
+Variable type:	numeric
+Initial value:  1000
+
+Variable Name:	WRAP
+Description:	wrap on right column mode
+Variable type:	boolean
+Initial value:	unset
+
+Variable Name:	Any Local AmigaDOS variable
+Description:	A local AmigaDos variable
+Variable type:  string
+Initial value:
+

@@ -1,0 +1,199 @@
+;
+; Script to install DICE.
+;
+; $Id: Install-Freeware,v 30.0 1994/06/10 17:55:03 dice Exp $
+;
+(set Dice_Version "V3.0")
+
+; Set state variables
+;
+(user 2)                        ;Ask them all the questions.  Sorry.
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Dice Version Number used in the naming convention of the distribution
+; diskettes. ie. Disk1_DiceVersion,  Disk2_DiceVersion etc.
+;
+
+; Set up logical disk Disks
+;
+(set Disk1: (cat "Disk1_" Dice_Version ":"))
+(set Disk1  (cat "Disk1_" Dice_Version))
+(set Disk2: (cat "Disk2_" Dice_Version ":"))
+(set Disk2  (cat "Disk2_" Dice_Version))
+(set Disk3: (cat "Disk3_" Dice_Version ":"))
+(set Disk3  (cat "Disk3_" Dice_Version))
+(set Disk4: (cat "Disk4_" Dice_Version ":"))
+(set Disk4  (cat "Disk4_" Dice_Version))
+(set Disk5: (cat "Disk5_" Dice_Version ":"))
+(set Disk5  (cat "Disk5_" Dice_Version))
+
+
+; Set up a error cleanup routine
+;
+(onerror)
+(complete 0)
+
+(user 2)                        ;Ask them all the questions.  Sorry.
+
+(set df0 (if (getassign "DF0" "d") ("DF0:") ("Drive not available")))
+(set df1 (if (getassign "DF1" "d") ("DF1:") ("Drive not available")))
+(set df2 (if (getassign "DF2" "d") ("DF2:") ("Drive not available")))
+(set df3 (if (getassign "DF3" "d") ("DF3:") ("Drive not available")))
+(set drive "!#@")
+(until (getassign drive "d")
+    (SET drive
+	(cat "DF"
+	    (askchoice
+		(prompt "Which floppy should I install to?")
+		(help   "DICE Needs to format a floppy to hold the freeware"
+			"version.  You will be prompted to insert a floppy in"
+			"this drive as a part of the installation process"
+		)
+		(choices (df0) (df1) (df2) (df3))
+		(default 0)
+	    )
+	)
+    )
+)
+
+(set drivename (cat drive ":"))
+(if (not
+	(askbool
+	    (prompt "Please insert a floppy into " drivename
+		    " for formatting to receive the Freeware DICE version\n"
+		    "Note: All information on this diskette will be lost"
+		    "Select Proceed to continue, Cancel to abort"
+	    )
+	    (help   "You need to put a disk into drive " drivename
+		    " in order for DICE to be able to format it and then"
+		    "put the DICE programs on it"
+	    )
+	    (choices "Proceed" "Cancel")
+	)
+    )
+    (abort)
+)
+
+(working "Formatting floppy in drive " drivename)
+(textfile
+    (dest "ram:nl_file")
+    (append "")
+    (safe)
+)
+
+(if
+   (run "SYS:System/Format <ram:nl_file >con:1/1/500/50/Formatting_Floppy drive " drivename " name Dice_3.0 NOICONS")
+   (
+      (delete "ram:nl_file" (safe))
+      (abort)
+   )
+)
+
+(delete "ram:nl_file" (safe))
+
+;***********************************************************************
+;			       Install Disk 1
+;***********************************************************************
+(debug "Install Disk1:")
+(complete 5)
+
+(askdisk
+   (prompt "Please insert the disk labeled " Disk1 ".\n"
+	   "(disk insertion is automatically detected)" )
+   (help   "The DICE program and other tools will be copied "
+	   "from the Disk " Disk1 " into your system.")
+   (dest Disk1)
+)
+
+;Copy lhex to ram: and set variable to point to lhex utility
+;
+(debug "About to copy lhex")
+(run "delete ram:lhex force" (safe))
+
+    (copyfiles
+	(source (cat Disk1: "bin/"))
+	(dest "ram:")
+	(choices  "lhex")
+	(safe)
+    )
+
+(set lhopt "ram:lhex >CON:0/0/640/40/Unpacker/INACTIVE -fw=%s xv %s")
+(set lhext "ram:lhex >CON:0/0/640/40/Unpacker/INACTIVE <ram:lhex.list -fw=%s xv %s")
+(complete 8)
+
+(set dice_dest "Freeware_Dice:")
+(makeassign "DCC" dice_dest)
+
+;***********************************************************************
+; Begin the joys of installation. Setup Dice drawer and icon if not there.
+; At this point we have a valid destination, so we tell installer where
+; the application will end up so the exit page will be correct -- also,
+; the installation log file (if any) will be copied to the destination.
+;***********************************************************************
+(set @default-dest dice_dest)
+
+	(working "Installing extended tools")
+	(textfile
+	    (dest "ram:lhex.list")
+	    (append "dobj\ndsearch\ndu\nfdtolib\nflush\nlibtos\ntouch\n")
+	    (safe)
+	)
+	(run
+	    (lhext (tackon dice_dest "Bin/") (cat Disk1: "extended_tools.lha"))
+	)
+	(delete "ram:lhex.list" (safe))
+
+	(complete 23)
+
+
+
+;***********************************************************************
+;			       Install Disk 5
+;***********************************************************************
+(debug "Install Disk5:")
+(complete 25)
+
+
+(askdisk
+   (prompt "Please insert the disk labeled " Disk5 ".\n"
+	   "(disk insertion is automatically detected)" )
+   (help   "The remaining Includes and Binaries will be copied "
+	 "from the Disk "  Disk5 " into your system.")
+   (dest Disk5)
+)
+
+	(working "Installing basic tools")
+	(run (lhopt (dice_dest) (cat Disk5: "Freeware.lha")))
+	(complete 85)
+
+	(working "Installing DME")
+	(textfile
+	    (dest "ram:lhex.list")
+	    (append "bin/dme\n")
+	    (safe)
+	)
+	(run
+	    (lhext (dice_dest) (cat Disk5: "dme_config.lha"))
+	)
+	(delete "ram:lhex.list" (safe))
+
+(debug "End game")
+(complete 100)
+(askbool
+   (prompt "The disk in drive " drivename " contains the freeware version "
+	   "of DICE.  Feel free to pass that disk along to your friends so "
+	   "that they can enjoy it."
+   )
+   (help   "Everything is done, just click Thank You")
+   (choices "Thank You" "")
+   (default 0)
+)
+
+;Cleanup
+;
+(delete "ram:lhex" (safe))
+(delete "ram:lhex.list" (safe))
+
+(exit)

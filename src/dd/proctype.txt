@@ -1,0 +1,7 @@
+ struct ExecBase **execbaseptr=(struct ExecBase **)4L;
+ UWORD cpuid;
+ struct ExecBase *execbase;
+
+ execbase = *execbaseptr;
+ cpuid = execbase->AttnFlags;
+ if (!(cpuid & AFF_68020))

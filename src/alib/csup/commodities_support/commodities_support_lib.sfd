@@ -1,0 +1,21 @@
+
+*
+*  Commodities functions in amiga.lib (V36 and higher only)
+*
+VOID ArgArrayDone()()
+UBYTE **ArgArrayInit(LONG argc,UBYTE **argv)(A0,A1)
+LONG ArgInt(UBYTE **tt,STRPTR entry,LONG defaultval)(A0,A1,D0)
+STRPTR ArgString(UBYTE **tt,STRPTR entry,STRPTR defaulstring)(A0,A1,A2)
+CxObj *HotKey(STRPTR description,struct MsgPort *port, LONG id)(A0,A1,D0)
+struct InputEvent *InvertString(STRPTR str,struct KeyMap *km)(A0,A1)
+VOID FreeIEvents(struct InputEvent *events)(A0)
+
+*
+* Commodities Macros
+*
+* CxObj *CxCustom(LONG(*)(),LONG id)(A0,D0)
+* CxObj *CxDebug(LONG id)(D0)
+* CxObj *CxFilter(STRPTR description)(A0)
+* CxObj *CxSender(struct MsgPort *port,LONG id)(A0,D0)
+* CxObj *CxSignal(struct Task *task,LONG signal)(A0,D0)
+* CxObj *CxTranslate(struct InputEvent *ie)(A0)

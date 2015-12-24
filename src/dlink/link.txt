@@ -1,0 +1,246 @@
+
+dlink c.a prg1.o prg2.o c.lib amiga.lib auto.lib x.o
+
+C.O:
+    text,code
+    ai0,code
+    ai1,code
+    ae0,code
+    ae1,code
+    ac,code
+    libdata,data
+    libbss,bss
+
+(oops, just realized that my declarations in libbss,bss should really
+be in libdata,data to guarentee the c.o works with large-data model
+applications that declare more than 64K of initialized data!)
+
+PRG1.O:
+    text,code
+    ai0,code
+    data,data
+    bss,bss
+
+PRG2.O:
+    text,code
+    data,data
+    bss,bss
+
+C.LIB:
+    text,code
+    ai0,code
+    libdata,data
+    libbss,bss
+
+    ...
+
+AUTO.LIB:
+    text,code
+    ai0,code	    (library openning)
+    ae0,code	    (library closing)
+
+X.O:
+    ai0,code	    (RTS)
+    ai1,code	    (RTS)
+    ae0,code	    (RTS)
+    ae1,code	    (RTS)
+    ac,code	    (RTS)
+
+------------------------------------------------------------------------
+			    LINK STEP 1
+			  LIKE-NAMED SECTIONS
+
+    C:text PRG1:text PRG2:text C.LIB:text AMIGA.LIB:text AUTO.LIB:text
+
+    C:ai0  PRG1:ai0 C.LIB:ai0 AUTO.LIB:ai0 X.O:ai0 (rts)
+
+    C:ai1  X.O:ai1 (rts)
+
+    C:ae0  AUTO.LIB:ae0 X.O:ae0 (rts)
+
+    C:ae1  X.O:ae1 (rts)
+
+    C:ac   X.O:ac  (rts)
+
+    C:libdata	C.LIB:libdata
+
+    C:libbss	C.LIB:libbss
+
+    PRG1:data  PRG2:data
+
+    PRG1:bss   PRG2:bss
+
+------------------------------------------------------------------------
+			    LINK STEP 2
+			   GROUP BY TYPE
+	     (ORDER COMBINED SECTIONS ACCORDING TO FIRST-ENCOUNTERED)
+
+
+    C:text PRG1:text PRG2:text C.LIB:text AMIGA.LIB:text AUTO.LIB:text +
+    C:ai0  PRG1:ai0 C.LIB:ai0 AUTO.LIB:ai0 X.O:ai0 (rts) +
+    C:ai1  X.O:ai1 (rts) +
+    C:ae0  AUTO.LIB:ae0 X.O:ae0 (rts) +
+    C:ae1  X.O:ae1 (rts) +
+    C:ac   X.O:ac  (rts) +
+
+    C:libdata	C.LIB:libdata +
+    PRG1:data  PRG2:data
+
+
+    C:libbss	C.LIB:libbss +
+    PRG1:bss   PRG2:bss
+
+------------------------------------------------------------------------
+			    LINK STEP 3
+		       GROUP ACCORDING TO MODEL
+		( SMALL DATA, SMALL CODE MODEL LETS SAY)
+
+    [ALL CODE GROUPS]			    -> CODE HUNK
+
+    [[ALL DATA GROUPS] [ALL BSS GROUPS] ]   -> DATA HUNK
+    [---------- small data section -----]
+
+------------------------------------------------------------------------
+	(another example of another possible final-merge.  Dice has an
+	option to do put everything into a single hunk, i.e. put the
+	read-only initialized data section into the code hunk for a
+	residentable program)
+
+			    LINK STEP 3
+		       GROUP ACCORDING TO MODEL
+	(SMALL DATA, SMALL CODE, RESIDENTABLE, SINGLE-HUNK EXAMPLE)
+
+    [ALL CODE GROUPS] [ALL DATA GROUPS]     -> CODE HUNK
+		       (read only copy)
+		     ^
+		     Nominal linker-defined symbols created to point
+		     here, give the size of the data and bss , etc...
+
+
+Basically, all DLink needs to do is guarentee that like-named sections
+are merged first, then unlike-named sections (i.e. small-data and small-code
+model), and that the final merged sections are ordered the same as they
+occur in the link list.  For example:
+
+dlink c.o prg1.o prg2.o c.lib amiga.lib auto.lib x.o
+
+oh yah, also that original section ordering within the assembly file is
+preserved.  So, for example, my c.o (enclosed) declares the following
+sections:
+    text,code
+    autoinit0,code
+    autoinit1,code
+    autoexit0,code
+    autoexit1,code
+    autoconfig,code (new, experimental)
+    libdata,data
+    libbss,bss
+
+Then, say, that prg1.o declares:
+    text,code
+    autoinit0,code
+    data,data
+    bss,bss
+
+And, x.o declares (x.o is also enclosed):
+    autoinit0,code
+    autoinit1,code
+    autoexit0,code
+    autoexit1,code
+    autoconfig,code
+
+Now, section ordering in the final merge will use the section ordering
+determined by the object modules as they are scanned.  Thus, when c.o
+declares libdata,data and libbss,bss BEFORE any other module can declare
+data,data and bss,bss, that means that in any final DATA section merge,
+libdata will always occur BEFORE data,data , and libbss will always come
+before bss,bss ...  This guarentees that if my c.lib contains only
+initialized data declarations they will ALWAYS be in range of the small-data
+model even if the user declares >64K of initialized data (data,data).
+
+This may be confusing.	c.o declares libdata,data and libbss,bss, and
+a program module declares data,data and bss,bss .  The final result is
+actually libdata+data+libbss+bss because the merge is a two step
+process -- first all inZtialized data sections and then all bss sections,
+finally merge the two groups together to get the final result.	(also,
+obviously libdata+data must come before libbss+bss to take advantage of
+the use-bigger-length-in-header trick for non-residentable programs so
+dlink forces that).
+
+In anycase, since c.o declares text,code before autoinit0,code and other
+code hunks, this forces the text,code section to occur first when the
+code sections are merged together at the end.  Here is an example of
+the final merged state of the code sections:
+
+    c.o-text prg1.o-text prg2.o-text c.lib-text amiga.lib-text auto.lib-text
+    x.o-text (if x.o had a text section, it would go last).
+
+The autoinit0, autoinit1, and other sections are merged in the same
+way.  The next level group merge would result in the final code hunk:
+
+    [ALL TEXT SECTIONS][ALL AUTOINIT0 SECTIONS]....[ALL AUTOCONFIG SECTIONS]
+
+The ordering of the section groups in the final link is determined by the
+order they are encountered in the link.  Thus c.o's autoinit0 section is
+guarenteed to come FIRST in the [ALL AUTOINIT0 SECTIONS
+group, and x.o's autoinit0 section (containing the RTS), is guarenteed
+to come LAST in the [ALL AUTOINIT0 SECTIONS
+group (oops, forgot the ']').
+
+Section ordering within a given library is not guarenteed since the
+library modules may be 'included' in the link in different orders
+depending on how many times dlink must scan the library.  However,
+section ordering BETWEEN libraries is guarenteed.  Thus, all sections
+in C.LIB come first in their respective groups.  All sections in
+AMIGA.LIB come next in their respective groups, and all sections in
+AUTO.LIB come after the other library sections but come BEFORE x.o's
+sections -- in their respective like-named groups)
+
+So, with this formal definition of how sections are combined together,
+first like-named sections, then grouped according to initial occurance
+(if c.o declares text and then autoinit0, and some later module
+declares autoinit0 and then text, the group ordering is still text first
+andautoinit0 second), then finally combined according to class (CODE,
+DATA, and BSS), One can declare an arbitrary number of autoinit style
+sections where the startup code can obtain a pointer to the section
+simply by declaring the section and defining a symbol, and reference
+the end of the section by simply included a post-object module after
+all object modules and libraries in the link which declares said
+sections and another symbol).  It also allows an autoinit style section
+to be terminated with a single RTS (i.e. x.o contains the RTS), so
+any intermediate object modules and libraries can simply 'lay down code'
+in that section and it all gets combined and run sequentially at the
+end.
+
+module inclusion follows normal library rules for libraries... I did not
+need to implement any kind of loose binding in dlink.  The reason for this
+is obvious.  Take, for example, auto.lib ... auto.lib is how I indirectly
+open libraries whos base variables are referenced but not declares.  A
+module in auto.lib declares the base variable.	If the base variable has
+been referenced but not declared
+then normal library rules cause the auto.lib module to be included.  But
+since autoinit sections are also part of the module, they get
+automatically get included and grouped with other autoinit sections.  So,
+one gets direct action out of an indirect reference... a sort of loose
+binding implemented a different way.  Even more loose than what you were
+planning I think!
+
+								  -Matt
+
+-------- Original Message --------
+
+From: jtoebes@BYTECOSY
+Date: Mon, 10 Dec 90 18:51:11 EST
+To: mdillon@BYTECOSY,
+ skrueger@BYTECOSY
+Message-Id: <memo.5954@BYTECOSY>
+Subject: Blink extensions...
+
+I have been thinking about the stuff you are doing and there are some
+interesting ideas with the merging of initialization that I am starting
+to like (with some minor caveats).  The issue the still continues to
+bother me is the requirement for using c.o/x.o.  I would like to get a
+copy of your specifications for the extensions so that we can see
+what we need to do to make it part of the official Blink standard (unless
+you have some objection to that).
+

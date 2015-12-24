@@ -1,0 +1,8 @@
+/* $VER: NextAME 37.1 (21.2.93): Activate next AME */
+
+options results
+'globalrx'
+parse var result next .
+address value('AME' || next)
+'activatewindow'
+exit

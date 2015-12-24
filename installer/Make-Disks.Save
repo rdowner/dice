@@ -1,0 +1,153 @@
+;;;
+;;; $ver: Make-DISKS 1.6 (16.04.94) 11:28:56
+;;;
+;       Distribute prepared archives among virtual disks
+;
+;       Intermediate:   ar:m
+;       Dest:           RD0:, RD1:, RD2:, RD3:, RD4:
+;
+
+
+;
+;       Prepare RAM floppy images, using the floppy emulator.
+;
+set echo on
+failat  21
+mount   rd1: >nil:
+mount   rd2: >nil:
+mount   rd3: >nil:
+mount   rd4: >nil:
+mount   rd5: >nil:
+
+format drive rd1: name "Disk1_V3.0" NOICONS <nil:
+copy    Disk1.info              rd1:Disk.info    com
+format drive rd2: name "Disk2_V3.0" NOICONS <nil:
+copy    Disk2.info              rd2:Disk.info    com
+format drive rd3: name "Disk3_V3.0" NOICONS <nil:
+copy    Disk3.info              rd3:Disk.info    com
+format drive rd4: name "Disk4_V3.0" NOICONS <nil:
+copy    Disk4.info              rd4:Disk.info    com
+format drive rd5: name "Disk5_V3.0" NOICONS <nil:
+copy    Disk5.info              rd5:Disk.info    com
+
+failat 1
+relabel rd1: name "Disk1_V3.0"
+diskchange RD1:
+relabel rd2: name "Disk2_V3.0"
+diskchange RD2:
+relabel rd3: name "Disk3_V3.0"
+diskchange RD3:
+relabel rd4: name "Disk4_V3.0"
+diskchange RD4:
+relabel rd5: name "Disk5_V3.0"
+diskchange RD5:
+
+assign ar: Oi:Archives
+;
+;       Disk 1
+;
+
+makedir                         rd1:l
+makedir                         rd1:bin
+makedir                         rd1:config
+makedir                         rd1:rexx
+makedir                         rd1:s
+makedir                         rd1:libs
+
+copy    Install-DICE                           rd1:    com ;59   == 63  
+copy    Install-DICE.info                      rd1:    com ;4    == 5   
+copy    Install-Floppy                         rd1:    com ;21   == 23  
+copy    Install-Floppy.info                    rd1:    com ;4    == 5   
+copy    Install-Freeware                       rd1:    com ;11   == 13  
+copy    Install-Freeware.info                  rd1:    com ;4    == 5   
+copy    Installer                              rd1:    com ;225  == 240 
+
+copy    dcc.master:bin/lhex                    rd1:bin com ;83   == 89  
+copy    dcc.master:bin/more                    rd1:bin com ;26   == 28  
+copy    dcc.master:l/fsovl-handler             rd1:l   com ;53   == 57  
+copy    dcc.master:About_Dice                  rd1:    com ;33   == 35  
+copy    dcc.master:About_Dice.info             rd1:    com ;3    == 4   
+copy    dcc.master:Copyright_Information       rd1:    com ;15   == 17  
+copy    dcc.master:Copyright_Information.info  rd1:    com ;1    == 2   
+copy    dcc.master:Release_Notes               rd1:    com ;37   == 40  
+copy    dcc.master:Release_Notes.info          rd1:    com ;1    == 2   
+copy    dcc.master:Known_Buglist               rd1:    com ;13   == 14  
+copy    dcc.master:Known_Buglist.info          rd1:    com ;1    == 2   
+
+copy    ar:include_13.lha              rd1:    ;122  ==  130
+copy    ar:include_20.lha              rd1:    ;505  ==  538
+copy    ar:extended_tools.lha          rd1:    ;405  ==  431
+;;;TOTAL SIZE=.........................................1754 -- 100%
+INFO RD1:
+
+;
+;       Disk 2
+;
+copy    ar:include_common.lha          rd2:    ;86   ==  92 
+copy    ar:dice_linklibs.lha           rd2:    ;887  ==  944
+copy    ar:include_30.lha              rd2:    ;650  ==  692
+;;;TOTAL SIZE=.........................................1733 -- 98%
+INFO RD2:
+
+;
+;       Disk 3
+;
+copy    ar:online_help2.lha            rd3:    ;39   ==  42 
+copy    ar:library_source.lha          rd3:    ;331  ==  352
+copy    ar:source_control.lha          rd3:    ;506  ==  539
+copy    ar:rom_tools.lha               rd3:    ;55   ==  58 
+copy    ar:amiga12_linklibs.lha        rd3:    ;669  ==  712
+;;;TOTAL SIZE=.........................................1708 -- 97%
+INFO RD3:
+
+;
+;       Disk 4
+;
+copy    ar:miscellaneous.lha           rd4:    ;48   ==  52 
+copy    ar:debugger.lha                rd4:    ;111  ==  119
+copy    ar:mmu_tools.lha               rd4:    ;434  ==  462
+copy    ar:example_source.lha          rd4:    ;355  ==  378
+copy    ar:amiga30_linklibs.lha        rd4:    ;631  ==  672
+;;;TOTAL SIZE=.........................................1688 -- 96%
+INFO RD4:
+
+;
+;       Disk 5
+;
+copy    ar:online_help1.lha            rd5:    ;268  ==  285
+copy    ar:basic_tools.lha             rd5:    ;302  ==  322
+copy    ar:freeware.lha                rd5:    ;738  ==  785
+copy    ar:dice_startup.lha            rd5:    ;2    ==  3  
+copy    ar:ttx_config.lha              rd5:    ;36   ==  39 
+copy    ar:dme_config.lha              rd5:    ;90   ==  96 
+copy    ar:ced_config.lha              rd5:    ;18   ==  20 
+copy    ar:ame_config.lha              rd5:    ;146  ==  156
+copy    dcc.master:Known_Buglist.info          rd5:    com ;1    == 2   
+;;;TOTAL SIZE=.........................................1713 -- 97%
+INFO RD5:
+
+;
+;       Cleanup.  Fix protections, etc.
+;
+protect rd1:#? r all quiet
+setdate rd1:#? 01-jan-94 12:00 all
+
+protect rd2:#? r all quiet
+setdate rd2:#? 01-jan-94 12:00 all
+
+protect rd3:#? r all quiet
+setdate rd3:#? 01-jan-94 12:00 all
+
+protect rd4:#? r all quiet
+setdate rd4:#? 01-jan-94 12:00 all
+
+protect rd5:#? r all quiet
+setdate rd5:#? 01-jan-94 12:00 all
+
+protect rd1:bin/#? re all quiet
+protect rd1:l/#?   re all quiet
+protect rd1:Install-DICE r
+protect rd1:Installer re
+
+set echo off
+

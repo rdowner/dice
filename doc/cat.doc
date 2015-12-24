@@ -1,0 +1,13 @@
+
+dcc/cat 							dcc/cat
+
+				CAT.DOC
+
+SYNOPSIS
+    cat [files/wildcards]
+
+DESCRIPTION
+    The cat program is similar to TYPE but will dump multiple files to
+    stdout.  If no files are specified cat copies its stdin to its
+    stdout.
+

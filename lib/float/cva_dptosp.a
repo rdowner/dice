@@ -1,0 +1,25 @@
+
+		;   CVA_DPTOSP.A
+		;
+		;   A0 = &arg	(4 bytes)
+		;
+		;   result in D0/D1
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+		section text,code
+
+		xref	_MathIeeeDoubTransBase
+
+		xref	_LVOIEEEDPTieee ; MathIeeeDoubTransBase (ieee.doub->ieee.sing)
+		xdef	__cvdptosp_a
+
+__cvdptosp_a	move.l	A6,-(sp)
+		move.l	_MathIeeeDoubTransBase(A4),A6
+		movem.l (A0),D0/D1          ; get ieee.double value
+		jsr	_LVOIEEEDPTieee(A6) ; convert ieee.doub->ieee.sing
+		move.l	(sp)+,A6
+		rts
+
+		END
+

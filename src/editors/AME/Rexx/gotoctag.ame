@@ -1,0 +1,45 @@
+/* $VER: Gotoctag 37.1 (21.2.93) : Goto CTAG function for AME */
+
+options results
+'getword'
+
+if (rc ~= 0) then do;
+    eprint "Need a tag"
+    exit;
+    end;
+
+tag = result
+
+'getprefs' 'var tags'
+if (rc ~= 0) then do;
+/*    eprint "Tags file not set, using default" */
+    result = 'tags: ctags'
+    end;
+
+parse var result . ':' tagfile
+'visit' tagfile
+'movebob'
+
+'find' '^' || tag
+if (rc ~= 0) then do;
+    eprint 'Tag not found'
+    exit;
+    end;
+
+'getline'
+tagline = result
+
+parse var result . file search
+parse var search '/' search '/' .
+search = substr(search,1,length(search)-1)
+search = insert( "'", search, pos('(',search)-1)
+search = insert("'",search,pos(')',search)-1)
+j = pos('[',search)
+if j > 0 then search = insert( "'", search, j-1)
+j = pos(']',search)
+if j > 0 then search = insert( "'", search, j-1)
+'visit' file
+'movebob'
+say 'looking for' search
+'find' search
+'movebol'

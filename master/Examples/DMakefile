@@ -1,0 +1,38 @@
+
+#   DMakefile - generic
+#
+
+FILES = cat hello led simplewin
+DIRS  = doshan exec_dev printer_driver shared_lib
+ED= t:
+
+FIEXES= $(FILES:*:"t:*")
+FISRCS= $(FILES:*:"*.c")
+FIOBJS= $(FILES:*:"t:*.o")
+
+default:
+    @echo "DMake $(FILES) $(DIRS)"
+    @echo "DMake all"
+
+all: $(FILES) $(DIRS)
+
+$(FILES) : $(FIEXES)
+
+$(FIEXES) : $(FISRCS)
+    dcc -mRR -proto -r %(right) -o %(left) -Ot:
+
+$(DIRS) : $(DIRS:*:*.dummy)
+
+$(DIRS:*:*.dummy) : $(DIRS:*:*.dummy)
+    cd %(left:*.dummy:*)
+    dmake all
+    cd
+
+clean: $(DIRS:*:*.clean)
+    -delete $(FIOBJS)
+
+$(DIRS:*:*.clean) : $(DIRS:*:*.clean)
+    cd %(left:*.clean:*)
+    dmake clean
+    cd
+

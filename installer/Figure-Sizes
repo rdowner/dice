@@ -1,0 +1,5 @@
+delete >NIL: Make-Disks.Save force
+rename Make-Disks Make-Disks.Save
+rx Create-Make-Disks >Make-Disks
+Diff Make-Disks.Save Make-Disks
+Protect Make-Disks rs

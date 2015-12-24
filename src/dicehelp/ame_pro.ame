@@ -1,0 +1,41 @@
+/* $VER: AME_PRO 37.2 (23.4.93 ) : AME Init file for DICE */
+
+/* Add a couple useful menu items for working with DICE */
+BAR '-1'
+ITEM '-1 "Compile" "rx dcc:rexx/compile"'
+ITEM '-1 "Dice Help (F5)" "rx dcc:rexx/dicehelp"'
+ITEM '-1 "Next Error" "rx dcc:rexx/nexterror"'
+
+ITEM '-1 "Icons" "setprefs icons"'
+ITEM '-1 "No Icons" "unsetprefs icons"'
+onmenu
+
+
+/* arexx STDOUT to an con: window */
+setprefs RXCON "*"
+
+alias "dicehelp rx dcc:rexx/dicehelp"
+
+bindkey "describekey F1"
+bindkey "deleteline F2"
+bindkey 'stringrx F3 "movebol;killline;yank;movebol;movedown;yank;movebol"'
+bindkey 'stringrx F4'
+bindkey "dicehelp F5"
+bindkey "nexterror Shift-F5"
+
+bindkey "foldfunction F6"
+bindkey "foldblock F7"
+bindkey "show F8"
+bindkey "hide F9"
+bindkey "unfold F10"
+
+/* setprefs UNDO */
+
+
+/* AME standard options (commented out).  Uncomment any you like. */
+
+/* rx "dcc:rexx/me_menu.ame"	/* Use MEMACS 2.04 style menus */ */
+/* rx "dcc:rexx/setoldfind.ame"	/* Switch to non-incremental find */ */
+/* rx "dcc:rexx/multiwindow.ame"	/* Switch AME to multiwindow mode */ */
+/* rx "dcc:rexx/auxinit.ame"	/* Init options for AME remote use */ */
+/* rx "dcc:rexx/vactive.ame"    /* Add menu items for AME requesters */ */

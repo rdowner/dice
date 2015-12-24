@@ -1,0 +1,8 @@
+
+failat 30
+delete >nil: t:dme.refs
+failat 20
+autorefs t:dme.refs #?.doc
+copy t:dme.refs dme.refs
+delete t:dme.refs
+

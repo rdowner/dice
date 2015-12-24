@@ -1,0 +1,11 @@
+
+.include ../DMakefile.inc
+
+all:
+
+install:	$(INSTDIR)config
+    cp dice.errors $(INSTDIR)config/dice.errors
+
+$(INSTDIR)config : $(INSTDIR)config
+    mkdir %(left)
+

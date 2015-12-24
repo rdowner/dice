@@ -1,0 +1,328 @@
+
+    TIME.DOC (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+TABLE OF CONTENTS
+
+c.lib/time/asctime
+c.lib/time/clock
+c.lib/time/ctime
+c.lib/time/localtime
+c.lib/time/strftime
+c.lib/time/time
+
+
+time/asctime						time/asctime
+
+   NAME
+	asctime - convert broken down time into standard text
+
+   SYNOPSIS
+	char *str = asctime(ts);
+	const struct tm *ts;
+
+   FUNCTION
+	asctime() converts a broken down time in the tm structure to an
+	ascii string and returns a pointer to that string.  The time
+	string is formatted like this:
+
+	    Mon Dec 8 01:53:33 1987\n\0
+
+	where \n stands for a newline character and \0 is terminating
+	nul.
+
+	The string is stored in a static buffer shared by both asctime and
+	ctime and so will get overwritten whenever either function is
+	called.
+
+   EXAMPLE
+	/*
+	 *  since the string returned by asctime already has a newline on
+	 *  it we use fputs instead puts.
+	 */
+
+	#include <stdio.h>
+	#include <time.h>
+
+	main()
+	{
+	    time_t t = time(NULL);
+	    fputs(asctime(localtime(&t)), stdout);
+	    return(0);
+	}
+
+   INPUTS
+	struct tm *ts;	pointer to a broken down time structure
+
+   RESULTS
+	char *str;	pointer to static string
+
+   SEE ALSO
+	time, localtime, asctime, strftime, ctime, clock
+
+
+time/clock						time/clock
+
+   NAME
+	clock - return system clock value
+
+   SYNOPSIS
+	clock_t clk = clock(void);
+
+   FUNCTION
+	clock() returns the system clock in ticks.  To obtain seconds from
+	ticks divide the returned value by CLK_TCK in <time.h>
+
+   EXAMPLE
+	#include <stdio.h>
+	#include <time.h>
+
+	main()
+	{
+	    clock_t clk = clock();
+	    long i;
+
+	    clk = clk + CLK_TCK;
+	    for (i = 0; clk - clock() > 0; ++i);
+	    printf("The FOR loop calling clock() took %d loops in one second\n", i);
+	    return(0);
+	}
+
+   INPUTS
+	none
+
+   RESULTS
+	clock_t clk;	    system clock time value
+
+   SEE ALSO
+	time, localtime, asctime, strftime, ctime, clock
+
+
+time/ctime						time/ctime
+
+   NAME
+	ctime - convert time into standard text
+
+   SYNOPSIS
+	char *str = ctime(&t);
+	time_t t;
+
+   FUNCTION
+	ctime converts a time pointer into ascii text using the following
+	format:
+
+	    Sun Dec 8 01:53:33 1987\n\0
+
+	where \n stands for a newline character and \0 is terminating
+	nul.
+
+	The string is stored in a static buffer shared by both asctime and
+	ctime and so will get overwritten whenever either function is
+	called.
+
+   EXAMPLE
+	/*
+	 *  since the string returned by ctime already has a newline on
+	 *  it we use fputs instead puts.
+	 */
+
+	#include <stdio.h>
+	#include <time.h>
+
+	main()
+	{
+	    time_t t = time(NULL);
+	    fputs(ctime(&t), stdout);
+	    return(0);
+	}
+
+   INPUTS
+	time_t *t;	pointer to a time_t value
+
+   RESULTS
+	char *str;	pointer to static string
+
+   SEE ALSO
+	time, localtime, asctime, strftime, ctime, clock
+
+
+time/localtime						time/localtime
+
+   NAME
+	localtime - convert time into broken down time
+
+   SYNOPSIS
+	struct tm *tp = localtime(&t);
+	time_t t;
+
+   FUNCTION
+	localtime takes the address of a time_t variable and breaks up
+	the time into component parts, storing them in a static tm
+	structure.  The address of this structure is returned.
+
+	Since the broken up time is stored into a static structure, the
+	structure will get overwritten on the next call to localtime().
+
+	The fields of the tm structure are:
+
+	struct tm {
+	    int tm_sec;     /*	0-59	*/
+	    int tm_min;     /*	0-59	*/
+	    int tm_hour;    /*	0-23	*/
+	    int tm_mday;    /*	1-31	*/
+	    int tm_mon;     /*	0-11	*/
+	    int tm_year;    /*	n+1900	*/
+	    int tm_wday;    /*	(sun)0-6*/
+	    int tm_yday;    /*	0-366	*/
+	    int tm_isdst;   /*	daylight svings time flag (not impl by DICE) */
+	};
+
+   EXAMPLE
+
+	/*
+	 *  Note that it is much easier to format time/date strings with
+	 *  strftime().
+	 */
+
+	#include <stdio.h>
+	#include <time.h>
+
+	main()
+	{
+	    time_t t = time(NULL);
+	    struct tm *tp = localtime(&t);
+
+	    printf("The time is %02d:%02d:%02d\n", tp->tm_hour, tp->tm_min, tp->tm_sec);
+
+	    return(0);
+	}
+
+   INPUTS
+	time_t *t;	pointer to a time_t
+
+   RESULTS
+	struct tm *tp;	pointer to a struct tm structure filled out according
+			to the passed time.
+
+   SEE ALSO
+	time, localtime, asctime, strftime, ctime, clock
+
+
+time/strftime						time/strftime
+
+   NAME
+	strftime - convert broken down time into a string according to
+		   a format.
+
+   SYNOPSIS
+	size_t len = strftime(buf, max, fmt, tm)
+	char *buf;
+	size_t max;
+	const char *fmt;
+	const struct tm *tm;
+
+   FUNCTION
+	strftime formats a broken down time into a buffer according to
+	a format string fmt.  The fmt string looks like a the format for
+	a printf except with different control definitions:
+
+	%%  - a literal '%' character
+	%a  - The locale's abbreviated name for the day of week
+	%A  - The locale's full name for the day of week
+	%b  - The locale's abbr. name for the month
+	%B  - The locale's full name for the month
+	%c  - The locale's default representation for the date & time (ctime)
+	%d  - The day of the month 01-31
+	%H  - The hour 00-23  (24 hour time)
+	%I  - The hour 01-12  (12 hour time)
+	%j  - The day in the year 001-366
+	%m  - The month 01-12
+	%M  - The minute 00-59
+	%p  - Indication of morning or afternoon.  In the US: "AM" or "PM"
+	%S  - The second 00-59
+	%U  - The week of the year 00-53, sunday is the first day in a week
+	%w  - The day of the week 0-6, sunday=0  (standard)
+	%W  - The day of the week 0-6, monday=0
+	%x  - The locale's default representation for the date only
+	%X  - The locale's default representation for the time only
+	%y  - The year mod 100 (00-99)
+	%Y  - The full year (e.g. 1990)
+	%Z  - The name of the locale's time zone, nothing if unknown
+
+	The number of characters written to the string is returned, or 0
+	if the formatted string exceeds the buffer size.
+
+   WARNING
+	There must be at least max + 1 bytes in buf or unexpected memory
+	might get overwritten.
+
+   EXAMPLE
+	#include <stdio.h>
+	#include <time.h>
+
+	main()
+	{
+	    time_t t = time(NULL);
+	    struct tm *tp = localtime(&t);
+	    char buf[256];
+
+	    strftime(buf, sizeof(buf) - 1, "Now is %A %d %B %Y  %X", tp);
+	    puts(buf);
+
+	    return(0);
+	}
+
+   INPUTS
+	char *buf;	    buffer to write formatted string into
+	size_t max;	    maximum size of buffer - 1
+	char *fmt;	    format string
+	struct tm *tm;	    broken down time
+
+   RESULTS
+	size_t len;	    length of formatted string in buffer or 0
+			    if the maximum was exceeded.
+
+   SEE ALSO
+	time, localtime, asctime, strftime, ctime, clock
+
+
+time/time						time/time
+
+   NAME
+	time - get current time
+
+   SYNOPSIS
+	time_t t = time(NULL);
+		    or
+	time(&t);
+	time_t t;
+
+   FUNCTION
+	time() returns the current time as a time_t and also copies it into
+	a time_t if the address of said is passed as an argument.  You may
+	pass NULL as an argument in which case the time is only returned.
+
+	The time is returned as seconds since some base date, time_t is
+	normally an unsigned long.
+
+   EXAMPLE
+	#include <stdio.h>
+	#include <time.h>
+
+	main()
+	{
+	    time_t t = time(NULL);
+
+	    printf("t = %u\n", t);
+	    return(0);
+	}
+
+   INPUTS
+	time_t *t;	pointer to a time_t or NULL
+
+   RESULTS
+	time_t t;	a time_t
+
+   SEE ALSO
+	time, localtime, asctime, strftime, ctime, clock
+
+

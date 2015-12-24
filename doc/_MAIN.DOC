@@ -1,0 +1,106 @@
+
+			 USING THE _MAIN ENTRY POINT
+
+    DICE uses a general startup code module that supports CLI programs,
+    workbench startup, residentable code, and custom configurations
+    such as compiling a dos handler.
+
+    To this end, DICE relies heavily on its AUTOINIT capability to
+    automatically bring in code during linking to perform appropriate
+    operations.  For example, if you use floating point, DICE will
+    automatically bring in routines to open and close the floating point
+    libraries.	If you do NOT use floating point, these routines are NOT
+    brought in.
+
+    You may have read about DICE's ability to automatically open the
+    amiga's libraries, accomplished by you, the programmer, simply making
+    the library calls without declaring the library base variable and
+    DICE automatically bringing in appropriate code during linking
+    to open and close those libraries not explcitly declared.  DICE uses
+    this feature not only for the floating point libraries, but for
+    DOS.LIBRARY as well.
+
+    DICE also uses the general autoinit capability to bring in code to
+    support the workbench.  Specifically, to wait for and retrieve the
+    workbench message passed to the task on its message port. This message
+    MUST be pulled off the port before even DOS.LIBRARY can be openned.
+
+    Normally, when you use the main() entry point, C.LIB's _main will be
+    brought in.  This causes an implicit reference causing ALIB/WBMAIN.A to
+    be brought in as autoinit code which is called by c.a before doing
+    anything that requires DOS.  In otherwords, workbench processing is
+    done automatically and wbmain(msg) is called (which you have to
+    supply).
+
+    But when you overide the _main() entry point with your own, things
+    work differently:
+
+    (1) DOS.LIBRARY is now openned automatically only if you makes calls
+	that need it.  (i.e. you don't have to worry about it)
+
+    (2) STDIO's stdin, stdout, and stderr are not set up, but you can
+	still use STDIO on FILE *'s that you explicitly fopen().
+
+    (3) DESCRIPTORS 0, 1, and 2 are not set up but you can still use
+	low level open(), read(), write(), etc... calls for descriptors
+	you open yourself.
+
+    (4) MEMORY MANAGEMENT still works fine
+
+    (5) WORKBENCH PROCESSING WILL NOT BE DONE BY DEFAULT, there is
+	no wbmain() and autoinit code normally brought in by C.LIB's
+	_main() to WaitPort()/GetMsg() the workbench message (if
+	workbench startup is detected) will NOT be brought in by
+	default.
+
+		      HOW DO I HAVE A _MAIN FOR PROGRAMS
+			RUN FROM THE WORKBENCH?
+
+    The answer is, a simple trick.  You must make a dummy reference
+    by having the following dummy code in your program:
+
+	routing_that_is_never_called()
+	{
+	    _waitwbmsg();
+	}
+
+    NEVER CALL THIS PROCEDURE!	It's only the reference that counts,
+    because ALIB/WBMAIN.A which contains _waitwbmsg() brings it in
+    as autoinit code which is run automatically by C.O
+
+    The end result is that autoinit code will WaitPort()/GetMsg()
+    the workbench message before calling your _main().
+
+    To process this message your _main() must check the _WBMsg variable.
+    If this variable is non-NULL, the program was started from the
+    workbench.	If it is NULL the program was started from a CLI.  Note
+    that the arguments (len, arg) passed to _main() are ONLY VALID FOR
+    CLI RUN PROGRAMS.  They will contain garbage for workbench run
+    programs.
+
+    You do NOT need to ReplyMsg() the workbench message on exit, that
+    is done automatically.  In fact, you should NEVER attempt to
+    return _WBMsg yourself, the return must be synced up to the exit
+    with a Forbid() that is ensured to not be broken only if done by
+    C.O's _exit() call.
+
+
+		WHY ISN'T THE WORKBENCH CHECKED FOR BY DEFAULT
+		 WHEN _main() is OVERRIDEN BY THE PROGRAMMER?
+
+    The answer is, to suport custom processes and tasks.  A custom
+    process created with CreateProc() or CreateNewProc() (2.0) looks
+    just like a workbench process, but no message will be sent over
+    the port.  Thus, if DICE were to do workbench processing by
+    default it would incorrectly handle custom processes.
+
+
+		    DO YOU REALLY WANT TO USE _main() ?
+
+    No, you do not.  I strongly suggest that you use the standard
+    main() and wbmain() entry points for all normal programs.
+
+    The ONLY time you *need* to use _main() is when you are developing
+    specialized programs such as DOS handlers, devices, and libraries.
+
+

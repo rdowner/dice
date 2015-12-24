@@ -1,0 +1,12 @@
+
+dcc/flush							dcc/flush
+
+				FLUSH.DOC
+
+SYNOPSIS
+    flush
+
+DESCRIPTION
+    The flush program flushes any unused fonts, libraries, etc... from
+    the system.
+

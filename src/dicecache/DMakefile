@@ -1,0 +1,49 @@
+
+#   dtaacs.library
+
+OD = dtmp:compc/dcache/
+EXE = dicecache.library
+CFLAGS= -mRR -ms -s -I$(OD) -l0 -lc -lamiga20 -proto
+#CFLAGS= -ms -s -I$(OD) -l0 -lc -lamiga13 -proto -DDEBUG
+PROTOS= $(OD)dicecache-protos.h
+CLIBDCH= dicecache_protos.h
+
+DCEXE= dicecache
+
+SRCS= tag.a lib.c init.c lock.c main.c cache.c subs.c
+OBJS= $(SRCS:"*.a":"$(OD)*.o") $(SRCS:"*.c":"$(OD)*.o")
+
+all: $(OD) $(PROTOS) $(EXE) $(DCEXE) $(CLIBDCH)
+
+#all: $(OD) $(PROTOS) $(EXE) $(LIB) $(RLIB) $(DCEXE) $(CLIBDCH)
+
+$(DCEXE) : dicecache.c
+    dcc dicecache.c -o %(left) -Ot:
+
+$(EXE) : $(OBJS)
+    dcc $(CFLAGS) %(right) -o %(left) -v
+
+$(OBJS) : $(SRCS)
+    dcc $(CFLAGS) %(right) -o %(left) -c
+
+$(PROTOS) : $(SRCS)
+    makeproto -o %(left) %(right)
+
+#$(LIB) : lib.fd
+#    fdtolib lib.fd -o %(left) -I$(OD) -auto dicecache.library
+#
+#$(RLIB) : lib.fd
+#    fdtolib lib.fd -mr -h defs.h -o %(left) -I$(OD) -auto dicecache.library
+
+clean:
+    -delete $(OBJS) $(PROTOS) QUIET
+    touch lib.fd
+
+$(OD) : $(OD)
+    makedir %(left:*/:*)
+
+$(CLIBDCH) : dicecache_protos.h lib.fd
+    fdtopragma lib.fd dicecache_protos.h -o t:dc.tmp -i
+    Join dicecache_protos.h t:dc.tmp AS %(left)
+    copy lib.fd dinclude:fd/dicecache_lib.fd
+

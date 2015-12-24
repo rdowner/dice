@@ -1,0 +1,23 @@
+
+		;   SPA_CEIL.A
+		;
+		;   D0 = fceil(D0)
+		;	      4(sp)
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+		section text,code
+
+		xref	_MathIeeeSingBasBase
+		xref	_LVOIEEESPCeil
+		xdef	__spceil
+
+__spceil	move.l	4(sp),D0
+		move.l	A6,-(sp)
+		move.l	_MathIeeeSingBasBase(A4),A6
+		jsr	_LVOIEEESPCeil(A6)
+		move.l	(sp)+,A6
+		rts
+
+		END
+

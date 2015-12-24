@@ -1,0 +1,38 @@
+
+# DMakefile
+#
+# (c)Copyright 1992 Obvious Implementations Corp, All Rights Reserved
+# CONFIDENTIAL, This is unpublished proprietary source code owned by
+# Obvious Implementations Corp.  This material contains trade secrets of
+# Obvious Implementations Corp.
+
+.include ../DMakefile.inc
+
+SRCS= main.c subs.c reloc.c symbol.c data.c code.c
+
+OBJS= $(SRCS:"*.c":"$(OD)dobj_*.o")
+
+EXE= $(UBIN)dobj
+EXED= $(INSTDIR)bin/dobj
+
+PROTOS= $(OD)dobj-protos.h
+
+all: $(PROTOS) $(EXE)
+
+$(EXE) : $(OBJS)
+	cc $(CFLAGS) $(OBJS) -o $(EXE) -lamiga
+
+$(OBJS) : $(SRCS)
+	cc $(CFLAGS) %(right) -o %(left) -c
+
+$(PROTOS) : $(SRCS)
+	rm -f $(PROTOS) $(PROTOS).new
+	fgrep -h Prototype $(SRCS) >$(PROTOS).new
+	mv -f $(PROTOS).new $(PROTOS)
+
+install:
+	install -c -m 0755 $(EXE) $(EXED)
+
+clean:
+	rm -f $(PROTOS) $(OBJS) $(EXE)
+

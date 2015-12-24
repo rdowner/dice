@@ -1,0 +1,38 @@
+
+		    ;	MEMCPY.A
+		    ;
+		    ;	(c)Copyright 1990, Matthew Dillon, All Rights Reserved
+		    ;
+		    ;	memcpy(d, s, bytes) -> movmem(s, d, bytes)
+		    ;	      A0  A1  D0	      A1 A0  D0
+		    ;
+
+		    xdef    _hyper_memcpy
+		    xdef    _memcpy
+		    xdef    @memcpy
+
+		    xdef    _memmove
+		    xdef    _hyper_memmove
+		    xdef    @memmove
+
+		    xref    _movmem
+		    xref    @movmem
+
+		    section text,code
+
+@memcpy
+@memmove	    exg     A0,A1
+		    jmp     @movmem(pc)
+
+_hyper_memcpy:
+_hyper_memmove:
+_memcpy:
+_memmove:
+		    lea     4(sp),A0
+		    movem.l (A0),D0/D1
+		    exg     D0,D1
+		    movem.l D0/D1,(A0)
+		    jmp     _movmem(pc)
+
+		    END
+

@@ -1,0 +1,209 @@
+#
+#  DMakefile
+#
+#  this file contains all library combinations allowed
+
+DLIB= dlib:
+
+start:
+	type lib.help
+
+all:	startup autos.lib c uc m rom
+
+c:	    cs.lib cl.lib csp.lib csr.lib cpl.lib crl.lib csrp.lib crpl.lib
+
+uc:	    ucs.lib ucsr.lib
+
+m:	    ms.lib ml.lib msp.lib msr.lib mpl.lib mrl.lib msrp.lib mrpl.lib
+
+rom:	    roms.lib romsr.lib roml.lib romrl.lib
+
+amiga13:    amiga13l.lib amiga13s.lib amiga13sp.lib amiga13pl.lib
+
+amiga20:    amiga20l.lib amiga20s.lib amiga20sp.lib amiga20sr.lib amiga20pl.lib \
+	    amiga20rl.lib amiga20srp.lib amiga20rpl.lib
+
+startup:
+    lbmake startup
+
+autos.lib:
+    lbmake auto s
+
+autol.lib:
+    lbmake auto l
+
+cs.lib:
+    lbmake clib s
+
+cl.lib:
+    lbmake clib l
+
+csp.lib:
+    lbmake clib s p
+
+csr.lib:
+    lbmake clib s r
+
+cpl.lib:
+    lbmake clib p l
+
+crl.lib:
+    lbmake clib r l
+
+csrp.lib:
+    lbmake clib s r p
+
+crpl.lib:
+    lbmake clib r p l
+
+#   UNIX compatible C library (automatically converts UNIX style paths to
+#	 amiga style)
+
+ucs.lib:
+    lbmake uclib s
+
+ucsr.lib:
+    lbmake uclib s r
+
+
+#   M[model].LIB
+#
+
+ms.lib:
+    lbmake mlib s
+
+ml.lib:
+    lbmake mlib l
+
+msp.lib:
+    lbmake mlib s p
+
+msr.lib:
+    lbmake mlib s r
+
+mpl.lib:
+    lbmake mlib p l
+
+mrl.lib:
+    lbmake mlib r l
+
+msrp.lib:
+    lbmake mlib s r p
+
+mrpl.lib:
+    lbmake mlib r p l
+
+
+#   ROM[model].LIB
+#
+
+roms.lib:
+    lbmake rom s
+
+romsr.lib:
+    lbmake rom s r
+
+roml.lib:
+    lbmake rom l
+
+romrl.lib:
+    lbmake rom r l
+
+#   AMIGA13[model].lib:
+
+amiga13l.lib:	$(DLIB)amiga13l.lib
+
+$(DLIB)amiga13l.lib : $(DLIB)/dlib.orig/amiga13l.lib
+    copy %(right) %(left)
+
+amiga13s.lib:	$(DLIB)amiga13s.lib
+
+$(DLIB)amiga13s.lib : $(DLIB)amiga13l.lib
+    libtos $(DLIB)amiga13l.lib $(DLIB)amiga13s.lib
+
+amiga13sp.lib:
+    lbmake amiga13 s p
+
+amiga13pl.lib:
+    lbmake amiga13 p l
+
+
+#   AMIGA20[model].lib
+#
+#   The amiga20l.lib from commodore has some incorrect tags, this stuff
+#   here fixes that.  dlib.orig/amiga20l.lib contains the actual, original
+#   Commodore library.	The amiga20l.lib provided with DICE is exactly
+#   that plus bug fixes to the Commodore library.
+
+amiga20l.lib:	$(DLIB)amiga20l.lib
+
+$(DLIB)amiga20l.lib : $(DLIB)/dlib.orig/amiga20l.lib amiga20_func_l.lib
+    join $(DLIB)amiga20_func_l.lib $(DLIB)/dlib.orig/amiga20l.lib AS %(left)
+
+amiga20s.lib:	$(DLIB)amiga20s.lib
+
+$(DLIB)amiga20s.lib : $(DLIB)amiga20l.lib
+    libtos $(DLIB)amiga20l.lib $(DLIB)amiga20s.lib
+
+amiga20sp.lib:
+    lbmake amiga20 s p
+
+amiga20sr.lib:
+    lbmake amiga20 s r
+
+amiga20pl.lib:
+    lbmake amiga20 p l
+
+amiga20rl.lib:
+    lbmake amiga20 r l
+
+amiga20srp.lib:
+    lbmake amiga20 s r p
+
+amiga20rpl.lib:
+    lbmake amiga20 r p l
+
+amiga20_func_l.lib:
+    lbmake a20func l
+
+FD20FILES= asl battclock battmem cia commodities console diskfont \
+	 dos exec expansion gadtools graphics icon iffparse \
+	input misc intuition keymap layers mathffp mathieeedoubbas \
+	mathieeedoubtrans mathieeesingbas mathieeesingtrans mathtrans \
+	potgo ramdrive timer translator utility wb disk rexxsyslib
+
+FD30FILES= asl battclock battmem cia commodities console diskfont \
+	 dos exec expansion gadtools graphics icon iffparse \
+	input misc intuition keymap layers mathffp mathieeedoubbas \
+	mathieeedoubtrans mathieeesingbas mathieeesingtrans mathtrans \
+	potgo ramdrive timer utility wb disk rexxsyslib
+
+INLINE20FD=	$(FD20FILES:"*":"dinclude:amiga20/fd/*_lib.fd")
+INLINE30FD=	$(FD30FILES:"*":"dinclude:amiga30/fd/*_lib.fd")
+INLINE20PROTOS= $(FD20FILES:"*":"dinclude:xclib/*_protos.h")
+INLINE30PRAGMAS= $(FD30FILES:"*":"dinclude:pragmas/*_pragmas.h")
+
+inline20:  $(INLINE20PROTOS)
+
+$(INLINE20PROTOS) : $(INLINE20FD)
+    cd dinclude:
+    fdtopragma %(right) -o %(left)
+    cd
+
+pragma30:  $(INLINE30PRAGMAS)
+
+$(INLINE30PRAGMAS) : $(INLINE30FD)
+    cd dinclude:
+    fdtopragma %(right) -o %(left)
+    cd
+
+#    fdtopragma %(right) %(right:"*/fd/*_lib.fd":"amiga20/clib/%2_protos.h") -o %(left)
+#    cd
+
+clean:
+    -delete $(DLIB)#?.lib
+    -delete $(DLIB)#?.o
+
+cleaninline:
+    -delete $(INLINE20PROTOS)
+

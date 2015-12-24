@@ -1,0 +1,5 @@
+
+list #?.c #?.h lformat "rcsdiff %s%s*nci -l %s" >t:x$process.tmp
+execute t:x$process.tmp
+delete t:x$process.tmp
+

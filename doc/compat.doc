@@ -1,0 +1,27 @@
+
+    COMPAT.DOC (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+TABLE OF CONTENTS
+
+c.lib/compat/bpf.a
+
+
+string/bpf						string/bpf
+
+   NAME
+	__builtin_printf() (___builtin_printf:)
+
+   SYNOPSIS
+	none
+
+   FUNCTION
+	Used by author when compiling the DICE source with other commercial
+	compilers to 'bootstrap' them.  Exists for historical reasons only.
+
+   NOTE
+	This function simply calls printf() and should not be used
+	normally.
+
+   SEE ALSO
+	printf
+

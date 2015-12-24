@@ -1,0 +1,33 @@
+
+		    ;	AutoInit0 brought in if the normal _main entry
+		    ;	point is used (due to _main making a dummy
+		    ;	reference to __waitwbmsg)
+		    ;
+		    ;	Since this is the first module in AUTO.LIB and
+		    ;	always referenced on the first pass, it will occur
+		    ;	before ANY library is openned, which is what we
+		    ;	want.
+
+		    section autoinit0,code
+
+		    xref    _LVOWaitPort
+		    xref    _LVOGetMsg
+		    xref    __WBMsg
+
+		    xdef    __waitwbmsg
+
+__waitwbmsg	    move.l  $114(A6),A0     ; ThisTask
+		    cmp.b   #13,8(A0)       ; NT_PROCESS ?
+		    bne     wwm100
+		    tst.l   $AC(A0)         ; pr_CLI ?
+		    bne     wwm100
+		    lea     $5C(A0),A0      ; message port
+		    move.l  A0,-(sp)
+		    jsr     _LVOWaitPort(A6)
+		    move.l  (sp)+,A0
+		    jsr     _LVOGetMsg(A6)
+		    move.l  D0,__WBMsg(A4)
+wwm100
+
+		    END
+

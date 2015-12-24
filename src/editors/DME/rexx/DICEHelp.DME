@@ -1,0 +1,71 @@
+/*
+**	DICEHelp help system.  Script for DME Editor.
+**
+**	Sample key definition, place in your DME s:.EDRC file:
+**
+**	    map a-help	(scanf %s rx1 DiceHelp1 \$scanf)
+**
+*/
+OPTIONS FAILAT 5
+rc = 0
+OPTIONS RESULTS
+
+parse arg searchstr junk
+
+title '(' "Searching for" searchstr ')'
+
+hostname = address()		/* Source DME window */
+portname = 'DICEHELP'           /* DICEHelp's port name */
+tempname = 't:DICEHelp.temp'    /* Temporary file for passing clips */
+
+/* If resident process is not loaded, try to load it.  Wait 6 seconds. */
+if ~show('p',portname) then do
+	address COMMAND 'RUN >NIL: <NIL: DICEHelp REXXSTARTUP'
+
+	do i = 1 to 6
+		if ~show('p',portname) then do
+			address COMMAND 'wait 1'
+		end
+	end
+
+	if ~show('p',portname) then do
+	    title '(DICEHelp program not found!)'
+	    exit
+	end
+end
+
+/* Ask DICEHelp for insight.  Display results, or error message */
+address value portname
+T searchstr			/* Search for string, return <T>empfile */
+if RC=0 then do
+	refline = RESULT
+	refstring = SUBWORD( refline, 2 )
+
+	address value hostname		 /* Back to DME */
+
+	if LENGTH(refstring) <= 0 then do  /* If a NULL line, bail */
+	    title '(' "Item" searchstr "not found!" ')'
+	    exit
+	end
+
+	title '(' loading refstring ')'
+	/*address command "Wait 1"*/
+	openwindow '+0+0+600+100' newfile refstring
+
+	newport = RESULT			/* get the port 	    */
+	if RC > 0 then do			/* if not there, then error */
+	     title '(Error: error opening doc file.)'
+		address command "Wait 6"
+		exit
+	end
+
+	exit
+end
+else if RC=1 then do
+    address value hostname
+    title '(' "Item" searchstr "not found!" ')'
+end
+else do
+    address value hostname
+    title '(' "Error code" RC "DICEHelp failed!" ')'
+end

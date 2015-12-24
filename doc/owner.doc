@@ -1,0 +1,60 @@
+Owner version 37.2 2/93
+Usage: owner [0x | $]address [0x | $]address ...
+
+
+Owner is used to find the "owner" of a RAM or ROM address.
+Onwer can find the "owner" or status (free) if the address is in:
+
+                Task Control Block
+                Task Stack
+                SegList
+                Public Message Ports
+                Messages on public ports
+                tc_MemEntry
+                FreeList
+                ROM Modules
+
+Version 37.2 of Owner adds "SegTracker" support.  If SegTracker
+(now distributed with Enforcer) is running, owner can find the hunk
+and offset of any address that's in any loaded code (process,
+library, device, handler, etc.)
+
+Owner can be used in conjunction with the "LVO" tool to find the
+likely systen function containing any ROM address.  This is very
+useful if you get an Enforcer hit or Mungwall hit or crash at
+a ROM PC address.  Ose Owner to determine the ROM module
+containing the adress, then give LVO the module name (example: intuition)
+and the address (example: LVO intuition ROMADDRESS=0xnnnnnnnn)
+
+
+Example usage of Owner
+======================
+
+1> Owner 0x3297a6 0x329fea 0x2cc98b 0x292a55 0x208f42 0x272327
+
+Address  - Owner
+--------   -----------
+
+003297A6 - in MsgPort 003297A4: LOGHOST signals to
+			  Process  0x00326998: ARexx - CLI ()
+
+00329FEA - in MsgPort 00329FE8: LOGPORT signals to
+			  Process  0x002DB470: ARexx - CLI ()
+
+/* If SegTracker is running, can find in library/device/handler seglists */
+00593A5A - in SegList  of LIBS:test.library   Hunk 0000 Offset 00000002
+
+/* If in a Process seglist */
+002CC98B - in SegList  of Process  0x002CE820: FizEd Master Process
+
+
+002CC98B - in MsgPort 002CC986: FizEd *PRIVATE* Port signals to
+			  Process  0x002CE820: FizEd Master Process
+
+00292A55 - in MsgPort 00292A50: Timer signals to
+			  Process  0x002A9A50: PopUpMenu
+
+00208F42 - in -TCB-    of Task     0x00208F3E: trackdisk.device
+00208F42 - in MemList  of Task     0x00208F3E: trackdisk.device
+
+00372327 - in FreeList

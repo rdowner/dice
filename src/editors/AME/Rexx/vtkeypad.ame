@@ -1,0 +1,10 @@
+/* $VER: VTKeypad 37.1 (21.2.93) : VT100 Keypad function */
+
+options results
+parse arg c .
+if c = P then splitwindow
+if c = Q then onlywindow
+if c = R then enlargewindow
+if c = S then shrinkwindow
+
+/* and the other can be used, if the keypad is in application mode */

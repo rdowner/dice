@@ -1,0 +1,77 @@
+
+    DYNAMIC.DOC (c)Copyright 1990-1991, Matthew Dillon, All Rights Reserved
+
+TABLE OF CONTENTS
+
+dynamic.library/__dynamic
+dynamic.library/
+
+
+dynamic.library/__dynamic			dynamic.library/__dynamic
+
+    DICE has compile-time support for dynamic.library through the use of
+    the __dynamic storage qualifier.  dynamic.library is a library that
+    dynamically links object modules run-time allowing programs to make
+    procedure calls to said modules or even reference variables exported by
+    said modules.
+
+    The dynamic.library calls that DICE uses are:
+
+	symPtr = GetHyperSymbol(const char *symbolName, tags...)
+	(void)   RelsHyperSymbol(void *symPtr, tags...)
+
+    The __dynamic storage qualifier is used as follows:
+
+    (1) extern __dynamic int x;
+    (2) extern __dynamic int fubar(int);
+    (3) __dynamic int x;
+    (4) __dynamic int fubar(int);
+
+    No aggregate initialization of a __dynamic variable is allowed and no
+    aggregate initialization of variables using the address of a dynamic
+    variable is allowed.  In otherwords:
+
+    int *y = &x;	/*  ILLEGAL */
+
+    test()
+    {
+	y = &x; 	/*  LEGAL   */
+    }
+
+    The compiler will generate autoinit and autoexit code to regargs
+    functions in C.LIB which in turn will call the appropriate
+    dynamic.library functions.	The regargs functions in C.LIB are:
+
+	ptr = _GetHyperFunc(func_name, func_type)
+	ptr = _GetHyperVar(var_name)
+	(void)_RelsHyperFunc(ptr)
+	(void)_RelsHyperVar(ptr)
+
+    If you wish, you can provide your own regargs functions to overide the
+    c.lib ones to provide your own dynamic procedure/variable capability.
+    The _Get*() functions return a pointer to the data item in question
+    while the _Rels*() functions release the reference, allowing the data
+    item to be freed after all references go away (multiple tasks might
+    share a given data item or procedure)
+
+			       OVERVIEW OF CAPABILITIES
+
+    run-time loading of object modules as performed by dynamic.library is
+    an incredibly powerful tool.  A third party might define a module
+    to do a specific job, such as convert a ViewPort and BitMap to an
+    IFF file.  The third party then makes this object module available
+    to the world.  Any program wishing to use the module simply does
+    so, but WITHOUT actually linking it in to the program.
+
+    This allows the third-party to upgrade his module at any time without
+    requiring a recompile, and allows other parties to duplicate the
+    functional interface and make compatible, possibly more powerful
+    modules available to individual users, again without requiring users
+    to get an update of the particular program that uses said module(s).
+
+    dynamic variables have similar capabilities, especially in terms of
+    shared memory.  Here is a method to share a variable amoung several
+    programs not necessarily written by the same author.  There being
+    no real limits, an object module might contain a semaphore variable,
+    for example, to arbitrate access to certain other constructs.
+

@@ -1,0 +1,12 @@
+
+.include ../DMakefile.inc
+
+all:
+
+install:	$(INSTDIR)include
+    tar cf - . | (cd $(INSTDIR)include; tar xvpf -)
+
+$(INSTDIR)include : $(INSTDIR)include
+    mkdir %(left)
+
+

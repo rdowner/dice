@@ -1,0 +1,3 @@
+
+char *getcwd(char *, int);
+

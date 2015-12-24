@@ -1,0 +1,72 @@
+
+makeproto/makeproto					    makeproto/makeproto
+
+				MAKEPROTO.DOC
+
+			    GENERAING PROTOTYPES
+
+	MAKEPROTO [-o outputfile] srcfile srcfile srcfile...
+
+
+    This has nothing to do with Lattice's prototype generation options.
+    With a little more work, using MakeProto to mesh multiple source
+    modules together is clean and easy to use.
+
+    makeproto is not a magic program.  In fact, source is available
+    in DCC2:DUTIL/MAKEPROTO.C .  All it does is scan the specified
+    source files for 'Prototype' lines and write them to the specified
+    output file.  A good example of the use of MAKEPROTO is the DME SOURCE
+    (DCC3:DME.LZH).  NOTE: use -x -r when extracting DME.LZH .  The DME
+    source also includes a good example of a DMakefile.
+
+    Basically, each file should include a .H file, lets call it DEFS.H .
+    DEFS.H contains the following two defines:
+
+	#define Prototype   extern
+	#define Local	    static
+
+    DEFS.H also, at the end, contains a line similar to this:
+
+	#include "prog-protos.h"
+
+    What you want to do is set up a dependancy in your DMakefile, Makefile,
+    or whatever such that whenever any source files change, MAKEPROTO is
+    run over all source files to create a new version of "prog-protos.h".
+    MAKEPROTO simply extracts 'Prototype' lines from the source files.
+
+    Thus, for each source file, you supply a list of Prototype and Local
+    lines at the beginning of the file which describe the functions that
+    appear later on and prototypes them for other source modules;
+
+    --------------------    FOO.C --------------------
+
+    #include "defs.h"
+
+    Prototype int MYGlobalRoutine(char *);
+
+    Local void SomeForwardRefdRoutine(void);
+
+    int
+    MyGlobalRoutine(str)
+    char *str;
+    {
+	SomeForwardRefdRoutine();
+	return(str + 1);
+    }
+
+    Local void
+    SomeForwardRefdRoutine(void)
+    {
+	/* whatever */
+    }
+
+    --------------------
+
+
+    The system is clean because prototypes for routines are defined in
+    the same source file as the routines themselves.  To generate a
+    prototype file for the above source module and, say, a few others,
+    the sequence is:
+
+    1> makeproto -o prog-protos.h foo.c main.c x.c bar.c fubar.c
+

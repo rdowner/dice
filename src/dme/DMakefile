@@ -1,0 +1,54 @@
+
+#   DMakefile for DME.	Directories required:
+#	dtmp:dme/	location of objects for DME
+#
+#   note that we place prog-protos.h in the object directory as well,
+#   since this is a generated file.
+#
+#   NOTE!! can only use -mRR with the 2.0 includes due to lack of
+#   prototypes in the 1.3 includes.
+
+EXE = ram:dme
+OD  = dtmp:dme/
+DCC = dcc
+CFLAGS= -r -ms -mi -I$(OD) -mRR -proto -Ht:defs.m=defs.h
+#CFLAGS= -r -ms -I$(OD) -Ht:defs.m=defs.h -mRR
+#CFLAGS= -r -ms -I$(OD)
+PROTOS= $(OD)prog-protos.h
+PRECOMP= t:defs.m
+
+
+SRCS= command.c filereq.c globals.c main.c keyboard.c menu.c mods.c refs.c \
+      rexx.c subs.c cmd1.c cmd2.c cmd3.c afilereq.a rexxbind.a wildcmp.a
+
+HDRS= defs.h rexx.h
+
+OBJS= $(SRCS:"*.c":"$(OD)*.o") $(SRCS:"*.a":"$(OD)*.o")
+
+all: $(OD) $(PRECOMP) $(PROTOS) $(EXE)
+
+nopro: $(EXE)
+
+$(EXE): $(OBJS)
+    cd $(OD)
+    $(DCC) $(CFLAGS) $(OBJS:"$(OD)*.o":"*.o") -o %(left)
+    cd
+    copy $(EXE) dcc:bin/amiga/bin
+    copy $(EXE) srcc:
+
+$(OBJS) : $(SRCS)
+    $(DCC) %(right) -o %(left) -c $(CFLAGS)
+
+$(PROTOS) : $(SRCS)
+    -delete %(left)
+    makeproto -o %(left) %(right)
+
+$(PRECOMP) : $(HDRS) $(PROTOS)
+    -delete %(left)
+
+$(OD) : $(OD)
+    makedir %(left:*/:*)
+
+clean:
+    -delete $(OBJS) $(PROTOS) $(PRECOMP)
+

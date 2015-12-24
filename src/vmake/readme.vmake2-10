@@ -1,0 +1,47 @@
+Version 2.10 of VMake adds a new CONFIG slot to the VMake.config file to 
+enhance editting of project files, and modifies CONFIG slot 3 to change the 
+way the ADD gadget works.
+
+CONFIG "10" "ame %f hunt %_PORT_)"
+
+Config slot 10 is a command which will be passed to execute(), in the same 
+fashion as config slot 7.  This string will be executed whenever the edit
+command is invoked and the item currently selected in the list is the
+project file (eg myproject.dice)  
+
+Config slot 7 is the command used by edit for all other files.  It is 
+appropriate to RUN the editor in this case.  This allows REXX interchanges 
+between the editor and VMake, eg for processing compile errors.
+
+Config slot 10 should invoke the editor directly, so that control will not
+be returned to VMake until the editor has saved the file.  If the editor is
+invoked, then the READ command will be invoked to read the modified project
+file after it has been editted.  This will not work correctly if you RUN the
+editor.
+
+If Config slot 10 is not present, VMake will use Config slot 7 to edit the 
+project file like any other file, and will not invoke the READ command after
+the edit command.  This is the way things worked before version 2.10
+
+CONFIG slot 3 provides the default pattern match used when the ADD gadget in 
+the file list is used.  It has been modified to:
+  "(#?.C|#?.H|#?FILE#?)"
+
+In addition to updating the documentation for this config slot, it might be 
+good to add the following advice with config slots 2, 3 and 4, in the 
+documentation for the affected commands: READ, NEW, SAVE, and RECFG; and in
+the section "Creating a new file in a Project" which describes using the NEW 
+gadget to add a file to a project.
+
+CONFIG slot 2 is used when you use the READ, NEW or SAVE commands without a
+definite argument as the default pattern for the file requester.  You can
+override the option by typing "#?" in the FILE entry of the file requester,
+or you can modify CONFIG slot 2 to meet your needs.
+
+CONFIG slot 3 is used when you press the NEW gadget in VMake's file list
+gadget as the default pattern match for the file requester.  You can override
+or modify ... (as above)
+
+CONFIG slot 4 (as modified by version 2.7. not as described in the original
+docs) is used when you use the RECFG command to read a new configuration file.
+(same blurb as for 2 & 3)

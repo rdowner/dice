@@ -1,0 +1,27 @@
+
+			COMPILING LINK LIBRARIES FROM SDOURCE
+
+				(AMIGA)
+
+   You can use the library source to compile additional DICE link libraries
+   that were not shipped on the original disks but you must have a great deal
+   of hard disk space and ram in order to be able to do this.
+
+   There is a certain amount of setup you will have to do before you can
+   use dmake to compile this library source.
+
+   * If you are running under 1.3 you have to change the 'Set' commands in
+     the DMakefile to 'SetEnv' commands.
+
+   * You need to assign XDLIB: to where the destination (where to create the
+     libraries).  You usually do not assign this to DLIB: so as not to
+     overwrite your original libraries immediately.
+
+   * Needless to say, you can't compile 3.0 libraries without the 3.0 includes.
+
+   * There are literally dozens of memory model variations, a full compile
+     of all libraries with all memory model variations requires over 7MB of
+     hard disk space just to store the objects and another 7MB to store 
+     the .LIB files themselves.  A full compile takes several hours on an
+     A3000!
+

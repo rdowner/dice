@@ -1,0 +1,42 @@
+
+			;   autoinit if you ever reference the FIFO library
+			;   library
+			;
+			;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+			;
+			;   can't use pc-relative between different code sections
+			;   and cannot put string in autoinit section!
+
+			xdef	_FifoBase
+			xref	__AutoFail0
+
+_LVOOpenLibrary 	equ	-552
+_LVOCloseLibrary	equ	-414
+
+			section autoinit0,code
+
+			moveq.l #0,D0
+			lea	fifoname(pc),A1
+			jsr	_LVOOpenLibrary(A6)
+			move.l	D0,_FifoBase(A4)
+			beq	__AutoFail0
+			bra	i10
+fifoname		dc.b	'fifo.library',0
+			ds.w	0
+i10
+
+			section autoexit0,code
+
+			move.l	_FifoBase(A4),D0
+			beq	l10
+			move.l	D0,A1
+			jsr	_LVOCloseLibrary(A6)
+l10
+
+
+			section libbss,bss
+
+_FifoBase		ds.l	1
+
+			END
+

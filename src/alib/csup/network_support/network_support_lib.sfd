@@ -1,0 +1,7 @@
+*
+*  Network-support functions in amiga.lib.
+*  ACrypt() first appeared in later V39 versions of amiga.lib, but
+*  operates correctly under V37 and up.
+*
+
+STRPTR ACrypt( STRPTR buffer, STRPTR password, STRPTR username ) (A0,A1,A2)

@@ -1,0 +1,379 @@
+;
+; Script to install DICE.
+;
+; $Id: Install-FLOPPY,v 30.0 1994/06/10 17:55:03 dice Exp $
+;
+(set Dice_Version "V3.0")
+(set dice_name "Dice_3.0")
+
+(set dice_dest (cat dice_name ":"))
+(set arch_dest (cat "arch:" dice_name))
+
+
+; Set state variables
+;
+(delopts "force")               ;Unprotect destination files automatically
+(user 2)                        ;Ask them all the questions.  Sorry.
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Dice Version Number used in the naming convention of the distribution
+; diskettes. ie. Disk1_DiceVersion,  Disk2_DiceVersion etc.
+;
+
+; Set up logical disk Disks
+;
+(set Disk1: (cat "Disk1_" Dice_Version ":"))
+(set Disk1  (cat "Disk1_" Dice_Version))
+(set Disk2: (cat "Disk2_" Dice_Version ":"))
+(set Disk2  (cat "Disk2_" Dice_Version))
+(set Disk3: (cat "Disk3_" Dice_Version ":"))
+(set Disk3  (cat "Disk3_" Dice_Version))
+(set Disk4: (cat "Disk4_" Dice_Version ":"))
+(set Disk4  (cat "Disk4_" Dice_Version))
+(set Disk5: (cat "Disk5_" Dice_Version ":"))
+(set Disk5  (cat "Disk5_" Dice_Version))
+
+
+; Set up a error cleanup routine
+;
+(onerror)
+(complete 0)
+
+(delopts "force")               ;Unprotect destination files automatically
+(user 2)                        ;Ask them all the questions.  Sorry.
+
+(set df0 (if (getassign "DF0" "d") ("DF0:") ("Drive not available")))
+(set df1 (if (getassign "DF1" "d") ("DF1:") ("Drive not available")))
+(set df2 (if (getassign "DF2" "d") ("DF2:") ("Drive not available")))
+(set df3 (if (getassign "DF3" "d") ("DF3:") ("Drive not available")))
+(set drive "!#@")
+(until (getassign drive "d")
+    (SET drive
+	(cat "DF"
+	    (askchoice
+		(prompt "Which floppy should I install to?")
+		(help   "DICE Needs to format a floppy to hold the installed"
+			"version.  You will be prompted to insert a floppy in"
+			"this drive as a part of the installation process"
+		)
+		(choices (df0) (df1) (df2) (df3))
+		(default 0)
+	    )
+	)
+    )
+)
+
+(set drivename (cat drive ":"))
+(if (not
+	(askbool
+	    (prompt "Please insert a floppy into " drivename
+		    " for formatting to receive the DICE installation\n"
+		    "Note: All information on this diskette will be lost"
+		    "Select Proceed to continue, Cancel to abort"
+	    )
+	    (help   "You need to put a disk into drive " drivename
+		    " in order for DICE to be able to format it and then"
+		    "put the DICE programs on it"
+	    )
+	    (choices "Proceed" "Cancel")
+	)
+    )
+    (abort)
+)
+
+(working "Formatting floppy in drive " drivename)
+(textfile
+    (dest "ram:nl_file")
+    (append "")
+    (safe)
+)
+
+(if
+   (run "SYS:System/Format <ram:nl_file >con:1/1/500/50/Formatting_Floppy drive "drivename " name " dice_name " NOICONS")
+   (
+      (delete "ram:nl_file" (safe))
+      (abort)
+   )
+)
+
+(delete "ram:nl_file" (safe))
+
+;***********************************************************************
+;			       Install Disk 1
+;***********************************************************************
+(debug "Install Disk1:")
+(complete 5)
+
+(askdisk
+   (prompt "Please insert the disk labeled " Disk1 ".\n"
+	   "(disk insertion is automatically detected)" )
+   (help   "The DICE program and other tools will be copied "
+	   "from the Disk " Disk1 " into your system.")
+   (dest Disk1)
+)
+
+(debug (cat "RUN >NIL: <NIL: " Disk1: "l/fsovl-handler >NIL: <NIL:"))
+(run (cat "RUN >NIL: <NIL: " Disk1: "l/fsovl-handler >NIL: <NIL:"))
+
+;Copy lhex to ram: and set variable to point to lhex utility
+;
+(debug "About to copy lhex")
+(run "delete ram:lhex force" (safe))
+
+    (copyfiles
+	(source (cat Disk1: "bin/"))
+	(dest "ram:")
+	(choices  "lhex")
+	(safe)
+    )
+
+(set lhopt "ram:lhex >CON:0/0/640/40/Unpacker/INACTIVE -fw=%s xv %s")
+(set lhext "ram:lhex >CON:0/0/640/40/Unpacker/INACTIVE <ram:lhex.list -fw=%s xv %s")
+(complete 8)
+
+
+;***********************************************************************
+; Begin the joys of installation. Setup Dice drawer and icon if not there.
+; At this point we have a valid destination, so we tell installer where
+; the application will end up so the exit page will be correct -- also,
+; the installation log file (if any) will be copied to the destination.
+;***********************************************************************
+(set @default-dest dice_dest)
+    (
+	(makedir (tackon dice_dest "Bin"     ) (infos))
+	(makedir (tackon dice_dest "Config"  ) (infos))
+	(makedir (tackon dice_dest "User"    ) (infos))
+	(makedir (tackon dice_dest "dtmp"))
+	(makedir (tackon dice_dest "s"))
+	(makedir (tackon dice_dest "Rexx"))
+	(makedir (tackon dice_dest "Include"))
+	(makedir (tackon dice_dest "Dlib"))
+    )
+
+	(copyfiles
+	    (source Disk1:)
+	    (dest dice_dest)
+	    (choices "l")
+	    (infos)
+	)
+	(complete 9)
+
+	(copyfiles
+	    (source Disk1:)
+	    (dest arch_dest)
+	    (choices "bin")
+	    (infos)
+	)
+	(complete 15)
+
+	(working "Installing Commodore 1.3 Include Files")
+	(run (lhopt (tackon arch_dest "Include/") (cat Disk1: "include_13.lha")))
+	(complete 20)
+
+	(working "Installing extended tools")
+	(textfile
+	    (dest "ram:lhex.list")
+	    (append "makeproto\nuprev\nwbrun\nVMake\nvopts\n")
+	    (safe)
+	)
+	(run
+	    (lhext (tackon arch_dest "Bin/") (cat Disk1: "extended_tools.lha"))
+	)
+	(delete "ram:lhex.list" (safe))
+        (textfile
+	    (dest "ram:lhex.list")
+	    (append "VMake.info\nVopts.info\n")
+	    (safe)
+	)
+	(run
+	    (lhext (tackon dice_dest "Bin/") (cat Disk1: "extended_tools.lha"))
+	)
+	(delete "ram:lhex.list" (safe))
+
+	(complete 23)
+
+
+
+   ;***********************************************************************
+   ;***********************************************************************
+   ;				  Install Disk 2
+   ;***********************************************************************
+(debug "Install Disk2:")
+(complete 22)
+
+(askdisk
+   (prompt "Please insert the disk labeled " Disk2 ".\n"
+	   "(disk insertion is automatically detected)" )
+   (help   "Some DICE Libraries, Source code, Documentation and Includes"
+	   "will be copied from the Disk "  Disk2 " into your system.")
+   (dest Disk2)
+)
+
+   (
+	(
+	    (working "Installing DICE Link Libraries")
+	    (textfile
+		(dest "ram:lhex.list")
+		(append "DLib/c.o\nDLib/c_pi.o\nDLib/c_pr.o\nDLib/x.o\nDLib/autos.lib\nDLib/cs.lib\nDLib/ms.lib\n")
+		(safe)
+	    )
+	    (run
+		(lhext (arch_dest) (cat Disk2: "dice_linklibs.lha"))
+	    )
+	    (delete "ram:lhex.list" (safe))
+	)
+	(complete 30)
+
+	(complete 34)
+
+	(textfile
+	    (dest "ram:lhex.list")
+	    (append "Config/Default_Project.info\n")
+
+	    (safe)
+	)
+	(run
+	    (lhext (dice_dest) (cat Disk2: "miscellaneous.lha"))
+	)
+	(delete "ram:lhex.list" (safe))
+	(complete 35)
+
+	(working "Installing Common Include Files")
+	(run (lhopt (tackon arch_dest "Include/") (cat Disk2: "include_common.lha")))
+	(complete 40)
+
+   )
+
+;***********************************************************************
+;			       Install Disk 3
+;***********************************************************************
+(debug "Install Disk3:")
+(complete 40)
+
+(askdisk
+   (prompt "Please insert the disk labeled " Disk3 ".\n"
+	   "(disk insertion is automatically detected)" )
+   (help   "The remaining DICE Libraries and Examples will be copied "
+	   "from the Disk "  Disk3 " into your system.")
+   (dest Disk3)
+)
+
+    (
+	(working "Installing Amiga Link Libraries")
+	(textfile
+	    (dest "ram:lhex.list")
+	    (append "DLib/amiga13s.lib\n")
+	    (safe)
+	)
+	(run
+	    (lhext (arch_dest) (cat Disk3: "amiga12_linklibs.lha"))
+	)
+	(delete "ram:lhex.list" (safe))
+
+	(working "Installing Diff")
+	(textfile
+	    (dest "ram:lhex.list")
+	    (append "diff\n")
+	    (safe)
+	)
+	(run
+	    (lhext (tackon arch_dest "Bin/") (cat Disk3: "source_control.lha"))
+	)
+	(delete "ram:lhex.list" (safe))
+    )
+
+;***********************************************************************
+;			       Install Disk 4
+;***********************************************************************
+(debug "Install Disk4:")
+(complete 65)
+
+(askdisk
+   (prompt "Please insert the disk labeled " Disk4 ".\n"
+	   "(disk insertion is automatically detected)" )
+   (help   "The remaining Includes and Binaries will be copied "
+	 "from the Disk "  Disk4 " into your system.")
+   (dest Disk4)
+)
+
+   (
+
+	(working "Installing debugger")
+	(textfile
+	    (dest "ram:lhex.list")
+	    (append "bin/dd\n")
+	    (safe)
+	)
+	(run
+	    (lhext (arch_dest) (cat Disk4: "debugger.lha"))
+	)
+	(delete "ram:lhex.list" (safe))
+	(complete 70)
+
+	(run (lhopt (arch_dest) (cat Disk4: "miscellaneous.lha")))
+	(complete 79)
+
+   )
+
+;***********************************************************************
+;			       Install Disk 5
+;***********************************************************************
+(debug "Install Disk5:")
+(complete 80)
+
+(askdisk
+   (prompt "Please insert the disk labeled " Disk5 ".\n"
+	   "(disk insertion is automatically detected)" )
+   (help   "The remaining Includes and Binaries will be copied "
+	 "from the Disk "  Disk5 " into your system.")
+   (dest Disk5)
+)
+
+	(working "Installing basic tools")
+	(run (lhopt (tackon arch_dest "Bin/") (cat Disk5: "basic_tools.lha")))
+	(complete 90)
+
+	(working "Installing Dice-Startup Script")
+	(run (lhopt (dice_dest) (cat Disk5: "dice_startup.lha")))
+        (complete 92)
+
+	(working "Installing Advanced Micro Emacs")
+	(run (lhopt (arch_dest) (cat Disk5: "ame_config.lha")))
+        (complete 95)
+;***********************************************************************
+;	 Final Installation
+;***********************************************************************
+(complete 98)
+
+
+
+   ;***********************************************************************
+   ;	    End game
+   ;***********************************************************************
+(debug "End game")
+(complete 100)
+(askbool
+   (prompt "In order for you to run DICE a script has been placed on the "
+	   "floppy disk you just created called Dice-Startup. Anytime you "
+           "wish to use Dice simply invoke this script. Note you can add "
+           "the commands to your startup script if you so desire.\n\n"
+	   "** IMPORTANT ** Please read the \"Release Notes\" file "
+	   "for important information, including how to hook your "
+	   "editor into the DICE system."
+   )
+   (help   "You you can add the commands from the Dice-Startup script to "
+	   "your startup script. This installation does not do this "
+	   "automatically so you do not have to have the Dice disk "
+	   "in your floppy drive during system boots.")
+   (choices "Thank You" "")
+   (default 0)
+)
+
+;Cleanup
+;
+(delete "ram:lhex" (safe))
+(delete "ram:lhex.list" (safe))
+
+(exit)

@@ -1,0 +1,130 @@
+
+		section text,CODE
+
+		xref	_CoProc
+		xref	@DevInit
+
+		xdef	_DeviceName
+		xdef	_IdString
+		xdef	_DUMmySeg
+
+		moveq.l #0,D0		;   word
+		rts			;   word
+
+InitDesc:
+		dc.w	$4AFC
+		dc.l	InitDesc
+		dc.l	EndCode
+		dc.b	0		;   not auto-init
+		dc.b	2		;   version
+		dc.b	3		;   NT_DEVICE
+		dc.b	0		;   priority
+		dc.l	_DeviceName
+		dc.l	_IdString
+		dc.l	_Init
+		dc.l	0		;   extra ?
+		dc.l	0
+		dc.l	0
+
+		dc.w	0		;   word (long align)
+
+		ds.l	0		;   long word align
+
+		dc.l	16		;   dummy segment
+_DUMmySeg:	dc.l	0
+		jmp	_CoProc(pc)     ;   co-process handles IO
+
+		section DATA,DATA
+
+_DeviceName:	dc.b	'fmsdisk.device',0
+_IdString:	dc.b	'fmsdisk.device 2.2 (22 May 1991)',13,10,0
+
+EndCode:
+
+		;   DICE startup and exit code attached to Init and
+		;   Expunge.
+
+		section text,code
+
+		xref	__BSS_LEN	    ; (dlink), length of BSS
+		xref	__DATA_BAS	    ; (dlink), base of initialized data
+		xref	__DATA_LEN	    ; (dlink), length of data
+
+		xdef	_ADevExpunge	    ; expunge called by DevExpunge()
+		xdef	_SysBase	    ; SysBase
+
+_Init:		move.l	A0,-(sp)            ; save segment
+
+		movem.l D2-D7/A2-A6,-(sp)   ; blanket save
+		move.l	4.W,A6		    ; EXEC base
+
+		;   Not resident, BSS space has been allocated for us
+		;   beyond the specified data, just load the base ptr
+
+snotres 	lea	__DATA_BAS+32766,A4
+		sub.l	A3,A3
+
+clrbss
+		;   CLEAR BSS	&-32766(A4) + __DATA_LEN*4
+
+		lea	-32766(A4),A0
+		move.l	#__DATA_LEN,D0
+		asl.l	#2,D0
+		add.l	D0,A0
+
+		move.l	#__BSS_LEN,D0	    ; longwords of bss
+		moveq.l #0,D1
+		bra	clrent
+clrlop		move.l	D1,(A0)+
+clrent		dbf	D0,clrlop
+		sub.l	#$10000,D0
+		bcc	clrlop
+
+		move.l	A6,_SysBase(A4)
+		jsr	__AutoInit0	    ; A6 has SYSBase
+		bne	xfail
+		jsr	__AutoInit1	    ; A6 has SYSBase
+		bne	xfail
+
+		movem.l (sp)+,D2-D7/A2-A6   ; blanket restore
+		move.l	(sp)+,A0            ; retrieve arg to Init to A0
+		jmp	@DevInit(pc)
+
+		;   if failure occurs (auto library open failed), return NULL
+
+xfail		movem.l (sp)+,D2-D7/A2-A6
+		move.l	(sp)+,D0            ; pop/ignore arg
+		moveq.l #0,D0		    ; return NULL
+		rts
+
+		;   Expunge, called by DevExpunge as subroutine
+
+_ADevExpunge
+		movem.l A4/A6,-(sp)
+		move.l	4.W,A6
+		lea	__DATA_BAS+32766,A4
+		jsr	__AutoExit1
+		jsr	__AutoExit0
+		movem.l (sp)+,A4/A6
+		rts
+
+		section data,data
+
+_SysBase	dc.l	0
+
+		;   These are special DICE sections that merge together special
+		;   code from other object modules and link libraries, the base
+		;   of which is defined here.
+
+		section autoinit0,code
+__AutoInit0:
+		section autoinit1,code
+__AutoInit1:
+		section autoexit0,code
+__AutoExit0:
+		section autoexit1,code
+__AutoExit1:
+
+
+		END
+

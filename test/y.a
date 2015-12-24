@@ -1,0 +1,17 @@
+
+		    ;
+		    ;
+		    ;
+
+		    section text,code
+
+		    xdef    fubar
+		    xref    begin
+
+fubar
+		    bra     begin
+		    nop
+		    nop
+		    nop
+
+		    END

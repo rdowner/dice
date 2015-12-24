@@ -1,0 +1,58 @@
+Give it a whirl!  More features are planned; optimizing reading an entire
+file, better determination of structure boundaries, list the source file
+name on a structure reference so the user can pop the entire file up,
+automatic unload on low memory, path for .index files rather than one
+hard-coded one, etc.
+
+You're the first tester.  Matt has yet to try this.  Note that CLI
+usage currently re-reads the index file; this will be fixed.
+
+After you get the s:DICEHelp.index file built, try playing with case
+and partial strings:
+
+                DICEHelp AllocMem
+                DICEHelp ALLOCmem
+                DICEHelp BltBitMapRast
+                DICEHelp BltBit
+                DICEHelp AddAppIcon
+                DICEHelp AddAppIconA
+
+DICEHelp returns instantly on a %100 match, or searches for the best match.
+Each case mismatch counts 1 inaccuacy point.  A difference in source/
+destination string length counts 2 per character.
+
+
+
+
+    Bryce Nesbitt           bryce@commodore.com
+                            uunet.uu.net!cbmvax!bryce
+
+Quick test DICEHelp:
+
+
+          1> Copy:
+                        DICEHelp to somewhere in your path
+
+          2> Execute:
+                        MakeIndex s:DICEHelp.index wherever:doc/#?.doc
+                        MakeIndex s:DICEHelp.index dinclude:amiga20/#?/#?.h
+                        MakeIndex s:DICEHelp.index dcc:doc/#?.doc
+
+          3> Copy:
+                        DICEHelp.ttx to REXX:, and make a keydef for it.
+                        I use <A>?.
+
+
+Commandline syntax:
+
+                DiceHelp <searchstring> [REXXSTARTUP]
+
+
+Rexx syntax:
+
+                T <searchstring>        ;Return in temp file, RESULT is filename
+                                        ;[Eventually whole files will just
+                                        ; return the name].
+                C <searchstring>        ;Return in clipboard, RESULT is item
+                S <searchstring>        ;Write to standard out
+

@@ -1,0 +1,5 @@
+/* dd initialization file */
+
+fkey 5 "symlist"
+mitem "-1" '"Extra command"' "source" "G"
+menus

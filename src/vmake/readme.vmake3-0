@@ -1,0 +1,28 @@
+Version 3.0 of VMake implements an interactive mode for Rexx commands.
+
+There is a new command, REXXI, that can be called with a parameter value
+of either "ON" or "OFF".  Any other parameter will cause VMake to issue
+a requester that uses a new TEXT slot (position 23) complaining about an
+invalid Rexx Interactive mode:
+
+TEXT "23" "Invalid REXX Interactive mode: "
+
+In the default state ("OFF"), VMake functions as it always has.  When a 
+command is invoked from REXX, if it tries to invoke any kind of requester
+the command will abort and return a non zero code to via Rexx.  This is
+intended to allow background operation from REXX.
+
+If the Rexx state is "ON", requesters are allowed, and no return code is
+set.  This mode is intended to allow you to enhance the commands available
+with VMake, eg to write scripts to be invoked by buttons or menus.
+
+There is also a new system symbol, _REXXINTER_ which will return the last
+value set by a valid REXXI command to VMake.  It starts out set to OFF.
+You can check this symbol at the start of a Rexx script by using the LOG
+command and then issue another REXXI command at the end of your script to
+restore the original setting.  Directly setting _REXXINTER_ will not change
+the Rexx processing mode, you must use the REXXI command.
+
+(Note to JAT: I did it that way because directly setting the symbol would
+also set the dirty flag, which is inappropriate, and it's easier to check
+for valid values in a command than in the general SET command.)

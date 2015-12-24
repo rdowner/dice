@@ -1,0 +1,5 @@
+
+failat 20
+makedir ram:cumo
+copycat src:comp/cpp/cumo.cpycat ram:cumo/
+protect ram:cumo/#? rwed ALL >nil:

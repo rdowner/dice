@@ -1,0 +1,42 @@
+
+		;   MULS.A
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+		;
+		;   32x32->32 multiply
+		;
+		;   args on stack, return result on stack
+		;
+		;   CANNOT DESTROY ANY REGS
+		;
+		;	8sp	10sp
+		;	4sp	6sp
+
+		section text,code
+		xdef	__muls
+		xdef	__mulu
+		xdef	_hyper__muls
+		xdef	_hyper__mulu
+
+_hyper__muls:
+_hyper__mulu:
+__mulu:
+__muls:
+		movem.l D0/D1,-(sp) ; 0=D0H 2=D0L 4=D1H 6=D1L
+
+		swap	D0	    ; D0H
+		mulu.w	D1,D0	    ; D1L   -> D0
+		swap	D1	    ; D1H
+		mulu	2(sp),D1    ; D0L   -> D1
+		add.l	D1,D0	    ;	+   -> D0 (D1 free)
+		swap	D0
+		clr.w	D0
+		move.w	2(sp),D1    ; D0L
+		mulu.w	6(sp),D1    ; D1L
+		add.l	D1,D0
+		addq.l	#8,sp	    ; restore stack
+		rts
+
+		END
+
+

@@ -1,0 +1,3 @@
+
+dcc x.c y.c z.c -mu -s -o x
+

@@ -1,0 +1,81 @@
+
+		;   STACK.A
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+		;
+		;   STACK CHECKING CODE.  This code is guarenteed to not
+		;   destroy any registers other then munging A5 and A7
+		;   as appropriate.
+
+		section text,code
+
+		xdef	__stk_alloc
+		xdef	__stk_free
+		xref	__stk_base
+		xref	__CStackAlloc
+		xref	__CStackFree
+
+		;   __stk_alloc called if we ran out of stack!	This
+		;   is called with two stack-based arguments (we can't use
+		;   registers because we can't destroy any registers other
+		;   then fixing up A5 and A7).
+		;
+		;   The two arguments are
+		;	8(sp)	#of bytes of arguments to procedure by caller
+		;	4(sp)	#of bytes of saved registers by callee
+		;		(not including RTS vector or FP)
+		;
+		;   We must return with no registers munged other then A5
+		;   and A7.  A5 must be the new stack pointer and A7 must
+		;   be the new frame pointer, exchanged because on return
+		;   we will fall through to an EXG instruction.
+		;
+		;   On call, A5 will contain what the caller had attempted
+		;   to allocate.  The amount is calculated A7-A5+8, but
+		;   after our movem it becomes A7-A5+8+16
+
+__stk_alloc	movem.l D0-D1/A0-A1,-(sp)
+		move.l	A7,A1
+		sub.l	A5,A1
+		pea	24(A1)		    ; space procedure needs
+		pea	24(sp)		    ; pointer to control frame
+		jsr	__CStackAlloc(pc)
+		addq.l	#4,sp
+
+		; new stack pointer returned in D0, does not include space
+		; allocated by the callee.  That space can be popped off
+		; the old stack and used to setup A7 and A5 for our return.
+		;
+		; note that we must setup A5 and A7 exchanged since we fall
+		; through to an EXG instruction on return.
+
+		move.l	sp,A0		    ; ptr for final register restore
+		move.l	D0,sp		    ; SP = new A5 frame pointer
+		sub.l	(A0)+,D0
+		move.l	D0,A5		    ; A5 = new A7 stack pointer
+		move.l	16(A0),-(sp)	    ; temp copy our return vector
+		movem.l (A0),D0-D1/A0-A1    ; restore registers
+		rts			    ; return
+
+
+
+		;   __stk_free()   - the caller's return vector was replaced
+		;		     with __stk_free and it's return FP
+		;		     replaced with a pointer to the old stack
+		;		     frame's return FP (after copying the
+		;		     old stack frame's return FP up past the
+		;		     callee's registers)
+		;
+		;		     We must restore the original stack,
+		;		     original FP, and return without
+		;		     modifying anything else.
+
+__stk_free	move.l	A5,A7		    ; move to original stack
+		move.l	(sp)+,A5	    ; restore original saved FP
+		movem.l D0-D1/A0-A1,-(sp)   ; save scratch regs! + dummy A2
+		jsr	__CStackFree(pc)    ; returns actual rts vector
+		movem.l (sp)+,D0-D1/A0-A1   ; restore scratch regs!
+		rts			    ; blammo.
+
+		END
+

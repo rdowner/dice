@@ -1,0 +1,70 @@
+
+			       FMS.DOC
+
+		    FILE BASED TRACKDISK SIMULATOR
+
+    * Useful for creating a floppy-like partition on your harddisk
+      (so you can diskcopy to a floppy) WITHOUT actually having to
+      create a special partition for it.
+
+    * Useful for testing new filesystems and such
+
+    * Up to 32 Units, OFS or FFS selectable via Mountlist
+
+    * THIS IS NOT A RAM DISK.  Operation will be necessarily slower
+      than your HD, but that isn't the point behind using the device!
+
+    * Advantages over RAD / Other ram disks ... doesn't use RAM.
+      Designed for hard disk users.  By putting the 'partition'
+      file on the hard disk, it sticks around and you don't loose
+      the data you wrote to it, so mounting it again after reboot
+      or power up yields whatever was there before.
+
+    The fmsdisk.device simulates a trackdisk.device for fixed media
+    via a DOS file (one file per unit).  Simply setup your Mountlist,
+    mount the simulated trackdisk, and format, and you are off.
+
+    This has particular advantages for those hard disk users who make
+    lots of distributions, like me.  I can create a simulated partition
+    using fmsdisk.device that uses exactly the same parameters as
+    my favorite floppy device (and run the appropriate file system,
+    in this case the OFS).  After formatting, I can copy the distribution
+    onto the simulated partition and then DiskCopy it to the floppy.
+
+    This also has advantages to people fooling around with writing their
+    own file systems, as the disk file used may be examined at any time
+    through normal programs while the 'filesystem' is running.
+
+			   INSTALLATION
+
+    copy fmsdisk.device devs:
+
+    Assign FMS: to some empty directory on your hard disk (doesn't have
+    to be empty, but might as well be clean, eh?).  Files will be
+    named FMS:Unit%d
+
+    Add appropriate entries to your Mountlist (see example Mountlist).
+
+    Mount FF0:
+
+    ; Only need to format the first time to create the file.
+    Format drive FF0: name "FF0" NOICONS
+
+    Repeat above two lines for each simulated partition you wish to add.
+
+			------------------
+			 VERSION HISTORY
+
+3.0
+	- major performance increase under the OFS via new caching.
+
+2.0
+	- doesn't Seek() if the file is already positioned at the
+	  requested next read/write sector.
+
+	- default buffers set to 10 instead of 2
+
+	- overall performance and efficiency increased.
+
+1.0	First release
+

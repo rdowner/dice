@@ -1,0 +1,6 @@
+Installer Checksum Utility - "instsum"
+
+	Used to determine a checksum on a file, the number being the same as
+that found be using the installer function "getsum".
+
+USAGE: instsum filename

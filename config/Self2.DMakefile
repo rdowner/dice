@@ -1,0 +1,48 @@
+EP=DCC:BIN/
+PROTOS= $(OD)protos.h
+EXE= $(EXEDIR)$(PROJECT)
+COMPFLAGS = $(CFLAGS) -I$(OD) $(PRECOMP:"*.h":"T:*.m") $(DBLEV)
+
+OBJS= $(SRCS:"*.c":"$(OD)*.o") $(SRCS:"*.a":"$(OD)*.o")
+
+all: DoResi $(PRECOMP) $(PROTOS) $(EXE)
+
+nopro: $(EXE)
+
+$(EXE): $(OBJS)
+    fwrite $(OD)$(PROJECT).lnktmp $(OBJS)
+    dcc -l0 $(COMPFLAGS) xc_dlib:c.o @$(OD)$(PROJECT).lnktmp xc_dlib:csr.lib xc_dlib:amiga20sr.lib xc_dlib:amiga20s.lib xc_dlib:amiga30sr.lib xc_dlib:autos.lib -o %(left)
+#   dcc $(COMPFLAGS) @$(OD)$(PROJECT).lnktmp -o %(left)
+
+$(OBJS) : $(SRCS)
+    dcc %(right) -o %(left) -c $(COMPFLAGS)
+
+$(PROTOS) : $(SRCS)
+    -delete %(left)
+    makeproto -o %(left) %(right)
+
+$(PRECOMP:"":"CANT.EXIST.RULE") : $(HDRS)
+    -delete %(left)
+
+clean:
+    -delete $(OBJS) $(PROTOS) $(PRECOMP)
+
+relink: rmexe $(EXE)
+
+rmexe:
+    -delete $(EXE)
+
+install: $(EXE)
+    copy $(EXE) dcc.master:bin
+
+DoResi:
+    -resident dlink remove
+    -resident das   remove
+    -resident dc1   remove
+    -resident dcpp  remove
+    -resident dcc   remove
+    resident dlink $(EP)dlink
+    resident das   $(EP)das
+    resident dc1   $(EP)dc1
+    resident dcpp  $(EP)dcpp
+    resident dcc   $(EP)dcc

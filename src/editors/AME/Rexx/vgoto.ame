@@ -1,0 +1,89 @@
+/* $VER: VGoto 37.1 (21.2.93) */
+/* This program brings up a Goto Requester for AME */
+
+if show("l", "rexxarplib.library") = 0 then do
+   check = addlib('rexxsupport.library', 0, -30, 0)
+   check = addlib('rexxarplib.library',  0, -30, 0)
+end
+
+options results
+
+/*
+*   The following sequence determines both AME's screen and port name,
+*   and also gets the number screen rows and columns.
+*/
+
+ameport = address()
+cols = ScreenCols(ameport)
+if cols == -1 then do
+   amescreen = ""
+   cols = ScreenCols()
+   rows = ScreenRows()
+end
+else do
+   amescreen = ameport
+   rows = ScreenRows(amescreen)
+end
+/*
+ *   Set up a host. This time, send all messages to our own port.
+ */
+
+address AREXX "'x = CreateHost(AMESEARCH, MFLAGSPORT, "amescreen")'"
+/*
+ *   Wait until it is ready.
+ */
+do i = 1
+   if showlist('p', AMESEARCH) ~= 0 then leave
+   call delay 30
+end
+
+/*
+ *   Open the window
+ */
+
+idcmp = 'CLOSEWINDOW+GADGETUP'
+flags = 'WINDOWCLOSE+WINDOWDRAG+WINDOWDEPTH+ACTIVATE'
+
+call OpenWindow(AMESEARCH, (cols - 640)/2, rows - 190, 120, 60, idcmp,   ,
+                flags, "Goto...")
+
+/*
+ *   Open the port that messages will come to
+ */
+mp = openport(MFLAGSPORT)
+
+
+/*
+ *   Add the gadgets
+ */
+
+call AddGadget(AMESEARCH, 36,   28, 2, "", "%d%1%g", 48, RIDGEBORDER)
+
+/*
+ *   Main event loop
+ */
+quitflag  = 0
+
+do forever
+   if quitflag = 1 then leave
+   t = waitpkt(MFLAGSPORT)
+   do forever
+      p = getpkt(MFLAGSPORT)
+      if c2d(p) = 0 then leave
+      cmd = getarg(p)
+      if cmd = 2 then findstring = getarg(p,1)
+      t = reply(p, 0)
+	
+      if cmd = "CLOSEWINDOW" then do
+         call CloseWindow(AMESEARCH)
+         quitflag = 1
+      end
+      else if cmd = "2" then do
+         call CloseWindow(AMESEARCH)
+         quitflag = 1
+	'gotoline' findstring
+      end
+   end
+end
+
+exit

@@ -1,0 +1,47 @@
+PROJECT= VMake
+DIR=
+SRCS= VMake.c /VCommon/Subs.c /VCommon/RenderInfo.c /VCommon/DefaultFonts.c Reader.c Gadgets.c State.c \
+/VCommon/VMenu.c Command.c Symbol.c File.c Process.c
+HDRS= RenderInfo.h DefaultFonts.h VMake.h
+EXTRAS= DCC:Config/VMake.Config OI:Notes/Status
+PDEFAULT= VMake.h
+EXEDIR=
+OD= DTMP:VMAKE/
+PRECOMP= t:Vmake.m
+TYPE= Normal
+RUN= CLI
+CLIARGS=
+CFLAGS= -mRR -d0 -proto -I/vcommon/ -I$(OD) -Ht:VMake.m=VMake.h -r -mi 
+CLI=
+
+#### AUTOMATICALLY GENERATED - DO NOT EDIT BELOW THIS LINE
+PROTOS= $(OD)prog-protos.h
+EXE= $(EXEDIR)$(PROJECT)
+
+OBJS= $(SRCS:"*.c":"$(OD)*.o") $(SRCS:"*.a":"$(OD)*.o")
+
+all: $(PRECOMP) $(PROTOS) $(EXE)
+
+nopro: $(EXE)
+
+$(EXE): $(OBJS)
+    fwrite $(OD)$(PROJECT).lnktmp $(OBJS)
+    dcc $(CFLAGS) @$(OD)$(PROJECT).lnktmp -o %(left)
+
+$(OBJS) : $(SRCS)
+    dcc %(right) -o %(left) -c $(CFLAGS)
+
+$(PROTOS) : $(SRCS)
+    -delete %(left)
+    makeproto -o %(left) %(right)
+
+$(PRECOMP) : $(SRCS) $(HDRS)
+    -delete %(left)
+
+clean:
+    -delete $(OBJS) $(PROTOS) $(PRECOMP)
+
+relink: rmexe $(EXE)
+
+rmexe:
+    -delete $(EXE)

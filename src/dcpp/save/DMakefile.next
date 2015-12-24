@@ -1,0 +1,35 @@
+
+#   DMakefile.next
+#
+# (c)Copyright 1992 Obvious Implementations Corp, All Rights Reserved
+# CONFIDENTIAL, This is unpublished proprietary source code owned by Obvious Implementations Corp.
+# This material contains trade secrets of Obvious Implementations Corp.
+
+OD= objs/
+EXE= ../bin/next/dcpp
+CFLAGS= -O2 -I$(OD) -I../c1 -I.. -L../suplib -DNO_ASM
+LFLAGS= -lamiga
+PROTOS= $(OD)protos.h
+
+CCPSRCS= main.c sym.c include.c direct.c define.c cpp.c cexp.c subs.c precomp.c
+CCPOBJS = $(CCPSRCS:"*.c":"$(OD)*.o") $(CCPSRCS:"*.a":"$(OD)*.o")
+
+all: $(OD) $(PROTOS) $(EXE)
+
+$(EXE) : $(CCPOBJS)
+    cc %(right) -o %(left) $(CFLAGS) $(LFLAGS)
+    strip %(left)
+
+$(CCPOBJS) : $(CCPSRCS)
+    cc %(right) -o %(left) -c $(CFLAGS)
+
+$(PROTOS) : $(CCPSRCS)
+    rm -f %(left)
+    makeproto -o%(left) %(right)
+
+clean:
+    rm -f $(CCPOBJS)
+
+$(OD) : $(OD)
+    mkdir %(left:*/:*)
+

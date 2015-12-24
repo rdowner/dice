@@ -1,0 +1,34 @@
+
+#   DMakefile for dlink using dcc.
+#
+#  (c)Copyright 1992 Obvious Implementations Corp, All Rights Reserved
+#  CONFIDENTIAL, This is unpublished proprietary source code owned by Obvious Implementations Corp.
+#  This material contains trade secrets of Obvious Implementations Corp.
+
+OD= objs/
+EXE= ../bin/next/dlink
+CFLAGS= -O2 -I.. -I$(OD) -L../suplib
+PROTOS= $(OD)protos.h
+
+CSRCS= main.c module.c reloc.c sym.c subs.c final.c jump.c
+COBJS = $(CSRCS:"*.c":"$(OD)*.o")
+
+all: $(OD) $(PROTOS) $(EXE)
+
+$(EXE) : $(COBJS)
+    cc $(COBJS) -o %(left) $(CFLAGS) -lamiga
+    strip %(left)
+
+$(COBJS) : $(CSRCS)
+    cc -c %(right) -o %(left) $(CFLAGS)
+
+$(PROTOS) : $(CSRCS)
+    -rm %(left)
+    makeproto -o%(left) %(right)
+
+clean:
+    -rm $(COBJS) $(PROTOS)
+
+$(OD) : $(OD)
+    mkdir %(left:*/:*)
+

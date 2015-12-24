@@ -1,0 +1,5 @@
+
+2.2
+    Found bug in parse.c relating to symbol buffers, would screw up
+    symbolic replace in multiple-dependancy line.
+

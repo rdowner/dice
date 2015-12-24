@@ -1,0 +1,112 @@
+/*
+**      $Id: VMake.ttx,v 30.0 1994/06/10 18:06:17 dice Exp $
+**
+**      VMake integration.  Script for Oxxi TurboText (tm).
+**
+*/
+PARSE UPPER ARG COMMAND /* Build Run Debug Front Open Compile */
+
+OPTIONS RESULTS
+
+'GetPort'
+port = Result
+clip = getclip('TTX_'||Result)
+if clip = "" | ~show('p',clip) THEN
+   DO
+      'SetStatusBar No VMake Project Active for this file'
+      exit 0
+   END
+
+'GetDocuments'
+docs = RESULT
+
+OKSAVE = 0
+DO WHILE docs ~= ''
+   PARSE VAR docs '"' dummy '" TURBOTEXT' port docs
+
+   port = 'TURBOTEXT'||port
+   ADDRESS VALUE port
+
+   'GetFileInfo'
+   changed = word(RESULT, 2)
+
+   IF changed = "YES" THEN
+   DO
+      IF OKSAVE = 0 then
+         DO
+            'RequestBool TITLE "You have unsaved files" PROMPT "Save changed files to disk?"'
+            IF RESULT = 'NO' THEN LEAVE
+            OKSAVE = 1
+         END
+      'SAVEFILE'
+   END
+   ADDRESS
+END
+
+IF show('p','DICE_ERROR_PARSER') THEN
+   ADDRESS DICE_ERROR_PARSER Clear
+
+'SetStatusBar Running Vmake to' command
+
+ADDRESS VALUE Clip
+
+SELECT
+   WHEN COMMAND = 'COMPILE' THEN
+      DO
+         ADDRESS
+         'GetFileInfo'
+         PARSE value RESULT with d1 d2 '"' file '"'
+         ADDRESS
+
+         'Select' file
+         IF RC = 0 THEN
+            'CALL 1'
+      END
+
+   WHEN COMMAND = 'BUILD' THEN
+      DO
+         'CALL 2'
+         CRC = RC
+      END
+   WHEN COMMAND = 'RUN'   THEN
+      DO
+         'CALL 2'
+         IF RC = 0 THEN
+            'CALL 4'
+         CRC = RC
+      END
+   WHEN COMMAND = 'DEBUG' THEN
+      DO
+         'CALL 2'
+         IF RC = 0 THEN
+            'CALL 5'
+         CRC = RC
+      END
+   WHEN COMMAND = 'FRONT' THEN
+      DO
+         'FRONT'
+         CRC = RC
+      END
+   WHEN COMMAND = 'OPEN' THEN
+      DO
+         'FRONT'
+         CRC = RC
+      END
+   OTHERWISE
+      DO
+         address
+         'SetStatusBar Unknown Command:' COMMAND
+         exit 5
+      END
+END
+
+ADDRESS
+
+IF CRC ~= 0 THEN
+DO
+   'SetStatusBar' COMMAND 'Failed:' RESULT
+END
+ELSE
+DO
+   'SetStatusBar' COMMAND 'Successful'
+END

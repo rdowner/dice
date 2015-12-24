@@ -1,0 +1,9 @@
+DC1: "fails.c" L:1 C:1 W:68 expected semicolon
+DC1: "fails.c" L:2 C:1 W:68 expected semicolon
+DC1: "fails.c" L:4 C:1 W:68 expected semicolon
+DC1: "fails.c" L:6 C:1 W:68 expected semicolon
+DC1: "fails.c" L:7 C:10 W:68 expected semicolon
+DC1: "fails.c" L:7 C:1 W:68 expected semicolon
+DC1: "fails.c" L:8 C:1 W:68 expected semicolon
+DC1: "fails.c" L:10 C:1 W:68 expected semicolon
+DLINK: "" L:0 C:0 Error:36 Undefined Symbol: _main (T:main)

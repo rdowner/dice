@@ -1,0 +1,19 @@
+
+		    ;
+		    ;
+		    ;
+
+		    section text,code
+
+		    xref    fubar
+		    xdef    begin
+
+begin
+		    bra     fubar
+		    bra.w   x
+		    nop
+		    nop
+		    nop
+x		    moveq.l #0,D0
+
+		    END

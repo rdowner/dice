@@ -1,0 +1,52 @@
+
+FP CALL FORMATS
+
+    ea of arg1 in A0		    (4, 8, 16 bytes)
+    ea of arg2 in A1		    (4, 8, 16 bytes)
+
+    dest returned in:	D0		4 bytes
+			D0/D1		8 bytes
+			D0/D1/A0/A1	16 bytes
+
+FP LIBRARY USED (__rtname_library):
+
+    __fpxxx_a	amiga single precision fp library
+    __fpxxx_i	single precision DICE library (m.lib)
+
+    __dpxxx_a	amiga double precision fp library
+    __dpxxx_i	double precision DICE library (m.lib)
+
+	    single precision	    (4 bytes)
+
+__fpadd
+__fpsub
+__fpmul
+__fpdiv
+__fpcmp
+
+__fptst
+__fpneg
+
+	    double precision	    (8 bytes)
+
+__dpadd
+__dpsub
+__dpmul
+__dpdiv
+__dpcmp
+
+__dptst
+__fpneg
+
+	    long double precision   (16 bytes)
+
+__xpadd
+__xpsub
+__xpmul
+__xpdiv
+__xpcmp
+
+__xptst
+__xpneg
+
+

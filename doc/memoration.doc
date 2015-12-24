@@ -1,0 +1,86 @@
+                           Memoration V1.0
+                           William S. Hawes
+
+Memoration is a tool to selectively limit the ability of a task or module
+to allocate memory, thereby simulating the effects of a low-memory
+condition without the bother of actually running out of memory.  It works
+by SetFunctioning the Exec AllocMem and/or AllocVec entries and then
+screening the requests. If a request from a particular task or range of
+addresses is received, memoration returns a zero instead of passing it
+through to AllocMem.
+
+When a task or module is denied a memory request, memoration sends a
+message to the serial port identifying the client task ID, the address it
+was called from, and the size of the denied request.  If the software can't
+handle being denied its memory request, this message will typically be
+followed by a series of enforcer reports telling of how the software went
+ahead and wrote to location 0.
+
+
+Command-Line Parameters.
+Memoration accepts command-line parameters to specify the module or task
+name and the range of memory sizes to disallow.  The argument template is
+
+MODULE,TASK/K,CLI/K/N,OFF/S,MIN/K/N,MAX/K/N,AFTER/K/N,EVERY/K/N,ALLADDR/S,
+ALLOCVEC/S,CHIP/S,FAST/S,BACKTRACE/K/N
+
+and the specifications can be changed at any time by reissuing the command.
+
+
+MODULE is the name of a ROMTag or library.  The resident modules are
+searched first, followed by a search of the system library list.  When an
+entry is found, the range of addresses encompassing its code is determined
+using several methods.  For ROMTags the range extends from the ROMTag
+itself to the next higher module, or to RT_ENDSKIP if no higher module
+exists.  For libraries a certain amount of voodoo is required, as the
+location of the library ROMtag isn't stored in the (public) library
+structure. In this case memoration examines the LVOs to determine the
+lowest and highest addresses, and then searches for a ROMtag in the range
+(low-$2000,high+$2000).  If a ROMTag is found, memoration uses the smaller
+of the ROMTag addresss and the lowest LVO address as the low limit, and the
+larger of the RT_ENDSKIP address and the highest LVO address as the high
+limit.
+
+TASK specifies the name of a task to trap.  The task must exist at the time
+memoration is run, and for best results should persist for the course of
+testing.  If you're using WShell (as you should be) you can define a name
+for a particular shell instance by using ``newwsh name sucker''.
+
+CLI specifies a shell number as the task to trap.
+
+MIN specifies the minimum memory requst to trap.  The default is 0.
+
+MAX specifies the maximum allocation to trap.  The default is 2000000.
+
+OFF turns off memory trapping.  The code patch is left intact, but won't
+trap any requests until enabled again.  AllocMem and AllocVec traps
+can be turned on and off separately.
+
+ALLOCVEC sets the trap for the AllocVec() entry, instead of AllocMem().
+Both functions can be trapped independently.
+
+AFTER specifies the number of allocations (within other specifications) to 
+pass before beginning the trap.
+
+EVERY traps every Nth allocation meeting the specifications.
+
+ALLADDR sets the address range to all memory.
+
+CHIP limits the trap to CHIP memory specifications.
+
+FAST limits the trap to FAST memory specifications.
+
+BACKTRACE specifies the number of longwords of stack backtrace desired.
+
+
+Examples:
+  memoration dos.library  ; disable all DOS allocations
+  memoration task DF0 min 400 ; disable larger alocations by DF0:
+  memoration icon.library task Workbench every 3
+  memoration console.device min 40 backtrace 8
+
+
+Further Notes.
+Memoration uses a seglist-split for its code patch, and so shouldn't be made
+resident, at least not on the first execution.
+

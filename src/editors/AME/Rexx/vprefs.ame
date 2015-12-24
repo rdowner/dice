@@ -1,0 +1,232 @@
+/* $VER: VPrefs 37.1 (21.2.93) */
+/*This program brings up a Preferences Requester for AME */
+
+if show("l", "rexxarplib.library") = 0 then do
+   check = addlib('rexxsupport.library', 0, -30, 0)
+   check = addlib('rexxarplib.library',  0, -30, 0)
+end
+
+options results
+
+/*
+*   The following sequence determines both AME's screen and port name,
+*   and also gets the number screen rows and columns.
+*/
+
+ameport = address()
+cols = ScreenCols(ameport)
+if cols == -1 then do
+   amescreen = ""
+   cols = ScreenCols()
+   rows = ScreenRows()
+end
+else do
+   amescreen = ameport
+   rows = ScreenRows(amescreen)
+end
+/*
+ *   Set up a host. This time, send all messages to our own port.
+ */
+
+address AREXX "'x = CreateHost(AMEPREFS, PREFSPORT, "amescreen")'"
+/*
+ *   Wait until it is ready.
+ */
+do i = 1
+   if showlist('p', AMEPREFS) ~= 0 then leave
+   call delay 30
+end
+
+/*
+ *   Open the window
+ */
+
+idcmp = 'CLOSEWINDOW+GADGETUP'
+flags = 'WINDOWCLOSE+WINDOWDRAG+WINDOWDEPTH+ACTIVATE'
+
+call OpenWindow(AMEPREFS, 0, 0, 640, 200, idcmp,   ,
+                flags, "AME Preferences...")
+
+/*
+ *   Open the port that messages will come to
+ */
+mp = openport(PREFSPORT)
+
+
+/*   Read the current settings */
+template = "AUTORD BACKUP BEEP CASE EOL FOLDS FREQ ICONS REGEX REQ UNDO"
+parse var template v.1 v.2 v.3 v.4 v.5 v.6 v.7 v.8 v.9 v.10 v.11
+'getprefs' template
+parse var result p.1 p.2 p.3 p.4 p.5 p.6 p.7 p.8 p.9 p.10 p.11 .
+
+template = "CHECK COLOR CONWAIT INDENT LEFT MCOLOR RIGHT TAB USTEPS"
+parse var template v.12 v.13 v.14 v.15 v.16 v.17 v.18 v.19 v.20
+'getprefs' template
+parse var result x p.12 x p.13 x p.14 x p.15 x p.16 x p.17 x p.18 x p.19 x p.20 .
+
+template = "ADDRESS PROJECT RXCON EPORT"
+parse var template v.21 v.22 v.23 v.24
+'getprefs' template
+parse var result 'ADDRESS: ' p.21 'PROJECT: ' p.22 'RXCON: ' p.23 'EPORT: ' p.24 .
+
+/*
+ *   Add the gadgets
+ */
+
+call AddGadget(AMEPREFS, 50,  18, 1, "  ", "%d")
+call AddGadget(AMEPREFS, 50,  36, 2, "  ", "%d")
+call AddGadget(AMEPREFS, 50,  54, 3, "  ", "%d")
+
+call AddGadget(AMEPREFS, 200,  18, 4, "  ", "%d")
+call AddGadget(AMEPREFS, 200,  36, 5, "  ", "%d")
+call AddGadget(AMEPREFS, 200,  54, 6, "  ", "%d")
+
+call AddGadget(AMEPREFS, 350,  18, 7, "  ", "%d")
+call AddGadget(AMEPREFS, 350,  36, 8, "  ", "%d")
+call AddGadget(AMEPREFS, 350,  54, 9, "  ", "%d")
+
+call AddGadget(AMEPREFS, 500,  18, 10, "  ", "%d")
+call AddGadget(AMEPREFS, 500,  36, 11, "  ", "%d")
+call AddGadget(AMEPREFS, 500,  54, 20, p.20, "%d%1%g",48,RIDGEBORDER)
+
+Call Move(AMEPREFS,80,24)
+Call Text(AMEPREFS,"Auto Read")
+Call Move(AMEPREFS,80,42)
+Call Text(AMEPREFS,"Backup")
+Call Move(AMEPREFS,80,60)
+Call Text(AMEPREFS,"Beep")
+
+Call Move(AMEPREFS,230,24)
+Call Text(AMEPREFS,"Case")
+Call Move(AMEPREFS,230,42)
+Call Text(AMEPREFS,"EOL Track")
+Call Move(AMEPREFS,230,60)
+Call Text(AMEPREFS,"Folds")
+
+Call Move(AMEPREFS,380,24)
+Call Text(AMEPREFS,"File Req")
+Call Move(AMEPREFS,380,42)
+Call Text(AMEPREFS,"Icons")
+Call Move(AMEPREFS,380,60)
+Call Text(AMEPREFS,"Regex")
+
+Call Move(AMEPREFS,530,24)
+Call Text(AMEPREFS,"Req")
+Call Move(AMEPREFS,530,42)
+Call Text(AMEPREFS,"Undo")
+Call Move(AMEPREFS,554,60)
+Call Text(AMEPREFS,"USteps")
+
+call AddGadget(AMEPREFS, 50,  80, 12, p.12, "%d%1%g",48,RIDGEBORDER)
+call AddGadget(AMEPREFS, 50,  98, 13, p.13, "%d%1%g",48,RIDGEBORDER)
+
+call AddGadget(AMEPREFS, 200,  80, 14, p.14, "%d%1%g",48,RIDGEBORDER)
+call AddGadget(AMEPREFS, 200,  98, 15, p.15, "%d%1%g",48,RIDGEBORDER)
+
+call AddGadget(AMEPREFS, 350,  80, 16, p.16, "%d%1%g",48,RIDGEBORDER)
+call AddGadget(AMEPREFS, 350,  98, 17, p.17, "%d%1%g",48,RIDGEBORDER)
+
+call AddGadget(AMEPREFS, 500,  80, 18, p.18, "%d%1%g",48,RIDGEBORDER)
+call AddGadget(AMEPREFS, 500,  98, 19, p.19, "%d%1%g",48,RIDGEBORDER)
+
+Call Move(AMEPREFS,104,86)
+Call Text(AMEPREFS,"Check")
+Call Move(AMEPREFS,104,104)
+Call Text(AMEPREFS,"Color")
+
+Call Move(AMEPREFS,254,86)
+Call Text(AMEPREFS,"Conwait")
+Call Move(AMEPREFS,254,104)
+Call Text(AMEPREFS,"Indent")
+
+Call Move(AMEPREFS,404,86)
+Call Text(AMEPREFS,"Left")
+Call Move(AMEPREFS,404,104)
+Call Text(AMEPREFS,"Mcolor")
+
+Call Move(AMEPREFS,554,86)
+Call Text(AMEPREFS,"Right")
+Call Move(AMEPREFS,554,104)
+Call Text(AMEPREFS,"Tab")
+
+call AddGadget(AMEPREFS, 50,  126, 21, p.21, "%d%1%g",120,RIDGEBORDER)
+call AddGadget(AMEPREFS, 50,  144, 22, p.22, "%d%1%g",120,RIDGEBORDER)
+
+call AddGadget(AMEPREFS, 350,  126, 23, p.23, "%d%1%g",120,RIDGEBORDER)
+call AddGadget(AMEPREFS, 350,  144, 24, p.24, "%d%1%g",120,RIDGEBORDER)
+
+Call Move(AMEPREFS,176,132)
+Call Text(AMEPREFS,"Address")
+Call Move(AMEPREFS,176,150)
+Call Text(AMEPREFS,"Project")
+
+Call Move(AMEPREFS,476,132)
+Call Text(AMEPREFS,"RXCON")
+Call Move(AMEPREFS,476,150)
+Call Text(AMEPREFS,"EPORT")
+
+call AddGadget(AMEPREFS, 50, 180, "USE",   "  OK    ", "USE")
+call AddGadget(AMEPREFS,500, 180, "CLOSE", " Cancel ", "CANCEL")
+
+/*
+ *   set gadgets that should be on
+ */
+
+do i = 1 to 11
+    if(left(p.i,1,1)= 'N') then do
+	res = SetGadget(AMEPREFS, i, "OFF")
+	end
+    else do
+	res = SetGadget(AMEPREFS, i, "ON")
+    	end
+    end
+
+/*
+ *   Main event loop
+ */
+quitflag  = 0
+
+do forever
+   if quitflag = 1 then leave
+   t = waitpkt(PREFSPORT)
+   do forever
+      p = getpkt(PREFSPORT)
+      if c2d(p) = 0 then leave
+      cmd = getarg(p)
+      if cmd > 11 then stringarg = getarg(p,1)
+      t = reply(p, 0)
+
+      /* see what we got */
+      if cmd = "CANCEL" then do
+         call CloseWindow(AMEPREFS)
+         quitflag = 1
+         end
+      else if cmd = "USE" | cmd = "CLOSEWINDOW" then do
+         call CloseWindow(AMEPREFS)
+	 do i = 1 to 11
+	     if left(p.i,1,1) = 'N' then 'unsetprefs' v.i
+	     else 'setprefs' v.i
+	     end
+	 temp = ""
+	 do i = 12 to 24
+	     temp = temp || v.i '"' || p.i || '"'
+	     end
+	 'setprefs' temp
+         quitflag = 1
+         end
+      else if datatype(cmd, 'W') = 1 then do
+	  if cmd < 12 then do
+	     if left(p.cmd,1,1) = 'N' then do
+		call SetGadget(AMEPREFS, cmd, "ON")
+		p.cmd = 'O'
+		end
+	     else do
+		call SetGadget(AMEPREFS, cmd, "OFF")
+		p.cmd = 'N'
+	  	end
+             end
+	  else p.cmd = stringarg
+	  end
+      end
+    end
+exit

@@ -1,0 +1,282 @@
+
+## DC1 error messages $VER: DICE.errors 3.1 (17.4.93)
+
+C1:001:__autoinit
+C1:002:__autoexit
+C1:003:__geta4
+C1:004:__chip
+C1:005:registered args
+C1:006:floating point
+C1:009:Unexpected EOF
+C1:010:Char Const Too Large!
+C1:011:NewLine in string constant
+C1:012:Illegal character '%c' $%02x
+C1:013:Unexpected Token '%s' expected '%s'
+C1:014:__geta4 keyword does NOT work with residentable executables!
+C1:015:More than 32K of auto variables!
+C1:016:Unsupported return type
+C1:017:constant does not fit storage: %d
+C1:018:size mismatch: %d, %d
+C1:019:repeated case: %d (0x%08lx)
+C1:020:block operation error in source
+C1:021:block operation error in dest
+C1:022:dest not lvalue
+C1:023:syntax error in expression
+C1:024:expected expression
+C1:025:expected '}'
+C1:026:expected %d close parens
+C1:027:expected close bracket
+C1:028:expected identifer after . or ->
+C1:029:expected ',' or ')' in function call
+C1:030:undefined symbol: %s
+C1:031:expected integer constant
+C1:032:not an lvalue
+C1:033:goto label not found: %.*s
+C1:034:constant div/mod by 0
+C1:035:ptr-ptr mismatch type: %s
+C1:036:unexpected void type
+C1:037:result not used
+C1:038:& of array redundant
+C1:039:& of bitfield illegal
+C1:040:indirection through non-ptr
+C1:041:must #include <alloca.h> for alloca
+C1:042:left hand side of assignment is not a procedure
+C1:043:unprototyped call
+C1:044:too few parameters in call
+C1:045:too many parameters in call
+C1:046:not structure or union type
+C1:047:maximum auto storage for temporaries exceeded
+C1:048:register not allocated: %d
+C1:049:expected integer type
+C1:050:illegal ptr arithmatic
+C1:051:illegal ptr conversion
+C1:052:illegal structure conversion
+C1:053:illegal cast
+C1:054:ptr-int conversion
+C1:055:illegal int conversion
+C1:056:int-ptr conversion
+C1:057:int/ptr mismatch
+C1:058:illegal or incompatible structure operation
+C1:059:illegal assignment
+C1:060:illegal ptr-int or int-ptr conversion, int-size != ptr-size
+C1:061:illegal bit-field operation
+C1:062:illegal compare
+C1:063:undefined structure tag: %s
+C1:064:undefined struct/union field: %s
+C1:065:ran out of memory
+C1:066:fp constant string too long!
+C1:067:fp constant too large to convert to int
+C1:068:expected semicolon
+C1:069:illegal type/storage qualifier for variable
+C1:070:illegal typedef
+C1:071:multiply defined procedure
+C1:072:type too complex
+C1:073:syntax error in declaration
+C1:074:enum identifier overides variable/type
+C1:075:id missing in procedure declaration
+C1:076:procedure id decl not in id list
+C1:077:statement's condition must be an expression
+C1:078:duplicate default: in switch
+C1:079:More than 2 hex digits found after \x in string
+C1:080:expected '{' or '}' for procedure def
+C1:081:case/default outside switch
+C1:082:else without if
+C1:083:too many initializers
+C1:084:array cannot hold string
+C1:085:illegal register specification
+C1:086:Variable not used: %*.*s
+C1:087:Illegal return type
+C1:088:Warning, SAS/C __qualifier placement
+C1:089:BREAK outside of loop/switch
+C1:090:CONTINUE outside of loop
+C1:091:Cannot take the address of a constant
+C1:092:Cannot passed unaligned structs by value
+C1:093:Prototype required for inline call
+C1:094:Input must be a seekable file
+C1:095:Can't open %s
+C1:096:Read failed
+C1:097:Can't open output %s
+C1:098:Incorrect type for indirection
+C1:099:Base variable (%.*s) for pragma is undefined
+C1:100:sizeof(type) is 0
+C1:101:Duplicate variable/symbol in same {} block: %.*s
+C1:102:Variable declared but not used: %.*s
+C1:103:Variable overides procedure argument: %.*s
+C1:104:Pragma argument count conflict with prototype: %.*s
+C1:105:Only D0 supported as a return register for pragmas: %.*s
+C1:106:Attempt to indirect through void pointer
+C1:107:Structure/Union %s has no members
+C1:108:Missing comma in initialization expression
+C1:109:Return type for procedures do not match from: %s
+C1:110:Number of args mismatch with prototype
+C1:111:Prototype into Non-Prototype
+C1:112:Incompatible procedure Argument #%d type: %s
+C1:113:Argument #%d is in a different register
+C1:114:Structure Types do not match: %s
+C1:115:Does not match original declaration type: %s
+C1:116:Subroutine too complex to generate code for
+C1:117:Internal Compiler error %d: %s
+C1:118:Can not read locale library file: %s
+C1:119:unrelocatable data reference in const storage
+C1:120:Can not open needed math library: %s
+
+##  DCPP error messages
+
+CP:001:No input file specified
+CP:002:Unable to create %s
+CP:003:Unknown directive
+CP:004:Maximum number of #if levels (%d) exceeded
+CP:006:Multiple #else's for an #if, suggest #elif
+CP:007:#endif without associated #if
+CP:009:#error directive: %.*s
+CP:010:Maximum number of #include/macro levels (%d) exceeded
+CP:011:File Size mismatch %s (%d)
+CP:012:Ran out of memory!
+CP:013:Read Error from %s
+CP:014:stringtize '#' valid only before macro argument in a #define
+CP:015:unterminated #if's left over from include after EOF: %d/%d
+CP:016:Unexpected EOF (unterminated comment?)
+CP:017:Software Error line 177
+CP:018:Unterminated double quoted string
+CP:019:Unterminated single quoted character constant
+CP:020:Read Error on precompiled header file
+CP:021:Error parsing precompiled header file
+CP:022:Can't seek in output file
+CP:023:No symbol specified for #undef
+CP:024:Illegal NULL symbol in defined macro
+CP:025:Maximum number of macro arguments (%d) exceeded
+CP:026:Expected comma
+CP:027:Expected closing paren
+CP:028:Software error in macro replace: %d/%d %d/%d
+CP:029:Recursive use of macro %s
+CP:030:Unexpected EOF in macro %s
+CP:031:Macro crosses #include boundry
+CP:033:Not enough arguments to macro: %d/%d
+CP:034:Expected closing paren, got '%c' in macro %s (too many args?)
+CP:035:Software Error (Creator)
+CP:036:Software Error in macro %s symbol %s
+CP:037:Software Error in allocator %d
+CP:038:GetNominalInclude() failed
+CP:039:Syntax Error
+CP:040:Too many close parens
+CP:041:Expression too complex
+CP:042:Error parsing expression
+CP:043:Error in #include line
+CP:044:Can't seek in precompiled header file
+CP:045:Expected comma or close paren
+CP:046:Expected close paren for macro %s
+CP:047:Can't open file %.*s
+CP:048:Possible nested comment, disallowed under ANSI
+
+##  DAS error mesages
+
+AS:001:No input file specified
+AS:002:Unable to open %s
+AS:003:Empty File or Unable to Seek
+AS:004:Ran out of memory, you may have to break up your source files
+AS:005:Error reading input
+AS:006:Unable to create %s
+AS:007:DAS is a minimal assembler designed to handle output from DC1
+AS:008:DAS infile -o objfile
+AS:009:Syntax error
+AS:010:Illegal Label: %s
+AS:011:Expected an operator, got: %c
+AS:012:Expected an expression
+AS:013:Bad register specification
+AS:014:Expected no operands for %s
+AS:015:Bad internal id
+AS:016:extension of .%c is illegal
+AS:017:bad operand size: %d
+AS:018:Removed branch to next location
+AS:019:Branch Optimization Module
+AS:020:Bad l_Mask/l_RegNo %d 0x%04x
+AS:021:Optimized Bxx -> BRA
+AS:022:Illegal relocation
+AS:023:Negative Section length: %d
+AS:024:Bad section directive, format is [name],type
+AS:025:Illegal section type, must be one of: code,data,bss,abs
+AS:026:Conflict in section name, previous section exists with different type
+AS:027:Only positive label offsets for relocation purposes
+AS:028:Must specify .W or .L for relocatable outer displacement
+AS:029:Cannot have outer displacement if no brackets [] in pseudoop
+AS:030:This is a 68020 opcode, use 'mc68020' directive
+AS:031:Undefined Label: %s
+AS:032:Expected terminating %c in string
+AS:033:Extranious garbage ignored: %s
+AS:034:Illegal Addressing mode(s) %d %d opcode %s
+AS:035:Directive requires a label
+AS:036:Directive requires a size extension
+AS:037:Expected comma, got %c (ascii %d)
+AS:038:Data generation from directive different size between passes %d -> %d
+AS:039:internal error handling debug directive
+AS:040:Label multiply defined: %s
+AS:041:Unknown Directive: %s
+AS:042:Label address mismatch between passes %s %d -> %d
+AS:043:Address mismatch between passes %d -> %d
+AS:044:Word offset out of range: %d
+AS:045:Byte offset out of range: %d
+AS:046:offset out of range: %d (0-7 only)
+AS:047:offset out of range: %d (1-8 only)
+AS:048:offset out of range: %d (0-15 only)
+AS:049:short branch to next instruction illegal
+AS:050:byte branch is out of range
+AS:051:internal instruction id error: %d
+
+##  DLINK error mesages
+
+LK:001:Can't create JMP for PC-rel offset greater then +/-32K, hunk too large
+LK:002:Relocation error, range (%d) falls outside hunk (%s)
+LK:003:Ran out of memory during linking
+LK:004:Relocation error, relocation to non-existant hunk %d of %d
+LK:005:No relocation info allowed for BSS data!
+LK:006:PC relative access to illegal symbol (type %d)
+LK:007:Internal Error in jump table creation
+LK:008:External symbol relocation error, relocation to non-existant hunk
+LK:009:Relocation error, offset not word aligned
+LK:010:Relocation to illegal symbol (type %d)
+LK:011:Error parsing object module %s offset %d
+LK:012:Unknown symbol type %d in file %s
+LK:013:Unknown hunk type 0x%08lx in %s
+LK:014:Software Error 146
+LK:015:object format error, more hunks then expected
+LK:016:object format error, fewer hunks then expected
+LK:017:Error 556
+LK:018:Error 562
+LK:019:Error 571
+LK:020:Cannot deal with empty data hunks!
+LK:021:final size mismatch %d/%d
+LK:022:internal reloc array mismatch %d/%d
+LK:023:Assertion failed line %d %s
+LK:024:Error freeing memory
+LK:025:PC relative relocation to data symbol! %s:%s sym=%.*s
+LK:026:32 bit relocations illegal for -pi/-pr: %s:%s
+LK:027:32 bit DATA/BSS relocations illegal for -r: %s:%s
+LK:028:Relocation scan, hunk out of range: %d/%d
+LK:029:PC relative relocations for BSS data is illegal
+LK:030:Illegal PC relative relocation: %s:%s to %s:%s
+LK:031:label(An) relocation to code section is illegal
+LK:032:8 bit relocation out of range (%d) in %s
+LK:033:16 bit inter-hunk relocation out of range (%d) in %s
+LK:034:Multiply defined symbol: %.*s (%s & %s)
+LK:035:Multiply defined symbol in same library! %.*s
+LK:036:Undefined Symbol: %.*s (%s)
+LK:037:Illegal A4-rel to far object: %.*s %s from %s
+LK:038:Absolute refs to BSS/DATA illegal with -r/-p* sym=%.*s
+LK:039:Hunk has no CODE, DATA or BSS! %s in %s
+LK:040:32 bit data-data relocations are illegal when using -r
+LK:041:Unable to find %s model <%s>
+LK:042:Cannot frag when using -r
+LK:043:Bad option: %s
+LK:044:Unable to open %s
+LK:045:Error 253 (%d)
+LK:046:Unable to create %s
+LK:047:Read error on %s
+LK:051:Illegal Hunk addr=%08lx type=%08lx name=%s
+LK:052:Object size mismatch in %s
+LK:053:Unknown symbol type %d sym=%.*s
+LK:054:16 bit data relocation out of range (%d) sym=%.*s in %s
+LK:055:-pi option: expected a code hunk!
+LK:056:-pi option: expected only one code hunk!
+LK:057:Cannot coagulate data/bss due to differing memory/resource types
+LK:058:32 bit relocations illegal for -pi/-pr
+

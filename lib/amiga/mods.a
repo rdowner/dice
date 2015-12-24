@@ -1,0 +1,41 @@
+
+		;   MODS.A
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+		;
+		;   D0%D1 -> D0 signed modulus
+		;   32%32 -> 32 signed modulus
+
+		section text,code
+
+		xdef	__mods
+		xref	__divu
+
+__mods:
+		tst.l	D1
+		bmi	ds10
+		tst.l	D0	     ; numerator
+		bmi	ds20
+		bsr	__divu
+		move.l	D1,D0	     ; remainder
+		rts
+ds10		neg.l	D1
+		tst.l	D0
+		bmi	ds30
+		bsr	__divu
+		;;neg.l   D1
+		move.l	D1,D0
+		rts
+ds20		neg.l	D0
+		bsr	__divu
+		neg.l	D1
+		move.l	D1,D0
+		rts
+ds30		neg.l	D0
+		bsr	__divu
+		neg.l	D1
+		move.l	D1,D0
+		rts
+
+		END
+

@@ -1,0 +1,65 @@
+
+#   dtaacs.library
+
+OD = dtmp:sharlib/
+EXE = libs:test.library
+CFLAGS= -mRR -ms -s -I$(OD) -l0 -Ldlib: -lc -lamiga20 -proto
+PROTOS= $(OD)lib-protos.h
+LIB= dtmp:sharlib/test.lib
+RLIB= dtmp:sharlib/testr.lib
+TEST1= t:test1
+TEST2= t:test2
+
+SRCS= tag.a lib.c init.c funcs.c
+OBJS= $(SRCS:"*.a":"$(OD)*.o") $(SRCS:"*.c":"$(OD)*.o")
+
+all: $(OD) $(PROTOS) $(EXE) $(LIB) $(RLIB) $(TEST1) $(TEST2)
+
+#   note:   flush program flushes memory (i.e. any previous version of
+#   this library that is in memory is flushed), new utility that does
+#   not exist on older DICE distributions.
+
+$(EXE) : $(OBJS)
+    dcc $(CFLAGS) %(right) -o %(left) -v
+    -flush
+
+$(OBJS) : $(SRCS)
+    dcc $(CFLAGS) %(right) -o %(left) -c
+
+$(OD)auto.o : auto.a
+    dcc $(CFLAGS) %(right) -o %(left) -c -S
+
+$(PROTOS) : $(SRCS)
+    makeproto -o %(left) %(right)
+
+$(LIB) : $(OD)auto.o lib.fd
+    fdtolib lib.fd -o t:lib.o -I$(OD)
+    join t:lib.o $(OD)auto.o AS %(left)
+    delete t:lib.o
+
+$(RLIB) : $(OD)auto.o lib.fd
+    fdtolib lib.fd -mr -h defs.h -o t:lib.o -I$(OD)
+    join t:lib.o $(OD)auto.o AS %(left)
+    delete t:lib.o
+
+#   TEST1   - compiled with registered args
+#   TEST2   - compiled without registered args
+#
+#   note: cannot use $(CFLAGS) here since it is setup for the library
+#	  compilation.
+
+$(TEST1) : test.c
+    dcc test.c -o %(left) -l$(OD)testr -mRR -DREGISTERED
+    -delete t:test.o
+
+$(TEST2) : test.c
+    dcc test.c -o %(left) -l$(OD)test
+    -delete t:test.o
+
+clean:
+    -delete $(OBJS) $(PROTOS) $(OD)auto.o t:test1 t:test2 QUIET
+    touch lib.fd
+
+$(OD) : $(OD)
+    makedir %(left:*/:*)
+

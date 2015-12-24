@@ -1,0 +1,51 @@
+
+
+    DLINK
+	2.06.10
+	    Fixedup -E option / error messages imported from dice.errors
+	    Ident changed to Commodore style
+
+	2.06.09
+	    Handles LINE debug hunks
+
+	2.06.08
+	    Fixed exiting-with-0 bug even when errors reported.
+
+	2.06.07
+	    fixed byte branch to external label, was calculated
+	    incorrectly (went one too far)
+
+	    fixed 8 bit relocation, was taking offset as unsigned
+
+	2.06.06
+	    Added check for illegal small-data references to far objects,
+	    generates error message.
+
+	2.06.05 :
+	    Fixed bug in 2.06.04 memory reuse.
+
+	2.06.04 :
+	    Revamped reusability of memory.  DLink takes about 15% less
+	    memory now.
+
+	2.06.03 :
+	    Bug in zalloc() found, relocation arrays larger than 4K
+	    (1024 entries) would trash memory.  fixed!
+
+	2.06.02 :
+	2.05.02 :
+
+	    -ma and -mw support (relocate for absolute long and absolute
+	    word addressing modes where the final data base address is
+	    hardwired)
+
+	    support for -pr and -pi options (to generate an executable
+	    containing a single hunk, both residentable and non-residentable
+	    versions)
+
+	    Fixed random-memory-read bug (did not effect linking, but would
+	    sometimes read random memory that happened to be the custom
+	    chip area, causing screen glitches and other problems)
+
+	    Better error reporting.
+

@@ -1,0 +1,485 @@
+
+    MEMORY.DOC (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+TABLE OF CONTENTS
+
+c.lib/memory/calloc
+c.lib/memory/cmpmem
+c.lib/memory/memcmp
+c.lib/memory/bcmp
+c.lib/memory/free
+c.lib/memory/malloc
+c.lib/memory/memcpy
+c.lib/memory/movmem
+c.lib/memory/bcopy
+c.lib/memory/realloc
+c.lib/memory/memset
+c.lib/memory/setmem
+c.lib/memory/clrmem
+c.lib/memory/bzero
+
+
+memory/calloc						memory/calloc
+
+   NAME
+	calloc	- allocate memory and clear
+
+   SYNOPSIS
+	void *ptr = calloc(objsize, numobjs)
+	size_t objsize;
+	size_t numobjs;
+
+   FUNCTION
+	Allocate memory and clear.  numobjs objects each objsize in size are
+	allocated contiguously and a pointer to the first object is
+	returned.  The memory is cleared to 0.
+
+	Effectively this is equivalent to a malloc(objsize * numobjs); and
+	then a setmem(ptr, objsize * numobjs, 0); call.
+
+	calloc returns NULL if the memory could not be allocated
+
+   EXAMPLE
+	/*
+	 *  allocate 16 objects and fill with junk
+	 */
+
+	#include <stdlib.h>
+	#include <assert.h>
+
+	typedef struct {
+	    long a, b, c;
+	} Junk;
+
+	main()
+	{
+	    Junk *jp;
+
+	    jp = calloc(sizeof(Junk), 16);
+	    assert(jp);
+
+	    {
+		Junk *tj = jp;
+		short i;
+
+		for (i = 0; i < 16; ++i, ++tj) {
+		    tj->a = 1;
+		    tj->b = 2;
+		    tj->c = 3;
+		}
+	    }
+	    free(jp);
+	    return(0);
+	}
+
+   INPUTS
+	size_t objsize;     size of each object
+	size_t numobjs;     number of objects to allocate
+
+   RESULTS
+	void *ptr;	    pointer to first object
+
+   SEE ALSO
+	malloc, strdup
+
+
+memory/cmpmem						memory/cmpmem
+memory/memcmp						memory/memcmp
+memory/bcmp						memory/bcmp
+
+   NAME
+	cmpmem	- compare two memory buffers
+	memcmp	- compare two memory buffers (ANSI)
+	bcmp	- compare two memory buffers (UNIX)
+
+   SYNOPSIS
+	int r = cmpmem(s1, s2, bytes)
+	int r = memcmp(s1, s2, bytes)
+	int r = bcmp(s1, s2, bytes)
+	void *s1;
+	void *s2;
+	size_t bytes;
+
+   FUNCTION
+	compare two memory buffers.  A byte by byte (unsigned) compare is
+	done.  When a compare fails and the byte in s1 is less than the
+	byte in s2 then -1 is returned.  If the byte in s1 is greater than
+	the byte in s2 then 1 is returned.
+
+	If the count is exhausted and all compares succeed then 0 is
+	returned indicating the two buffers are the same.
+
+   EXAMPLE
+	#include <stdlib.h>
+	#include <assert.h>
+
+	main()
+	{
+	    unsigned char buf1[4];
+	    unsigned char buf2[4];
+	    int r;
+
+	    buf1[0] = 0;	buf2[0] = 0;
+	    buf1[1] = 10;	buf2[1] = 10;
+	    buf1[2] = 15;	buf2[2] = 15;
+	    buf1[3] = 4;	buf2[3] = 4;
+
+	    r = memcmp(buf1, buf2, 4);
+	    assert(r == 0);
+
+	    buf1[2] = 12;
+	    r = memcmp(buf1, buf2, 4);
+	    assert(r < 0);
+
+	    buf1[2] = 200;
+	    r = memcmp(buf1, buf2, 4);
+	    assert(r > 0);
+	    return(0);
+	}
+
+   INPUTS
+	void *s1;	    pointer to first buffer
+	void *s2;	    pointer to second buffer
+	size_t bytes;	    size of each buffer
+
+   RESULTS
+	int r;		    -1 if buf s1 < buf s2, 0 if buf s1 == buf s2,
+			    1 if buf s1 > buf s2.
+
+   SEE ALSO
+	memset, setmem, bzero, clrmem, bcopy, movmem, memcpy, memmove
+
+
+memory/free						memory/free
+
+   NAME
+	free	- free memory allocated by calloc(), malloc(), or strdup().
+
+   SYNOPSIS
+	void free(ptr);
+	void *ptr;
+
+   FUNCTION
+	free memory allocated by calloc(), malloc(), or strdup().
+
+	IT IS ILLEGAL TO FREE(NULL).  If free() is given an illegal pointer
+	or NULL it will freeze the process by calling Wait(0L).
+
+   EXAMPLE
+	see calloc() example
+
+   INPUTS
+	void *ptr;	    pointer to memory to free
+
+   RESULTS
+	none
+
+   SEE ALSO
+	malloc, calloc, strdup
+
+
+memory/malloc						memory/malloc
+
+   NAME
+	malloc	- allocate memory, the memory is NOT automatically cleared
+
+   SYNOPSIS
+	void *ptr = malloc(bytes);
+	size_t bytes;
+
+   FUNCTION
+	malloc allocates the specified number of bytes of memory.  The
+	returned pointer is longword aligned.
+
+	malloc returns NULL if the memory could not be allocated.  Note
+	that, unlike calloc, malloc does NOT ZERO THE MEMORY it
+	returns.
+
+   EXAMPLE
+	/*
+	 *  allocate 16 objects and fill with junk, same as calloc example
+	 *  but uses malloc instead.  Note that using malloc has the
+	 *  advantage of not having to do a run time multiplication (and
+	 *  possibly not bring in _muls or _mulu from c.lib to accomplish
+	 *  this)
+	 */
+
+	#include <stdlib.h>
+	#include <assert.h>
+
+	typedef struct {
+	    long a, b, c;
+	} Junk;
+
+	main()
+	{
+	    Junk *jp;
+
+	    jp = malloc(sizeof(Junk) * 16);
+	    assert(jp);
+
+	    setmem(jp, sizeof(Junk) * 16, 0);
+
+	    {
+		Junk *tj = jp;
+		short i;
+
+		for (i = 0; i < 16; ++i, ++tj) {
+		    tj->a = 1;
+		    tj->b = 2;
+		    tj->c = 3;
+		}
+	    }
+	    free(jp);
+	    return(0);
+	}
+
+   INPUTS
+	size_t bytes;	    number of bytes to allocate
+
+   RESULTS
+	void *ptr;	    pointer to base of allocated memory.  The memory
+			    is not zerod.
+
+   SEE ALSO
+	calloc, strdup
+
+
+memory/memcpy						memory/memcpy
+memory/movmem						memory/movmem
+memory/bcopy						memory/bcopy
+memory/memmove						memory/memmove
+
+   NAME
+	memcpy	- copy memory  ANSI, does not work with overlapped memory buffers
+	memmove - copy memory  ANSI, works with overlapped memory buffers
+	movmem	- copy memory	     works with overlapped memory buffers
+	bcopy	- copy memory  UNIX, works with overlapped memory buffers
+
+   SYNOPSIS
+	void *ptr = memcpy(d, s, bytes);
+	void *ptr = memmove(d, s, bytes);
+	void *ptr = movmem(s, d, bytes);
+	void *ptr = bcopy(s, d, bytes);
+
+	void *d;
+	void *s;
+	size_t bytes;
+
+   FUNCTION
+	these functions copy memory from one region to another.  Unlike
+	string routines these functions do not stop the copy when a nul
+	is encountered.
+
+   NOTE
+	DICE's memory move optimizes the copy using movem when possible,
+	yielding very fast memory copies for large buffers.
+
+   WARNING
+	BE CAREFUL about argument ordering.  Some calls take the source
+	buffer first and other calls take the destination buffer first.
+
+	The ANSI committee really screwed up its standard, going for a
+	destination, source ordering rather than the more logical
+	source, destination ordering.  Thus, many programmers will use
+	the non-standard movmem() call instead of the ANSI memmove() call.
+
+	The ANSI function 'memcpy' as defined by the ANSI standard cannot
+	handle overlapped memory areas.  The Amiga implementation can but
+	you should remember this if you intend to port your code.
+
+	The UNIX bcopy call exists for compatibility purposes and should
+	not be used with new programs.
+
+   EXAMPLE
+	/*
+	 *  This example copies the entire buffer, not just the part
+	 *  containing the string.  Normally one just uses string routines.
+	 */
+
+	#include <string.h>
+	#include <assert.h>
+
+	main()
+	{
+	    char s[16];
+	    char d[16];
+	    void *p;
+
+	    strcpy(s, "This is a test");
+
+	    p = movmem(s, d, sizeof(s));
+	    assert(p == d);
+	    puts(d);
+
+	    strcpy(s, "FuBarBletch");
+	    p = bcopy(s, d, sizeof(s));
+	    assert(p == d);
+	    puts(d);
+
+	    strcpy(s, "EchoBeko");
+	    p = memcpy(d, s, sizeof(s));
+	    assert(p == d);
+	    puts(d);
+
+	    strcpy(s, "GakFuBar");
+	    p = memmove(d, s, sizeof(s));
+	    assert(p == d);
+	    puts(d);
+
+	    return(0);
+	}
+
+
+   INPUTS
+	void *s;	    source buffer
+	void *d;	    destination buffer
+
+   RESULTS
+	void *ptr;	    pointer to the destination buffer (d)
+
+   SEE ALSO
+	memset, setmem, bzero, clrmem, cmpmem, memcmp,
+	strcpy, strncpy
+
+
+
+memory/realloc						memory/realloc
+
+   NAME
+	realloc - reallocate memory allocated by calloc, malloc, or strdup
+
+   SYNOPSIS
+	void *newptr = realloc(oldptr, bytes)
+	void *oldptr;
+	size_t bytes;
+
+   FUNCTION
+	realloc reallocates a previously allocated buffer, making it
+	larger or smaller.  realloc returns a pointer to a new buffer
+	which might be the same as the old buffer, but might not.
+
+	data in the original buffer is copied to the new buffer and
+	the original buffer is freed.  When extending a buffer with
+	realloc note that the extended bytes (beyond the original buffer)
+	will come up garbage.
+
+	You may pass a NULL as the first argument to realloc which basically
+	makes realloc a malloc.
+
+   EXAMPLE
+	#include <string.h>
+	#include <assert.h>
+	#include <stdlib.h>
+
+	main()
+	{
+	    char *s;
+	    int len;
+
+	    s = strdup("This is a test");
+	    assert(s);
+
+	    len = strlen(s);
+
+	    /*
+	     *	Remember that len does not include the nul byte at the end
+	     *	of the string
+	     */
+
+	    s = realloc(s, len + 8);        /*  make more room */
+	    assert(s);
+
+	    /*
+	     *	we can use strcat since in extending the allocated string
+	     *	the nul *was* copied along with the string during the realloc.
+	     */
+
+	    strcat(s, "xx");
+
+	    puts(s);        /*  This is a testxx    */
+
+	    return(0);
+	}
+
+
+   INPUTS
+	void *oldptr;	    pointer to original allocated buffer
+	size_t bytes;	    size of new buffer
+
+   RESULTS
+	void *newptr;	    pointer to new buffer
+
+   SEE ALSO
+	malloc, calloc, strdup
+
+
+memory/memset						memory/memset
+memory/setmem						memory/setmem
+memory/clrmem						memory/clrmem
+memory/bzero						memory/bzero
+
+   NAME
+	memset	-   ANSI    set memory buffer to a byte value
+	setmem	-   DEFACTO set memory buffer to a byte value
+	clrmem	-   DICE    zero out a memory buffer
+	bzero	-   UNIX    zero out a memory buffer
+
+   SYNOPSIS
+	void *ptr = memset(buf, c, n);
+	void *ptr = setmem(buf, n, c);
+	void *ptr = clrmem(buf, n);
+	void *ptr = bzero(buf, n);
+
+	void *buf;
+	int c;
+	size_t n;
+
+   FUNCTION
+	fill a memory buffer with the specified character, c.  c is
+	converted to an unsigned char by the fill routine before beginning
+	the fill.  n bytes are filled.
+
+   WARNING
+	Again, watch out for argument ordering, especially for the
+	ANSI memset() call.  Again, the ANSI committee really screwed
+	up the call ordering so there is another defacto standard
+	call called setmem().
+
+	bzero() exists for UNIX compatibility, and clrmem() is yet another
+	call (this time introduced by DICE, sorry! :-)).
+
+	memset() and setmem() are the most portable calls.
+
+   EXAMPLE
+	#include <string.h>
+	#include <assert.h>
+	#include <stdlib.h>
+
+	main()
+	{
+	    char buf[32];
+	    char *b;
+
+	    b = setmem(buf, 32, 0);
+	    assert(b == buf);
+
+	    b = setmem(buf, 4, 'a');
+	    b = memset(buf + 4, 'b' , 4);
+	    puts(buf);      /*  aaaabbbb    */
+
+	    return(0);
+	}
+
+
+   INPUTS
+	void *buf;	    pointer to buffer to fill
+	int c;		    character to copy into buffer (setmem, memset)
+	size_t n;	    # of bytes to fill
+
+   RESULTS
+	void *ptr;	    pointer to buffer (== buf).
+
+   SEE ALSO
+	malloc, calloc, strdup, movmem, cmpmem
+

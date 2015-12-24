@@ -1,0 +1,5 @@
+# base string list that DICE uses to generate embedded catalog id's
+#
+0007:Hello world
+0005:This is a test
+

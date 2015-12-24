@@ -1,0 +1,27 @@
+
+# DMakefile
+#
+# (c)Copyright 1992 Obvious Implementations Corp, All Rights Reserved
+# CONFIDENTIAL, This is unpublished proprietary source code owned by
+# Obvious Implementations Corp.  This material contains trade secrets of
+# Obvious Implementations Corp.
+
+.include ../DMakefile.inc
+
+SRCS= bintohex.c fdtolib.c fdtopragma.c istrip.c lbmake.c \
+        libtos.c makeproto.c romable.c hunks.c uprev.c
+
+EXES= $(SRCS:"*.c":"$(UBIN)*")
+#EXESD= $(SRCS:"*.c":"$(INSTDIR)bin/*")
+
+all: $(EXES)
+
+$(EXES) : $(SRCS)
+	cc $(CFLAGS) %(right) -o %(left) -lamiga
+
+install:
+	install -c -m 0755 $(EXES) $(INSTDIR)bin/
+
+clean:
+	rm -f $(EXES)
+

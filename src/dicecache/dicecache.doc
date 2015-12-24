@@ -1,0 +1,116 @@
+
+				   DICECACHE.DOC
+
+    DICECACHE.LIBRARY implements whole file caching for any DICE executable
+    that goes through the stdio/fd interface.  DICE EXECUTABLES DO NOT
+    REQUIRE DICECACHE.LIBRARY TO RUN BUT CAN RUN, POTENTIALLY, MUCH FASTER
+    IF DICECACHE.LIBRARY EXISTS.
+
+    DICECACHE SHOULD ONLY BE USED WITH MACHINES CONTAINING 1.5MB OF RAM OR
+    GREATER.  A 1MB machine does not have enough memory to utilize
+    DICECACHE.
+
+    Currently, DICECACHE.LIBRARY will be used only with files openned for
+    read-only operations... that is, modes "r" or "rb".  stdio reading
+    functions such as getc(), fgets(), and fread() will be virtually
+    instantanious.
+
+    DICECACHE.LIBRARY caches files by extension, installed with the
+    'dicecache' command as follows:
+
+    1> dicecache on		; turn on caching
+    1> dicecache ADD .c ADD .h ADD .lib ; add suffixes to the cachable list
+    1> dicecache off		; turn off caching
+    1> dicecache ?		; print available keywords, additional commands
+
+    DICECACHE caches whole files at a time, assuming the fit in the cache.
+    If the cache fills up, space is made by freeing the data for whole
+    files at a time on a random basis (weighted according to the size of
+    the file so small files generally stick around).  This ensures that
+    even if your cache is not large enough to fit your design cycle that a
+    speed improvement will still occur.
+
+    * Warning:	Dicecache does NOT currently free entries under low memory
+    conditions.  Do not specify a cache size (using dicecache MAXSIZE <n>)
+    greater then your machine can accomodate.
+
+    DICECACHE commands:
+
+    	ADD <suffix>
+
+    		Add a suffix to the list of cachable file suffixes.
+
+    	REM <suffix>
+
+    		remove a suffix from the list of cachable file suffixes.
+
+    	ON
+
+    		enable caching
+
+    	OFF
+
+    		disable caching
+
+    	FLUSH
+
+    		flush cached files.  Note that files in active operation
+    		will not be flushed.
+
+    	MAXFILE <nfiles>
+
+		set maximum number of files dicecache will keep track of.
+		When the limit is reached, dicecache will begin to flush
+		random files.
+
+    	MAXSIZE <size>
+
+    		only files less then the specified size will be cached.
+    		files larger then the specified size will not be cached.
+
+    STATUS LINE:
+
+    	"Cached AA/BB/CC filemax=DD hit=EE/FF (NN %) suffixes=<suffixes>"
+
+    	AA		- number of cached bytes currently in use
+    	BB		- total number of bytes currently cached
+    	CC		- maximum number of bytes that can be cached
+    	filemax=DD	- maximum number of files that can be cached
+    	hit=EE/FF	- cache hit on EE out of FF files
+    	NN %		- cache hit percentage
+    	<suffixes>	- list of suffixes being cached.
+
+
+				  LIBRARY CALLS
+
+    (DICE's stdio/fd routines automatically utilize DICECACHE if it is
+    enabled.  If you wish to use it manually you may do so, but you MUST
+    check DiceCacheBase before doing so.  DICE will automatically open
+    dicecache.library and setup DiceCacheBase if it exists, otherwise
+    DiceCacheBase will be left NULL.  Do NOT declare DiceCacheBase as doing
+    so will *disable* DICE's autoinit for it.  Instead, simply extern it.
+
+
+    CacheDesc = DiceCacheOpen(fileName, modes, &fileSize)
+
+	Returns NULL if the file could not be found or is uncacheable.
+	fileName and modes are as in fopen().  If successfull, fileSize is
+	set to the size of the file.
+
+	This call Examine()'s and compares timestamps, re-caching the file
+	if it has been modified.  In order for this operation to be fast
+	you should ensure that you have enough buffers (with the CLI
+	ADDBUFFERS command) to cache file headers for any conceivable
+	usage.
+
+    (void) DiceCacheClose(CacheDesc)
+
+	Close a previously openned file cache
+
+    ptr = DiceCacheSeek(CacheDesc, pos, &size)
+
+	Seek within a cached file.  This call returns a pointer to an
+	internal buffer along with the maximum number of contiguous bytes
+	in that buffer.
+
+

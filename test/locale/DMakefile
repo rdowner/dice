@@ -1,0 +1,6 @@
+
+all:
+    dcc hello.c -o hello -v -int hello.base
+    catcomp hello.cd hello_e.ct catalog catalogs/english/hello.catalog
+    catcomp hello.cd hello_d.ct catalog catalogs/deutsch/hello.catalog
+

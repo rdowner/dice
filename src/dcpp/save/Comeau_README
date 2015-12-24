@@ -1,0 +1,55 @@
+
+			SAS/C VS DICE COMPILATION OF DCPP
+
+    * You can create a working executable using SAS/C or DICE to compile
+      the source in this directory.  Using DICE is preferable :-) but you
+      get SAS/C compilation for free since my source must compile under
+      SAS/C for bootstrapping purposes.
+
+      Note that you will get a lot of integer mismatch warnings compiling
+      with SAS/C.  This is due to that fact that many routines take shorts
+      and SAS/C like to warn you that fubar(i + 1) (where i is a short)
+      does not math an argument type of short.	Other things like that
+      generate warnings too...
+
+    * Note the '#ifdef _DCC' lines in direct.c, main.c, and include.c ..
+      If DCPP is compiled using SAS/C, certain things are not compiled in:
+
+      (1) #pragma DCCOPTS (direct.c)
+      (2) version ID / version printout (main.c)
+      (3) -unix option to convert path names (e.g. '../fubar', to
+	  more easily convert unix sources)
+
+    * Two source files which are not part of DCPP proper are also
+      included for your benefit:
+
+      (1) "tokens.h" actually comes from the DC1 source, used by DCPP
+	  when generating precompiled includes.  It is included here but
+	  might be changed in the future (that is, things may be added as
+	  DICE progresses).  Such an occurance could make older DCPP
+	  executables incompatible.
+
+      (2) You might wish to support the unix compatibility option with
+	  a SAS/C compiled version of DCPP so I have included the
+	  UnixToAmigaPath() subroutine.
+
+    * DCPP is compiled to obtain error messages from a fixed file
+      called 'DCC:CONFIG/DICE.ERRORS'.  For your Atari port you will have
+      to change this.  CONFIG/DICE.ERRORS is included (you can remove all
+      lines except the one's prefixed by 'CP' for the port or, optionally,
+      hard-code the errors.  We'll be translating DICE.ERRORS into
+      assorted languages.
+
+    * WARNING, STDIO, I just noticed that I open everything "r", "w",
+      etc... instead of "rb", "wb", etc...  This could be an important
+      distinction on the Atari, I don't know.
+
+
+		-Matt Dillon	-Bryce Nesbitt	   -John Toebes
+
+	Obvious Implementations Corp.		Obvious Implementations Corp.
+	Cary World Headquarters			Lake Tahoe Retreat
+	207 Livingstone Drive			1005 Apollo Way
+	Cary, NC  27513				Incline Village, NV  89451
+	919-469-4210	;(Voice)		702-831-8000	;(Voice)
+	919-469-3853	;(Fax)			702-831-4059	;(Fax)

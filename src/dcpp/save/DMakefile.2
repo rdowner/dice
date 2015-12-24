@@ -1,0 +1,27 @@
+
+#   DMakefile.2
+#
+#  (c)Copyright 1992 Obvious Implementations Corp, All Rights Reserved
+#  CONFIDENTIAL, This is unpublished proprietary source code owned by Obvious Implementations Corp.
+#  This material contains trade secrets of Obvious Implementations Corp.
+
+OD= dtmp:comp2/cpp/
+EXE= dcc:bin/amiga/bin2/xc_dcpp
+CFLAGS= -ms -r -I$(OD) -Isrc:comp/c1 -DDEBUG
+PROTOS= $(OD)protos.h
+
+CCPSRCS= main.c sym.c include.c direct.c define.c cpp.c cexp.c subs.c precomp.c asubs.a
+CCPOBJS = $(CCPSRCS:"*.c":"$(OD)*.o") $(CCPSRCS:"*.a":"$(OD)*.o")
+
+all: $(PROTOS) $(EXE)
+
+$(EXE) : $(CCPOBJS)
+    lc_dcc %(right) -o %(left) $(CFLAGS)
+
+$(CCPOBJS) : $(CCPSRCS)
+    lc_dcc %(right) -o %(left) $(CFLAGS) -c
+
+$(PROTOS) : $(CCPSRCS)
+    -delete %(left)
+    xc_makeproto -o%(left) %(right)
+

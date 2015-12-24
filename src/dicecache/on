@@ -1,0 +1,3 @@
+
+dicecache ON ADD .c ADD .h ADD .o ADD .lib
+

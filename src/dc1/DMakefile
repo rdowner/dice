@@ -1,0 +1,41 @@
+
+# DMakefile
+#
+# (c)Copyright 1992 Obvious Implementations Corp, All Rights Reserved
+# CONFIDENTIAL, This is unpublished proprietary source code owned by
+# Obvious Implementations Corp.  This material contains trade secrets of
+# Obvious Implementations Corp.
+
+.include ../DMakefile.inc
+
+SRCS= main.c asm1.c asm2.c asmaddr.c asmflt.c asubs.c block.c cexp.c \
+    error.c exp.c gen.c genarith.c genass.c genbool.c genlogic.c genmisc.c \
+    lex.c pragma.c reg.c rules.c sem.c stmt.c subs.c sym.c toplevel.c types.c \
+    dlang.c
+
+OBJS= $(SRCS:"*.c":"$(OD)dc1_*.o")
+
+EXE= $(UBIN)dc1
+EXED= $(INSTDIR)bin/dc1
+
+PROTOS= $(OD)dc1-protos.h
+
+all: $(PROTOS) $(EXE)
+
+$(EXE) : $(OBJS)
+	cc $(CFLAGS) $(OBJS) -o $(EXE) -lamiga
+
+$(OBJS) : $(SRCS)
+	cc $(CFLAGS) %(right) -o %(left) -c
+
+$(PROTOS) : $(SRCS)
+	rm -f $(PROTOS) $(PROTOS).new
+	fgrep -h Prototype $(SRCS) >$(PROTOS).new
+	mv -f $(PROTOS).new $(PROTOS)
+
+install:
+	install -c -m 0755 $(EXE) $(EXED)
+
+clean:
+	rm -f $(PROTOS) $(OBJS) $(EXE)
+

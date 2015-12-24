@@ -1,0 +1,8 @@
+##base _TestBase
+##bias 30
+##public
+LockTestLib()()
+UnLockTestLib()()
+PostString(str)(A0)
+GetString(buf,max)(A0,D0)
+##end

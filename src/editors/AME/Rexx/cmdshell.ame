@@ -1,0 +1,11 @@
+/* $VER: Cmdshell 37.1 (21.2.93) : Arexx Command Shell */
+
+options results
+rc = open('file',"*",'R')
+do forever
+    line=readln('file')
+    if EOF('file') then leave
+    interpret line
+    end
+say closing file
+rc = close ('file')

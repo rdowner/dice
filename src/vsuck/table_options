@@ -1,0 +1,217 @@
+
+        Keyword         |  Meaning
+        ----------------+----------------------------------------------------
+        $Author: dice $       | Name of person who last modified file.
+        ----------------+----------------------------------------------------
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $:           | Name, lock status, path and other information about
+                        | the file.  Usually placed at the top of each source
+                        | code file.
+        ----------------+----------------------------------------------------
+        $Date: 1994/06/10 18:09:35 $         | Creation and modification date.
+        ----------------+----------------------------------------------------
+
+
+        Keyword         |  Meaning
+        ---------------------------------------------------------------------
+        $Author: dice $       | Name of person who last modified file.
+        ---------------------------------------------------------------------
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $:           | Name, lock status, path and other information about
+                        | the file.  Usually placed at the top of each source
+                        | code file.
+        ---------------------------------------------------------------------
+        $Date: 1994/06/10 18:09:35 $         | Creation and modification date.
+        ---------------------------------------------------------------------
+
+
+        Keyword         :  Meaning
+        ----------------:----------------------------------------------------
+        $Author: dice $       : Name of person who last modified file.
+        ----------------:----------------------------------------------------
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $:           : Name, lock status, path and other information about
+                        : the file.  Usually placed at the top of each source
+                        : code file.
+        ----------------:----------------------------------------------------
+        $Date: 1994/06/10 18:09:35 $         : Creation and modification date.
+        ----------------:----------------------------------------------------
+
+
+        Keyword         :  Meaning
+        ================+====================================================
+        $Author: dice $       : Name of person who last modified file.
+        ----------------+----------------------------------------------------
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $:           : Name, lock status, path and other information about
+                        : the file.  Usually placed at the top of each source
+                        : code file.
+        ----------------+----------------------------------------------------
+        $Date: 1994/06/10 18:09:35 $         : Creation and modification date.
+        ----------------+----------------------------------------------------
+
+      : Keyword         :  Meaning                                           :
+      +=================+====================================================+
+      : $Author: dice $       : Name of person who last modified file.             :
+      :-----------------+----------------------------------------------------:
+      : $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $:           : Name, lock status, path and other information about:
+      :                 : the file.  Usually placed at the top of each source:
+      :                 : code file.                                         :
+      +-----------------+----------------------------------------------------+
+      : $Date: 1994/06/10 18:09:35 $         : Creation and modification date.                    :
+      +-----------------+----------------------------------------------------+
+
+        Keyword     : - : Meaning
+        ============+===+====================================================
+        $Author: dice $   : a : Name of person who last modified file.
+                    +---+---------------------------------------------------
+                    : b : Name, lock status, path and other information about
+                    :   : the file.  Usually placed at the top of each source
+                    :   : code file.
+        ------------+---+------------------------------------------------
+        $Date: 1994/06/10 18:09:35 $     :   : Creation and modification date.
+        ------------+---+------------------------------------------------
+
+
+        Keyword         :  Meaning
+        ----------------+----------------------------------------------------
+        $Author: dice $       : Name of person who last modified file.
+        ----------------+----------------------------------------------------
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $:           : Name, lock status, path and other information about
+                        : the file.  Usually placed at the top of each source
+                        : code file.
+        ----------------+----------------------------------------------------
+        $Date: 1994/06/10 18:09:35 $         : Creation and modification date.
+        ----------------+----------------------------------------------------
+
+
+        Keyword         :  Meaning
+        ----------------------------------------------------------------------
+        $Author: dice $       : Name of person who last modified file.
+        ----------------------------------------------------------------------
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $:           : Name, lock status, path and other information about
+                        : the file.  Usually placed at the top of each source
+                        : code file.
+        ----------------------------------------------------------------------
+        $Date: 1994/06/10 18:09:35 $         : Creation and modification date.
+        ----------------------------------------------------------------------
+
+
+
+        Keyword         |  Meaning
+        *********************************************************************
+        $Author: dice $       | Name of person who last modified file.
+        *********************************************************************
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $:           | Name, lock status, path and other information about
+                        | the file.  Usually placed at the top of each source
+                        | code file.
+        *********************************************************************
+        $Date: 1994/06/10 18:09:35 $         | Creation and modification date.
+        *********************************************************************
+
+
+        Keyword         *  Meaning
+        *********************************************************************
+        $Author: dice $       * Name of person who last modified file.
+        *********************************************************************
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $:           * Name, lock status, path and other information about
+                        * the file.  Usually placed at the top of each source
+                        * code file.
+        *********************************************************************
+        $Date: 1994/06/10 18:09:35 $         * Creation and modification date.
+        *********************************************************************
+
+
+        Keyword         :  Meaning
+        :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        $Author: dice $       : Name of person who last modified file.
+        :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $:           : Name, lock status, path and other information about
+                        : the file.  Usually placed at the top of each source
+                        : code file.
+        :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        $Date: 1994/06/10 18:09:35 $         : Creation and modification date.
+        :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+        Keyword         :  Meaning
+        ---------------------------------------------------------------------
+        $Author-$       : Name of person who last modified file.
+        ---------------------------------------------------------------------
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $-           : Name, lock status, path and other information about
+                        : the file.  Usually placed at the top of each source
+                        : code file.
+        ---------------------------------------------------------------------
+        $Date-$         : Creation and modification date.
+        ---------------------------------------------------------------------
+
+
+        Keyword         :  Meaning
+        =====================================================================
+        $Author=$       : Name of person who last modified file.
+        =====================================================================
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $=           : Name, lock status, path and other information about
+                        : the file.  Usually placed at the top of each source
+                        : code file.
+        =====================================================================
+        $Date=$         : Creation and modification date.
+        =====================================================================
+
+
+
+        Keyword         :  Meaning
+        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+        $Author: dice $       : Name of person who last modified file.
+        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $           : Name, lock status, path and other information about
+                        : the file.  Usually placed at the top of each source
+                        : code file.
+        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+        $Date: 1994/06/10 18:09:35 $         : Creation and modification date.
+        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+
+        Keyword         =  Meaning
+        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+        $Author: dice $       = Name of person who last modified file.
+        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $           = Name, lock status, path and other information about
+                        = the file.  Usually placed at the top of each source
+                        = code file.
+        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+        $Date: 1994/06/10 18:09:35 $         = Creation and modification date.
+        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+        Keyword         -  Meaning
+        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+        $Author: dice $       - Name of person who last modified file.
+        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $           - Name, lock status, path and other information about
+                        - the file.  Usually placed at the top of each source
+                        - code file.
+        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+        $Date: 1994/06/10 18:09:35 $         - Creation and modification date.
+        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+        Keyword         :  Meaning
+        :=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
+        $Author: dice $       : Name of person who last modified file.
+        :=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $           : Name, lock status, path and other information about
+                        : the file.  Usually placed at the top of each source
+                        : code file.
+        :=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
+        $Date: 1994/06/10 18:09:35 $         : Creation and modification date.
+        :=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
+
+
+        Keyword         +  Meaning
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        $Author+$       + Name of person who last modified file.
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        $Id: table_options,v 30.0 1994/06/10 18:09:35 dice Exp $+           + Name, lock status, path and other information about
+                        + the file.  Usually placed at the top of each source
+                        + code file.
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        $Date+$         + Creation and modification date.
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+

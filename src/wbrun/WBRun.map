@@ -1,0 +1,199 @@
+WBRun                   17-Apr-93 22:11:51  Hunk Section                Page 1-1
+
+ num hunk         size filename         punit    type         base  alv     size
+   0 _NOMERGE      430 LIB:CBACK.O      cback    code            0    2      424
+   1 __MERGED      21c LIB:CBACK.O      cback    data            0    0       78
+                       WBRun.o          WBRun.c  data           78    0       10
+                       lib:sc.lib       sigfunc. data           88    0       24
+                       lib:sc.lib       _iob.c   data           ac    0       68
+                       lib:sc.lib       _ufb.c   data          114    0        8
+                       lib:sc.lib       _fmode.c data          11c    0        8
+                       lib:sc.lib       _cxovf.c data          124    0       3c
+                       lib:sc.lib       _cxbrk.c data          160    0       50
+                       lib:sc.lib       exitfunc data          1b0    0        4
+                       lib:sc.lib       _stdv36. data          1b4    0       14
+                       lib:sc.lib       _stdwin. data          1c8    0       14
+                       lib:sc.lib       io2errno data          1dc    0       40
+                       WBRun.o          WBRun.c  bss           21c    0       10
+                       lib:sc.lib       errno.c  bss           22c    0        4
+                       lib:sc.lib       memheap. bss           230    0        4
+                       lib:sc.lib       _top.c   bss           234    0        4
+                       lib:sc.lib       _exit.c  bss           238    0        4
+                       lib:sc.lib       _main.c  bss           23c    0       c8
+   2 text         112c WBRun.o          WBRun.c  code            0    0      770
+                       lib:sc.lib       _fpinit. code          770    0       30
+                       lib:sc.lib       savecli. code          7a0    0      128
+                       lib:sc.lib       _MemClea code          8c8    0       58
+                       lib:sc.lib       _write.c code          920    0      100
+                       lib:sc.lib       _lseek.c code          a20    0       94
+                       lib:sc.lib       _cxovf.c code          ab4    0       a0
+                       lib:sc.lib       _xcovf   code          b54    0       10
+                       lib:sc.lib       _exit.c  code          b64    1       58
+                       lib:sc.lib       _main.c  code          bc4    0      274
+                       lib:sc.lib       _cxbrk.c code          e38    0      14c
+                       lib:sc.lib       _chkufb. code          f84    0       4c
+                       lib:sc.lib       _chkabor code          fd0    0       50
+                       lib:sc.lib       memchr   code         1020    0       24
+                       lib:sc.lib       strncat  code         1044    0       24
+                       lib:sc.lib       exit.c   code         1068    0       54
+                       lib:sc.lib       io2errno code         10bc    0       60
+                       lib:sc.lib       main     code         111c    0       10
+WBRun                  17-Apr-93 22:11:51  Symbol Section               Page 2-1
+
+symbol     offset:hunk symbol     offset:hunk symbol     offset:hunk
+@exit        106c:2    @main        111c:2    @memchr      102c:2   
+@strncat     1050:2    @_CXBRK       e3c:2    @_XCEXIT       18:1   
+@__chkab      fd0:2    @__chkuf      f88:2    @__exit       b68:2   
+@__freec      864:2    @__io2er     10c0:2    @__lseek      a2e:2   
+@__savec      7a4:2    @__write      92c:2    _DeleteP      73a:2   
+_DOSBase      21c:1    _errno        22c:1    _exit        1068:2   
+_IconBas      228:1    _LinkerD       (0:*)   _main         280:2   
+_MathBas      220:1    _MathTra      224:1    _memchr      1020:2   
+_MemClea      6b4:2    _msg          64e:2    _MyCreat      6be:2   
+_NULL          22:1    _setarg       5b8:2    _strncat     1044:2   
+_SysBase       4a:1    __BackGr       78:1    __Backst       62:1   
+__BSSBAS       (0:*)   __BSSLEN       (0:*)   __CoverL       (0:*)  
+__CoverS       (0:*)   __CXBRK       e38:2    __CXOVF       ab4:2   
+__FPERR        2e:1    __LibRev       (0:*)   __LibVer       (0:*)  
+__main          0:2    __MemCle      8c8:2    __MemHea      230:1   
+__ONBREA       42:1    __ONERR        3a:1    __ONEXIT       3e:1   
+__OSERR        2a:1    __Progra       66:1    __SIGFPE       32:1   
+__SIGINT       36:1    __StackP       52:1    __WBench       4e:1   
+__XCEXIT       18:1    __XCOVF       b54:2    ___BackG       78:1   
+___base        26:1    ___chkab      fd0:2    ___chkuf      f84:2   
+___close      238:1    ___ctors        0:*    ___curdi       46:1   
+___dtors        0:*    ___exit       b64:2    ___exitf      1b0:1   
+___fmask      120:1    ___fmode      11c:1    ___fpini      770:2   
+___fpter      788:2    ___freec      864:2    ___io2er     10bc:2   
+___iob         ac:1    ___lseek      a20:2    ___main       bc4:2   
+___nufbs      114:1    ___prior       84:1    ___procn       80:1   
+___savec      7a0:2    ___sigfu       88:1    ___stack       7c:1   
+___stdio      1b4:1    ___stdio      1c8:1    ___top        234:1   
+___ufbs       118:1    ___write      920:2   
+WBRun                   17-Apr-93 22:11:51  Xref Section                Page 3-1
+
+symbol   (Def) Module  Off (Ref) Module  Off (Ref) Module  Off (Ref) Module  Off
+@exit    exit.c          4 _main.c       260
+@main    main            0 _main.c       25c
+@memchr  memchr          c _write.c       68 _write.c       c2
+@strncat strncat         c _main.c       15a _main.c       182
+@_CXBRK  _cxbrk.c        4 _chkabor       32
+@__chkab _chkabor        0 _lseek.c       1c _write.c       18
+@__chkuf _chkufb.        4 _lseek.c       22 _write.c       1e
+@__exit  _exit.c         4 exit.c         52 _cxbrk.c       92 _cxbrk.c       b2
+                           _cxbrk.c       e8 _cxovf.c       20 _cxovf.c       66
+@__io2er io2errno        4 _write.c       f0
+@__lseek _lseek.c        e _write.c       54
+@__write _write.c        c exit.c         40
+_DOSBase WBRun.c         0 _cxbrk.c       68 _cxbrk.c       82 _main.c       192
+                           _main.c       1c6 _main.c       1e4 _exit.c        3a
+                           _lseek.c       44 _lseek.c       86 _write.c       7a
+                           _write.c       96 _write.c       d4 _write.c       e4
+                           savecli.       88 savecli.       f4 cback          60
+                           cback         13e cback         16c cback         202
+                           cback         2b4 cback         32a cback         354
+                           cback         3be cback         3ce cback         3f2
+_errno   errno.c         0 _chkufb.       1c _chkufb.       3c _lseek.c       2e
+                           _lseek.c       5c _write.c       f4
+_LinkerD       (0:*)       cback           e cback         272
+_main    WBRun.c       280 main            6
+_SysBase cback          4a _main.c       15e
+__BackGr WBRun.c         0 cback         12a
+__Backst cback          62 WBRun.c       4ea WBRun.c       4fa WBRun.c       66a
+                           WBRun.c       67c WBRun.c       696 WBRun.c       6a0
+__BSSBAS       (0:*)       cback          24
+__BSSLEN       (0:*)       cback          2c
+__CXOVF  _cxovf.c        0 _xcovf          c
+__MemCle _MemClea        0 cback         348
+__MemHea memheap.        0 _MemClea        6 _MemClea       24
+__OSERR  cback          2a _chkufb.        c _lseek.c       36 _lseek.c       56
+                           _write.c       3a _write.c       ec
+__Progra cback          66 _cxbrk.c       12 _cxovf.c       26
+__StackP cback          52 _xcovf          2
+__WBench cback          4e _main.c        d2 _main.c       126 _main.c       140
+__XCEXIT cback          18 _exit.c        4c _exit.c       bbc
+__XCOVF  _xcovf          0 WBRun.c         c WBRun.c       28c WBRun.c       5c2
+                           WBRun.c       65a WBRun.c       6ba WBRun.c       6c8
+                           WBRun.c       744
+___base  cback          26 _MemClea       2c _MemClea       3c WBRun.c         8
+                           WBRun.c       288 WBRun.c       5be WBRun.c       656
+                           WBRun.c       6b6 WBRun.c       6c4 WBRun.c       740
+___ctors        0:*        _fpinit.        4 _fpinit.        e _fpinit.       26
+___dtors        0:*        _fpinit.       1c
+___exitf exitfunc        0 exit.c          c
+___fmode _fmode.c        0 _main.c       222
+___fpini _fpinit.        0 cback         318 cback         24e cback         42a
+___fpter _fpinit.       18 cback         342
+___freec savecli.       c4 cback         37e
+___iob   _iob.c          0 exit.c         1e _main.c       22e _main.c       238
+WBRun                   17-Apr-93 22:11:51  Xref Section                Page 3-2
+
+symbol   (Def) Module  Off (Ref) Module  Off (Ref) Module  Off (Ref) Module  Off
+                           _main.c       23e _main.c       246 _main.c       24c
+                           _main.c       250
+___main  _main.c         0 cback         252 cback         322
+___nufbs _ufb.c          0 _chkufb.       14 _main.c       21c
+___prior WBRun.c         c cback         164
+___procn WBRun.c         8 cback         160
+___savec savecli.        0 cback          72 cback         424
+___sigfu sigfunc.        0 _chkabor       20 _chkabor       36 _chkabor       3a
+                           _cxbrk.c       8c _cxbrk.c       ac _cxbrk.c       e2
+                           _cxbrk.c       f2
+___stack WBRun.c         4 cback         168
+___stdio _stdv36.        0 _main.c       17e
+___stdio _stdwin.        0 _main.c       134
+___top   _top.c          0 _MemClea       30 _MemClea       36 _MemClea       4e
+___ufbs  _ufb.c          4 _chkufb.       24 _main.c        f4 _exit.c         c
+WBRun                   17-Apr-93 22:11:51  File Section                Page 4-1
+
+filename         punit    hunk     type       offset:hunk     size
+LIB:CBACK.O      cback    _NOMERGE code            0:0         424
+                          __MERGED data            0:1          78
+WBRun.o          WBRun.c  text     code            0:2         770
+                          __MERGED data           78:1          10
+                          __MERGED bss           21c:1          10
+WBRun                 17-Apr-93 22:11:51  Library Section               Page 5-1
+
+filename         punit    hunk     type       offset:hunk     size
+lib:sc.lib       errno.c  text     code            -:-           0
+                          __MERGED bss           22c:1           4
+                 memheap. text     code            -:-           0
+                          __MERGED bss           230:1           4
+                 sigfunc. text     code            -:-           0
+                          __MERGED data           88:1          24
+                 _fpinit. text     code          770:2          30
+                 savecli. text     code          7a0:2         128
+                 _MemClea text     code          8c8:2          58
+                 _iob.c   text     code            -:-           0
+                          __MERGED data           ac:1          68
+                 _ufb.c   text     code            -:-           0
+                          __MERGED data          114:1           8
+                 _fmode.c text     code            -:-           0
+                          __MERGED data          11c:1           8
+                 _write.c text     code          920:2         100
+                 _lseek.c text     code          a20:2          94
+                 _top.c   text     code            -:-           0
+                          __MERGED bss           234:1           4
+                 _cxovf.c text     code          ab4:2          a0
+                          __MERGED data          124:1          3c
+                 _xcovf   text     code          b54:2          10
+                 _exit.c  text     code          b64:2          58
+                          __MERGED bss           238:1           4
+                 _main.c  text     code          bc4:2         274
+                          __MERGED bss           23c:1          c8
+                 _cxbrk.c text     code          e38:2         14c
+                          __MERGED data          160:1          50
+                 _chkufb. text     code          f84:2          4c
+                 _chkabor text     code          fd0:2          50
+                 memchr   text     code         1020:2          24
+                 strncat  text     code         1044:2          24
+                 exitfunc text     code            -:-           0
+                          __MERGED data          1b0:1           4
+                 exit.c   text     code         1068:2          54
+                 _stdv36. text     code            -:-           0
+                          __MERGED data          1b4:1          14
+                 _stdwin. text     code            -:-           0
+                          __MERGED data          1c8:1          14
+                 io2errno text     code         10bc:2          60
+                          __MERGED data          1dc:1          40
+                 main     text     code         111c:2          10

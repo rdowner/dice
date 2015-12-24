@@ -1,0 +1,152 @@
+There have been several changes to VMake since the last release of the 
+documents.  These notes are accurate for Version 2.7.
+
+VMake now supports a rexx port fairly fully.  The port name is stored in
+symbol _PORT_ which you can query by using the log command  For example,
+if you define a new menu item in DCC:VMake.config as
+
+  ITEM  "Show port"  "" "LOG %(_PORT_)"
+
+you can display the REXX port at any time by choosing that menu entry.
+The value of the port will normally be VMAKE.01 unless you have multiple
+copies of VMake running.
+
+You can invoke the commands described in chapter 5 section 4, namely
+QUIT, TRACE, EDIT, EXEC, ADDR, READ, NEW, SAVE, FRONT, BACK, JUMP, LOG, 
+SCAN, SET, CONFIG, CALL, and SELECT.  If the commands take a parameter,
+you MUST provide the parameter when invoking the command from REXX.
+VMAKE  never uses requesters when commands are invoked from REXX, it just
+returns a fail result code.  The text for the error code is one of the 
+TEXT entries in file DCC:config/VMake.config.
+
+You can get the value of any VMake symbol using the LOG command.  When
+invoked from REXX, the value is put in the REXX return result string
+as well as being printed to the console window.  You can use all the
+substitution symbols.  LOG %(SYMBOL) will return the value of SYMBOL.
+
+You can use the following REXX script to find your way around.  The
+"options results" line causes REXX to use RC for error codes from
+commands.  RC = 0 if there are no errors.  If RC = 0, RESULT will be set
+by VMAKE.  The value will be the string "Command OK" unless the command
+was LOG, in which case it will be whatever string LOG creates.
+
+   /* send a rexx command to vmake */
+   options results
+   arg cmd cmdargs
+   say 'command =' cmd
+   say 'args =' cmdargs
+   address VMAKE.01
+   cmd cmdargs
+   say 'Return result =' RC ':' RESULT
+
+To invoke a REX script from within VMake, use the ADDR command, not EXEC.
+For example, you could define a menu item to invoke TEST.REXX:
+
+   ITEM "Test" "" "ADDR REXX TEST.REXX %(_PORT_) %s"
+
+This will invoke TEST.REXX and pass the name of VMake's REXX port and the
+full path name of the currently selected list entry.  TEST.REXX can use
+any of the VMake commands, and whatever else you choose to throw in.
+
+If you used EXEC instead of ADDR, and TEST.REXX attempted to invoke a
+VMake command, your VMake and REXX sessions would hang as each waited
+for the other to relinquish control.
+  
+SCAN now understands subdirectories.  The following menu item does more
+or less what you might expect:
+
+   ITEM "Scan hdrs" "" "SCAN hdrs/#?.h"
+
+The SELECT command is now implemented.  The parameter can either be the
+full path name as it appears in the list, or just the file name.  The
+REXX return code is 0 if it succeeds, and the item will be visually
+selected in the list as if you had clicked once with the mouse.
+
+The following new commnds have been implemented for use with menus,
+buttons or REXX scripts:  ADD, DEL, LTOP, LBOT, LUP, LDN & RECFG
+
+RECFG takes one parameter, a config file name.  If you don't provide a
+name, you will get a file requester (unless you invoke RECFG from REXX,
+in which case you get an error).  The new config file can be as
+different from the old one as you like, except that you should use the
+same names for symbols.  Not only can you change the menus and buttons,
+you can define different gadgets if you wish.
+
+If you invoke RECFG from within a project, it will assign the new config
+file name to a symbol CONFIG.  If you save the project, this symbol will
+be saved with it and the specified config file will be used every time
+you open that project.  If you quit the project without saving, you will
+see a requester asking if you want to save the updated project file or
+not. 
+
+All the other commands refer to the subgadgets of the LIST gadget.  
+
+ADD takes a parameter (or it will give you the same file requester as
+the NEW gadget as long as you are not in REXX), and it adds the parameter
+to the list.  The newly added item becomes the selected list entry.
+
+DEL deletes the current selection from the list.  It takes no parameter
+and will fail if nothing is selected.  If it succeeds, it leaves the
+next entry in the list selected.
+
+LTOP, LBOT, LUP and LDN position you to the top or bottom of the list or
+move you up or down.  They will all leave the selected entry selected
+and visually highlighted, or fail if there is no entry to move to.
+
+Vmake now provides better support for symbols you may define that are
+not associated with any visible gadget.  If you use the SET command to
+define a new symbol, it will be saved to the project (.DICE) file.  If
+you attempt to quit without saving, you will now get a requester warning 
+you that the project has changed.  Such symbols can be useful with REXX
+commands or with menus, using the %(SYMBOL) substitution construct.
+
+The CREATE option in the PROJECT menu has not been implemented.  You can
+only create new projects in existing directories, using the NEW option.
+If you want to create a totally new project, you should first create a
+directory for it before starting VMAKE.
+
+A new item has been added to the PROJECT menu, as described above.
+
+CONFIGURE will request a configuration file name, and then open the
+selected config file, allowing you to redefine buttons, menus, or any of
+the gadgets, text strings or config strings.
+
+A new menu, LIST, has been created to illustrate the use of the list
+movement commands.  It also creates keyboard equivalents to let you move
+around the list.
+
+Two new standard symbols have been defined.
+
+_CONFIG_ is project independant, and always contains the name of the
+most recently loaded config file.
+
+CONFIG is project dependent.  It need not be defined, but if it is set
+in a project (.DICE) file , it will cause the named config file to be 
+loaded immediately after the project is loaded.  If it is not defined, 
+and a non standard config file was in use, the standard config file will 
+be restored immediately after the project is loaded.
+
+Some new TEXT and CONFIG strings have been defined in the config file.
+
+TEXT SLOT 20 "Symbols too large for command buffer"
+
+message indicating a command could not execute because when the
+sustitutions were performed, the results overflowed the command buffer. 
+
+TEXT SLOT 21 "Unable to select requested item: "
+
+message indicating that a parameter in a command such as SELECT could
+not be found in the list.
+
+TEXT SLOT 22 "Invalid or missing parameters for command"
+
+Particularly likely to occur when a command is invoked improperly from
+REXX.  Otherwise VMake would put up a requester.
+
+CONFIG SLOT 4  "(#?.config)"
+
+this is the search pattern for the DOS 2.0 file requester used by the
+RECFG command to get a config file name.
+
+Previously documented CONFIG SLOTS 4 through 11 have been moved to
+positions 5 through 12 respectively.

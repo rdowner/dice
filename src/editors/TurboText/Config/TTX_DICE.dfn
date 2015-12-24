@@ -1,0 +1,72 @@
+/*
+**  $Id: TTX_DICE.dfn,v 30.0 1994/06/10 18:06:15 dice Exp $
+**
+**  DICE Support for TurboText.
+**  Add these lines to your "TurboText:support/ttx_startup.dfn" file:
+**      #
+**      LINKS:
+**         "dcc:config/TTX_DICE.dfn"
+**      #
+*/
+
+MENUS: APPEND
+   MENU " DICE "
+     ITEM "Open Project File"	      "" ExecARexxMacro DCC:Rexx/VMake.ttx Open
+     BAR
+     ITEM "Compile Current"	      "" ExecARexxMacro DCC:Rexx/VMake.ttx Compile
+     ITEM "Build Project (F9)"	      "" ExecARexxMacro DCC:Rexx/VMake.ttx Build
+     ITEM "Build & Run"		      "" ExecARexxMacro DCC:Rexx/VMake.ttx Run
+     ITEM "Build & Debug (F7)"	      "" ExecARexxMacro DCC:Rexx/VMake.ttx Debug
+     ITEM "Project Manager"	      "" ExecARexxMacro DCC:Rexx/VMake.ttx Front
+     BAR
+     ITEM "Help Under Cursor (F6)"    "" ExecARexxMacro DCC:Rexx/DiceHelp.ttx
+     ITEM "Help Box (ALT-F6)"         "" ExecARexxMacro DCC:Rexx/DiceHelp.ttx Prompt
+     BAR
+     ITEM "Next Error (F8)"	      "" ExecARexxMacro DCC:Rexx/ErrorMove.ttx Next
+     ITEM "Current Error (Shift-F8)"  "" ExecARexxMacro DCC:Rexx/ErrorMove.ttx Current
+     ITEM "First Error (ALT-F8)"      "" ExecARexxMacro DCC:Rexx/ErrorMove.ttx First
+     ITEM "Previous Error (Ctrl-F8)"  "" ExecARexxMacro DCC:Rexx/ErrorMove.ttx Prev
+     ITEM "Clear Errors"              "" ExecARexxMacro DCC:Rexx/ErrorClear.ttx
+
+#
+
+KEYBOARD: APPEND
+   F6                 ExecARexxMacro DCC:Rexx/DiceHelp.ttx
+   ALT-F6             ExecARexxMacro DCC:Rexx/DiceHelp.ttx Prompt
+   F7                 ExecARexxMacro DCC:Rexx/VMake.ttx    Debug
+   F9                 ExecARexxMacro DCC:Rexx/VMake.ttx    Build
+   F8                 ExecARexxMacro DCC:Rexx/ErrorMove.ttx Next
+   Shift-F8           ExecARexxMacro DCC:Rexx/ErrorMove.ttx Current
+   ALT-F8             ExecARexxMacro DCC:Rexx/ErrorMove.ttx First
+   Ctrl-F8            ExecARexxMacro DCC:Rexx/ErrorMove.ttx Prev
+
+   CTRL-K             DeleteEOL
+   CTRL-P             SetMeta2
+   CTRL-Y             DeleteLine
+   CTRL-[             MarkBlk
+   CTRL-]             MarkBlk
+
+   META2-CTRL-S       SaveFile
+   META2-CTRL-C       SaveFile
+   META2-CTRL-Q       CloseDoc
+   META2-S            SaveFile
+   META2-C            SaveFile
+   META2-Q            CloseDoc
+   ALT-Y              UnDeleteLine
+
+   NUM_PAD-1          MoveEOL
+   NUM_PAD-2          MoveDown
+   NUM_PAD-3          MoveDownScr
+   NUM_PAD-4          MoveLeft
+   NUM_PAD-5          InsertLine
+   NUM_PAD-6          MoveRight
+   NUM_PAD-7          MoveSOL
+   NUM_PAD-8          MoveUp
+   NUM_PAD-9          MoveUpScr
+   NUM_PAD-0          SetPrefs Overstrike Toggle
+   CTRL-NUM_PAD-7     MoveSOF
+   CTRL-NUM_PAD-1     MoveEOF
+   SHIFT-NUM_PAD-6    ShiftRight
+   SHIFT-NUM_PAD-4    ShiftLeft
+   SHIFT-NUM_PAD-8    ScrollView 1 Relative
+   SHIFT-NUM_PAD-2    ScrollView -1 Relative

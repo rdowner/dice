@@ -1,0 +1,183 @@
+/* $VER: VFind 37.1 (21.2.93) */ 
+/* This program brings up a Search Requester for AME */
+
+if show("l", "rexxarplib.library") = 0 then do
+   check = addlib('rexxsupport.library', 0, -30, 0)
+   check = addlib('rexxarplib.library',  0, -30, 0)
+end
+
+options results
+
+/*
+*   The following sequence determines both AME's screen and port name,
+*   and also gets the number screen rows and columns.
+*/
+
+ameport = address()
+cols = ScreenCols(ameport)
+if cols == -1 then do
+   amescreen = ""
+   cols = ScreenCols()
+   rows = ScreenRows()
+end
+else do
+   amescreen = ameport
+   rows = ScreenRows(amescreen)
+end
+/*
+ *   Set up a host. This time, send all messages to our own port.
+ */
+
+address AREXX "'x = CreateHost(AMESEARCH, MFLAGSPORT, "amescreen")'"
+/*
+ *   Wait until it is ready.
+ */
+do i = 1
+   if showlist('p', AMESEARCH) ~= 0 then leave
+   call delay 30
+end
+
+/*
+ *   Open the window
+ */
+
+idcmp = 'CLOSEWINDOW+GADGETUP'
+flags = 'WINDOWCLOSE+WINDOWDRAG+WINDOWDEPTH+ACTIVATE'
+
+call OpenWindow(AMESEARCH, (cols - 640)/2, rows - 190, 600, 120, idcmp,   ,
+                flags, "Find...")
+
+/*
+ *   Open the port that messages will come to
+ */
+mp = openport(MFLAGSPORT)
+
+
+/*
+ *   Read the current search settings
+ */
+'getlastpattern'
+findstring = result
+"getprefs" "case"
+caseflag = result
+"getprefs" "regex"
+regexflag = result
+
+direct = 1
+
+/*
+ *   Add the gadgets
+ */
+
+call AddGadget(AMESEARCH, 50,   28, 2, findstring, "%d%1%g", 160, RIDGEBORDER)
+call AddGadget(AMESEARCH, 360,  28, 0, "  ", "%d")
+call AddGadget(AMESEARCH, 360,  46, 1, "  ", "%d")
+call AddGadget(AMESEARCH, 360,  64, 3, "  ", "%d")
+call AddGadget(AMESEARCH, 110,  46, 4, "Again", "%d")
+
+Call Move(AMESEARCH,220,34)
+Call Text(AMESEARCH,"Search String")
+Call Move(AMESEARCH,400,34)
+call Text(AMESEARCH, "Case Sensitive")
+Call Move(AMESEARCH,400,52)
+call Text(AMESEARCH, "Regular Expression")
+Call Move(AMESEARCH,400,68)
+call Text(AMESEARCH, "Forward Search")
+
+call AddGadget(AMESEARCH, 50, 84, "USE",   "\    OK    \  ", "USE")
+call AddGadget(AMESEARCH,450, 84, "CLOSE", "\   Cancel  \  ", "CANCEL")
+
+
+/* set things up for the cancel */
+
+uncase = 'unsetprefs'
+unregex = 'unsetprefs'
+
+/*
+ *   set gadgets that should be on
+ */
+
+
+if compare(caseflag,"CASE") = 0 then do
+	res = SetGadget(AMESEARCH, 0, "ON")
+	uncase = 'setprefs'
+	end
+
+if compare(regexflag,"REGEX") = 0 then do
+	res = SetGadget(AMESEARCH, 1, "ON")
+	unregex = 'setprefs'
+	end
+
+res = SetGadget(AMESEARCH, 3, "ON" )
+
+/*
+ *   Main event loop
+ */
+quitflag  = 0
+
+do forever
+   if quitflag = 1 then leave
+   t = waitpkt(MFLAGSPORT)
+   do forever
+      p = getpkt(MFLAGSPORT)
+      if c2d(p) = 0 then leave
+      cmd = getarg(p)
+      if cmd = 2 then findstring = getarg(p,1)
+      t = reply(p, 0)
+/*
+ *   See what we got
+ */
+      if cmd = "CANCEL" then do
+         call CloseWindow(AMESEARCH)
+	 /* cancel changes in find preferences */
+	 uncase "CASE"
+	 unregex "REGEX"
+         quitflag = 1
+      end
+      else if cmd = "USE" | cmd = "CLOSEWINDOW" then do
+         call CloseWindow(AMESEARCH)
+         quitflag = 1
+      end
+      else if cmd = "2" | cmd = 4 then do
+	if direct = 1 then 'find' findstring
+	else 'findprev' findstring
+	if rc ~= 0 then 'beepscreen'
+      end
+      else if cmd = "0" then do
+	if compare(caseflag,"CASE") = 0 then do
+		call SetGadget(AMESEARCH, cmd, "OFF")
+		'unsetprefs' "CASE"
+	end
+	else do
+		call SetGadget(AMESEARCH, cmd, "ON")
+		'setprefs' "CASE"
+	end
+		'getprefs' "CASE"
+		caseflag = result
+      end
+      else if cmd = "1" then do
+	if compare(regexflag,"REGEX") = 0 then do
+		call SetGadget(AMESEARCH, cmd, "OFF")
+		'unsetprefs' "REGEX"
+	end
+	else do
+		call SetGadget(AMESEARCH, cmd, "ON")
+		'setprefs' "REGEX"
+	end
+		'getprefs' "REGEX"
+		regexflag = result
+      end
+      else if cmd = "3" then do
+	if direct = 0 then do
+		direct = 1
+		call SetGadget(AMESEARCH, cmd, "ON")
+	end
+	else do
+		call SetGadget(AMESEARCH, cmd, "OFF")
+	   	direct = 0
+	end
+      end
+   end
+end
+
+exit

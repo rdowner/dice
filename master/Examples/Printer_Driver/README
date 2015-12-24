@@ -1,0 +1,17 @@
+
+			PRINTER DRIVER EXAMPLE README
+
+    Enclosed is example printer driver code for DICE.  Essentially it
+    is the same as commodore printer driver code with the following
+    exceptions:
+
+    * uses a DICE startup for Init/Expunge which means that you can use
+      DICE's auto-library open/close capability (i.e. not have to
+      manually open intuition.library, graphics.library, etc...)
+
+    * uses the small-data model, meaning that all interface functions
+      are qualified with __geta4
+
+    Also, const data declarations are used for read-only data whenever
+    possible to reduce data segment overhead.
+

@@ -1,0 +1,71 @@
+PROJECT= DC1
+DIR= 
+SRCS= asm1.c asm2.c asmaddr.c asmflt.c asubs.c block.c cexp.c exp.c gen.c \
+genarith.c genass.c genbool.c genlogic.c genmisc.c lex.c main.c reg.c rules.c \
+sem.c stmt.c subs.c sym.c toplevel.c types.c error.c pragma.c hash.a
+HDRS= DC1_rev.h asm.h defs.h error.h ieee.h machine.h stmt.h sym.h tokens.h \
+types.h var.h
+EXTRAS= 
+PDEFAULT= VOpts.h
+EXEDIR= oi:Bin/amiga/bincom1/
+OD= dtmp:compc1/dc1/
+PRECOMP= 
+TYPE= OI:Config/Self3.DMAKEFILE
+RUN= 
+CLIARGS= test.c -r
+CFLAGS= -ms -r -3.0 -mRR -proto -Idinclude:amiga20 \
+-DREGISTERED -DCOMMERCIAL
+LEVEL= 1
+CLI= 
+CFGNAME= vmake.config
+DBLEV= 
+
+#### AUTOMATICALLY GENERATED - DO NOT EDIT BELOW THIS LINE
+EP=DCC:BIN/
+PROTOS= $(OD)protos.h
+EXE= $(EXEDIR)$(PROJECT)
+COMPFLAGS = $(CFLAGS) -I$(OD) $(PRECOMP:"*.h":"T:*.m") $(DBLEV)
+
+OBJS= $(SRCS:"*.c":"$(OD)*.o") $(SRCS:"*.a":"$(OD)*.o")
+
+all: DoResi $(PRECOMP) $(PROTOS) $(EXE)
+
+nopro: $(EXE)
+
+$(EXE): $(OBJS)
+    fwrite $(OD)$(PROJECT).lnktmp $(OBJS)
+    dcc -l0 $(COMPFLAGS) xc_dlib:c.o @$(OD)$(PROJECT).lnktmp xc_dlib:csr.lib xc_dlib:amiga20sr.lib xc_dlib:amiga20s.lib xc_dlib:autos.lib -o %(left)
+#   dcc $(COMPFLAGS) @$(OD)$(PROJECT).lnktmp -o %(left)
+
+$(OBJS) : $(SRCS)
+    dcc %(right) -o %(left) -c $(COMPFLAGS)
+
+$(PROTOS) : $(SRCS)
+    -delete %(left)
+    makeproto -o %(left) %(right)
+
+$(PRECOMP:"":"CANT.EXIST.RULE") : $(HDRS)
+    -delete %(left)
+
+clean:
+    -delete $(OBJS) $(PROTOS) $(PRECOMP)
+
+relink: rmexe $(EXE)
+
+rmexe:
+    -delete $(EXE)
+
+install: $(EXE)
+    copy $(EXE) dcc.master:bin
+
+DoResi:
+    -resident dlink remove
+    -resident das   remove
+    -resident dc1   remove
+    -resident dcpp  remove
+    -resident dcc   remove
+    resident dlink $(EP)dlink
+    resident das   $(EP)das
+    resident dc1   $(EP)dc1
+    resident dcpp  $(EP)dcpp
+    resident dcc   $(EP)dcc

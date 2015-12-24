@@ -1,0 +1,1340 @@
+			Installer Documentation
+			Last Revised: October 18, 1991
+
+
+Contents:
+
+	BACKGROUND
+
+	OVERVIEW
+		Standard Invocation
+		Initial Actions
+		Startup Screens
+		Installation Actions
+
+	SCRIPTING LANGUAGE TUTORIAL
+		Basic elements
+		Escape characters
+		Symbols
+		Types of symbols
+		Statements
+		Data types
+		Special Features
+		Miscellaneous
+
+	INSTALLER LANGUAGE REFERENCE
+		Notes
+		Statements
+		Control Statements
+		Functions
+		Summary of parameters
+		Pre-defined variables
+
+	INSTALLER LANGUAGE QUICK REFERENCE
+		Overview
+		Quick Language Overview
+		Pre-defined variables
+		Default Help String Variables
+		Statements
+		Functions
+
+				BACKGROUND
+
+Installation of applications from floppy disks onto a hard disk has
+proven to be a very inconsistent and often frustrating endeavor for
+most end-users.  This has been caused by many factors, some of which
+are:
+
+1. Many products do not come with any utility or script to install an
+application on a hard disk.
+
+2. Many products assume a great deal of familiarity with the startup
+process of the Amiga and applications, including assigns, device names
+(as opposed to volume names), etc.
+
+3. The installation scripts or utilities included with some products
+vary widely in their ability to deal with different environments and
+systems.
+
+About a year ago, Commodore set out to remedy this situation, by
+developing a standard tool that developers can include with their
+products, which provides the user with a standard way to install
+applications.  The Installer's features were based on a number of
+assumptions:
+
+1. Installation requirements vary widely---some need assigns, some need
+new drawers created, some install pieces in system drawers such as a
+fonts drawer, a `product' might be just an upgrade and the installation
+must check to see which version (if any) they currently have installed,
+etc.
+
+2. Different users have different levels of comfort and expertise when
+attempting to install software, and the Installer should be able to
+accomodate a range of users.  Many installation scripts assume a great
+deal of knowledge, which is very intimidating for a novice.
+
+3. The installer tool must be very flexible internally, but present a
+consistent pleasant graphical user interface to the user that only
+shows the user information or prompts that they need to see.  The
+Installer should be resolution, color and font sensitive.
+
+4. Writing scripts to install an application will require some effort,
+but certainly no more than writing an AmigaDOS shell script equivalent,
+and the resulting installation procedure will be more friendly,
+flexible, and much better looking than the latter.
+
+5. Not everyone will be running 2.0 by the time the tool becomes
+available, so it must run under 1.3 and 2.0.
+
+
+				OVERVIEW
+
+The Installer is a script driven program, that presents a consistent
+installation environment to the end user.  The user never sees the
+script.  Instead they are presented with simple yes/no choices, and may
+be asked to specify locations to put things on their system.
+
+To accomodate different user levels, they can choose to run the tool in
+novice, average or expert modes.  Scripts can include help text to
+explain any choices that the user must make.  At each step the user is
+given the option of aborting the installation.
+
+
+Standard Invocation
+
+The Installer is normally started up from a Workbench Project icon
+which has the same name as the script to interpret and has a default
+tool of Installer.  A number of tooltypes are available to modify the
+operation of the Installer:
+
+	APPNAME - Name of the application being installed (appears in
+		the startup screen). This MUST be given.
+
+	MINUSER - The minimum possible operation mode of the
+		installation for a script. This will be either NOVICE
+		(all decisions made by Installer), AVERAGE (only
+		important decisions made by user) or EXPERT (user gets
+		to confirm almost all actions). The default is NOVICE.
+
+	DEFUSER - Indicates which operation mode button should be
+		initially selected. Same values as MINUSER, with the
+		value of the MINUSER tooltype being the default (which
+		will be NOVICE if MINUSER not defined).
+
+	PRETEND - If set to FALSE, indicates that PRETEND mode not
+		available for this script.
+
+	LOGFILE - The name of the log file that the Installer should
+		use.  This must be a full path.  The default is
+		"install_log_file".
+
+	LOG - In NOVICE mode the default is to create a log file (to disk).
+		If this tooltype is set to FALSE, the creation of a log file in
+		NOVICE mode is disabled.
+
+Although the installer can be started up from the CLI, that is not the
+recommended mode.  CLI invocation is provided mainly for script debugging
+purposes.  The command template is:
+
+	SCRIPT/k,APPNAME,MINUSER,DEFUSER,LOGFILE,NOLOG/s,NOPRETEND/s
+
+
+Initial Actions
+
+The first thing the installer does is compile the installation script
+into an internal format that can be easily interpreted. If there are
+syntax errors in the script, they will be caught during this phase.
+
+
+Startup Screens
+
+Next, the Installer asks the user what Installation Mode to run in,
+either NOVICE, AVERAGE or EXPERT.  If the user chooses NOVICE, they
+will not be asked any more questions (although they may be requested to
+do things).  In the other user levels, a second display appears asking
+the user if he wants to install "for real" or "do a dry run", and if he
+wants a transcription of the installation process written to either a
+file or printer.
+
+
+Installation Actions
+
+Now the Installer interprets its internal version of the script. Any
+commands that call for a user interface will cause the Installer to
+algorithmically generate a display, always including buttons to allow
+for context sensitive help and aborting the installation.
+
+
+			SCRIPTING LANGUAGE TUTORIAL
+
+The script langauge of the Installer is based on LISP.  It is not
+difficult to learn, but requires a lot of parentheses.  An Installer
+script can easily be made to look very readable.
+
+Basic elements: The basic elements of the installer language are:
+
+	Type					Example
+	----					-------
+	decimal integers			5
+	hexadecimal integers			$a000
+	binary integers				%0010010
+	strings					"Hello" or 'Hello'
+	symbols					x
+	comments				; this is a comment
+	( )					for statement definition
+	space (or any white space)		delimits symbols
+
+Escape-characters are supported as in the C language:
+
+	Escape sequence				Produces
+	---------------				--------
+	'\n'					newline character
+	'\r'					return character
+	'\t'					tab character
+	'\0'					a NUL character
+	'\"'					a double-quote
+	'\\'					a backslash
+
+Symbols (variables): a symbol is any sequence of characters surrounded
+by spaces that is not a quoted string, an integer or a control
+character. This means that symbols can have punctuation marks and other
+special characters in them. The following are all valid symbols:
+
+	x
+	total
+	this-is-a-symbol
+	**name**
+	@#__#@
+
+Types of symbols: There are three types of symbols:
+
+	- user-defined symbols. These are created using the "set"
+	  function.
+	- built-in function names. These include things like '+' and
+	  '*' as well as textual names such as "delete" or "rename".
+	- special symbols. These are variables which are created by the
+	  installer before the script actually starts to run, and are
+	  used to tell the script certain things about the environment.
+	  These symbols always begin with an '@' sign. An example is
+	  '@default-dest' which tells you the default directory that was
+	  selected by the installer.
+
+Statements: The format of a statement is:
+
+	(operator <operand1> <operand2> ...)
+
+A statement to assign the value '5' to the variable 'x' would be:
+
+	(set x 5)
+
+You can read this as "set x to 5". Note that the variable 'x' does not
+have to be declared -- it is created by this statement.
+
+Note that there is no difference between operators and functions -- the
+function 'set' and the arithmetic operator '+' are both used exactly
+the same way.
+
+Combining statements: A statement can be used as the operand to another
+statement as follows:
+
+	(set var (+ 3 5))
+
+In this case, the statement '(+ 3 5)' is evaluated first, and the
+result is 8. You can think of this as having the '(+ 3 5)' part being
+replaced by an 8. So now we are left with:
+
+	(set var 8)
+
+	-- which is the same form as the first example.
+
+Note that the '(+ 3 5)' part actually produced a value: "8". This is
+called the "result" of the statement. Many statements return results,
+even some that might surprise you (such as "set" and "if").
+
+Data Types: All data types in the installer are dynamic, that is to say
+the type of a variable is determined by the data that is in it. So if
+you assign the string "Hello, World" to the variable 'x', then 'x' will
+be of type STRING. Later you can assign an integer to 'x' and x will be
+of type INTEGER.  When using variables in expressions, the interpreter
+will attempt to convert to the proper type if possible.
+
+Special forms: There are two exceptions to the form of a statement. The
+first type is used for string substitution: If the first item in
+parentheses is a text string rather than a function name, the result of
+that clause is another string that is created by taking the original
+string and performing a "printf"-like formatting operation on it, using
+the other arguments of the statement as parameters to the formatting
+operation.
+
+Thus the statement:
+
+	("My name is %s and I am %ld years old" "Mary" 5)
+
+Becomes:
+
+	"My name is Mary and I am 5 years old"
+
+Note since the formatting operation uses the ROM "RawDoFmt" routine,
+you must always say "%ld" rather than "%d" (The interpreter always
+passes numeric quantities as longwords).
+
+The second type of exception occurs if the elements in parentheses are
+themselves statements in parentheses. In this case, the interpreter
+assumes that all the elements are statements to be executed
+sequentially.
+
+For example, this statement sets the value of three different
+variables, "var1", "var2" and "var3":
+
+	((set var1 5) (set var2 6) (set var3 7))
+
+What this feature does is allow the language to have a block structure,
+where an "if" statement can have multiple statements in it's "then" or
+"else" clause. Note that the result of this statement will be the
+result of the last statement in the sequence.
+
+Complex statements: Here is an example of how statements in the script
+language can be combined into complex expressions. We will start with
+an "if" statement. The basic format of an "if" statement is:
+
+	(if <condition> <then-statement> [<else-statement>])
+
+The condition should be a statement which returns a value. Then "then"
+and optional "else" parts should be statements. Note that if the "then"
+or "else" statements produce a result, then the "if" statement will
+also have this result.
+
+Our first example is a rather strange one: Using an "if" statement to
+simulate a boolean "not" operator. (Note that there are easier ways in
+the script language to do this).
+
+	(set flag 0)				; set a flag to FALSE
+
+	(set flag (if flag 0 1))		; a Boolean NOT
+
+Basically, the "if" statement tests the variable "flag". If flag is
+non-zero, it produces the value "0". Otherwise, the result is "1". In
+either case, "flag" is set to the result of the "if" statement.
+
+Now, let's plug some real statements into our "if" statement.
+
+	(if flag					; conditional test
+		(message "'flag' was non-zero\n")	; "then" clause.
+		(message "'flag' was zero\n")		; "else" clause.
+	)						; closing parenthesis
+
+Note the style of the indenting. This makes for an easier to read program.
+
+Now, we'll add a real condition. The "=" operator tests for equality of
+two items.
+
+	(if (= a 2)					; conditional test
+		(message "a is 2\n")			; "then" clause
+		(message "a is not 2\n")		; "else" clause
+	)						; closing parenthesis
+
+Finally, just to make things interesting, we'll make the "else" clause
+a compound statement.
+
+	(if (= a 2)					; conditional test
+		(message "a is 2\n")			; "then" clause
+		(	(message "a is not 2\n")	; "else" compound stmt
+			(set a 2)
+			(message "but it is now!\n")
+		)					; end of compound statement
+	)						; end of if
+
+
+Special Features
+
+When the Installer first starts up, it attempts to determine the "best"
+place to install the application. Any volume named "WORK:" is given
+preference, as this is the standard way that an Amiga comes configured
+from Commodore.
+
+There are two keyboard shortcuts. Whenever there is a "Help" button
+active, pressing the HELP key will also bring up the help display.
+Whenever there is an "Abort" button active, pressing ESC brings up the
+abort requester. Also, whenever the installer is "busy", pressing ESC
+brings up the abort requester -- there is text is the title bar to that
+effect.
+
+If an application must have assigns or other actions performed
+during system boot, the Installer will add these to a file named
+"S:user-startup". The installer will then add the lines
+
+	if exists S:user-startup
+	execute S:user-startup
+	endif
+
+to the user's "startup-sequence". The Installer will attempt to
+determine the boot volume of the system when looking for the
+"startup-sequence" and can handle any AmigaDOS scripts executed from
+"startup-sequence" (up to 10 levels of nesting).
+
+The Installer can create an assign to just a device, volume or logical
+assignment. This comes in handy when you want to update an application
+which comes on a volume named "MyApp:", but the installed version is in
+a directory with the logical assign "MyApp:"!
+
+The Installer always copies files in CLONE mode, meaning all the
+protection bits, filenotes and file dates are preserved. When copying
+files the Installer gives a "fuelgauge" readout of the progress of the
+copy.
+
+The Installer can find the version number of any executable file that
+has either a RomTag with an ID string (such as libraries and devices)
+or has a version string conforming to that given in the 1990 DevCon
+notes. The Installer can also checksum files. A seperate utility named
+"instsum" is provided to determine a file's checksum for use with this
+feature.
+
+
+Miscellaneous
+
+To perform a set of actions on all the contents of a directory matching
+a pattern you can use the "foreach" operator. To perform a set of
+actions on an explicit set of files, the following installer statements
+can be used as a template:
+
+	(set n 0)
+	(while (set thisfile (select n "file1" "file2" "file3" ""))
+		(	(set n (+ n 1))
+			(... your stuff involving thisfile ...)
+		)
+	)
+
+Note that an empty string is considered a FALSE value to any condition
+operator.
+
+To run an external CLI command which normally requires user input,
+redirect the input from a file with the needed responces. For example,
+to format a disk one could combine the statement shown below with a
+file which contains only a newline character.
+
+	(run "format <nl_file drive DF0: name ToBeEmpty")
+
+
+			INSTALLER LANGUAGE REFERENCE
+
+NOTES
+
+1. When the script exits either by comming to the end or via the "exit"
+statement, a message will be displayed saying where the application was
+installed and where the logfile (if any) was written. Note that you
+must store in "@default-dest" where you actually installed the
+application (see "@default-dest" below).
+
+2. A newline character ('\n', 0x0a) will cause a line break when the
+installer performs word-wrapping.. A hard-space (ALT-space, 0xa0) will
+prevent a word break when the installer performs word-wrapping. Also,
+quoted sections will be considered one word for word-wrapping purposes.
+For example, if the following help text was used:
+
+    "The disk name \"FrameZapper 2.0\" is needed to complete installation."
+
+Then the text "FrameZapper 2.0" will not have a word break before the "2".
+
+3. The maximum size of a string in a script is 512 bytes.
+The maximum size of any string variable is 10000 bytes. If you need to
+create long help text for example, break it into 512 byte chunks and
+then use the automatic string concatination ability of the installer to
+create the final, larger string.  Also, don't overlook the the use of
+line continuation of strings in scripts to make your scripts more
+managable. If you ever find that the installer reports a stack overflow
+error, look to see if it caused by too many small strings being
+concatinated and merge them into larger blocks.
+
+4. The "run" and "execute" statements only return the result of the command
+run or executed under 2.0; they always return 0 under 1.3. If you must have
+some result under both 1.3 and 2.0, try this combo:
+
+	# in the DOS script to execute:
+	failat 31
+	command
+	if error
+		setenv installer-result 10
+	else
+		if warn
+			setenv installer-result 5
+		else
+			setenv installer-result 0
+		endif
+	endif
+
+	# in the installer script
+	(execute DOS-Script)
+	(set theResult (getenv "installer-result"))
+
+STATEMENTS
+
+(set <varname> <value> [<varname2> <value2> ...])
+
+Set the variable <varname> to the indicated value. If <varname> does
+not exist it will be created. Set returns the value of the last
+assignment.
+
+Note: All variables are typeless, and any variable may be used wherever
+a string could be used. All variables are global.
+
+(makedir <name> <parameters>)
+
+Creates a new directory.  Parameters:
+
+	prompt - tell the user what's going to happen.
+	help - text of help message
+	infos - create an icon for directory
+	confirm - if this option is present, user will be prompted,
+		else the directory will be created silently.
+	safe - make directory even if in PRETEND mode
+
+(copyfiles <parameters>)
+
+Copies one or more files from the install disk to a target directory.
+Each file will be displayed with a checkmark next to the name
+indicating if the file should be copied or not.  Parameters:
+
+	prompt, help - as above
+	source - name of source directory or file
+	dest - name of destination directory, which is created if it
+		doesn't exist
+	newname - if copying one file only, and file is to be renamed, this is
+		the new name
+	choices - a list of files/directories to be copied (optional)
+	all - all files/directories in the source directory should be copied
+	pattern - indicates that files/directories from the source dir
+		matching a pattern should be copied
+	files - only copy files. By default the installer will match and copy
+		subdirectories.
+	infos - switch to copy icons along with other files/directories
+	fonts - switch to not display ".font" files, yet still copy any that
+		match a directory that is being copied.
+	optional - makes it not a fatal error if a file doesn't copy
+	confirm -  if this option is present, user will be prompted to
+		indicate which files are to be copied, else the files
+		will be copied silently.
+	safe - copy files even if in PRETEND mode.
+
+(copylib <parameters>)
+
+Copies one file using version checking; i.e., it only overwrites an
+existing file if the new file has a higher version/revision number.
+Parameters:
+
+	prompt, help - as above
+	source - name of source directory or file
+	dest - name of destination directory
+	newname - if copying one file only, and file is to be renamed,
+		this is the new name
+	infos - switch to copy icons along with other files
+	optional - makes it not a fatal error if a file doesn't copy
+	confirm - user will be asked to confirm. Note that an EXPERT user
+		will be able to overwrite a newer file with an older one.
+	safe - copy the file even if in PRETEND mode
+
+(startup <appname> <parameters>)
+
+This command edits the "S:user-startup" file, which is executed by the
+user's startup-sequence (Installer will modify the user's
+startup-sequence if needed, although in a friendly way). The "command"
+parameter is used to declare AmigaDOS command lines which will be
+executed. The command lines are grouped by application, using the
+supplied argument "appname". If there is already an entry in
+"S:user-startup" for that application, the new command lines will
+completely replace the old. The command lines for other applications
+will not be affected.  Parameters:
+
+	prompt, help - as above
+	command - used to declare an AmigaDOS command line to be
+		executed at system startup.
+
+(tooltype <parameters>)
+
+Modify an icon's tool type. Normally the new tool type values will be
+set up in advance by various statements in the install language (i.e.
+the user does not actually have to type in the tooltype values). For
+example, you could use an "askchoice" to ask the user what type of
+screen resolution they want and then format the tooltype string based
+on their choice. The "tooltype" operation merely asks for a
+confirmation before actually writing.  Parameters:
+
+	prompt, help - as above
+	dest - the icon to be modified
+	settooltype - the tooltype name and value string.
+	setdefaulttool - default tool for a project
+	setstack - set size of stack
+	noposition - reset to NOICONPOSITION
+	confirm - if this option is present, the user will be asked for
+		confirmation, otherwise the modification proceeds
+		silently.
+	safe - make changes even if in PRETEND mode
+
+(textfile <parameters>)
+
+Creates a text file from other textfiles or computed text strings. This
+can be used to create configuration files, AREXX programs or execute
+scripts.  Parameters:
+
+	help, prompt - as above
+	dest - the name of the text file to be created.
+	append - a string to be appended to the new text file.
+	include - a text file to be appended to the new text file.
+	confirm - if this option is present, the user will be asked for
+	confirmation, otherwise the writing proceeds silently.
+	safe - create file even if in PRETEND mode
+
+(execute <argument> ...)
+
+Executes an AmigaDOS script with the arguments given. NOTE: Does not
+ask user for confirmation, however this can be added by using
+"askchoice" or "askbool".  Parameters:
+
+	help, prompt - as above
+	confirm - if this option is present, the user will be asked for
+		confirmation, otherwise the execute proceeds silently.
+	safe - execute script even if in PRETEND mode
+
+Returns a result is executed under 2.0.  Returns 0 under 1.3.  See
+NOTES for workarounds under 1.3.
+
+(run <argument> ...)
+
+Executes a compiled program with the arguments given. NOTE: Does not
+ask user for confirmation, however this can be added by using
+"askchoice" or "askbool".  Parameters:
+
+	help, prompt - as above
+	confirm - if this option is present, the user will be asked for
+		confirmation, otherwise the run proceeds silently.
+	safe - run program even if in PRETEND mode
+
+Returns a result is executed under 2.0.  Returns 0 under 1.3.  See
+NOTES for workarounds under 1.3.
+
+(rexx <argument> ...)
+
+Executes n ARexx script with the arguments given. NOTE: Does not ask
+user for confirmation, however this can be added by using "askchoice"
+or "askbool". If the ARexx server is not active, an error will be
+generated.  Parameters:
+
+	help, prompt - as above
+	confirm - if this option is present, the user will be asked for
+	confirmation, otherwise the rexx script proceeds silently.
+	safe - execute script even if in PRETEND mode
+
+(makeassign <assign> [<path>] (parameters))
+
+Assigns 'assign' to 'path'. If 'path' is not specified, the assignment
+is cleared.  Parameters:
+
+	safe - execute script even if in PRETEND mode
+
+Note: assign must be supplied without a colon; i.e. "ENV" not "ENV:".
+
+(rename <oldname> <newname> <parameters>)
+
+Renames a file or directory. If the "disk" parameter is given, then
+this command relabels the disk named oldname to newname. When
+relabeling a disk, ONLY include a colon in the oldname. Returns 1 if
+the rename was successful, 0 if it failed.  Parameters:
+
+	help, prompt - as above
+	confirm - if this option is present, the user will be asked for
+		confirmation, otherwise the rename proceeds silently.
+	disk - switch to get rename to relabel a disk.
+	safe - rename even if in PRETEND mode
+
+(delete <file> <parameters>)
+
+Delete a file. Parameters:
+
+	help, prompt - as above
+	confirm - if this option is present, the user will be asked for
+		confirmation, otherwise the delete proceeds silently.
+	safe - delete even if in PRETEND mode
+
+(protect <file> [<protection-bits>] <parameters>)
+
+Either gets the protection bits for a file (if second argument not
+given), or sets them. When setting bits, returns 1 if the attempt
+succeeded, else returns a 0. Getting the bits returns a -1 if it
+failed.  Parameters:
+
+	safe - change protection even if in PRETEND mode
+
+(abort <message> <message> ...)
+
+Exits the installation procedure with the given messages and then
+processes the onerror statements (is any).
+
+(exit)
+
+This causes normal termination of a script. The "done with
+installation" message is displayed. The "onerror" statements are not
+executed.
+
+(complete <number>)
+
+This statement is used to inform the user how complete the installation
+is. The number (which must be between 0 and 100) will be printed in the
+title bar of the installer window with a '%' sign.
+
+(message <string> <string> ...)
+
+This statement displays a message to the user in a window, along with
+Proceed, Abort and optional Help buttons.  Parameters:
+
+	help - optional help text
+
+(working <string> <string> ...)
+
+The strings will be concatenated to form a message which will appear
+below a standard line that reads "Working on Installation".
+Useful if you are a doing a long operation other than file copying
+(which has its own status display).
+
+(user <user-level>)
+
+Used to change the user level of the current installation. This
+statement should ONLY be used when debugging scripts.  Remove such
+statements from any script before distribution of your product.
+Returns the current user level.
+
+
+CONTROL STATEMENTS
+
+NOTE: Strings can be used as the result of a test expression. An empty string
+is considered a FALSE value, all others are considered TRUE.
+
+(if <expression> <true-statement> <false-statement>)
+
+Operates as a standard "if-then" statement.
+
+(while <expression> <statement> ... )
+
+Operates as a standard "do-while" statement.
+
+(until <expression> <statement> ... )
+
+Operates as a standard "do-until" statement.
+
+(foreach <drawer name> <pattern> <statement>)
+
+For each file or directory matching the pattern located in the given
+drawer statement will be executed. The special variables "@each-name"
+and "@each-type" will contain the filename and the DOS object type,
+respectfully. (By DOS object type we mean the same value as found in
+fib_DirEntryType if one Examine'd the object.)
+
+((...) (...) (...))
+
+Execute a sequence of statements. The statements in the parentheses will be
+executed in order -- not needed at topmost level.
+
+(trap <trapflags> <statements>)
+
+Used for catching errors. Works much like C "longjmp", i.e. when an
+error occurs, control is passed to the statement after "trap".
+"Trapflags" determine which errors are trapped. The trap statement
+itself returns the error type or zero if no error occured. The current
+error type values are:
+
+	1 - user aborted
+	2 - ran out of memory
+	3 - error in script
+	4 - DOS error (see @ioerr below)
+	5 - bad parameter data
+
+(onerror <statements>)
+
+When a fatal error occurs that was not trapped, a set of statements can
+be called to clean-up after the script. These statements are logged in
+by using the onerror construct. Note that onerror can be used multiple
+times to allows context sensitive termination.
+
+
+FUNCTIONS
+
+(<string> <arguments> ...)
+
+The "string substitution function". Whenever a text string is the first
+item in a parenthesized group, the arguments will be substituted into
+the string using RawDoFmt. Note: This function does no argument type
+checking.
+
+(cat <string> <string> ...)
+
+Concatenates the strings and returns the resulting string.
+
+(transcript <string> <string> ...)
+
+Concatenates the strings, appends a newline and then prints the
+resulting string to the transcript file (if any).
+
+(tackon <path> <file>)
+
+Concatenates the filename to the pathname and returns resulting string.
+
+(fileonly <path>)
+
+Returns only the file part of a pathname.
+
+(pathonly <path>)
+
+returns only the non-file part of a pathname.
+
+(askdir <parameters>)
+
+Asks the user for a directory name, with a scrolling list requester.
+The user can either create a new directory or specify an existing one.
+If the user cancels, the routine will cause an abort. Parameters:
+
+	prompt, help - as above
+	default - default name of directory to be selected.
+
+(askfile <parameters>)
+
+Asks the user for a file name, with a scrolling list requester.
+Parameters:
+
+	prompt, help - as above
+	default - default name of file to be selected
+
+(askstring <parameters>)
+
+Prompts the user to enter a text string.  Parameters:
+
+	prompt, help - as above
+	default - the default text string.
+
+(asknumber <parameters>)
+
+Prompts the user to enter an integer quantity.  Parameters:
+Prints the allowed range below the integer gadget if the "range"
+parameter is given, and prevents the user from proceeding without
+entering a valid number.
+
+	prompt, help - as above
+	range - valid input range of numbers
+	default - default value
+
+(askchoice <parameters>)
+
+Ask the user to select one out of N choices, using radio buttons.
+Parameters:
+
+	prompt, help - as above
+	choices - a list of choice strings, such as "ok" "cancel", etc.
+	default - the number of the default choice (defaults to 0)
+
+(askoptions <parameters>)
+
+Ask the user to select any number of N choices, using checkbox buttons.
+A bit mask is returned as a result, with the first bit indicating the
+state of the first choice, etc.  Parameters:
+
+	prompt, help - as above
+	choices - a list of choice strings, such as "ok" "cancel", etc.
+	default - a bit mask of the buttons to be checked (defaults to -1)
+
+(askbool <parameters>)
+
+Ask the user to select yes or no.  Parameters:
+
+	prompt, help - as above
+	default - 0 = no, 1 = yes
+		choices - change the positive and negative text. The defaults are
+		"Yes" and "No". So to change the text to "Proceed" and "Cancel"
+		you would use: (choices "Proceed" "Cancel")
+
+(askdisk <parameters>)
+
+Ask the user to insert a disk in a user friendly manner. For instance,
+the prompt can describe the disk by its label; e.g. "FooBar Program Disk".
+This function will not exit until the correct disk is inserted, or the user
+aborts.
+
+	prompt, help - as above
+		dest - the volume name of the disk to be inserted
+	newname - a name to assign to the disk for future reference.
+		This assignment is done even in Dry Run mode -- it is
+		considered "safe" disk - switch to get a drive list to
+		be shown initially.
+	Note: volume name must be supplied without a colon; i.e. "ENV" not "ENV:".
+
+(exists <filename>)
+
+Returns 0 if does not exists, 1 if a file, and 2 if a directory.
+
+(earlier <file-1> <file-2>)
+
+Returns TRUE is file-1 is earlier than file-2.
+
+(getsize <filename>)
+
+Returns the size of a file.
+
+(getdiskspace <pathname>)
+
+Returns the available space in bytes on the disk given by pathname.
+Returns a -1 if the pathname is bad or information could not be
+obtained from the filesystem (even though pathname was valid).
+
+(getsum <filename>)
+
+Returns the checksum of a file, for comparing versions.
+
+(getversion <filename>)
+
+If the named file has a RomTag with an ID string or a 2.x version
+string, this will return the version number. If filename is not
+provided, then the version of the OS is returned instead. Note that
+this function does NOT assume files ending with ".library" or ".device"
+reside a particular place -- the path must be included.
+
+The version number is returned as a 32 bit value, where the high order
+16 bit word is the version and the low order word is the revision.
+Here is some sample statements to parse a version number:
+
+(set vernum (getversion "c:iconx"))
+(set ver (/ vernum 65536))
+(set rev (- vernum (* ver 65536) ) )
+
+(message
+        ("You have version %ld.%ld" ver rev)
+)
+
+(getenv <name>)
+
+Returns the contents of the given ENV: variable.
+
+(getassign <name> <opts>)
+
+Returns the pathname of the object 'name'. The default is for logical
+assignments only, but can be changed using an options string where the
+characters are:
+
+	'v' - only match volumes
+	'a' - only match logical assignments
+	'd' - only match devices
+
+Therefore 'a' would be equalivant to having no options.
+
+Note: name must be supplied without a colon; i.e. "ENV" not "ENV:".
+
+(select <n> <item> <item> ...)
+
+Returns the value of the Nth item.
+
+(=  <expression-1> <expression-2>)
+(>  <expression-1> <expression-2>)
+(>= <expression-1> <expression-2>)
+(<  <expression-1> <expression-2>)
+(<= <expression-1> <expression-2>)
+(<> <expression-1> <expression-2>)
+
+These are the standard relational expressions.
+
+(+  <expression> ...)
+
+Returns the sum of all the arguments.
+
+(-  <expression-1> <expression-2>)
+
+Returns the first argument minus the second argument
+
+(* <expression> ...)
+
+Returns the product of all the arguments
+
+(/  <expression-1> <expression-2>)
+
+Returns the first argument divided by the second argument
+
+(AND <expression-1> <expression-2>)
+(OR  <expression-1> <expression-2>)
+(XOR <expression-1> <expression-2>)
+(NOT <expression>)
+
+
+Standard logical functions
+
+(IN  <expression> <bit numumer-1> ...)
+
+Returns 0 if none of the given bit numbers (starting at 0 for the LSB)
+is set in the result of expression, else returns a mask of the bits
+that were set.
+
+
+SUMMARY OF PARAMETERS
+
+(help <string-1> <string-2> ...)
+
+This is used to specify the help text for each action.
+
+(prompt <string-1> <string-2> ...)
+
+This is used to provide the "title" of the screen which explains to the
+user what this step does.
+
+(safe)
+
+	This tells the installer that an action not normally performed in Pretend
+mode should be performed.
+
+(choices <string-1> <string-2> ...)
+
+Used to display a series of checkmarks. This is used in the "askchoice"
+function to indicate what choices the user has. It can also be used in the
+"copyfiles" statement to specify that only certain files can be copied.
+(If not present, some other criterion will be used to determine which files
+to copy).
+
+(pattern <string>)
+
+    Used in the "copyfiles" statement to specify a wildcard pattern.
+
+(all)
+
+    In the "copyfiles" statement, specifies that all files are to be copied.
+
+(source <filename>)
+
+    Specifies the file or directory to be read as part of this command.
+
+(dest <filename>)
+
+    Specifies the file or directory to be modified as part of the command.
+
+(newname <name>)
+
+    Used in "copyfiles" to specify that a file will have a new name after being
+copied. Used in "askdisk" in assign the new name to the inserted disk.
+
+(confirm <user-level>)
+
+    On some statements, the user will only be informed of the action (and
+allowed to cancel it) if the "confirm" option is specified. The user level can
+be "expert" or "average" ("expert" is the default).
+
+(infos)
+
+    Indicates to the "copyfiles" statement that accompanying ".info" files are
+to be copied as well.
+
+(fonts)
+
+    Indicates to the "copyfiles" statement that accompanying ".font" files are
+to be copied as well.
+
+(optional)
+
+    Indicates to the "copyfiles" and "copylib" statement that it is not a fatal
+error to have a copy fail.
+
+(settooltype <tooltype> <value>)
+
+    Used to modify a tooltype to a certain value. If the tooltype
+does not exist it will be created; if the <values> parameter is omitted,
+the tooltype will be deleted.
+
+(setdefaulttool <value>)
+
+    Used to modify a the default tool of an icon.
+
+(setstack <value>)
+
+    Used to modify a the stack size included in an icon.
+
+(noposition)
+
+    Used to modify a positioning of an icon to NO_ICON_POSITION.
+
+(disk)
+
+	When used with the "rename" statement, specifies that a disk relabel
+operation is really desired. When used with the "askdir" statement, specifies
+that a drive list should be shown initially (instead of a file list).
+
+(append <string>)
+
+    Within a "textfile" statement, will append the string to the textfile.
+
+(include <filename>)
+
+    Within a "textfile" statement, will append the listed file to the textfile.
+
+(default <value>)
+
+    specifies the default value of an askchoice, askstring, or asknumber action.
+
+(range <min> <max>)
+
+    specifies the range of allowable numbers for an asknum statement.
+
+(command <text> ...)
+
+	specifies the text of a command to be inserted into the S:User-Startup
+file. (Argument strings are merged.)
+
+
+PRE-DEFINED VARIABLES
+
+@icon
+
+	The pathname of the icon used to start the installer.
+
+@default-dest
+
+	The installer's suggested location for installing an application. If
+you installed the application somewhere else (as the result of asking the
+user) then you should modify this value -- this will allow the "final"
+statement to work properly. Note that creating a drawer and putting the
+application in that drawer is considered installing the application somewhere
+else. Set it to "" if there really is no definite place that the "application"
+was installed. The log file will be copied to the drawer indicated by
+@default-dest unless it was set to "".
+
+@pretend
+
+	The state of the pretend flag (1 if pretend mode).
+
+@user-level
+
+	The user-level the script is being run at: 0 for novice, 1 for average,
+	2 for expert.
+
+@error-msg
+
+	The text that would have been printed for a fatal error, but was
+overridden by a trap statement.
+
+@special-msg
+
+	If a script wants to supply its own text for any fatal error at
+various points in the script, this variable should be set to that text. The
+original error text will be appended to the special-msg within parenthesis.
+Set this variable to "" to clear the special-msg handling.
+
+@ioerr
+
+	The value of the last DOS error. Can be used in conjunction with the
+"trap" statement to learn more about what an error occured.
+
+@each-name
+@each-type
+
+	Used in a "foreach" loop (see above).
+
+
+@askoptions-help
+@askchoice-help
+@asknumber-help
+@askstring-help
+@askdisk-help
+@askfile-help
+@askdir-help
+@copylib-help
+@copyfiles-help
+@makedir-help
+@startup-help
+
+	Default help text for various functions. These can be appended to the
+explanation provided for a particular action or used as is.
+
+
+		INSTALLER LANGUAGE QUICK REFERENCE
+
+Overview
+	Attempts to install in "work:" by default if it exists.
+	HELP key brings up context-sensitive help.
+	Esc key brings up the abort requester.
+	Can add assigns to s:User-Startup, and adds lines to
+	s:Startup-Sequence (if necessary?) to make sure s:User-Startup
+	is executed upon boot-up.
+	Can check versions of files/libraries.
+	Install can run in "real" (do it) or "pretend" (dry run) modes.
+
+Quick language overview
+
+	Language is lisp-like (lots of parentheses (()) (-:).
+	Variables are typeless (a la ARexx), i.e., strings and numbers
+	are treated interchangably.
+	Strings are delimited with " or '.
+	Certain embedded sequences are available for strings:
+		'\n'	newline		'\r'	return
+		'\t'	tab		'\0'	NUL
+		'\"'	double-quote	'\\'	backslash
+	Statements go in parentheses ( ).  The general format is:
+		(operator <operand1> <operand2> ...)
+	E.g., to assign the value '5' to the variable 'x', use
+		(set x 5)
+	To produce the sum of two numbers, use
+		(+ 5 9)
+	Note that there is no difference between operators and functions--
+	the function 'set' and the arithmetic operator '+' are both
+	used exactly the same way.
+	Combining statements: A statement can be used as the operand to
+	another statement.  E.g.: (set x (+ 3 5))
+	In this case, the statement '(+ 3 5)' is evaluated first, and the
+	result is 8. You can think of this as having the '(+ 3 5)' part
+	being replaced by an 8, leaving: (set v 8)
+	Note that the '(+ 3 5)' part actually produced a value: "8".
+	This is called the "result" of the statement. Many statements
+	return results, even some that might surprise you (such as
+	"set" and "if").
+	Comments are preceeded with a semi-colon ";"
+	Hex numbers are preceeded with a $, e.g., $23 ; 35
+	Binary numbers are preceeded with a %, e.g., %0101 ; 5
+	Many statements return a value, which can be used in
+	assignments, tests, etc.
+	Data can be formatted using a string literal with argument
+	placemarkers, e.g.,
+		("i am %ld foot %ld inches tall." 6 3)
+		;produces a string with %ld's replaced with 6 and 3.
+
+
+PRE-DEFINED VARIABLES
+
+	@icon - pathname of install script icon
+	@default-desk - dir. where install wants to put things by default
+	@pretend - state of "pretend" (dry run mode) flag
+	@user-level - 0-Novice,1-Average,2-Expert
+	@error-msg - msg that would be displayed if error not trapped (see trap)
+	@special-msg - custom fatal error message
+	@each-name, @each-type - used in "foreach" loop
+	@execute-dir - If set to a valid path, installer will change directory
+		to it whenever a "run" or "execute" statement is performed.
+
+
+DEFAULT HELP STRING VARIABLES
+
+	@askoptions-help	@askchoice-help		@asknumber-help
+	@askstring-help		@askdisk-help		@askfile-help
+	@askdir-help		@copylib-help		@copyfiles-help
+	@makedir-help		@startup-help
+
+
+STATEMENTS
+
+Many commands have standard parameters (some optional):
+	(all) ; specifies all files are to copied
+	(append <string>) ; add string to text file (for textfile)
+	(choices <string1> <string2> ...) ; radio button options
+	(command <string1> <string2>...) ; add to s:user-startup
+	(confirm <user-level>) ; confirmation
+	(default <value>) ; default value, choice, string, etc.
+	(dest <file>) ; output to <file>
+	(help <string1> <string2> ...) ; define current help info
+	(include <file>) ; insert file in textfile statement
+	(infos) ; copy .info files also
+	(newname <name>) ; specify new file or disk name
+	(noposition) ; make icon "floating"
+	(pattern <string>) ; used w/ "files" for patterns
+	(prompt <string1> <string2> ...) ; text to show user
+	(range <min> <max>) ; numeric input (asknum) range
+	(safe) ; force installer to perform action even if in pretend mode.
+	(settooltype <tooltype> <value>) ; set icon tool type
+	(setdefaulttool <value>) ; set icon's default tool
+	(setstack <value>) ; set icon's stack value
+	(source <file>) ; read from <file>
+
+Note: Custom parameters are shown below in < >, and standard parameters are
+show as (param..) where "param" is one of help, prompt, safe, etc.
+See above for details on standard parameters.
+
+(abort <string1> <string2> ...)
+  ; abandon installation
+(complete <num>)
+  ; display percentage through install in titlebar
+(copyfiles (prompt..) (help..) (source..) (dest..) (newname..)
+  (choices..) (all) (pattern..) (files) (infos) (confirm..) (safe))
+  ; copy files (and subdir's by default). files option say NO subdirectories
+(copylib (prompt..) (help..) (source..) (dest..) (newname..) (infos)
+  (confirm) (safe)
+  ; install a library if newer version
+(delete file (help..) (prompt..) (confirm..) (safe))
+  ; delete file
+(execute <arg> (help..) (prompt..) (confirm) (safe))
+  ; execute script file
+(exit)
+  ; end installation
+(foreach <dir> <pattern> <statements>)
+  ;do for entries in directory
+(if expr truestatements falsestatements)
+  ; conditional
+(makeassign <assign> <path> (safe)) ; note: <assign> doesn't need `:'
+  ; create an assignment
+(makedir <name> (prompt..) (help..) (infos) (confirm..) (safe))
+  ; make a directory
+(message <string1> <string2>...)
+  ; display message with Proceed, Abort buttons
+(onerror (<statements>))
+  ; general error trap
+(rename <old> <new> (help..) (prompt..) (confirm..) (safe))
+  ; rename files
+(rexx <arg> (help..) (prompt..) (confirm..) (safe))
+  ; execute ARexx script
+(run <arg> (help..) (prompt..) (confirm..) (safe))
+  ; execute program
+(set <varname> <expression>)
+  ; assign a value to a variable
+(startup (prompt..) (command..))
+  ; add a command to the boot scripts (startup-sequence, user-startup)
+(textfile (prompt..) (help..) (dest..) (append) (include..)
+  (confirm..) (safe))
+  ; create text file from other text files and strings
+(tooltype (prompt..) (help..) (dest..) (settooltype..) (setstack..)
+  (setdefaulttool..) (noposition) (confirm..) (safe))
+  ; modify an icon
+(trap <flags> <statements>)
+  ; trap errors.  flags:1-abort,2-nomem,3-error,4-dos,5-badargs
+(until <expr> <statements>)
+  ; do-until conditional structure (test end of loop)
+(while <expr> <statements>)
+  ; do-while conditional structure (test top of loop)
+(working)
+  ; indicate to user that installer is busy doing things
+
+
+FUNCTIONS
+
+(= <expr1> <expr2>) ; equality test (returns 0 or 1)
+(> <expr1> <expr2>) ; greater than test (returns 0 or 1)
+(>= <expr1> <expr2>) ; greater than or equal test (returns 0 or 1)
+(< <expr1> <expr2>) ; less than test (returns 0 or 1)
+(<= <expr1> <expr2>) ; less than or equal test
+(+ <expr1> <expr2> ...) ; returns sum of expressions
+(- <expr1> <expr2>) ; returns <expr1> minus <expr2>
+(* <expr1> <expr2> ...) ; returns product of expressions
+(/ <expr1> <expr2>) ; returns <expr1> divided by <expr2>
+(AND <expr1> <expr2>) ; returns logical AND of <expr1> and <expr2>
+(OR <expr1> <expr2>) ; returns logical OR of <expr1> and <expr2>
+(XOR <expr1> <expr2>) ; returns logical XOR of <expr1> and <expr2>
+(NOT <expr>) ; returns logical NOT of <expr>
+(IN <expr> <bit-number> <bitnumber>...)	; returns <expr> AND bits
+(<format string> <arg1> <arg2> ...) ; printf clone
+(askdir (prompt..) (help..) (default..)) ; ask for directory name
+(askfile (prompt..) (help..) (default..)) ; ask for file name
+(askstring (prompt..) (help..) (default..)) ; ask for a string
+(asknumber (prompt..) (help..) (range..) (default..)) ; ask for a number
+(askchoice (prompt..) (choices..) (default..)) ; choose 1 options
+(askoptions (prompt (help..) (choices..) default..)) ; choose n options
+(askbool (prompt..) (help..) (default..) (choices..)) ; 0=no, 1=yes
+(askdisk (prompt..) (help..) (dest..) (newname..))
+(cat <string1> <string2>...) ; returns concatenation of strings
+(exists <filename>) ; 0 if no, 1 if file, 2 if dir
+(earlier <file1> <file2>) ; true if file1 earlier than file2
+(fileonly <path>) ; return file part of path (see pathonly)
+(getassign <name> <opts>) ; return value of logical name (no `:')
+  ; <opts: 'v'-volumes, 'a'-logical, 'd'-devices
+(getdiskspace <path>) ; return available space
+(getenv <name>) ; return value of environment variable
+(getsize <file>) ; return size
+(getsum <file>) ; return checksum of file for comparison purposes
+(getversion) ; return version/revision of file, library, etc. as 32 bit num
+(pathonly <path>) ; return dir part of path (see fileonly)
+(select <n> <item1> <item2> ...) ; return n'th item
+(transcript <string1> <string2>) ; puts concatenated strings in log file.
+(tackon <path> <file>) ; return properly concatenated file to path

@@ -1,0 +1,103 @@
+
+		;   D0/D1
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+		section text,code
+
+		xdef	__divu
+		xdef	_hyper__divu
+
+_hyper__divu:
+__divu:
+
+		tst.l	D1
+		beq	du5
+		swap	D1
+		tst.w	D1
+		bne	du100	; 32/32 -> 16
+
+		move.l	D2,-(sp)
+
+		swap	D1
+
+		move.l	D0,D2
+		divu	D1,D2	; 32/16 -> 16r:16q
+		bvs	du10
+		move.l	D2,D1
+		clr.w	D1
+		swap	D1	; D1 = remainder
+		moveq.l #0,D0
+		move.w	D2,D0	; D0 = quotient
+		move.l	(sp)+,D2
+		rts
+
+du5		move.l	D0,D1	; remainder = numerator
+		moveq.l #-1,D0	; quotient = illegal
+		rts
+
+		;   D0:32/D1:16 = :32, remainder = SWAP D2
+
+du10		move.l	D3,-(sp)
+		;;clr.w   D2	      ; D2 = r.0
+		;;swap	  D2	      ; D2 = remainder.l
+		;;move.l  D2,-(sp)
+		;;sub.l   D2,D0       ; D0 = D0 - remainder (new numerator)
+		move.l	D0,D2
+		clr.w	D2
+		swap	D2	    ; D2 = 0.msb of new numerator
+		divu	D1,D2	    ; D2 = r.qmsb
+		move.w	D2,D3
+		swap	D3
+		clr.w	D3	    ; D3 = qmsb.0
+
+		move.w	D0,D2	    ; D2 = r.nlsb
+		divu	D1,D2	    ; D2 = r.qlsb
+
+		move.w	D2,D3
+		move.l	D3,D0	    ; D0 = quotient
+		clr.w	D2
+		swap	D2
+		move.l	D2,D1	    ; D1 = remainder
+
+		move.l	(sp)+,D3
+		move.l	(sp)+,D2
+		rts
+
+		;   32/32 -> 32 , D1 in lsb.msb order	(D0.32 / D1.32)
+
+du100		movem.l D2-D4,-(sp)
+
+		move.l	D0,D2
+		clr.w	D2
+		swap	D2	    ; D2 = numerator 0.msb
+		divu	D1,D2	    ; 0.msb / x.msb, D2.w = result
+		move.w	D2,D3
+
+		moveq.l #0,D2
+		move.w	D3,D2	    ; D2.l = result (0.result)
+
+		mulu.w	D1,D3	    ; D3.l = D1.w.msb x result (0.msb x)
+		swap	D1	    ; D1 now in msb.lsb order
+		move.w	D2,D4
+		mulu.w	D1,D4	    ; D4.l = D1.w.lsb x result (0.lsb x)
+		swap	D3	    ; D3 = msb.0 x
+		add.l	D4,D3	    ; D3 = multiplication result
+		sub.l	D3,D0	    ; D0 = D0 - D3.
+		bmi	du150
+		move.l	D0,D1	    ; D1 = remainder
+		move.l	D2,D0	    ; D0 = quotient
+		movem.l (sp)+,D2-D4
+		rts
+du150		subq.l	#1,D2	    ; D0 is negative, add D1 until it becomes +
+		add.l	D1,D0
+		bmi	du150
+		move.l	D0,D1	    ; D1 = remainder
+		move.l	D2,D0	    ; D0 = quotient
+		movem.l (sp)+,D2-D4
+		rts
+
+		END
+
+
+

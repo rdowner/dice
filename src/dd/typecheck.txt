@@ -1,0 +1,92 @@
+Well, for anything that is MEMORY (not hardware) you can do TypeOfMem()...
+
+For things that are hardware, checking the board list would give you that.
+
+Here is an example code section to mapping memory addresses.  You can
+use it to build your own map...
+
+The only trick is that low memory (location 0 to 1024 or 4096 depending
+on the CPU) is protected too...  This is what the new WACK uses...
+
+                        -- Mike
+
+
+        /*
+         * Now for the control areas...
+         */
+        mmu=Mark_Address(mmu,0x00BC0000,0x00040000,NONCACHEABLE);
+        mmu=Mark_Address(mmu,0x00D80000,0x00080000,NONCACHEABLE);
+
+        /*
+         * Now for F-Space...
+         */
+        mmu=Mark_Address(mmu,0x00F00000,0x00080000,CACHEABLE);
+
+        /*
+         * Now for the ROM...
+         */
+        mmu=Map_ROM(mmu,ROM_Addr);      /* Usually just F80000 for 512K */
+
+        /*
+         * If the credit card resource, make the addresses valid...
+         */
+        if (OpenResource("card.resource"))
+        {
+                mmu=Mark_Address(mmu,0x00600000,0x00440002,NONCACHEABLE);
+        }
+
+        /*
+         * If CDTV, make CDTV hardware valid...
+         */
+        if (FindResident("cdstrap"))
+        {
+                mmu=Mark_Address(mmu,0x00E00000,0x00080000,NONCACHEABLE);
+        }
+
+        /*
+         * Check for ReKick/ZKick/KickIt
+         */
+        if ((((ULONG)(SysBase->LibNode.lib_Node.ln_Name)) >> 16) == 0x20)
+        {
+                mmu=Mark_Address(mmu,0x00200000,0x00080000,CACHEABLE);
+        }
+
+        /*
+         * Special case the first page of CHIP RAM
+         */
+        mmu=Mark_Address(mmu,0,0x1000,NONCACHEABLE);
+
+        /*
+         * Now, put in the free memory
+         */
+        Forbid();
+        mem=(struct MemHeader *)SysBase->MemList.lh_Head;
+        while (mem->mh_Node.ln_Succ)
+        {
+                mmu=Mark_Address(mmu,(ULONG)(mem->mh_Lower),(ULONG)(mem->mh_Uppe
+r)-(ULONG)(mem->mh_Lower),((MEMF_CHIP & TypeOfMem(mem->mh_Lower)) ? NONCACHEABLE
+ : CACHEABLE));
+                mem=(struct MemHeader *)(mem->mh_Node.ln_Succ);
+        }
+        Permit();
+
+        /*
+         * Map in the autoconfig boards
+         */
+        if (ExpansionBase=OpenLibrary("expansion.library",0))
+        {
+        struct  ConfigDev       *cd=NULL;
+
+                while (cd=FindConfigDev(cd,-1L,-1L))
+                {
+                        /* Skip memory boards... */
+                        if (!(cd->cd_Rom.er_Type & ERTF_MEMLIST))
+                        {
+                                mmu=Mark_Address(mmu,(ULONG)(cd->cd_BoardAddr),c
+d->cd_BoardSize,NONCACHEABLE);
+                        }
+                }
+                CloseLibrary(ExpansionBase);
+        }
+
+& re

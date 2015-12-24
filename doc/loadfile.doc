@@ -1,0 +1,12 @@
+
+loadfile/loadfile                                             loadfile/loadfile
+
+
+        loadfile <inFile>
+
+
+        /Loadfile/ loads the specified file into memory, and waits for
+        CTRL-C to be pressed.  This command allows viewing of /romable/
+        output with a debugger.
+
+            inFile      Binary input file.

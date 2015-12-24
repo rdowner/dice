@@ -1,0 +1,334 @@
+; script to install PPage
+
+	; set up a error cleanup routine
+
+(onerror
+	(makeassign "PPageInstCG" (safe))
+	(makeassign "PPageInstPgm" (safe))
+	(makeassign "PPageInstUtil" (safe))
+)
+
+(complete 0)
+
+	; just in case the installation was restarted
+
+(makeassign "PPageInstCG" (safe))		; start fresh
+(makeassign "PPageInstPgm" (safe))
+(makeassign "PPageInstUtil" (safe))
+
+	; see if this is really an update
+
+(set is_update 0)
+(set ppage_dest (getassign "PPage" "a"))
+
+	; if update, be sure they want program in same place
+
+(if ppage_dest
+	(if (askbool
+			(prompt "Your current copy of Professional Page appears to be located in the drawer named \""
+					ppage_dest
+					"\". Do you want the update installed in that drawer?"
+			)
+			(help
+				"The installer has determined that you may already have a "
+				"copy of PPage installed on your system. If this is wrong or "
+				"you want the update installed elsewhere, select NO as an "
+				"answer. Otherwise, select YES."
+			)
+			(default 1)
+		)
+
+		(set is_update 1)		; if user wants in same place
+
+		(set ppage_dest			; if user wants in different place
+			(tackon
+				(askdir
+					(prompt "In which disk or drawer should Professional Page be installed?")
+					(help @askdir-help)
+					(default @default-dest)
+				)
+				"PPage"
+			)
+		)
+	)
+)
+
+	; if not an update, get a location for program
+
+(if (not ppage_dest)
+	(set ppage_dest
+		(tackon
+			(askdir
+				(prompt "In which disk or drawer should Professional Page be installed?")
+				(help @askdir-help)
+				(default @default-dest)
+			)
+			"PPage"
+		)
+	)
+)
+
+	; now lock on to volume 'ppage'
+
+(askdisk
+	(prompt "Please insert the disk labeled \"Professional Page Program Disk\".")
+	(help	"The Professional Page program and other tools will be copied "
+			"from the \"Professional Page Program Disk\" into your system.")
+	(dest  "PPage")
+	(newname "PPageInstPgm")
+)
+
+	; make PPage drawer & icon if not there
+
+(if (not is_update)
+	(makedir ppage_dest (infos))
+)
+
+	; at this point we have a valid destination, so we tell installer where
+	; the application will end up so the exit page will be correct -- also,
+	; the installation log file (if any) will be copied to the destination
+(set @default-dest ppage_dest)
+
+(copyfiles
+	(source "PPageInstPgm:PPage")
+	(dest ppage_dest)
+	(infos)
+)
+
+(complete 20)
+
+(tooltype
+	(dest ppage_dest)
+	(noposition)
+)
+
+   ;
+   ; these libraries are necessary for PPage, make sure that they are there:
+   ;
+
+(copylib 
+	(source "PPageInstPgm:libs/mathtrans.library")
+	(dest "LIBS:")
+)
+
+(copylib 
+	(source "PPageInstPgm:libs/diskfont.library")
+	(dest "LIBS:")
+)
+
+   ;
+   ; While we've got this diskette, grab the new paintjet driver in case
+   ; he wants it.
+
+(if (not (exists "DEVS:printers/HP_PaintJet"))
+	(copyfiles
+		(prompt
+			"If your printer is an HP PaintJet, you will need a printer "
+			"driver for it. Please indicate whether or not you want this "
+			"printer driver copied to your system.")
+		(help @copyfiles-help)
+		(source "PPageInstPgm:devs/printers/HP_PaintJet")
+		(dest "DEVS:printers")
+		(infos)
+		(confirm)
+	)
+)
+
+(complete 30)
+
+	; get lock on utility disk
+
+(askdisk
+	(prompt "Please insert the disk labeled \"Professional Page Fonts & Utilities Disk\".")
+	(help	"The \"Professional Page Fonts & Utilities Disk\" contains additional data and fonts usefull to "
+			"Professional Page.")
+	(dest  "PPageUtil")
+	(newname "PPageInstUtil")
+)
+
+(copyfiles
+	(source "PPageInstUtil:Data")
+	(dest (tackon ppage_dest "Data"))		; will make directory
+	(all)
+)
+
+(copyfiles
+	(source "PPageInstUtil:MakeFont")
+	(dest ppage_dest)
+	(infos)
+)
+
+(tooltype
+	(dest (tackon ppage_dest "MakeFont"))
+	(noposition)
+)
+
+(copyfiles
+	(source "PPageInstUtil:PPage_Any_Font")
+	(dest ppage_dest)
+)
+
+(complete 40)
+
+(set answer1
+	(askbool
+		(prompt "Should the Tutorial Files be installed?")
+		(help
+			"The Tutorial files (in conjunction with the tutorial section"
+			"of the manual) show how to create a newletter. This may be "
+			"helpful to you.")
+		(default 1)
+	)
+)
+
+(if answer1
+	(copyfiles
+		(source "PPageInstUtil:Newsletter")
+		(dest (tackon ppage_dest "NewsLetter"))
+		(all)
+		(infos)
+	)
+)
+
+(complete 50)
+
+(set answer1
+	(askchoice
+		(prompt "Where would you like Professional Page's bitmapped fonts installed?")
+		(help	"These fonts are standards for desktop publishing work, but can"
+				"also be used in other Amiga programs.")
+		(choices "FONTS: drawer" "ProPage's drawer" "Don't install")
+		(default 1)
+	)
+)
+
+(if (= answer1 0)
+	(copyfiles
+		(source "PPageInstUtil:Fonts")
+		(dest "FONTS:")
+		(all)
+	)
+)
+
+(if (= answer1 1)
+	(
+		(copyfiles
+			(source "PPageInstUtil:Fonts")
+			(dest (tackon ppage_dest "Fonts"))
+			(all)
+		)
+		(textfile
+			(dest (tackon ppage_dest "PPageFonts"))
+			(append "Echo \"Selecting PPage fonts\" NOLINE\n"
+					"Assign FONTS: \""
+					ppage_dest
+					"/Fonts\"\nEcho \"Done.\"\n"
+			)
+		)
+		(copyfiles
+			(source "PPageInstUtil:misc/icons/PPageFonts.info")
+			(dest ppage_dest)
+		)
+			; **** but what if they have a FONTS disk, hum...
+		(set the_fonts (getassign "FONTS" "a"))
+		(textfile
+			(dest (tackon ppage_dest "AmigaFonts"))
+			(append "Echo \"Selecting Amiga fonts\" NOLINE\n"
+					"Assign FONTS: \""
+					the_fonts
+					"\"\nEcho \"Done.\"\n"
+			)
+		)
+		(copyfiles
+			(source "PPageInstUtil:misc/icons/AmigaFonts.info")
+			(dest ppage_dest)
+		)
+	)
+)
+
+(complete 70)
+
+(set answerCG
+	(askbool
+		(prompt "Should the Compugraphic Fonts be installed?")
+		(help "These are used to by Professional Page to produce scalable screen fonts.")
+		(default 1)
+	)
+)
+
+(if answerCG
+	(askdisk
+		(prompt "Please insert the disk labeled \"Professional Page Outline Fonts Disk\".")
+		(help	"The \"Professional Page Outline Fonts Disk\" disk contains the Compugraphic Fonts.")
+		(dest  "CGFonts")
+		(newname "PPageInstCG")
+	)
+)
+
+(set the_cache "")
+
+(if answerCG
+	(
+		(copyfiles
+			(source "PPageInstCG:")
+			(dest (tackon ppage_dest "CGFonts"))
+			(all)
+		)
+		(delete (tackon ppage_dest "CGFonts/disk.info"))
+		(rename (tackon ppage_dest "CGFonts/CacheEdit")
+				(tackon ppage_dest "CacheEdit"))
+		(rename (tackon ppage_dest "CGFonts/CacheEdit.info")
+				(tackon ppage_dest "CacheEdit.info"))
+		(tooltype
+			(dest (tackon ppage_dest "CacheEdit"))
+			(noposition)
+		)
+		(set the_cache
+			(cat
+				"ASSIGN CGFonts: \"" (tackon ppage_dest "CGFonts") "\"\n"
+				"ASSIGN CGCache: \"" (tackon ppage_dest "CGFonts/CGCache") "\"\n"
+			)
+		)
+	)
+)
+
+(complete 90)
+
+	; modify S:User-Startup
+
+(startup "PPage"
+	(prompt
+		"Some instructions need to be added to the \"S:user-startup\" "
+		"so that your system will be properly configured to use PPage.")
+	(help "Do this or PPage won't work!!")
+	(command
+		"ASSIGN PPage: \"" ppage_dest "\"\n"
+		"ASSIGN PPageUtil: \"" ppage_dest "\"\n"
+		the_cache
+	)
+)
+
+	; reinitialize assigns
+
+(if (not @pretend)
+	(	(makeassign "PPage" ppage_dest)
+		(makeassign "PPageUtil" ppage_dest)
+		(if answerCG
+			(	(makeassign "CGFonts" (tackon ppage_dest "CGFonts"))
+				(makeassign "CGCache" (tackon ppage_dest "CGFonts/CGCache"))
+			)
+		)
+	)
+)
+
+(complete 100)
+
+	; cleanup
+
+(makeassign "PPageInstCG" (safe))
+(makeassign "PPageInstPgm" (safe))
+(makeassign "PPageInstUtil" (safe))
+
+	; this is not strictly necessary, but doesn't hurt -- there is always
+	; a default (exit) at the end of any script
+(exit)

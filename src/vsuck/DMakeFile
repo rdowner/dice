@@ -1,0 +1,19 @@
+#
+#       $Id: DMakeFile,v 30.0 1994/06/10 18:09:35 dice Exp $
+#
+
+CFLAGS  =
+SRCS    = VSuck.c VSuckExamples.c VReturn.c
+OBJS    = $(SRCS:"*.c":"*.o")
+EXES    = $(SRCS:"*.c":"*")
+OD      = T:
+
+all: $(EXES)
+
+$(EXES) : $(SRCS)
+        dcc $(CFLAGS) %(right) -o %(left) -O $(OD)
+
+#
+#$(OBJS) : $(SRCS)
+#        dcc $(CFLAGS) %(right) -o %(left) -c
+#

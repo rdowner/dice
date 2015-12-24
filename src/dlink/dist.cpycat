@@ -1,0 +1,22 @@
+
+src:comp/dlink/DMakefile.dist	/DMakefile
+src:comp/dlink/mkdist		/
+src:comp/dlink/TODO		/
+src:comp/dlink/DMakefile.1	/
+src:comp/dlink/DMakefile.3	/
+src:comp/dlink/DMakefile.2	/
+src:comp/dlink/reloc.c		/
+src:comp/dlink/subs.c		/
+src:comp/dlink/error.h		/
+src:comp/dlink/module.c 	/
+src:comp/dlink/final.c		/
+src:comp/dlink/version.doc	/
+src:comp/dlink/defs.h		/
+src:comp/dlink/hash.a		/
+src:comp/dlink/main.c		/
+src:comp/dlink/syms.h		/
+src:comp/dlink/link.txt 	/
+src:comp/dlink/jump.c		/
+src:comp/dlink/sym.c		/
+src:comp/config/dice.errors	config/
+

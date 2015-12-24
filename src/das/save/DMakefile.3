@@ -1,0 +1,51 @@
+
+#   DMakefile for DASM
+
+OD= dtmp:comp3/das/
+EXE= dcc:bin/amiga/bin3/das
+PEXE= dcc:bin/amiga/binp/das
+CFLAGS= -r -ms -mRR -I$(OD)
+PROTOS= $(OD)protos.h
+
+SRCS= main.c passa.c passb.c passc.c passg.c lab.c ops.c direct.c exp.c subs.c sect.c
+OBJS = $(SRCS:"*.c":"$(OD)*.o")
+LOBS= $(SRCS:"*.c":"*.o")
+
+POBJS = $(SRCS:"*.c":"$(OD)p_*.o")
+PLOBS= $(SRCS:"*.c":"p_*.o")
+
+all: $(OD) $(PROTOS) $(EXE)
+
+prof: $(OD) $(PROTOS) $(PEXE)
+
+$(EXE) : $(OBJS)
+    cd $(OD)
+    xc_dcc $(LOBS) -o %(left) $(CFLAGS)
+    cd
+
+$(OBJS) : $(SRCS)
+    xc_dcc -c %(right) -o %(left) $(CFLAGS)
+
+$(PEXE) : $(POBJS)
+    cd $(OD)
+    xc_dcc $(PLOBS) -o %(left) $(CFLAGS) -prof3
+    cd
+
+$(POBJS) : $(SRCS)
+    xc_dcc -c %(right) -o %(left) $(CFLAGS) -prof3
+
+
+$(PROTOS) : $(SRCS)
+    -delete %(left)
+    xc_makeproto -o%(left) %(right)
+
+clean:
+    -delete $(OBJS)
+    -delete $(POBJS)
+
+cleanprof:
+    -delete $(POBJS)
+
+$(OD) : $(OD)
+    makedir %(left:*/:*)
+

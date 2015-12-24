@@ -1,0 +1,439 @@
+ActualArgType	types.c	/^ActualArgType(type)$/
+ActualPassType	types.c	/^ActualPassType(proctype, type, afterEnd)$/
+ActualReturnType	types.c	/^ActualReturnType(stmt, proctype, type)$/
+AddAuxSub	subs.c	/^AddAuxSub(name)$/
+AddEnumIdent	types.c	/^AddEnumIdent(type, sym, value)$/
+AddExternList	toplevel.c	/^AddExternList(var)$/
+AddRules	rules.c	/^AddRules(exp)$/
+AddStrList	toplevel.c	/^AddStrList(name, len, label, iidx)$/
+Align	subs.c	/^Align(long bytes, long align)$/
+AllocAddrRegister	reg.c	/^AllocAddrRegister(stor)$/
+AllocAddrRegisterAbs	reg.c	/^AllocAddrRegisterAbs(stor, regno)$/
+AllocAnyRegister	reg.c	/^AllocAnyRegister(stor, type, cache)$/
+AllocArgsStorage	reg.c	/^AllocArgsStorage(Stor *stor, Type *type, int real,/
+AllocConstStor	reg.c	/^AllocConstStor(s, val, type)$/
+AllocDataRegister	reg.c	/^AllocDataRegister(stor, size)$/
+AllocDataRegisterAbs	reg.c	/^AllocDataRegisterAbs(stor, size, regno)$/
+AllocExternalStorage	reg.c	/^AllocExternalStorage(sym, stor, type, flags)$/
+AllocFltConstStor	reg.c	/^AllocFltConstStor(s, ptr, len, type)$/
+AllocLabel	gen.c	/^AllocLabel()$/
+AllocRegVarStorage	reg.c	/^AllocRegVarStorage(var)$/
+AllocRegVarStorageReq	reg.c	/^AllocRegVarStorageReq(Var *var, short reqNo, long /
+AllocRegisterAbs	reg.c	/^AllocRegisterAbs(Stor *s, short regno, short size)/
+AllocStackStorage	reg.c	/^AllocStackStorage(stor, type, flags)$/
+AllocStaticStorage	reg.c	/^AllocStaticStorage(sym, stor, type, flags)$/
+AllocStructure	defs.h	/^#define AllocStructure(type)  ((type *)zalloc(size/
+AllocTmpStorage	reg.c	/^AllocTmpStorage(stor, type, cache)$/
+AllocTmpStructure	defs.h	/^#define AllocTmpStructure(type)  ((type *)talloc(s/
+Assert	defs.h	/^#define Assert(cond)	if (!(cond)) _Assert(_SrcFile/
+AssignRules	rules.c	/^AssignRules(exp)$/
+AttemptAllocRegisterAbs	reg.c	/^AttemptAllocRegisterAbs(Stor *s, short regno, shor/
+AutoAggregate	asubs.c	/^AutoAggregate(ptr, n)$/
+AutoAggregateBeg	asubs.c	/^AutoAggregateBeg(s, type)$/
+AutoAggregateEnd	asubs.c	/^AutoAggregateEnd()$/
+AutoAggregateSync	asubs.c	/^AutoAggregateSync()$/
+AutoAssignRegisteredArgs	asm1.c	/^AutoAssignRegisteredArgs(Var **vars, short args)$/
+AutoIncDecSize	exp.c	/^AutoIncDecSize(exp)$/
+AutoResultStorage	rules.c	/^AutoResultStorage(exp)$/
+BalanceTmpFlt	subs.c	/^BalanceTmpFlt(f1, f2)$/
+BinaryArithRules	rules.c	/^BinaryArithRules(exp)$/
+BinaryLogicRules	rules.c	/^BinaryLogicRules(exp)$/
+BinaryRules	rules.c	/^BinaryRules(exp)$/
+BitFieldResultExp	genmisc.c	/^BitFieldResultExp(exp)$/
+BitFieldResultType	genmisc.c	/^BitFieldResultType(pexp, bfo)$/
+BlockAddStmt	block.c	/^BlockAddStmt(stmt)$/
+BlockAddTop	block.c	/^BlockAddTop(var)$/
+BlockAddVar	block.c	/^BlockAddVar(var)$/
+BlockDown	block.c	/^BlockDown(short bid)$/
+BlockFlagCallMade	block.c	/^BlockFlagCallMade()$/
+BlockRemoveDuplicateVar	block.c	/^BlockRemoveDuplicateVar(storFlags, sym, type)$/
+BlockUp	block.c	/^BlockUp()$/
+BoolLabels	genbool.c	/^BoolLabels(Exp *exp, long subcond1, long subcond2)/
+CallAsmSupport	asm2.c	/^CallAsmSupport(Exp *exp,char *mop, Stor *s1, Stor /
+CallCenter	defs.h	/^#define CallCenter() ((*exp->ex_Func)(&exp))$/
+CallFPSupport	asmflt.c	/^CallFPSupport($/
+CallLeft	defs.h	/^#define CallLeft()   ((*exp->ex_ExpL->ex_Func)(&ex/
+CallRight	defs.h	/^#define CallRight()  ((*exp->ex_ExpR->ex_Func)(&ex/
+CastIfConstantFit	rules.c	/^CastIfConstantFit(pexp, type)$/
+CharToNibble	lex.c	/^CharToNibble(short c)$/
+CheckConversion	rules.c	/^CheckConversion(exp, t1, t2)$/
+CheckPointerType	types.c	/^void CheckPointerType(olexIdx, lexIdx, t1, t2)$/
+CloseLibsExit	asmflt.c	/^CloseLibsExit(void)$/
+CombineOp	cexp.c	/^CombineOp(patomStack, popStack)$/
+CompBlock	stmt.c	/^CompBlock(short t, Stmt **pstmt)$/
+CompBracedAssign	cexp.c	/^CompBracedAssign(short t, Type *type, Exp **pexp, /
+CompBreak	stmt.c	/^CompBreak(short t, Stmt **pstmt)$/
+CompBreakPoint	stmt.c	/^CompBreakPoint(short t, Stmt **pstmt)$/
+CompContinue	stmt.c	/^CompContinue(short t, Stmt **pstmt)$/
+CompDecl	toplevel.c	/^CompDecl(short t, Var **pvar, long absorbSemi)$/
+CompDo	stmt.c	/^CompDo(short t, Stmt **pstmt)$/
+CompEnumType	toplevel.c	/^CompEnumType(short t, Type **ptype)$/
+CompExp	cexp.c	/^CompExp(short t, Exp **pexp, long commaok)$/
+CompFor	stmt.c	/^CompFor(short t, Stmt **pstmt)$/
+CompGoto	stmt.c	/^CompGoto(short t, Stmt **pstmt)$/
+CompIf	stmt.c	/^CompIf(short t, Stmt **pstmt)$/
+CompLabel	stmt.c	/^CompLabel(short t, Stmt **pstmt)$/
+CompProcedure	stmt.c	/^CompProcedure(short t, Var *var)$/
+CompProcedureArgDeclarators	stmt.c	/^CompProcedureArgDeclarators(short t, Var ***pvars,/
+CompReturn	stmt.c	/^CompReturn(short t, Stmt **pstmt)$/
+CompStmtDeclExp	stmt.c	/^CompStmtDeclExp(short t, Stmt **pstmt, long semiex/
+CompStructType	toplevel.c	/^CompStructType(short t, Type **ptype, long flags)$/
+CompSwitch	stmt.c	/^CompSwitch(short t, Stmt **pstmt)$/
+CompType	toplevel.c	/^CompType(short t, Type **ptype, long *pflags, long/
+CompTypeDeclarators	toplevel.c	/^CompTypeDeclarators(short t, Type **ptype, Symbol /
+CompTypeofType	toplevel.c	/^CompTypeofType(short t, Type **ptype)$/
+CompVar	toplevel.c	/^CompVar(short t, Type *baseType, long storFlags, l/
+CompWhile	stmt.c	/^CompWhile(short t, Stmt **pstmt)$/
+CompareRules	rules.c	/^CompareRules(exp, bigok)$/
+CompareTypes	block.c	/^CompareTypes(long olexIdx, long lexIdx, Type *tn, /
+ConstFpAdd	asmflt.c	/^ConstFpAdd(exp, s1, s2, d)$/
+ConstFpDiv	asmflt.c	/^ConstFpDiv(exp, s1, s2, d)$/
+ConstFpMul	asmflt.c	/^ConstFpMul(exp, s1, s2, d)$/
+ConstFpNeg	asmflt.c	/^ConstFpNeg(exp, s, d)$/
+ConstFpSub	asmflt.c	/^ConstFpSub(exp, s1, s2, d)$/
+CountARegOver	reg.c	/^CountARegOver()$/
+CountDRegOver	reg.c	/^CountDRegOver()$/
+CreateBinaryResultStorage	rules.c	/^CreateBinaryResultStorage(Exp *exp, short freeSub)/
+CreateUnaryResultStorage	rules.c	/^CreateUnaryResultStorage(Exp *exp, short freeSub)$/
+DebugLine	gen.c	/^DebugLine(lexIdx)$/
+DelStrList	toplevel.c	/^DelStrList(label)$/
+DirectDeclarator	toplevel.c	/^DirectDeclarator(Type **ptype, Symbol **psym, shor/
+DumpAuxSubs	subs.c	/^DumpAuxSubs()$/
+DumpExternList	toplevel.c	/^DumpExternList(long procs)$/
+DumpStats	main.c	/^DumpStats()$/
+DumpStrList	toplevel.c	/^DumpStrList()$/
+EnsureReturnStorageLeft	defs.h	/^#define EnsureReturnStorageLeft()   { if ((exp->ex/
+EnsureReturnStorageRight	defs.h	/^#define EnsureReturnStorageRight()  { if (exp->ex_/
+ExitError	error.c	/^ExitError(short code)$/
+ExpToConstant	exp.c	/^ExpToConstant(exp)$/
+ExpToLValue	exp.c	/^ExpToLValue(exp, stor, type)$/
+ExpToType	exp.c	/^ExpToType(exp)$/
+ExplicitRegistersDeclared	toplevel.c	/^ExplicitRegistersDeclared(Var **vars, long args)$/
+FPStrToInt	subs.c	/^FPStrToInt(exp, ptr, len)$/
+FPrefix	subs.c	/^FPrefix(exp, ptr, len, buf)$/
+FindBreakLabel	block.c	/^FindBreakLabel()$/
+FindContinueLabel	block.c	/^FindContinueLabel()$/
+FindEnumType	types.c	/^FindEnumType(name)$/
+FindLexCharAt	lex.c	/^FindLexCharAt(i)$/
+FindLexFileLine	lex.c	/^FindLexFileLine(lexIdx, plexFile, plexFileNameLen,/
+FindStructUnionElm	types.c	/^FindStructUnionElm(type, exp, pbfo)$/
+FindStructUnionTag	types.c	/^FindStructUnionTag(type)$/
+FindStructUnionType	types.c	/^FindStructUnionType(Symbol *sym, long isUnion)$/
+FindSymbolId	sym.c	/^FindSymbolId(Symbol *sym, short lexid)$/
+FloatingRules	rules.c	/^FloatingRules(exp)$/
+FltIsNegative	subs.c	/^FltIsNegative(ptr, len)$/
+FltIsZero	subs.c	/^FltIsZero(exp, ptr, len)$/
+FreeRegArgs	genmisc.c	/^FreeRegArgs(exp, actno)$/
+FreeRegister	reg.c	/^FreeRegister(stor)$/
+FreeStackStorage	reg.c	/^FreeStackStorage(stor)$/
+FreeStorage	reg.c	/^FreeStorage(stor)$/
+GenAddr	genmisc.c	/^GenAddr(pexp)$/
+GenAnd	genlogic.c	/^GenAnd(pexp)$/
+GenAndAnd	genbool.c	/^GenAndAnd(pexp)$/
+GenAndEq	genass.c	/^GenAndEq(pexp)$/
+GenArray	genmisc.c	/^GenArray(pexp)$/
+GenAssEq	genass.c	/^GenAssEq(pexp)$/
+GenBFExt	genmisc.c	/^GenBFExt(pexp)$/
+GenBlock	gen.c	/^GenBlock(block)$/
+GenBoolCompare	genbool.c	/^GenBoolCompare(pexp)$/
+GenBoolCompareSame	genbool.c	/^GenBoolCompareSame(pexp)$/
+GenBracEq	genass.c	/^GenBracEq(pexp)$/
+GenBracedAssign	genass.c	/^GenBracedAssign(pexp)$/
+GenBreak	gen.c	/^GenBreak(stmt)$/
+GenBreakPoint	gen.c	/^GenBreakPoint(stmt)$/
+GenCall	genmisc.c	/^GenCall(pexp)$/
+GenCaratEq	genass.c	/^GenCaratEq(pexp)$/
+GenCast	genmisc.c	/^GenCast(pexp)$/
+GenCastArgs	genmisc.c	/^GenCastArgs(type, cexp, pexp)$/
+GenColon	genbool.c	/^GenColon(pexp)$/
+GenComma	genarith.c	/^GenComma(pexp)$/
+GenCompl	genlogic.c	/^GenCompl(pexp)$/
+GenCondBranch	genbool.c	/^GenCondBranch(pexp)$/
+GenContinue	gen.c	/^GenContinue(stmt)$/
+GenDataElm	asubs.c	/^GenDataElm(exp, type)$/
+GenDiv	genarith.c	/^GenDiv(pexp)$/
+GenDivEq	genass.c	/^GenDivEq(pexp)$/
+GenDo	gen.c	/^GenDo(stmt)$/
+GenEq	genass.c	/^GenEq(pexp)$/
+GenExp	gen.c	/^GenExp(stmt)$/
+GenExpResult	gen.c	/^GenExpResult(stmt)$/
+GenFlagCallMade	block.c	/^GenFlagCallMade()$/
+GenFltConst	genmisc.c	/^GenFltConst(pexp)$/
+GenFor	gen.c	/^GenFor(stmt)$/
+GenGoto	gen.c	/^GenGoto(stmt)$/
+GenGtGtEq	genass.c	/^GenGtGtEq(pexp)$/
+GenIf	gen.c	/^GenIf(stmt)$/
+GenInd	genmisc.c	/^GenInd(pexp)$/
+GenIntConst	genmisc.c	/^GenIntConst(pexp)$/
+GenLShf	genlogic.c	/^GenLShf(pexp)$/
+GenLabel	gen.c	/^GenLabel(stmt)$/
+GenLtLtEq	genass.c	/^GenLtLtEq(pexp)$/
+GenMi	genarith.c	/^GenMi(pexp)$/
+GenMiEq	genass.c	/^GenMiEq(pexp)$/
+GenNeg	genarith.c	/^GenNeg(pexp)$/
+GenNot	genbool.c	/^GenNot(pexp)$/
+GenOr	genlogic.c	/^GenOr(pexp)$/
+GenOrEq	genass.c	/^GenOrEq(pexp)$/
+GenOrOr	genbool.c	/^GenOrOr(pexp)$/
+GenParen	genarith.c	/^GenParen(pexp)$/
+GenPercent	genarith.c	/^GenPercent(pexp)$/
+GenPercentEq	genass.c	/^GenPercentEq(pexp)$/
+GenPl	genarith.c	/^GenPl(pexp)$/
+GenPlEq	genass.c	/^GenPlEq(pexp)$/
+GenPop	block.c	/^GenPop(chk)$/
+GenPosDec	genmisc.c	/^GenPosDec(pexp)$/
+GenPosInc	genmisc.c	/^GenPosInc(pexp)$/
+GenPreDec	genmisc.c	/^GenPreDec(pexp)$/
+GenPreInc	genmisc.c	/^GenPreInc(pexp)$/
+GenPush	block.c	/^GenPush(child)$/
+GenPushArgs	genmisc.c	/^GenPushArgs(exp)$/
+GenQuestion	genbool.c	/^GenQuestion(pexp)$/
+GenRShf	genlogic.c	/^GenRShf(pexp)$/
+GenRegArgs	genmisc.c	/^GenRegArgs($/
+GenReturn	gen.c	/^GenReturn(stmt)$/
+GenSizeof	genmisc.c	/^GenSizeof(pexp)$/
+GenSpecialAssignment	genass.c	/^GenSpecialAssignment(pexp, genFunc)$/
+GenStar	genarith.c	/^GenStar(pexp)$/
+GenStarEq	genass.c	/^GenStarEq(pexp)$/
+GenStaticData	asubs.c	/^GenStaticData(var)$/
+GenStrConst	genmisc.c	/^GenStrConst(pexp)$/
+GenStructElm	genmisc.c	/^GenStructElm(pexp)$/
+GenStructInd	genmisc.c	/^GenStructInd(pexp)$/
+GenSwitch	gen.c	/^GenSwitch(stmt)$/
+GenVarRef	genmisc.c	/^GenVarRef(pexp)$/
+GenWhile	gen.c	/^GenWhile(stmt)$/
+GenXor	genlogic.c	/^GenXor(pexp)$/
+GenerateRegSpecOutput	types.c	/^GenerateRegSpecOutput(var)$/
+GenerateVar	gen.c	/^GenerateVar(var)$/
+GetAllocatedScratch	reg.c	/^GetAllocatedScratch()$/
+GetLockedScratch	reg.c	/^GetLockedScratch()$/
+GetToken	defs.h	/^#define GetToken()  ((LexDispatch[(ubyte)LFBase->l/
+GetUsedRegisters	reg.c	/^GetUsedRegisters()$/
+ImmStorage	asubs.c	/^ImmStorage(stor)$/
+InMaskPop	genmisc.c	/^InMaskPop(scReg)$/
+InMaskPush	genmisc.c	/^InMaskPush(exp, scReg)$/
+InitDummy	main.c	/^InitDummy()$/
+InitGen	gen.c	/^InitGen(long enab)$/
+InitLex	lex.c	/^InitLex(void)$/
+InitRules	rules.c	/^InitRules(pexp, t1)$/
+InitSym	sym.c	/^InitSym(int enab)$/
+InitTypes	types.c	/^InitTypes(int enab)$/
+InsertAssign	exp.c	/^InsertAssign(pexp, var)$/
+InsertBranch	exp.c	/^InsertBranch(pexp, cond, label)$/
+InsertCast	exp.c	/^InsertCast(pexp, type)$/
+InsertNot	exp.c	/^InsertNot(pexp)$/
+IntToFPStr	subs.c	/^IntToFPStr(v, isuns, plen)$/
+Internationalize	subs.c	/^Internationalize(char *str, long size)$/
+IsRegCall	gen.c	/^IsRegCall(flags)$/
+LexCharConst	lex.c	/^LexCharConst(void)$/
+LexDecimal	lex.c	/^LexDecimal(void)$/
+LexFloating	lex.c	/^LexFloating(b, i)$/
+LexHex	lex.c	/^LexHex(ubyte c, long i)$/
+LexInteger	lex.c	/^LexInteger(void)$/
+LexLineFeed	lex.c	/^LexLineFeed(void)$/
+LexOctal	lex.c	/^LexOctal(ubyte c, long i)$/
+LexSimpleToken	lex.c	/^LexSimpleToken(void)$/
+LexString	lex.c	/^LexString(void)$/
+LexSymbol	lex.c	/^LexSymbol(void)$/
+LexTLex	lex.c	/^LexTLex(void)$/
+LexToken	lex.c	/^LexToken(void)$/
+LexWhiteSpace	lex.c	/^LexWhiteSpace(void)$/
+LoadLocaleDefs	subs.c	/^LoadLocaleDefs(char *file)$/
+LockStorage	reg.c	/^LockStorage(s)$/
+LooseTypeLink	types.c	/^LooseTypeLink(roottype, qualtype)$/
+MakeBitfieldType	types.c	/^MakeBitfieldType(flags, bits)$/
+MakeEnumType	types.c	/^MakeEnumType(name)$/
+MakeStructUnionType	types.c	/^MakeStructUnionType(sym, isUnion)$/
+MakeSymbol	sym.c	/^MakeSymbol(const char *name, short len, short lexi/
+MarkAreaMunged	subs.c	/^MarkAreaMunged(s, e)$/
+MatchRules	rules.c	/^MatchRules(exp)$/
+Max	asm2.c	/^#define Max(a,b)    (((a) > (b)) ? (a) : (b))$/
+Mmain	main.c	/^main(ac, av)$/
+Mtest	test.c	/^main()$/
+Mx	x.c	/^main()$/
+My	y.c	/^main()$/
+NoMem	subs.c	/^NoMem()$/
+NormalizeTmpFlt	subs.c	/^NormalizeTmpFlt(f)$/
+ObtainErrorString	error.c	/^ObtainErrorString(short errNum)$/
+OffsetMunged	subs.c	/^OffsetMunged(i)$/
+OptBinaryArithRules	rules.c	/^OptBinaryArithRules(exp)$/
+OptBinaryRules	rules.c	/^OptBinaryRules(exp)$/
+OptimizeBitField	asm2.c	/^OptimizeBitField(s, d)$/
+PadStructure	genass.c	/^void PadStructure(size, bfhold)$/
+ParseOpts	main.c	/^ParseOpts(short ac, char **av, short c1Only)$/
+PointerOpt	toplevel.c	/^PointerOpt(Type **ptype, Symbol **psym, short t)$/
+PopLexFile	lex.c	/^PopLexFile(void)$/
+PopStackStorage	reg.c	/^PopStackStorage(void)$/
+PowerOfTwo	subs.c	/^PowerOfTwo(v)$/
+PragmaSymbol	sym.c	/^PragmaSymbol(char *name, short len)$/
+ProcessLibCallPragma	pragma.c	/^ProcessLibCallPragma(char *buf, short syscall)$/
+PushArgExp	genmisc.c	/^PushArgExp(exp)$/
+PushAtom	cexp.c	/^PushAtom(patomStack, popStack, genFunc)$/
+PushLexFile	lex.c	/^PushLexFile(char *name, short nameLen, long begPos/
+PushOp	cexp.c	/^PushOp(patomStack, popStack, genFunc, precedence, /
+PushStackStorage	reg.c	/^PushStackStorage(void)$/
+ReUseStackStorage	reg.c	/^ReUseStackStorage(stor)$/
+RegCallOrder	asm1.c	/^RegCallOrder(type, ano, prgno)$/
+RegCallUseRegister	reg.c	/^RegCallUseRegister(short rno)$/
+RegDisableRegs	reg.c	/^RegDisableRegs(mask)$/
+RegEnableRegs	reg.c	/^RegEnableRegs()$/
+RegFlagTryAgain	reg.c	/^RegFlagTryAgain()$/
+RegInUse	reg.c	/^RegInUse(short regno)$/
+RegMaskToString	asubs.c	/^RegMaskToString(mask, pcnt)$/
+RegisterMaskConflict	asubs.c	/^RegisterMaskConflict(s1, mask)$/
+ResSymbol	sym.c	/^#define ResSymbol(name,lexid)		MakeSymbol(name, si/
+ResSymbol3	sym.c	/^#define ResSymbol3(name,lexid,lexdata)	MakeSymbol(/
+ResType	sym.c	/^#define ResType(name, type)		MakeSymbol(name, size/
+ResetRegAlloc	reg.c	/^ResetRegAlloc()$/
+ResolveStructUnionType	toplevel.c	/^ResolveStructUnionType(type)$/
+ReuseStorage	reg.c	/^ReuseStorage(s, d)$/
+ReverseFeed	toplevel.c	/^ReverseFeed(ptype, type)$/
+ReverseOrder	asm2.c	/^ReverseOrder(short cond)$/
+SWAPL	asm1.c	/^#define SWAPL(l1,l2)	{ long lt = l1; l1 = l2; l2 =/
+SWAPS	asm.h	/^#define SWAPS(s1,s2)    {   Stor *t = s2; s2 = s1;/
+SameRegister	asubs.c	/^SameRegister(s1, s2)$/
+SameStorage	asubs.c	/^SameStorage(s1, s2)$/
+SaveCopyConflictsRegArgs	genmisc.c	/^SaveCopyConflictsRegArgs($/
+SemanticAdd	sem.c	/^SemanticAdd(Symbol *sym, short lexid, void *data)$/
+SemanticAddTop	sem.c	/^SemanticAddTop(Symbol *sym, short lexid, void *dat/
+SemanticAddTopBlock	sem.c	/^SemanticAddTopBlock(Symbol *sym, short lexid, void/
+SemanticLevelDown	sem.c	/^SemanticLevelDown()$/
+SemanticLevelUp	sem.c	/^SemanticLevelUp()$/
+SetRequester	error.c	/^SetRequester(void *new)$/
+SetStructUnionType	types.c	/^SetStructUnionType(t, vars, nv, flags)$/
+ShiftRules	rules.c	/^ShiftRules(exp)$/
+SizeFit	asm1.c	/^SizeFit(v)$/
+SizeFitSU	asm1.c	/^SizeFitSU(v, s)$/
+SkipToken	lex.c	/^SkipToken(short t, short expect)$/
+SortCases	asm1.c	/^SortCases(exp, cases, labels, num)$/
+SpecialChar	lex.c	/^SpecialChar(pi)$/
+StorToString	asubs.c	/^StorToString(s, plen)$/
+StorToStringBuf	asubs.c	/^StorToStringBuf(s, base)$/
+StorToTmpFlt	subs.c	/^StorToTmpFlt(exp, s, f)$/
+SubDivideSwitch	asm1.c	/^SubDivideSwitch(exp, s, c, j, is, ie, deflabel, ca/
+SubRules	rules.c	/^SubRules(exp)$/
+SubStmtCall	gen.c	/^#define SubStmtCall(label)   if (stmt->label) (*st/
+SymToString	subs.c	/^SymToString(sym)$/
+TerminateCondition	genbool.c	/^TerminateCondition(sub, exp)$/
+TestPragmaCall	pragma.c	/^TestPragmaCall(var, prgno)$/
+ThreeOp	asm1.c	/^ThreeOp(exp, s1, s2, d, op)$/
+TmpFltMantDiv	subs.c	/^TmpFltMantDiv(uword *wp, short n, uword v)$/
+TmpFltMantMul	subs.c	/^TmpFltMantMul(uword *wp, short n, uword v)$/
+TmpFltToStor	subs.c	/^TmpFltToStor(exp, f, s)$/
+TmpFpAdd	asmflt.c	/^TmpFpAdd(s, d)$/
+TokenToStr	lex.c	/^TokenToStr(short t)$/
+TooManyRegs	reg.c	/^TooManyRegs()$/
+TopLevel	toplevel.c	/^TopLevel(short t)$/
+TransferRegister	reg.c	/^TransferRegister(s, regno, size)$/
+TypeLink	types.c	/^TypeLink(subtype, partype)$/
+TypeLinkEnd	types.c	/^TypeLinkEnd(subtype, partype)$/
+TypeToAryType	types.c	/^TypeToAryType(type, exp, entries)$/
+TypeToProcType	types.c	/^TypeToProcType(Type *type, Var **vars, short n, lo/
+TypeToProtoStr	subs.c	/^TypeToProtoStr(Type *type, short i)$/
+TypeToPtrType	types.c	/^TypeToPtrType(type)$/
+TypeToQualdType	types.c	/^TypeToQualdType(type, flags)$/
+UnaryArithRules	rules.c	/^UnaryArithRules(exp)$/
+UnaryLogicRules	rules.c	/^UnaryLogicRules(exp)$/
+UnaryRules	rules.c	/^UnaryRules(exp)$/
+Undefined_Tag	types.c	/^void Undefined_Tag(type, sym, lexIdx)$/
+UnlockStorage	reg.c	/^UnlockStorage(s)$/
+UnscratchStorage	reg.c	/^UnscratchStorage(exp)$/
+_Assert	main.c	/^_Assert(file, line)$/
+a	y.c	/^a()$/
+arysize	defs.h	/^#define arysize(ary)	(sizeof(ary)\/sizeof((ary)[0]/
+asm_add	asm1.c	/^asm_add(exp, s1, s2, d)$/
+asm_align	asm1.c	/^asm_align(long size)$/
+asm_and	asm1.c	/^asm_and(exp, s1, s2, d)$/
+asm_bfext	asm2.c	/^asm_bfext(exp, s, d)$/
+asm_bfsto	asm2.c	/^asm_bfsto(exp, s, d)$/
+asm_bftst	asm2.c	/^asm_bftst(exp, s)$/
+asm_blockfill	asm2.c	/^asm_blockfill(exp, d, n, v)$/
+asm_blockop	asm2.c	/^asm_blockop(Exp *exp, char *op, short cond, Stor */
+asm_branch	asm1.c	/^asm_branch(label)$/
+asm_call	asm1.c	/^asm_call(Exp *exp, Stor *s, Type *rtype, Stor *d, /
+asm_clr	asm1.c	/^asm_clr(exp, d)$/
+asm_cmp	asm2.c	/^asm_cmp(exp, s1, s2, pcond)$/
+asm_cond_scc	asm1.c	/^asm_cond_scc(exp, typeid, s1, s2, pcond, d)$/
+asm_condbra	asm1.c	/^asm_condbra(short cond, long label)$/
+asm_div	asm2.c	/^asm_div(Exp *exp, Stor *s1, Stor *s2, Stor *d, sho/
+asm_dynamictag	asm1.c	/^asm_dynamictag(var)$/
+asm_end	asm1.c	/^asm_end()$/
+asm_exg	asm1.c	/^asm_exg(s1, s2)$/
+asm_export	asm1.c	/^asm_export(sym)$/
+asm_ext	asm1.c	/^asm_ext(exp, s, d, sflags)$/
+asm_extern	asm1.c	/^asm_extern(var)$/
+asm_fltconst	asmflt.c	/^asm_fltconst(exp, s, ary)$/
+asm_fpadd	asmflt.c	/^asm_fpadd(exp, t, s1, s2, d)$/
+asm_fpcmp	asmflt.c	/^asm_fpcmp(exp, s1, s2, pcond)$/
+asm_fpdiv	asmflt.c	/^asm_fpdiv(exp, t, s1, s2, d)$/
+asm_fpmul	asmflt.c	/^asm_fpmul(exp, t, s1, s2, d)$/
+asm_fpneg	asmflt.c	/^asm_fpneg(exp, t, s, d)$/
+asm_fpsub	asmflt.c	/^asm_fpsub(exp, t, s1, s2, d)$/
+asm_fptest	asmflt.c	/^asm_fptest(exp, s)$/
+asm_fptofp	asmflt.c	/^asm_fptofp(exp, s, d)$/
+asm_fptoint	asmflt.c	/^asm_fptoint(exp, s, d)$/
+asm_gen_logic_class	asm1.c	/^asm_gen_logic_class(exp, str, bitstr, bitinverse, /
+asm_getind	asmaddr.c	/^asm_getind($/
+asm_getindex	asmaddr.c	/^asm_getindex($/
+asm_getlea	asmaddr.c	/^asm_getlea(exp, s, d)$/
+asm_illegal	asm2.c	/^asm_illegal(void)$/
+asm_inttofp	asmflt.c	/^asm_inttofp(exp, s, d)$/
+asm_label	asm1.c	/^asm_label(label)$/
+asm_layoutfpconst	asmflt.c	/^asm_layoutfpconst(exp, s, d)$/
+asm_lea	asmaddr.c	/^asm_lea(exp, s, offset, d)$/
+asm_move	asm2.c	/^asm_move(exp, s, d)$/
+asm_move_cast	asm2.c	/^asm_move_cast(exp, s, d)$/
+asm_movei	asm1.c	/^asm_movei(exp, val, d)$/
+asm_moveqAndSwap	asm2.c	/^asm_moveqAndSwap(long value, char dregC, short swa/
+asm_mul	asm2.c	/^asm_mul(exp, s1, s2, d)$/
+asm_mul_requires_call	asm2.c	/^asm_mul_requires_call(offset)$/
+asm_neg	asm1.c	/^asm_neg(exp, s, d)$/
+asm_or	asm1.c	/^asm_or(exp, s1, s2, d)$/
+asm_pop	asm1.c	/^asm_pop(n)$/
+asm_pop_mask	asm1.c	/^asm_pop_mask(mask)$/
+asm_procbegin	asm1.c	/^asm_procbegin(var)$/
+asm_procend	asm1.c	/^asm_procend(Var *var, short forceLink)$/
+asm_proclink	asm1.c	/^asm_proclink(var)$/
+asm_push	asm1.c	/^asm_push(exp, type, s)$/
+asm_push_mask	asm1.c	/^asm_push_mask(mask)$/
+asm_rcomove	asm1.c	/^asm_rcomove(Exp *exp, char *ano, short i, Stor *d)/
+asm_regentry	asm1.c	/^asm_regentry(var)$/
+asm_restore_regs	reg.c	/^asm_restore_regs(mask)$/
+asm_returnstorage	asm1.c	/^asm_returnstorage(exp)$/
+asm_save_regs	reg.c	/^asm_save_regs(mask)$/
+asm_sccb	asm1.c	/^asm_sccb(Exp *exp, Stor *d, short cond, short nega/
+asm_segment	asm1.c	/^asm_segment(var)$/
+asm_shift	asm2.c	/^asm_shift(exp, dir, s1, s2, d)$/
+asm_stackbytes	asm1.c	/^asm_stackbytes(rtype)$/
+asm_string	asm1.c	/^asm_string(label, str, bytes, flags, iidx)$/
+asm_sub	asm1.c	/^asm_sub(exp, s1, s2, d)$/
+asm_switch	asm1.c	/^asm_switch(exp, num, cases, labels, deflabel)$/
+asm_test	asm1.c	/^asm_test(exp, s)$/
+asm_test_and	asm1.c	/^asm_test_and(exp, s1, s2)$/
+asm_test_scc	asm1.c	/^asm_test_scc(Exp *exp, long typeid, Stor *s, short/
+asm_xor	asm1.c	/^asm_xor(exp, s1, s2, d)$/
+cerror	error.c	/^cerror(short etype, const char *buf, ...)$/
+cmpmem	subs.c	/^cmpmem(ubyte *s1, ubyte *s2, long n)$/
+dbprintf	defs.h	/^#define dbprintf(x) if (DDebug) printf x$/
+eprintf	subs.c	/^eprintf(short asout, const char *str, ...)$/
+extop	asm1.c	/^extop(size1, size2, d)$/
+fubar	test.c	/^fubar(__A0 char *a, __D0 unsigned char b, __A1 voi/
+hash	sym.c	/^hash(const ubyte *buf, short bytes)$/
+help	main.c	/^help()$/
+if	main.c	/^    if (OutFileName && ExitCode > 5 && !DDebug) {$/
+itodec	asubs.c	/^itodec(ptr, val)$/
+itohex	asubs.c	/^itohex(ptr, val)$/
+match_nesting	cexp.c	/^short match_nesting(short t)$/
+outop	asubs.c	/^outop(char *op, short siz, Stor *s, Stor *d)$/
+plcsym	pragma.c	/^plcsym(ptr, pbase, plen)$/
+putc	defs.h	/^#define putc(c,fi) (((fi)->sd_WLeft <= 0) ? fputc(/
+talloc	subs.c	/^talloc(bytes)$/
+tclear	subs.c	/^tclear()$/
+vcerror	error.c	/^vcerror(long lexIdx, short etype, const char *buf,/
+veprintf	subs.c	/^veprintf(short asout, const char *str, va_list va)/
+xLexString	lex.c	/^xLexString(void)$/
+xLexSymbolRef	lex.c	/^xLexSymbolRef(relId, i)$/
+yerror	error.c	/^yerror(long lexIdx, short errorId, ...)$/
+zalloc	subs.c	/^zalloc(bytes)$/
+zerror	error.c	/^zerror(short errorId, ...)$/
+zrealloc	subs.c	/^zrealloc(ptr, objsize, oldsize, newsize)$/

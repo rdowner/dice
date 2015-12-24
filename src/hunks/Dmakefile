@@ -1,0 +1,134 @@
+
+#   DMakefile for dutil
+#
+#   (c)Copyright 1992-1993 Obvious Implementations Corp, All Rights Reserved
+#
+#   Source to many utilities is provided as example code.  To make the source
+#   for a single utility you supply the full destination path, e.g. 
+#   'dmake dcc:bin/makeproto'
+#
+#   You may incorporate source code found here into your own programs
+#   as long as said programs serve a substantially different purpose
+#   then where source was taken from from.  For example, you
+#   could pull code from DOBJ when writing your own linker but you
+#   could NOT use code from DOBJ if you intend to write a disassembler.
+#
+#   There are a considerable number of targes in this DMakefile that I use
+#   to compile various intermediate versions of DICE and other binaries.
+#   You need only concern yourself with the default... a simple 'DMake'
+#   will suffice.
+
+
+SRCS=  hunks.c
+
+RSRCS= 	hunks.c
+
+
+MODULE= dutil
+
+OD= dtmp:comp/$(MODULE)/
+OD1= dtmp:comp1/$(MODULE)/
+OD2= dtmp:comp2/$(MODULE)/
+ODC= dtmp:compc/$(MODULE)/
+ODR= dtmp:compr/$(MODULE)/
+ODF= dtmp:compf/$(MODULE)/
+ODN= /tmp/comp/$(MODULE)/
+
+ODIRS= $(OD) $(OD1) $(OD2) $(ODC) $(ODR) $(ODF)
+
+EXES= $(RSRCS:"*.c":"ram:*")
+EXES1= $(SRCS:"*.c":"dcc:bin/amiga/bin1/lc_*")
+EXES2= $(SRCS:"*.c":"dcc:bin/amiga/bin2/xc_*")
+EXESC= $(SRCS:"*.c":"dcc:bin/amiga/bincom/*")
+EXESR= $(SRCS:"*.c":"dcc:bin/amiga/binreg/*")
+EXESF= $(SRCS:"*.c":"dcc:bin/amiga/binfree/*")
+EXESN= $(SRCS:"*.c":"../bin/next/*")
+
+CFLAGS= -ms -r -mRR -I$(ODR) -proto -DREGISTERED
+CFLAGS1= -iinclude: -idinclude: -i$(OD1) -v -dDEBUG -dNO_ASM
+CFLAGS2= -ms -r -I$(OD2) -DDEBUG -DREGISTERED -DCOMMERCIAL
+CFLAGSC= -ms -r -mRR -I$(ODC) -proto -DREGISTERED -DCOMMERCIAL
+CFLAGSR= -ms -r -mRR -I$(ODR) -proto -DREGISTERED
+CFLAGSF= -ms -r -mRR -I$(ODF) -proto -DFREEWARE
+CFLAGSN= -O2 -I.. -I$(ODN) -L../suplib -DREGISTERED -DCOMMERCIAL -DNO_ASM
+
+OBJS = $(RSRCS:"*.c":"$(OD)*.o")
+OBJS1 = $(SRCS:"*.c":"$(OD1)*.o")
+OBJS2 = $(SRCS:"*.?":"$(OD2)*.o")
+OBJSC = $(SRCS:"*.?":"$(ODC)*.o")
+OBJSR = $(SRCS:"*.?":"$(ODR)*.o")
+OBJSF = $(SRCS:"*.?":"$(ODF)*.o")
+OBJSN = $(SRCS:"*.?":"$(ODN)*.o")
+
+default: $(OD:"*/$(MODULE)/":"*") $(OD) $(EXES)
+
+pass1: $(OD1:"*/$(MODULE)/":"*") $(OD1) $(EXES1)
+
+pass2: $(OD2:"*/$(MODULE)/":"*") $(OD2) $(EXES2)
+
+com: $(ODC:"*/$(MODULE)/":"*") $(ODC) $(EXESC)
+
+reg: $(ODR:"*/$(MODULE)/":"*") $(ODR) $(EXESR)
+
+free: $(ODF:"*/$(MODULE)/":"*") $(ODF) $(EXESF)
+
+next: $(ODN) $(EXESN)
+
+$(EXES) : $(OBJS)
+    dcc $(CFLAGS) %(right) -o %(left)
+
+$(EXES1) : $(OBJS1)
+  blink FROM LIB:c.o %(right) LIB lib:lc.lib lib:amiga20.lib TO %(left) BATCH
+
+$(EXES2) : $(OBJS2)
+    lc_dcc $(CFLAGS2) %(right) -o %(left)
+
+$(EXESC) : $(OBJSC)
+    xc_dcc $(CFLAGSC) %(right) -o %(left)
+
+$(EXESR) : $(OBJSR)
+    xc_dcc $(CFLAGSR) %(right) -o %(left)
+
+$(EXESF) : $(OBJSF)
+    xc_dcc $(CFLAGSF) %(right) -o %(left)
+
+$(EXESN) : $(OBJSN)
+    cc $(CFLAGSN) %(right) -o %(left) -lamiga
+    strip %(left)
+
+$(OBJS) : $(RSRCS)
+    dcc $(CFLAGS) %(right) -o %(left) -c
+
+$(OBJS1) : $(SRCS:"*.c")
+    lc $(CFLAGS1) -o%(left) %(right)
+
+$(OBJS2) : $(SRCS)
+    lc_dcc $(CFLAGS2) %(right) -o %(left) -c
+
+$(OBJSC) : $(SRCS)
+    xc_dcc $(CFLAGSC) %(right) -o %(left) -c
+
+$(OBJSR) : $(SRCS)
+    xc_dcc $(CFLAGSR) %(right) -o %(left) -c
+
+$(OBJSF) : $(SRCS)
+    xc_dcc $(CFLAGSF) %(right) -o %(left) -c
+
+$(OBJSN) : $(SRCS)
+    cc $(CFLAGSN) %(right) -o %(left) -c
+
+clean:
+    -delete $(ODIRS:*/:*) ALL
+
+$(ODIRS:"*/$(MODULE)/":"*") : $(ODIRS:"*/$(MODULE)/":"*")
+    makedir %(left)
+
+$(ODIRS) : $(ODIRS)
+    makedir %(left:*/:*)
+
+$(ODN) : $(ODN)
+    mkdir %(left:*/:*)
+
+clean_next:
+    -rm -rf $(OBJSN)
+

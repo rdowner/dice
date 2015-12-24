@@ -1,0 +1,44 @@
+
+
+    STACK CHECKING CODE
+
+	movem.l regs,-(sp)
+	link	A5,#-10
+	cmp.l	__stack_end(A4),A5      STACKCHK    (A5 prevets link/unlk
+	blo	l1			STACKCHK    from being opt'd out)
+	bsr	__stack_alloc(pc)       STACKCHK
+l1
+
+	    .
+	    .
+	    .
+	unlk	A5		(move A5,sp,  move (sp)+,A5)
+	movem.l (sp)+,regs
+	rts
+
+    With Stack Checking
+
+	movem.l regs,-(sp)
+	link	A5,#-10
+	cmp.l	__stack_end(A4),sp
+	blo	l1
+	bsr	__stack_alloc(pc)
+l1
+
+		.
+		.
+		.
+
+	unlk	A5
+	movem.l (sp)+,regs/A5
+	rts
+
+    Note that any passed variables are referenced A5-relative, any A7-rel
+    referenced variables have already been preloaded.  A5 is dropped
+    by __stack_alloc but not otherwise modified.  A new stack may be
+    allocated in which case A7 will have the new stack.  A5 is used as
+    a way pointer since it will be the same at __stack_free.
+
+
+
+

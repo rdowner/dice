@@ -1,0 +1,61 @@
+PROJECT= DCPP
+DIR= 
+SRCS= main.c sym.c include.c direct.c define.c cpp.c cexp.c subs.c precomp.c \
+asubs.a
+HDRS= DCPP_rev.h defs.h error.h
+EXTRAS= 
+PDEFAULT= 
+EXEDIR= oi:bin/amiga/bincom1/
+OD= dtmp:compc1/dcpp/
+PRECOMP= 
+TYPE= OI:Config/Self3x.DMAKEFILE
+RUN= 
+CLIARGS= -DFOO=1 test.c
+CFLAGS= -ms -r -mRR -proto -DREGISTERED -DCOMMERCIAL
+CLI= 
+
+#### AUTOMATICALLY GENERATED - DO NOT EDIT BELOW THIS LINE
+EP=OI:BIN/Amiga/BinCom/
+PROTOS= $(OD)protos.h
+EXE= $(EXEDIR)$(PROJECT)
+COMPFLAGS = $(CFLAGS) -I$(OD) $(PRECOMP:"*.h":"T:*.m")
+
+OBJS= $(SRCS:"*.c":"$(OD)*.o") $(SRCS:"*.a":"$(OD)*.o")
+
+all: DoResi $(PRECOMP) $(PROTOS) $(EXE)
+
+nopro: $(EXE)
+
+$(EXE): $(OBJS)
+    fwrite $(OD)$(PROJECT).lnktmp $(OBJS)
+    dcc $(COMPFLAGS) @$(OD)$(PROJECT).lnktmp -o %(left)
+
+$(OBJS) : $(SRCS)
+    dcc %(right) -o %(left) -c $(COMPFLAGS)
+
+$(PROTOS) : $(SRCS)
+    -delete %(left)
+    makeproto -o %(left) %(right)
+
+$(PRECOMP:"":"CANT.EXIST.RULE") : $(HDRS)
+    -delete %(left)
+
+clean:
+    -delete $(OBJS) $(PROTOS) $(PRECOMP)
+
+relink: rmexe $(EXE)
+
+rmexe:
+    -delete $(EXE)
+
+DoResi:
+    -resident dlink remove
+    -resident das   remove
+    -resident dc1   remove
+    -resident dcpp  remove
+    -resident dcc   remove
+    resident dlink $(EP)dlink
+    resident das   $(EP)das
+    resident dc1   $(EP)dc1
+    resident dcpp  $(EP)dcpp
+    resident dcc   $(EP)dcc

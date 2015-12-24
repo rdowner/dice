@@ -1,0 +1,128 @@
+/* */
+total = 653
+disk  = 1
+
+CALL Setup
+say ';;;                                                    ;'total
+total = total + Handle('ar:include_13.lha'       disk)
+total = total + Handle('ar:include_20.lha'       disk)
+total = total + Handle('ar:extended_tools.lha'   disk)
+CALL NextDisk
+
+total = total + Handle('ar:include_common.lha'   disk)
+total = total + Handle('ar:miscellaneous.lha'    disk)
+total = total + Handle('ar:dice_linklibs.lha'    disk)
+total = total + Handle('ar:include_30.lha'       disk)
+CALL NextDisk
+
+total = total + Handle('ar:online_help2.lha'     disk)
+total = total + Handle('ar:library_source.lha'   disk)
+total = total + Handle('ar:source_control.lha'   disk)
+total = total + Handle('ar:rom_tools.lha'        disk)
+total = total + Handle('ar:amiga12_linklibs.lha' disk)
+CALL NextDisk
+
+total = total + Handle('ar:debugger.lha'         disk)
+total = total + Handle('ar:mmu_tools.lha'        disk)
+total = total + Handle('ar:example_source.lha'   disk)
+total = total + Handle('ar:amiga30_linklibs.lha' disk)
+CALL NextDisk
+
+total = total + Handle('ar:online_help1.lha'     disk)
+total = total + Handle('ar:basic_tools.lha'      disk)
+total = total + Handle('ar:freeware.lha'         disk)
+total = total + Handle('ar:ttx_config.lha'       disk)
+total = total + Handle('ar:dme_config.lha'       disk)
+total = total + Handle('ar:ced_config.lha'       disk)
+total = total + Handle('ar:ame_config.lha'       disk)
+CALL NextDisk
+CALL Cleanup
+
+EXIT
+
+Handle: PROCEDURE
+   PARSE ARG name disk
+   st     = STATEF(name)
+   size   = WORD(st, 2)
+   blocks = WORD(st, 3)
+   res    = CalcBlocks(size)
+   CALL Report(name disk blocks res)
+   RETURN res
+
+CalcBlocks: PROCEDURE
+   ARG SIZE
+   blocks = trunc((size + 487)/488)
+   res =  blocks+trunc((blocks+71)/72)
+   RETURN res
+
+Report: PROCEDURE
+   PARSE ARG NAME DISK BLK RES
+   SAY 'copy   ' LEFT(name,30) 'rd'disk':    ;'LEFT(blk,4) '==' LEFT(res,4)
+   RETURN
+
+NextDisk: PROCEDURE EXPOSE total disk
+   room = TRUNC((total + 5 + 5)*100/1758)
+   SAY ';;;TOTAL SIZE=.........................................'total'+5='total+5 room'%'
+   SAY 'INFO RD'disk':'
+   SAY ''
+   IF total > 1752 THEN
+      DO
+         SAY '"***Disk' disk 'will not fit'
+      END
+   disk = disk + 1
+   total = 0
+   IF disk <= 5 THEN
+      DO
+         SAY ';'
+         SAY ';       Disk' disk
+         SAY ';'
+      END
+   RETURN
+
+Cleanup: PROCEDURE
+   SAY ';'
+   SAY ';       Cleanup.  Fix protections, etc.'
+   SAY ';'
+   SAY 'protect rd1:#? r all quiet'
+   SAY 'setdate rd1:#? 01-jan-94 12:00 all'
+   SAY ''
+   SAY 'protect rd2:#? r all quiet'
+   SAY 'setdate rd2:#? 01-jan-94 12:00 all'
+   SAY ''
+   SAY 'protect rd3:#? r all quiet'
+   SAY 'setdate rd3:#? 01-jan-94 12:00 all'
+   SAY ''
+   SAY 'protect rd4:#? r all quiet'
+   SAY 'setdate rd4:#? 01-jan-94 12:00 all'
+   SAY ''
+   SAY 'protect rd5:#? r all quiet'
+   SAY 'setdate rd5:#? 01-jan-94 12:00 all'
+   SAY ''
+   SAY 'protect rd1:bin/#? re all quiet'
+   SAY 'protect rd1:l/#?   re all quiet'
+   SAY 'protect rd1:Install-DICE r'
+   SAY 'protect rd1:Installer re'
+   SAY ''
+   SAY 'set echo off'
+   SAY ''
+   RETURN
+
+Setup: PROCEDURE
+   dt = '('translate(date(e),'.','/')')' time()
+
+   SAY ';;;'
+   SAY ';;; $ver: Make-DISKS 1.6' dt
+   SAY ';;;'
+
+   rc = Open('x', 'Make-Disks.start', 'r')
+   if ~rc THEN
+      DO
+         SAY "Can't open Make-Disks.start"
+      END
+
+   DO WHILE ~EOF('x')
+      say readln('x')
+   END
+
+   rc = Close('x')
+   RETURN

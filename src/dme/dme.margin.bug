@@ -1,0 +1,78 @@
+From uunet!glia.biostr.washington.edu!bjackson Tue, 16 Jun 92 01:28:41 PST
+Received: by overload.Berkeley.CA.US (V1.16/Amiga)
+	id AA00000; Tue, 16 Jun 92 01:28:41 PST
+Received: from UWAVM.U.WASHINGTON.EDU by relay1.UU.NET with SMTP 
+	(5.61/UUNET-internet-primary) id AA27948; Tue, 16 Jun 92 00:40:42 -0400
+Received: from glia.biostr.washington.edu by UWAVM.U.WASHINGTON.EDU
+   (IBM VM SMTP V2R1) with TCP; Mon, 15 Jun 92 21:40:17 PDT
+Received: by glia.biostr.washington.edu 
+  (5.52/Eno-0.1) id AA14462; Mon, 15 Jun 92 21:43:24 PDT
+Posted-Date: Mon, 15 Jun 92 21:43:20 PDT
+Message-Id: <9206160443.AA14462@glia.biostr.washington.edu >
+Date: Mon, 15 Jun 92 21:43:20 PDT
+X-Mailer: ELM [version 2.3 PL11]
+From: uunet!glia.biostr.washington.edu!bjackson (Ben Jackson)
+To: dillon@Overload.Berkeley.CA.US
+Subject: DME wordwrap bug
+
+Ok, I think I've got some more info on the DME crash...
+It's a fluke that I happened to be working on this file:
+
+----8<--cut----8<--cut----8<--cut----8<--cut----8<--cut---
+
+
+                                             Michelle Wrighstman
+                                             7728 Hearthstone Way
+                                             Indianapolis, IN  46227
+
+                                             June 15, 1992
+
+         The Children's Museum
+         Attn:  Ms. Melody Plew
+         3000 N. Meridian
+         Indianapolis, IN
+
+
+
+
+
+
+
+
+
+         Dear Ms. Plew:
+
+         I would like to be considered for a position in a gallery at
+         the Museum.  My experience working with children and adults,
+         my creativity any my enthusiasm would be of great benefit
+         to the Children's Museum.
+
+         I am looking forward to meeting you and will call in a few
+         days to schedule an interview.  During the day I can be
+         contacted at 639-1982.  Thank you for you time and
+         consideration.
+
+
+                                             Sincerely,
+
+
+
+                                             Michelle Wrightsman
+
+
+
+
+
+--end----end--
+
+Well, at the time, the file lacked the 9 leading spaces. (I forgot
+about them on the ascii send, sorry...) Wordwrap was on, margin 60,
+and I absentmindedly did:
+repeat lbot (first `          ' down)
+Which causes a rather processor intensive lockup.
+
+(note that there are 10 spaces in the command that caused the crash,
+I decided it only needed 9 later)
+
+This is with DME 1.46 (the vers included with 2.06.40)
+

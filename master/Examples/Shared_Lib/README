@@ -1,0 +1,50 @@
+
+			SHARED_LIB EXAMPLE CODE
+
+    This is a fully compilable shared library implemented for DICE
+    demonstrating how one can write their very own shared library.  Some
+    knowledge in shared libraries is required to understand the code..
+    the basic thing to remember is (1) that a shared library is NOT a
+    normal C program, and (2) the interface calls MUST be reentrant...
+    i.e. multiple tasks can make a library call simultaniously.
+
+				SHARED LIBRARY
+
+    DEFS.H	contains header stuff
+    TAG.A	library independant basic code
+    LIB.C	library independant basic code
+    INIT.C	library dependant initialization routines
+    FUNCS.C	library dependant routines
+
+    TAG.A and LIB.C are almost self contained with only a few modifications
+    required to use them for other library projects... basically the
+    name of the library in TAG.A and the function list in LIB.C
+
+    TAG.A contains a subset of the standard startup code, LIB/AMIGA/C.A,
+    and assumes non-resident compilation (i.e. you cannot use the -r
+    option).  This isn't a problem since the -r option doesn't gain you
+    anything as far as shared libraries go.
+
+    The individual library interface routines are declared with the LibCall
+    macro, defined in DEFS.H, which ensures the small-data pointer is set
+    up for all interface calls allowing use of the small-data model.  The
+    register specification for the call arguments must match those in the
+    TEST.FD file.
+
+    Also, TAG.A must be the FIRST source module specified, and it is in
+    this example.
+
+				THE LINK LIB
+
+    The Library template generates a link lib, in this case called TEST.LIB,
+    which contains library tags and an autoinit module.  The result is
+    that the MYTEST program does not need to explicitly open and close
+    TEST.LIBRARY!
+
+			     COMPILING AND RUNNING
+
+    Run the Test.DICE project and Make it under vmake.
+
+    Run the mytest.DICE project, Make it under vmake, and then run the
+    TEST.SCRIPT script from a shell.
+

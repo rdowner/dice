@@ -1,0 +1,22 @@
+
+dcc:cpp/DMakefile.cumo.lc	dcpp/DMakefile.lc
+dcc:cpp/DMakefile.cumo.dcc	dcpp/DMakefile.dcc
+dcc:cpp/DMakefile.cumo		dcpp/DMakefile
+dcc:cpp/README.cumo		dcpp/README
+dcc:config/dice.errors		dcpp/config/dice.errors
+dcc:lib/extra/unixpath.c	dcpp/unixpath.c
+dcc:cpp/precomp.c	dcpp/
+dcc:cpp/direct.c	dcpp/
+dcc:cpp/asubs.a 	dcpp/
+dcc:cpp/version.doc	dcpp/
+dcc:cpp/sym.c		dcpp/
+dcc:cpp/cexp.c		dcpp/
+dcc:cpp/main.c		dcpp/
+dcc:cpp/cpp.c		dcpp/
+dcc:cpp/subs.c		dcpp/
+dcc:cpp/define.c	dcpp/
+dcc:cpp/defs.h		dcpp/
+dcc:cpp/include.c	dcpp/
+dcc:cpp/error.h 	dcpp/
+dcc:c1/tokens.h 	dcpp/
+

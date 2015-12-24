@@ -1,0 +1,16 @@
+##base _DiceCacheBase
+##bias 30
+##public
+DiceCacheOpen(name,modes,psiz)(A0,A1,A2)
+DiceCacheClose(cn)(A0)
+DiceCacheSeek(cn,off,psiz)(A0,D0,A1)
+DiceCacheGetSuffixes(buf,max)(A0,D0)
+DiceCacheAddSuffix(buf)(A0)
+DiceCacheRemSuffix(buf)(A0)
+DiceCacheFlush(bytes)(D0)
+DiceCacheSet(lary,n)(A0,D0)
+DiceCacheGet(lary,n)(A0,D0)
+DiceCacheEnable()()
+DiceCacheDisable()()
+##end
+

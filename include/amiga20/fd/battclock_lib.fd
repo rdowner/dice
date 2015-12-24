@@ -1,0 +1,11 @@
+* "battclock.resource"
+##base _BattClockBase
+##bias 6
+##public
+ResetBattClock()()
+ReadBattClock()()
+WriteBattClock(time)(d0)
+##private
+ReadBattClockMem(offset,length)(d1/d2)
+WriteBattClockMem(data,offset,length)(d0/d1/d2)
+##end

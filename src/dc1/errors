@@ -1,0 +1,1163 @@
+asm1.c         1 EUNREG_AUTOINIT
+asm1.c         2 EUNREG_AUTOEXIT
+asm1.c         3 EUNREG_GETA4
+asm1.c         4 EUNREG_CHIP
+UNUSED         5 EUNREG_REG_ARGS
+rules.c        6 EUNREG_FLOATINGPT
+UNUSED         7 EUNREG_RESERVED7
+UNUSED         8 EUNREG_RESERVED8
+lex.c          9 EFATAL_UNEXPECTED_EOF
+lex.c          9 EFATAL_UNEXPECTED_EOF
+lex.c         10 EWARN_CHAR_CONST_TOO_LONG
+lex.c         11 EWARN_NEWLINE_IN_STRING_CONST
+lex.c         12 EWARN_ILLEGAL_CHAR, ptr[-1], ptr[-1]
+lex.c         13 EERROR_UNEXPECTED_TOKEN, TokenToStr(t), TokenToStr(expect)
+asm1.c        14 EERROR_GETA4_ILLEGAL
+asm1.c        15 EERROR_TOO_MANY_AUTOS
+types.c       16 EERROR_UNSUPPORTED_RETURN_TYPE
+asm1.c        16 EERROR_UNSUPPORTED_RETURN_TYPE
+asm1.c        16 EERROR_UNSUPPORTED_RETURN_TYPE
+asm1.c        16 EERROR_UNSUPPORTED_RETURN_TYPE
+asm1.c        17 EWARN_CONSTANT_OUT_OF_RANGE, cases[num-1]
+asm1.c        17 EWARN_CONSTANT_OUT_OF_RANGE, cases[0]
+asm1.c        17 EWARN_CONSTANT_OUT_OF_RANGE, n
+asm1.c        18 EERROR_SIZE_MISMATCH, s1->st_Size, s2->st_Size
+asm1.c        19 EERROR_CASE_REPEATED, sv, sv
+asm2.c        20 EERROR_BLOCK_OPERATION_SOURCE
+asm2.c        21 EERROR_BLOCK_OPERATION_DEST
+asm1.c        22 EFATAL_DEST_NOT_LVALUE
+asm2.c        22 EFATAL_DEST_NOT_LVALUE
+stmt.c        23 EFATAL_SYNTAX_ERROR_EXP
+cexp.c        23 EFATAL_SYNTAX_ERROR_EXP
+cexp.c        23 EFATAL_SYNTAX_ERROR_EXP
+stmt.c        23 EFATAL_SYNTAX_ERROR_EXP
+cexp.c        23 EFATAL_SYNTAX_ERROR_EXP
+cexp.c        23 EFATAL_SYNTAX_ERROR_EXP
+cexp.c        23 EFATAL_SYNTAX_ERROR_EXP
+cexp.c        23 EFATAL_SYNTAX_ERROR_EXP
+stmt.c        23 EERROR_SYNTAX_ERROR_EXP
+cexp.c        23 EFATAL_SYNTAX_ERROR_EXP
+cexp.c        23 EFATAL_SYNTAX_ERROR_EXP
+cexp.c        23 EFATAL_SYNTAX_ERROR_EXP
+cexp.c        24 EFATAL_EXPECTED_EXP
+UNUSED        25 EERROR_EXPECTED_RBRACE
+cexp.c        26 EFATAL_EXPECTED_CLOSE_PARENS, parens
+cexp.c        27 EERROR_EXPECTED_CLOSE_BRACKET
+cexp.c        28 EFATAL_EXPECTED_STRUCT_TAG
+cexp.c        29 EFATAL_EXPECTED_COMMACLOSE
+cexp.c        30 EERROR_UNDEFINED_SYMBOL, SymToString(LexSym)
+exp.c         31 EERROR_EXPECTED_INT_CONST
+exp.c         32 EERROR_NOT_LVALUE
+genass.c      32 EERROR_NOT_LVALUE
+exp.c         32 EERROR_NOT_LVALUE
+exp.c         32 EERROR_NOT_LVALUE
+gen.c         33 EERROR_GOTO_LABEL_NOT_FOUND,
+genarith.c    34 EERROR_CONST_DIVMOD_0
+genarith.c    34 EERROR_CONST_DIVMOD_0
+types.c       35 EWARN_PTR_PTR_MISMATCH, TypeToProtoStr(t1, 0)
+UNUSED        35 EERROR_PTR_PTR_MISMATCH
+genarith.c    36 EERROR_UNEXPECTED_VOID_TYPE
+genbool.c     36 EERROR_UNEXPECTED_VOID_TYPE
+types.c       36 EERROR_NOT_STRUCT_UNION
+genarith.c    36 EERROR_UNEXPECTED_VOID_TYPE
+rules.c       36 EERROR_UNEXPECTED_VOID_TYPE
+genbool.c     36 EERROR_UNEXPECTED_VOID_TYPE
+rules.c       36 EERROR_UNEXPECTED_VOID_TYPE
+rules.c       36 EERROR_UNEXPECTED_VOID_TYPE
+rules.c       36 EERROR_UNEXPECTED_VOID_TYPE
+rules.c       36 EERROR_UNEXPECTED_VOID_TYPE
+rules.c       36 EERROR_UNEXPECTED_VOID_TYPE
+rules.c       36 EERROR_UNEXPECTED_VOID_TYPE
+rules.c       36 EERROR_UNEXPECTED_VOID_TYPE;
+rules.c       36 EERROR_UNEXPECTED_VOID_TYPE
+rules.c       36 EERROR_UNEXPECTED_VOID_TYPE
+rules.c       36 EERROR_UNEXPECTED_VOID_TYPE
+rules.c       36 EERROR_UNEXPECTED_VOID_TYPE
+rules.c       36 EERROR_UNEXPECTED_VOID_TYPE
+rules.c       36 EERROR_UNEXPECTED_VOID_TYPE
+rules.c       36 EERROR_UNEXPECTED_VOID_TYPE
+genbool.c     37 EWARN_RESULT_NOT_USED
+genbool.c     37 EWARN_RESULT_NOT_USED
+genbool.c     37 EWARN_RESULT_NOT_USED
+genmisc.c     38 EWARN_ADDR_ARRAY_REDUNDANT
+genmisc.c     39 EERROR_ADDR_BITFIELD_ILLEGAL
+genmisc.c     40 EERROR_INDIRECTION_NOT_PTR
+genmisc.c     40 EERROR_INDIRECTION_NOT_PTR
+genmisc.c     40 EERROR_INDIRECTION_NOT_PTR
+genmisc.c     41 EERROR_ALLOCA
+genmisc.c     42 EERROR_LHS_NOT_PROCEDURE
+genmisc.c     43 EERROR_UNPROTOTYPED_CALL
+genmisc.c     44 EWARN_TOO_FEW_PARAMETERS
+genmisc.c     45 EWARN_TOO_MANY_PARAMETERS
+genmisc.c     46 EERROR_NOT_STRUCT_UNION
+reg.c         47 EFATAL_MAX_TMP_EXCEEDED
+reg.c         48 ESOFT_REG_NOT_ALLOCATED, regno
+reg.c         48 ESOFT_REG_NOT_ALLOCATED, regno
+genmisc.c     49 EERROR_EXPECTED_INT_TYPE
+genbool.c     49 EERROR_EXPECTED_INT_TYPE
+rules.c       49 EERROR_EXPECTED_INT_TYPE
+rules.c       49 EERROR_EXPECTED_INT_TYPE
+rules.c       49 EERROR_EXPECTED_INT_TYPE
+genbool.c     49 EERROR_EXPECTED_INT_TYPE
+rules.c       49 EERROR_EXPECTED_INT_TYPE
+rules.c       50 EERROR_ILLEGAL_PTR_ARITH
+rules.c       50 EERROR_ILLEGAL_PTR_ARITH
+rules.c       51 EERROR_ILLEGAL_PTR_CONVERSION
+rules.c       51 EERROR_ILLEGAL_PTR_CONVERSION
+rules.c       52 EERROR_ILLEGAL_STRUCT_CVT
+rules.c       53 EERROR_ILLEGAL_CAST
+genmisc.c     53 EERROR_ILLEGAL_CAST
+rules.c       54 EWARN_PTR_INT_CONVERSION
+rules.c       55 EERROR_ILLEGAL_INT_CONVERSION
+rules.c       56 EWARN_INT_PTR_CONVERSION
+rules.c       56 EWARN_INT_PTR_CONVERSION;
+rules.c       56 EWARN_INT_PTR_CONVERSION
+rules.c       56 EWARN_INT_PTR_CONVERSION
+rules.c       57 EWARN_PTR_INT_MISMATCH
+rules.c       57 EWARN_PTR_INT_MISMATCH
+rules.c       58 EERROR_ILLEGAL_STRUCT_OP
+rules.c       58 EERROR_ILLEGAL_STRUCT_OP
+toplevel.c    59 EERROR_ILLEGAL_ASSIGNMENT
+rules.c       59 EERROR_ILLEGAL_ASSIGNMENT
+genass.c      59 EERROR_ILLEGAL_ASSIGNMENT
+rules.c       59 EERROR_ILLEGAL_ASSIGNMENT
+rules.c       59 EERROR_ILLEGAL_ASSIGNMENT;
+genass.c      59 EERROR_ILLEGAL_ASSIGNMENT
+genass.c      59 EERROR_ILLEGAL_ASSIGNMENT
+rules.c       59 EERROR_ILLEGAL_ASSIGNMENT;
+rules.c       59 EERROR_ILLEGAL_ASSIGNMENT
+rules.c       60 EERROR_ILLEGAL_PTR_INT_SIZE
+rules.c       60 EERROR_ILLEGAL_PTR_INT_SIZE
+rules.c       60 EERROR_ILLEGAL_PTR_INT_SIZE;
+rules.c       60 EERROR_ILLEGAL_PTR_INT_SIZE;
+toplevel.c    61 EERROR_ILLEGAL_BITFIELD_OP
+toplevel.c    61 EERROR_ILLEGAL_BITFIELD_OP
+rules.c       61 EERROR_ILLEGAL_BITFIELD_OP
+rules.c       61 EERROR_ILLEGAL_BITFIELD_OP
+toplevel.c    61 EERROR_ILLEGAL_BITFIELD_OP
+rules.c       62 ESOFT_ILLEGAL_COMPARE
+types.c       63 EERROR_UNDEFINED_TAG, SymToString(sym)
+types.c       63 EERROR_UNDEFINED_TAG
+types.c       64 EERROR_UNDEFINED_ELEMENT, SymToString(exp->ex_Symbol)
+UNUSED        65 EFATAL_NO_MEMORY
+subs.c        66 EFATAL_FPSTR_TOO_LONG
+subs.c        67 EFATAL_FPINT_TOO_LARGE
+toplevel.c    68 EWARN_EXPECTED_SEMICOLON
+stmt.c        68 EWARN_EXPECTED_SEMICOLON
+stmt.c        68 EERROR_EXPECTED_SEMICOLON
+toplevel.c    69 EERROR_ILLEGAL_QUALIFIER
+stmt.c        69 EERROR_ILLEGAL_QUALIFIER
+toplevel.c    69 EERROR_ILLEGAL_QUALIFIER
+toplevel.c    70 EERROR_ILLEGAL_TYPEDEF
+toplevel.c    70 EERROR_ILLEGAL_TYPEDEF
+toplevel.c    71 EERROR_MULTIPLY_DEFINED_PROC
+toplevel.c    71 EERROR_MULTIPLY_DEFINED_PROC
+UNUSED        72 EFATAL_TYPE_TOO_COMPLEX
+toplevel.c    73 EERROR_SYNTAX_ERROR_DECL
+stmt.c        73 EERROR_SYNTAX_ERROR_DECL
+toplevel.c    73 EERROR_SYNTAX_ERROR_DECL
+stmt.c        73 EERROR_SYNTAX_ERROR_DECL
+stmt.c        73 EERROR_SYNTAX_ERROR_DECL
+stmt.c        73 EERROR_SYNTAX_ERROR_DECL
+stmt.c        73 EERROR_SYNTAX_ERROR_DECL
+toplevel.c    73 EERROR_SYNTAX_ERROR_DECL
+toplevel.c    74 EWARN_ENUM_OVERIDE
+stmt.c        75 EERROR_ID_MISSING_PROC
+stmt.c        76 EERROR_ID_NOT_IN_LIST
+stmt.c        77 EFATAL_STMT_COND_NOT_EXP
+stmt.c        77 EFATAL_STMT_COND_NOT_EXP
+stmt.c        77 EFATAL_STMT_COND_NOT_EXP
+stmt.c        77 EFATAL_STMT_COND_NOT_EXP
+stmt.c        78 EERROR_DUPLICATE_DEFAULT
+UNUSED        79 EERROR_STATEMENTS_BEFORE_CASE
+stmt.c        80 EERROR_EXPECTED_OCBRACE_PROC
+stmt.c        80 EERROR_EXPECTED_OCBRACE_PROC
+stmt.c        81 EERROR_CASE_DEFAULT_OUTSIDE
+stmt.c        81 EERROR_CASE_DEFAULT_OUTSIDE
+stmt.c        82 EERROR_ELSE_NO_IF
+genass.c      83 EERROR_TOO_MANY_INITIALIZERS
+toplevel.c    83 EERROR_TOO_MANY_INITIALIZERS
+cexp.c        83 EERROR_TOO_MANY_INITIALIZERS
+cexp.c        84 EERROR_ARRAY_CANNOT_HOLD_STRING
+stmt.c        85 EERROR_ILLEGAL_REGSPEC
+toplevel.c    85 EERROR_ILLEGAL_REGSPEC
+UNUSED        86 EWARN_VARIABLE_NOT_USED
+exp.c         87 EERROR_ILLEGAL_RETURN_TYPE
+gen.c         87 EERROR_ILLEGAL_RETURN_TYPE
+toplevel.c    88 EWARN_SASC_QUALIFIER_PLACEMENT
+stmt.c        89 EERROR_BREAK_OUTSIDE_LOOPSW
+stmt.c        90 EERROR_CONT_OUTSIDE_LOOP
+asmaddr.c     91 EERROR_ADDRESS_INT_CONST
+asm1.c        92 EERROR_PASS_UNALIGNED_STRUCT
+genmisc.c     93 EERROR_PROTO_REQUIRED_INLINE
+lex.c         94 EFATAL_INPUT_NOT_SEEKABLE
+lex.c         95 EFATAL_CANT_OPEN_FILE, lf->lf_FileName
+UNUSED        96 EFATAL_READ_FAILED
+main.c        97 EFATAL_CANT_OPEN_OUTPUT, ptr ? ptr : "?"
+asmaddr.c     98 EERROR_BAD_IND_TYPE
+cexp.c        99 EFATAL_PRAGMA_BASE_UNDEF, sym->Len, sym->Name
+genmisc.c    100 EERROR_SIZEOF_TYPE_0
+sem.c        101 EWARN_DUPLICATE_SYMBOL, sym->Len, sym->Name
+block.c      101 EERROR_DUPLICATE_SYMBOL,
+stmt.c       101 EWARN_DUPLICATE_SYMBOL, LexSym->Len, LexSym->Name
+gen.c        102 EWARN_VARIABLE_NOT_USED, var->Sym->Len, var->Sym->Name
+sem.c        103 EWARN_VARIABLE_OVERIDES_ARG, sym->Len, sym->Name
+pragma.c     104 EFATAL_PRAGMA_CONFLICT_ARGS, pn->pn_FuncLen, pn->pn_Func
+pragma.c     105 EFATAL_PRAGMA_RETURN_D0, pn->pn_FuncLen, pn->pn_Func
+asmaddr.c    106 EERROR_VOID_IND_TYPE
+toplevel.c   107 EERROR_NO_MEMBERS, SymToString(FindStructUnionTag(type       )
+cexp.c       108 EWARN_MISSING_COMMA
+cexp.c       108 EWARN_MISSING_COMMA
+block.c      109 EWARN_RETURN_MISMATCH, TypeToProtoStr(tn->SubType, 0)
+block.c      110 EERROR_ARGUMENT_COUNT
+block.c      111 EERROR_NON_PROTOTYPE
+types.c      111 EWARN_NON_PROTOTYPE
+block.c      112 EERROR_ARGUMENT_MISMATCH,
+block.c      113 EERROR_REGISTER_MISMATCH, i + 1
+block.c      114 EERROR_INCOMPATIBLE_STRUCTURE, TypeToProtoStr(tn, 0)
+block.c      115 EWARN_DOES_NOT_MATCH, TypeToProtoStr(to, 0)
+types.c      115 EWARN_DOES_NOT_MATCH,   TypeToProtoStr(t2, 0)
+block.c      115 EWARN_DOES_NOT_MATCH,
+block.c      115 EWARN_DOES_NOT_MATCH,  TypeToProtoStr(to->SubType, 0)
+gen.c        116 EFATAL_TOO_MANY_REDOS
+main.c       117 EFATAL_INTERNAL_ERROR, line, file
+main.c       118 EERROR_BAD_LOCALE, ptr
+genass.c     119 EERROR_BADRELOC_IN_CONST
+asmflt.c     120 EERROR_CANT_OPEN_MATHLIB, "mathieeedoub[bas,trans].library"
+asmflt.c     120 EERROR_CANT_OPEN_MATHLIB, "mathieeesing[bas,trans].library"
+asmflt.c     120 EERROR_CANT_OPEN_MATHLIB, "math[ffp,trans].library"
+
+
+C1:001:__autoinit
+C1:002:__autoexit
+C1:003:__geta4
+C1:004:__chip
+C1:005:registered args
+C1:006:floating point
+C1:009:Unexpected EOF
+C1:010:Char Const Too Large!
+C1:011:NewLine in string constant
+C1:012:Illegal character '%c' $%02x
+C1:013:Unexpected Token '%s' expected '%s'
+C1:014:__geta4 keyword does NOT work with residentable executables!
+C1:015:More than 32K of auto variables!
+C1:016:Unsupported return type
+C1:017:constant does not fit storage: %d
+C1:018:size mismatch: %d, %d
+C1:019:repeated case: %d (0x%08lx)
+C1:020:block operation error in source
+C1:021:block operation error in dest
+C1:022:dest not lvalue
+C1:023:syntax error in expression
+C1:024:expected expression
+C1:025:expected '}'
+C1:026:expected %d close parens
+C1:027:expected close bracket
+C1:028:expected identifer after . or ->
+C1:029:expected ',' or ')' in function call
+C1:030:undefined symbol: %s
+C1:031:expected integer constant
+C1:032:not an lvalue
+C1:033:goto label not found: %.*s
+C1:034:constant div/mod by 0
+C1:035:ptr-ptr mismatch type: %s
+C1:036:unexpected void type
+C1:037:result not used
+C1:038:& of array redundant
+C1:039:& of bitfield illegal
+C1:040:indirection through non-ptr
+C1:041:must #include <alloca.h> for alloca
+C1:042:left hand side of assignment is not a procedure
+C1:043:unprototyped call
+C1:044:too few parameters in call
+C1:045:too many parameters in call
+C1:046:not structure or union type
+C1:047:maximum auto storage for temporaries exceeded
+C1:048:register not allocated: %d
+C1:049:expected integer type
+C1:050:illegal ptr arithmatic
+C1:051:illegal ptr conversion
+C1:052:illegal structure conversion
+C1:053:illegal cast
+C1:054:ptr-int conversion
+C1:055:illegal int conversion
+C1:056:int-ptr conversion
+C1:057:int/ptr mismatch
+C1:058:illegal or incompatible structure operation
+C1:059:illegal assignment
+C1:060:illegal ptr-int or int-ptr conversion, int-size != ptr-size
+C1:061:illegal bit-field operation
+C1:062:illegal compare
+C1:063:undefined structure tag: %s
+C1:064:undefined struct/union field: %s
+C1:065:ran out of memory
+C1:066:fp constant string too long!
+C1:067:fp constant too large to convert to int
+C1:068:expected semicolon
+C1:069:illegal type/storage qualifier for variable
+C1:070:illegal typedef
+C1:071:multiple defined procedure
+C1:072:type too complex
+C1:073:syntax error in declaration
+C1:074:enum identifier overides variable/type
+C1:075:id missing in procedure declaration
+C1:076:procedure id decl not in id list
+C1:077:statement's condition must be an expression
+C1:078:duplicate default: in switch
+C1:079:statements before first case in switch
+C1:080:expected '{' or '}' for procedure def
+C1:081:case/default outside switch
+C1:082:else without if
+C1:083:too many initializers
+C1:084:array cannot hold string
+C1:085:illegal register specification
+C1:086:Variable not used: %*.*s
+C1:087:Illegal return type
+C1:088:Warning, SAS/C __qualifier placement
+C1:089:BREAK outside of loop/switch
+C1:090:CONTINUE outside of loop
+C1:091:Cannot take the address of a constant
+C1:092:Cannot passed unaligned structs by value
+C1:093:Prototype required for inline call
+C1:094:Input must be a seekable file
+C1:095:Can't open %s
+C1:096:Read failed
+C1:097:Can't open output %s
+C1:098:Incorrect type for indirection
+C1:099:Base variable (%.*s) for pragma is undefined
+C1:100:sizeof(type) is 0
+C1:101:Duplicate variable/symbol in same {} block: %.*s
+C1:102:Variable declared but not used: %.*s
+C1:103:Variable overides procedure argument: %.*s
+C1:104:Pragma argument count conflict with prototype: %.*s
+C1:105:Only D0 supported as a return register for pragmas: %.*s
+C1:106:Attempt to indirect through void pointer
+C1:107:Structure/Union %s has no members
+C1:108:Missing comma in initialization expression
+C1:109:Return type for procedures do not match from: %s
+C1:110:Number of args mismatch with prototype
+C1:111:Prototype into Non-Prototype
+C1:112:Incompatible procedure Argument #%d type: %s
+C1:113:Argument #%d is in a different register
+C1:114:Structure Types do not match: %s
+C1:115:Does not match original declaration type: %s
+C1:116:Subroutine too complex to generate code for
+C1:117:Internal Compiler error %d: %s
+C1:118:Can not read locale library file: %s
+C1:119:unrelocatable data reference in const storage
+C1:120:Can not open needed math library: %s
+
+
+
+@MAJOR HEADING = DC1 Error Messages<$M[ChapError]>
+
+@NAME = C1:001<R>
+C1:002<R>
+C1:003<R>
+C1:004<R>
+C1:005
+
+@ERRMESS = <%15>_<%0>_autoinit<R>
+__autoexit<R>
+__geta4<R>
+__chip<R>
+registered args
+
+These error messages should only occur if you are using the freeware
+release, and attempt to use features not supported in that limited
+version.
+
+@NAME = C1:009
+
+@ERRMESS = Unexpected EOF
+
+The source or header file ended abruptly, for example ending in the
+middle of a quoted string or macro.
+
+@NAME = C1:010
+
+@ERRMESS = Char Const Too Large!
+
+Only 4 characters are allowed within a character constant, more than
+four, such as 'abcde' will generate this error.
+
+@NAME = C1:011
+
+@ERRMESS = NewLine in string constant
+
+A newline occurs within a string constant, such as the next two lines:
+
+@INDEN1 = "abcd<R>
+efgh"
+
+This is not legal under ANSI C. Instead, you can create a single large
+string using "string1" "string2" ... two sets of quoted strings with
+no delimiter, putting them side by side or on separate lines as you
+like.
+
+@NAME = C1:012
+
+@ERRMESS = Illegal character '%c' $%02x
+
+Certain characters are illegal. One example is '#', when not part
+of a preprocessor directive:  int x= 43#.
+
+@NAME = C1:013
+
+@ERRMESS = Unexpected Token '%s' expected '%s'
+
+The expected token wasn't the one we got! The error message tells
+you what the character was and what was expected.  This is normally
+indicative of mismatched parenthesis or a semi-colon inside a subroutine
+call that expected commas or a close parenthesis.  Most full featured
+prograzmmer's editors can match braces (ie. find a matching } for
+every {) to help track these errors down.
+
+@NAME = C1:014
+
+@ERRMESS = <%15>_<%0>_geta4 keyword does NOT work with residentable
+executables!
+
+<%15>_<%0>_geta4 requires the base of the data to be at a known absolute
+relocatable location. You cannot use <%15>_<%0>_geta4 in conjunction
+with -r because residentable code allocates its data segment at run
+time.  Keep in mind that in the most common situation where you might
+get such an error -- writing shared libraries and devices, making
+the program resident would not buy you anything anyway.  The other
+common situation where you would need to use <%15>_<%0>_geta4 -- Amiga
+shared library callbacks, currently requires you to not make such
+executables residentable.
+
+@NAME = C1:015
+
+@ERRMESS = More than 32K of auto variables!
+
+DICE accesses all stack variables using word-register-relative, thus
+no more than 32KBytes worth of stack variables may be declared.
+
+@NAME = C1:016
+
+@ERRMESS = Unsupported return type
+
+You attempted to return a type that is currently unsupported.  Since
+all return types including structural returns are now supported, you
+should not get this error message.  Getting this error message would
+most likely be due to a bug in DICE.
+
+@NAME = C1:017
+
+@ERRMESS = constant does not fit storage: %d
+
+DICE will, in some cases, catch the use of constants that are out
+of range in a particular situation. For example, specifying the constant
+'128' in relation to a signed character (-128 to 127).
+
+DICE checks constant-fit only in hazzardous situations such as in
+a switch().
+
+@NAME = C1:018
+
+@ERRMESS = size mismatch: %d, %d
+
+This is a code generation error which can occur when you compare or
+run operations on incompatible types.  This error occurs when high
+level routines in the compiler fail to detect a problem with your
+source.
+
+@NAME = C1:019
+
+@ERRMESS = repeated case: %d (0x%08lx)
+
+The specified case, given in both decimal and hex, occurs more than
+once within a switch statement.
+
+@NAME = C1:020<R>
+C1:021
+
+@ERRMESS = block operation error in source<R>
+block operation error in dest
+
+Generally means that either the source or the destination of a block-op,
+such as a structure assignment, are incompatible. For example:
+
+@INDENT = foo = bar;
+
+where foo has a different structure type than bar. Generally this 
+error is preceeded by an "illegal assignment" error.
+
+@NAME = C1:022
+
+@ERRMESS = dest not lvalue
+
+Generally occurs if the object of an assignment is not assignable
+("lvalue means <MI>modifiable value<D>). However, note that DICE is
+notably weak in this area. It will cheerfully allow you to do things
+like (a + b) = c + d;, obviously illegal.
+
+@NAME = C1:023
+
+@ERRMESS = syntax error in expression
+
+A General syntax error in an expression occured. Usually occurs due
+to an illegally constructed expression, such as:
+
+@INDEN1 = a ] b;
+
+can also occur due to too few parenthesis.
+
+@NAME = C1:024
+
+@ERRMESS = expected expression
+
+An expression was expected when, instead, either nothing or a statement
+was found. This can also occur due to a syntax error in the expression.
+
+@NAME = C1:025
+
+@ERRMESS = expected '}'
+
+A close brace was expected, for example, a global declaration such
+as:
+
+@INDEN1 = int a[] = { 1, 2, 3;
+
+@NAME = C1:026
+
+@ERRMESS = expected %d close parens
+
+Expected one or more close parenthesis in an expression.
+
+@NAME = C1:027
+
+@ERRMESS = expected close bracket
+
+Expected a close bracket ']', generally caused by an incomplete array
+index such as a[i = 4;
+
+@NAME = C1:028
+
+@ERRMESS = expected identifer after . or ->>
+
+A structure indirection via '.' or '->>' requires a structure member
+to be specified. i.e. a field name.
+
+@NAME = C1:029
+
+@ERRMESS = expected ',' or ')' in function call
+
+Expected a delimiter in a function call. Either comma if another argument
+is to be given, or a close parenthesis to end the function call.
+
+@NAME = C1:030
+
+@ERRMESS = undefined symbol: %s
+
+The given symbol is not defined. For example, referencing a variable
+that was not defined or extern'd.
+
+@NAME = C1:031
+
+@ERRMESS = expected integer constant
+
+An integer constant was expected, generally occurs when you declare
+an array. For example, the following is illegal: int i[j];
+
+@NAME = C1:032
+
+@ERRMESS = not an lvalue
+
+Occurs when an lvalue was expected, usually in an assignment. An lvalue
+is an expression which exists in real storage, for example:
+
+@INDEN1 = *ptr = 4;
+
+the expression '*ptr' points to real storage where as the expression
+(a + b) in;
+
+@INDEN1 = (a + b) = 4;
+
+does NOT.  Note that DICE is not very good at catching lvalues errors
+yet.
+
+@NAME = C1:033
+
+@ERRMESS = goto label not found
+
+One or more 'goto label;' statements in a procedure specifies a non-existant
+label.
+
+@NAME = C1:034
+
+@ERRMESS = constant div/mod by 0
+
+You attempted to use the '/' or '%' operator with the constant value
+0 on the right hand side. Division/Modulus by 0 is illegal.
+
+@NAME = C1:035
+
+@ERRMESS = ptr-ptr mismatch
+
+Generally occurs in a pointer comparison or assignment. The two pointers
+do not point to the same type. Example,
+
+char *a; long *b; if (a << b);
+
+@NAME = C1:036
+
+@ERRMESS = unexpected void type
+
+Occurs due to an illegally constructed expression where the result
+storage is void.
+
+@NAME = C1:037
+
+@ERRMESS = result not used
+
+This warning occurs in some cases where an expression has been calculated
+but the result ends up not being used.  For example:
+
+@INDEN1 = a <<= 4;
+
+@NAME = C1:038
+
+@ERRMESS = & of array redundant
+
+Example: int a[4]; int *b = &a; ... the '&' is redundant because accessing
+an array variable without any index yields a pointer to the array
+anyway.
+
+@NAME = C1:039
+
+@ERRMESS = & of bitfield illegal
+
+It is not legal to take the address of a bitfield element in a structure
+since no pointer representation is possible.
+
+@NAME = C1:040
+
+@ERRMESS = indirection through non-ptr
+
+Example: int a; *a = 4; ... i.e. where 'a' wasn't a pointer. Will
+also occur if you attempt to index a variable which is not an array
+or pointer, i.e. a[4] = 4; where 'a' is an integer instead of an array/pointer.
+
+@NAME = C1:041
+
+@ERRMESS = must #include <<alloca.h>> for alloca
+
+DICE requires a special alloca. To obtain it any modules that use
+alloca() must #include <<alloca.h>> which redefines it properly.
+
+@NAME = C1:042
+
+@ERRMESS = lhs not a procedure
+
+You attempted to make a procedure call, such as foo(23); where foo
+is not a procedure. Example:
+
+@INDEN1 = int foo;<R>
+...<R>
+foo(23);
+
+This can occur if you accidently declare a variable whos name is the
+same as a procedure you attempt to call.
+
+@NAME = C1:043
+
+@ERRMESS = unprototyped call
+
+When the -proto option to DCC is used, any procedure call which is
+not prototyped will generate this error.
+
+@NAME = C1:044<R>
+C1:045
+
+@ERRMESS = too few parameters in call<R>
+too many parameters in call
+
+For prototyped procedures, the number of arguments is generally known.
+DICE will print these warnings if you make a procedure call with too
+few or too many arguments.
+
+@NAME = C1:046
+
+@ERRMESS = not structure or union type
+
+An attempt was made to indirect through a structure or union where
+the lhs (left hand side) was not a structure or union type.
+
+@NAME = C1:047
+
+@ERRMESS = maximum auto storage for temporaries exceeded
+
+DICE tracks stack temporaries, mainly for floating point. If DICE's
+maximum number of temporaries is exceeded due to an overly complex
+expression, this error will be given.
+
+@NAME = C1:048
+
+@ERRMESS = register not allocated: %d
+
+This is generally an indication of a software error within DC1 if
+not preceeded by other error messages.
+
+@NAME = C1:049
+
+@ERRMESS = expected integer type
+
+An integer type was expected but instead a non-integer type was found.
+For example, trying to use a float to index an array.
+
+@NAME = C1:050
+
+@ERRMESS = illegal ptr arithmatic
+
+This error generally occurs when you do something illegal with a pointer.
+For example, while 'ptr - i' is valid, 'i - ptr' is not. While you
+can subtract two pointers 'p1 - p2', you cannot add two pointers 'p1
++ p2'.
+
+@NAME = C1:051
+
+@ERRMESS = illegal ptr conversion
+
+This error generally occurs when you attempt to cast a structure to
+a pointer or vise versa.
+
+@NAME = C1:052
+
+@ERRMESS = illegal structure conversion
+
+This error is similar to #051
+
+@NAME = C1:053
+
+@ERRMESS = illegal cast
+
+A catch all for casts that DICE does not understand, such as converting
+integers into arrays.
+
+@NAME = C1:054
+
+@ERRMESS = ptr-int conversion
+
+Generally occurs when DICE is forced to convert a pointer to an integer,
+for example when making a procedure call and passing a pointer when
+the procedure expected an integer.
+
+@NAME = C1:055
+
+@ERRMESS = illegal int conversion
+
+It is illegal to convert an integer to a structure or vice-versa,
+generally the error occurs through an explicit cast.
+
+@NAME = C1:056
+
+@ERRMESS = int-ptr conversion
+
+Generally occurs when DICE is forced to convert an integer to a pointer,
+for example when making a procedure call and passing an integer when
+the procedure expected a pointer.  The most common problem related
+to this is not having #include'd the appropriate prototypes for various
+Amiga library calls or for your own routines.
+
+@NAME = C1:057
+
+@ERRMESS = int/ptr mismatch
+
+Generally occurs when you compare two unlike types (an integer and
+a pointer).
+
+@NAME = C1:058
+
+@ERRMESS = illegal or incompatible structure operation
+
+When you assign structures to each other they must be of the same
+type & size. May also occur if you accidently assign a structure to
+a non-structure or vice-versa.
+
+@NAME = C1:059
+
+@ERRMESS = illegal assignment
+
+The assignment is illegal. Usually occurs if you attempt to assign
+a field in a structure in the structure definition, like:
+
+@INDEN1 = struct foo {
+
+@INDEN2MID = int x = 4; /* huh ?? */
+
+@INDEN1BOT = };
+
+@NAME = C1:060
+
+@ERRMESS = illegal ptr-int or int-ptr conversion, int-size != ptr-size
+
+This is catch-all for programs that convert between pointers and integers
+and vice-versa. You can only convert an int or long to a pointer and
+back in DICE. Converting to or from a short is illegal.
+
+@NAME = C1:061
+
+@ERRMESS = illegal bit-field operation
+
+The bitfield operation is not legal. Generally occurs when you attempt
+to declare a bitfield not part of a structure or union.
+
+@NAME = C1:062
+
+@ERRMESS = illegal compare
+
+Generally occurs when you attempt to compare two structures. You can
+only use == and != when comparing structures.
+
+@NAME = C1:063
+
+@ERRMESS = undefined structure tag
+
+Generally occurs when you attempt to reference a field in a structure
+which has yet to be defined.  Note that it is perfectly legal to declare
+pointers to undefined structures as long as you do not attempt to
+reference a field in the structure.
+
+@NAME = C1:064
+
+@ERRMESS = undefined struct/union field: %s
+
+The specified field does not exist in the structure definition.
+
+@NAME = C1:065
+
+@ERRMESS = ran out of memory
+
+DICE ran out of memory. The README file outlines possible steps to
+take ranging from making fewer things resident to specifying a temporary
+directory on your HD instead of in T: (usually assigned to RAM:).  The
+most common memory problem is related to DAS, which is a known memory
+hog.  The best work around is to split up large source files into
+smaller ones.
+
+@NAME = C1:066
+
+@ERRMESS = fp constant string too long!
+
+A floating point constant is too long (>> 128 digits). DICE can only
+handle so much.
+
+@NAME = C1:067
+
+@ERRMESS = fp constant too large to convert to int
+
+The fp constant is less than -0x80000000 or larger than 0x7FFFFFFF
+and thus cannot be converted to an integer.
+
+@NAME = C1:068
+
+@ERRMESS = expected semicolon
+
+A semicolon was expected. For example:
+
+@INDEN1 = int a<<--- oops<R>
+int b;
+
+Generally occurs when something unexpected happens, a semicolon is
+not always the correct solution. For example, can occur if you have
+too many close braces.
+
+@NAME = C1:069
+
+@ERRMESS = illegal type/storage qualifier for variable
+
+The type or storage qualifier is illegal for this variable declaration.
+
+@NAME = C1:070
+
+@ERRMESS = illegal typedef
+
+The typedef is illegal.
+
+@NAME = C1:071
+
+@ERRMESS = multiply defined procedure
+
+You have defined a procedure (definition means procedure declaration
+with { ... code ... }) more than once in the same source file.
+
+@NAME = C1:072
+
+@ERRMESS = type too complex
+
+Occurs if a type is too complex for DICE to handle. For example, DICE
+cannot deal with an array with 32 dimensions.
+
+@NAME = C1:073<R>
+C1:074
+
+@ERRMESS = syntax error in declaration<R>
+enum identifier overides variable/type
+
+Occurs if you create an enum identifier that overides an existing
+typedef or variable.  While enum's are supposed to be in a separate
+domain, this is one of the areas in which DICE is not totally ANSI.
+
+@NAME = C1:075
+
+@ERRMESS = id missing in procedure declaration
+
+You have made a procedure definition, probably using the ANSI procedure
+definition style, but forgotten to specify an identifier for one of
+the arguments.  Only procedure <B>REFERENCES<D> may leave off the
+identifier.
+
+@INDEN1 = void fubar(int) { ... }   /*  not ok in definition    */
+
+@INDEN1 = void fubar(int);          /*  ok in prototype */
+
+@NAME = C1:076
+
+@ERRMESS = procedure id decl not in id list
+
+This occurs if you declare a procedure with arguments old style and
+mistakenly declare a variable that wasn't specified in the identifier
+list.
+
+@INDEN1 = int fubar(a,b,c)<R>
+int a, b, c, d;<R>
+{<R>
+}
+
+Note that the variable 'd' did not exist in the id list.
+
+@NAME = C1:077
+
+@ERRMESS = statement's condition must be an expression
+
+RETURN, IF, DO and WHILE require an expression or nothing. The middle
+argument for FOR() requires an expression. Whatever you gave the compiler,
+it wasn't an expression.
+
+@NAME = C1:078
+
+@ERRMESS = duplicate default: in switch
+
+You have more than one default: statement in a switch.
+
+@NAME = C1:079
+
+@ERRMESS = statements before first case in switch
+
+Again, strict ANSI says it is ok to have statements before a switch
+though it says nothing as to how they are supposed to get executed.
+
+@INDEN1 = switch(fubar) {
+
+@INDEN2MID = x = 4;
+
+@INDEN1MID = case 1:
+
+@INDEN2MID = ...
+
+@INDEN1BOT = }
+
+But DICE will generate an error.
+
+@NAME = C1:080
+
+@ERRMESS = expected '{' or '}' for procedure def
+
+Just a more specific error message to the general syntax error. There
+is something wrong with your procedure definition, DICE expected an
+open brace and then the procedure but didn't see an open brace.
+
+@NAME = C1:081
+
+@ERRMESS = case/default outside switch
+
+with DICE, the case and default statements must be on the same semantic
+level as the switch() { ... } even though ANSI says they can be in
+lower levels. At least for now. The other common cause is if you really
+do have a case or default statement outside of the switch statement.
+
+@NAME = C1:082
+
+@ERRMESS = else without if
+
+You have an ELSE statement not associated with any IF statement. The
+most common mistake is when you accidently put two statements in between
+an IF and an ELSE without using braces, like this:
+
+@INDEN1 = if (i == 0)
+
+@INDEN2MID = i = 1; j = 2; /* wrong, need braces if more than one
+stmt */
+
+@INDEN1MID = else
+
+@INDEN2BOT = i = 3;
+
+Which more commonly occurs if you use #define macros heavily.
+
+@NAME = C1:083
+
+@ERRMESS = too many initializers
+
+This error will occur if you specify more initializers in a structure
+assignment then the structure has fields.  For example:
+
+@INDEN1 = struct { int a, b; } Fu = { 1, 2, 3 };     /* where's the
+3 go? */
+
+@NAME = C1:084
+
+@ERRMESS = array cannot hold string
+
+This error will occur if you declare an array and initialize it to
+a string that is larger then the array.  Note that the special case
+where the string's nil terminator is just outside the array is allowed
+(the nil terminator is ignored).
+
+@INDEN1 = char Fu[3] = { "abcd" };
+
+@NAME = C1:085
+
+@ERRMESS = illegal register specification
+
+This error occurs if you specify more then one register for a procedure
+argument.  E.G.  void fubar(__D0 __D1 int a) { ... }
+
+@NAME = C1:086
+
+@ERRMESS = Variable not used: %*.*s
+
+This warning informs you of variables which you have declared but
+not referenced.
+
+@NAME = C1:087
+
+@ERRMESS = Illegal return type
+
+This error indicates that you have attempted to return a type which
+is incompatible with the return type of the procedure.  For example,
+returning an integer from a procedure which is supposed to return
+void.
+
+@NAME = C1:088
+
+@ERRMESS = Warning, SAS/C <%15>_<%0>_qualifier placement
+
+DICE attempts to be somewhat SAS/C compatible in terms of type qualifier
+placement but, frankly, SAS/C is too wierd in some respects.  With
+DICE, extensions normally occur <B>BEFORE<D> the type name while in
+SAS/C they normally occur <B>AFTER<D> the type name.  DICE will accept
+SAS/C qualifier placement and issue this warning, but note that in
+this particular case multiple declarators separated by commas will
+not work using SAS/C qualifier placement:
+
+@INDEN1 = int __chip a, b;      /* DOESN'T WORK, ONLY A in __CHIP
+*/
+
+@INDEN1 = __chip int a, b;      /* WORKS, BOTH A & B ARE IN CHIP  */
+
+You should also note that DICE accepts <%15>_<%0>_asm, simply ignoring
+it, and also ignores the <B>register<D> qualifier with explicit register
+specifications.  That is:
+
+@INDEN1 = long fubar(<%15>_<%0>_D0 int a) ...   /* DICE METHOD  */
+
+@INDEN1 = long fubar(a)<R>
+                      /* DICE METHOD  */ <%15>_<%0>_D0 int a;<R>
+{<R>
+...
+
+@INDEN1 = long <%15>_<%0>_asm fubar(register <%15>_<%0>_d0 int a)
+... /* SAS/C */
+
+DICE will accept the SAS/C registered args procedure format in the
+name of portability but it's unreadable.
+
+@NAME = C1:089
+
+@ERRMESS = BREAK outside of loop/switch
+
+The BREAK statement normally breaks out of the nearest switch, do,
+for, or while statement.  If you are not within any of those constructs
+there is nowhere to BREAK to and this error message will occur.
+
+@NAME = C1:090
+
+@ERRMESS = CONTINUE outside of loop
+
+The CONTINUE statement normally continue's to the nearest do, for,
+or while statement (note that switch() statements are skipped).  If
+you are not within a loop statement then CONTINUE has nowhere to go
+and this error message occurs.
+
+@NAME = C1:091
+
+@ERRMESS = Cannot take the address of a constant
+
+You cannot take the address of a constant.  E.G. int *a = &4;  ...
+what is that supposed to mean?  If you code structures to constant
+addresses remember to cast the constant addresses as pointers.
+
+@NAME = C1:092
+
+@ERRMESS = Cannot passed unaligned structs by value
+
+The <%15>_<%0>_unaligned storage qualifier is meant for certain very
+rare situations where you do not want structures to be word aligned.
+Unfortunately, DICE is not able to perform all possible operations
+on such structures and passing them by value is one of those operations.
+You can pass a <B>pointer<D> to the structure just fine, just not
+by value.
+
+@NAME = C1:093
+
+@ERRMESS = Prototype required for inline call
+
+Inline library calls are generally implemented by #include'ing the
+appropriate prototype file.  The DICE method is to #include the appropriate
+file in clib/, e.g. <<clib/exec_protos.h>>.  DICE will find "dinclude:clib/exec_protos.h"
+first which then declares the #pragma's and finally includes the commodore
+protos, "dinclude:amiga20/clib/exec_protos.h".  This error occurs
+if a #pragma has been found for a routine but no ANSI prototype.  DICE
+requires an ANSI prototype as well as a #pragma to be able to make
+an inline library call.
+
+@NAME = C1:094
+
+@ERRMESS = Input must be a seekable file
+
+DICE must be able to seek around the input file.  This error occurs
+if, for example, you specify a pipe as the input file instead of a
+disk file.
+
+@NAME = C1:095
+
+@ERRMESS = Can't open %s
+
+DICE is unable to open the specified file
+
+@NAME = C1:096
+
+@ERRMESS = Read failed
+
+DICE is able to open the file but Read() failed unexpectedly.
+
+@NAME = C1:097
+
+@ERRMESS = Can't open output %s
+
+DICE is unable to create either a temporary output file or your specified
+output file, depending on what it is doing.  For example, if you compile
+a source file into an object DICE can give this error while attempting
+to create the temporary assembly (.a) file before assembling it into
+your object.
+
+@NAME = C1:098
+
+@ERRMESS = Incorrect type for indirection
+
+You can only indirect (the unary '*' operator) through a pointer.
+

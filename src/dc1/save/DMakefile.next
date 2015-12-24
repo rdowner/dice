@@ -1,0 +1,37 @@
+
+OD= objs/
+EXE= ../bin/next/dc1
+
+CFLAGS= -O2 -I.. -I$(OD) -L../suplib -DREGISTERED -DCOMMERCIAL
+
+SRCS= asm1.c asm2.c asmaddr.c asmflt.c asubs.c block.c cexp.c exp.c gen.c \
+ genarith.c genass.c genbool.c genlogic.c genmisc.c lex.c main.c reg.c \
+ rules.c sem.c stmt.c subs.c sym.c toplevel.c types.c error.c pragma.c
+
+OBJS = $(SRCS:"*.c":"$(OD)*.o")
+
+PROTOS= $(OD)protos.h
+
+all: $(OD) $(PROTOS) $(EXE)
+
+nomkp: $(EXE)
+
+quick: $(EXE)
+
+$(EXE) : $(OBJS)
+    cc $(OBJS) -o %(left) $(CFLAGS) -lamiga
+#    strip %(left)
+
+$(OBJS) : $(SRCS)
+    cc $(CFLAGS) %(right) -o %(left) -c
+
+$(PROTOS) : $(SRCS)
+    -rm %(left)
+    makeproto -o%(left) %(right)
+
+clean :
+    rm $(OBJS)
+
+$(OD) : $(OD)
+    mkdir %(left:*/:*)
+

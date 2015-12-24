@@ -1,0 +1,8 @@
+/* $VER: Setoldfind 37.1 (21.2.93) */ 
+/* Switch find and incremental find keys for people who prefer 
+/* normal find to incremental find. */
+
+bindkey "find ^S"
+bindkey "findprev ^R"
+bindkey "ifindnext ^XS"
+bindkey "ifindprev ^X-R"

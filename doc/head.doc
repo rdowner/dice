@@ -1,0 +1,14 @@
+
+dcc/head							dcc/head
+
+				HEAD.DOC
+
+SYNOPSIS
+
+    head <files/wildcards>
+
+DESCRIPTION
+
+    The HEAD program prints the first 10 lines of each file specified
+    on the command line.
+

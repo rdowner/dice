@@ -1,0 +1,103 @@
+/*
+ *  MALLOC.C
+ *
+ *  (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+ */
+
+#include <exec/memory.h>
+#include <errno.h>
+
+extern long *__MemList;
+
+void *
+malloc(size_t bytes, line)
+{
+    long *ptr;
+    char *p;
+
+    if (bytes == 0)
+	return(NULL);
+
+    ptr = AllocMem(bytes + 20, MEMF_PUBLIC);
+    if (ptr)
+    {
+	ptr[0] = (long)__MemList;
+	__MemList = ptr;
+	ptr[1] = bytes + 20;
+	ptr[2] = line;
+	ptr[3] = 0xabcdefab;
+	ptr += 4;
+	p = (char *)ptr+bytes;
+	p[0] = 0x57;
+	p[1] = 0x33;
+	p[2] = 0xAA;
+	p[3] = 0xE5;
+    }
+    else
+    {
+	errno = ENOMEM;
+    }
+if (run_arexx_server)
+{
+   run_arexx_server = 0;
+   printf("alloc %d bytes to %08lx from line %d\n", bytes, ptr, line);
+   run_arexx_server = 1;
+}
+    return((void *)ptr);
+}
+
+
+void
+free(void *vptr)
+{
+    long **scan = &__MemList;
+    long *item;
+    unsigned char *p;
+    long *ptr;
+
+    if (vptr == NULL)
+	return;
+
+    ptr = (long *)vptr - 4;
+
+    while (item = *scan)
+    {
+	if (item == ptr)
+	{
+	    *scan = *(long **)item;
+	    //
+	    // No make sure that the memory has not been trashed
+	    //
+	    if (ptr[3] != 0xabcdefab)
+	    {
+	       printf("Header trashed: Allocation %08lx from line %d\n", ptr+4, ptr[2]);
+	    }
+	    p = (char *)vptr + ptr[1] - 20;
+	    if (p[0] != 0x57 ||
+	        p[1] != 0x33 ||
+	        p[2] != 0xaa ||
+	        p[3] != 0xe5)
+	    {
+	       printf("Trailer trashed: Allocation %08lx from line %d\n", ptr+4, ptr[2]);
+	    }
+
+if (run_arexx_server)
+{
+   run_arexx_server = 0;
+   printf("Free %d bytes to %08lx from line %d\n", ptr[1]-20, ptr+4, ptr[2]);
+      run_arexx_server = 1;
+}
+	    FreeMem(ptr, ptr[1]);
+	    return;
+	}
+	scan = (long **)item;
+    }
+if (run_arexx_server)
+{
+   run_arexx_server = 0;
+printf("Free %08lx not on list from line %d\n", ptr+4, ptr[2]);
+   run_arexx_server = 1;
+}
+
+}
+

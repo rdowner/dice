@@ -1,0 +1,48 @@
+
+#   DMakefile for FSOVL, a handler that overlays a directory or directory
+#   tree and provides additional capabilities.	Our handler provides
+#   automatic compression and decompression.
+
+OD= dtmp:fsovl/
+#SRCS= main.c init.c dos.c core.c compress.c
+SRCS= main.c init.c dos.c core.c zipcomp.c
+OBJS= $(SRCS:"*.c":"$(OD)*.o")
+EXE= dcc:l/fsovl-handler
+PROTOS= $(OD)fsovl-protos.h
+#CFLAGS= -mi -I$(OD) -DFSDEBUG
+CFLAGS= -ms -mi -I$(OD) -DFSDEBUG
+ZIPCFLAGS= $(CFLAGS) -DSMALL_MEM -DWSIZE=8192
+
+ZIPSRCS= zip/globals.c \
+	 zip/zip/bits.c zip/zip/trees.c zip/zip/deflate.c \
+	 zip/zip/util.c zip/zip/x.c \
+	 zip/unzip/inflate.c zip/unzip/x.c zip/unzip/y.c
+ZIPOBJS= $(ZIPSRCS:"*.c":"$(OD)*.o")
+
+all: $(OD) $(PROTOS) $(EXE)
+
+$(EXE) : $(OBJS) $(ZIPOBJS)
+    dcc $(CFLAGS) %(right) -o %(left)
+
+#    -mount test: from mountlist.local
+
+$(OBJS) : $(SRCS)
+    dcc $(CFLAGS) %(right) -o %(left) -c
+
+$(ZIPOBJS) : $(ZIPSRCS)
+    dcc $(ZIPCFLAGS) %(right) -o %(left) -c -Izip -I%(right:*/*/*:*/*)
+
+$(OD) : $(OD)
+    makedir %(left:*/:*)
+    makedir %(left)zip
+    makedir %(left)zip/zip
+    makedir %(left)zip/unzip
+
+$(PROTOS) : $(SRCS)
+    -delete %(left) $(OD)defs.m
+    makeproto -o%(left) %(right)
+
+clean:
+    -delete $(OBJS)
+    -delete $(ZIPOBJS)
+

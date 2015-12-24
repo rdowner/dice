@@ -1,0 +1,9 @@
+
+    support common blocks
+
+    * Jump table fails / retry ?  Does this cause non-reentrancy
+      problems that I forgot about ?
+
+    * if no DATA section then __DATA_BAS made BSS !  causes problems
+      with startup code but can't fix because relocation code
+      would access illegal memory (since no BSS image)

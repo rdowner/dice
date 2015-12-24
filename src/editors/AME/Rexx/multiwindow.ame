@@ -1,0 +1,31 @@
+/* $VER: Multiwindow 37.1 (21.2.93)
+/* Setup For Multiple Windows AME use */
+/* This makes AME open additional windows for new files, and links */
+/* the various AME kill buffers together via the clipboard.device */
+/* and binds the rexx script to jump from one window to another */
+
+alias 'closeall globalrx quit'
+alias 'newwindow ame as noarg' /* dummy argument */
+
+ITEM '-1 "New Window" "ame as noarg"'	/* dummy argument */
+ITEM '-1 "Next Window" "rx dcc:rexx/nextame"'
+
+ITEM '18 "Erase" "stringrx deleteblock; copykill" E'
+ITEM '19 "Paste" "stringrx pastekill; yank" Y'
+
+ITEM '21 "Erase Vertical Block" "vdeleteblock; copykill" <'
+ITEM '22 "Yank Vertical Block" "pastekill; vyank" >'
+
+onmenu
+
+bindkey 'rx F4 "dcc:rexx/nextame"'	/* bind next ame function */
+
+bindkey 'stringrx ^Y "pastekill; yank"'
+bindkey 'stringrx ^K "killline; copykill"'
+
+bindkey 'stringrx ^X-^Y "pastekill; vyank"'
+bindkey 'stringrx ^W "deleteblock; copykill"'
+bindkey 'stringrx ^X-W "vdeleteblock; copykill"'
+
+ITEM '3 "Visit New" "stringrx splitwindow; visit" U'
+onmenu

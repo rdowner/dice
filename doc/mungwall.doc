@@ -1,0 +1,384 @@
+Mungwall 37.71 (c) 1988-93 Commodore-Amiga, Inc. All Rights Reserved
+Munglist 37.12 (c) 1992-93 Commodore-Amiga, Inc. All Rights Reserved
+
+Mungwall munges memory and watches for illegal FreeMem's.
+Mungwall is especially useful in combination with Enforcer.
+Output is either serial or parallel (mungwall.par), or local by
+using both mungwall and a local serial debug capture tool such
+as Sushi.
+
+Munglist may be used in conjunction with Mungwall, and allows you to
+list the owners and allocation information for memory blocks which are
+in-use, and perform other memory functions.  See Munglist.doc after
+Mungwall.doc.
+
+
+Mungwall.doc
+============
+
+Revisions
+=========
+
+(Thanks to Vic Wagner for SAS-6ifying and fixing some bugs!)
+
+$Log: mungwall.doc,v $
+# Revision 30.0  1994/06/10  17:54:51  dice
+# .
+#
+Revision 37.71  1993/10/02  03:48:13  Vic
+Changed - the way the length of the task/process name is calculated.
+          There was a slight bug if the name had no 'path' in it and
+          was not terminated with a null which could cause problems
+          if some arguments had originally been given to the program
+
+Revision 37.70  1993/10/01  22:59:35  Vic
+Deleted - from this document all the Munglist stuff (it has it's own document
+          now.
+Added   - RCS Id and Log information for future tracking
+Changed - the munging of C0DEF00D to C0DEFEED which was installed in 37.49
+          should now work.
+        - all other changes had to do with 'moving' to SAS C 6.x
+
+
+Since 37.49 MungWall, NAMETAG option tags each allocation with the name
+of the allocator.  The new "MUNGLIST" program examines used memory areas
+for mungwall tag info, and outputs a list of who owns the various
+pieces of allocated memory, their sizes, etc.  If you have used the
+NAMETAG option of MungWall, this list will include the name of the
+task or command that allocated the memory.  Note that certain
+allocations belonging to your program may be displayed as belonging
+to another task (such as the task of a disk device that you
+locked a file on or accessed).
+
+Mungwall 37.51 adds an AvailMem wedge which reduces reported available
+memory by the size which Mungwall will add to any allocation.  It also
+correct a problem which had caused the NAMETAG option to crash on a
+68000.
+
+Mungwall 37.52 fixes Enforcer hits in task name comparisons and adds
+better A6 handling when calling the real memory functions.
+
+Mungwall 37.53 should finally fix mungwall crashes on 68000 when
+using taskname-related options.
+
+Mungwall 37.54 - some fixes to output during initialization
+
+Mungwall 37.55 - fixes a bug in Mungwall where last chunk of memory
+   could be lost, and fixes a similar bug in munglist which could occur
+   if munglist's buffer filled.  Also added munglist bufsize argument.
+
+Mungwall 37.57 - stops null terminating cli_CommandName in place which
+   makes mungwall name options again compatible with DMAKE and ARexx
+   scripts with 1-character names.  Adds new SHOWFAIL option which
+   tells Mungwall to report all failed allocations.  Changes the output
+   text "(at 0xhhhhhhh)" to "(task 0xhhhhhhh)" to be easier to understand.
+ 
+Mungwall 37.58 - adds matching NO and UPDATE options for SHOWSTACK,
+   NAMETAG, and SHOWFAIL.
+
+Mungwall 37.60 - adds SHOWPC dump of memory at A: and C: caller addresses
+   and a matching NOSHOWPC option.  Does not show a supposed PC address
+   if it is not RAM according to TypeOfMem().  This is to help prevent
+   enforcer hits or worse, possible reads (or read-triggered writes)
+   to hardware registers.
+
+Mungwall 37.61 and Munglist 37.4 - Add the important capability for
+   Mungwall to distinguish between old mungwall cookies left over in
+   memory after rebooting, and new ones.  The mungwall info area on
+   each allocation has been enlarged by 8 bytes and now contains a
+   second per-session cookie which is based on the datestamp
+   when mungwall is first started.   Munglist has been enhanced
+   to show the addresses applications received when they allocated
+   memory, not the address of the larger piece mungwall allocated.
+   Some changes to output format.
+
+Mungwall 37.62 implements a new default rolling fill character for
+   the walls surrounding memory allocations.  Each allocation gets
+   a new fill character between $81 and $FF.  This allows Mungwall to
+   generally catch errors where too much memory has been copied
+   from one allocation to another.  Note that the explicit FILLCHAR
+   option of Mungwall now disables the rolling fillchar feature.
+   Do not use the FILLCHAR option if you want the protection of the
+   rolling fill char.  Some changes to output format.
+
+Mungwall 37.63 adds SHOWHUNK and NOSHOWHUNK options.  With SHOWHUNK,
+   mungwall will attempt to show the hunk and offset for the probable
+   C or Asm PC addresses of the caller generating the hit if the PC
+   address is in RAM and also within the seglist of the caller's process.
+
+Mungwall 37.64 adds SegTracker support.  If SHOWHUNK is option is on,
+   if SegTracker is installed, mungwall will get hunk/offset info
+   from SegTracker, else mungwall can only check if the probable
+   PC addresses are in the calling process's own SegList.
+
+Mungwall 37.65 - Fixes output where decimal size was being printed
+   as if it were a hex number 0xnnnn  (should be just nnnn)
+
+Mungwall 37.67 - Adds TIMESTAMP option
+
+Mungwall 37.68 - Adds timestamp output to hits and snoops if TIMESTAMP on
+
+Mungwall 37.69 - Modified for new Munglist MARK option
+
+
+What Mungwall Does
+==================
+ 
+Memory munging:
+
+ - Except when Enforcer is running, location 0 is set to $C0DEDBAD, i.e.
+   programs referencing location zero will not f.e. find a null string.
+
+ - On startup all free memory is munged with $ABADCAFE. If this number
+   shows up, someone is referencing memory in the free list.
+
+ - Except when MEMF_CLEAR is set, memory is pre-munged on allocation with
+   $DEADFOOD. When this is used in an Enforcer report, the caller is
+   allocating memory and doesn't initialize it before using it. Note that
+   only memory which has a cookie attached will be pre-munged.
+
+ - Memory is filled with $DEADBEEF before it is freed, encouraging
+   programs reusing free'ed memory to crash.
+
+Memory watching:
+
+Mungwall places a magic cookie before the memory allocation.
+Along with a wall of bytes on either side of the allocation to keep an
+eye on the memory just before or after the allocation. If the
+memory wall is trashed, mungwall complains and shows the damaged area.
+If memory is trashed so bad that the cookie is completely gone, Mungwall
+will not consider it a walled memory allocation and lets it go. Changes
+are you'll be corrupting the memory list and/or overwriting other memory
+allocation and crash soon after that. If a mungwall hit occurs, memory
+will not be munged or free'ed, to give you a change to look at what was
+written there.
+
+Both null pointer FreeMem()'s and null sized Alloc/FreeMem()'s trigger
+mungwall. Mungwall also gets upset when a memoryblock is free'ed with a
+size different from the one used for allocating the memoryblock, and will
+say so. The integrity of the walls will be tested according to the size
+specified on allocation time, but will not be free'ed.
+
+Pointers passed to FreeMem() will be rejected if they are non-longword
+alligned. Thus possible catching bogus pointers otherwise left untouched
+by mungwall.
+
+Unless a specific task(s) is watched and that task leaves before mungwall
+does, mungwall will always lose some memory.
+
+NOTES:
+
+Other debugging tools which SetFunction() AllocMem() and/or
+FreeMem() and JSR to what they think is the old memory routine,
+should be run BEFORE mungwall. Mungwall needs to know the returnaddress
+of the initial caller. Running other debugging tools after mungwall
+will result in false reports about layers.library and invalid
+mungwall reports about the caller. The 'scratcher' for example must
+be run before mungwall, 'memoration' can be run afterwards, since it
+JMP's.
+
+When mungwall is being stopped, the walls around the original allocations
+which are not free'ed at that point, will never get free'ed, only the block
+within. Thus causing memory fragmentation and memory loss.
+In addition, stopping and restarting mungwall can cause numerous
+bogus mungwall hits if applications allocate uncleared memory
+(containing unlceared mungwall cookies) while mungwall is off and then
+free it when mungwall is back on.
+
+
+Memory allocations larger than 3 gigabytes will not be marked by mungwall.
+
+Usage: Mungwall [UPDATE] [TASK name] [(NO)WAIT] [(NO)SHOWFAIL]
+  [(NO)SNOOP] [INFO] [(NO)SHOWSTACK] [(NO)SHOWPC] [(NO)SHOWHUNK]
+  [(NO)NAMETAG] [(NO)TIMESTAMP] [PRESIZE n] [POSTSIZE n] [FILLCHAR 0xHH]
+
+TASK name   - Watch only the task(s), or all but the task(s) specified
+              with 'name'. Multiple tasknames are indicated by placing
+              a '|' between the names. If the names are preceeded by an
+              exclamation mark, all tasks except the ones indicated are
+              tracked. ALL is a reserved name, indicating all tasks
+              should be tracked. Default ALL.
+
+PRESIZE     - Size of wall before memory allocation in bytes. Minimum 4,
+              maximum 64. Default 32.
+
+POSTSIZE    - Size of wall after memory allocation in bytes. Minimum 4,
+              maximum 64. The actual number of bytes after the allocation
+              may vary slightly, since it's upped to the nearest longword.
+              Default 32.
+
+FILLCHAR n  - Character to build the memory wall with. Can be indicated
+              both hexadecimal and decimal. Default is a rolling fillchar
+	      which uses a new odd number between $81 and $FF for each
+	      new allocation.  This makes it possible for Mungwall to
+	      usually catch errors where too much memory is copied
+	      from one allocation to another.  Specifying a FILLCHAR
+	      disables the default rolling fillchar feature.
+	      
+SNOOP       - Produce snoop compatible output. No snoop output is given
+              for illegal FreeMem's. Default OFF. Layers AllocMem's and
+              FreeMem's are never snooped. SNOOP is particulary useful
+              in combination with TASK. Snoop output can be filtered
+              with 'snoopstrip' to find the origin of memory loss.
+
+WAIT        - Halt task causing a hit and wait for Ctrl-C. Make sure you
+            - can issue a break to the task. WAIT can be used without
+              specifying a specific taskname to watch. Default OFF.
+
+INFO        - Show configuration information.
+
+SHOWSTACK   - Show 32 longwords of the stack whenever a hit/snoop occurs
+
+NAMETAG     - Tag each allocation with allocating task or command's name
+
+SHOWFAIL    - Tells mungwall to report all memory allocation failures
+
+SHOWPC	    - Show a dump of memory at the A: and C: possible PC
+	      (program counter) addresses (one should be correct)
+              Does not show a supposed PC address if it is not RAM
+              according to TypeOfMem().  This is to help prevent enforcer
+              hits or worse, possible reads (or read-triggered writes)
+              to hardware registers.
+
+SHOWHUNK    - On a hit or snoop, if the probable PC address of a reported
+	      call to AllocMem or FreeMem is within the calling process's
+	      seglist, attempt to show hunk and offset information.
+
+TIMESTAMP   - Timestamp each allocation with system time
+
+UPDATE      - Indicates an already running mungwall task should be up-
+              dated with new parameters. Presize, postsize and fillchar
+              can never be updated.  NOTE - when doing an UPDATE, the
+	      UPDATE option must be the first command line arg
+
+The following are extra updating parameters.
+
+NOSNOOP     - Turn snooping off.
+
+NOWAIT      - No longer halt a task in case of an error.
+
+NONAMETAG   - Turn off taskname storage
+
+NOSHOWSTACK - Turn off showstack option
+
+NOSHOWFAIL  - Turn off option that displays memory allocation failures
+
+NOSHOWPC    - Turn off option that displays dump of memory at caller PC
+
+NOSHOWHUNK  - Turn off options that displays hunk and offset information
+
+NOTIMESTAMP - Turn off the timestamping feature
+
+
+
+
+Munglist.doc
+============
+
+Munglist examines memory for in-use pieces of memory which were allocated
+while mungwall was active.  Mungwall saves special information at the start
+of each allocation.  Munglist finds this information and outputs it,
+providing a fairly accurate list of currently-in-use pieces of memory
+and who allocated them.
+
+Revisions
+=========
+
+$Log: mungwall.doc,v $
+# Revision 30.0  1994/06/10  17:54:51  dice
+# .
+#
+; Revision 37.12  1993/10/01  23:09:52  Vic
+; Added   - ONLY option
+;         - MARK/SINCE MARK description to the 'usage'
+;         - RCS Id and Log information for future tracking
+; Changed - only slightly the ordering of this document (put what Munglist
+;           is as the 1st paragraph)
+;         - separated this document from the combined document with Mungwall
+;
+
+MungList 37.6 adds serial-output memory checking and remunging options
+
+Munglist 37.8 adds SHOWTIME option (displays TIMESTAMP above)
+
+Munglist 37.10 adds MARK and SINCE MARK options
+
+Munglist 37.11 removes debugging line, adds TOTAL taskname option
+
+
+
+Usage: munglist [buffsize] [SHOWHUNK] [CHECK] [REMUNGE] [SHOWTIME] [-tickdelay]
+                [MARK] [SINCE MARK] [ONLY|TOTAL taskname]
+Requires mungwall 37.69+.  SHOWTIME requires V37+ and mungwall 37.69+.
+Output errors possible for memory freed and/or reallocated while listing
+Good SHOWHUNK output requires SegTracker and still-loaded allocating program
+CHECK/REMUNGE are serial output and turn off listing. tickdelay is for CHECK
+MARK saves the current time for use with:
+SINCE MARK lists only allocations which have occured SINCE the MARKed time
+ONLY Taskname list ONLY allocations by that task (implies TOTAL also)
+TOTAL Taskname just totals up the amount currently allocated by that task
+Default buffsize is 8000
+
+
+buffsize option
+
+The default 8000 byte buffer used by munglist may not be large enough to
+capture a large or fragmented memory list.  To provide a different
+buffsize, just pass the size in bytes as the first argument.
+
+SHOWHUNK option
+
+With the SHOWHUNK option (and SegTracker from The Enforcer archive running),
+Munglist will try to show possible Hunk and Offset from which memory was
+allocated.  This can be inexact since one program may have forgotten to
+free memory, and another program may now be loaded in the same location
+the old program was unloaded from.
+
+SHOWTIME option
+
+If TIMESTAMP was specifed for Mungwall, the SHOWTIME option of Munglist
+can show you the time each allocation was made.
+
+MARK option
+
+Tells MungList to mark the current time, for use by SINCE MARK.
+If this is the only argument passed, munglist will mark and exit.
+Mark (m) is now also offered as an option when munglist presents
+its interactive prompt after listing.
+
+SINCE MARK option
+
+Tells MungList to only list allocations made since the MARK time.
+When done, the new prompt will offer choices to quit, mark again,
+run again.  This allows you to just list recent allocations.
+SINCE MARK may be used in combination with the MARK option to avoid
+an overly long first list.
+
+TOTAL taskname
+
+This tells munglist to just total up the amount of memory allocated
+by the named task.  This can be used with the SINCE MARK option.
+
+
+NOTE: The REMUNGE and CHECK options TURN OFF the stdout munglist output
+
+
+REMUNGE option
+
+Instead of outputting a list of memory chunks in use, MungList will
+remunge free memory, outputting a short serial message.
+
+
+CHECK option
+
+Instead of outputting a list of memory pieces in use, MungList will
+check the in-use memory pieces for trashed bytes before or after
+each allocation.  A short serial message is output, followed by
+mungwall-like serial error output for any trashed memory pieces.
+
+-tickdelay
+
+Tells MungList CHECK or REMUNGE to stay loaded and loop every tickdelay
+50th's of a second.
+
+

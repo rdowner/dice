@@ -1,0 +1,24 @@
+
+istrip/istrip						    istrip/istrip
+
+    ISTRIP destprefix wildcards
+
+
+    ISTRIP will strip comments and extranious whitespace from all files
+    specified by <wildcards> and create an output file under the same name
+    prefixed by <destprefix>.
+
+    Example (contrived)
+
+    1> cd dinclude:
+    1> copy amiga13 ram:amiga13 ALL QUIET
+    1> istrip ram: amiga13/#?/#?
+
+    ISTRIP is very stupid in that it will not create the destination
+    directory hierarchy.  The COPY above basically does that for us, the
+    copied files are extranious and overwritten when ISTRIP is run.
+
+    ISTRIP is useful mainly for developers who obtain later versions of the
+    commented Amiga includes and want to create an uncommented version (The
+    uncommented includes are much smaller yielding faster compilation).
+

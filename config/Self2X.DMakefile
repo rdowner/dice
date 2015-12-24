@@ -1,0 +1,45 @@
+#### AUTOMATICALLY GENERATED - DO NOT EDIT BELOW THIS LINE
+EP=OI:BIN/Amiga/Bin2/
+PROTOS= $(OD)protos.h
+EXE= $(EXEDIR)$(PROJECT)
+COMPFLAGS = $(CFLAGS) -I$(OD) $(PRECOMP:"*.h":"T:*.m")
+
+OBJS= $(SRCS:"*.c":"$(OD)*.o") $(SRCS:"*.a":"$(OD)*.o")
+
+all: DoResi $(PRECOMP) $(PROTOS) $(EXE)
+
+nopro: $(EXE)
+
+$(EXE): $(OBJS)
+    fwrite $(OD)$(PROJECT).lnktmp $(OBJS)
+    dcc $(COMPFLAGS) @$(OD)$(PROJECT).lnktmp -o %(left)
+
+$(OBJS) : $(SRCS)
+    dcc %(right) -o %(left) -c $(COMPFLAGS)
+
+$(PROTOS) : $(SRCS)
+    -delete %(left)
+    makeproto -o %(left) %(right)
+
+$(PRECOMP:"":"CANT.EXIST.RULE") : $(HDRS)
+    -delete %(left)
+
+clean:
+    -delete $(OBJS) $(PROTOS) $(PRECOMP)
+
+relink: rmexe $(EXE)
+
+rmexe:
+    -delete $(EXE)
+
+DoResi:
+    -resident dlink remove
+    -resident das   remove
+    -resident dc1   remove
+    -resident dcpp  remove
+    -resident dcc   remove
+    resident dlink $(EP)xc_dlink
+    resident das   $(EP)xc_das
+    resident dc1   $(EP)xc_dc1
+    resident dcpp  $(EP)xc_dcpp
+    resident dcc   $(EP)xc_dcc

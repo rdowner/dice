@@ -1,0 +1,43 @@
+# $VER: Library.DMakefile 3.3 (2.21.94)
+PROTOS= $(OD)$(PROJECT)-protos.h
+EXE= $(EXEDIR)$(PROJECT).library
+FD= $(EXEDIR)$(PROJECT).fd
+LINKLIB= $(EXEDIR)$(PROJECT).lib
+PRAGMAS= $(EXEDIR)$(PROJECT)_pragmas.h
+COMPFLAGS = -no-env $(CFLAGS) $(OD:"*":-I*) $(PRECOMP:"*.h":"-HT:%1.m=%1.h") $(VMAKEPORT:"*":"-R0 *") -l0 -lc -lamiga30 -lautos -ms
+PCOMPFILE = $(PRECOMP:"*.h":"T:*.m")
+
+OBJS= $(SRCS:"*.a":"$(OD)*.o") $(SRCS:"*.c":"$(OD)*.o")
+
+all: $(PCOMPFILE) $(PROTOS) $(LINKLIB) $(PRAGMAS) $(EXE)
+
+nopro: $(EXE)
+
+$(EXE): $(OBJS)
+    fwrite $(OD)$(PROJECT).lnktmp $(OBJS)
+    dcc $(COMPFLAGS) @$(OD)$(PROJECT).lnktmp -o %(left)
+
+$(OBJS) : $(SRCS)
+    dcc %(right) -o %(left) -c $(COMPFLAGS)
+
+$(PROTOS) : $(SRCS)
+    -delete %(left)
+    makeproto -o %(left) %(right)
+
+$(PCOMPFILE:"":"CANT.EXIST.RULE") : $(HDRS)
+    -delete %(left)
+
+$(PRAGMAS) : $(FD)
+    fdtopragma $(FD) -o %(left)
+
+$(LINKLIB) : $(FD)
+    fdtolib $(FD) -o %(left) -auto $(EXE)
+
+clean:
+    -delete $(OBJS) $(PROTOS) $(PCOMPFILE) $(PRAGMAS) $(LINKLIB) $(OD)$(PROJECT).lnktmp
+
+relink: rmexe $(EXE)
+
+rmexe:
+    -delete $(EXE)
+

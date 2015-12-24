@@ -1,0 +1,31 @@
+
+Hi, Matt.
+
+Here are two programs, howing two different methods.  The first is
+helloworld.c,  modified to show use of external strings as well as internal.
+
+the MSG_ defines will be defined automatically by DICE, during
+its 'make .cd file pass'.  You're going to have to have such a pass, to
+give the user a chance to remove strings that should not be localized.
+
+Then, something is going to have to take that .cd file, and order the
+strings according to the MSG_ defines.	I'm using catcomp to do this.
+
+We need to have those defines at some point;  those defines are the
+relationship between the strings built into the program and the strings
+in the catalog.
+
+
+The idea of reading all the strings from the catalog directly to make
+the dice string table (rather than use the block method above) has
+two problems:  1) the IFF spec for the catalog file has not been
+released/documented as far as I know.  and 2) the string numbers
+are not contiguous.  So we can't just loop on a catalog in general
+and pull the strings out.  If we remove the ability for the user to
+specify message number ranges of his/her own, we can use GetCatalogStr()
+for DICE to build its table.  (this is shown in hello.c).  But I don't
+think the limitation is acceptable.
+
+
+			andy
+

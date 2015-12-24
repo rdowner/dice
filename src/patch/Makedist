@@ -1,0 +1,11 @@
+#!/bin/sh
+# Make distribution tar file for patch with unified diff changes.
+
+files='ChangeLog Configure EXTERN.h INTERN.h MANIFEST Makedist Makefile.SH README common.h config.H config.h.SH inp.c inp.h malloc.c patch.c patch.man patchlevel.h pch.c pch.h util.c util.h version.c version.h'
+
+distdir=patch-2.0.12u3
+
+mkdir $distdir &&
+ln $files $distdir &&
+tar -cvz -f $distdir.tar.Z $distdir
+rm -rf $distdir

@@ -1,0 +1,12 @@
+
+dcc/du								dcc/du
+
+				DU.DOC
+
+SYNOPSIS
+    du [files/wildcards]
+
+DESCRIPTION
+    The DU program will scan files and directories and return the disk
+    usage.  It will fudge for the FFS or OFS.
+

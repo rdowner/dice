@@ -1,0 +1,36 @@
+Vmake version 3.1 has the following enhancements:
+
+The console window can now follow the Vmake window to public screens.  
+
+When Vmake jumps to a public screen, the console window is closed.  The next 
+time Vmake writes to the console, it will reappear on the new screen.  
+Information from the previous console window is lost.
+
+In order to bring about this behavior, the vmake.config file has been altered
+to use a new parameter substitution string, %n, which expands to the name of
+the public screen on which the VMake window appears.  CONFIG string 1 becomes:
+
+  CONFIG "1"  "CON:0/0/640/100/VMake Console/AUTO/screen %n"
+
+VMake now sets the REXX return code in interactive mode (REXXI ON).
+
+If Vmake presents a requester with no options, indicating that a command has 
+failed, the error code will be set to the index of the TEXT string in the 
+requester.  If the requester presents choices, the error code will be set as
+above if the user selects the 'CANCEL' option.  If the user select 'OK' or
+the middle button, both of which allow the command to continue, then the REXX
+return code will be set to 0 to indiate success.  In addition, if the VMake
+command puts up a file requester and the user cancels rather than selecting a
+file, the return code will be set to a non zero value.
+
+The SET command has been tidied up.  
+
+If no symbol name is given in the command, VMake now puts up a requester.  
+Also, VMake now deals correctly with symbols whose name starts with an 
+underscore (eg _systemsymbol).  Any symbol whose name starts with an 
+underscore is not saved with the project file, and  its value is preserved 
+when changing between projects.  With version 3.1, Vmake no longer issues 
+the requester "File has been changed, save?"  as a result of updating such a 
+system symbol.  The requester does appear if a symbol that will be saved with 
+the project has been set or altered.
+

@@ -1,0 +1,186 @@
+
+lbmake/lbmake						    lbmake/lbmake
+
+				  LBMAKE.DOC
+
+		    SECOND GENERATION LINK LIBRARY MANAGER
+
+    The LBMake utility is similar to LibMake but greatly enhances your
+    ability to manage the compiling of link libraries from source code. The
+    LBMake utility uses a control file called "lib.def" in the directory
+    you run lbmake from.  For a good example of a fully working LBMake
+    system refer to the LIB.DEF file in the DCC:LIB/ directory (containing
+    the full compilable library source to DICE).
+
+    LBMake understands the basics of compiling source files into objects
+    and JOINing objects into libraries as well as how to turn .FD files
+    into tag libraries.  LBMake is used to generate all of DICE's
+    link libraries and object modules.
+
+    The LBMake control file, "lib.def" determines LBMake's operation in
+    conjuction with keywords you give it.  The control file may contain
+    lines of the following form:
+
+    @Type   <symbol>	<options>
+
+	The @Type command associates a set of compiler options with a
+	symbol.  For example:
+
+	@Type	s	    -ms -r -pr
+
+	You normally have several @Type commands denoting various memory
+	models you wish to generate libraries for.  When you run LBMake,
+	any keywords you specify on the command line which match symbols
+	specified in @Type commands will cause the associated options to
+	be used when compiling source files.  By specifying several keywords
+	on the LBMake command line you can merge options for several
+	memory model combinations.
+
+	The @Type symbols are merged together to create a single symbol
+	which can be used to modify the name of the generated library
+	or object module.
+
+    @Objects <symbol> <filepath>
+
+	The @Objects command defines a symbolic name which will later be
+	used to reference individual files that are to be compiled into
+	individual object modules.  The <filepath> contains the filename
+	template that is to be used to name the object files after
+	compilation, where %s denotes the name of the object module.
+	For example:
+
+	@Objects startup    dlib:%s
+
+	If, later on, the 'startup' symbol is associated with the files
+	fubar/a.c, fubar/b.c, and fubar/c.c LBMake will, when asked to
+	compile 'startup', generate the object modules dlib:a.o, dlib:b.o,
+	and dlib:c.o from their source files.
+
+	You may specify multiple @Objects commands but should specify at
+	most one @Objects reference at a time on the LBMake command line,
+	as in the example above.
+
+    @Library <symbol> <filepath>
+
+	The @Library commands is similar to the @Objects command but
+	indicates that all files referenced by <symbol> are to be
+	JOIN'd together into a single result.  For example:
+
+	@Library    clib    dlib:c%s.lib
+
+	The filename template in this case reflects any @Type commands
+	which you have activated via the LBMake command line.  For
+	example, if you ran the following LBMake:
+
+	1> LBMake s r clib
+
+	LBMake would commence to compile objects associated with the 'clib'
+	symbol, JOIN them together, and name the result 'dlib:csr.lib'.
+
+	You may specify multiple @Library commands but should specify at
+	most one @Library reference at a time on the LBMake command line,
+	as in the example above.
+
+    @DefTree	<filepath>
+
+	The @DefTree command defines the default DIRECTORY where
+	intermediate files are to be stored.  The name of the directory
+	can depend on the @Type commands which have been activated
+	thereby giving you separate directories for separate memory
+	models.
+
+	@DefTree    dtmp:comp3/lib_%s/
+
+	So, for example, if you were to 'LBMake s r clib' LBMake would put
+	the associated object modules in 'dtmp:comp3/lib_sr/'.
+
+    @AltTree	<symbol>    <filepath>
+
+	The @AltTree command works like @DefTree but allows you to specify
+	a symbol on the LBMake command line which overides the @DefTree.
+
+	@AltTree    pass2   dtmp:comp2/lib_%s/
+
+	You may specify multiple @AltTree commands but should specify at
+	most one on the LBMake command line.  This feature is most useful
+	in a production system to generate 'experimental' versions of a
+	library until one is ready for the next release, then generate a
+	'master' version.
+
+			    SPECIFYING FILES
+
+    The remainder of the "lib.def" control file contains file
+    specifications.. i.e. a list of files and which libraries they
+    apply to.  A file can apply to more then one library.  The general
+    format for the file list is:
+
+    <filename>		    +/-<symbol> +/-<symbol> +/-<symbol> ...
+
+    Each file is followed by one or more symbols.  For example:
+
+    amiga/profile.c	+clib +uclib +free -pass2
+
+    Would indicate that the amiga/profile.c module is associated with the
+    library defined by the symbol 'clib', the library defined by the symbol
+    'uclib', and the library defined by the symbol 'free' (i.e. these three
+    symbols are part of @Library commands).  However, the file does not
+    exist in any of these libraries of the 'pass2' symbol is specified on
+    the Command line, where 'pass2' also refers to an @AltTree command.
+
+    The basic idea is that you list every file for every library in a
+    particular project, just as I have done in my "lib.def" file for DICE,
+    then use LBMake to generate the actual .lib and .o files.
+
+    LBMake will create a duplicate directory structure in the object tree
+    as specified by @DefTree (or an active @AltTree).  It appends the
+    FULL PATH of the source file to the destination tree so, for example,
+    if you were to:
+
+    1> LBMake s r clib
+
+    The LBMake would compile 'amiga/profile.c' into
+    'dtmp:comp3/lib_sr/amiga/profile.o'
+
+    Therefore, you may not specify any absolute file paths in order for
+    LBMake to work properly.
+
+
+				.FD FILES
+
+    LBMake supports the generation of tag libraries from .FD files.  It
+    recognizes a .FD file by the .FD extension in the file specification.
+    In order to properly support .FD files LBMake requires that the
+    file specification be of the following form:
+
+	[directory_path]filename_lib.fd     +/-<symbol> +/-<symbol> ...
+
+    Why the brackets?  Well, remember what I said about not being able to
+    use absolute filepaths because they screw up the placement of object
+    modules in the object tree?  Brackets provide a solution to this
+    problem when you have no choice but to use absolute file paths. The
+    part of the path in brackets will be IGNORED when it comes to figuring
+    out what the object file name should be.  This is especially important
+    for .FD files which are generally put elsewhere.
+
+    To further automate operation LBMake looks for the prototype file
+    associated with the .FD file using the same path but munging the
+    '_lib.fd' part to '_protos.h' and munging '/fd/' or ':fd/' into
+    '/clib/' or ':clib/'.  In otherwords, it munges something like:
+
+	[dinclude:amiga20/fd/]mathieeesingbas_lib.fd	 into
+	[dinclude:amiga20/clib/]mathieeesingbas_protos.h
+
+			    AUTOINIT CODE INCLUSION
+
+    For autoinit code inclusion one needs to specify the actual
+    name of the library, e.g. 'fubar.library', along with each .FD file
+    name using the following format:
+
+	[directory_path]filename_lib.fd,libraryname	+/-<symbol> +/-<symbol> ...
+
+    For example:
+
+	h/fd/myfubar_lib.fd,fubar.library   +mylib
+
+
+

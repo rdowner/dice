@@ -1,0 +1,64 @@
+PROJECT= helloworld
+DIR=
+SRCS= helloworld.c
+HDRS=
+EXTRAS= helloworld.cd
+PDEFAULT=
+EXEDIR=
+OD=
+PRECOMP=
+TYPE= Normal
+RUN=
+CLIARGS=
+CFLAGS= -IV:include -d1
+
+
+#### AUTOMATICALLY GENERATED - DO NOT EDIT BELOW THIS LINE
+PROTOS= $(OD)$(PROJECT)-protos.h
+EXE= $(EXEDIR)$(PROJECT)
+COMPFLAGS = $(CFLAGS) $(OD:"*":-I*) $(PRECOMP:"*.h":"-HT:%1.m=%1.h")
+PCOMPFILE = $(PRECOMP:"*.h":"T:*.m")
+
+OBJS= $(SRCS:"*.c":"$(OD)*.o") $(SRCS:"*.a":"$(OD)*.o")
+
+all: $(PCOMPFILE) $(PROTOS) $(EXE) helloworld_strings.o hello
+
+nopro: $(EXE)
+
+helloworld_strings.o : helloworld.cd
+CatComp helloworld.cd cfile helloworld_strings.h objfile helloworld_strings.o
+
+# this is the deutsch helloworld catalog
+d_helloworld.catalog:	helloworld_d.ct helloworld.cd
+CatComp helloworld.cd helloworld_d.ct catalog d_helloworld.catalog
+copy d_helloworld.catalog catalogs/deutsch/helloworld.catalog
+
+# this is the english helloworld catalog
+e_helloworld.catalog:	helloworld_e.ct helloworld.cd
+CatComp helloworld.cd helloworld_e.ct catalog e_helloworld.catalog NOOPTIM
+copy e_helloworld.catalog catalogs/english/helloworld.catalog
+
+$(EXE): helloworld_strings.o $(OBJS)
+    fwrite $(OD)$(PROJECT).lnktmp $(OBJS)
+    dcc $(COMPFLAGS) @$(OD)$(PROJECT).lnktmp -o %(left)
+
+hello:	hello.o
+    dcc $(COMPFLAGS) hello.o -o hello
+
+hello.o:	hello.c
+    dcc $(COMPFLAGS) hello.c -o hello.o -c $(COMPFLAGS)
+
+$(OBJS) : $(SRCS)
+    dcc %(right) -o %(left) -c $(COMPFLAGS)
+
+$(PROTOS) : $(SRCS)
+    -delete %(left)
+    makeproto -o %(left) %(right)
+
+clean:
+    -delete $(OBJS) $(PROTOS) $(PRECOMP)
+
+relink: rmexe $(EXE)
+
+rmexe:
+    -delete $(EXE)

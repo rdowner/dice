@@ -1,0 +1,88 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* |_o_o|\\ Copyright (c) 1986 The Software Distillery.  All Rights Reserved */
+/* |. o.| || This program may not be distributed without the permission of   */
+/* | .  | || the authors.                                                    */
+/* | o  | ||    Dave Baker    Ed Burnette        Stan Chow         BBS:      */
+/* |  . |//     Jay Denebeim  Gordon Keener      Jack Rouse   (919)-471-6436 */
+/* ======       John Toebes   Mary Ellen Toebes  Doug Walker                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+WBRun II by John Toebes © 1986, 1988 The Software Distillery.
+ All Rights Reserved
+ 235 Trillingham Ln, Cary, NC 27513
+ 
+Contributions to continue development of this and other fine products for the
+Amiga should be sent to the Software Distillery at the above address.
+
+Other Products produced by the Software Distillery are:
+   BLINK     - the Turbo-charged Alink replacement
+   POPCLI    - Screen saver and Pop up CLI hotkey
+   HACK      - The Amiga port of the famous UNIX game
+   MAKE      - A software development tool one shouldn't be without
+   KERMIT    - The World renown file transfer protocol brought to the Amiga
+   ICONEXEC, SETALTERNATE, SETWINDOW - Icon manipulation tools
+   TSIZE     - A short utility for determining directory sizes.
+All of these are available on our BBS.
+
+Permission is hereby granted to distribute this program provided both this
+documentation accompanies the executable and that no charge is made for its
+distribution.  Contributions to the distillery are encouraged.  If you wish
+to include this program in a comercial product, contact us first.
+
+WBRun is a program designed to allow any program to be invoked from CLI yet
+behave as if it were invoked from Workbench.  Note that workbench need not
+be loaded!  This is a boon for people who are short on memory and do not
+wish the extra overhead of workbench.
+
+This permits running programs created with AmigaBasic and TrueBasic (or
+any other application that creates a workbench project icon) from CLI
+as either a turnkey application or even in a startup-sequence.
+
+To invoke a program with WBRun you need to execute the command:
+  WBRun <icon1> <icon2> ...
+
+Where <icon1> is the primary program to be run.  The name must correspond
+to a workbench Icon.  <icon2> and subsequent parameters are taken as 
+workbench arguments to be passed to the primary program.
+
+For example:
+   To run Initialize:
+      WBRun SYS:System/Initialize
+
+   To run a program (call it Printit) that takes arguments (normally shift
+   clicked on) you would type
+      WBRun Printit Arg1 Arg2
+
+To run an AmigaBasic Program:
+  WBRun myprogram
+
+Note that the arguments must be qualified if they are not in the current
+directory.
+
+Supressing the Copyright message:
+  If you are building a turnkey application that you do not wish to have
+display the WBRun copyright message, you may supress it with the CLI
+redirection features:
+   WBRun >NIL: MyApplication
+
+If you do this, you must give credit to the Software Distillery in your
+application.
+
+Known Bugs:
+  None so far...
+
+How it works:
+  WBRun simulates a phoney workbench by building an argument list of the
+locks and names corresponding to the command line arguments.  It then opens
+up the disk object for the first argument to determine the tool type.  For
+a TOOL it simply invokes that program, for a Project it determines the
+default tool to be invoked.  Once the program to be invoked is determined,
+it does a LoadSeg on it, CreateProc and sends the startup message to the
+newly created task.  Finally it waits for the response message from the
+task before terminating.  All resources allocated are freed upon completion
+or any error.
+
+The code is written completely in Lattice C under 5.02 taking advantage
+of Blink and CBack.  Without messages to make it user friendly it is a
+shade over 2K, the messages and minimal IO support raise it to 4956 bytes.
+Note that all this is done without making any serious attempts at optimization.

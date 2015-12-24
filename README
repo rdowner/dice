@@ -1,0 +1,183 @@
+
+			    DICE SOURCE CODE RELEASE README
+
+    (c)Copyright 1992-1997 Obvious Implementations Corp.  Redistribution and
+       use is allowed under the terms of the DICE-LICENSE FILE,
+       DICE-LICENSE.TXT.
+
+    Well, here it is.  The source to DICE.  I really meant to release this a
+    lot sooner.  I plead laziness :-)  Note that I haven't touched my Amiga
+    for quite a while, and the library support may very well be lacking.
+    Support up to the amiga 3.0 includes / library is included, but the
+    amiga includes themselves are not included because I am not sure what
+    the disposition of commodore's copyright is.
+
+    DICE is a 68000 compiler.  It was written as an Amiga C compiler, but it
+    can really be used as a generic 68000 C compiler.  Even though I haven't
+    touched an Amiga for a while, I still use DICE on my FreeBSD box to 
+    compile 68000 projects.
+
+    DICE will compile on an Amiga, linux, or FreeBSD machine.  Most of the
+    utilities will generate the correct 68000 byte ordering even when compiled
+    on an Intel box.  It will generate Amiga binaries and utilities are 
+    included to generate ROMable code.   All DICE features work and the
+    relocateable and small-data models are incredibly powerful when used in
+    an embedded environment.
+
+    My email address and web pages
+
+	dillon@backplane.com
+	http://www.backplane.com/
+	http://www.obviously.com/
+
+    I am willing to maintain the source tree, at least for a little while.
+    Bug fixes should be emailed to me.
+
+(I)  MISSING FILES
+
+    There is some confusion as to whether the Amiga includes can be 
+    distributed.  Before commodore went belly-up, they did make the .FD
+    files free, so I am including the fd/ and clib/ subdirectories for
+    the 1.3, 2.0. and 3.0 includes but I am not including any of the
+    commodore structural includes (exec/, intuition/, etc...)
+
+    If you have the amiga includes, the 1.3 includes should be placed in
+    include/amiga13, the 2.0 placed in include/amiga20, and so on.
+
+    What this means is that you CAN generate an 'amiga.lib' and pragmas
+    from the .fd files, but the structural includes aren't available unless
+    you already have them.
+
+    The amiga includes are only required if you are compiling the
+    compiler on the Amiga or compiling for an Amiga target.  These 
+    includes are not required if you use DICE to compile embedded 68000 code.
+
+(II) COMPILING DICE UNDER UNIX FOR CROSS-COMPILING
+
+    NOTE: floating point constants are not supported because they require
+    the Amiga FP library.  However, you can generate all amiga libraries
+    except those routines which employe FP constants from your 
+
+    (0) Setup environment
+
+	setenv DCCOPTS -3.0 -//
+	setenv DINCLUDE /home/dice/include/
+
+	(assuming this is where you unpack the distribution)
+
+	If your UNIX box uses intel byte ordering, the makefiles are setup
+	ok.  If it doesn't, you have to remove the -DINTELBYTEORDER option
+	from suplib/Makefile and src/*/Makefile.  Sorry!  This option must
+	be specified correctly for the DICE compiler on a UNIX box to produce
+	machine-independant (68000 byte-ordered) output files.
+
+	Most people run UNIX on Intel platforms (e.g. FreeBSD).  If so you
+	do not have to modify the Makefiles... you leave -DINTELBYTEORDER in.
+
+    (1) Make the suplemental library for UNIX.
+	
+	cd suplib
+	make
+	make install
+	make clean
+	cd ..
+
+    (2) make the compiler and utilities
+
+	NOTE: the main compiler does not support FP constants when compiled
+	under UNIX.
+
+	cd src
+	make
+	make install
+	make clean
+	cd ..
+
+	NOTE: if using csh/tcsh, you should 'rehash' after installing the
+	binaries and also make sure that your $path includes the location
+	of these binaries.
+
+
+    (3) AMIGA SPECIFIC AMIGAxxx.LIB EQUIVALENTS
+
+	These libraries are provided precompiled in the distribution and may
+	also be regenerated.
+
+	You can create amigaxxx.lib equivalents.  The auto library is used
+	to automatically open those system libraries used by the code.
+
+	cd lib
+	dmake -f DMakefile.unix amiga13
+	dmake -f DMakefile.unix amiga20
+	dmake -f DMakefile.unix auto
+
+    (4) ROM LIBRARY, AMIGA LIBRARIES
+
+	These libraries are provided precompiled in the distribution and may
+	also be regenerated.
+
+	You can create a machine-independant ROM library
+
+	cd lib
+	dmake -f DMakefile.unix rom
+
+    (5) AMIGA SUPPORT LIBRARIES
+
+	These libraries are provided precompiled in the distribution and may
+	also be regenerated.
+
+	DICE includes stdio, string, and other Amiga-specific support 
+	libraries.   If you have the amiga includes installed, you can compile
+	these libraries simply with:
+
+	cd lib
+	dmake -f DMakefile.unix all
+
+(III) COMPILING DICE UNDER THE AMIGA
+
+    Yes you can do it.  Unfortunately, I haven't run the compile myself for
+    a long time so you will probably have to mess around with the various
+    DMakefile's.  The DMakefile's for the compiler & utilities look something
+    like:  src/dc1/DC1.DICE.  You compile by cd'ing into src/dc1 and then
+    doing a 'DMakefile -f DC1.DICE'.  You will have to setup a compilation
+    environment, though, and since I don't have an Amiga handy I can't give
+    you exact instructions.
+
+    To compile DICE on the Amiga you need DICE.  This shouldn't be a problem,
+    I include full amiga compiler binaries.  I do not include the
+    commodore-specific Amiga includes, however... you need to get those
+    separately.
+
+(IV) DIRECTORIES
+
+    abin	amiga binaries
+    dlib	amiga/68000 support libraries
+
+    ubin	unix binaries
+    ulib	unix support libraries
+
+    src		primary utility and compiler source
+    lib		amiga/68000 support library source
+    suplib	unix support library source
+
+    include	header files for amiga/68000 libraries, including
+		selected portions of the 1.3, 2.0, and 3.0 includes
+		(the clib and fd directories only), and the DICE
+		ANSI library.
+
+    config	Various amiga-related DMakefile's for compiling
+		DICE (included as-is)
+
+    doc		Library and compiler documentation
+		(included as-is)
+
+
+    installer	Bunches of installation scripts.  Included AS-IS.
+
+    master	Random junk (used to be the disk template that I used
+		to make floppies).  Removed duplicate information that
+		already exists in other directories.
+
+
+						-Matt
+

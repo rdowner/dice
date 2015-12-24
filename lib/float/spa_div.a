@@ -1,0 +1,24 @@
+
+		;   SPA_DIV.A
+		;
+		;   D0	arg1	(4 bytes)
+		;   D1	arg2	(4 bytes)
+		;
+		;   result -> D0
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+		section text,code
+
+		xref	_MathIeeeSingBasBase
+		xref	_LVOIEEESPDiv
+		xdef	__spdiv_a
+
+__spdiv_a	move.l	A6,-(sp)
+		move.l	_MathIeeeSingBasBase(A4),A6
+		jsr	_LVOIEEESPDiv(A6)
+		move.l	(sp)+,A6
+		rts
+
+		END
+

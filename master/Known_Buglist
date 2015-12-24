@@ -1,0 +1,121 @@
+$VER: Known_Buglist 3.0 (1.20.94)
+
+No product of any reasonable complexity is completely without problems.
+If someone were to fix every last item/suggestion/enhancement then nothing
+would be ever released.  We hope to have achieved the balance between what
+must be fixed verses what would be nice to eventually address.
+
+The following enhancements/suggestions/bugs still remain in the latest version
+of DICE.  We do not believe that their presense impares the final product, but
+certainly they are on our list to be addressed in time.
+
+Bugid Area	 Description of bug
+----- ---------- --------------------------------------------------------
+01020 CLIB	 Suggestion for some aztec compatibility functions
+00052 CLIB	 difftime, gmtime undefined
+00054 CLIB	 mblen wctomb mbtowc wcstombs mbstowcs functions not defined
+01024 CLIB	 Suggestion for a full path functionality
+00151 CLIB	 Suggestion _sys_errlist (DICE BETA INFO)
+00055 CLIB	 setlocale localeconv functions not defined
+01087 DAS	 Assembler uses too much memory
+01111 DC1	 #pragma Enhancement
+06047 DC1	 DC1 code optimization opportunity
+06038 DC1	 DC1 fails to warn about unreached code eliminating a variable usage
+06035 DC1	 DC1 generates multiple jump tables
+01013 DC1	 DC1 generates switch with pc-relative jumps even under -mC option
+65009 DC1	 DC1 needs an option for string merging
+01127 DC1	 DC1 should recognize main() and insert a return(0)
+01076 DC1	 DC1 could generate better code for postfix increment operators
+01082 DC1	 Suggestion for better error diagnostics
+00061 DC1	 Enhancement: Add Inline function support
+01142 DC1	 Problems with taking address of registerized function pointer
+01128 DC1	 Enhancement to optimize an expression of the form "0 << something",
+01109 DC1	 Enhancement to relax void type checking
+00056 DC1	 Wide character support for L' missing from the compiler
+10001 DCC	 Enhancement: DCC should generate an auto ctag file
+06032 DCC	 Enhancements: Inline calls and 68020 optimizations
+00048 DCC	 Enhancement: support WShell resi lists
+00122 DCPP	 Ehnancement: ; on a #ifdef statement generates a syntax error
+00003 DCPP	 DCPP accepts multiple #defines
+01107 DCPP	 Enhancement: Better handling of errors with macros
+01146 DCPP	 DCPP Problems with macro invocations spanning lines
+01106 DD	 Beta4 DD Problems
+00123 DD	 Enhancements: DBUG comments
+65016 DD	 DD's step command in source mode should be improved
+01051 DiceHelp	 Add caching of the Indexfile to DiceHelp
+06034 CLIB	 Suggestion for routines for ARRAYS
+00051 CLIB	 missing memchr, strcoll, strxfrm
+00131 DLink	 DLink should read SAS/C .lib files
+00130 DLink	 DLink ideas.
+01102 DLink	 Jump table optimization for DLink
+00133 DMake	 Enhancement: Add #include support to DMake
+00500 DMake	 Add DMake support for # as a comment in the middle of a line
+06056 DMake	 DMake 2.1 bug with multiple nested dependencies
+01055 DMake	 DMake needs internationalization Support
+00134 DMake	 Re: DMake and long lines
+00154 DME	 Enhancement: Add Scroll bar and clipboard support to DME
+00137 DME	 Enhancement: DME & ARP
+01144 DME	 DME's "unmap" command is broken
+01009 DME	 Enhancement: Issues associated with the RexPortName
+01116 DOCS	 -new0 is not explained in the docs
+06054 DOCS	 documentation missing for getfh(), fseek() and _bufsiz
+01059 DOCS	 Need online Docs for DICE
+00042 fdtopragma fdtopragma should handle CIA stuff automatically
+65002 CLIB	 strftime() doesn't print out the time zone
+01042 Misc	 There is no standard use of an Editor environment variable
+06014 RCS	 Checkin problem with multiple empty updates
+01031 VMake	 VMake does not auto-detach from the CLI
+01072 VMake	 VMake users can not set symbols not attached to a gadget
+01026 VMake	 VMake does not handle file dependencies
+01025 VOpts	 VOpts does not detect #pragma DCCOPTS on other than the first line
+01065 VOpts	 Enhancement: VOpts needs some command line support
+01064 VOpts	 Enhancement: VOpts needs to open on public screens
+
+
+
+
+These are problems that have been reported but we can not reproduce them.
+We actually believe that they have been fixed by other changes but have not been
+able to conclusively prove it.
+-------------------------------------------------------------------------------
+Bugid Area	 Description of bug
+----- ---------- --------------------------------------------------------
+06064 ARCH	 Lockup problem with archiving filehandler
+06023 DC1	 Enforcer hit from DC1
+06048 DC1	 Enforcer hits by dice
+01097 DC1	 Major DC1 crash - one line asignment
+01081 DC1	 Problem with variable scoping
+06007 DC1	 Software-error with structure passing
+06024 DC1	 Typedef of a function crashes DICE
+00040 DCC	 -a option does not work on DCC
+00119 DCC	 -new and @filelist does not use the timestamp-checker
+01012 DC1	 Dice loses track of datatypes in deeply nested data structures
+00039 DC1	 Enforcer hits from DC1
+00142 DC1	 problem assembling DICE output.
+
+
+Of course we have some issues with the Operating system that we can't work around
+---------------------------------------------------------------------------------
+Bugid Area	 Description of bug
+----- ---------- --------------------------------------------------------
+06060 CLIB	 lstat() does not work with RAM: in v37
+65010 DC1	 Ieee single precision libraries crash on the 68040
+
+
+And of course we have issues where the way that Dice works is not actually a bug
+--------------------------------------------------------------------------------
+Bugid Area	 Description of bug
+----- ---------- --------------------------------------------------------
+06043 DMake	 DMake: please insert volume DCC: in any drive
+01110 DC1	 Constant allocation problem with -mD and -l0
+65022 DC1	 Discrepancy between typedef and normal type
+06061 DC1	 expressions in arrays
+06016 DC1	 Structures in a program cause a crash in the run program
+01129 DCPP	 dcpp does not handle expressions in #if directives
+01141 CLIB	 Problem with startup code and strncat
+06039 DC1	 Bug with comments in strings
+06059 DC1	 BUG WITH DOUBLES IN DICE 3.00.48 ?
+01112 DCC	 "dcc -l0" still includes x.o
+01036 DCC	 -R0 eats the next option
+65004 DLink	 DLink always creates a symbol hunk For _main and _exit symbols.
+03002 vmake	 Can't close VMake Console under Dos 1.3

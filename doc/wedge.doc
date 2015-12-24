@@ -1,0 +1,608 @@
+
+				WEDGE
+
+Format: WEDGE <library> <offset> [regs ptrs] [opt fklnprasxz u t=<tasklist>
+        b=<baud> c=<comment> d=<n>]
+    or  WEDGE LIST
+    or  WEDGE KILLALL
+
+Template: WEDGE "LIBRARY,OFFSET,REGS/K,PTRS/K,OPT/S,T=/K,B=/K,C=/K,D=/K"
+
+Purpose: To monitor calls to any library function.
+
+Specification:
+
+WEDGE allows you to monitor the library function calls of system and
+application tasks.  This is useful for both debugging and the optimization
+of software. WEDGE reports the name and address of the task calling the
+function, the Forbid/Disable status, the register contents, data pointed to
+by registers, stack, and the function return value.
+
+You can restrict reporting to a list of tasks, and you can also exclude a
+list of tasks from reporting.  When in serial mode, Debug (ROMWACK) can be
+invoked either before or after the WEDGEd function.
+
+Wedge 37.1 adds SegTracker support, and reduced stack usage.
+(older versions of wedge can cause stack overflow crashes under
+2.1 and higher OS when locale.library is present).
+
+NOTE - The new Software Tools LVO command has a "wedgeline" option which
+can be used with the Amiga FD files to automatically create command lines
+for WEDGE.  This is the easiest way to create a basic command line for
+WEDGE - much easier than figuring out the register bit patterns yourself.
+See the final section on creating your own wedges for more information.
+
+
+EXPLANATION OF WEDGE ARGUMENTS
+
+In this section, the CLI argument is listed followed by the Workbench TOOL
+TYPE enclosed in parentheses.  If an example is included to illustrate an
+argument, the example shows both the CLI argument and the corresponding TOOL
+TYPE.
+
+
+Required Arguments (ToolTypes shown in parentheses)
+
+NOTE - All command line options should be lower-case
+
+<library> (LIBRARY=)	Specifies any run-time library (without the
+			".library" suffix).
+
+			Example:	exec		(LIBRARY=exec)
+
+
+<offset>  (OFFSET=)	Specifies the library base offset of the function
+			being WEDGEd.  It must be expressed as a negative
+			offset in hexadecimal form.
+
+			Example:	0xff28	(OFFSET=0xff28)
+
+
+Optional Argument Pair
+
+NOTE:  REGS and PTRS must be used in conjunction with each other.  If you
+       supply one option, you MUST supply the other.  They cannot be used
+       alone.
+
+<regs>	(REGS=)		Hexadecimal word (format 0xHHHH) representing the
+			registers that should be reported.  Each bit set in
+			the word represents a 68000 register, with the bits
+			from right to left, representing d0 through d7 then
+			a0 through a7.
+
+			Example: To monitor d0, d1, a0 and a6, the bit
+				 pattern would be:
+
+                                         a6        a0    d1  d0
+                                          \        /      \  /
+                                 Binary:  0100 0001 0000 0011
+
+                             Then convert binary nibbles to hexadecimal:
+
+                                  Binary<>Hex Conversion Table
+
+                                 0000=0  0100=4  1000=8  1100=C
+                                 0001=1  0101=5  1001=9  1101=D
+                                 0010=2  0110=6  1010=A  1110=E
+                                 0011=3  0111=7  1011=B  1111=F
+
+				 This example converted to hex is
+
+                                              HEX 4 1 0 3
+
+                                 The regs argument would be:
+
+				 0x4103		(REGS=0x4103)
+
+
+<ptrs>    (PTRS=)	The hex word (format 0xHHHH) representing the
+			monitored registers that point to the data you want
+			reported.  This is especially useful for monitoring
+			text strings passed as function arguments. The first
+			16 bytes of the data will be reported in both hex
+			and ASCII.  The hex word is formed the same way as
+			for the REGS option.
+
+			Example:  If d1 and a0 are pointers:
+				    0x0102	(PTRS=0x0102)
+
+
+
+f  	(FORBID=TRUE)	Causes WEDGE to Forbid() before calling the WEDGEd
+			function.  WEDGE will not call Permit() until Result
+			is returned.  This flag is only meaningful if Result
+			reporting is in effect.  When you are monitoring
+			tasks that are calling the same functions, this flag
+			can help to synchronize Result reports with other
+			WEDGE output by attempting to prevent multitasking
+			until the function returns.  Functions that Wait()
+			and local output will break this Forbid().
+
+
+k	(KILL=TRUE)	Kills this WEDGE.  Use KILL=TRUE for a kill-only
+			icon.  Use KILL=FALSE for an install-only icon.  If
+			a KILL TOOL TYPE is not present, the icon will
+			toggle WEDGE in and out.)
+
+
+l  	(LOCAL=TRUE)	Selects studio reporting.  In this mode, WEDGE can
+			only report the function calls of non-FORBIDden
+			processes with available stack of at least 1800
+			bytes.  (Only 300 bytes are needed for serial or
+			parallel output.)  In addition, function calls made
+			by the Local output handler will not be reported.
+			(The Local output handler is usually a window, but
+			it may be another handler if CLI output redirection
+			was used.)
+
+			In all output modes, WEDGE will bypass reporting if
+			the caller's available stack is too low for safe
+			execution of the output function.  All unreported
+			calls are tallied, and a count is presented at the
+			next report. The available stack safety feature may
+			be turned off (at your own risk) with the UNSAFE
+			TOOL TYPE or with the CLI 'U' flag.
+
+
+n	(NOISY=TRUE)	Notifies user of WEDGE installation and removal.
+
+
+p	(PARALLEL=TRUE) Selects parallel reporting, instead of serial.  By
+			default, all debugging output is directed to the
+			serial port and may be received by a terminal,
+			serial printer or a second computer running terminal
+			software.  Optionally, the output can be directed to
+			the parallel port or displayed locally.
+
+
+r	(RESULT=TRUE)   Monitors the return value of reported functions. An
+			Id number is assigned to each reported function
+			call.  That call's Return value report is tagged
+			with the same Id number. This allows you to match
+			calls and return values, even if multitasking causes
+			other WEDGE reports to be output in between them.
+
+a	(RESULTP=TRUE)	Monitors what the result points to.
+
+
+s	(STACK=TRUE)	Monitors stack limits and pointer.
+
+
+x	(EXCLUDE=TRUE)	Excludes tasks in the tasklist from reporting.
+
+
+u	(UNSAFE=TRUE)	Reports regardless of the available stack.  Use this
+			option at your own risk.  When WEDGE is run from the
+			CLI, the U flag may not be grouped with other flags
+			(there must be a space before it).
+
+
+z	(ZAP=TRUE)	When used in conjunction with the k option, z lets
+			you force the unloading of a WEDGE that is still in
+			use.  Generally this is a very dangerous thing to
+			do.  But, occasionally, it is necessary because a
+			WEDGE that is unWEDGEd with kill will not be
+			unloaded if there is still an "occupant" in the
+			WEDGE. This can occur if you have WEDGEd Wait() with
+			Result reporting, and a task calls Wait(0), which
+			will never Return.  In this case, you can use the z
+			option to force the unloading of the Wait() WEDGE.
+			Note:  A new WEDGE may not be installed in a
+			function if an old one has not been unloaded.
+
+				Usage -- CLI:  Opt KZ
+				         TOOL TYPES:	KILL=TRUE
+  							ZAP=TRUE
+
+
+"b=rate"  (BAUD=RATE)	Sets the serial hardware baud rate.  This option is
+			ignored if Parallel or Local output is requested.
+			The baud rate is determined by the last value stored
+			in the serper register. When you boot your system,
+			the hard ware is set to 9600 baud.  If you use the
+			serial.device or SER: before using WEDGE, the serper
+			(serial period) register may contain a different
+			rate.  Use this option to reset the baud rate for
+			WEDGE.  If run from CLI, the b option without a
+			specified rate will set 9600 baud.  If you also use
+			the d option to enter ROMWACK, you must use 9600
+			baud since ROMWACK forces 9600.  Use quotes if you
+			are passing this parameter to a script.
+
+
+"c=text" (COMMENT="text") Allows you to include a comment with each report.
+			 The comment is generally the name and register
+			 argument descriptions for the function being
+			 WEDGEd.  From CLI, quotes must be used around the
+			 entire C= string if the comment contains spaces.
+			 If entered from the Workbench, everything to the
+			 right of the = sign should be in quotes.  The WEDGE
+			 comments are displayed when you do a WEDGE List. If
+			 a WEDGE has no comment, its offset and library will
+			 be listed.
+
+                              Usage -- CLI:       "c=AvailMem d1=Type"
+                                       TOOL TYPE: COMMENT="AvailMem d1=Type"
+
+
+d=n	(DEBUG=n)	Causes a call to Debug() on the nth reported call of
+			the WEDGEd function.  (This option is only valid in
+			a serial WEDGE.)  By default, Debug() invokes the
+			system's built-in 9600 baud serial debugger ROMWACK.
+			Since ROMWACK forces 9600 baud, you should only use
+			this option in a 9600 baud WEDGE (unless you have a
+			resident serial debugger that works at other baud
+			rates).
+
+			If Result reporting (opt r) is in effect, the call
+			to Debug() will be made AFTER the WEDGEd function
+			has been called and its result reported.  If Result
+			reporting is not on, Debug() will be called after
+			the normal WEDGE report and immediately before WEDGE
+			actually calls the function.  This allows you to
+			enter the debugger either before or after the WEDGEd
+			function has been called.  In both cases, you will
+			enter the debugger with all of the function caller's
+			registers intact, except for a6 which will contain
+			ExecBase.  The first two values on the stack will be
+			the return address for Debug() and the caller's a6.
+
+			When you exit the debugger, you will be prompted
+			"Debug again <y or n>?" at the serial terminal.  By
+			entering 'y', you can Debug successive calls to the
+			WEDGEd function.  Note that Debug will not be
+			invoked if the caller is running on the system stack
+			because the caller may be an interrupt.
+
+			You will also be asked whether you wish to Wait
+			the calling task.  If you say yes, the calling task
+			will be placed in a  Wait for CTRL-C.  You can
+			then use local debugging tools to examine memory.
+			When you are ready to restart the calling task,
+			you can use BREAK to restart the task (if it
+			was started from CLI) or the Software Tools
+			"breaktask" command to send a CTRL-C to any
+			named Exec task or CLI command.
+
+			When run from the CLI, the d option used without an
+			argument is equivalent to "d=1."
+
+				Usage -- CLI:  		"d=6" or opt d
+                       	                 TOOL TYPE:	DEBUG=1
+
+
+"t=tasklist"		Limits reporting to the tasks named in Tasklist.
+(TASKS="tasklist")      This is useful for monitoring the function calls of
+			a particular task or group of tasks.  If the x
+			option (EXCLUDE) is used, the tasks in the tasklist
+			are instead excluded from reporting.  This is
+			useful for screening out any Amiga OS tasks that
+			make heavy use of the function being monitored.
+
+			The tasklist should be in quotes, and multiple task
+			names should be separated by a vertical bar.  WEDGE
+			will compare the tasklist names against both Task
+			node names and the command name of any CLI invoked
+			command which calls the WEDGEd function.
+
+			WEDGE also recognizes two special task names:
+
+				System: Matches any code running on system
+					stack (interrupts, etc.).
+
+				All: If this is the only task name in the
+				     list, the list is ignored.  This allows
+				     you to disable the TASKS TOOL TYPE
+				     without removing it from the .info file.
+
+				Usage -- CLI:  	    "t=System|CON|wedge"
+        			         TOOL TYPE: TASKS="System|CON|wedge"
+
+
+EXAMPLE WEDGE COMMAND LINES
+
+Note - by default, when LVO generates a wedge command line for you,
+it will tell wedge you want to see the result (opt r) and also that
+you want to see what all address register arguments and a7 point to.
+But dos.library often uses a data register such as d1 to pass name
+arguments.  You probably want to see such name arguments (and not
+just their addresses), so after generating a wedgeline with LVO,
+you may wish to edit the 3rd hex parameter (the show me what these
+registers point at parameter) to set the bit for the data register
+in which the name is passed.  For example, the Open and Lock examples
+below, as generated by LVO, were:
+
+run wedge dos 0xffe2 0x8006 0x8000 opt r   "c=Open(name,accessMode)(d1/d2)"
+run wedge dos 0xffac 0x8006 0x8000 opt r   "c=Lock(name,type)(d1/d2)"
+                                 ^bits for d3 d2 d1 d0
+
+But we have changed these by setting the bit for d1 in the third
+hex parameter, so wedge will show us the data pointed at by d1:
+
+run wedge dos 0xffe2 0x8006 0x8002 opt r   "c=Open(name,accessMode)(d1/d2)"
+run wedge dos 0xffac 0x8006 0x8002 opt r   "c=Lock(name,type)(d1/d2)"
+
+The following examples were all generated with LVO, but we edited
+the Open and Lock examples as described previously.
+
+DOS Examples:
+
+run wedge dos 0xffe2 0x8006 0x8002 opt r   "c=Open(name,accessMode)(d1/d2)"
+run wedge dos 0xffdc 0x8002 0x8000 opt r   "c=Close(file)(d1)"
+run wedge dos 0xffac 0x8006 0x8002 opt r   "c=Lock(name,type)(d1/d2)"
+run wedge dos 0xffa6 0x8002 0x8000 opt r   "c=UnLock(lock)(d1)"
+run wedge dos 0xffa0 0x8002 0x8000 opt r   "c=DupLock(lock)(d1)"
+
+Memory Examples:
+
+run wedge exec 0xff3a 0x8003 0x8000 opt r   "c=AllocMem(byteSize,requirements)(d0/d1)"
+run wedge exec 0xff2e 0x8201 0x8200 opt r   "c=FreeMem(memoryBlock,byteSize)(a1,d0)"
+run wedge exec 0xfd54 0x8003 0x8000 opt r   "c=AllocVec(byteSize,requirements)(d0/d1)"
+run wedge exec 0xfd4e 0x8200 0x8200 opt r   "c=FreeVec(memoryBlock)(a1)"
+
+Other Exec Examples:
+
+run wedge exec 0xfe44 0x8303 0x8300 opt r   "c=OpenDevice(devName,unit,ioRequest,flags)(a0,d0/a1,d1)"
+run wedge exec 0xfe3e 0x8200 0x8200 opt r   "c=CloseDevice(ioRequest)(a1)"
+run wedge exec 0xfdd8 0x8201 0x8200 opt r   "c=OpenLibrary(libName,version)(a1,d0)"
+run wedge exec 0xfe62 0x8200 0x8200 opt r   "c=CloseLibrary(library)(a1)"
+
+Intuition Examples:
+
+run wedge intuition 0xff34 0x8100 0x8100 opt r   "c=OpenWindow(newWindow)(a0)"
+run wedge intuition 0xffb8 0x8100 0x8100 opt r   "c=CloseWindow(window)(a0)"
+run wedge intuition 0xff3a 0x8100 0x8100 opt r   "c=OpenScreen(newScreen)(a0)"
+run wedge intuition 0xffbe 0x8100 0x8100 opt r   "c=CloseScreen(screen)(a0)"
+run wedge intuition 0xfda2 0x8300 0x8300 opt r   "c=OpenWindowTagList(newWindow,tagList)(a0/a1)"
+run wedge intuition 0xfd9c 0x8300 0x8300 opt r   "c=OpenScreenTagList(newScreen,tagList)(a0/a1)"
+
+Icon examples:
+
+run wedge icon 0xffb2 0x8100 0x8100 opt r   "c=GetDiskObject(name)(a0)"
+run wedge icon 0xffa6 0x8100 0x8100 opt r   "c=FreeDiskObject(diskobj)(a0)"
+run wedge icon 0xffac 0x8300 0x8300 opt r   "c=PutDiskObject(name,diskobj)(a0/a1)"
+run wedge icon 0xffa0 0x8300 0x8300 opt r   "c=FindToolType(toolTypeArray,typeName)(a0/a1)"
+
+
+
+RUNNING WEDGE FROM THE WORKBENCH
+
+You could make a Tool icon for Wedge, and/or Project icons with the
+Default Tool of Wedge if you want to use Wedge from Workbench.
+
+When WEDGE is run directly from the Workbench, the TOOL TYPES entries in the
+icon's INFO window determine which library and offset to monitor and which
+options are enabled/disabled.  To change an entry or add an option that is
+not listed, use the Workbench INFO function.  To bring up the INFO window,
+select a Wedge icon, then select the INFO option in the Workbench's first
+menu (the Workbench menu).  Use the scroll arrows, the add/delete gadgets,
+and the key board to add, delete or modify the icon's TOOL TYPE entries.
+
+The acceptable format for TOOL TYPES entries was included in the explanation
+of each option.  The TOOL TYPES default to:
+
+	AmigaDOS argument		TOOL TYPE Default
+
+	<regs> 				REGS=0x0000
+	<ptrs>				PTRS=0x0000
+	l				LOCAL=FALSE
+	p				PARALLEL=FALSE
+	r				RESULT=FALSE
+	a				RESULTP=FALSE
+	s				STACK=FALSE
+	x				EXCLUDE=FALSE
+	"t=tasklist"			TASKS=ALL
+
+There are no default values for the library and offset arguments. These
+values MUST be supplied.
+
+
+
+SPECIAL WEDGE FUNCTIONS
+
+The following functions can be specified with a single CLI argument, a TOOL
+TYPES entry, or simply by double-clicking on the corresponding icon in the
+WEDGE window.
+
+CLI Command		TOOL TYPES	Icon		Function
+
+WEDGE help		HELP=TRUE	Wedge.Help	Lists WEDGE
+							arguments, TOOL
+							TYPES, and notes.
+
+WEDGE killall		KILLALL=TRUE	Wedge.KillAll	Signals all WEDGEs
+							to remove
+							themselves. If no
+							WEDGEs are currently
+							installed, this
+							option will remove
+							and deallocate the
+							resident
+							"WedgeMaster"
+							Message Port which
+							holds some global
+							information for the
+							WEDGEs.
+
+WEDGE list		LIST=TRUE	Wedge.List	Lists all WEDGEs
+							currently installed.
+
+
+WEDGE LIMITATIONS
+
+Due to the need for WEDGE to be fast and small and to call as few library
+functions as possible, there are certain arbitrary limitations.
+
+1.  The Exec functions RawIOInit, RawDoFmt, RawMayGetChar, and RawPutChar()
+    may not be WEDGEd because they are called indirectly by the WEDGE itself.
+    If these functions were WEDGEd, a recursive loop would occur.  WEDGE
+    caches pointers to Forbid and Permit.  Installed WEDGEs call these
+    functions using these pointers, so these functions may be WEDGEd.
+
+2.  To help prevent such recursive loops in Local mode, function calls made
+    by the Local output handler are not reported.  Unless CLI output
+    redirection has been used, the Local handler is a CON: window.  All
+    function calls made by the standard Amiga Exec devices are automatically
+    screened out in Local mode, since our devices are not Processes.
+    However, be warned that if you redirect Local output to a third party
+    handler or device, a recursive loop (and big crash) can occur.
+
+3.  There are size limits for several WEDGE arguments:
+
+		tasklist	31 task names; 319 characters
+		library		39 characters
+		comment		79 characters
+
+4.  The maximum size for KILLALL and LIST is 127 WEDGEs.
+
+5.  The CLI command names specified in the tasklist option must be 16
+    characters or less.  If you want to monitor or exclude a command with a
+    larger name, rename it.  There is no limit on the size of normal Exec
+    Task names in the tasklist.
+
+
+
+WARNINGS
+
+1.  In some cases, the caller of a WEDGEd function may have so little
+    available stack that the WEDGE code to save the caller's registers and
+    to check his stack may overrun it.  If this happens, severe crashes can
+    occur. Use the tasklist to screen out tasks with tiny stacks.
+
+2.  WEDGE contains a number of safety features to prevent recursion.
+    However, the possibility of recursive crashes still exists, most notably
+    in Local mode.  See the note on Local recursion in "WEDGE Limitations."
+
+3.  When creating masks for REGS and PTRS, do not indiscriminately specify
+    registers as pointers.  Only specify a register as a pointer if the
+    address of a string, structure, buffer, etc. is actually passed in that
+    register. If a register is specified as a pointer, its contents will be
+    used as an ad dress and the data at that address will be read.  If the
+    register actually contains flags or other non-address data, you could
+    end up reading registers which are reset by a read.  This could cause a
+    crash.
+
+4.  If you WEDGE common Exec functions, such as AllocMem() and Signal(),
+    with out excluding low level OS tasks such as input.device and
+    trackdisk.device, the system will slow to a crawl.  It is strongly
+    suggested that you do not write to disks while an intensive WEDGE is
+    running.  (It would take forever anyway.)
+
+
+
+SAMPLE WEDGE COMMANDS AND RESULTING OUTPUT
+
+NOTE:  Normally you would set up a ".w" script and/or icon to install a
+       WEDGE.
+
+Example 1.
+
+WEDGE exec.library AvailMem function (oxff28) with Stack reporting (OPT S).
+Only report on calls made by Workbench or the CLI command AVAIL.
+
+Enter:
+
+1> run Toolkit:Debug/Wedge/WEDGE exec 0xff28 opt s "c=AvailMem d1=Type"
+"t=Workbench|Avail"
+
+Sample WEDGE Output:
+
+----------------------------------------------------------------------------
+AvailMem d1=Type
+COMMAND: Avail    PROCESS: Initial CLI ($203798) [F]
+Pre-wedge a7=$232D7C  Task Stack:  Lower=$203854, Upper=$203E94
+Command Stack: Base at startup=$232DF8, Size=10000
+
+AvailMem d1=Type
+PROCESS:  Workbench ($20FB40)
+Pre-wedge a7=$210F14   Task Stack: Lower=$20FBFC, Upper=$210F84
+----------------------------------------------------------------------------
+
+When a CLI command calls the WEDGEd function, the COMMAND name is reported.
+In addition, if Stack reporting has been requested, both the PROCESS and the
+separate COMMAND stack are reported.  Also note the "[F]" in one of the
+reports.  This means the task calling the function had a Forbid() in effect.
+A Disable() would have been reported as "[D]", both as "[FD]".
+
+
+Example 2
+
+WEDGE dos.library Open function (offset 0xffe2), report registers d1 and d2
+(0x0006).  Report what d1 points at (0x0002), and report both Result (opt r)
+and Stack (opt s).
+
+Enter:
+
+1> run Toolkit:Debug/Wedge/WEDGE dos 0xffe2 0x0006 0x0002 opt rs "c=Open
+d1=Name d2=Mode"
+
+Sample WEDGE Output when Workbench calls Open (".info",MODE_NEWFILE):
+
+----------------------------------------------------------------------------
+Open d1=Name d2=Mode
+PROCESS: Workbench ($20FB40)
+d1 $00FECD60 ->  $2E696E66  6F005359   533A5379  7374656D .info.SYS:System
+d2 $000003EE
+Pre-wedge a7=$210DFC   Task Stack: Lower=$20FBFC, Upper=$210F04
+Result ID=6
+Result: $86EB9  (ID=6)
+----------------------------------------------------------------------------
+
+In the ASCII dump at the right, all unprintable values, such as the 0
+terminating the ".info" filename, are printed as a period (".").  All
+output lines except the "PROCESS" line are optional and are requested via
+CLI arguments or TOOL TYPES.
+
+The OpenWindow.w, Open.w, and AvailMem.w icons have been provided for
+wedging common system functions.  OpenWindow.w installs a WEDGE into $FF34
+of the intuition.library; Open.w installs a WEDGE into $FFE2 of the
+dos.library; and AvailMem.w installs a WEDGE into $FF28 of the exec.library.
+These projects can be run through the Workbench.  To change any of the
+parameters, change the TOOL TYPES entries in the icon's Info window.
+
+The icons are set up for Local output.  The scripts are set up for default
+(serial) output with no baud rate specified.  To use serial scripts for
+Local or Parallel debugging, pass the appropriate flag when you execute the
+script.  In order for Execute to find the scripts, you must cd where they
+are or copy them to your s: directory.  Here are some examples of passing
+options to the AvailMem.w script:
+
+execute AvailMem.w prs	(prs = Parallel, Result reports, Stack reports)
+execute AvailMem.w l	(l = Local)
+execute AvailMem.w dr	(dr = Debug on first call, Result reports)
+
+
+
+CREATING YOUR OWN WEDGE SCRIPTS AND ICONS
+
+NEW - The new LVO command's "wedgeline" option can be used with the Amiga
+FD files to automatically create command lines for WEDGE.  This is the
+easiest way to create a basic command line for WEDGE - much easier than
+figuring out the register bit patterns yourself.  Use LVO to create and
+redirect a basic wedge line to a file, then edit the file to change or
+add additional options.  LVO requires the assignment FD: to where you have
+stored the FD files.
+
+Example:  LVO >s:availmem.w exec AvailMem wedgeline
+          will create a script called availmem.w which contains:
+run wedge exec 0xff28 0x8002 0x8000 opt r   "c=AvailMem(requirements)(d1)"
+
+By executing the above script, you will wedge into the exec
+AvailMem function for all tasks, default serial output, with
+result values (opt r) shown.
+
+To create additional WEDGE icons, duplicate an existing icon, then go into
+the icon's INFO window to modify the TOOL TYPES arguments.
+
+Each icon is attached to a ".w" script file, so you should use ED or MEMACS
+to modify the script file attached to your icon.  If you do not, the script
+file will not install the desired WEDGE from CLI since it will be a
+duplicate of the script attached to the icon you copied.
+
+Offsets for all system library functions may be found in the Addison-Wesley
+ROM Kernel Reference Manual:  Includes and Autodocs.  The manual contains
+several representations of each offset.  Use the hex form that starts with
+"0xf".  Or use the LVO command with the FD files to automatically
+generate LVO's or WEDGE command lines.
+
+

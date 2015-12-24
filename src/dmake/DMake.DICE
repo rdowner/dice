@@ -1,0 +1,54 @@
+PROJECT= DMake
+DIR= 
+SRCS= Main.c Parse.c CmdList.c Convert.c Depend.c Var.c Run.c Buffer.c \
+Wildcmp.a
+HDRS= defs.h tokens.h
+EXTRAS= Localize.file oi:Notes/Status Test_DMakefile workbench.doc \
+version.doc dmake.doc
+PDEFAULT= 
+EXEDIR= 
+OD= dtmp:dmake/
+PRECOMP= defs.h
+TYPE= Normal
+RUN= 
+CLIARGS= -f DMake.DICE -a dtmp:dmake/Dpend.o
+CFLAGS= -2.0 -r 
+OBJS= $(SRCS:"*.c":"$(OD)*.o") $(SRCS:"*.a":"$(OD)*.o")
+EXE= dmake
+
+#### AUTOMATICALLY GENERATED - DO NOT EDIT BELOW THIS LINE
+PROTOS= $(OD)$(PROJECT)-protos.h
+EXE= $(EXEDIR)$(PROJECT)
+COMPFLAGS = $(CFLAGS) $(OD:"*":-I*) $(PRECOMP:"*.h":"-HT:%1.m=%1.h")
+PCOMPFILE = $(PRECOMP:"*.h":"T:*.m")
+
+OBJS= $(SRCS:"*.c":"$(OD)*.o") $(SRCS:"*.a":"$(OD)*.o")
+
+all: $(PCOMPFILE) $(PROTOS) $(EXE)
+
+nopro: $(EXE)
+
+$(EXE): $(OBJS)
+    fwrite $(OD)$(PROJECT).lnktmp $(OBJS) V:lib/debug.lib
+    dcc $(COMPFLAGS) @$(OD)$(PROJECT).lnktmp -o %(left)
+
+$(OBJS) : $(SRCS)
+    dcc %(right) -o %(left) -c $(COMPFLAGS)
+
+$(PROTOS) : $(SRCS)
+    -delete %(left)
+    makeproto -o %(left) %(right)
+
+$(PCOMPFILE:"":"CANT.EXIST.RULE") : $(HDRS)
+    -delete %(left)
+
+clean:
+    -delete $(OBJS) $(PROTOS) $(PRECOMP)
+
+relink: rmexe $(EXE)
+
+rmexe:
+    -delete $(EXE)
+
+version:
+    -bumprev 1 dmake_rev

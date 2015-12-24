@@ -1,0 +1,44 @@
+
+		;   MODS.A
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+		;
+		;   D0/D1 -> D0 signed divide
+		;   32/32 -> 32 signed divide
+		;
+		;   HYPER function, cannot use PC-rel addressing
+
+		section text,code
+
+		xdef	__mods
+		xdef	_hyper__mods
+		xref	__divu
+
+_hyper__mods:
+__mods:
+		tst.l	D1
+		bmi	ds10
+		tst.l	D0	     ; numerator
+		bmi	ds20
+		jsr	__divu
+		move.l	D1,D0	     ; remainder
+		rts
+ds10		neg.l	D1
+		tst.l	D0
+		bmi	ds30
+ds10n		jsr	__divu
+		neg.l	D1
+		move.l	D1,D0
+		rts
+ds20		neg.l	D0
+		jsr	__divu
+		neg.l	D1
+		move.l	D1,D0
+		rts
+ds30		neg.l	D0
+		jsr	__divu
+		move.l	D1,D0
+		rts
+
+		END
+

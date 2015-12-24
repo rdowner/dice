@@ -1,0 +1,51 @@
+cmdlist.c..
+309 error(FATAL, "bad variable spec in command list for %s", dep->dn_Node.ln_Name);
+361 printf("    %s\n", cmd);
+
+convert.c..
+ 32 error(FATAL, "maximum recursion reached in WildConvert");
+
+parse.c..
+ 67 error(FATAL, "Unable to open %S", fileName);
+ 90 error(FATAL, "Expected a symbol!");
+304 error(FATAL, "%d items on the left, %d on the right of colon!", nlhs, nrhs);
+397 error(FATAL, "Variable %s does not exist", AltBuf);
+410 error(FATAL, "Bad variable specification after name");
+442 error(FATAL, "Bad variable replacement spec %c", c);
+459 error(FATAL, "Bad variable replacement spec: %c", c);
+492 error(FATAL, "Variable %s does not exist", altBuf);
+505 error(FATAL, "Bad variable specification after name");
+542 error(FATAL, "Bad variable replacement spec %c", c);
+562 error(FATAL, "Bad variable replacement spec: %c", c);
+585 error(FATAL, "Too many levels of variable recursion");
+651 error(FATAL, "Variable %s does not exist", AltBuf);
+662 error(FATAL, "Bad variable specification after name");
+694 error(FATAL, "Bad variable replacement spec %c", c);
+711 error(FATAL, "Bad variable replacement spec: %c", c);
+777 error(FATAL, "newline in control string");
+786 error(FATAL, "Symbol overflow: %s", SymBuf);
+788 error(FATAL, "Expected closing quote");
+809 error(FATAL, "Symbol overflow: %s", SymBuf);
+819 error(FATAL, "Unexpected token");
+
+825    static char *TypeString[] = { "Fatal", "Warning", "Debug" };
+829    printf("%s: %s Line %d: ", FileName, TypeString[type], LineNo);
+833    puts("");
+
+main.c..
+ 50 printf("DMAKE Done.\n");
+ 52 printf("All Targets up to date.\n");
+105 sprintf(buf, "Bad ToolType: %s", ptr);
+106 switch(AutoRequest(NULL, ITextOf(ptr), ITextOf("Ignore"), ITextOf("Abort"), 0, 0, 300, 40)) {
+176 puts("DMake V2.1 " __DATE__);
+179 error(FATAL, "Expected argument to command line option");
+201 error(FATAL, "Unable to find %s", node->rn_Node.ln_Name);
+237 puts("DMAKE V2.1 (c)Copyright 1991 Matthew Dillon, All Rights Reserved");
+238 puts("DMAKE [-f file] [-n]");
+
+run.c..
+130 printf("Unable to cd %s\n", ptr);
+140 printf("Unable to cd %s\n", ptr);
+173 sprintf(cmdArgs, "%s\n\r", cmd + ci);
+237 printf("Exit code %d %s\n", err, (ignore) ? "(Ignored)":"");
+257 printf("Exit code %d %s\n", err, (ignore) ? "(Ignored)":"");

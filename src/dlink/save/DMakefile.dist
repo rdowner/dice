@@ -1,0 +1,68 @@
+
+#   DMakefile for dlink using dcc.
+#
+#  (c)Copyright 1992 Obvious Implementations Corp, All Rights Reserved
+#  CONFIDENTIAL, This is unpublished proprietary source code owned by Obvious Implementations Corp.
+#  This material contains trade secrets of Obvious Implementations Corp.
+
+OD= dtmp:dlink/
+EXE= ram:dlink
+PEXE= ram:p_dlink
+CFLAGS= -ms -mRR -r -I$(OD)
+PROTOS= $(OD)protos.h
+
+CSRCS= main.c module.c reloc.c sym.c subs.c final.c jump.c
+ASRCS= hash.a
+
+COBS = $(CSRCS:"*.c":"*.o")
+AOBS = $(ASRCS:"*.a":"*.o")
+
+PCOBS = $(CSRCS:"*.c":"p_*.o")
+PAOBS = $(ASRCS:"*.a":"p_*.o")
+
+COBJS = $(CSRCS:"*.c":"$(OD)*.o")
+AOBJS = $(ASRCS:"*.a":"$(OD)*.o")
+
+PCOBJS = $(CSRCS:"*.c":"$(OD)p_*.o")
+PAOBJS = $(ASRCS:"*.a":"$(OD)p_*.o")
+
+all: $(OD) $(PROTOS) $(EXE)
+
+prof: $(OD) $(PROTOS) $(PEXE)
+
+$(EXE) : $(AOBJS) $(COBJS)
+    cd $(OD)
+    dcc $(AOBS) $(COBS) -o %(left) $(CFLAGS) -v
+    cd
+
+$(COBJS) : $(CSRCS)
+    dcc -c %(right) -o %(left) $(CFLAGS)
+
+$(AOBJS) : $(ASRCS)
+    dcc -c %(right) -o %(left) $(CFLAGS)
+
+$(PEXE) : $(PAOBJS) $(PCOBJS)
+    cd $(OD)
+    dcc $(PAOBS) $(PCOBS) -o %(left) $(CFLAGS) -v -prof3
+    cd
+
+$(PCOBJS) : $(CSRCS)
+    dcc -c %(right) -o %(left) $(CFLAGS) -prof3
+
+$(PAOBJS) : $(ASRCS)
+    dcc -c %(right) -o %(left) $(CFLAGS) -prof3
+
+$(PROTOS) : $(CSRCS) $(ASRCS)
+    -delete %(left)
+    makeproto -o%(left) %(right)
+
+clean:
+    -delete $(COBJS) $(AOBJS) $(PROTOS)
+    -delete $(PCOBJS) $(PAOBJS)
+
+cleanprof:
+    -delete $(PCOBJS) $(PAOBJS)
+
+$(OD) : $(OD)
+    makedir %(left:*/:*)
+

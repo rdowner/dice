@@ -1,0 +1,119 @@
+
+    DCC
+	2.06.54
+	    * when you compile a program like this:   dcc x.c y.c -o x 
+	      Temporary objects are placed in T: and deleted on completion.
+	      This makes DCC treat object files much like temporary 
+	      preprocessor and temporary assembly files.
+
+	      Compiling dcc -c x.c y.c still works as expected (leaves the
+	      object modules in the current directory) and specifying
+	      object modules, like 'dcc x.o y.c -o x' works properly (the
+	      x.o object module is NOT deleted but the temporary y.o object
+	      module will be).
+
+	2.06.53
+	    * XXX MAJOR changes unlisted
+
+	2.06.45
+	    * DCC would previously not maintain object module ordering in the
+	    link when you mix .c, .o, and .a files in one command.  That
+	    has been fixed.
+
+	    * There are two ways to specify libraries.	Here is an example that
+	    mixes both ways:
+
+	    dcc fubar.c x.lib y.c -lzap
+
+	    Method #1:	  specify library file 'x.lib'.
+	    Method #2:	  specify library with -l option
+
+	    In Method #1 the library x.lib will be linked in between fubar.o and
+	    y.o at link time.
+
+	    In Method #2 libraries specified with the -l option are linked AFTER
+	    ALL OBJECTS but BEFORE C*.LIB AND AUTOS.LIB (which is how it worked
+	    previously).  Therefore, the positioning of -l options relative to
+	    other source/assembly/object files does not effect the outcome.
+
+	    The positioning of -l options relative to other -l options does, of
+	    course, have the effect of changing the order in which libraries are
+	    linked in.
+
+	    * The AMIGA*.LIB libraries have been renamed to bring them inline
+	    with the naming conventions for other libraries:
+
+		OLD NAMING CONVENTION		    NEW NAMING CONVENTION
+		amigal20.lib			    amiga20l.lib
+		amigasr20.lib			    amiga20sr.lib
+
+		etc...
+
+	    * Previously DCC would put object modules in wierd places.	It now puts
+	    object modules in the same directory as the source module by default.
+	    For example:
+
+	    DCC fubar.c -c -o t:fubar.o       ; works like before -- explicit
+						; specification of object file name
+
+	    DCC xx:fubar.c -c		      ; REGISTERED:	      t:fubar.o
+						; ALPHA2 COMMERCIAL:	fubar.o
+						; ALPHA3 COMMERCIAL:	xx:fubar.o
+
+	    That is, the registered release would stick the object in T: by
+	    default, the commercial version you have would stick it in the
+	    current directory, and the 'final' version that I haven't sent you
+	    yet will stick it in the same directory as the source file.
+
+	    The -O option overides this as it always has.. that is, the -O
+	    option is used as a prefix (and any assignment: is removed from
+	    the file name), e.g.:
+
+	    DCC xx:a/b/fubar.c -Ot: -c	      ; REG/A2/A3:    t:a/b/fubar.o
+
+
+	2.06.44 :
+		    On link pass, deletes executable before beginning link
+		    so as not to leave an older executable in existance.
+
+		    Object files, by default, are now put into the current
+		    directory instead of T:
+
+		    Assembly files are put into the current directory if
+		    the -a option is used.
+
+		    The default executable name is set to the name of the
+		    source file minus the '.c'.  OCCURS FOR SINGLE-FILE
+		    COMPILATIONS ONLY.
+
+		    -norom option turns off a previous -rom option
+		    -noproto option turns off a previous -proto option
+
+	2.06.33 :
+		    version bump to track DC1 version
+
+	2.06.21 :
+		    now creates the directory heirarchy for a destination
+		    path if it does not exist, unless -noheir is given.
+
+		    Object file path now correctly based on source file
+		    path, before it was removing the first element of
+		    a relative path.
+
+	2.05.14 :
+		    Fixes bug in DCC's checking of the output file name
+
+	2.05.11 :
+		    Uses 2.0 FindSegment()/RunCommand() system calls for
+		    extremely efficient program startup, especially if
+		    resident.  ^C now propogated properly.
+
+	2.05.09 :
+		    Uses 2.0 System() call if running under 2.0
+
+	2.05.08 :
+		    Massive additions
+
+	2.05.06 :
+		    -U[define] added (undef a define)
+

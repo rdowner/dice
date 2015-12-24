@@ -1,0 +1,9 @@
+# Makefile converted using LMKTOSMAKE version 1.0
+ 
+CC = sc5
+ 
+LC1FLAGS = -b -d
+LC2FLAGS = -v -s -r
+
+WBRun: WBRun.o
+	slink LIB:CBACK.O WBRun.o LIB lib:sc.lib VERBOSE SD SC ND MAP WBRun.map hsflx

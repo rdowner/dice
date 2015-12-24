@@ -1,0 +1,125 @@
+
+		;   LOCK.A
+		;
+		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+
+		section text,CODE
+
+		xref	_SysBase
+
+		xref	_LVOSignal
+		xref	_LVOForbid
+		xref	_LVOPermit
+		xref	_LVOWait
+		xref	_LVOFindTask
+
+		xdef	_LockAddr
+		xdef	_LockAddrB
+		xdef	_TryLockAddr
+		xdef	_TryLockAddrB
+		xdef	_UnlockAddr
+		xdef	_UnlockAddrB
+
+_TryLockAddrB:	movem.l 4(sp),D0/A0
+		bra	TLA0
+_TryLockAddr:
+		move.l	4(sp),A0
+		moveq.l #0,D0
+
+TLA0:		bset.b	D0,4(A0)                ; attempt to gain lock
+		bne	tla10			; failure
+		moveq.l #1,D0
+		rts				; success, return 1
+tla10		moveq.l #-1,D0			; failure, return -1
+		rts
+
+_LockAddrB:	movem.l 4(sp),D0/A0             ; bit: D0    lock: A0
+		bra	LA0
+_LockAddr:					; bit: 0     lock: A0
+		move.l	4(sp),A0
+
+		;	MAIN LOCK CODE
+
+		moveq.l #0,D0
+LA0:		bset.b	D0,4(A0)                ; attempt to gain lock
+		bne	la10			; failure
+		rts				; success, done, rts (FAST)
+
+la10		movem.l D2/A2/A6,-(sp)          ; failure (SLOW) (BLOCK)
+		move.l	_SysBase,A6		; A6 = SYSBase
+		movem.l D0/A0,-(sp)
+		sub.l	A1,A1
+		jsr	_LVOFindTask(A6)
+		move.l	D0,D2
+		jsr	_LVOForbid(A6)
+		movem.l (sp)+,D0/A0
+		bset.b	D0,4(A0)                ; try again after FORBID
+		beq	la20			; got it!
+
+		;   Put linked list structure on stack
+
+		move.w	D0,-(sp)                ; bit#    12(sp)
+		move.l	D2,-(sp)                ; task#    8(sp)
+		move.l	A0,-(sp)                ; &var     4(sp)
+		move.l	(A0),-(sp)              ; Next      (sp)
+		move.l	sp,(A0)                 ; (put at head of list)
+
+		;   Loop Wait/re-attempt lock
+
+la15		moveq.l #$10,D0 		; wait (semaphore signal)
+		jsr	_LVOWait(A6)
+
+		move.w	12(sp),D0               ; try for lock
+		move.l	4(sp),A0
+		bset.b	D0,4(A0)
+		bne	la15			; loop until get it
+
+la16		cmp.l	(A0),sp                 ; unlink, find our node!
+		beq	la18
+		move.l	(A0),A0
+		bra	la16
+la18		move.l	(sp),(A0)
+		add.w	#14,sp
+la20
+		jsr	_LVOPermit(A6)
+		movem.l (sp)+,D2/A2/A6
+		rts
+
+		xdef	_UnlockAddr
+		xdef	_UnlockAddrB
+
+_UnlockAddrB:	movem.l 4(sp),D0/A0
+		bra	UL0
+_UnlockAddr:	move.l	4(sp),A0
+		moveq.l #0,D0
+
+UL0:		bclr.b	D0,4(A0)                ; clear lock bit
+		move.l	(A0),D1                 ; anybody waiting?
+		beq	ulrts			; no, rts
+ULW:
+		movem.l D2/A2/A6,-(sp)          ; yes, wake 'm all up
+		move.b	D0,D2			; D2 = bit#
+		move.l	_SysBase,A6		; A6 = SYSBase
+		movem.l D0/A0,-(sp)
+		jsr	_LVOForbid(A6)
+		movem.l (sp)+,D0/A0
+
+		move.l	(A0),D1                 ; get pointer again after FORBID
+		beq	ul20			; no, rts (close a window)
+
+ul10		move.l	D1,A2			; A2 = node
+		cmp.b	13(A2),D2               ; waiting on our bit #?
+		bne	ul18		       ; no
+		move.l	8(A2),A1                ; yes, signal the node
+		moveq.l #$10,D0
+		jsr	_LVOSignal(A6)          ; signal EVERYONE waiting
+ul18		move.l	(A2),D1                 ; next
+		bne	ul10
+
+ul20
+		jsr	_LVOPermit(A6)
+		movem.l (sp)+,D2/A2/A6
+ulrts		rts
+
+		END
+
