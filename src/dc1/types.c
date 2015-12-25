@@ -202,8 +202,8 @@ InitTypes(int enab)
 	LongDoubleAlign = sizeof(int);
 	PointerSize = sizeof(void *);
 	IntSize = sizeof(int);
-	LongSize = sizeof(int32_t);
-	QuadSize = sizeof(int64_t);
+	LongSize = sizeof(long);	/* Rune ifc to machine native */
+	QuadSize = sizeof(quad_t);	/* Rune ifc to machine native */
 	FloatSize = sizeof(float);
 	DoubleSize = sizeof(double);
 	LongDoubleSize = sizeof(long double);

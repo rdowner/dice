@@ -362,6 +362,8 @@ MatchEa(uword opCode, short ea, short reg, int32_t modes)
 	    if (modes - (1 << i) == 0)
 		break;
 	}
+	if (i == 32)	/* don't crash if we don't know */
+	    i = 0;
     }
     return(i);
 }
