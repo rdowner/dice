@@ -28,7 +28,6 @@
 
 	dillon@backplane.com
 	http://www.backplane.com/
-	http://www.obviously.com/
 
     I am willing to maintain the source tree, at least for a little while.
     Bug fixes should be emailed to me.
@@ -178,6 +177,11 @@
 		to make floppies).  Removed duplicate information that
 		already exists in other directories.
 
+(IV) LATE UPDATE NOTES
+
+    In 2015 I fixed issues compiling DICE on 64-bit BSD machines and
+    revalidated the (32-bit) 68000 output.  It should compile and operate
+    as expected on BSD or Linux.  I bumped the DCC rev to 1.14.
 
 						-Matt
 
