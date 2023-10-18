@@ -208,7 +208,7 @@
 
     In 2023 I fixed a number of gcc compile warnings and errors, including
     one assembly bug (that might never have gotten hit in the original
-    codebase anyway).
+    codebase anyway).  DCC rev bumped to 1.15.
 
 						-Matt
 
