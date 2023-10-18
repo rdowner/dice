@@ -104,8 +104,8 @@ HandleInstReloc(
      */
 
     if (label->l_Type != LT_EXT) {
-    while (*list && (*list)->Label->Sect->Hunk < label->Sect->Hunk)
-	list = &(*list)->RNext;
+	while (*list && (*list)->Label->Sect->Hunk < label->Sect->Hunk)
+	    list = &(*list)->RNext;
 
 	while (*list && (*list)->Label->Sect->Hunk == label->Sect->Hunk) {
 	    if ((*list)->Label == reloc->Label)

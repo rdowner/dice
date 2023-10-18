@@ -265,6 +265,8 @@ int32_t *ary;
 {
     static int LibsOpen = 0;
 
+    ary[0] = 0;
+    ary[1] = 0;
 
     switch(LibsOpen) {
     case 0:
@@ -406,6 +408,10 @@ Exp *exp;
 Stor *s;
 int32_t *ary;
 {
+    ary[0] = 0;
+    ary[1] = 0;
+    ary[2] = 0;
+    ary[3] = 0;
     TmpBuf[0] = 0;	/* prevent unused var warning */
     dbprintf(("asm_fltconst: not implemented\n"));
     Assert(0);

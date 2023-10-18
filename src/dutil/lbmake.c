@@ -636,7 +636,7 @@ int32_t line;
 	if (stricmp(ptr, ".lib") != 0 && stricmp(ptr, ".o") != 0)
 	    strcpy(ptr, ".o");
     } else {
-	strcat(ptr, ".o");
+	strcat(obj, ".o");
     }
 
     kn = AllocKeyNode(src, opts, obj, (aux[0] ? aux : NULL));
@@ -777,7 +777,7 @@ char *objFile;
 char *aux;
 {
     int32_t r;
-    char buf[256];
+    char buf[1024];
     char hfile[256];
 
     /*
@@ -792,7 +792,9 @@ char *aux;
     if (strreplace(hfile, "/fd/", "/clib/") < 0)
 	strreplace(hfile, ":fd/", ":clib/");
 
-    r = sprintf(buf, "%s %s -h %s -o %s %s", FDToLibName, srcFile, hfile, objFile, FlagsBuf);
+    r = snprintf(buf, sizeof(buf),
+		 "%s %s -h %s -o %s %s",
+		 FDToLibName, srcFile, hfile, objFile, FlagsBuf);
     if (aux)
 	sprintf(buf + r, " -auto %s", aux);
     puts(buf);
@@ -811,9 +813,10 @@ char *srcFile;
 char *objFile;
 {
     int32_t r;
-    char buf[256];
+    char buf[1024];
 
-    sprintf(buf, "%s %s -o %s %s -c", CompilerName, srcFile, objFile, FlagsBuf);
+    snprintf(buf, sizeof(buf),
+	     "%s %s -o %s %s -c", CompilerName, srcFile, objFile, FlagsBuf);
     puts(buf);
     fflush(stdout);	/* SAS/C */
 
@@ -1003,7 +1006,7 @@ char *repStr;
 	    movmem(ptr, ptr + (l2 - l1), strlen(ptr) + 1);
 	else if (l1 > l2)
 	    movmem(ptr, ptr - (l1 - l2), strlen(ptr) + 1);
-	strncpy(ptr, repStr, l2);
+	bcopy(repStr, ptr, l2);
 	return(0);
     } else {
 	return(-1);

@@ -90,7 +90,7 @@ char	DccOptsBuf[1024];
 char	*OutFile;
 char	*HdrFile;
 char	*FuncPrefix = "_";
-char	Buf[256];
+char	Buf[2048];
 char	FuncName[256];
 char	Prefix[64];
 short	RegOpt;
@@ -207,13 +207,13 @@ main(int ac, char **av)
 	FILE *fi;
 	char rs_tmp[L_tmpnam];
 
-	sprintf(Buf, "%sdcc -mRRX %s -a -o %s%s",
+	snprintf(Buf, sizeof(Buf), "%sdcc -mRRX %s -a -o %s%s%s",
 	    Prefix,
 	    HdrFile,
 	    tmpnam(rs_tmp),
-	    DccOptsBuf
+	    DccOptsBuf,
+	    (Symbols ? " -s -sym" : "")
 	);
-	if(Symbols)strcat(Buf," -s -sym");
 	puts(Buf);
 #ifdef unix
     	system(Buf);

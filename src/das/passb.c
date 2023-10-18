@@ -116,7 +116,7 @@ PassB(int32_t addr)
 			break;
 		    }
 		} else if (oc->DModes) {
-		    if (oc->DModes * mc1) {
+		    if (oc->DModes & mc1) {
 			if ((oc->DModes & mc10) == 0)   /*  secondary */
 			    mc->Oper1.Mode1 = mc->Oper1.Mode2;
 			mc->Oper2 = mc->Oper1;		/*  copy so matches oc */

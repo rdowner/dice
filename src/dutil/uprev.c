@@ -12,7 +12,7 @@
 
 #define MAX_FNAME 256
 
-const static char version_string[] = VERSTAG;
+//const static char version_string[] = VERSTAG;
 
 int main(int argc, char **argv)
 {

@@ -214,7 +214,7 @@ ParseOpts(short ac, char **av, short cppOnly)
 	    if (ptr[0] != '.')
 		help(1);
 	    {
-		static char ABuf[32];
+		static char ABuf[256];
 
 #ifdef AMIGA
 		sprintf(ABuf, "%sdinclude:amiga%c%c",
@@ -223,7 +223,7 @@ ParseOpts(short ac, char **av, short cppOnly)
 		    ptr[1]
 		);
 #else
-		sprintf(ABuf, INSTDIR "%sinclude/amiga%c%c",
+		snprintf(ABuf, sizeof(ABuf), INSTDIR "%sinclude/amiga%c%c",
 		    Prefix,
 		    ptr[-1],
 		    ptr[1]

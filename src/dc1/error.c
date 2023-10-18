@@ -141,7 +141,7 @@ vcerror(int32_t lexIdx, short etype, const char *buf, va_list va, short eno)
 	    if (pos > 80)
 	    {
 	       if ((errcol - (pos + ebufoff)) > 10) break;
-	       memcpy(ebuf, ebuf+10, pos-10);
+	       bcopy(ebuf+10, ebuf, pos-10);
 	       pos -= 10;
 	       ebufoff += 10;
 	    }

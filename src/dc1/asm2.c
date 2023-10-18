@@ -1545,19 +1545,19 @@ CallAsmSupport(Exp *exp,char *mop, Stor *s1, Stor *s2, Stor *d, short orderReq)
     AddAuxSub(mop);
 
     if (s1 && s1->st_Type == ST_FltConst) {
-	int32_t fpv;
+	int32_t fpv[4];
 
 	Assert(s1->st_Size == 4);
-	asm_fltconst(exp, s1, &fpv);
-	AllocConstStor(&ss1, fpv, &LongType);
+	asm_fltconst(exp, s1, fpv);
+	AllocConstStor(&ss1, fpv[0], &LongType);
 	s1 = &ss1;
     }
     if (s2 && s2->st_Type == ST_FltConst) {
-	int32_t fpv;
+	int32_t fpv[4];
 
 	Assert(s2->st_Size == 4);
-	asm_fltconst(exp, s2, &fpv);
-	AllocConstStor(&ss2, fpv, &LongType);
+	asm_fltconst(exp, s2, fpv);
+	AllocConstStor(&ss2, fpv[0], &LongType);
 	s2 = &ss2;
     }
 
