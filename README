@@ -1,5 +1,58 @@
 
 			    DICE SOURCE CODE RELEASE README
+			       ADDENDUM, 17 October 2023
+
+    So here it is, BSD licensed.  The DICE compiler from my Amiga days.
+    I have sinced made it compile under bsd/linux on hopefully 32 or 64
+    bit architectures (it may need a bit of work to compiler under linux
+    but since it compiles under BSD the work should be minimal).
+
+    It will output 68K assembly.  Since it was originally targetted to
+    the Amiga, DICE totally depended on the Amiga libraries for all floating
+    point support so this version here which compiles under unix and
+    generates 68K basically has NO floating point support.  Sorry, nothing
+    I can do about that :-).  Nor is there any 64-bit integer support.
+    A "long" is 32 bits,
+
+    I wrote the original DICE many many years ago and sold it as shareware
+    for the Amiga.  It originally cost $50 and many people got their start
+    on C with it on the Amiga.  I originally wrote it because Lattice C
+    and Aztec C were both too expensive for many developers just starting
+    out, and I wanted the community to have something that included full
+    sources that people could use and learn from.
+
+    For quite a few years in the 1990's I would receive cashiers checks in
+    the mail from the U.S. and many other countries and would dutifully
+    generate the floppy disks, put them in a mailer, and mail them out.
+    DICE did not make me a millionaire or anything like that, but it did
+    provide a second income and I appreciate the life options that gave me
+    in later years.
+
+    Later on a number of people, particularly John Toebes and Bryce Nesbit,
+    encouraged me to put together a company (which John did most of the
+    work for) and spruce up the compiler.  That company was called
+    Obviously Implementations Corp.  It was basically a 3-man company
+    and we continued to sell DICE under that name for (I think) the same
+    price.
+
+    When we finally decided to end, many years later, a few checks would
+    still come in every once in a while.  My good friend Bryce took on the
+    task of attempting to return these cashiers checks to their owners
+    along with a pointer to the now (almost) open-source DICE sources.
+
+    As of now, all DICE sources are BSD licensed and truly open source.
+
+    It is still mostly K&R C because ANSI C was quite new at the time.  Still
+    prototyped, however, and compiles pretty cleanly with modern C compilers.
+
+    I do not know if it will self-compile on 68K, that is a code path I haven't
+    been able to test when I ported it over to UNIX.
+
+			    DICE SOURCE CODE RELEASE README
+
+		(NOTE, some of these instructions may be obsolete or
+		 inapplicable now)
+
 
     (c)Copyright 1992-1997 Obvious Implementations Corp.  Redistribution and
        use is allowed under the terms of the DICE-LICENSE FILE,
@@ -53,51 +106,27 @@
 
 (II) COMPILING DICE UNDER UNIX FOR CROSS-COMPILING
 
-    NOTE: floating point constants are not supported because they require
+    NOTE: Floating point constants are not supported because they require
     the Amiga FP library.  However, you can generate all amiga libraries
-    except those routines which employe FP constants from your 
+    except those routines which employe FP constants from your sources.
 
-    (0) Setup environment
+    (1) install dmake.  Unfortunately many years after dmake someone wrote
+	a dmake so to avoid confusion, my dmake was renamed to dxmake.
 
-	setenv DCCOPTS -3.0 -//
-	setenv DINCLUDE /home/dice/include/
+	I'm sure someone will be able to clean up the topology and generate
+	Makefile's for BSD make or gmake, but I haven't done that so...
 
-	(assuming this is where you unpack the distribution)
+    (2) setup target directories via the top-level DMakefile and DMakefile.inc.
+	Get the byte order -D option correct.  It defaults to -DINTELBYTEORDER
+	(little endian I think).
 
-	If your UNIX box uses intel byte ordering, the makefiles are setup
-	ok.  If it doesn't, you have to remove the -DINTELBYTEORDER option
-	from suplib/Makefile and src/*/Makefile.  Sorry!  This option must
-	be specified correctly for the DICE compiler on a UNIX box to produce
-	machine-independant (68000 byte-ordered) output files.
+    (3) dxmake inside the project directory.
 
-	Most people run UNIX on Intel platforms (e.g. FreeBSD).  If so you
-	do not have to modify the Makefiles... you leave -DINTELBYTEORDER in.
+	dxmake obj
+	dxmake
+	dxmake install
 
-    (1) Make the suplemental library for UNIX.
-	
-	cd suplib
-	make
-	make install
-	make clean
-	cd ..
-
-    (2) make the compiler and utilities
-
-	NOTE: the main compiler does not support FP constants when compiled
-	under UNIX.
-
-	cd src
-	make
-	make install
-	make clean
-	cd ..
-
-	NOTE: if using csh/tcsh, you should 'rehash' after installing the
-	binaries and also make sure that your $path includes the location
-	of these binaries.
-
-
-    (3) AMIGA SPECIFIC AMIGAxxx.LIB EQUIVALENTS
+    (4) AMIGA SPECIFIC AMIGAxxx.LIB EQUIVALENTS
 
 	These libraries are provided precompiled in the distribution and may
 	also be regenerated.
@@ -106,31 +135,25 @@
 	to automatically open those system libraries used by the code.
 
 	cd lib
-	dmake -f DMakefile.unix amiga13
-	dmake -f DMakefile.unix amiga20
-	dmake -f DMakefile.unix auto
+	dxmake -f DMakefile.unix amiga13
+	dxmake -f DMakefile.unix amiga20
+	dxmake -f DMakefile.unix auto
 
-    (4) ROM LIBRARY, AMIGA LIBRARIES
+    (4) ROM LIBRARY, AMIGA LIBRARIES, AMIGA SUPPORT LIBRARIES
 
-	These libraries are provided precompiled in the distribution and may
-	also be regenerated.
-
-	You can create a machine-independant ROM library
-
-	cd lib
-	dmake -f DMakefile.unix rom
-
-    (5) AMIGA SUPPORT LIBRARIES
-
-	These libraries are provided precompiled in the distribution and may
-	also be regenerated.
+	These are in the lib/ subdirectory, read the DMakefile's available.
+	dxmake -f DMakefile.unix rom
 
 	DICE includes stdio, string, and other Amiga-specific support 
 	libraries.   If you have the amiga includes installed, you can compile
 	these libraries simply with:
 
 	cd lib
-	dmake -f DMakefile.unix all
+	dxmake -f DMakefile.unix all
+
+	Most DICE use cases these days do not use the original Amiga OS and
+	you are kinda on your own in terms of putting together stdio-like
+	support libraries.
 
 (III) COMPILING DICE UNDER THE AMIGA
 
@@ -182,6 +205,10 @@
     In 2015 I fixed issues compiling DICE on 64-bit BSD machines and
     revalidated the (32-bit) 68000 output.  It should compile and operate
     as expected on BSD or Linux.  I bumped the DCC rev to 1.14.
+
+    In 2023 I fixed a number of gcc compile warnings and errors, including
+    one assembly bug (that might never have gotten hit in the original
+    codebase anyway).
 
 						-Matt
 
