@@ -78,7 +78,7 @@ Exp **pexp;
          */
 
         if (exp->ex_Type == NULL) {
-            short isUnsigned __unused = 0;
+            short isUnsigned __attribute__((unused)) = 0;
             if ((e1->ex_Type->Flags | e2->ex_Type->Flags) & TF_UNSIGNED)
                 isUnsigned = 1;
 

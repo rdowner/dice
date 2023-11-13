@@ -329,7 +329,7 @@ asm_getind(
     short dexists
 ) {
     int32_t flags = s->st_Flags;
-    short subtypeary __unused = 0;
+    short subtypeary __attribute__((unused)) = 0;
     int32_t size;
     Type *subType;
     Stor td;

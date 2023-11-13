@@ -10,6 +10,7 @@
  *
  */
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -481,7 +482,7 @@ DumpHunks(fo1, fo2)
 FILE *fo1;
 FILE *fo2;
 {
-    int32_t endpc __unused = CodeStart;
+    int32_t endpc __attribute__((unused)) = CodeStart;
     short n;
     short nextIsEven = 1;
     Hunk *h;
