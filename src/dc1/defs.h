@@ -13,6 +13,7 @@ typedef unsigned short  uword;
 
 #include <stdarg.h>                     /* standard includes    */
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <include/lib/version.h>

@@ -12,6 +12,7 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -76,7 +77,7 @@ char *fileName;
 
     if ((fi = fopen(fileName, "r")) != NULL) {
         uint32_t type;
-        uint32_t flags __unused;
+        uint32_t flags __attribute__((unused));
         uint32_t skip;
         uint32_t n;
 
