@@ -1,0 +1,12 @@
+# Output of the build
+dlib/
+lib/obj3/
+obj/
+ubin/
+ulib/
+
+# Amiga header files - not to be checked in
+include/amiga31
+
+# IDE metadata
+.vscode/
