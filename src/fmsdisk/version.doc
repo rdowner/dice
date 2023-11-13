@@ -1,12 +1,12 @@
 
-			    FMS VERSION.DOC
+                            FMS VERSION.DOC
 
     2.2
-	converted to DICE as an example
+        converted to DICE as an example
 
     1.0
-	now unloads segment and closes dos.library on expunge
+        now unloads segment and closes dos.library on expunge
 
     0.0
-	initial release
+        initial release
 

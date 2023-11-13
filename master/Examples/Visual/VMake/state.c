@@ -868,7 +868,7 @@ void mark_clean(void)
       if (strobj)
       {
          /* checkpoint present string - safely                    */
-	 strncpy(strobj->clean_buf, strobj->buf, MAX_STRING);
+         strncpy(strobj->clean_buf, strobj->buf, MAX_STRING);
       }
       obj = obj->next;
    }

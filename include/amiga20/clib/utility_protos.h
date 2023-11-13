@@ -1,15 +1,15 @@
 #ifndef  CLIB_UTILITY_PROTOS_H
 #define  CLIB_UTILITY_PROTOS_H
 /*
-**	$Filename: clib/utility_protos.h $
-**	$Release: 2.04 $
-**	$Revision: 30.156 $
-**	$Date: 1995/01/11 05:18:13 $
+**      $Filename: clib/utility_protos.h $
+**      $Release: 2.04 $
+**      $Revision: 30.156 $
+**      $Date: 1995/01/11 05:18:13 $
 **
-**	C prototypes. For use with 32 bit integers only.
+**      C prototypes. For use with 32 bit integers only.
 **
-**	(C) Copyright 1990 Commodore-Amiga, Inc.
-**	    All Rights Reserved
+**      (C) Copyright 1990 Commodore-Amiga, Inc.
+**          All Rights Reserved
 */
 /* "utility.library" */
 #ifndef  UTILITY_TAGITEM_H
@@ -24,19 +24,19 @@
 /* *** TagItem FUNCTIONS *** */
 struct TagItem *FindTagItem( Tag tagVal, struct TagItem *tagList );
 ULONG GetTagData( Tag tagVal, unsigned long defaultVal,
-	struct TagItem *tagList );
+        struct TagItem *tagList );
 ULONG PackBoolTags( unsigned long initialFlags, struct TagItem *tagList,
-	struct TagItem *boolMap );
+        struct TagItem *boolMap );
 struct TagItem *NextTagItem( struct TagItem **tagListPtr );
 void FilterTagChanges( struct TagItem *newTagList, struct TagItem *oldTagList,
-	long apply );
+        long apply );
 void MapTags( struct TagItem *tagList, struct TagItem *mapList,
-	long includeMiss );
+        long includeMiss );
 struct TagItem *AllocateTagItems( unsigned long numItems );
 struct TagItem *CloneTagItems( struct TagItem *tagList );
 void FreeTagItems( struct TagItem *tagList );
 void RefreshTagItemClones( struct TagItem *cloneList,
-	struct TagItem *origList );
+        struct TagItem *origList );
 BOOL TagInArray( Tag tagVal, Tag *tagArray );
 LONG FilterTagItems( struct TagItem *tagList, Tag *filterArray, long logic );
 /**/
@@ -60,4 +60,4 @@ LONG Stricmp( UBYTE *string1, UBYTE *string2 );
 LONG Strnicmp( UBYTE *string1, UBYTE *string2, long length );
 UBYTE ToUpper( unsigned long character );
 UBYTE ToLower( unsigned long character );
-#endif	 /* CLIB_UTILITY_PROTOS_H */
+#endif   /* CLIB_UTILITY_PROTOS_H */

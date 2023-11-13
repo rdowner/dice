@@ -82,13 +82,13 @@ double xx;
     d3 = 1.0E99;
     printf("CONVERSION TEST ON %4.8lf\n", d1);
     for (i = 0; i < 100; ++i) {
-	f1 = d1;
-	d1 = f1;
-	d2 = xx - d1;
-	if (d2 == d3)
-	    break;
-	printf("%4d %1.16le\n", i, d2);
-	d3 = d2;
+        f1 = d1;
+        d1 = f1;
+        d2 = xx - d1;
+        if (d2 == d3)
+            break;
+        printf("%4d %1.16le\n", i, d2);
+        d3 = d2;
     }
 }
 

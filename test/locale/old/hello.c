@@ -14,10 +14,10 @@ Quit
 #include <pragmas/exec_pragmas.h>
 #include <pragmas/locale_pragmas.h>
 
-#define CATCOMP_STRINGS		// for demonstrating the reverse index functions
-				// in the real program, the strings would appear
-				// in this program;  I'm using the defines
-				// for convenience
+#define CATCOMP_STRINGS         // for demonstrating the reverse index functions
+                                // in the real program, the strings would appear
+                                // in this program;  I'm using the defines
+                                // for convenience
 
 #include "helloworld_strings.h"
 
@@ -51,13 +51,13 @@ char *string;
 
     // built translation table
     if(LocaleBase) {
-	APTR catalog;
+        APTR catalog;
         catalog = OpenCatalogA(NULL,"helloworld.catalog",tags);
-        for(i=0; i<100; i++) {	// build string table
-	    if( *(string = GetCatalogStr(catalog,i,"")) == NULL)break;
-	    strcpy(builtin[i],string);
+        for(i=0; i<100; i++) {  // build string table
+            if( *(string = GetCatalogStr(catalog,i,"")) == NULL)break;
+            strcpy(builtin[i],string);
         }
-	CloseCatalog(catalog);
+        CloseCatalog(catalog);
     }
     openCatalog("helloworld.catalog");
     printf("Cat Index of [%s] is %d\n",MSG_BYE_STR,GetIndex(MSG_BYE_STR));
@@ -89,8 +89,8 @@ LONG GetIndex(STRPTR string)
 int i;
 
     for(i=0; i<100; i++) {
-	if(*builtin[i] == NULL)break;	// end of table
-	if(!Stricmp(builtin[i],string))return i;
+        if(*builtin[i] == NULL)break;   // end of table
+        if(!Stricmp(builtin[i],string))return i;
     }
     return NULL;
 }

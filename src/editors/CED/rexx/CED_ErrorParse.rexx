@@ -78,5 +78,5 @@ do i = 1 to 6
 end
 
 ADDRESS 'rexx_ced'
-'jump to line' E.line	/* Jump straight to the line number. */
+'jump to line' E.line   /* Jump straight to the line number. */
 'DM' E.STRING

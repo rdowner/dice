@@ -15,7 +15,7 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 BOOL
 HYPER ## AslRequestTags(req, tag1, ...)

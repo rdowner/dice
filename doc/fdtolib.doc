@@ -1,53 +1,53 @@
 
-dcc/fdtolib							dcc/fdtolib
+dcc/fdtolib                                                     dcc/fdtolib
 
-				FDTOLIB.DOC
+                                FDTOLIB.DOC
 
-			      Matthew Dillon
-			      891 Regal Rd.
-			      Berkeley, Ca. 94708
-			      USA
+                              Matthew Dillon
+                              891 Regal Rd.
+                              Berkeley, Ca. 94708
+                              USA
 
-			      dillon@overload.Berkeley.CA.US	    --or--
-			      uunet.uu.net!overload!dillon
+                              dillon@overload.Berkeley.CA.US        --or--
+                              uunet.uu.net!overload!dillon
 
 SYNOPSIS
     FDTOLIB files/wildcard.fd [-h hdrfile] -o libname [-mr] [-mD] <more_opts)
 
-    files/wildcard.fd	specifies one or more files and/or AmigaDOS
-			wildcarding that represents the .FD files that
-			are to be processed into a library
+    files/wildcard.fd   specifies one or more files and/or AmigaDOS
+                        wildcarding that represents the .FD files that
+                        are to be processed into a library
 
-    -h hdrfile		hdrfile is a .H files that #include's all
-			prototypes associated with the FD files.  It
-			is only used if the -mr option is specified
+    -h hdrfile          hdrfile is a .H files that #include's all
+                        prototypes associated with the FD files.  It
+                        is only used if the -mr option is specified
 
-    -o libname		specify output library name
+    -o libname          specify output library name
 
-    -mr 		specify that a REGISTERED call interface library
-			is to be generated (for DICE -m[r,R,RR] options),
-			else generates a normal stack-args interface
-			library.
+    -mr                 specify that a REGISTERED call interface library
+                        is to be generated (for DICE -m[r,R,RR] options),
+                        else generates a normal stack-args interface
+                        library.
 
-    -mD 		specify large-data model, else small-data model
+    -mD                 specify large-data model, else small-data model
 
-    -I include-dir	passed to DCC
+    -I include-dir      passed to DCC
 
-    -p prefix		Set prefix (currently only for standard generation,
-			doesn't work with -mr).  The default is a single
-			unscore.  This option is normally used to generate
-			_hyper_ tags for dynamic.library
+    -p prefix           Set prefix (currently only for standard generation,
+                        doesn't work with -mr).  The default is a single
+                        unscore.  This option is normally used to generate
+                        _hyper_ tags for dynamic.library
 
-    -prof		Generate profiling code for the tags.  This will
-			cause all library calls to be profiled when the
-			program that links with this library is run.
+    -prof               Generate profiling code for the tags.  This will
+                        cause all library calls to be profiled when the
+                        program that links with this library is run.
 
-    -auto library	Generate auto-init code for library after the
-			tags.  <library> in this case is the name of
-			the shared library.  For example, -auto fubar.library
+    -auto library       Generate auto-init code for library after the
+                        tags.  <library> in this case is the name of
+                        the shared library.  For example, -auto fubar.library
 
-    -AUTO library	Generate ONLY auto-init code for library (do
-			not generate tags)
+    -AUTO library       Generate ONLY auto-init code for library (do
+                        not generate tags)
 
 DESCRIPTION
 
@@ -57,10 +57,10 @@ DESCRIPTION
 
     Basically, FDTOLIB will generate one of four types of libraries:
 
-	default     small-data model
-	-mD	    large-data model
-	-mr	    small-data model + DICE registered parameters entry pts
-	-mr -mD     large-data model + DICE registered parameters entry pts
+        default     small-data model
+        -mD         large-data model
+        -mr         small-data model + DICE registered parameters entry pts
+        -mr -mD     large-data model + DICE registered parameters entry pts
 
     If -mr is used suitable prototypes must be specified with the -h option.
     In this case, FDTOLIB will run DCC with a special option to have it
@@ -69,7 +69,7 @@ DESCRIPTION
 
     FDTOLIB then proceeds to scan the .FD files, creating temporary
     assembly files in T: and assembling them with DAS, then appending
-    them to the output library and deleting the scratch files.	This
+    them to the output library and deleting the scratch files.  This
     step occurs for each function in each .FD files.
 
     (For faster operation, you will want to make DAS resident for the

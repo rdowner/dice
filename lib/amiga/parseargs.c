@@ -22,22 +22,22 @@ int len;
     int ac = 0;
 
     for (;;) {
-	while (*copy == ' ' || *copy == 9)
-	    ++copy;
-	if (*copy == 0 || *copy == 0x0A)
-	    break;
-	++ac;
-	if (*copy == '\"') {
-	    do {
-		++copy;
-	    } while (*copy && *copy != '\"');
-	} else {
-	    while (*copy && *copy != 0x0A && *copy != ' ' && *copy != 9)
-		++copy;
-	}
-	if (*copy == 0)
-	    break;
-	*copy++ = 0;
+        while (*copy == ' ' || *copy == 9)
+            ++copy;
+        if (*copy == 0 || *copy == 0x0A)
+            break;
+        ++ac;
+        if (*copy == '\"') {
+            do {
+                ++copy;
+            } while (*copy && *copy != '\"');
+        } else {
+            while (*copy && *copy != 0x0A && *copy != ' ' && *copy != 9)
+                ++copy;
+        }
+        if (*copy == 0)
+            break;
+        *copy++ = 0;
     }
     return(ac);
 }
@@ -53,15 +53,15 @@ char **av;
 int ac;
 {
     while (ac) {
-	while (*copy == ' ' || *copy == 9)
-	    ++copy;
-	if (*copy == '\"')
-	    ++copy;
-	*av++ = copy;
-	while (*copy)
-	    ++copy;
-	++copy;
-	--ac;
+        while (*copy == ' ' || *copy == 9)
+            ++copy;
+        if (*copy == '\"')
+            ++copy;
+        *av++ = copy;
+        while (*copy)
+            ++copy;
+        ++copy;
+        --ac;
     }
 }
 

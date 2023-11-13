@@ -38,21 +38,21 @@ ParentDir(lock)(d1)
 IsInteractive(file)(d1)
 Execute(string,file,file2)(d1/d2/d3)
 *--- functions in V36 or higher (distributed as Release 2.0) ---
-*	DOS Object creation/deletion
+*       DOS Object creation/deletion
 AllocDosObject(type,tags)(d1/d2)
 FreeDosObject(type,ptr)(d1/d2)
-*	Packet Level routines
+*       Packet Level routines
 DoPkt(port,action,arg1,arg2,arg3,arg4,arg5)(d1/d2/d3/d4/d5/d6/d7)
 SendPkt(dp,port,replyport)(d1/d2/d3)
 WaitPkt()()
 ReplyPkt(dp,res1,res2)(d1/d2/d3)
 AbortPkt(port,pkt)(d1/d2)
-*	Record Locking
+*       Record Locking
 LockRecord(fh,offset,length,mode,timeout)(d1/d2/d3/d4/d5)
 LockRecords(recArray,timeout)(d1/d2)
 UnLockRecord(fh,offset,length)(d1/d2/d3)
 UnLockRecords(recArray)(d1)
-*	Buffered File I/O
+*       Buffered File I/O
 SelectInput(fh)(d1)
 SelectOutput(fh)(d1)
 FGetC(fh)(d1)
@@ -66,7 +66,7 @@ VFWritef(fh,format,argarray)(d1/d2/d3)
 VFPrintf(fh,format,argarray)(d1/d2/d3)
 Flush(fh)(d1)
 SetVBuf(fh,buff,type,size)(d1/d2/d3/d4)
-*	DOS Object Management
+*       DOS Object Management
 DupLockFromFH(fh)(d1)
 OpenFromLock(lock)(d1)
 ParentOfFH(fh)(d1)
@@ -82,14 +82,14 @@ ReadLink(port,lock,path,buffer,size)(d1/d2/d3/d4/d5)
 MakeLink(name,dest,soft)(d1/d2/d3)
 ChangeMode(type,fh,newmode)(d1/d2/d3)
 SetFileSize(fh,pos,mode)(d1/d2/d3)
-*	Error Handling
+*       Error Handling
 SetIoErr(result)(d1)
 Fault(code,header,buffer,len)(d1/d2/d3/d4)
 PrintFault(code,header)(d1/d2)
 ErrorReport(code,type,arg1,device)(d1/d2/d3/d4)
 *--- (1 function slot reserved here) ---
 ##bias 492
-*	Process Management
+*       Process Management
 Cli()()
 CreateNewProc(tags)(d1)
 RunCommand(seg,stack,paramptr,paramlen)(d1/d2/d3/d4)
@@ -109,7 +109,7 @@ SetPrompt(name)(d1)
 GetPrompt(buf,len)(d1/d2)
 SetProgramDir(lock)(d1)
 GetProgramDir()()
-*	Device List Management
+*       Device List Management
 SystemTagList(command,tags)(d1/d2)
 AssignLock(name,lock)(d1/d2)
 AssignLate(name,path)(d1/d2)
@@ -128,23 +128,23 @@ NextDosEntry(dlist,flags)(d1/d2)
 MakeDosEntry(name,type)(d1/d2)
 FreeDosEntry(dlist)(d1)
 IsFileSystem(name)(d1)
-*	Handler Interface
+*       Handler Interface
 Format(filesystem,volumename,dostype)(d1/d2/d3)
 Relabel(drive,newname)(d1/d2)
 Inhibit(name,onoff)(d1/d2)
 AddBuffers(name,number)(d1/d2)
-*	Date, Time Routines
+*       Date, Time Routines
 CompareDates(date1,date2)(d1/d2)
 DateToStr(datetime)(d1)
 StrToDate(datetime)(d1)
-*	Image Management
+*       Image Management
 InternalLoadSeg(fh,table,funcarray,stack)(d0/a0/a1/a2)
 InternalUnLoadSeg(seglist,freefunc)(d1/a1)
 NewLoadSeg(file,tags)(d1/d2)
 AddSegment(name,seg,system)(d1/d2/d3)
 FindSegment(name,seg,system)(d1/d2/d3)
 RemSegment(seg)(d1)
-*	Command Support
+*       Command Support
 CheckSignal(mask)(d1)
 ReadArgs(template,array,args)(d1/d2/d3)
 FindArg(keyword,template)(d1/d2)
@@ -165,10 +165,10 @@ FreeArgs(args)(d1)
 FilePart(path)(d1)
 PathPart(path)(d1)
 AddPart(dirname,filename,size)(d1/d2/d3)
-*	Notification
+*       Notification
 StartNotify(notify)(d1)
 EndNotify(notify)(d1)
-*	Environment Variable functions
+*       Environment Variable functions
 SetVar(name,buffer,size,flags)(d1/d2/d3/d4)
 GetVar(name,buffer,size,flags)(d1/d2/d3/d4)
 DeleteVar(name,flags)(d1/d2)

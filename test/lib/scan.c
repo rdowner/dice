@@ -22,20 +22,20 @@ main()
     printf("Please enter another line-");
     fflush(stdout);
     if (gets(buf) == NULL) {
-	puts("That was EOF!");
+        puts("That was EOF!");
     } else {
-	int n1, n2;
-	printf("addrs %08lx %08lx ", &c, buf2);
-	n = sscanf(buf, "%c%s", &c, buf2);
-	printf("And this time n =%d, c = $%02x, s = '%s'\n", n, c, buf);
+        int n1, n2;
+        printf("addrs %08lx %08lx ", &c, buf2);
+        n = sscanf(buf, "%c%s", &c, buf2);
+        printf("And this time n =%d, c = $%02x, s = '%s'\n", n, c, buf);
 
-	printf("Now, enter two numbers-");
-	fflush(stdout);
-	if (gets(buf)) {
-	    printf("addrs %08lx %08lx ", &n1, &n2);
-	    n = sscanf(buf, "%d %d", &n1, &n2);
-	    printf("Result n = %d numbers %d and %d\n", n, n1, n2);
-	}
+        printf("Now, enter two numbers-");
+        fflush(stdout);
+        if (gets(buf)) {
+            printf("addrs %08lx %08lx ", &n1, &n2);
+            n = sscanf(buf, "%d %d", &n1, &n2);
+            printf("Result n = %d numbers %d and %d\n", n, n1, n2);
+        }
     }
 }
 

@@ -1,112 +1,112 @@
 /* $VER: ME_Menu 37.1 (21.2.93 ) */ 
 /* Menu setup code to look like 2.04 MEmacs  */
 
-menutitle 	0  "Project"
-item 	1  '"Rename...       ^XF"' 	"setfilepath"
-item 	2  '"Read file...    ^X^R"' 	"open"
-item 	3  '"Visit file...   ^X^V"' 	"visit"
-item 	4  '"Insert file...  ^X^I"'  	"insertfile"
-bar 	5
-item 	6  '"Save file       ^X^S"'	"save"
-item 	7  '"Save file as... ^X^W"' 	"saveas"
-item 	8  '"Save mod        ^X^M"'	"savemod"
-item 	9  '"Save & Exit     ^X^F"'  	"quickexit"
-bar	10
-item	11  '"NewShell        ^_"'  	"spawn"
-item	12  '"ShellCommand... ^X!"'  	"spawncommand"
-bar	13
-item	14  '"Quit            ^C"'  	"quit"
-item	15  '"About"'  			"displayversion"
+menutitle       0  "Project"
+item    1  '"Rename...       ^XF"'      "setfilepath"
+item    2  '"Read file...    ^X^R"'     "open"
+item    3  '"Visit file...   ^X^V"'     "visit"
+item    4  '"Insert file...  ^X^I"'     "insertfile"
+bar     5
+item    6  '"Save file       ^X^S"'     "save"
+item    7  '"Save file as... ^X^W"'     "saveas"
+item    8  '"Save mod        ^X^M"'     "savemod"
+item    9  '"Save & Exit     ^X^F"'     "quickexit"
+bar     10
+item    11  '"NewShell        ^_"'      "spawn"
+item    12  '"ShellCommand... ^X!"'     "spawncommand"
+bar     13
+item    14  '"Quit            ^C"'      "quit"
+item    15  '"About"'                   "displayversion"
 
-menutitle	16  "Edit"
-item	17  '"Kill region     ^W"'  	"erase"
-item	18  '"Yank            ^Y"'   	"yank"
-item	19  '"Set mark        ^@"'  	"setbookmark"
-item	20  '"Copy region     ESCW"'  	"copyblock"
-item	21  '"Upper region    ESC^U"'  	"uppercaseblock"
-item	22  '"Lower region    ESC^L"'  	"lowercaseblock"
-bar	23
-item	24  '"List buffers    ^X^B"'  	"displaybuffers"
-item	25  '"Select buffer   ^XB"'  	"usebuffer..."
-item	26  '"Insert buffer   ^XI"'  	"insertbuffer..."
-item	27  '"Kill buffer     ^XK"'  	"deletebuffer..."
-bar	28
-item	29  '"Redisplay       ^L"'  	"refresh"
-item	30  '"Quote Char      ^Q"'  	"quote"
-item	31  '"Indent          ^J"'  	"indent"
-item	32  '"Transpose       ^T"'  	"twiddle"
-item	33  '"Cancel          ^G"'  	"abort"
-bar	34
-item	35  '"Copy          "'  	"cut" "C"
-item	36  '"Paste         "'  	"paste" "V"
+menutitle       16  "Edit"
+item    17  '"Kill region     ^W"'      "erase"
+item    18  '"Yank            ^Y"'      "yank"
+item    19  '"Set mark        ^@"'      "setbookmark"
+item    20  '"Copy region     ESCW"'    "copyblock"
+item    21  '"Upper region    ESC^U"'   "uppercaseblock"
+item    22  '"Lower region    ESC^L"'   "lowercaseblock"
+bar     23
+item    24  '"List buffers    ^X^B"'    "displaybuffers"
+item    25  '"Select buffer   ^XB"'     "usebuffer..."
+item    26  '"Insert buffer   ^XI"'     "insertbuffer..."
+item    27  '"Kill buffer     ^XK"'     "deletebuffer..."
+bar     28
+item    29  '"Redisplay       ^L"'      "refresh"
+item    30  '"Quote Char      ^Q"'      "quote"
+item    31  '"Indent          ^J"'      "indent"
+item    32  '"Transpose       ^T"'      "twiddle"
+item    33  '"Cancel          ^G"'      "abort"
+bar     34
+item    35  '"Copy          "'          "cut" "C"
+item    36  '"Paste         "'          "paste" "V"
 
-menutitle	37  "Window"
-item	38  '"One window      ^X1"' 	"onlywindow"
-item	39  '"Split window    ^X2"' 	"splitwindow"
-item	40  '"Next window     ^XN"' 	"nextwindow"
-item	41  '"Prev window     ^XP"' 	"prevwindow"
-item	42  '"Expand window   ^XZ"' 	"enlargewindow"
-item	43  '"Shrink window   ^X^Z"' 	"shrinkwindow"
-item	44  '"Next w page     ESC^V"' 	"moveothernextpage"
-item	45  '"Prev w page     ^XV"' 	"moveotherprevpage"
+menutitle       37  "Window"
+item    38  '"One window      ^X1"'     "onlywindow"
+item    39  '"Split window    ^X2"'     "splitwindow"
+item    40  '"Next window     ^XN"'     "nextwindow"
+item    41  '"Prev window     ^XP"'     "prevwindow"
+item    42  '"Expand window   ^XZ"'     "enlargewindow"
+item    43  '"Shrink window   ^X^Z"'    "shrinkwindow"
+item    44  '"Next w page     ESC^V"'   "moveothernextpage"
+item    45  '"Prev w page     ^XV"'     "moveotherprevpage"
 
-menutitle	46  "Move"
-item	47  '"Top of buffer   ESC<"' 	"movebob"
-item	48  '"End of buffer   ESC>"'  	"moveeob"
-item	49  '"Top of window   ESC,"' 	"movebow"
-item	50  '"End of window   ESC."'  	"moveeow"
-bar	51
-item	52  '"Goto line...    ^X^G"'  	"gotoline"
-item	53  '"Swap dot & mark ^X^X"'	"gotobookmark"
-item	54  '"Next page       ^V"'  	"movenextpage"
-item	55  '"Previous page   ESCV"'  	"moveprevpage"
-item	56  '"Next word       ESCF"'  	"movenextword"
-item	57  '"Previous word   ESCB"'  	"moveprevword"
-item	58  '"Scroll up       ^Z"'  	"scrollwindowup"
-item	59  '"Scroll down     ESCZ"'  	"scrollwindowdown"
+menutitle       46  "Move"
+item    47  '"Top of buffer   ESC<"'    "movebob"
+item    48  '"End of buffer   ESC>"'    "moveeob"
+item    49  '"Top of window   ESC,"'    "movebow"
+item    50  '"End of window   ESC."'    "moveeow"
+bar     51
+item    52  '"Goto line...    ^X^G"'    "gotoline"
+item    53  '"Swap dot & mark ^X^X"'    "gotobookmark"
+item    54  '"Next page       ^V"'      "movenextpage"
+item    55  '"Previous page   ESCV"'    "moveprevpage"
+item    56  '"Next word       ESCF"'    "movenextword"
+item    57  '"Previous word   ESCB"'    "moveprevword"
+item    58  '"Scroll up       ^Z"'      "scrollwindowup"
+item    59  '"Scroll down     ESCZ"'    "scrollwindowdown"
 
-menutitle	60  "Line"
-item	61  '"Open line       ^O"'  	"openline"
-item	62  '"Kill line       ^X^D"'  	"deleteline"
-item	63  '"Kill to eol     ^K"'  	"killline"
-bar	64
-item	65  '"Start of line   ^A"'  	"movebol"
-item	66  '"End of line     ^E"'  	"moveeol"
-item	67  '"Next line       ^N"'   	"movedown"
-item	68  '"Previous line   ^P"'  	"moveup"
-item	69  '"Line to top     ESC!"'  	"reposition"
-bar	70
-item	71  '"Delete blanks   ^X-W"'  	"deletewhitespace"
-item	72  '"Show line #     ^X="'  	"displayposition"
+menutitle       60  "Line"
+item    61  '"Open line       ^O"'      "openline"
+item    62  '"Kill line       ^X^D"'    "deleteline"
+item    63  '"Kill to eol     ^K"'      "killline"
+bar     64
+item    65  '"Start of line   ^A"'      "movebol"
+item    66  '"End of line     ^E"'      "moveeol"
+item    67  '"Next line       ^N"'      "movedown"
+item    68  '"Previous line   ^P"'      "moveup"
+item    69  '"Line to top     ESC!"'    "reposition"
+bar     70
+item    71  '"Delete blanks   ^X-W"'    "deletewhitespace"
+item    72  '"Show line #     ^X="'     "displayposition"
 
-menutitle	73  "Word"
-item	74  '"Delete forw     ESCD"'  	"deletenextword"
-item	75  '"Delete back     ESCH"'  	"deleteprevword"
-bar	76
-item	77  '"Upper word      ESCU"'  	"upper"
-item	78  '"Lower word      ESCL"'  	"lower"
-item	79  '"Cap word        ESCC"'  	"capital"
-item	80  '"Switch case     ESC^"'  	"swapcase"
+menutitle       73  "Word"
+item    74  '"Delete forw     ESCD"'    "deletenextword"
+item    75  '"Delete back     ESCH"'    "deleteprevword"
+bar     76
+item    77  '"Upper word      ESCU"'    "upper"
+item    78  '"Lower word      ESCL"'    "lower"
+item    79  '"Cap word        ESCC"'    "capital"
+item    80  '"Switch case     ESC^"'    "swapcase"
 
-menutitle	81  "Search"
-item	82  '"Search forward... ESC^S"' 	"find"
-item	83  '"Search backward...ESC^R"' 	"findprev"
-bar	84
-item	85  '"Search replace... ESCR"'  	"findreplace"
-item	86  '"Query s & r       ESCQ"'		"findchange"
-item	87  '"Fence match       ESC^F"' 	"movematchbkt"
+menutitle       81  "Search"
+item    82  '"Search forward... ESC^S"'         "find"
+item    83  '"Search backward...ESC^R"'         "findprev"
+bar     84
+item    85  '"Search replace... ESCR"'          "findreplace"
+item    86  '"Query s & r       ESCQ"'          "findchange"
+item    87  '"Fence match       ESC^F"'         "movematchbkt"
 
-menutitle	88  "Extras"
-item	89  '"Set            ^XS"'  	"setprefs"
-bar	90
-item	91  '"Start macro    ^X("' 	"startmacro"
-item	92  '"End macro      ^X)"' 	"stopmacro"
-item	93  '"Execute macro  ^XE"' 	"executemacro"
-bar	94
-item	95  '"Set key        ESC^B"'	"bindkey"
-bar	96
-item	97  '"Execute file...ESCE"'	"rx"
-item	98  '"Execute line...ESXA"' 	"stringrx"
+menutitle       88  "Extras"
+item    89  '"Set            ^XS"'      "setprefs"
+bar     90
+item    91  '"Start macro    ^X("'      "startmacro"
+item    92  '"End macro      ^X)"'      "stopmacro"
+item    93  '"Execute macro  ^XE"'      "executemacro"
+bar     94
+item    95  '"Set key        ESC^B"'    "bindkey"
+bar     96
+item    97  '"Execute file...ESCE"'     "rx"
+item    98  '"Execute line...ESXA"'     "stringrx"
 
-endmenu	99
+endmenu 99
 onmenu

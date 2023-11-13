@@ -23,12 +23,12 @@ __autoexit static void
 ILocaleExit(void)
 {
     if (Catalog) {
-	CloseCatalog(Catalog);
-	Catalog = NULL;
+        CloseCatalog(Catalog);
+        Catalog = NULL;
     }
     if (Locale) {
-	CloseLocale(Locale);
-	Locale = NULL;
+        CloseLocale(Locale);
+        Locale = NULL;
     }
 }
 
@@ -39,19 +39,19 @@ SetCatalog(char *localeName, char *catName)
 
     ILocaleExit();
     if (LocaleBase) {
-	Locale = OpenLocale(localeName);
-	r = 1;
-	if (Catalog = OpenCatalogA(Locale, catName, NULL)) {
-	    long *al;
+        Locale = OpenLocale(localeName);
+        r = 1;
+        if (Catalog = OpenCatalogA(Locale, catName, NULL)) {
+            long *al;
 
-	    r = 2;
+            r = 2;
 
-	    for (al = _AutoLocale + 1; *al; al += 2) {
-		printf("%s ->", (char *)*al);
-		*al = GetCatalogStr(Catalog, al[1], (char *)al[0]);
-		printf("%s\n", (char *)*al);
-	    }
-	}
+            for (al = _AutoLocale + 1; *al; al += 2) {
+                printf("%s ->", (char *)*al);
+                *al = GetCatalogStr(Catalog, al[1], (char *)al[0]);
+                printf("%s\n", (char *)*al);
+            }
+        }
     }
     return(r);
 }

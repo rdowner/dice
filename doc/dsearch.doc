@@ -1,7 +1,7 @@
 
-dcc/dsearch							dcc/dsearch
+dcc/dsearch                                                     dcc/dsearch
 
-			     DSEARCH.DOC
+                             DSEARCH.DOC
 
 SYNOPSIS
     dsearch "string" [files/wildcards]

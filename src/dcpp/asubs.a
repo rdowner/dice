@@ -1,89 +1,89 @@
 
-		;   ASUBS.A
-		;
-		; (c)Copyright 1992 Obvious Implementations Corp, All Rights Reserved
-		; CONFIDENTIAL, This is unpublished proprietary source code owned by Obvious Implementations Corp.
-		; This material contains trade secrets of Obvious Implementations Corp.
+                ;   ASUBS.A
+                ;
+                ; (c)Copyright 1992 Obvious Implementations Corp, All Rights Reserved
+                ; CONFIDENTIAL, This is unpublished proprietary source code owned by Obvious Implementations Corp.
+                ; This material contains trade secrets of Obvious Implementations Corp.
 
 
 ;Prototype __stkargs char *HandleTriGraphs(char *);
 ;Prototype int hash(ubyte *, short);
 
-		section text,code
+                section text,code
 
-		xdef	_HandleTriGraphs
-		xref	_TriGraphConvert
+                xdef    _HandleTriGraphs
+                xref    _TriGraphConvert
 
-		;   ptrend = HandleTriGraphs(buf)
-		;
-		;   Optimized assembly to replace tri-graph sequences in a
-		;   buffer.
+                ;   ptrend = HandleTriGraphs(buf)
+                ;
+                ;   Optimized assembly to replace tri-graph sequences in a
+                ;   buffer.
 
 _HandleTriGraphs:
-		movem.l D2/A2,-(sp)
-		move.l	8+4(sp),A2
-		moveq.l #$3F,D2 	; '?'
-htloop		move.b	(A2)+,D0	; get byte
-		beq	htdone
-		cmp.b	D2,D0
-		bne	htloop
-		cmp.b	(A2),D2 	; ??
-		bne	htloop
-		move.l	A3,-(sp)
-		subq.l	#1,A2
-		move.l	A2,A3
-		bra	htloop2 	; TRI-GRAPH!
+                movem.l D2/A2,-(sp)
+                move.l  8+4(sp),A2
+                moveq.l #$3F,D2         ; '?'
+htloop          move.b  (A2)+,D0        ; get byte
+                beq     htdone
+                cmp.b   D2,D0
+                bne     htloop
+                cmp.b   (A2),D2         ; ??
+                bne     htloop
+                move.l  A3,-(sp)
+                subq.l  #1,A2
+                move.l  A2,A3
+                bra     htloop2         ; TRI-GRAPH!
 htdone
-		move.l	A2,D0
-		subq.l	#1,D0
-		movem.l (sp)+,D2/A2
-		rts
+                move.l  A2,D0
+                subq.l  #1,D0
+                movem.l (sp)+,D2/A2
+                rts
 
-		;   if a tri-graph sequence is found, this second loop handles
-		;   it (less efficiently)
+                ;   if a tri-graph sequence is found, this second loop handles
+                ;   it (less efficiently)
 
-htloop2 	move.b	(A2)+,D0
-		move.b	D0,(A3)+
-		beq	htdone2
-		cmp.b	D2,D0	    ; ?
-		bne	htloop2
-		cmp.b	(A2),D2     ; ??
-		bne	htloop2
-		move.b	1(A2),D0
-		ext.w	D0
-		ext.l	D0
-		move.l	D0,-(sp)
-		jsr	_TriGraphConvert(pc)
-		addq.l	#4,sp
-		tst.l	D0
-		beq	htloop2
-		move.b	D0,-1(A3)
-		addq.l	#2,A2
-		bra	htloop2
+htloop2         move.b  (A2)+,D0
+                move.b  D0,(A3)+
+                beq     htdone2
+                cmp.b   D2,D0       ; ?
+                bne     htloop2
+                cmp.b   (A2),D2     ; ??
+                bne     htloop2
+                move.b  1(A2),D0
+                ext.w   D0
+                ext.l   D0
+                move.l  D0,-(sp)
+                jsr     _TriGraphConvert(pc)
+                addq.l  #4,sp
+                tst.l   D0
+                beq     htloop2
+                move.b  D0,-1(A3)
+                addq.l  #2,A2
+                bra     htloop2
 
 htdone2
-		move.l	A3,A2
-		move.l	(sp)+,A3
-		bra	htdone
+                move.l  A3,A2
+                move.l  (sp)+,A3
+                bra     htdone
 
 
 
-		xdef	_hash
-		xdef	@hash
+                xdef    _hash
+                xdef    @hash
 
-_hash		move.l	4(sp),A0
-		move.l	8(sp),D0
+_hash           move.l  4(sp),A0
+                move.l  8(sp),D0
 @hash
-		move.l	D2,-(sp)
-		moveq.l #0,D1	    ; v
-		bra	henter
-hloop		rol.w	#5,D1
-		move.b	(A0)+,D2
-		eor.b	D2,D1
-henter		dbf	D0,hloop
-		move.l	D1,D0
-		move.l	(sp)+,D2
-		rts
+                move.l  D2,-(sp)
+                moveq.l #0,D1       ; v
+                bra     henter
+hloop           rol.w   #5,D1
+                move.b  (A0)+,D2
+                eor.b   D2,D1
+henter          dbf     D0,hloop
+                move.l  D1,D0
+                move.l  (sp)+,D2
+                rts
 
-		END
+                END
 

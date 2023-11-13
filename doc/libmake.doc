@@ -1,9 +1,9 @@
 
-libmake/libmake 					    libmake/libmake
+libmake/libmake                                             libmake/libmake
 
-				LIBMAKE.DOC
+                                LIBMAKE.DOC
 
-		      GENERATING LARGE LINK LIBRARIES
+                      GENERATING LARGE LINK LIBRARIES
 
     Libmake is a utility that will scan a file listings sources files for
     a library, determine what is out of date, compile the out of date
@@ -14,61 +14,61 @@ libmake/libmake 					    libmake/libmake
 
     Libmake takes several arguments, some optional:
 
-	libmake <file> -n -o objdir -l lib -clean -pr -mRR -mC -mD -proto -Ddef
+        libmake <file> -n -o objdir -l lib -clean -pr -mRR -mC -mD -proto -Ddef
 
 
     <file>
-	specify the control file that contains a list of source modules,
-	see below.
+        specify the control file that contains a list of source modules,
+        see below.
 
     -v
-	verbose operation
+        verbose operation
 
     -n
-	dry run (do not actually compile/assemble/join anything)
+        dry run (do not actually compile/assemble/join anything)
 
     -Dmacro[=def]
 
-	specify DCPP macro, i.e. #define equivalent to be passed to all
-	compiles.
+        specify DCPP macro, i.e. #define equivalent to be passed to all
+        compiles.
 
     -o object_dir
 
-	specify object directory prefix, if a directory must end in
-	'/' or ':', allowing both file prefixes and directory paths.
+        specify object directory prefix, if a directory must end in
+        '/' or ':', allowing both file prefixes and directory paths.
 
     -l library
 
-	specify library output file, usually something.lib
+        specify library output file, usually something.lib
 
     -clean
 
-	instead of compiling/assembling/join'ing the library, delete
-	ALL object modules from object_dir relating to the library.
+        instead of compiling/assembling/join'ing the library, delete
+        ALL object modules from object_dir relating to the library.
 
     -pr
-	pass -pr option to DCC
+        pass -pr option to DCC
 
     -proto
-	pass -proto option to DCC
+        pass -proto option to DCC
 
     -mr
     -mR
     -mRR
-	specify reg-call opts to DCC (normally only -mRR is useful when
-	generating fully registered libraries)
+        specify reg-call opts to DCC (normally only -mRR is useful when
+        generating fully registered libraries)
 
     -mD
-	pass -mD to DCC, causes DCC to use the large-data
-	model.	Default is to use the small-data model
+        pass -mD to DCC, causes DCC to use the large-data
+        model.  Default is to use the small-data model
 
     -mC
-	pass -mC to DCC, causes DCC to use the large-code
-	model.	Default is to use the small-data model
+        pass -mC to DCC, causes DCC to use the large-code
+        model.  Default is to use the small-data model
 
     -prof
-	pass -prof to DCC, causes profiling code to be generated for
-	all the routines in the library.
+        pass -prof to DCC, causes profiling code to be generated for
+        all the routines in the library.
 
 
 CONTROL FILE
@@ -84,7 +84,7 @@ CONTROL FILE
 
     ------------------ example file -----------------
 
-    ;	Full C library
+    ;   Full C library
 
     assert/assert.c
     assert/abort.c
@@ -113,24 +113,24 @@ CONTROL FILE
 
     Then object modules would be created as follows:
 
-	DTMP:XX/assert/assert.o
-	DTMP:XX/assert/abort.o
-	DTMP:XX/amiga/exit.o
+        DTMP:XX/assert/assert.o
+        DTMP:XX/assert/abort.o
+        DTMP:XX/amiga/exit.o
 
-	etc..
+        etc..
 
     You probably want to pre-create the directory structure required.
     Please refer to the library source archive for examples (no less than
     DMakefile's calling libmake to regenerate every single DICE library
     that exists!)
 
-		     NAMING CONVENSIONS IN THE CONTROL FILE
+                     NAMING CONVENSIONS IN THE CONTROL FILE
 
-    .a	    assemble with DAS
+    .a      assemble with DAS
     .a68    assemble with A68K
-    .o	    insert specified object into destination library (raw copy)
+    .o      insert specified object into destination library (raw copy)
     .lib    insert specified library into destination library (raw copy)
     <other> any other suffix is assumed to be a C source file to compile
-	    with DCC
+            with DCC
 
 

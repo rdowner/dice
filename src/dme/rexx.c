@@ -27,8 +27,8 @@ Prototype int do_rexx (char *);
 
 #if AREXX
 
-int foundcmd;	    /* control for implicit ARexx macro invocation   */
-int CmdErr;	    /* global command error flag for do_rexx()'s use */
+int foundcmd;       /* control for implicit ARexx macro invocation   */
+int CmdErr;         /* global command error flag for do_rexx()'s use */
 PORT AuxRexxPort;   /* unique port name for DME-sourced commands     */
 
 /*
@@ -42,8 +42,8 @@ init_arexx()
 {
     static char AuxName[15];
     if (RexxSysBase) {
-	sprintf(AuxName, "DME.%08lx", FindTask(NULL));
-	CreateDiceRexxPort(&AuxRexxPort, AuxName);
+        sprintf(AuxName, "DME.%08lx", FindTask(NULL));
+        CreateDiceRexxPort(&AuxRexxPort, AuxName);
     }
 }
 
@@ -121,24 +121,24 @@ char *macstr;
     long rc = 1;
 
     if (RexxSysBase) {
-	BPTR oldLock = CurrentDir(Ep->dirlock);
-	long ec;
-	rc = PlaceRexxCommand(&AuxRexxPort, macstr, &res, &ec);
-	/*printf("rc = %d ec = %d res = %s\n", rc, ec, res ? res : "<null>");*/
+        BPTR oldLock = CurrentDir(Ep->dirlock);
+        long ec;
+        rc = PlaceRexxCommand(&AuxRexxPort, macstr, &res, &ec);
+        /*printf("rc = %d ec = %d res = %s\n", rc, ec, res ? res : "<null>");*/
 
-	if (res) {
-	    av[1] = "result";
-	    av[2] = res;
-	    do_set();
-	    free(res);
-	}
-	if (rc) {
-	    if (ec)
-		title("Command not found");
-	}
-	CurrentDir(oldLock);
+        if (res) {
+            av[1] = "result";
+            av[2] = res;
+            do_set();
+            free(res);
+        }
+        if (rc) {
+            if (ec)
+                title("Command not found");
+        }
+        CurrentDir(oldLock);
     } else {
-	title("couldn't open rexxsyslib.library on startup");
+        title("couldn't open rexxsyslib.library on startup");
     }
     return(rc);
 }
@@ -164,11 +164,11 @@ char **pres;
     free(ptr);
 
     if (foundcmd) {
-	rc = (rc == 1) ? 0 : 5;
-	if (CmdErr)
-	    rc = 10;
+        rc = (rc == 1) ? 0 : 5;
+        if (CmdErr)
+            rc = 10;
     } else {
-	rc = do_rexx(arg0);
+        rc = do_rexx(arg0);
     }
     foundcmd = 1;   /* XXX */
     return(rc);

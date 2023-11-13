@@ -12,8 +12,8 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
-typedef struct Process	 Process;
+typedef struct TagItem   TagItem;
+typedef struct Process   Process;
 
 struct Process *
 HYPER ## CreateNewProcTagList( struct TagItem *tags )

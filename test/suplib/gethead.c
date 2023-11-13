@@ -8,7 +8,7 @@ GetHead(struct List *list)
     struct Node *node = list->lh_Head;
 
     if (node->ln_Succ == NULL)
-	node = NULL;
+        node = NULL;
     return((void *)node);
 }
 

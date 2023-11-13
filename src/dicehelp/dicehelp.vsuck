@@ -1,153 +1,153 @@
 dice/AboutDICEHelp                                        dice/AboutDICEHelp
 
-	DICE includes an extremely quick, powerful and highly flexible online
-	help system.  In less than a half second, DICEHelp is able to locate
-	and return information on any DICE utility, C language library call,
-	Include file, C structure, Amiga library function or added user item.
+        DICE includes an extremely quick, powerful and highly flexible online
+        help system.  In less than a half second, DICEHelp is able to locate
+        and return information on any DICE utility, C language library call,
+        Include file, C structure, Amiga library function or added user item.
 
-	Use of DICEHelp speeds programming: not only do you save time
-	flipping pages in a paper manual, but you save the mental
-	interruption.	Following links or references becomes a matter of
-	single keystrokes.  DICEHelp even helps to reduce programming errors;
-	with quick access to information it becomes easier to look it up than
-	to guess.
+        Use of DICEHelp speeds programming: not only do you save time
+        flipping pages in a paper manual, but you save the mental
+        interruption.   Following links or references becomes a matter of
+        single keystrokes.  DICEHelp even helps to reduce programming errors;
+        with quick access to information it becomes easier to look it up than
+        to guess.
 
     Help from the command line
     --------------------------
-	DICEHelp works from just about anywhere, including any editor,
-	Workbench, Shell or CLI window.  Simply execute the program with your
-	search string.	Case and word suffix are unimportant. DICEHelp uses a
-	"fuzzy" weighted average to find the item that best matches your
-	request.
+        DICEHelp works from just about anywhere, including any editor,
+        Workbench, Shell or CLI window.  Simply execute the program with your
+        search string.  Case and word suffix are unimportant. DICEHelp uses a
+        "fuzzy" weighted average to find the item that best matches your
+        request.
 
-	DICEHelp malloc
+        DICEHelp malloc
 
-	To pause DICEHelp output, press the SPACE bar. To resume, press
-	DELETE.  To abort, press CTRL-C.  With Kickstart 2.0 or better, help
-	items may be easily copied from the console and pasted into your
-	editor.  Simply select with the mouse and type AMIGA-C to copy to the
-	clipboard, then AMIGA-V to paste to the editor.
+        To pause DICEHelp output, press the SPACE bar. To resume, press
+        DELETE.  To abort, press CTRL-C.  With Kickstart 2.0 or better, help
+        items may be easily copied from the console and pasted into your
+        editor.  Simply select with the mouse and type AMIGA-C to copy to the
+        clipboard, then AMIGA-V to paste to the editor.
 
     Help from your editor
     ---------------------
-	Rather than tying you to a specific file viewer program, DICEHelp
-	works with your favorite editor.  DICEHelp is flexible enough to
-	integrate with even the most basic of editors.	The DICE installer is
-	able to automatically configure many popular editors for use with
-	DICEHelp.
+        Rather than tying you to a specific file viewer program, DICEHelp
+        works with your favorite editor.  DICEHelp is flexible enough to
+        integrate with even the most basic of editors.  The DICE installer is
+        able to automatically configure many popular editors for use with
+        DICEHelp.
 
-	With most editors, one or two "hotkeys" are established. One
-	keystroke, such as ALT-HELP, searches for help on the word under the
-	cursor. Another keystroke, such as CTRL-HELP, brings up a box
-	requesting a search string.  The help information appears in a new
-	window or split view depending on the editor.
+        With most editors, one or two "hotkeys" are established. One
+        keystroke, such as ALT-HELP, searches for help on the word under the
+        cursor. Another keystroke, such as CTRL-HELP, brings up a box
+        requesting a search string.  The help information appears in a new
+        window or split view depending on the editor.
 
-	If multiple items match your selection, a list is given at the end.
-	Simply select an item and press the hotkey.
+        If multiple items match your selection, a list is given at the end.
+        Simply select an item and press the hotkey.
 
     The DICEHelp index file
     -----------------------
-	DICEHelp can't stand alone.  Like many of us it "-Needs a little help
-	from its friends".  In this case the friends are the installer,
-	makeindex and s:dicehelp.index.
+        DICEHelp can't stand alone.  Like many of us it "-Needs a little help
+        from its friends".  In this case the friends are the installer,
+        makeindex and s:dicehelp.index.
 
-	The index file, s:dicehelp.index, specifies all possible search items
-	and where to find them.  This file is built automatically by the
-	installer program.  If changes are made to the files containing help,
-	you must manually update the index file.  Simply start the installer
-	and select "Update DICEHelp index file".
+        The index file, s:dicehelp.index, specifies all possible search items
+        and where to find them.  This file is built automatically by the
+        installer program.  If changes are made to the files containing help,
+        you must manually update the index file.  Simply start the installer
+        and select "Update DICEHelp index file".
 
-	The installer also needs some help from its friends.  Makeindex
-	automatically scans include files and function documentation,
-	appending to an index file.  If you are interested in custom setups,
-	please see the makeindex reference page.
+        The installer also needs some help from its friends.  Makeindex
+        automatically scans include files and function documentation,
+        appending to an index file.  If you are interested in custom setups,
+        please see the makeindex reference page.
 
-	The index file format is very simple.  Each line is either a filename
-	or a help item:
+        The index file format is very simple.  Each line is either a filename
+        or a help item:
 
-	~volume:path/docname
-	SearchKey<tab>start<tab>bytes
+        ~volume:path/docname
+        SearchKey<tab>start<tab>bytes
 
-	"~" specifies a new filename that applies to all entries until the
-	next "~".  The filename may be a full path, or relative to the
-	location of the index file.
+        "~" specifies a new filename that applies to all entries until the
+        next "~".  The filename may be a full path, or relative to the
+        location of the index file.
 
-	<start> and <bytes> are hex offsets into the file.  Zero <start> and
-	<end> specifies that DICEHelp should clip the entire file.
+        <start> and <bytes> are hex offsets into the file.  Zero <start> and
+        <end> specifies that DICEHelp should clip the entire file.
 
     Help from AREXX
     ---------------
-	Text editors usually talk to DICEHelp though AREXX.  Sample scripts
-	have been provided for most popular editors; see the dcc:rexx and
-	dcc:config directories for details.  If you create or improve editor
-	scripts, send them to us; we'll include the best ones in the next
-	release!
+        Text editors usually talk to DICEHelp though AREXX.  Sample scripts
+        have been provided for most popular editors; see the dcc:rexx and
+        dcc:config directories for details.  If you create or improve editor
+        scripts, send them to us; we'll include the best ones in the next
+        release!
 
-	DICEHelp may be made resident with the REXXSTARTUP option. An AREXX
-	port by the name of "DICEHELP" is created to take requests.  The
-	first character of the passed argument specifies the command, the
-	second character must be a space, the rest depend on the command:
+        DICEHelp may be made resident with the REXXSTARTUP option. An AREXX
+        port by the name of "DICEHELP" is created to take requests.  The
+        first character of the passed argument specifies the command, the
+        second character must be a space, the rest depend on the command:
 
  T <searchword>
-	    Write clip to a temporary file in T:.
+            Write clip to a temporary file in T:.
 
  C <searchword>
-	    Return help via clipboard.device.
+            Return help via clipboard.device.
 
  S <searchword>
-	    Return help to standard out (used for console support in
-	    DICEHelp).
+            Return help to standard out (used for console support in
+            DICEHelp).
 
  Z <c> <editor line>
-	    Originally called "crutches mode," because it was designed to
-	    support less capable editors, this is now serves as the primary
-	    REXX access to DICEHelp.  Given a column count and a byte offset,
-	    DICEHelp extracts the proper word in context, and returns help.
-	    This command also knows how to parse the special multiple
-	    reference lines at the end of DICEHelp clips.
+            Originally called "crutches mode," because it was designed to
+            support less capable editors, this is now serves as the primary
+            REXX access to DICEHelp.  Given a column count and a byte offset,
+            DICEHelp extracts the proper word in context, and returns help.
+            This command also knows how to parse the special multiple
+            reference lines at the end of DICEHelp clips.
 
-	    The Z keyword is followed by a space, a decimal byte offset, and
-	    then the entire editor line.  Tabs may be present in the line,
-	    provided the column count treats each tab as one byte.
+            The Z keyword is followed by a space, a decimal byte offset, and
+            then the entire editor line.  Tabs may be present in the line,
+            provided the column count treats each tab as one byte.
 
  Q QUIT
-	    Quit. Shut down REXX port and free all memory.  The "QUIT" is
-	    required.
+            Quit. Shut down REXX port and free all memory.  The "QUIT" is
+            required.
 
     AREXX results
     -------------
-	DICEHelp returns a result string for every action other than quit.
-	You must enable results from AREXX with "OPTIONS RESULTS":
+        DICEHelp returns a result string for every action other than quit.
+        You must enable results from AREXX with "OPTIONS RESULTS":
 
  E [error text]
-	    If the first character of the result is E, the rest of the line
-	    is an error message to present to the user.
+            If the first character of the result is E, the rest of the line
+            is an error message to present to the user.
 
  T [temp file]
-	    If the first character of the result is T, the rest of the line
-	    is the name of the DICEHelp temporary file, usually
-	    t:DICEHelp.temp.  Your AREXX program should load this file, and
-	    may delete it when finished.
+            If the first character of the result is T, the rest of the line
+            is the name of the DICEHelp temporary file, usually
+            t:DICEHelp.temp.  Your AREXX program should load this file, and
+            may delete it when finished.
 
  F [full path]
-	    If the first character of the result is P, the rest of the line
-	    is a full path name.  The user has requested help from an entire
-	    file.  To save a copying step, your AREXX program should load
-	    this directly.  Do not delete this file!  Note: the file name may
-	    contain spaces.
+            If the first character of the result is P, the rest of the line
+            is a full path name.  The user has requested help from an entire
+            file.  To save a copying step, your AREXX program should load
+            this directly.  Do not delete this file!  Note: the file name may
+            contain spaces.
 
  S stdout
-	    Dummy return value sent for the "S" command.
+            Dummy return value sent for the "S" command.
 
 
-	Most editor macros will automatically start the resident DICEHelp
-	process if the "DICEHELP" port is not found.  Note that the port
-	may not show up for several seconds after the command is
-	executed.   See any of the editor macros for a complete example
-	that also retries:
+        Most editor macros will automatically start the resident DICEHelp
+        process if the "DICEHELP" port is not found.  Note that the port
+        may not show up for several seconds after the command is
+        executed.   See any of the editor macros for a complete example
+        that also retries:
 
-	     if ~show('p',portname) then do
-	       address COMMAND 'RUN >NIL: <NIL: DICEHelp REXXSTARTUP"
-	    end
+             if ~show('p',portname) then do
+               address COMMAND 'RUN >NIL: <NIL: DICEHelp REXXSTARTUP"
+            end
 
 

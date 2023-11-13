@@ -7,7 +7,7 @@
  *    DICE-LICENSE.TXT.
  *
  *  OpenConsole()   - set this process's console as far as we can do such
- *		      things.
+ *                    things.
  */
 
 #define DOSBase_DECLARED
@@ -41,12 +41,12 @@
 #endif
 
 typedef struct FileHandle   FileHandle;
-typedef struct Process	    Process;
-typedef struct List	    List;
-typedef struct MsgPort	    MsgPort;
-typedef struct Message	    Message;
+typedef struct Process      Process;
+typedef struct List         List;
+typedef struct MsgPort      MsgPort;
+typedef struct Message      Message;
 typedef struct CommandLineInterface CLI;
-typedef struct Task	    Task;
+typedef struct Task         Task;
 
 static BPTR  CustomCIS;
 static BPTR  CustomCOS;
@@ -63,17 +63,17 @@ opencon_exit(void)
     Process *proc = (Process *)FindTask(NULL);
 
     if (CustomCIS || CustomCOS)
-	proc->pr_ConsoleTask = SaveConsoleTask;
+        proc->pr_ConsoleTask = SaveConsoleTask;
     if (CustomCIS) {
-	proc->pr_CIS = SaveCIS;
-	Close(CustomCIS);
-	CustomCIS = 0;
+        proc->pr_CIS = SaveCIS;
+        Close(CustomCIS);
+        CustomCIS = 0;
     }
     if (CustomCOS) {
-	Write(CustomCOS, "**END**\n", 8);
-	proc->pr_COS = SaveCOS;
-	Close(CustomCOS);
-	CustomCOS = 0;
+        Write(CustomCOS, "**END**\n", 8);
+        proc->pr_COS = SaveCOS;
+        Close(CustomCOS);
+        CustomCOS = 0;
     }
 }
 
@@ -87,26 +87,26 @@ const char *str;
 
     opencon_exit();
     if (CustomCIS = Open(str, 1005)) {
-	fh = BTOC(CustomCIS);
-	if (fh->fh_Type) {
-	    r = TRUE;
+        fh = BTOC(CustomCIS);
+        if (fh->fh_Type) {
+            r = TRUE;
 
-	    SaveConsoleTask = proc->pr_ConsoleTask;
-	    SaveCOS = proc->pr_COS;
-	    SaveCIS = proc->pr_CIS;
-	    proc->pr_ConsoleTask = fh->fh_Type;
-	    proc->pr_COS = CustomCOS = Open("*", 1005);
-	    proc->pr_CIS = CustomCIS;
-	    freopen("*", "r", stdin);
-	    freopen("*", "w", stdout);
-	    freopen("*", "w", stderr);
-	    /*proc->pr_ConsoleTask = SaveConsoleTask;*/
-	    stdout->sd_Flags |= __SIF_IOLBF;
-	    stderr->sd_Flags |= __SIF_IOLBF;
-	} else {
-	    Close(CustomCIS);
-	    CustomCIS = 0;
-	}
+            SaveConsoleTask = proc->pr_ConsoleTask;
+            SaveCOS = proc->pr_COS;
+            SaveCIS = proc->pr_CIS;
+            proc->pr_ConsoleTask = fh->fh_Type;
+            proc->pr_COS = CustomCOS = Open("*", 1005);
+            proc->pr_CIS = CustomCIS;
+            freopen("*", "r", stdin);
+            freopen("*", "w", stdout);
+            freopen("*", "w", stderr);
+            /*proc->pr_ConsoleTask = SaveConsoleTask;*/
+            stdout->sd_Flags |= __SIF_IOLBF;
+            stderr->sd_Flags |= __SIF_IOLBF;
+        } else {
+            Close(CustomCIS);
+            CustomCIS = 0;
+        }
     }
     return(r);
 }

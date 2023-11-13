@@ -1,23 +1,23 @@
 
-		;   DEXP.A
-		;
-		;   D0/D1 = exp(D0/D1)
-		;		4(sp)
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   DEXP.A
+                ;
+                ;   D0/D1 = exp(D0/D1)
+                ;               4(sp)
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xref	_MathIeeeDoubTransBase
-		xref	_LVOIEEEDPExp
-		xdef	_exp
+                xref    _MathIeeeDoubTransBase
+                xref    _LVOIEEEDPExp
+                xdef    _exp
 
-_exp		movem.l 4(sp),D0/D1
-		move.l	A6,-(sp)
-		move.l	_MathIeeeDoubTransBase(A4),A6
-		jsr	_LVOIEEEDPExp(A6)
-		move.l	(sp)+,A6
-		rts
+_exp            movem.l 4(sp),D0/D1
+                move.l  A6,-(sp)
+                move.l  _MathIeeeDoubTransBase(A4),A6
+                jsr     _LVOIEEEDPExp(A6)
+                move.l  (sp)+,A6
+                rts
 
-		END
+                END
 

@@ -27,7 +27,7 @@ void *RelsHyperSymbolTags(void *, Tag tag1, ...);
 
 #endif
 
-#define DT_END	    0
+#define DT_END      0
 #define DT_TYPE     1
 
 #endif

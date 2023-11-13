@@ -8,11 +8,11 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 void 
 HYPER ## DrawBevelBox( struct RastPort *rport, long left, long top, long width,
-	long height, Tag tag1 )
+        long height, Tag tag1 )
 {
-	DrawBevelBoxA(rport,left,top,width,height,(TagItem *)&tag1);
+        DrawBevelBoxA(rport,left,top,width,height,(TagItem *)&tag1);
 }

@@ -27,18 +27,18 @@ long sigMask;
     _SigMask = sigMask;
 
     for (;;) {
-	if (sigcheckchld())
-	    _SigRdy |= 1 << SIGCHLD;
+        if (sigcheckchld())
+            _SigRdy |= 1 << SIGCHLD;
 
-	if ((_SigRdy & ~_SigMask) == 0) {
-	    long mask = Wait(SIGF_SINGLE | SIGBREAKF_CTRL_C | SIGBREAKF_CTRL_D);
-	    if (mask & (SIGBREAKF_CTRL_C | SIGBREAKF_CTRL_D)) {
-		amiga_vfork_sigall(mask & (SIGBREAKF_CTRL_C | SIGBREAKF_CTRL_D));
-		_SigRdy |= 1 << SIGINT;
-	    }
-	}
-	if (_SigRdy & ~_SigMask)
-	    break;
+        if ((_SigRdy & ~_SigMask) == 0) {
+            long mask = Wait(SIGF_SINGLE | SIGBREAKF_CTRL_C | SIGBREAKF_CTRL_D);
+            if (mask & (SIGBREAKF_CTRL_C | SIGBREAKF_CTRL_D)) {
+                amiga_vfork_sigall(mask & (SIGBREAKF_CTRL_C | SIGBREAKF_CTRL_D));
+                _SigRdy |= 1 << SIGINT;
+            }
+        }
+        if (_SigRdy & ~_SigMask)
+            break;
     }
     _SignalReadySigs();
     _SigMask = oldmask;
@@ -67,10 +67,10 @@ _SignalReadySigs()
     short i;
 
     if (rdyMask = _SigRdy & ~_SigMask) {
-	for (i = 0; i < 32; ++i) {
-	    if (rdyMask & (1 << i))
-		raise(i);
-	}
+        for (i = 0; i < 32; ++i) {
+            if (rdyMask & (1 << i))
+                raise(i);
+        }
     }
 }
 

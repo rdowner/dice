@@ -1,8 +1,8 @@
 
 TEST:
-	   Handler = t:dos-handler
-	   Stacksize = 4096
-	   Priority = 0
-	   GlobVec  = -1
+           Handler = t:dos-handler
+           Stacksize = 4096
+           Priority = 0
+           GlobVec  = -1
 #
 

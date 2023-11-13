@@ -7,24 +7,24 @@ strins(d, s)
 char *d;
 const char *s;
 {
-    int len = strlen(s);    /*	# bytes to insert   */
+    int len = strlen(s);    /*  # bytes to insert   */
     char *ptr;
 
     /*
-     *	make room
+     *  make room
      */
 
     ptr = d + strlen(d);
     while (ptr >= d) {
-	ptr[len] = ptr[0];
-	--ptr;
+        ptr[len] = ptr[0];
+        --ptr;
     }
 
     /*
-     *	insert string
+     *  insert string
      */
 
     while (*s)
-	*++ptr = *s++;
+        *++ptr = *s++;
 }
 

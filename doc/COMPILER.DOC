@@ -1,48 +1,48 @@
 
-compiler/compiler					    compiler/compiler
-compiler/COMPILER					    compiler/COMPILER
+compiler/compiler                                           compiler/compiler
+compiler/COMPILER                                           compiler/COMPILER
 
-				DICE SYSTEM
+                                DICE SYSTEM
 
-			      Matthew Dillon
-			      891 Regal Rd.
-			      Berkeley, Ca. 94708
-			      USA
+                              Matthew Dillon
+                              891 Regal Rd.
+                              Berkeley, Ca. 94708
+                              USA
 
-			      dillon@overload.Berkeley.CA.US
-			      uunet.uu.net!overload!dillon
+                              dillon@overload.Berkeley.CA.US
+                              uunet.uu.net!overload!dillon
 
-			      BIX: mdillon
+                              BIX: mdillon
 
-		    COMPILER FEATURES LIST AND ORGANIZATION
+                    COMPILER FEATURES LIST AND ORGANIZATION
 
-		    NOTE: net distributed releases will not contain
-			  commodore includes or amiga*.lib
+                    NOTE: net distributed releases will not contain
+                          commodore includes or amiga*.lib
 
     (1) Organization of includes and libraries, default:
 
-	DINCLUDE:	    location of top level includes such as stdio.h
+        DINCLUDE:           location of top level includes such as stdio.h
 
-	DINCLUDE:Amiga13/   location of 1.3 amiga includes, -1.3 option must
-			    be used with DCC or set in ENV:DCCOPTS
+        DINCLUDE:Amiga13/   location of 1.3 amiga includes, -1.3 option must
+                            be used with DCC or set in ENV:DCCOPTS
 
-	DINCLUDE:Amiga20/   location of 2.0 amiga includes, -2.0 option must
-			    be used with DCC or set in ENV:DCCOPTS
+        DINCLUDE:Amiga20/   location of 2.0 amiga includes, -2.0 option must
+                            be used with DCC or set in ENV:DCCOPTS
 
 
-	NOTE !!! Amiga 1.3 and 2.0 includes should be placed in the
-	subdirectory dinclude:Amiga13 and dinclude:amiga20, that is,
-	dinclude:Amiga13/Exec/*.h, dinclude:Amiga13/graphics/*.h, etc...
+        NOTE !!! Amiga 1.3 and 2.0 includes should be placed in the
+        subdirectory dinclude:Amiga13 and dinclude:amiga20, that is,
+        dinclude:Amiga13/Exec/*.h, dinclude:Amiga13/graphics/*.h, etc...
 
-	DCC references startup and libraries to DLIB:
+        DCC references startup and libraries to DLIB:
 
-	DLIB:amigas13.lib   A small-data model version of the 1.3 AMIGA.LIB
-	DLIB:amigas20.lib   A small-data model version of the 2.0 AMIGA.LIB
-	DLIB:cs.lib	    The main C library for which you have source code
-	DLIB:ms.lib	    The math library
-	DLIB:auto.lib	    The auto library-open library
-	DLIB:c.o	    The startup module
-	DLIB:x.o	    The terminator module
+        DLIB:amigas13.lib   A small-data model version of the 1.3 AMIGA.LIB
+        DLIB:amigas20.lib   A small-data model version of the 2.0 AMIGA.LIB
+        DLIB:cs.lib         The main C library for which you have source code
+        DLIB:ms.lib         The math library
+        DLIB:auto.lib       The auto library-open library
+        DLIB:c.o            The startup module
+        DLIB:x.o            The terminator module
 
     (2) (removed)
 
@@ -52,200 +52,200 @@ compiler/COMPILER					    compiler/COMPILER
     If you give DICE the following line (assuming DCCOPTS contains the -1.3
     option):
 
-	1> DCC foo.o -o foo
+        1> DCC foo.o -o foo
 
     It will run DLink with the following options:
 
-	DLink dlib:c.o foo.o dlib:cs.lib dlib:amigas13.lib dlib:auto.lib dlib:x.o -o foo
+        DLink dlib:c.o foo.o dlib:cs.lib dlib:amigas13.lib dlib:auto.lib dlib:x.o -o foo
 
-    DLIB:C.O		DICE startup code
-    FOO.O		your object module(s)
-    DLIB:CS.LIB 	small data model version of c.lib
-    DLIB:AMIGAS13.LIB	small data model version of commodore amiga.lib for 1.3
-    DLIB:AUTO.LIB	DICE AUTO.LIB
-    DLIB:X.O		DICE section terminator code
+    DLIB:C.O            DICE startup code
+    FOO.O               your object module(s)
+    DLIB:CS.LIB         small data model version of c.lib
+    DLIB:AMIGAS13.LIB   small data model version of commodore amiga.lib for 1.3
+    DLIB:AUTO.LIB       DICE AUTO.LIB
+    DLIB:X.O            DICE section terminator code
 
 
-	Some explanation is in order.  AUTO.LIB catches any references to
-	common library base variables when no storage has been declared and
-	imports code to automatically open said libraries on startup and
-	close them on exit.  DICE uses this feature to import code to open
-	and close "dos.library" when DOSBase is referenced, and also for
-	the floating point libraries.
+        Some explanation is in order.  AUTO.LIB catches any references to
+        common library base variables when no storage has been declared and
+        imports code to automatically open said libraries on startup and
+        close them on exit.  DICE uses this feature to import code to open
+        and close "dos.library" when DOSBase is referenced, and also for
+        the floating point libraries.
 
-	You, the programmer, can use the feature to simply make arbitrary
-	library calls and not have to deal with base variables, openning,
-	or closing libraries in your code.  To take advantage of the
-	feature simply do not declare library base variables or open/close
-	the libraries.
+        You, the programmer, can use the feature to simply make arbitrary
+        library calls and not have to deal with base variables, openning,
+        or closing libraries in your code.  To take advantage of the
+        feature simply do not declare library base variables or open/close
+        the libraries.
 
-	X.O is used to supply an RTS at the end of the special autoinit and
-	autoexit sections.  Any module between C.O and X.O may declare
-	these special sections to handle run-time relocations and other
-	DICE features, and do so such that when the base of the section is
-	JSR'd all the various module's code is sequenced through until the
-	RTS in X.O is hit for the sections in question.
+        X.O is used to supply an RTS at the end of the special autoinit and
+        autoexit sections.  Any module between C.O and X.O may declare
+        these special sections to handle run-time relocations and other
+        DICE features, and do so such that when the base of the section is
+        JSR'd all the various module's code is sequenced through until the
+        RTS in X.O is hit for the sections in question.
 
 
     (4) SMALL DATA AMIGA.LIB
 
-	DICE uses a small-data model version of Commodore's AMIGA.LIB to
-	allow it to generate residentable executables (-r option to DCC).
-	The small data amiga.lib, called AMIGAS13.LIB (note the 's') is
-	generated from the large modem amiga.lib with the LIBTOS program.
-	(under 2.0 it's AMIGAS20.LIB)
+        DICE uses a small-data model version of Commodore's AMIGA.LIB to
+        allow it to generate residentable executables (-r option to DCC).
+        The small data amiga.lib, called AMIGAS13.LIB (note the 's') is
+        generated from the large modem amiga.lib with the LIBTOS program.
+        (under 2.0 it's AMIGAS20.LIB)
 
-	The source to the LIBTOS program is available to allow developers
-	using DICE to add new base variables to LIBTOS's search list when
-	new operating systems come out without having to wait for my
-	update.
+        The source to the LIBTOS program is available to allow developers
+        using DICE to add new base variables to LIBTOS's search list when
+        new operating systems come out without having to wait for my
+        update.
 
-	WARNING!!  Commodore screwed up the var-args entry points in the
-	2.0 amiga.lib, such as CreateNewProcTags().  To ensure that you get
-	tags that work properly, you must remake the 2.0 's' library from
-	the library source archive after installing updates from commodore.
-	The DICE library source overides these var-args tags with ones that
-	work.
+        WARNING!!  Commodore screwed up the var-args entry points in the
+        2.0 amiga.lib, such as CreateNewProcTags().  To ensure that you get
+        tags that work properly, you must remake the 2.0 's' library from
+        the library source archive after installing updates from commodore.
+        The DICE library source overides these var-args tags with ones that
+        work.
 
     ----------------------------------------------------------------------
 
-			    COMPILER FEATURES LIST
+                            COMPILER FEATURES LIST
 
     (0) ANSI.  Pretty much ansi.  Please report non-ansism problems.  Check
-	out the doc/KnownBugs list before reporting a problem.
+        out the doc/KnownBugs list before reporting a problem.
 
     (1) autos are placed in registers based on weighted usage.  A0,A1,D0,D1
-	will be used as register variables whenever possible, which usually
-	reduces the number of registers that must be saved/restored in
-	critical low level routines.  The 'register' keyword is essentially
-	ignored but does add some weight to the variable for register
-	selection.  If you do not wish a variable to be placed in a register,
-	use the volatile storage qualifier when declaring the variable.
+        will be used as register variables whenever possible, which usually
+        reduces the number of registers that must be saved/restored in
+        critical low level routines.  The 'register' keyword is essentially
+        ignored but does add some weight to the variable for register
+        selection.  If you do not wish a variable to be placed in a register,
+        use the volatile storage qualifier when declaring the variable.
 
     (2) LINK/UNLK is removed from low level routines that do not reference
-	A5 and do not make any subroutine calls.
+        A5 and do not make any subroutine calls.
 
     (3) MOVEM is converted to MOVE or deleted entirely when possible.
 
     (4) Various obvious optimizations:  use of BSET, BCLR, BTST as short
-	cuts to logic operations, CMP/TST, etc...
+        cuts to logic operations, CMP/TST, etc...
 
     (5) Switch() statements are optimized as follows:
 
-	    * if the range of values is less than double the number of cases
-	      a lookup table will be used
+            * if the range of values is less than double the number of cases
+              a lookup table will be used
 
-	    * if a small number of cases exists a sub[q]/beq sequence
-	      will be used
+            * if a small number of cases exists a sub[q]/beq sequence
+              will be used
 
-	    * for a sufficiently large set of cases that cannot be made
-	      into a jump table, a binary subdivision method is used
-	      allowing huge switches to be processed very quickly.
+            * for a sufficiently large set of cases that cannot be made
+              into a jump table, a binary subdivision method is used
+              allowing huge switches to be processed very quickly.
 
     (6) Branch optimization.  Bxx to BRAs are optimized (up to 20 hops) by
-	DAS, and massive optimization is done to multi-level conditionals
-	by the main compiler pass.  branches to the next instruction are
-	deleted entirely.
+        DAS, and massive optimization is done to multi-level conditionals
+        by the main compiler pass.  branches to the next instruction are
+        deleted entirely.
 
     (7) Workbench support.  The standard startup module supports the workbench.
-	Specifically, the low level _main() in c.o does this.
+        Specifically, the low level _main() in c.o does this.
 
-	When a program is run from the workbench, a different entry point is
-	called:     wbmain(wbmsg)
+        When a program is run from the workbench, a different entry point is
+        called:     wbmain(wbmsg)
 
-	If you do not supply a wbmain() then the one from the c.lib library
-	is used which immediately return(-1)s, exiting the program.
+        If you do not supply a wbmain() then the one from the c.lib library
+        is used which immediately return(-1)s, exiting the program.
 
-	The standard return from wbmain() or using exit() or _exit()
-	automatically ReplyMsg()s the workbench message for you, do NOT
-	do so manually.
+        The standard return from wbmain() or using exit() or _exit()
+        automatically ReplyMsg()s the workbench message for you, do NOT
+        do so manually.
 
     (8) _main() shortcut for extremely low level programs.
 
-	REFER TO _MAIN.DOC FOR INFORMATION ON USING THE _main()
-	ENTRY POINT INSTEAD OF main().
+        REFER TO _MAIN.DOC FOR INFORMATION ON USING THE _main()
+        ENTRY POINT INSTEAD OF main().
 
     (9) AutoInit support.  You may qualify a subroutine with the __autoinit
-	keyword that will cause it to be automatically called by the
-	startup code rather than having to explicitly call it from main.
+        keyword that will cause it to be automatically called by the
+        startup code rather than having to explicitly call it from main.
 
-	This feature is more useful to bring code in indirectly.  For
-	example, to automatically OpenLibrary() (& CloseLibrary()) floating
-	point libraries if their base variables are referenced.  However,
-	it can also be used for independant module initialization.  Note
-	that stdio is NOT up and running at this time.
+        This feature is more useful to bring code in indirectly.  For
+        example, to automatically OpenLibrary() (& CloseLibrary()) floating
+        point libraries if their base variables are referenced.  However,
+        it can also be used for independant module initialization.  Note
+        that stdio is NOT up and running at this time.
 
-	Refer to the auto.lib source code for examples.
+        Refer to the auto.lib source code for examples.
 
-	__autoexit works the same way.	Note that __autoinit routines are
-	called BEFORE _main, just after autoinit libraries are openned,
-	and __autoexit routines are called in __exit just before autoinit
-	libraries are closed.
+        __autoexit works the same way.  Note that __autoinit routines are
+        called BEFORE _main, just after autoinit libraries are openned,
+        and __autoexit routines are called in __exit just before autoinit
+        libraries are closed.
 
     (10) DCC runs fast.  Make everything resident and watch it fly.  Most
-	 of this speed comes from loading entire files into memory at once.
-	 This might present a memory problem, but in general DICE's memory
-	 usage is comparable to Lattice and Aztec.
+         of this speed comes from loading entire files into memory at once.
+         This might present a memory problem, but in general DICE's memory
+         usage is comparable to Lattice and Aztec.
 
     (11) CODE SIZE is comparable with Lattice and Aztec, even better in
-	 many cases.  The minimum program sizes are as follows:
+         many cases.  The minimum program sizes are as follows:
 
-	_main() { }          448    no stdio/fd
-	 main() { }         2736    some stdio
-	 main() { printf..} 5492    most of stdio
+        _main() { }          448    no stdio/fd
+         main() { }         2736    some stdio
+         main() { printf..} 5492    most of stdio
 
     (12) EXTENSIONS , see EXTENSIONS.DOC.  DICE provides many extensions
-	 to C to support various AMIGAisms and ROM based code, including
-	 special treatment of the 'const' storage qualifier.
+         to C to support various AMIGAisms and ROM based code, including
+         special treatment of the 'const' storage qualifier.
 
     (13) The preprocessor is able to handle arbitrarily sized macros.  There
-	 are no limits to symbol or macro length.  The preprocessor is able to
-	 handle up to 64 levels of includes / macro recursions with arbitrary
-	 use of the string-ize (#) and token pasting (##) operators.
+         are no limits to symbol or macro length.  The preprocessor is able to
+         handle up to 64 levels of includes / macro recursions with arbitrary
+         use of the string-ize (#) and token pasting (##) operators.
 
-	 The preprocessor implements the __BASE_FILE__ macro as well as all
-	 standard ANSI macros (__FILE__, __LINE__, __DATE__, __TIME__, ...)
+         The preprocessor implements the __BASE_FILE__ macro as well as all
+         standard ANSI macros (__FILE__, __LINE__, __DATE__, __TIME__, ...)
 
     (14) DICE supports the creation of residentable executables in nearly
-	 all cases (exception: using the __geta4 procedure qualifier
-	 precludes being able to make an executable resident, also non
-	 const __chip data... see EXTENSIONS.DOC)
+         all cases (exception: using the __geta4 procedure qualifier
+         precludes being able to make an executable resident, also non
+         const __chip data... see EXTENSIONS.DOC)
 
-	 Not only is residentability supported, but it is supported
-	 without requiring the programmer to #include all sorts of
-	 prototype/pragma files.
+         Not only is residentability supported, but it is supported
+         without requiring the programmer to #include all sorts of
+         prototype/pragma files.
 
     (15) DICE supports the small-data model, large data model, small and
-	 large code models, and special data models (word absolute,
-	 absolute known address) for supporting ROMable code.  The linker
-	 automatically generates JMP tables when the small-code model is
-	 used in large executables.
+         large code models, and special data models (word absolute,
+         absolute known address) for supporting ROMable code.  The linker
+         automatically generates JMP tables when the small-code model is
+         used in large executables.
 
     (16) REGISTERED user's DICE supports __chip, __near, and __far keywords,
-	 as well as many others.
+         as well as many others.
 
     (17) Simplified library and startup module design.  There are no multiple
-	 versions of a single library for different memory models and the
-	 frontend, DCC, makes all library and startup module interaction
-	 except m.lib invisible.  The same c.o handles both resident and
-	 non-resident startup.	c.lib and m.lib may be used with programs
-	 that declare more than 64KBytes of BSS (though not with programs
-	 that declare more than 64KBytes of __near initialized storage).
+         versions of a single library for different memory models and the
+         frontend, DCC, makes all library and startup module interaction
+         except m.lib invisible.  The same c.o handles both resident and
+         non-resident startup.  c.lib and m.lib may be used with programs
+         that declare more than 64KBytes of BSS (though not with programs
+         that declare more than 64KBytes of __near initialized storage).
 
-	 There is no large-data-model version of c.lib and m.lib,
-	 although you can easily recompile the libraries into a large-data
-	 model version if you wish.  I suggest that instead of doing that
-	 you stick with the small-data model and use the __geta4 type
-	 qualifier to procedures which are called out of context.
+         There is no large-data-model version of c.lib and m.lib,
+         although you can easily recompile the libraries into a large-data
+         model version if you wish.  I suggest that instead of doing that
+         you stick with the small-data model and use the __geta4 type
+         qualifier to procedures which are called out of context.
 
-	 The registered dist contains several source examples for libraries,
-	 dos handlers, exec devices, and printer drivers.
+         The registered dist contains several source examples for libraries,
+         dos handlers, exec devices, and printer drivers.
 
     (18) Optimization of args to prototyped routines
 
 
     --------------------------------------------------------------------------
-				    GOALS
+                                    GOALS
 
     In writing DICE my goals are as follows:
 
@@ -280,7 +280,7 @@ compiler/COMPILER					    compiler/COMPILER
       or add your own features to programs like DCC.
 
     ------------------------------------------------------------------------
-				   COMMENTS
+                                   COMMENTS
 
     Registerized parameteres are now implemented.  The implementation
     turned out to be not all that complex.  However, you cannot as yet
@@ -312,9 +312,9 @@ compiler/COMPILER					    compiler/COMPILER
     that will only introduce more bugs into the compiler.
 
     ------------------------------------------------------------------------
-				COMPATIBILITY
+                                COMPATIBILITY
 
-				   ANSI C
+                                   ANSI C
 
     With structural returns and auto-aggregate is implemented, DICE is now
     95% ANSI compliant.  Known differences are described in the KNOWNBUGS
@@ -327,7 +327,7 @@ compiler/COMPILER					    compiler/COMPILER
     the C strcpy() and an assembly strcpy() relative to the run time of
     their program.
 
-				    AMIGA
+                                    AMIGA
 
     As said in feature (7), if you wish your program to be runnable from
     the workbench you must supply a wbmain() entry point.  If you do not
@@ -344,14 +344,14 @@ compiler/COMPILER					    compiler/COMPILER
     The Registered release of DICE supports the __near, __far, and __chip
     keywords.
 
-			      UNBUFFERED CONSOLE IO
+                              UNBUFFERED CONSOLE IO
 
     You may set a console to RAW mode using the setbuf() and setvbuf() calls.
     You may set a console back to COOKED mode using the same calls.
 
     ------------------------------------------------------------------------
 
-				Your first program
+                                Your first program
 
     1> cd examples
     1> dcc hello.c -o ram:hello
@@ -359,14 +359,14 @@ compiler/COMPILER					    compiler/COMPILER
     hello world
     1>
 
-				Your first residentable program
+                                Your first residentable program
 
     1> cd examples
     1> dcc hello.c -o ram:hello -r
     1> ram:hello
     hello world
     1> resident ram:hello
-    1> hello	    ; instantanious execution
+    1> hello        ; instantanious execution
     hello world
     1>
 

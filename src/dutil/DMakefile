@@ -17,11 +17,11 @@ EXES= $(SRCS:"*.c":"$(UBIN)*")
 all: $(EXES)
 
 $(EXES) : $(SRCS)
-	cc $(CFLAGS) %(right) -o %(left) -lamiga
+        cc $(CFLAGS) %(right) -o %(left) -lamiga
 
 install:
-	install -c -m 0755 $(EXES) $(INSTDIR)bin/
+        install -c -m 0755 $(EXES) $(INSTDIR)bin/
 
 clean:
-	rm -f $(EXES)
+        rm -f $(EXES)
 

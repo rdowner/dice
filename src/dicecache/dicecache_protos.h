@@ -14,9 +14,9 @@
  *  If DiceCacheOpen() returns NULL, *psize contains:
  */
 
-#define PS_CACHE_DISABLED   0	/*  disabled or not read-only	*/
-#define PS_NO_MATCH	    1
-#define PS_LOCK_FAILED	    2
+#define PS_CACHE_DISABLED   0   /*  disabled or not read-only   */
+#define PS_NO_MATCH         1
+#define PS_LOCK_FAILED      2
 #define PS_GENERAL_FAILURE  9
 
 /*

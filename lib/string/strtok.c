@@ -18,23 +18,23 @@ const char *toks;
     char *ptr;
 
     if (cmd == NULL) {
-	cmd = Cmd;
-	if (cmd == NULL)
-	    return(NULL);
+        cmd = Cmd;
+        if (cmd == NULL)
+            return(NULL);
     }
 
     /*
-     *	skip whitespace
+     *  skip whitespace
      */
 
     while (*cmd && strchr(toks, *cmd))
-	++cmd;
+        ++cmd;
 
     if (*cmd == 0)
-	return(NULL);
+        return(NULL);
 
     if (ptr = strpbrk(cmd, toks))
-	*ptr++ = 0;
+        *ptr++ = 0;
     Cmd = ptr;
     return(cmd);
 }

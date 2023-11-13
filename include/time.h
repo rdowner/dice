@@ -16,19 +16,19 @@ typedef unsigned long clock_t;
 typedef unsigned long time_t;
 
 struct tm {
-    int tm_sec;     /*	0-59	*/
-    int tm_min;     /*	0-59	*/
-    int tm_hour;    /*	0-23	*/
-    int tm_mday;    /*	1-31	*/
-    int tm_mon;     /*	0-11	*/
-    int tm_year;    /*	n+1900	*/
-    int tm_wday;    /*	(sun)0-6*/
-    int tm_yday;    /*	0-366	*/
-    int tm_isdst;   /*	daylight svings time flag */
+    int tm_sec;     /*  0-59    */
+    int tm_min;     /*  0-59    */
+    int tm_hour;    /*  0-23    */
+    int tm_mday;    /*  1-31    */
+    int tm_mon;     /*  0-11    */
+    int tm_year;    /*  n+1900  */
+    int tm_wday;    /*  (sun)0-6*/
+    int tm_yday;    /*  0-366   */
+    int tm_isdst;   /*  daylight svings time flag */
 };
 
 #define CLK_TCK     50
-#define CLOCKS_PER_SEC	CLK_TCK
+#define CLOCKS_PER_SEC  CLK_TCK
 
 extern char *asctime(const struct tm *);
 extern clock_t clock(void);

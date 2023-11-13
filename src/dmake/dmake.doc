@@ -1,13 +1,13 @@
 
-				DMAKE V 2.0
+                                DMAKE V 2.0
 
-    Matthew Dillon	    dillon@Overload.Berkeley.CA.US
-    891 Regal Rd.	    uunet.uu.net!overload!dillon
+    Matthew Dillon          dillon@Overload.Berkeley.CA.US
+    891 Regal Rd.           uunet.uu.net!overload!dillon
     Berkeley, Ca. 94708
     USA
 
 
-    DMake   -	Dillon's MAKE utility (NOT Make or Lmk compatible.. better)
+    DMake   -   Dillon's MAKE utility (NOT Make or Lmk compatible.. better)
 
     The idea with DMake is to provide a powerful make utility through
     general features rather than specialized hacks.  DMake is governed
@@ -24,8 +24,8 @@
     # options are as follows ...
 
     (2) ASSIGNMENTS -- Any line of the form <SYMBOL> = ...  is considered
-	an assignment.	Any variable references from within the assignment will
-	be resolved immediately.
+        an assignment.  Any variable references from within the assignment will
+        be resolved immediately.
 
     CFLAGS= -r
     SRCS= x.c y.c z.c
@@ -47,19 +47,19 @@
 
 
     dst1 ... dstN : src1 ... srcN
-	command1
-	command2  ...
+        command1
+        command2  ...
 
     dst1 ... dstN : src1 ... srcN
-	command1
-	command2  ...
+        command1
+        command2  ...
 
     Finally, note that a dst* or src* symbol does not need to be a
     filename.  It is perfectly valid to make up dummy names which are then
     used as the lhs of a dependency that collects other dependancies
     together.
 
-			      DEPENDANCIES
+                              DEPENDANCIES
 
     When declaring dependancies you may use four different forms.  The
     first form is to have a single destination and several sources.  This
@@ -71,7 +71,7 @@
     For example, this form would be used to indicate that an executable
     depends on all the objects being resolved before you can run the link.
 
-	(1) dst : src1 src2 src3 ... srcN
+        (1) dst : src1 src2 src3 ... srcN
 
     The second form is the most useful in that it allows you to specify
     multiple 1 : 1 dependancies.  Thus, you can specify, for example, that
@@ -83,7 +83,7 @@
     individually and the command list is run for any individual pair that
     is out of date.
 
-	(2) dst1 dst2 dst3 ... dstN : src1 src2 src3 ... srcN
+        (2) dst1 dst2 dst3 ... dstN : src1 src2 src3 ... srcN
 
     The next form may be used to specify that many files depend on one file
     being resolved.  An example of usage would be to make all the object
@@ -91,7 +91,7 @@
     each dst* : src pair with %(left) set to the current dst* and %(right)
     set to the single source.
 
-	(3) dst1 dst2 dst3 ... dstN : src
+        (3) dst1 dst2 dst3 ... dstN : src
 
     The last form is esoteric but sometimes useful.  EACH dst* on the left
     hand side depends on the entire right hand side.  You can have an
@@ -102,35 +102,35 @@
     depend on all headers causing a recompile to occur if any header is
     modified.
 
-	(4) dst1 dst2 dst3 ... dstN :: src1 src2 ... srcI
+        (4) dst1 dst2 dst3 ... dstN :: src1 src2 ... srcI
 
 
-			WILDCARDED FILE LIST REPLACEMENT
-				VARIABLE ACCESS
+                        WILDCARDED FILE LIST REPLACEMENT
+                                VARIABLE ACCESS
 
     DMake's most powerful feature is an easy to use file list replacement
     through options in a variable specification.  You may insert the
     contents of any variable using the form:
 
-	$(SYMBOL)
+        $(SYMBOL)
 
     Furthermore, you can make modifications to the contents of the variable
     on the fly using:
 
-	$(SYMBOL:wildcard)              only those files which match <wildcard>
-	$(SYMBOL:wildcard:wildcard)     matching files and also do a conversion
+        $(SYMBOL:wildcard)              only those files which match <wildcard>
+        $(SYMBOL:wildcard:wildcard)     matching files and also do a conversion
 
     Simple */? wildcarding is used.  A wildcard may contain a colon or
-    other punctuation but if it does you MUST surround it with quotes.	Here
+    other punctuation but if it does you MUST surround it with quotes.  Here
     is a quick example:
 
-	SRCS= a.c b.c c.c d.c xx.a
-	OBJS= $(SRCS:*.c:"dtmp:%1.o")
+        SRCS= a.c b.c c.c d.c xx.a
+        OBJS= $(SRCS:*.c:"dtmp:%1.o")
 
-	all:
-	    echo $(OBJS)
+        all:
+            echo $(OBJS)
 
-	(the result is 'dtmp:a.o dtmp:b.o dtmp:c.o dtmp:d.o')
+        (the result is 'dtmp:a.o dtmp:b.o dtmp:c.o dtmp:d.o')
 
     The first wildcard specification restricts which files from the list
     are to be taken -- 'xx.a' was ignored, as you can see.  Each '*' or '?'
@@ -146,16 +146,16 @@
     You can embed variables within variables as with the following example
     (note that this time xx.a is included):
 
-	OD= dtmp:fubar/
-	SRCS= a.c b.c c.c d.c xx.a
-	OBJS= $(SRCS:*.?:"$(OD)%1.o")
+        OD= dtmp:fubar/
+        SRCS= a.c b.c c.c d.c xx.a
+        OBJS= $(SRCS:*.?:"$(OD)%1.o")
 
-	all:
-	    echo $(OBJS)
+        all:
+            echo $(OBJS)
 
 
-	(the result is: 'dtmp:fubar/a.o dtmp:fubar/b.o dtmp:fubar/c.o
-	dtmp:fubar/d.o dtmp:fubar/xx.o')
+        (the result is: 'dtmp:fubar/a.o dtmp:fubar/b.o dtmp:fubar/c.o
+        dtmp:fubar/d.o dtmp:fubar/xx.o')
 
     As a side note, you may also specify '?' and '*' in the destination
     wildcard.  These are considered dummies and are equivalent to %N where
@@ -165,10 +165,10 @@
     thing to do is restrict your link line to include only the object files
     and skip the headers:
 
-	$(EXE) : $(PROTOS) $(OBJS) $(HDRS)
-	    dcc %(right:*.o) -o %(left)
+        $(EXE) : $(PROTOS) $(OBJS) $(HDRS)
+            dcc %(right:*.o) -o %(left)
 
-			    ENVIROMENT VARIABLES
+                            ENVIROMENT VARIABLES
 
     2.0 local variables and 1.3/2.0 ENV: variables are fully accessible.
     Under 2.0 you can also modify local variables on the fly.
@@ -177,10 +177,10 @@
 
     Under 2.0, any command containing '<', '>', '`', or '|', or is an
     alias, will be run with System().  Thus, such commands may not be used
-    to modify local variables or the local enviroment.	Also, such commands
+    to modify local variables or the local enviroment.  Also, such commands
     cannot be ^C'd due to the way AmigaDOS works.
 
-			  LINE CONTINUATION AND ESCAPES
+                          LINE CONTINUATION AND ESCAPES
 
     Any line may be continued by terminating it with a backslash '\'.  It
     is possible to escape the special characters '$' and '%' by doubling
@@ -190,7 +190,7 @@
     It is possible to escape ':' and other special characters by assigning
     them (or a string containing them) to a variable
 
-				COMMAND SHELL
+                                COMMAND SHELL
 
     Under 2.0 commands that do not contain any sort of redirection are run
     with RunCommand().  If a command is an alias or there is some sort of
@@ -198,17 +198,17 @@
 
     Under 1.3 everything is run with Execute()
 
-			 EXTREMELY ADVANCED CAPABILITIES
+                         EXTREMELY ADVANCED CAPABILITIES
 
     Now, you may have noted earlier that I said you could not have any
     givem left-hand-side with more then one command list.  Take, for
     example:
 
-	a.o : a.c
-	    dcc %(right) -o %(left)
+        a.o : a.c
+            dcc %(right) -o %(left)
 
-	a.o : defs.h
-	    **** illegal to put command list here ****
+        a.o : defs.h
+            **** illegal to put command list here ****
 
     Actually, it isn't illegal.  When DMake encounters a dependency without
     a command list it will automatically 'force' the next higher level
@@ -222,7 +222,7 @@
     right hand sides.  If several command lists apply then their order of
     execution will be bottom-up
 
-			  EXISTANCE OF A FILE OR DIRECTORY
+                          EXISTANCE OF A FILE OR DIRECTORY
 
     Another advanced feature quite useful in fully automating the
     compilation process is the ability to create a directory tree on
@@ -231,9 +231,9 @@
     have a dependency that creates DTMP:fubar if it does not already
     exist.
 
-	XX= dtmp:fubar
+        XX= dtmp:fubar
 
-	$(XX) : $(XX)
-	    makedir %(left)
+        $(XX) : $(XX)
+            makedir %(left)
 
 

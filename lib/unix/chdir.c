@@ -25,8 +25,8 @@ static void
 chdir_exit()
 {
     if (OrigDir) {
-	UnLock(CurrentDir(OrigDir));
-	OrigDir = NULL;
+        UnLock(CurrentDir(OrigDir));
+        OrigDir = NULL;
     }
 }
 
@@ -38,22 +38,22 @@ const char *path;
     BPTR lock;
 
     if (lock = Lock(UnixToAmigaPath(path), SHARED_LOCK)) {
-	FIB *fib;
+        FIB *fib;
 
-	if (fib = malloc(sizeof(FIB))) {
-	    if (Examine(lock, fib) && fib->fib_DirEntryType > 0) {
-		r = 0;
-		lock = CurrentDir(lock);
-		if (OrigDir == NULL) {
-		    OrigDir = lock;
-		    lock = NULL;
-		    atexit(chdir_exit);
-		}
-	    }
-	    free(fib);
-	}
-	if (lock)
-	    UnLock(lock);
+        if (fib = malloc(sizeof(FIB))) {
+            if (Examine(lock, fib) && fib->fib_DirEntryType > 0) {
+                r = 0;
+                lock = CurrentDir(lock);
+                if (OrigDir == NULL) {
+                    OrigDir = lock;
+                    lock = NULL;
+                    atexit(chdir_exit);
+                }
+            }
+            free(fib);
+        }
+        if (lock)
+            UnLock(lock);
     }
     return(r);
 }

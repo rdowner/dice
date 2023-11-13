@@ -14,16 +14,16 @@ line = result
 lastword = words(line)
 if lastword > 0 then do
     do i = 1 to lastword
-	thisword=UPPER(word(line,i))
-	say table.thisword
+        thisword=UPPER(word(line,i))
+        say table.thisword
 
-	if table.thisword = 1 then do
-	    index = wordindex(line,i)
-	    line = delword(line,i,1)
-	    newword = upper(thisword) || ' '
-	    line = insert(newword,line,index-1)
-	    end
- 	end
+        if table.thisword = 1 then do
+            index = wordindex(line,i)
+            line = delword(line,i,1)
+            newword = upper(thisword) || ' '
+            line = insert(newword,line,index-1)
+            end
+        end
     'deleteline'
     text line
     end

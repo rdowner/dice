@@ -31,7 +31,7 @@ extern void __FailedAssert(char *, int);
 #ifdef NDEBUG
 #define assert(ignore)
 #else
-#define assert(exp)	if (!(exp)) __FailedAssert( __BaseFile, __LINE__);
+#define assert(exp)     if (!(exp)) __FailedAssert( __BaseFile, __LINE__);
 #endif
 #endif
 

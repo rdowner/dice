@@ -1,24 +1,24 @@
 
-		;   GETPRED.A
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
-		;
+                ;   GETPRED.A
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;
 
-		section text,CODE
+                section text,CODE
 
-		xdef	_GetPred	    ; node = GetPred(node:4(sp))
-		xdef	@GetPred
+                xdef    _GetPred            ; node = GetPred(node:4(sp))
+                xdef    @GetPred
 
-_GetPred:	move.l	4(sp),A0
+_GetPred:       move.l  4(sp),A0
 @GetPred:
-		move.l	4(A0),A0
-		tst.l	4(A0)
-		beq	gp0
-		move.l	A0,D0
-		rts
-gp0		moveq.l #0,D0
-		rts
+                move.l  4(A0),A0
+                tst.l   4(A0)
+                beq     gp0
+                move.l  A0,D0
+                rts
+gp0             moveq.l #0,D0
+                rts
 
-		END
+                END
 
 

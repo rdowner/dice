@@ -6,4 +6,4 @@ LC1FLAGS = -b -d
 LC2FLAGS = -v -s -r
 
 WBRun: WBRun.o
-	slink LIB:CBACK.O WBRun.o LIB lib:sc.lib VERBOSE SD SC ND MAP WBRun.map hsflx
+        slink LIB:CBACK.O WBRun.o LIB lib:sc.lib VERBOSE SD SC ND MAP WBRun.map hsflx

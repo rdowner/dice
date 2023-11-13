@@ -31,11 +31,11 @@ MakeVar(char *name, char type)
     Var *var;
 
     for (var = GetHead(&VarList); var; var = GetSucc(&var->var_Node)) {
-	if (var->var_Node.ln_Type == type && strcmp(var->var_Node.ln_Name, name) == 0) {
-	    while (PopCmdListChar(&var->var_CmdList) != EOF)
-		;
-	    return(var);
-	}
+        if (var->var_Node.ln_Type == type && strcmp(var->var_Node.ln_Name, name) == 0) {
+            while (PopCmdListChar(&var->var_CmdList) != EOF)
+                ;
+            return(var);
+        }
     }
     var = malloc(sizeof(Var) + strlen(name) + 1);
     clrmem(var, sizeof(Var));
@@ -54,62 +54,62 @@ FindVar(char *name, char type)
     Var *var;
 
     for (var = GetHead(&VarList); var; var = GetSucc(&var->var_Node)) {
-	if (var->var_Node.ln_Type == type && strcmp(var->var_Node.ln_Name, name) == 0)
-	    break;
+        if (var->var_Node.ln_Type == type && strcmp(var->var_Node.ln_Name, name) == 0)
+            break;
     }
 
     /*
-     *	check for local & env variable(s).  local variables under 2.04
-     *	or later only.
+     *  check for local & env variable(s).  local variables under 2.04
+     *  or later only.
      */
 
     if (var == NULL || var->var_Node.ln_Type == '0') {
 #ifdef AMIGA
-	if (Running2_04()) {
-	    char *ptr;
-	    long len;
+        if (Running2_04()) {
+            char *ptr;
+            long len;
 
-	    if (GetVar(name, (char *)&ptr, 2, 0) >= 0) {
-		len = IoErr();
-		ptr = malloc(len + 1);
-		if (GetVar(name, ptr, len + 1, 0) >= 0) {
-		    var = MakeVar(name, '0');
-		    AppendVar(var, ptr, strlen(ptr));
-		}
-		free(ptr);
-	    }
-	} else {
-	    BPTR lock;
-	    long fh;
-	    long size;
+            if (GetVar(name, (char *)&ptr, 2, 0) >= 0) {
+                len = IoErr();
+                ptr = malloc(len + 1);
+                if (GetVar(name, ptr, len + 1, 0) >= 0) {
+                    var = MakeVar(name, '0');
+                    AppendVar(var, ptr, strlen(ptr));
+                }
+                free(ptr);
+            }
+        } else {
+            BPTR lock;
+            long fh;
+            long size;
 
-	    if (lock = Lock("ENV:", SHARED_LOCK)) {
-		if (fh = Open(name, 1005)) {
-		    Seek(fh, 0L, 1);
-		    if ((size = Seek(fh, 0L, -1)) >= 0) {
-			char *ptr = malloc(size + 1);
+            if (lock = Lock("ENV:", SHARED_LOCK)) {
+                if (fh = Open(name, 1005)) {
+                    Seek(fh, 0L, 1);
+                    if ((size = Seek(fh, 0L, -1)) >= 0) {
+                        char *ptr = malloc(size + 1);
 
-			Read(fh, ptr, size);
-			ptr[size] = 0;
+                        Read(fh, ptr, size);
+                        ptr[size] = 0;
 
-			var = MakeVar(name, '0');
-			AppendVar(var, ptr, strlen(ptr));
-			free(ptr);
-		    }
-		    Close(fh);
-		}
-		UnLock(lock);
-	    }
-	}
+                        var = MakeVar(name, '0');
+                        AppendVar(var, ptr, strlen(ptr));
+                        free(ptr);
+                    }
+                    Close(fh);
+                }
+                UnLock(lock);
+            }
+        }
 #else
-	{
-	    char *ptr;
+        {
+            char *ptr;
 
-	    if (ptr = getenv(name)) {
-		var = MakeVar(name, '0');
-		AppendVar(var, ptr, strlen(ptr));
-	    }
-	}
+            if (ptr = getenv(name)) {
+                var = MakeVar(name, '0');
+                AppendVar(var, ptr, strlen(ptr));
+            }
+        }
 #endif
     }
     return(var);
@@ -123,6 +123,6 @@ char *buf;
 long len;
 {
     while (len--)
-	PutCmdListChar(&var->var_CmdList, *buf++);
+        PutCmdListChar(&var->var_CmdList, *buf++);
 }
 

@@ -42,9 +42,9 @@ ReturnPacket(DosPacket *packet)
     Message *mess;
     MsgPort *replyPort;
 
-    replyPort		     = packet->dp_Port;
-    mess		     = packet->dp_Link;
-    packet->dp_Port	     = PktPort;
+    replyPort                = packet->dp_Port;
+    mess                     = packet->dp_Link;
+    packet->dp_Port          = PktPort;
     mess->mn_Node.ln_Name    = (char *)packet;
     PutMsg(replyPort, mess);
 }
@@ -55,10 +55,10 @@ MakeDosFileLock(GEntry *gentry, long mode)
     FileLock *flock;
 
     if (flock = DosAlloc(sizeof(FileLock))) {
-	flock->fl_Key = (long)gentry;
-	flock->fl_Access = mode;
-	flock->fl_Task = PktPort;
-	flock->fl_Volume = CTOB(Dl);
+        flock->fl_Key = (long)gentry;
+        flock->fl_Access = mode;
+        flock->fl_Task = PktPort;
+        flock->fl_Volume = CTOB(Dl);
     }
     return(flock);
 }
@@ -77,7 +77,7 @@ DosAlloc(long bytes)
     bytes += 4;
 
     if (pl = AllocMem(bytes, MEMF_PUBLIC|MEMF_CLEAR)) {
-	*pl = bytes;
+        *pl = bytes;
     }
     return((void *)(pl + 1));
 }
@@ -103,45 +103,45 @@ RoutePacket(DosPacket *packet)
     long r;
 
     switch(packet->dp_Type) {
-    case ACTION_EXAMINE_OBJECT:		/* dp_Arg1 = lock	*/
+    case ACTION_EXAMINE_OBJECT:         /* dp_Arg1 = lock       */
     case ACTION_EXAMINE_NEXT:
     case ACTION_DELETE_OBJECT:
     case ACTION_CREATE_DIR:
-	r = DoSyncPacket(
-	    BLockToGPort(packet->dp_Arg1),
-	    packet->dp_Type,
-	    BLockToGLock(packet->dp_Arg1),
-	    packet->dp_Arg2,
-	    packet->dp_Arg3,
-	    packet->dp_Arg4
-	);
-	break;
-    case ACTION_SET_DATE:		/* dp_arg2 = lock	*/
+        r = DoSyncPacket(
+            BLockToGPort(packet->dp_Arg1),
+            packet->dp_Type,
+            BLockToGLock(packet->dp_Arg1),
+            packet->dp_Arg2,
+            packet->dp_Arg3,
+            packet->dp_Arg4
+        );
+        break;
+    case ACTION_SET_DATE:               /* dp_arg2 = lock       */
     case ACTION_SET_PROTECT:
     case ACTION_SET_COMMENT:
-	r = DoSyncPacket(
-	    BLockToGPort(packet->dp_Arg2),
-	    packet->dp_Type,
-	    packet->dp_Arg1,
-	    BLockToGLock(packet->dp_Arg2),
-	    packet->dp_Arg3,
-	    packet->dp_Arg4
-	);
-	break;
-    case ACTION_RENAME_OBJECT:		/* dp_Arg1, Arg3 = lock	*/
-	r = DoSyncPacket(
-	    BLockToGPort(packet->dp_Arg1),
-	    packet->dp_Type,
-	    BLockToGLock(packet->dp_Arg1),
-	    packet->dp_Arg2,
-	    BLockToGLock(packet->dp_Arg3),
-	    packet->dp_Arg4
-	);
-	break;
-    case ACTION_CHANGE_MODE:		/* dp_Arg2 GHandle	*/
-	/* no action */
-	r = 0;
-	break;
+        r = DoSyncPacket(
+            BLockToGPort(packet->dp_Arg2),
+            packet->dp_Type,
+            packet->dp_Arg1,
+            BLockToGLock(packet->dp_Arg2),
+            packet->dp_Arg3,
+            packet->dp_Arg4
+        );
+        break;
+    case ACTION_RENAME_OBJECT:          /* dp_Arg1, Arg3 = lock */
+        r = DoSyncPacket(
+            BLockToGPort(packet->dp_Arg1),
+            packet->dp_Type,
+            BLockToGLock(packet->dp_Arg1),
+            packet->dp_Arg2,
+            BLockToGLock(packet->dp_Arg3),
+            packet->dp_Arg4
+        );
+        break;
+    case ACTION_CHANGE_MODE:            /* dp_Arg2 GHandle      */
+        /* no action */
+        r = 0;
+        break;
     }
     return(r);
 }
@@ -162,9 +162,9 @@ BLockToGEntry(BPTR lock)
     GEntry *gentry;
 
     if (flock = BTOC(lock)) {
-	gentry = (GEntry *)flock->fl_Key;
+        gentry = (GEntry *)flock->fl_Key;
     } else {
-	gentry = &GRoot;
+        gentry = &GRoot;
     }
     return(gentry);
 }
@@ -203,11 +203,11 @@ DoSyncPacket(MsgPort *dport, long action, long a1, long a2, long a3, long a4)
     std.sp_Pkt.dp_Arg4 = a4;
 
     dbprintf(("DoSynchPacket to %08lx type %08lx (%d) args %lx %lx %lx %lx\n",
-	dport, std.sp_Pkt.dp_Type, std.sp_Pkt.dp_Type,
-	std.sp_Pkt.dp_Arg1,
-	std.sp_Pkt.dp_Arg2,
-	std.sp_Pkt.dp_Arg3,
-	std.sp_Pkt.dp_Arg4
+        dport, std.sp_Pkt.dp_Type, std.sp_Pkt.dp_Type,
+        std.sp_Pkt.dp_Arg1,
+        std.sp_Pkt.dp_Arg2,
+        std.sp_Pkt.dp_Arg3,
+        std.sp_Pkt.dp_Arg4
     ));
 
     PutMsg(dport, &std.sp_Msg);
@@ -215,15 +215,15 @@ DoSyncPacket(MsgPort *dport, long action, long a1, long a2, long a3, long a4)
     GetMsg(AuxPort);
 
     dbprintf(("Res1 %08lx Res2 %08lx\n", 
-	std.sp_Pkt.dp_Res1, 
-	std.sp_Pkt.dp_Res2
+        std.sp_Pkt.dp_Res1, 
+        std.sp_Pkt.dp_Res2
     ));
 
     if (std.sp_Pkt.dp_Res1 == DOS_FALSE)
-	return(-std.sp_Pkt.dp_Res2);
+        return(-std.sp_Pkt.dp_Res2);
     /*
     if (std.sp_Pkt.dp_Res2 > 0)
-	return(-std.sp_Pkt.dp_Res2);
+        return(-std.sp_Pkt.dp_Res2);
     */
     return(std.sp_Pkt.dp_Res1);
 }
@@ -241,15 +241,15 @@ LockPacket(BPTR lock, ubyte *name, short nameLen)
 
     makebstr(name, nameLen, buf);
     if ((long)buf & 3)
-	dbprintf(("BUF NOT ALIGNED\n"));
+        dbprintf(("BUF NOT ALIGNED\n"));
 
     r = DoSyncPacket(
-	flock->fl_Task, ACTION_LOCATE_OBJECT, 
-	lock, CTOB(buf), SHARED_LOCK, 
-	0
+        flock->fl_Task, ACTION_LOCATE_OBJECT, 
+        lock, CTOB(buf), SHARED_LOCK, 
+        0
     );
     if (r <= 0)
-	r = 0;
+        r = 0;
     return(r);
 }
 
@@ -261,7 +261,7 @@ DupLockPacket(BPTR lock)
 
     r = DoSyncPacket(flock->fl_Task, ACTION_COPY_DIR, lock, 0, 0, 0);
     if (r <= 0)
-	r = 0;
+        r = 0;
     return(r);
 }
 
@@ -275,11 +275,11 @@ CreateDirPacket(BPTR lock, ubyte *name, short nameLen)
     makebstr(name, nameLen, buf);
 
     r = DoSyncPacket(
-	flock->fl_Task, ACTION_CREATE_DIR, 
-	lock, CTOB(buf), 0, 0
+        flock->fl_Task, ACTION_CREATE_DIR, 
+        lock, CTOB(buf), 0, 0
     );
     if (r <= 0)
-	r = 0;
+        r = 0;
     return(r);
 }
 
@@ -292,12 +292,12 @@ LockPacketPort(MsgPort *port, ubyte *name, short nameLen)
     makebstr(name, nameLen, buf);
 
     r = DoSyncPacket(
-	port, ACTION_LOCATE_OBJECT, 
-	0, CTOB(buf), SHARED_LOCK, 
-	0
+        port, ACTION_LOCATE_OBJECT, 
+        0, CTOB(buf), SHARED_LOCK, 
+        0
     );
     if (r <= 0)
-	r = 0;
+        r = 0;
     return(r);
 }
 
@@ -311,12 +311,12 @@ SetCommentPacket(BPTR lck,ubyte *np,short nl,ubyte *cp,short cl,GEntry *gentry)
     makebstr(np, nl, buf);
 
     if (gentry && (gentry->ge_Flags & GEF_COMPRESSED))
-	cmm[0] = sprintf(cmm + 1, "##%08lx##%.*s", gentry->ge_Bytes, cl, cp);
+        cmm[0] = sprintf(cmm + 1, "##%08lx##%.*s", gentry->ge_Bytes, cl, cp);
     else
-	cmm[0] = sprintf(cmm + 1, "%.*s", cl, cp);
+        cmm[0] = sprintf(cmm + 1, "%.*s", cl, cp);
 
     DoSyncPacket(flock->fl_Task, ACTION_SET_COMMENT,
-	0, lck, CTOB(buf), CTOB(cmm)
+        0, lck, CTOB(buf), CTOB(cmm)
     );
 }
 
@@ -344,11 +344,11 @@ OpenPacket(BPTR lock, ubyte *name, short nameLen, long mode)
     fh->fh_Type = flock->fl_Task;
     r = DoSyncPacket(flock->fl_Task, mode, CTOB(fh), lock, CTOB(buf), 0);
     if (r != DOS_TRUE) {
-	DosFree(fh);
-	return(0);
+        DosFree(fh);
+        return(0);
     } else {
-	dbprintf(("open success fh=%08lx arg1=%08lx\n", fh, fh->fh_Arg1));
-	return(CTOB(fh));
+        dbprintf(("open success fh=%08lx arg1=%08lx\n", fh, fh->fh_Arg1));
+        return(CTOB(fh));
     }
 }
 
@@ -376,7 +376,7 @@ ReadPacket(BPTR fhb, ubyte *buf, long bytes)
     long r;
 
     if (fh->fh_Type == 0)
-	return(0);
+        return(0);
     r = DoSyncPacket(fh->fh_Type, ACTION_READ, fh->fh_Arg1,(long)buf,bytes,0);
     return(r);
 }
@@ -397,6 +397,6 @@ makebstr(ubyte *name, short nameLen, ubyte *buf)
     *buf = nameLen;
     ++buf;
     movmem(name, buf, nameLen);
-    buf[nameLen] = 0;		// necessary for 1.3
+    buf[nameLen] = 0;           // necessary for 1.3
 }
 

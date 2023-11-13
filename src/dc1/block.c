@@ -15,11 +15,11 @@ Prototype short BlockCost;
 
 BlockStmt *CurBlock;
 BlockStmt *CurGen;
-Var *TopVarBase;	/*  list of top-level variables */
+Var *TopVarBase;        /*  list of top-level variables */
 
-short	BlockCost;	/*  how costly will operations be time-relative */
-			/*  (e.g. keep loop variables in registers when */
-			/*  we run out!)				*/
+short   BlockCost;      /*  how costly will operations be time-relative */
+                        /*  (e.g. keep loop variables in registers when */
+                        /*  we run out!)                                */
 
 Prototype BlockStmt *BlockDown(short);
 Prototype BlockStmt *BlockUp(void);
@@ -64,8 +64,8 @@ BlockUp()
     block->LastLexIdx = LFBase->lf_Index;
 
     if (block->Parent) {
-	if (block->Frame.Flags & FF_CALLMADE)
-	    block->Parent->Frame.Flags |= FF_CALLMADE;
+        if (block->Frame.Flags & FF_CALLMADE)
+            block->Parent->Frame.Flags |= FF_CALLMADE;
     }
     CurBlock = block->Parent;
 
@@ -94,19 +94,19 @@ Var *var;
     vbase = block->LastVar;
 
     while (var) {
-	vnext = var->Next;
-	var->Next = NULL;
+        vnext = var->Next;
+        var->Next = NULL;
 
-	if (var->Type->Id == TID_PROC || (var->Flags & TF_EXTERN)) {
-	    BlockAddTop(var);
-	} else {
-	    Assert(block);
-	    if (State == SARG)
-		var->Flags |= VF_ARG;
-	    *block->LastVar = var;
-	    block->LastVar = &var->Next;
-	}
-	var = vnext;
+        if (var->Type->Id == TID_PROC || (var->Flags & TF_EXTERN)) {
+            BlockAddTop(var);
+        } else {
+            Assert(block);
+            if (State == SARG)
+                var->Flags |= VF_ARG;
+            *block->LastVar = var;
+            block->LastVar = &var->Next;
+        }
+        var = vnext;
     }
     return(*vbase);
 }
@@ -119,8 +119,8 @@ Stmt *stmt;
 
     Assert(block);
     if (stmt) {
-	*block->Last = stmt;
-	block->Last = &stmt->st_Next;
+        *block->Last = stmt;
+        block->Last = &stmt->st_Next;
     }
 }
 
@@ -139,13 +139,13 @@ FindContinueLabel()
     BlockStmt *block = CurBlock;
 
     while (block) {
-	switch(block->Bid) {
-	case BT_FOR:
-	case BT_WHILE:
-	case BT_DO:
-	    return(block->LabelTest);
-	}
-	block = block->Parent;
+        switch(block->Bid) {
+        case BT_FOR:
+        case BT_WHILE:
+        case BT_DO:
+            return(block->LabelTest);
+        }
+        block = block->Parent;
     }
     return(0);
 }
@@ -156,20 +156,20 @@ FindBreakLabel()
     BlockStmt *block = CurBlock;
 
     while (block) {
-	switch(block->Bid) {
-	case BT_FOR:
-	case BT_WHILE:
-	case BT_DO:
-	case BT_SWITCH:
-	    return(block->LabelBreak);
-	}
-	block = block->Parent;
+        switch(block->Bid) {
+        case BT_FOR:
+        case BT_WHILE:
+        case BT_DO:
+        case BT_SWITCH:
+            return(block->LabelBreak);
+        }
+        block = block->Parent;
     }
     return(0);
 }
 
 /*
- *			Generation phase
+ *                      Generation phase
  */
 
 void
@@ -182,10 +182,10 @@ BlockStmt *child;
     Assert(child->Parent == block);
     /* cerror(ESOFT, "Block mismatch %08lx %08lx %08lx", child, child->Parent, block); */
     if (block) {
-	child->Frame.StackParent = block->Frame.StackParent + block->Frame.StackUsed;
+        child->Frame.StackParent = block->Frame.StackParent + block->Frame.StackUsed;
     } else {
-	ResetRegAlloc();
-	child->Frame.StackParent = 0;
+        ResetRegAlloc();
+        child->Frame.StackParent = 0;
     }
     child->Frame.StackUsed     = 0;
     child->Frame.DownStackUsed = 0;
@@ -199,9 +199,9 @@ BlockStmt *child;
 
     /*
     if (child->Frame.RegCantUse)
-	RegDisableRegs(child->Frame.RegCantUse);
+        RegDisableRegs(child->Frame.RegCantUse);
     else
-	RegEnableRegs();
+        RegEnableRegs();
     */
 
     CurGen = child;
@@ -213,8 +213,8 @@ GenFlagCallMade()
     Assert(CurGen);
     /*CurGen->Frame.RegCantUse |= REGSCRATCH;*/
     if ((CurGen->Frame.Flags & FF_CALLMADE) == 0) {
-	RegFlagTryAgain();
-	CurGen->Frame.Flags |= FF_CALLMADE;
+        RegFlagTryAgain();
+        CurGen->Frame.Flags |= FF_CALLMADE;
     }
 }
 
@@ -234,22 +234,22 @@ BlockStmt *chk;
 
     PopStackStorage();
     if ((block = chk->Parent) != NULL) {
-	if (block->Frame.DownStackUsed < child->Frame.StackUsed + child->Frame.DownStackUsed)
-	    block->Frame.DownStackUsed = child->Frame.StackUsed + child->Frame.DownStackUsed;
-	block->Frame.DownStackUsed = Align(block->Frame.DownStackUsed, StackAlign);
+        if (block->Frame.DownStackUsed < child->Frame.StackUsed + child->Frame.DownStackUsed)
+            block->Frame.DownStackUsed = child->Frame.StackUsed + child->Frame.DownStackUsed;
+        block->Frame.DownStackUsed = Align(block->Frame.DownStackUsed, StackAlign);
 
-	/*
-	 *  asm2.c, support routines call.  RegCantUse effects register
-	 *  allocation of scratch registers.
-	 */
+        /*
+         *  asm2.c, support routines call.  RegCantUse effects register
+         *  allocation of scratch registers.
+         */
 
-	if (child->Frame.Flags & FF_CALLMADE)
-	    block->Frame.Flags |= FF_CALLMADE;
+        if (child->Frame.Flags & FF_CALLMADE)
+            block->Frame.Flags |= FF_CALLMADE;
 
-	if (block->Frame.SubARegOver < child->Frame.CurARegOver + child->Frame.SubARegOver)
-	    block->Frame.SubARegOver = child->Frame.CurARegOver + child->Frame.SubARegOver;
-	if (block->Frame.SubDRegOver < child->Frame.CurDRegOver + child->Frame.SubDRegOver)
-	    block->Frame.SubDRegOver = child->Frame.CurDRegOver + child->Frame.SubDRegOver;
+        if (block->Frame.SubARegOver < child->Frame.CurARegOver + child->Frame.SubARegOver)
+            block->Frame.SubARegOver = child->Frame.CurARegOver + child->Frame.SubARegOver;
+        if (block->Frame.SubDRegOver < child->Frame.CurDRegOver + child->Frame.SubDRegOver)
+            block->Frame.SubDRegOver = child->Frame.CurDRegOver + child->Frame.SubDRegOver;
     }
     CurGen = block;
 }
@@ -266,10 +266,10 @@ Var *var;
     Var *first = var;
 
     for (;;) {
-	AllocExternalStorage(var->Sym, &var->var_Stor, var->Type, var->Flags);
-	if (var->Next == NULL)
-	    break;
-	var = var->Next;
+        AllocExternalStorage(var->Sym, &var->var_Stor, var->Type, var->Flags);
+        if (var->Next == NULL)
+            break;
+        var = var->Next;
     }
     var->Next = TopVarBase;
     TopVarBase = first;
@@ -291,41 +291,41 @@ Type *type;
     Var *var;
 
     if (type->Id == TID_PROC || ((storFlags & TF_AUTO) == 0 && State == SOUTSIDE)) {
-	base = &TopVarBase;
+        base = &TopVarBase;
 
-	while (*base && (*base)->Sym != sym)
-	    base = &(*base)->Next;
-	if ((var = *base) != NULL) { 
-	    /*
-	     * uh oh, duplicate... extern?.  If proc auto ext
-	     */
-	    *base = var->Next;
-	    var->Next = NULL;
+        while (*base && (*base)->Sym != sym)
+            base = &(*base)->Next;
+        if ((var = *base) != NULL) { 
+            /*
+             * uh oh, duplicate... extern?.  If proc auto ext
+             */
+            *base = var->Next;
+            var->Next = NULL;
 
-	    /*
-	     *	If a procedure use prototype'd type.  Compare args.
-	     *
-	     *	If a normal declaration we have a duplicate.  However, if
-	     *	-mu (UNIX common variables) are implemented allow a new
-	     *	declaration to overide the old.
-	     */
+            /*
+             *  If a procedure use prototype'd type.  Compare args.
+             *
+             *  If a normal declaration we have a duplicate.  However, if
+             *  -mu (UNIX common variables) are implemented allow a new
+             *  declaration to overide the old.
+             */
 
-	    if (type->Id != TID_PROC && (storFlags & TF_EXTERN) == 0 && (var->Flags & TF_EXTERN) == 0)
-	    {
-		if (UnixCommonOpt && var->Refs == 0 && var->u.AssExp == NULL)
-		    ;
-		else
-		    yerror(var->LexIdx, EERROR_DUPLICATE_SYMBOL,
-		           var->Sym->Len, var->Sym->Name);
-		var = NULL;
-	    } else if (type != var->Type &&
-	               CompareTypes(var->LexIdx, LFBase->lf_Index, type, var->Type) < 0) {
-		var = NULL;
-	    }
-	}
+            if (type->Id != TID_PROC && (storFlags & TF_EXTERN) == 0 && (var->Flags & TF_EXTERN) == 0)
+            {
+                if (UnixCommonOpt && var->Refs == 0 && var->u.AssExp == NULL)
+                    ;
+                else
+                    yerror(var->LexIdx, EERROR_DUPLICATE_SYMBOL,
+                           var->Sym->Len, var->Sym->Name);
+                var = NULL;
+            } else if (type != var->Type &&
+                       CompareTypes(var->LexIdx, LFBase->lf_Index, type, var->Type) < 0) {
+                var = NULL;
+            }
+        }
     } else {
-	Assert(CurBlock);
-	var = NULL;
+        Assert(CurBlock);
+        var = NULL;
     }
     return(var);
 }
@@ -334,28 +334,28 @@ int
 CompareTypes(int32_t olexIdx, int32_t lexIdx, Type *tn, Type *to)
 {
     while (tn != to) {
-	if (tn == NULL || to == NULL)
-	    break;
+        if (tn == NULL || to == NULL)
+            break;
 /* what about TID_FLT */
-	switch(tn->Id) {
-	case TID_INT:
-	    if (*tn->Size == *to->Size && ((tn->Flags ^ to->Flags) & TF_COMPAREQUALS) == 0)
-		return(0);
+        switch(tn->Id) {
+        case TID_INT:
+            if (*tn->Size == *to->Size && ((tn->Flags ^ to->Flags) & TF_COMPAREQUALS) == 0)
+                return(0);
             if (to->Id != TID_INT) return(-1);
-	    break;
-	case TID_PTR:
-	case TID_ARY:
-	    /*
-	     *	XXX extern fubar[]; verses declaration *fubar; not checked
-	     */
+            break;
+        case TID_PTR:
+        case TID_ARY:
+            /*
+             *  XXX extern fubar[]; verses declaration *fubar; not checked
+             */
             if ((to->Id != TID_PTR) && (to->Id != TID_ARY)) return(-1);
-	    if ((tn->Id == TID_PTR && *tn->SubType->Size == 0) ||
-	        (to->Id == TID_PTR && *to->SubType->Size == 0))
-		return(0);
-	    tn = tn->SubType;
-	    to = to->SubType;
-	    continue;
-	case TID_PROC:
+            if ((tn->Id == TID_PTR && *tn->SubType->Size == 0) ||
+                (to->Id == TID_PTR && *to->SubType->Size == 0))
+                return(0);
+            tn = tn->SubType;
+            to = to->SubType;
+            continue;
+        case TID_PROC:
             /* (ProtoOnlyOpt) ? EERROR : EWARN */
             if (to->Id != TID_PROC)
             {
@@ -363,19 +363,19 @@ CompareTypes(int32_t olexIdx, int32_t lexIdx, Type *tn, Type *to)
                return(-1);
             }
 
-	    if (CompareTypes(olexIdx, lexIdx, tn->SubType, to->SubType) < 0)
-	    {
-	        yerror(lexIdx,  EWARN_RETURN_MISMATCH, TypeToProtoStr(tn->SubType, 0));
-	        yerror(olexIdx, EWARN_DOES_NOT_MATCH,  TypeToProtoStr(to->SubType, 0));
-	    }
-	    if (to->Args > 0 && tn->Args < 0)
-	    {
-	    	yerror(lexIdx, (ProtoOnlyOpt) ? EERROR_NON_PROTOTYPE
-	    	                              : EWARN_NON_PROTOTYPE);
-		break;
-	    }
-	    if (to->Args < 0 || tn->Args < 0)
-		return(0);
+            if (CompareTypes(olexIdx, lexIdx, tn->SubType, to->SubType) < 0)
+            {
+                yerror(lexIdx,  EWARN_RETURN_MISMATCH, TypeToProtoStr(tn->SubType, 0));
+                yerror(olexIdx, EWARN_DOES_NOT_MATCH,  TypeToProtoStr(to->SubType, 0));
+            }
+            if (to->Args > 0 && tn->Args < 0)
+            {
+                yerror(lexIdx, (ProtoOnlyOpt) ? EERROR_NON_PROTOTYPE
+                                              : EWARN_NON_PROTOTYPE);
+                break;
+            }
+            if (to->Args < 0 || tn->Args < 0)
+                return(0);
 
             /*
              *  prototyped
@@ -408,20 +408,20 @@ CompareTypes(int32_t olexIdx, int32_t lexIdx, Type *tn, Type *to)
             {
                 yerror(lexIdx, EERROR_ARGUMENT_COUNT);
             }
-	    break;
-	case TID_STRUCT:
-	case TID_UNION:
-	case TID_BITFIELD:
-	    if (tn->Id == to->Id && tn->Args == to->Args && tn->Vars == to->Vars)
-		return(0);
-	    yerror(lexIdx, EERROR_INCOMPATIBLE_STRUCTURE, TypeToProtoStr(tn, 0));
+            break;
+        case TID_STRUCT:
+        case TID_UNION:
+        case TID_BITFIELD:
+            if (tn->Id == to->Id && tn->Args == to->Args && tn->Vars == to->Vars)
+                return(0);
+            yerror(lexIdx, EERROR_INCOMPATIBLE_STRUCTURE, TypeToProtoStr(tn, 0));
             yerror(olexIdx, EWARN_DOES_NOT_MATCH, TypeToProtoStr(to, 0));
-	    break;
-	}
-	break;
+            break;
+        }
+        break;
     }
     if (tn != to)
-	return(-1);
+        return(-1);
     return(0);
 }
 

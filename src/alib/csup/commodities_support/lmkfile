@@ -1,10 +1,10 @@
 
-MODNAME	          = commodities_support_lib
-VERSION		  = 38
+MODNAME           = commodities_support_lib
+VERSION           = 38
 
-REMOTE		  = V:lib/csupport/commodities_support
+REMOTE            = V:lib/csupport/commodities_support
 
-LD_FILE	          = $(MODNAME).lib
+LD_FILE           = $(MODNAME).lib
 
 C_COMPILER        = LC
 C_COMPILER_OPTS   = -b0 -ms -v -O -cfistqmcu -d0
@@ -22,18 +22,18 @@ LIBS        = LIB:amiga.lib LIB:lcnb.lib LIB:debug.lib
 ##############################################################################
 # Build the link library...
 #
-$(LD_FILE):	$(OBJECTS)
-		@Join $(OBJECTS) AS $(LD_FILE)
+$(LD_FILE):     $(OBJECTS)
+                @Join $(OBJECTS) AS $(LD_FILE)
 
 
 ##############################################################################
 # Default rules...
 #
 .c.o:
-	$(C_COMPILER) $(C_COMPILER_OPTS) $*.c
+        $(C_COMPILER) $(C_COMPILER_OPTS) $*.c
 
 .asm.o:
-	$(ASSEMBLER) $*.asm $(ASSEMBLER_OPTS) $*.o
+        $(ASSEMBLER) $*.asm $(ASSEMBLER_OPTS) $*.o
 
 
 ##############################################################################
@@ -49,14 +49,14 @@ freeie.o: freeie.c
 # Delete all object files
 #
 clean:
-	@Delete $(OBJECTS)
-	@Delete $(LD_FILE)
+        @Delete $(OBJECTS)
+        @Delete $(LD_FILE)
 
 
 ##############################################################################
 # Release the current build to the server...
 #
 internal:
-	@Delete $(REMOTE)/((\#?.(c|h|asm|i|ld|rev|doc|lib|sfd))|lmkfile)
-	@Protect ((\#?.(c|h|asm|i|ld|rev|doc|lib|sfd))|lmkfile) +r quiet
-	@Copy ((\#?.(c|h|asm|i|ld|rev|doc|lib|sfd))|lmkfile) $(REMOTE)
+        @Delete $(REMOTE)/((\#?.(c|h|asm|i|ld|rev|doc|lib|sfd))|lmkfile)
+        @Protect ((\#?.(c|h|asm|i|ld|rev|doc|lib|sfd))|lmkfile) +r quiet
+        @Copy ((\#?.(c|h|asm|i|ld|rev|doc|lib|sfd))|lmkfile) $(REMOTE)

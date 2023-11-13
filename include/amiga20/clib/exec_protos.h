@@ -1,15 +1,15 @@
 #ifndef  CLIB_EXEC_PROTOS_H
 #define  CLIB_EXEC_PROTOS_H
 /*
-**	$Filename: clib/exec_protos.h $
-**	$Release: 2.04 $
-**	$Revision: 30.156 $
-**	$Date: 1995/01/11 05:18:08 $
+**      $Filename: clib/exec_protos.h $
+**      $Release: 2.04 $
+**      $Revision: 30.156 $
+**      $Date: 1995/01/11 05:18:08 $
 **
-**	C prototypes. For use with 32 bit integers only.
+**      C prototypes. For use with 32 bit integers only.
 **
-**	(C) Copyright 1990 Commodore-Amiga, Inc.
-**	    All Rights Reserved
+**      (C) Copyright 1990 Commodore-Amiga, Inc.
+**          All Rights Reserved
 */
 #ifndef  EXEC_TYPES_H
 #include <exec/types.h>
@@ -21,10 +21,10 @@ ULONG Supervisor( unsigned long (*userFunction)() );
 void InitCode( unsigned long startClass, unsigned long version );
 void InitStruct( APTR initTable, APTR memory, unsigned long size );
 struct Library *MakeLibrary( APTR funcInit, APTR structInit,
-	unsigned long (*libInit)(), unsigned long dataSize,
-	unsigned long segList );
+        unsigned long (*libInit)(), unsigned long dataSize,
+        unsigned long segList );
 void MakeFunctions( APTR target, APTR functionArray,
-	unsigned long funcDispBase );
+        unsigned long funcDispBase );
 struct Resident *FindResident( UBYTE *name );
 void InitResident( struct Resident *resident, unsigned long segList );
 /*------ diagnostics --------------------------------------------------*/
@@ -45,7 +45,7 @@ void Cause( struct Interrupt *interrupt );
 /*------ memory allocation --------------------------------------------*/
 APTR Allocate( struct MemHeader *freeList, unsigned long byteSize );
 void Deallocate( struct MemHeader *freeList, APTR memoryBlock,
-	unsigned long byteSize );
+        unsigned long byteSize );
 APTR AllocMem( unsigned long byteSize, unsigned long requirements );
 APTR AllocAbs( unsigned long byteSize, APTR location );
 void FreeMem( APTR memoryBlock, unsigned long byteSize );
@@ -88,13 +88,13 @@ void RemLibrary( struct Library *library );
 struct Library *OldOpenLibrary( UBYTE *libName );
 void CloseLibrary( struct Library *library );
 APTR SetFunction( struct Library *library, long funcOffset,
-	unsigned long (*newFunction)() );
+        unsigned long (*newFunction)() );
 void SumLibrary( struct Library *library );
 /*------ devices ------------------------------------------------------*/
 void AddDevice( struct Device *device );
 void RemDevice( struct Device *device );
 BYTE OpenDevice( UBYTE *devName, unsigned long unit,
-	struct IORequest *ioRequest, unsigned long flags );
+        struct IORequest *ioRequest, unsigned long flags );
 void CloseDevice( struct IORequest *ioRequest );
 BYTE DoIO( struct IORequest *ioRequest );
 void SendIO( struct IORequest *ioRequest );
@@ -108,7 +108,7 @@ APTR OpenResource( UBYTE *resName );
 /*------ private diagnostic support -----------------------------------*/
 /*------ misc ---------------------------------------------------------*/
 void RawDoFmt( UBYTE *formatString, APTR dataStream, void (*putChProc)(),
-	APTR putChData );
+        APTR putChData );
 ULONG GetCC( void );
 ULONG TypeOfMem( APTR address );
 ULONG Procure( struct Semaphore *semaport, struct Message *bidMsg );
@@ -129,7 +129,7 @@ void RemSemaphore( struct SignalSemaphore *sigSem );
 ULONG SumKickData( void );
 /*------ more memory support ------------------------------------------*/
 ULONG AddMemList( unsigned long size, unsigned long attributes,
-	unsigned long pri, APTR base, UBYTE *name );
+        unsigned long pri, APTR base, UBYTE *name );
 void CopyMem( APTR source, APTR dest, unsigned long size );
 void CopyMemQuick( APTR source, APTR dest, unsigned long size );
 /*------ cache --------------------------------------------------------*/
@@ -147,7 +147,7 @@ void ObtainSemaphoreShared( struct SignalSemaphore *sigSem );
 APTR AllocVec( unsigned long byteSize, unsigned long requirements );
 void FreeVec( APTR memoryBlock );
 APTR CreatePrivatePool( unsigned long requirements, unsigned long puddleSize,
-	unsigned long puddleThresh );
+        unsigned long puddleThresh );
 void DeletePrivatePool( APTR poolHeader );
 APTR AllocPooled( unsigned long memSize, APTR poolHeader );
 void FreePooled( APTR memory, APTR poolHeader );
@@ -160,4 +160,4 @@ void ChildOrphan( APTR tid );
 void ChildStatus( APTR tid );
 void ChildWait( APTR tid );
 /*------ future expansion ---------------------------------------------*/
-#endif	 /* CLIB_EXEC_PROTOS_H */
+#endif   /* CLIB_EXEC_PROTOS_H */

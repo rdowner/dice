@@ -1,39 +1,39 @@
 
-quickref/quickref					       quickref/quickref
+quickref/quickref                                              quickref/quickref
 
-			       QUICKREF.DOC
+                               QUICKREF.DOC
 
     NOTE:   The unregistered version of DICE does NOT have the DCC:MAN
-	    directory.
+            directory.
 
 
     DME may be used to quick-reference library calls.  To allow DME to
     do this the following lines must be in your S:.EDRC file (hd installed):
 
-	addpath dcc:man
-	addpath dcc:doc
-	addpath dinclude:
+        addpath dcc:man
+        addpath dcc:doc
+        addpath dinclude:
 
     floppy installed, you can reference the original distribution diskettes.
     Note that the disk containing the reference you seek must be in a drive
     or the reference will not be found.
 
-	addpath dcc2:man
-	addpath dcc1:doc
-	addpath dinclude:
+        addpath dcc2:man
+        addpath dcc1:doc
+        addpath dinclude:
 
     The dcc:man directory contains manual pages for DICE and an already
     created quick-reference file DME.REFS .  By adding the directory to
     DME's search list you can, from DME, position the cursor over any
     subroutine name, example:
 
-		printf("%s%d\n", "fubar", 10);
-		^
-		cursor is over the 'p'
+                printf("%s%d\n", "fubar", 10);
+                ^
+                cursor is over the 'p'
 
     And type c-] (control-right-bracket), and DME will search all paths for
     DME.REFS files containing quick reference info for DICE manual pages.
-    DME brings up a window with the appropriate reference information.	Your
+    DME brings up a window with the appropriate reference information.  Your
     original window is still available, of course, so you can refer to the
     material and make changes to your program source easily.
 
@@ -49,9 +49,9 @@ quickref/quickref					       quickref/quickref
     Additionally, you can quick-reference INCLUDE STRUCTURES.  That is why
     the 'addpath dinclude:' is in there.  For example:
 
-	    NewWindow
-	    ^
-	    cursor over the N, type c-] (control right-bracket)
+            NewWindow
+            ^
+            cursor over the N, type c-] (control right-bracket)
 
     Will bring up the associated structure from the includes files.  If you
     have commented includes (AmigaDOS V1.3 Native Developer's Update, $20
@@ -59,12 +59,12 @@ quickref/quickref					       quickref/quickref
     quick-reference material.
 
     ------------------------------------------------------------------------
-				HOW IT WORKS
+                                HOW IT WORKS
 
     To create a quick-refable document the header before each 'manual' entry
     must be of the form:
 
-    aaaaa/bbbbb 					    aaaaa/bbbbb
+    aaaaa/bbbbb                                             aaaaa/bbbbb
 
     That is, the same a/b string repeated twice on the line.  This is how
     the autodocs: are formatted, by the way.  You can also quickref .H files
@@ -74,11 +74,11 @@ quickref/quickref					       quickref/quickref
     showing how to quick-reference your includes):
 
     1> cd dinclude:
-    1> delete dme.refs	    ; make sure dme.refs is gone 'cause it is appended to
+    1> delete dme.refs      ; make sure dme.refs is gone 'cause it is appended to
     1> autorefs DME.REFS #?.h amiga/#?/#?.h
 
     Basically you can specify arbitrary wild cards.  The files specified should
-    be relative the current directory.	You then add the current directory
+    be relative the current directory.  You then add the current directory
     to DME's ADDPATH list:
 
     (in DME's S:.EDRC file):

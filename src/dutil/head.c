@@ -37,17 +37,17 @@ char **av;
 #endif
 
     for (i = 1; i < ac; ++i) {
-	FILE *fi;
+        FILE *fi;
 
-	if ((fi = fopen(av[i], "r")) != NULL) {
-	    if (ac > 2)
-		printf("--- %s ---\n", av[i]);
-	    head(fi);
-	    fclose(fi);
-	    puts("");
-	} else {
-	    printf ("--- %s --- (unable to open)\n", av[i]);
-	}
+        if ((fi = fopen(av[i], "r")) != NULL) {
+            if (ac > 2)
+                printf("--- %s ---\n", av[i]);
+            head(fi);
+            fclose(fi);
+            puts("");
+        } else {
+            printf ("--- %s --- (unable to open)\n", av[i]);
+        }
     }
     return(0);
 }
@@ -60,9 +60,9 @@ FILE *fi;
     short i;
 
     for (i = 0; i < 10; ++i) {
-	if (fgets(buf, sizeof(buf), fi) == NULL)
-	    break;
-	fputs(buf, stdout);
+        if (fgets(buf, sizeof(buf), fi) == NULL)
+            break;
+        fputs(buf, stdout);
     }
 }
 

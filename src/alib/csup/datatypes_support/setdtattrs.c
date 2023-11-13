@@ -9,9 +9,9 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 ULONG SetDTAttrs( Object *o, struct Window *win, struct Requester *req,Tag Tag1, ... )
 {
-	return SetDTAttrsA(o,win,req,(TagItem *)&Tag1);
+        return SetDTAttrsA(o,win,req,(TagItem *)&Tag1);
 }

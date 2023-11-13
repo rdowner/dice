@@ -8,7 +8,7 @@
 //#include <clib/intuition_protos.h>
 
 extern LONG EasyRequestArgs( struct Window *window, struct EasyStruct *easyStruct,
-	ULONG *idcmpPtr, APTR args );
+        ULONG *idcmpPtr, APTR args );
 
 
 LONG

@@ -1,23 +1,23 @@
 
-		;   FASIN.A
-		;
-		;   D0 = fasin(D0)
-		;	      4(sp)
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   FASIN.A
+                ;
+                ;   D0 = fasin(D0)
+                ;             4(sp)
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xref	_MathIeeeSingTransBase
-		xref	_LVOIEEESPAsin
-		xdef	__spasin
+                xref    _MathIeeeSingTransBase
+                xref    _LVOIEEESPAsin
+                xdef    __spasin
 
-__spasin	move.l	4(sp),D0
-		move.l	A6,-(sp)
-		move.l	_MathIeeeSingTransBase(A4),A6
-		jsr	_LVOIEEESPAsin(A6)
-		move.l	(sp)+,A6
-		rts
+__spasin        move.l  4(sp),D0
+                move.l  A6,-(sp)
+                move.l  _MathIeeeSingTransBase(A4),A6
+                jsr     _LVOIEEESPAsin(A6)
+                move.l  (sp)+,A6
+                rts
 
-		END
+                END
 

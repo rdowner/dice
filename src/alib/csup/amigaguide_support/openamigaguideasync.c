@@ -15,5 +15,5 @@ APTR
 HYPER ## OpenAmigaGuideAsync( struct NewAmigaGuide *nag, Tag tag1, ...)
 {
 
-	return OpenAmigaGuideAsyncA(nag,(TagItem *)&tag1);
+        return OpenAmigaGuideAsyncA(nag,(TagItem *)&tag1);
 }

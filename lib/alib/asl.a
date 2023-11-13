@@ -1,38 +1,38 @@
 
-			;   autoinit if you ever reference ASL.LIBRARY
-			;
-			;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                        ;   autoinit if you ever reference ASL.LIBRARY
+                        ;
+                        ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-			xdef	_AslBase
-			xref	__AutoFail0
+                        xdef    _AslBase
+                        xref    __AutoFail0
 
-_LVOOpenLibrary 	equ	-552
-_LVOCloseLibrary	equ	-414
+_LVOOpenLibrary         equ     -552
+_LVOCloseLibrary        equ     -414
 
-			section autoinit0,code
+                        section autoinit0,code
 
-			moveq.l #0,D0
-			lea	aslname(pc),A1
-			jsr	_LVOOpenLibrary(A6)
-			move.l	D0,_AslBase(A4)
-			beq	__AutoFail0
-			bra	i10
-aslname 		dc.b	'asl.library',0
-			ds.w	0
+                        moveq.l #0,D0
+                        lea     aslname(pc),A1
+                        jsr     _LVOOpenLibrary(A6)
+                        move.l  D0,_AslBase(A4)
+                        beq     __AutoFail0
+                        bra     i10
+aslname                 dc.b    'asl.library',0
+                        ds.w    0
 i10
 
-			section autoexit0,code
+                        section autoexit0,code
 
-			move.l	_AslBase(A4),D0
-			beq	l10
-			move.l	D0,A1
-			jsr	_LVOCloseLibrary(A6)
+                        move.l  _AslBase(A4),D0
+                        beq     l10
+                        move.l  D0,A1
+                        jsr     _LVOCloseLibrary(A6)
 l10
 
 
-			section libbss,bss
+                        section libbss,bss
 
-_AslBase		ds.l	1
+_AslBase                ds.l    1
 
-			END
+                        END
 

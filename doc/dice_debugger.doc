@@ -1,4 +1,4 @@
-Dice/DD							  Dice/DD
+Dice/DD                                                   Dice/DD
 
  Dice Debugger (DD) User's Manual
 
@@ -6,10 +6,10 @@ Dice/DD							  Dice/DD
  
  DD is a debugger designed exclusively for the DICE compiler environment.          
  In previous versions of DICE, all debugging had to be done with assembly
- language debuggers or by inserting printf() calls in the code.	This is
+ language debuggers or by inserting printf() calls in the code. This is
  no longer the case!   DD takes advantage of many old and many new features
  in the DICE compiler to provide you with the ability to debug on the source                   
- level.	DD is both command-line and mouse driven.
+ level. DD is both command-line and mouse driven.
  
  DD allows you to examine your program in a variety of display modes and
  using as many windows as you desire.  DD also features ARexx support, the
@@ -47,7 +47,7 @@ Dice/DD							  Dice/DD
  when compiling.
  
  Lastly, DD will cause the program being debugged to call exit() under
- various circumstances.	If you decide to quit DD while partway debugging
+ various circumstances. If you decide to quit DD while partway debugging
  through a program, your program will immediately exit().  You should take
  advantage of this to have your program clean up any resources it used
  during the debugging session (close your windows, free memory allocated,
@@ -87,7 +87,7 @@ Dice/DD							  Dice/DD
  invisible to the program and it will behave as if it were run from the CLI alone.
  
  While debugging, your process will be in one of two states - debugger state or
- program state.	When in debugger state, the debugger has full control, responds
+ program state. When in debugger state, the debugger has full control, responds
  to your inputs, etc.  When in program state, your program is in full control and
  will run until it exits or until you hit a breakpoint or other stoppage (guru)
  of your program.  The debugger is careful NOT to do DOS calls which might cause
@@ -103,7 +103,7 @@ Dice/DD							  Dice/DD
  compile with -s -d1 to get full debugging capability.
  
  To launch the debugger, just type:
- 	1> DD myprog parm parm parm ...
+        1> DD myprog parm parm parm ...
  Where myprog is the name of your program (to be debugged) and parm parm parm
  is the typical CLI arguments that you would give to your program.  DD will
  open a console window for you to enter commands.
@@ -119,7 +119,7 @@ Dice/DD							  Dice/DD
  
  You initially start DD and have a single console window to control the debugger
  from.  The top few lines of the window are used to display the CPU registers of the
- current state of your program.	All the standard 68000 Data and ADDress Registers
+ current state of your program. All the standard 68000 Data and ADDress Registers
  are displayed, as well as the PC, and SR registers.  The individual bits of the
  condition codes (CCR) are displayed to the right of the SR.  Also, the program's
  state is displayed.  Many states are possible, but typically your program will be
@@ -138,7 +138,7 @@ Dice/DD							  Dice/DD
  _main or @main.
  
  Below the general purpose display is the Status: line, where DD will display
- its various status and error messages.	Initially, this line says:
+ its various status and error messages. Initially, this line says:
  Status: Ready for command.
  
  Below the status line is the command line itself.  As you type in your commands,
@@ -148,7 +148,7 @@ Dice/DD							  Dice/DD
  the PC is in.  It is always good to know what file your bug is in...
  
  And finally, below the command line are two lines reserved for display of the
- current function key bindings.	By default, these are bound to some very common
+ current function key bindings. By default, these are bound to some very common
  commands that you would otherwise have to type.
  
  DD supports multiple windows - but all share the same command line.  You use
@@ -163,7 +163,7 @@ Dice/DD							  Dice/DD
  are bound to the window.  The left mouse button is a select button and operates
  differently, depending on where you click.  Clicking on text in the window
  generally causes the word you clicked on to be entered onto the command line
- automatically for you.	That funny character string on the left of the prompt
+ automatically for you. That funny character string on the left of the prompt
  is there so you can click to generate those characters.  Clicking to the
  right of the command line is like hitting return to execute the command.
  You can click in any combination of windows to build your command lines.
@@ -297,11 +297,11 @@ Dice/DD							  Dice/DD
  COMMAND DESCRIPTIONS
  
  AGAIN
- 	This command repeats the last command entered.  It is
+        This command repeats the last command entered.  It is
  occasionally useful when a complicated command was entered. 
  
  ALIAS
- 	This command provides a limited alias function for all internal
+        This command provides a limited alias function for all internal
  commands.  When an internal command is aliased, DD looks for an AREXX
  program with the same name (with the .DD extension) and executes that
  instead of the internal command.  The internal command is still
@@ -327,17 +327,17 @@ Dice/DD							  Dice/DD
  fail.
  
  BP ALL
- 	When a breakpoint is hit, it is automatically unset.  However,
+        When a breakpoint is hit, it is automatically unset.  However,
  it is still in the breakpoint table, and can be rearmed.  The bp all
  commnd rearms all breakpoints in the table. 
  
  BREAKPOINTS
- 	This command displays the table containing the current
+        This command displays the table containing the current
  breakpoint list, and current status.  Breakpoints can be set and unset
  directly on the table display itself. 
  
  BYTES {expression}
- 	The bytes command changes the display mode of the current
+        The bytes command changes the display mode of the current
  window to the bytes display.  The optional expression allows you to
  specify the start of the byte display.  (DD attempts to keep enforcer
  happy; most illegal accesses are trapped).  If no expression is
@@ -345,30 +345,30 @@ Dice/DD							  Dice/DD
  is changed. 
  
  CHANGEWINDOW
- 	This command is used to move and size the curren DD window.  It
+        This command is used to move and size the curren DD window.  It
  only operates under AmigaaOS 2.0 or greater (so, why haven't you
  upgraded yet ?).  The command takes the two coordinates of the upper
  left corner of the window, the width, and the height, and moves the
  window there if possible. 
  
  CLEAR {expression}
- 	This command clears the breakpoint at the expression.  If no
+        This command clears the breakpoint at the expression.  If no
  expression is given, the breakpoint is cleared at the PC location.
  The breakpoint is not removed from the breakpoint table, and may be
  re-armed by the BP command.
  
  CLEAR ALL
- 	Clear all clears the entire breakpoint table. 
+        Clear all clears the entire breakpoint table. 
  
  CLOSE
- 	This command closes the current display window.  If the current
+        This command closes the current display window.  If the current
  window is the only DD window open, DD exits. 
  
  DEVS
- 	This command displays the current Exec Device List
+        This command displays the current Exec Device List
  
  DISM {expression}
- 	The dism command changes the display mode of the current window
+        The dism command changes the display mode of the current window
  to the disassembly display.  The optional expression allows you to
  specify the start of the disassembly display.  (DD attempts to keep
  enforcer happy; most illegal accesses are trapped).  If no expression
@@ -376,30 +376,30 @@ Dice/DD							  Dice/DD
  mode is changed. 
  
  DOSBASE
- 	This command displays the pulic fields of the AmigaDOS DOSBase
+        This command displays the pulic fields of the AmigaDOS DOSBase
  structure. 
  
  DOWN
- 	This command is used to move the cursor down one line.  New
+        This command is used to move the cursor down one line.  New
  informtion is displayed at the bottom of the display area if the
  display scrolls.  This command acts the same as pressing the cursor
  down key. 
  
  EVAL {expression}
- 	This command evaluates an expression, and prints the result to
+        This command evaluates an expression, and prints the result to
  the screen. 
  
  EXECBASE
- 	This command displays the current contents of the public fields
+        This command displays the current contents of the public fields
  of ExecBase. 
  
  FKEY num definition
- 	This command is used to set one of the ten function key
+        This command is used to set one of the ten function key
  definitions.  The command takes the function key number (from 1 to 10)
  and the definition string. 
  
  GO {expression}
- 	The go command sets all the breakpoints in the breakpoint
+        The go command sets all the breakpoints in the breakpoint
  table, and starts execution on the program being debugged.  Execution
  begins at the expression if provided; otherwise execution begins at
  the address contained in the program counter (PC).  The program runs
@@ -409,21 +409,21 @@ Dice/DD							  Dice/DD
  single step functions (step or over) instead. 
  
  HELP {command}
- 	Provide short online help list
+        Provide short online help list
  
  HUNKS
- 	This command changes the current display to a table of the
+        This command changes the current display to a table of the
  hunks in the progra being debugged. 
  
  INFO
- 	This command displays information on the current task, taken
+        This command displays information on the current task, taken
  from the task structure. 
  
  INTRS
- 	The intrs command displays the Exec interrupt list. 
+        The intrs command displays the Exec interrupt list. 
  
  JUMP {name}
- 	The jump command is used to jump a DD window to another public
+        The jump command is used to jump a DD window to another public
  Intuition screen.  With no argument, the jump command jumps the window
  to the next public screen.  If an argument is specified, the jump
  command jumps the window to that public screen.  If the screen does
@@ -431,10 +431,10 @@ Dice/DD							  Dice/DD
  happens. 
  
  LIBS
- 	This command diplays the Exec library list.
+        This command diplays the Exec library list.
  
  LONGS {expression}
- 	The longs command changes the display mode of the current
+        The longs command changes the display mode of the current
  window to the longs display.  The optional expression allows you to
  specify the start of the longs display.  (DD attempts to keep enforcer
  happy; most illegal accesses are trapped).  If no expression is
@@ -442,7 +442,7 @@ Dice/DD							  Dice/DD
  is changed. 
  
  MBAR slot
- 	This command is used when setting up the programmable menu
+        This command is used when setting up the programmable menu
  system, to add a menubar at the specified slot.  The slot can be a
  positive integer (from 0 to 127) or -1 (which tells DD to append the
  new menu bar to the existing menus) When this command is used, menus
@@ -450,7 +450,7 @@ Dice/DD							  Dice/DD
  command. 
  
  MEND
- 	This command is used when setting up the programmable menu
+        This command is used when setting up the programmable menu
  system, to add a menu end marker at the specified slot. The slot can
  be a positive integer (from 0 to 127) or -1 , which tells DD to append
  the new menu end marker to the existing menus. When this command is
@@ -458,10 +458,10 @@ Dice/DD							  Dice/DD
  the menus command. 
  
  MEMLIST
- 	This command displays the current Exec memory lists
+        This command displays the current Exec memory lists
  
  mitem slot label command shortcutkey
- 	This command is used when setting up the programmable menu
+        This command is used when setting up the programmable menu
  system, to add a menu item at the specified slot. The slot can be a
  positive integer (from 0 to 127) or -1 , which tells DD to append the
  new menu item to the end of the existing menus.  The label is what is
@@ -472,7 +472,7 @@ Dice/DD							  Dice/DD
  command. 
  
  MIXED {expression}
- 	The mixed command changes the display mode of the current
+        The mixed command changes the display mode of the current
  window to the mixed display.  The optional expression allows you to
  specify the start of the longs display.  (DD attempts to keep enforcer
  happy; most illegal accesses are trapped).  If no expression is
@@ -482,10 +482,10 @@ Dice/DD							  Dice/DD
  disassembled instructions that each source line compiles to. 
  
  MENUS
- 	This command activates the DD menus.
+        This command activates the DD menus.
  
  MSUB slot label command shortcutkey
- 	This command is used when setting up the programmable menu
+        This command is used when setting up the programmable menu
  system, to add a menu subitem at the specified slot. The slot can be a
  positive integer (from 0 to 127) or -1 , which tells DD to append the
  new menu subitem to the end of the existing menus.  The label is what
@@ -498,7 +498,7 @@ Dice/DD							  Dice/DD
  Instead, they are treated as menu items. 
  
  MTITLE slot label
- 	This command is used when setting up the programmable menu
+        This command is used when setting up the programmable menu
  system, to add a menu title at the specified slot.  The slot can be a
  positive integer (from 0 to 127) or -1 (which tells DD to append the
  new menu title to the existing menus) Each menu title must have at
@@ -507,18 +507,18 @@ Dice/DD							  Dice/DD
  and must be turned on with the menus command. 
  
  OFFSETS
- 	This command toggles the display of addresses as either offsets
+        This command toggles the display of addresses as either offsets
  from a listed symbol name or plain hex addresses. 
  
  OPEN {type}
- 	This command is used to open a new DD display.  If no type is
+        This command is used to open a new DD display.  If no type is
  specified, a new window is opened with the same display as the current
  window.  Otherwise, a display of the specified type is opened.  The
  displys are somewhat independent ... each can display a different
  address, but share breakpoints, the registers, Rexx port name, etc. 
  
  OVER {range}
- 	This command is used to single step the program under debug,
+        This command is used to single step the program under debug,
  stepping over subroutines.  The subroutine is executed, and control
  returns to the debugger at the instruction immediately following.
  The optional range parameter allows you to set up an address range
@@ -526,121 +526,121 @@ Dice/DD							  Dice/DD
  under debug leaves the range.
  
  PAGEDOWN
- 	This command is used to move the cursor down one page.  New
+        This command is used to move the cursor down one page.  New
  informtion is displayed at the bottom of the display area if the
  display scrolls.  This command acts the same as pressing the shifted cursor
  down key. 
  
  PAGEUP
- 	This command is used to move the cursor up one page.  New
+        This command is used to move the cursor up one page.  New
  informtion is displayed at the top of the display area if the
  display scrolls.  This command acts the same as pressing the shifted cursor
  up key. 
  
  RENDLIST
- 	This command is used to signal completion of a buffer list creation
+        This command is used to signal completion of a buffer list creation
  by an external ARexx program.  DD allows external commands to create an
  information list through its ARexx port.  The list is then available for
  display;  DD handles scrolling, refresh of the list, and so on.  This command
  tells DD that the list is complete and ready for display.
  
  RGETBYTE {expression}
- 	This command is used to get one line of bytes at expression.  If no
+        This command is used to get one line of bytes at expression.  If no
  expression is provided, the bytes will be fetched from the location specified
  by the PC.  The bytes are returned in the ARexx RESULT variable.
  
  RGETCOM
- 	This command is used to get the command line.  The command line
+        This command is used to get the command line.  The command line
  is returned in the ARexx RESULT variable.
  
  RGETDISM {expr}
- 	This command is used to get one line of disassembly at expression.  If no
+        This command is used to get one line of disassembly at expression.  If no
  expression is provided, the disassembly will be fetched from the location 
  specified by the PC.  The bytes are returned in the ARexx RESULT variable.
  
  RGETEVAL {expr}
- 	This command evaluates the expression, and passes it back in the
+        This command evaluates the expression, and passes it back in the
  ARexx RESULT variable.
  
  RGETINFO {expr}
- 	This command is used to get the program name and current line number
+        This command is used to get the program name and current line number
  of the expression.  If no expression is provided, the information will be 
  fetched from the location specified by the PC.  The results are returned in 
  the ARexx RESULT variable.
  
  RGETLINE {expr}
- 	This command is used to get one line of mixed display at expression.  
+        This command is used to get one line of mixed display at expression.  
  If no expression is provided, the disassembly will be fetched from the location 
  specified by the PC.  The lines are returned in the ARexx RESULT variable.
  
  RGETLONG {expr}
- 	This command is used to get one line of long words at expression.  If no
+        This command is used to get one line of long words at expression.  If no
  expression is provided, the long words will be fetched from the location specified
  by the PC.  The bytes are returned in the ARexx RESULT variable.
  
  RGETWORD {expr}
- 	This command is used to get one line of words at expression.  If no
+        This command is used to get one line of words at expression.  If no
  expression is provided, the words will be fetched from the location specified
  by the PC.  The bytes are returned in the ARexx RESULT variable.
  
  RGETPC
- 	This command is used to get the value if the current Program 
+        This command is used to get the value if the current Program 
  Counter (PC).  The bytes are returned in the ARexx RESULT variable.
  
  RPUTLIST
- 	This command is used to add a line of text to the buffer list being
+        This command is used to add a line of text to the buffer list being
  created by an external ARexx program.  DD allows external commands to create an
  information list through its ARexx port.  The list is then available for
  display;  DD handles scrolling, refresh of the list, and so on.  This command
  gives a line for DD to add to the list.
  
  RSHOWLIST
- 	This command is used to display the external buffer list previously
+        This command is used to display the external buffer list previously
  created with the rputlist commands.
  
  RSTARTLIST
- 	This command is used to signal the start of creation of a buffer list 
+        This command is used to signal the start of creation of a buffer list 
  by an external ARexx program.  DD allows external commands to create an
  information list through its ARexx port.  The list is then available for
  display;  DD handles scrolling, refresh of the list, and so on.  This command
  initializes the buffer list.
  
  RX rexx-script
- 	This command executes an external ARexx script file.  DD will treat any
+        This command executes an external ARexx script file.  DD will treat any
  command given by the user which is not an internal command as an ARexx
  command;  the rx command is to execute scripts with the same name as
  internal commands, or the same name as a symbol from the program under debug.
  
  SAVEPREFS
- 	This command saves the configuration file for DD to dcc:config/dd.config.
+        This command saves the configuration file for DD to dcc:config/dd.config.
  This file contains information on which commands are aliased, window position
  information, etc.
  
  SET {address} {value}
- 	This command is used to set the address to the specified value.  If the
+        This command is used to set the address to the specified value.  If the
  value is not given, a 0 will be used.  This command can also change the value
  of the registers  (A register is denoted by the trailing :, ie A0: or PC:).
  
  PORTS
- 	This command is used to display the Exec port list.
+        This command is used to display the Exec port list.
  
  PROCESS {expression}
- 	This command is used to display process information for the process
+        This command is used to display process information for the process
  at {expression}.  If no expression is given, the address contained in the
  Program Counter will be used instead.
  
  RESOURCES
- 	This command is used to display the Exec resources list.
+        This command is used to display the Exec resources list.
  
  QUIT
- 	This command calls the exit routine (_exit or @exit) of the program
+        This command calls the exit routine (_exit or @exit) of the program
  under debug with a 20 in D0, then exits from the DD program.
  
  REFRESH
- 	Refresh the current window display.
+        Refresh the current window display.
  
  REGISTERS
- 	This command toggles the register display.  Some windows contain the
+        This command toggles the register display.  Some windows contain the
  register display by default (the mixed mode display, for instance).  Others
  do not (the source display).  The registers command changes this for a
  particular window.  Once the registers command has been executed in a
@@ -648,16 +648,16 @@ Dice/DD							  Dice/DD
  command.
  
  RESET
- 	This command calls the exit routine (_exit or @exit) of the program
+        This command calls the exit routine (_exit or @exit) of the program
  under debug with a 20 in D0, then restarts the it.
  
  RSTEP            - toggle library call auto stepover flag
- 	This command toggles the auto stepover flag for libraries.  If rstep
+        This command toggles the auto stepover flag for libraries.  If rstep
  is on, then DD will automatically use OVER when asked to STEP into an 
  Amiga rom routine.
  
  source {expression}
- 	The source command changes the display mode of the current window
+        The source command changes the display mode of the current window
  to the source display.  The optional expression allows you to
  specify the start of the source display.  (DD attempts to keep
  enforcer happy; most illegal accesses are trapped).  If no expression
@@ -665,55 +665,55 @@ Dice/DD							  Dice/DD
  mode is changed. 
  
  STEP
- 	This command is used to single step the program under debug.
+        This command is used to single step the program under debug.
  The optional range parameter allows you to set up an address range
  for execution.  Control returns to the debugger if the program
  under debug leaves the range.
  
  SYMBOLS {expression}
- 	This command is used to display the symbol table for the program
+        This command is used to display the symbol table for the program
  under debug.  Breakpoints can be set from this table.  This table is 
  ordered by address.
- 	
+        
  SYMLIST
- 	This command is used to display the symbol table for the program
+        This command is used to display the symbol table for the program
  under debug.  This table is sorted.
  
  TASKS
- 	This command will display the Exec task list.
+        This command will display the Exec task list.
  
  UNALIAS
- 	This command removes a previously set alias.  To save the change, 
+        This command removes a previously set alias.  To save the change, 
  the saveprefs command must be used.
  
  UP
- 	This command is used to move the cursor up one line.  New
+        This command is used to move the cursor up one line.  New
  informtion is displayed at the top of the display area if the
  display scrolls.  This command acts the same as pressing the cursor up key. 
  
  WATCHBYTE {expression} - set/clear (toggle) byte watchpoints
- 	This command is used to see the values of bytes at the specified
+        This command is used to see the values of bytes at the specified
  expression.  This command  sets or clears a watchbyte.  If there are any 
  watchbytes,  the display is added to the current DD window;  otherwise there is
  no watchbyte display.  The expression can be an address, or a symbol.
  
  WATCHCLEAR       - clear all watchpoints
- 	This command removes all watchbytes, watchwords, and watchlongs.
+        This command removes all watchbytes, watchwords, and watchlongs.
  
  WATCHLONG {expr} - set/clear (toggle) long watchpoints
- 	This command is used to see the values of longss at the specified
+        This command is used to see the values of longss at the specified
  expression.  This command  sets or clears a watchlong.  If there are any 
  watchlongs,  the display is added to the current DD window;  otherwise there is
  no watchlong display.  The expression can be an address, or a symbol.
  
  WATCHWORD {expr} - set/clear (toggle) word watchpoints
- 	This command is used to see the values of words at the specified
+        This command is used to see the values of words at the specified
  expression.  This command  sets or clears a watchword.  If there are any 
  watchwords,  the display is added to the current DD window;  otherwise there is
  no watchword display.  The expression can be an address, or a symbol.
  
  WORDS {expression}
- 	The dism command changes the display mode of the current window
+        The dism command changes the display mode of the current window
  to the word display.  The optional expression allows you to
  specify the start of the word display.  (DD attempts to keep
  enforcer happy; most illegal accesses are trapped).  If no expression

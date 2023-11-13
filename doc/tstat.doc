@@ -29,10 +29,10 @@ The first command arg to TSTAT tells TSTAT who to watch.
 
 This can be specified in one of the following ways:
 
-- CLI number				Example: TSTAT 4
+- CLI number                            Example: TSTAT 4
   TSTAT will watch CLI 4 and all commands that run as part of CLI 4
 
-- Exec task name or CLI command name	Example: TSTAT myprogram
+- Exec task name or CLI command name    Example: TSTAT myprogram
   TSTAT will watch any exec task or CLI command named "myprogram",
   waiting for it to appear when no task/command is present with that name.
  

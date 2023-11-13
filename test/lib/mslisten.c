@@ -16,17 +16,17 @@ main()
     fi = openport(O_RDWR, 512);
     printf("open-port fi %08lx\n", fi);
     if (fi) {
-	puts("reading til EOF");
-	while (fgets(buf, 256, fi)) {
-	    printf("* ");
-	    fputs(buf, stdout);
-	    fflush(stdout);
-	    fprintf(fi, "accepted\n");
-	    fflush(fi);
-	}
-	puts("closing");
-	fclose(fi);
-	puts("closed");
+        puts("reading til EOF");
+        while (fgets(buf, 256, fi)) {
+            printf("* ");
+            fputs(buf, stdout);
+            fflush(stdout);
+            fprintf(fi, "accepted\n");
+            fflush(fi);
+        }
+        puts("closing");
+        fclose(fi);
+        puts("closed");
     }
 }
 

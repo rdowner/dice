@@ -20,7 +20,7 @@ const char *s;
     const char *b = s;
 
     while (*s)
-	++s;
+        ++s;
     return(s - b);
 }
 

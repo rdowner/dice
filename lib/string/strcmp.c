@@ -21,13 +21,13 @@ const char *s;
 const char *d;
 {
     while (*(ubyte *)s == *(ubyte *)d) {
-	if (*s == 0)
-	    return(0);
-	++s;
-	++d;
+        if (*s == 0)
+            return(0);
+        ++s;
+        ++d;
     }
     if (*(ubyte *)s < *(ubyte *)d)
-	return(-1);
+        return(-1);
     return(1);
 }
 

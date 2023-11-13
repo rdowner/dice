@@ -9,25 +9,25 @@ documentation found on the '91 DevCon disks.
 
 Notes:
 
-	The Installer now requires a 10000 byte stack. Please alter any
+        The Installer now requires a 10000 byte stack. Please alter any
 Installer script icons so they have a stack size of 10000.
 
-	Please remember that the string formating command
+        Please remember that the string formating command
 
-	("..." <value> <value> ...)
+        ("..." <value> <value> ...)
 
 requires that interger values be formatted by "%ld", not "%d". All integer
 variables in the Installer are LONGWORDS.
 
-	The documentation for "working" found in the DevCon notes is incorrect.
+        The documentation for "working" found in the DevCon notes is incorrect.
 The correct template is
 
-	(working <string> <string> ...)
+        (working <string> <string> ...)
 
 where the strings will be concatinated to form a message which will appear
 below a standard line that reads "Working on Installation".
 
-	The maximum size of a string in a script is 512 bytes. The maximum size
+        The maximum size of a string in a script is 512 bytes. The maximum size
 of any string variable is 10000 bytes. If you need to create long help text
 you will need to break the text into 512 byte chunks and then use the
 automatic string concatination ability of the installer to create the final,
@@ -37,48 +37,48 @@ that the installer reports a stack overflow error, look to see if it caused
 by too many small strings being concatinated and merge them into larger
 blocks. 
 
-	The "run" and "execute" statements only return the result of the command
+        The "run" and "execute" statements only return the result of the command
 run or executed under 2.0; they always return 0 under 1.3. If you must have
 some result under both 1.3 and 2.0, try this combo:
 
-	# in the DOS script to execute:
-	failat 31
-	command
-	if error
-		setenv installer-result 10
-	else
-		if warn
-			setenv installer-result 5
-		else
-			setenv installer-result 0
-		endif
-	endif
+        # in the DOS script to execute:
+        failat 31
+        command
+        if error
+                setenv installer-result 10
+        else
+                if warn
+                        setenv installer-result 5
+                else
+                        setenv installer-result 0
+                endif
+        endif
 
-	; in the installer script
-	(execute DOS-Script)
-	(set theResult (getenv "installer-result"))
+        ; in the installer script
+        (execute DOS-Script)
+        (set theResult (getenv "installer-result"))
 
-	When providing a pattern in a script, be sure it is less than 65
+        When providing a pattern in a script, be sure it is less than 65
 characters in length. Although patterns up to 128 characters in size may
 work, the maximum reliable length is 64.
 
-	To convert an integer to a string, use the "cat" function. All integer
+        To convert an integer to a string, use the "cat" function. All integer
 arguments to "cat" are converted to strings during concatination.
 
-	To convert a string to an integer do this:
+        To convert a string to an integer do this:
 
-	(set <interger-var> (+ <string-var>))
+        (set <interger-var> (+ <string-var>))
 
-	One command that was previously left undocumented is the "debug"
+        One command that was previously left undocumented is the "debug"
 statement. Its template is
 
-	(debug <anything> <anything> ...)
+        (debug <anything> <anything> ...)
 
 When the Installer is run from a CLI, "debug" will print the values of the
 parameters with a space bewteen each parameter. For example, the statements
 
-	(set myvar 2)
-	(debug "This value of 'myvar' is" myvar)
+        (set myvar 2)
+        (debug "This value of 'myvar' is" myvar)
 
 will print "This value of myvar is 2". If the parameter is an uninitialized
 variable, then debug will print "<NIL>" as its value.
@@ -86,32 +86,32 @@ variable, then debug will print "<NIL>" as its value.
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.1 (10-1-91):
-	Added a new variable "@execute-dir". If this variable is set to a valid
+        Added a new variable "@execute-dir". If this variable is set to a valid
 path, then the installer will change directory to it whenever a "run" or
 "execute" statement is performed.
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.2 (10-4-91):
-	Changed documentation for "working" statement to match reality.
+        Changed documentation for "working" statement to match reality.
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.4 (10-16-91):
-	The "asknumber" now prints the allowed range below the integer gadget
+        The "asknumber" now prints the allowed range below the integer gadget
 if the "range" parameter is given. Also, the user cannot proceed without
 entering a valid number.
-	Fixed many UI and stack-related bugs. Installer no longer munges long
+        Fixed many UI and stack-related bugs. Installer no longer munges long
 lines found in the "user-startup" file.
-	Fixed "exists" statement to match the documented return values.
-	Added a new pattern matcher which more closely matches the functionality
+        Fixed "exists" statement to match the documented return values.
+        Added a new pattern matcher which more closely matches the functionality
 of the one found in the 2.0 dos.library.
-	Added "user" statement which can be used to change the user level of the
+        Added "user" statement which can be used to change the user level of the
 current installation. This statement should ONLY be used when debugging
 scripts. Remove such statements from any script before distribution of your
 product. The format is
 
-	(user <user-level>)
+        (user <user-level>)
 
 where <user-level> is either 0 (NOVICE), 1 (AVERAGE) or 2 (EXPERT). This
 statement returns the current user level.
@@ -119,37 +119,37 @@ statement returns the current user level.
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.5 (10-17-91):
-	Fixed "message" statement so its works correctly when help is provided.
-	Fixed "run" and "execute" commands so that it does not abort incorrectly.
+        Fixed "message" statement so its works correctly when help is provided.
+        Fixed "run" and "execute" commands so that it does not abort incorrectly.
 Also, see the notes above for more information about the "run" and "execute".
-	Fixed "working" so that it resets its text positioning.
-	The LOGFILE tooltype can now accept a complete pathname, just not a file
+        Fixed "working" so that it resets its text positioning.
+        The LOGFILE tooltype can now accept a complete pathname, just not a file
 name.
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.6 (10-19-91):
-	The Installer now handles negative numbers properly.
-	Fixed pattern matching code so its doesn't overrun the stack. See note
+        The Installer now handles negative numbers properly.
+        Fixed pattern matching code so its doesn't overrun the stack. See note
 above about length of patterns.
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.7 (11-27-91):
-	Added "shiftleft" and "shiftright" math operations. Their formats are
+        Added "shiftleft" and "shiftright" math operations. Their formats are
 
-	(shiftleft <number> <amount to shift>)
-	(shiftrght <number> <amount to shift>)
+        (shiftleft <number> <amount to shift>)
+        (shiftrght <number> <amount to shift>)
 
-	Added "substr" statement to perform string operations. The format is
+        Added "substr" statement to perform string operations. The format is
 
-	(substr <string> <start> [<count>])
+        (substr <string> <start> [<count>])
 
 where start begins at 0 in the string. Count is optional -- if omitted then
 the remaining part of the string is returned.
-	New, improved, "protect" command. The new format is
+        New, improved, "protect" command. The new format is
 
-	(protect <filename> [<protection values>])
+        (protect <filename> [<protection values>])
 
 where protection values is a string giving changes to the file's protection
 bits. For example, "-d +a" would make a file undeletable and set to archived.
@@ -157,112 +157,112 @@ As before, just giving a filename returns the current protection bits.
 Finally, the old version of "protect" still works. Which version is used is
 based on whether the second parameter is an integer (old method) or a string
 (new method).
-	Fixed bugs in "tooltype" statement involving stack size and tooltypes.
-	Fixed bug in "askfile" involving text in file name string gadget.
-	Fixed bug in "askdir" involving the default drawer being on an unmounted
+        Fixed bugs in "tooltype" statement involving stack size and tooltypes.
+        Fixed bug in "askfile" involving text in file name string gadget.
+        Fixed bug in "askdir" involving the default drawer being on an unmounted
 volume. NOTE: It is always best to insure that the volume you want is
 mounted by using the "askdisk" command. That's one of the reasons why its
 provided.
-	The predefined variables TRUE and FALSE now work right.
-	The predefined variable "@copylib-help" now describes the user interface
+        The predefined variables TRUE and FALSE now work right.
+        The predefined variable "@copylib-help" now describes the user interface
 correctly.
-	Fixed bug in "copyfiles" involving not cloning a file properly when
+        Fixed bug in "copyfiles" involving not cloning a file properly when
 inside a drawer that was just created.
-	The "select" command in now a control statement. This means that "select"
+        The "select" command in now a control statement. This means that "select"
 can be used as a case select construct. Only the selected element will be
 evaluated.
-	The "getassign" command now works for variables instead of just literals.
-	A busy pointer is displayed while the script is being compiled.
+        The "getassign" command now works for variables instead of just literals.
+        A busy pointer is displayed while the script is being compiled.
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.8 (12-15-91):
-	Version 1.7 didn't work on 68000 systems. This one does.
-	Added a SCRIPT tooltype that allows specification of the installer script
+        Version 1.7 didn't work on 68000 systems. This one does.
+        Added a SCRIPT tooltype that allows specification of the installer script
 to use.
-	Fixed "getassign" so that it returns an empty string when no assignment
+        Fixed "getassign" so that it returns an empty string when no assignment
 exists instead of nil.
-	Changed "askfile" do the default path can be either reference a file or a
+        Changed "askfile" do the default path can be either reference a file or a
 drawer. If a file, the filename gadget is filled in.
-	Added a new parameter "swapcolors" to "tooltype". This instructs the
+        Added a new parameter "swapcolors" to "tooltype". This instructs the
 installer to swap the first two planes of the image of the icon being modified
 if the version of the OS if less than 36 (version 1.3-). This does mean that
 your icons need have the 2.0 color scheme on your distribution disks.
-	Added a new parameter "newpath" to "askdir" that allows for non-existant
+        Added a new parameter "newpath" to "askdir" that allows for non-existant
 paths to be supplied as the default drawer. This is similar to the way that
 version 1.0 worked. The format is
 
-	(askdir ... (newpath))
+        (askdir ... (newpath))
 
-	Added a new function "expandpath" that will take an any path and return
+        Added a new function "expandpath" that will take an any path and return
 the full path. For example, it might expand "SYS:c" to "System2.0:c". The
 format is
 
-	(expandpath <path>)
+        (expandpath <path>)
 
-	And finally, the installer now has user-defined procedures (subroutines).
+        And finally, the installer now has user-defined procedures (subroutines).
 This functionality is very primative. There are no local variables. To define
 a new prodecure you use the "prodedure" command:
 
-	(procedure <procedure-name> <statement>)
+        (procedure <procedure-name> <statement>)
 
 You can then call the procedure thus:
 
-	(<procedure-name>)
+        (<procedure-name>)
 
 Note that procedure-name is not a string, just a symbol name.
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.9 (12-15-91):
-	Fixed "makedir" display.
-	Fixed "copyfiles" so a choice of a directory works.
-	If "infos" is specified for "copyfiles" and the destination drawer does
+        Fixed "makedir" display.
+        Fixed "copyfiles" so a choice of a directory works.
+        If "infos" is specified for "copyfiles" and the destination drawer does
 not exist, a default icon will be made for the drawer the Installer creates.
-	Changed "copylib" so it will create the destination directory as long as
+        Changed "copylib" so it will create the destination directory as long as
 there is only one level missing. For example, copying to a non-existant
 "DEVS:midi" would create the directory "midi", but copying to "DEVS:midi/extra"
 where neither "midi" or "extra" exists would fail. This duplicates the
 functionality of "copyfiles".
-	Fixed "procedure" so that it actually works!
-	Added a new pre-defined variable "@app-name" which contains the APPNAME
+        Fixed "procedure" so that it actually works!
+        Added a new pre-defined variable "@app-name" which contains the APPNAME
 value given at startup.
-	Added "noreq" parameter to "exists" so no requester is displayed if the
+        Added "noreq" parameter to "exists" so no requester is displayed if the
 path given is not on a mounted volume. In this case the result is 0 (doesn't
 exist). The format is:
 
-	(exists <filename> (noreq))
+        (exists <filename> (noreq))
 
-	Added "resident" parameter to "getversion". You can now get the version of
+        Added "resident" parameter to "getversion". You can now get the version of
 a library or device in memory. For example:
 
-	(getversion "intuition.library" (resident))
+        (getversion "intuition.library" (resident))
 
 would return the version/revision of intuition. Note that using the "resident"
 parameter causes first the library and then the device list to be checked.
 
-	Added option to "exit" to print extra explanatory text in the final window.
+        Added option to "exit" to print extra explanatory text in the final window.
 The format is
 
-	(exit <string> <string> ...)
+        (exit <string> <string> ...)
 
-	Added a new function "database", which can return information about the
+        Added a new function "database", which can return information about the
 Amiga that the Installer is running on. The format is
 
-	(database <feature>)
+        (database <feature>)
 
 where "feature" is a string. This function always returns a string result,
 even if the result looks like a number. The feature given is unknown, the
 function returns "unknown". The currently understood features and their
 possible values are:
 
-	"vblank": "50", "60"
-	"cpu": "68000", "68010", "68020", "68030", "68040"
+        "vblank": "50", "60"
+        "cpu": "68000", "68010", "68020", "68030", "68040"
 
-	And now for the big one: The initial user options displays are now a
+        And now for the big one: The initial user options displays are now a
 command! The format is
 
-	(welcome <string> <string> ...)
+        (welcome <string> <string> ...)
 
 Old scripts will still work, as the Installer can detect that you never
 referenced "welcome" during compilation. This means that you can execute
@@ -275,39 +275,39 @@ whichever of the two initial displays appears first.
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.10 (12-30-91):
-	Fixed bug in "copyfiles" (although I would like others to test this).
+        Fixed bug in "copyfiles" (although I would like others to test this).
 The bug was that sometimes doing a confirmed copyfiles followed by an
 unconfirmed copyfiles would cause a crash on the next user interface item.
-	Fixed bug in the code that makes an assign under 1.3. ("I hate, I hate,
+        Fixed bug in the code that makes an assign under 1.3. ("I hate, I hate,
 I hate DOS 1.3!")
-	Added a debugging parameter to "askdisk". If you add "(assigns)" as a
+        Added a debugging parameter to "askdisk". If you add "(assigns)" as a
 parameter, then assigns will match the askdisk request also. Note that this
 parameter should be removed before putting the install script on your
 distribution disk!
-	Expanded the parameter "optional" when used with "copyfile" or "copylib",
+        Expanded the parameter "optional" when used with "copyfile" or "copylib",
 also added it to "delete". The new format is
 
-	(optional <option> <option> ...)
+        (optional <option> <option> ...)
 
 The first three options are mutually exclusive and do not apply to "delete":
 
-	"fail" - installer aborts if could not copy (the default)
-	"nofail" - installer continues if could not copy
-	"oknodelete" - aborts if can't copy, unless reason was "delete protected"
+        "fail" - installer aborts if could not copy (the default)
+        "nofail" - installer continues if could not copy
+        "oknodelete" - aborts if can't copy, unless reason was "delete protected"
 
 The next two apply to all the cases:
 
-	"force" - unprotect destination
-	"askuser" - ask user if the file should be unprotected (but not in novice)
+        "force" - unprotect destination
+        "askuser" - ask user if the file should be unprotected (but not in novice)
 
 In the case of "askuser", the default for novice mode is an answer of "no".
 Therefore, you may want to use "force" to make the novice mode default answer
 appear to be "yes".
 
-	Added the statement "delopts" which allows for a global change to the
+        Added the statement "delopts" which allows for a global change to the
 defaults to "copyfile", "copylib" and "delete". The format is
 
-	(delopts <option> <option> ...)
+        (delopts <option> <option> ...)
 
 just like in the expanded version of "optional" given above. The default
 global options is "fail".
@@ -315,95 +315,95 @@ global options is "fail".
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.11 (1-15-92):
-	Fixed enforcer hit in code that compiles the "procedure" statement.
-	Fixed bug in "optional". Sometimes it wouldn't work in "copylib" or
+        Fixed enforcer hit in code that compiles the "procedure" statement.
+        Fixed bug in "optional". Sometimes it wouldn't work in "copylib" or
 "copyfile".
-	Changed Installer so, for copy/deletion purposes, a write-protected file
+        Changed Installer so, for copy/deletion purposes, a write-protected file
 is the same as a delete-protected file. Commodore feels that for many users,
 these two states are used interchangably.
-	Changed "copyfiles", "copylib", "askdir" and "askfile" so they can handle
+        Changed "copyfiles", "copylib", "askdir" and "askfile" so they can handle
 relative pathnames for source and destination parameters.
-	Changed the format statement ("..." parameter parameter) so it can accept
+        Changed the format statement ("..." parameter parameter) so it can accept
 a string varible as the formating string instead of a literal string. So
 the format statement's new form is
 
-	(<format string> <parameter> ...)
+        (<format string> <parameter> ...)
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.12 (1-16-92):
-	Fixed problem that would cause "BAD LOCAL TEXT" to show up as a message
+        Fixed problem that would cause "BAD LOCAL TEXT" to show up as a message
 occationally.
-	Added two new selectors for "database": "graphics-mem" and "total-mem".
+        Added two new selectors for "database": "graphics-mem" and "total-mem".
 Remember that "database" always returns its results as strings.
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.13 (2-8-92):
-	Added the "newpath" and "disk" parameters to "askfile" -- "askfile" and
+        Added the "newpath" and "disk" parameters to "askfile" -- "askfile" and
 "askdir" now have similar parameters. See above about "newpath". The
 parameter "disk" causes a drive list to appear first. 
-	Added "getdevice" function. Given a pathname, "getdevice" returns the
+        Added "getdevice" function. Given a pathname, "getdevice" returns the
 dos device name of where that path is. For example, "c:mount" as a path
 might return "WB_2.x". The function's format is
 
-	(getdevice <path>)
+        (getdevice <path>)
 
-	Added functionality to "getassign". If a device name is used as the name
+        Added functionality to "getassign". If a device name is used as the name
 and the search is limited to devices using the "d" option, then "getassign"
 will return the device or volume name if the device exists, otherwise it will
 return a empty string. An example usage would be (getassign "df1" "d").
-	Added a "strlen" function to find the length of a string. The format is
+        Added a "strlen" function to find the length of a string. The format is
 
-	(strlen <string>)
+        (strlen <string>)
 
-	Added a "patmatch" function that will determine is a string matches an
+        Added a "patmatch" function that will determine is a string matches an
 AmigaDOS pattern. The function return either TRUE or FALSE. The format is
 
-	(patmatch <pattern> <string>)
+        (patmatch <pattern> <string>)
 
-	Added a tooltype of PRINTER. If set to FALSE, then the printer option in
+        Added a tooltype of PRINTER. If set to FALSE, then the printer option in
 the log file settings will be ghosted. There is also a NOPRINT command line
 parameter.
-	Added a "nogauge" parameter to "copyfiles" and "copylibs". This will
+        Added a "nogauge" parameter to "copyfiles" and "copylibs". This will
 disable the copy status indicator. The format is
 
-	(nogauge)
+        (nogauge)
 
-	Added a "quiet" parameter to "exit" which causes the normal final report
+        Added a "quiet" parameter to "exit" which causes the normal final report
 display to be skipped. A tidbit for those who want to more that install
 things with the installer... The format is
 
-	(quiet)
+        (quiet)
 
-	In the same vein, added a predefined variable "@abort-button". If the
+        In the same vein, added a predefined variable "@abort-button". If the
 script sets this to some text string, then the text "Abort Install" will
 be replaced by the value of "@abort-button".
-	Changed the copy status gauge so it doesn't change the pointer and title
+        Changed the copy status gauge so it doesn't change the pointer and title
 bar between files.
-	Changed some of the help texts so that the gadget descriptions conform
+        Changed some of the help texts so that the gadget descriptions conform
 more closely to the Style Guide.
-	Changed "copyfiles" so that an script error occurs if more than one
+        Changed "copyfiles" so that an script error occurs if more than one
 of "all", "pattern" or "choices" is used.
-	Fixed problems with the "delete protection" display. Also changed the
+        Fixed problems with the "delete protection" display. Also changed the
 buttons to read "Overwrite" and "Skip File", which is less ambiguous.
-	Fixed "exit" so it concatinates strings as documented above.
-	Fixed error message code so that long messages don't corrupt memory.
-	Fixed the CLI parameter parsing. Sometimes the wrong results would occur.
-	Fixed some parsing bugs in the compiler part of the Installer.
-	The Installer no longer uses proportional text. It was just not working
+        Fixed "exit" so it concatinates strings as documented above.
+        Fixed error message code so that long messages don't corrupt memory.
+        Fixed the CLI parameter parsing. Sometimes the wrong results would occur.
+        Fixed some parsing bugs in the compiler part of the Installer.
+        The Installer no longer uses proportional text. It was just not working
 properly in all cases. (So much for the Grand Experiment.)
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.14 (2-17-92):
-	Added a new tooltype/CLI parameter LANGUAGE and a new pre-defined
+        Added a new tooltype/CLI parameter LANGUAGE and a new pre-defined
 variable "@language". This variable will be set to the text "english" by
 default, but can be overriden by the LANGUAGE value. Scripts can use this
 anyway that makes sense.
-	Fixed a minor bug in copyfiles, etc., that would report that there was a
+        Fixed a minor bug in copyfiles, etc., that would report that there was a
 DOS error when the user aborts during a file copy.
-	Fixed a cosmetic bug in the file copy status indicator. The Installer
+        Fixed a cosmetic bug in the file copy status indicator. The Installer
 will now delete path elements from the destination path when printing so that
 the text will not overwrite the areas outside the status display. An ellipsis
 is prepended to the truncated pathname to indicate this has occured.
@@ -411,18 +411,18 @@ is prepended to the truncated pathname to indicate this has occured.
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.15 (3-13-92):
-	The Installer now prints the Prompt text to any of the "ask..." statements
+        The Installer now prints the Prompt text to any of the "ask..." statements
 in the log file. Word wrapping is performed on the prompt text. The general
 form would be
 
-	>This is the prompt.
-	Ask Choice: User's choice was Whatever.
+        >This is the prompt.
+        Ask Choice: User's choice was Whatever.
 
 This form was chosen for reasons that cannot be explained at this time :-)
 In the future this will hopefully be changed to
 
-	Ask Choice: "This is the prompt."
-	User's choice was Whatever.
+        Ask Choice: "This is the prompt."
+        User's choice was Whatever.
 
 Either way, this will hopefully make the log file more useful as a customer
 service tool.
@@ -430,32 +430,32 @@ service tool.
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.16 (3-16-92):
-	Fixed a bug involving the wrapping of really long words (including such
+        Fixed a bug involving the wrapping of really long words (including such
 things as gigantic pathnames).
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.17 (3-23-92):
-	Fixed a bug that caused an enforcer hit when using help from the AskDisk
+        Fixed a bug that caused an enforcer hit when using help from the AskDisk
 display.
-	Also, the last two releases had bad version numbers in the About display.
+        Also, the last two releases had bad version numbers in the About display.
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.18 (4-14-92):
-	Fixed a bug involving @execute-dir related code that prevented reseting
+        Fixed a bug involving @execute-dir related code that prevented reseting
 the value back to "".
-	Fixed a bug with command line parameters that was mishandling keywords.
+        Fixed a bug with command line parameters that was mishandling keywords.
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.19 (4-28-92):
-	It appears that the supposedly logical operators where actually being
+        It appears that the supposedly logical operators where actually being
 handled as bitwise operators!! This has been fixed and four new operators
 have been added: "bitand", "bitor", "bitxor" and "bitnot". Please check
 your scripts to see if you are using any of the logical operators ("and",
 "or", "xor" and "not") as bitwise and change them to the four new operators.
-	Changed the window title bar text when "complete" is used so that the
+        Changed the window title bar text when "complete" is used so that the
 words "Press 'Esc' to abort" will be visible. This is done by removing the
 name of the install script if the text of the window title would be clipped
 if the install script name was there.
@@ -463,76 +463,76 @@ if the install script name was there.
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.20 (5-15-92):
-	Fixed some enforcer hits involving "working".
-	Improved how the Installer handles laying out checkboxs and radio
+        Fixed some enforcer hits involving "working".
+        Improved how the Installer handles laying out checkboxs and radio
 gadgets when there isn't enough room. Attempts will be made to switch to
 topaz-8 and/or reduce the spacing between elements.
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.21 (7-6-92):
-	Fixed problems with freeing string variables used as parameters. 
-	Changed "startup" so that if the user skips the adding of "execute
+        Fixed problems with freeing string variables used as parameters. 
+        Changed "startup" so that if the user skips the adding of "execute
 s:user-startup" to his startup sequence, "user-startup" is still changed
 to include the startup commands.
-	A comment: The prompt and help parameters for the "startup" statement
+        A comment: The prompt and help parameters for the "startup" statement
 are only used by the confirmation display to edit "user-startup". This only
 happens in EXPERT mode.
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.22 (7-16-92):
-	Fixed problems with the "newname" parameter. It was persisting through
+        Fixed problems with the "newname" parameter. It was persisting through
 multiple calls to "copyfiles".
-	Although "newname" was mentioned as a parameter to "copylib", it was
+        Although "newname" was mentioned as a parameter to "copylib", it was
 never actually implemented. It now works. Note that the destination file
 name is normally the file part of the source path.
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.23 (8-3-92):
-	It is now an error to attempt to change the type of any variable
+        It is now an error to attempt to change the type of any variable
 beginning with '@' (unless the variable is currently <nil>).
-	Fixed problem with recursive file copying. The user's ability to skip a
+        Fixed problem with recursive file copying. The user's ability to skip a
 copy would still cause an abort.
-	The "delete" statement no longer deletes the icon of a file that exists
+        The "delete" statement no longer deletes the icon of a file that exists
 but was not deleted.
-	Fixed bug in listview that was causing enforcer hits.
-	A comment: "tackon" cannot deal with a leading '/' in the <file>
+        Fixed bug in listview that was causing enforcer hits.
+        A comment: "tackon" cannot deal with a leading '/' in the <file>
 parameter. This may be fixed in a future version.
-	Added more error checking to insure that commands are being called with
+        Added more error checking to insure that commands are being called with
 the required parameters. Note that "copyfiles" requires a source!
 This is not correct:
 
-	(copyfiles
-		/* no source */
-		(choices "df0:file1" "df0:file2")
-		...
-	)
+        (copyfiles
+                /* no source */
+                (choices "df0:file1" "df0:file2")
+                ...
+        )
 
 It should actually be:
 
-	(copyfiles
-		(source "df0:")
-		(choices "file1" "file2")
-		...
-	)
+        (copyfiles
+                (source "df0:")
+                (choices "file1" "file2")
+                ...
+        )
 
 ----------------------------------------------------------------------------
 
 Changes for Installer v1.24 (9-1-92):
-	If the "startup" statement finds a startup-sequence it can't deal with,
+        If the "startup" statement finds a startup-sequence it can't deal with,
 it use to report an error and abort. This wasn't too cool. As an interim fix,
 it merely assumes that an expert made the startup-sequence and that the
 proper commands to execute user-startup were put in place. Because of
 localization issues, the real solution (a new error message) cannot be added
 at this time. (Note: This was mainly happening to those who had dual startups
 so they could boot into either 1.3 or 2.0. An expert state, I would say.)
-	Changed "settooltype" parameter so a valueless tooltype could be added. The
+        Changed "settooltype" parameter so a valueless tooltype could be added. The
 format is
 
-	(settooltype <tooltype-string> "")
+        (settooltype <tooltype-string> "")
 
 Remember that (tooltype <tooltype-string>) deletes the tooltype given.
-	Fixed bug involving predefined string variables that was causing enforcer
+        Fixed bug involving predefined string variables that was causing enforcer
 hits.

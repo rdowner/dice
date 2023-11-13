@@ -1,7 +1,7 @@
 
-dcc/expand							dcc/expand
+dcc/expand                                                      dcc/expand
 
-				EXPAND.DOC
+                                EXPAND.DOC
 
 SYNOPSIS
     expand wildcard
@@ -9,28 +9,28 @@ SYNOPSIS
 
 DESCRIPTION
     The EXPAND program will generate a file list based on one or more
-    wildcard patterns.	If you specify only a single argument it should be
+    wildcard patterns.  If you specify only a single argument it should be
     a wildcard pattern.  If you specify more then one argument then the
     first argument MUST be template for formatting the output.
 
     The template currently supports:
 
-	* standard characters
+        * standard characters
 
-	* %s (replaced with the filename, up to 10 occurances)
+        * %s (replaced with the filename, up to 10 occurances)
 
-	* %% (replaced with a single '%'), use when you need a '%'
-	  character so as not to confuse the template
+        * %% (replaced with a single '%'), use when you need a '%'
+          character so as not to confuse the template
 
     For example:
 
-	1> expand S:#?
-	startup-sequence
-	user-startup
-	...
-	1> expand "hello %s %s" S:#?
-	hello startup-sequence startup-sequence
-	hello user-startup startup-sequence
-	...
-	1>
+        1> expand S:#?
+        startup-sequence
+        user-startup
+        ...
+        1> expand "hello %s %s" S:#?
+        hello startup-sequence startup-sequence
+        hello user-startup startup-sequence
+        ...
+        1>
 

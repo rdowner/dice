@@ -1,5 +1,5 @@
 *
 * Timer support functions in amiga.lib (V36 and higher only)
 *
-LONG	TimeDelay(LONG unit, ULONG secs, ULONG microsecs)	(D0,D1,D2)
-LONG	DoTimer(struct timeval *, LONG unit, WORD command)	(A0,D0,D1)
+LONG    TimeDelay(LONG unit, ULONG secs, ULONG microsecs)       (D0,D1,D2)
+LONG    DoTimer(struct timeval *, LONG unit, WORD command)      (A0,D0,D1)

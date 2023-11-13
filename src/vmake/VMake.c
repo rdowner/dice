@@ -534,7 +534,7 @@ default:
                   switch (aproctype)
                   {
                      case 1: /* simple filename to add to list */
-		     {
+                     {
                         int match = 0; /* directory match ? */
                         int pdir = 0;  /* prepend directory name? */
                         int l;
@@ -549,10 +549,10 @@ default:
                            fplock = ParentDir(argptr->wa_Lock);
                            if (SameLock(fplock, global.workdir)
                                   == LOCK_SAME)
-			   {
+                           {
                               match = 2;
                               pdir = 1;
-			   }
+                           }
                            else
                            {
                               wplock = ParentDir(global.workdir);
@@ -562,11 +562,11 @@ default:
                               else
                               {
                                  if (SameLock(wplock, fplock)
-				        == LOCK_SAME)
-				 {
+                                        == LOCK_SAME)
+                                 {
                                     match = 4;
-				    pdir = 1;
-				 }
+                                    pdir = 1;
+                                 }
                               }
                            }
                         }
@@ -585,27 +585,27 @@ default:
                               strcpy(appwinbuff, "/");
                            if (pdir)       /* parent dir name required */
                            {
-			      if (Examine(argptr->wa_Lock, &vmfib))
-			      {
-			         strcat(appwinbuff, vmfib.fib_FileName);
+                              if (Examine(argptr->wa_Lock, &vmfib))
+                              {
+                                 strcat(appwinbuff, vmfib.fib_FileName);
                                  /* note: fplock is valid when pdir = 1 */
-			         if (fplock == 0) /* name is root */
+                                 if (fplock == 0) /* name is root */
                                     strcat(appwinbuff, ":");
-			      }
+                              }
                               else
                                  match = 0;  /* no path name - forget it */
                            }
                         }
-			else
+                        else
                            if (NameFromLock(argptr->wa_Lock, appwinbuff, 255))
-			      pdir = 1;  /* have path in appwinbuff now */
+                              pdir = 1;  /* have path in appwinbuff now */
 
                         /* path (if any) in appwinbuff, name in wa_Name */
                         l = strlen(appwinbuff);
                         p = appwinbuff+l;
 
                         if (pdir)  /* parent dir name in appwinbuff */
-			/* append "/" if approriate */
+                        /* append "/" if approriate */
                            if (*(p-1) != ':')
                            {
                               strcpy(p, "/");
@@ -615,13 +615,13 @@ default:
                            strcpy(p, argptr->wa_Name);
                         handle_list(global.filelist, NULL, CLASS_ADD, appwinbuff, 0);
 
-			if (fplock)
-			   UnLock(fplock);
-			if (wplock)
-			   UnLock(wplock);
+                        if (fplock)
+                           UnLock(fplock);
+                        if (wplock)
+                           UnLock(wplock);
                         break;
 
-		     }
+                     }
                      case 2: /* project script: proj.DICE */
                      {
                         char cmdbuff[266];
@@ -696,11 +696,11 @@ int CreateWindow()
 {
    struct NewWindow nw;
 
-   struct TagItem	wintags[] = {
-      { WA_PubScreen,		(ULONG)global.screen },
+   struct TagItem       wintags[] = {
+      { WA_PubScreen,           (ULONG)global.screen },
           /* The screen we want to be on */
-      { WA_PubScreenFallBack,	(ULONG)TRUE	}, /* Or workbench if not */
-      { TAG_DONE,		(ULONG)0	}
+      { WA_PubScreenFallBack,   (ULONG)TRUE     }, /* Or workbench if not */
+      { TAG_DONE,               (ULONG)0        }
    };
 
 

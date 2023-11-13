@@ -1,14 +1,14 @@
 ######################################################################
-MAKEMETA=	../../../tools/makemeta
+MAKEMETA=       ../../../tools/makemeta
 
-SUBSYSNAME=	intuition_support
+SUBSYSNAME=     intuition_support
 
-AFILES= 	autodocs.asm hookface.asm classface.asm
+AFILES=         autodocs.asm hookface.asm classface.asm
 
 CFILES= 
 
-OFILES=		hookface.obj classface.obj
+OFILES=         hookface.obj classface.obj
 
-all quick:	${SUBSYSNAME}_lib.lib
+all quick:      ${SUBSYSNAME}_lib.lib
 
 .INCLUDE=${MAKEMETA}

@@ -3,7 +3,7 @@
 
 all:
 
-install:	$(INSTDIR)include
+install:        $(INSTDIR)include
     tar cf - . | (cd $(INSTDIR)include; tar xvpf -)
 
 $(INSTDIR)include : $(INSTDIR)include

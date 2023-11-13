@@ -8,11 +8,11 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 
 struct Catalog *
 HYPER ## OpenCatalog( struct Locale *locale, STRPTR name, Tag tag1, ... )
 {
-	return OpenCatalogA(locale,name,(TagItem *)&tag1);
+        return OpenCatalogA(locale,name,(TagItem *)&tag1);
 }

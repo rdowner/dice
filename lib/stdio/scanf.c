@@ -23,7 +23,7 @@ const char *ctl;
     error = _sfmt(ctl, va, fgetc, ungetc, stdin, &cnt);
     va_end(va);
     if (error)
-	return(error);
+        return(error);
     return(cnt);
 }
 

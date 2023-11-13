@@ -9,9 +9,9 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 Object *NewDTObject( APTR name, Tag Tag1, ... )
 {
-	return NewDTObjectA(name,(TagItem *)&Tag1);
+        return NewDTObjectA(name,(TagItem *)&Tag1);
 }

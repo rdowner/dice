@@ -1,12 +1,12 @@
 ######################################################################
-MAKEMETA=	../../../tools/makemeta
+MAKEMETA=       ../../../tools/makemeta
 
-SUBSYSNAME=	timer_support
+SUBSYSNAME=     timer_support
 
-AFILES= 	TimeDelay.asm
+AFILES=         TimeDelay.asm
 
-OFILES= 	TimeDelay.obj
+OFILES=         TimeDelay.obj
 
-all quick:	${SUBSYSNAME}_lib.lib
+all quick:      ${SUBSYSNAME}_lib.lib
 
 .INCLUDE=${MAKEMETA}

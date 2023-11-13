@@ -21,7 +21,7 @@
 #include <lib/misc.h>
 #include <lib/unix.h>
 
-#ifndef INCLUDE_VERSION 	/*  2.0 compilation compat check */
+#ifndef INCLUDE_VERSION         /*  2.0 compilation compat check */
 #define INCLUDE_VERSION     0
 #else
 #include <clib/exec_protos.h>
@@ -31,8 +31,8 @@
 
 #else
 
-#define DLIBPRE		INSTDIR
-#define DLIBPOS		"dlib/"
+#define DLIBPRE         INSTDIR
+#define DLIBPOS         "dlib/"
 
 #include <suplib/lists.h>
 #include <suplib/string.h>
@@ -63,7 +63,7 @@
 #include <sys/file.h>
 #include <string.h>
 #include <errno.h>
-#include <include/lib/version.h>	/* DICE specific include */
+#include <include/lib/version.h>        /* DICE specific include */
 
 #define Prototype   extern
 #define Local
@@ -71,15 +71,15 @@
 #define BTOC(bptr,ctype)    ((ctype *)((int32_t)bptr << 2))
 #define CTOB(ptr)           ((int32_t)(ptr) >> 2)
 
-typedef unsigned char	ubyte;
-typedef unsigned short	uword;
-typedef struct CommandLineInterface	CLI;
-typedef struct Process	     Process;
-typedef struct List	     List;
+typedef unsigned char   ubyte;
+typedef unsigned short  uword;
+typedef struct CommandLineInterface     CLI;
+typedef struct Process       Process;
+typedef struct List          List;
 typedef struct FileInfoBlock FIB;
-typedef struct Node	     Node;
+typedef struct Node          Node;
 
-#define DICE_C	    0
+#define DICE_C      0
 #define LATTICE_C   1
 #define AZTEC_C     2
 

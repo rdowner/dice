@@ -27,7 +27,7 @@
 **/
 
 #define st_Func     Hdr.Func
-#define st_Tok	    Hdr.Tok
+#define st_Tok      Hdr.Tok
 #define st_Next     Hdr.Next
 #define st_LexIdx   Hdr.LexIdx
 
@@ -46,36 +46,36 @@ typedef struct Stmt {
 
 /*
  *  Sub statements.  Note that labels are allocated at parse time whether or
- *  not they are used.	Normally the statement generator will insert conditional
+ *  not they are used.  Normally the statement generator will insert conditional
  *  branch nodes into the condition expressions and/or generate it's own
  *  expression to handle branch to the beginning of a loop, for example.
  */
 
 typedef struct ExpStmt {
     StmtHdr Hdr;
-    struct Exp	*Expr;
+    struct Exp  *Expr;
 } ExpStmt;
 
 typedef struct DeclStmt {
     StmtHdr Hdr;
-    struct Var	*Var;
+    struct Var  *Var;
 } DeclStmt;
 
 typedef struct LabelStmt {
     StmtHdr Hdr;
     int32_t    Label;
-    Stmt    *Stmt1;	    /*	a: stmt, stmt is optional   */
+    Stmt    *Stmt1;         /*  a: stmt, stmt is optional   */
 } LabelStmt;
 
 
 typedef struct ForStmt {
     StmtHdr Hdr;
     struct BlockStmt *Block;
-    Stmt    *Stmt0;	/*  available for initial jump	*/
-    Stmt    *Stmt1;	/*  init    */
-    Stmt    *Stmt2;	/*  exp     */
-    Stmt    *Stmt3;	/*  stmt    */
-    Stmt    *Stmt4;	/*  code    */
+    Stmt    *Stmt0;     /*  available for initial jump  */
+    Stmt    *Stmt1;     /*  init    */
+    Stmt    *Stmt2;     /*  exp     */
+    Stmt    *Stmt3;     /*  stmt    */
+    Stmt    *Stmt4;     /*  code    */
 
     int32_t    LabelBegin;
 } ForStmt;
@@ -83,24 +83,24 @@ typedef struct ForStmt {
 typedef struct WhileStmt {
     StmtHdr Hdr;
     struct BlockStmt *Block;
-    Stmt    *Stmt0;	/*  available for initial jump	*/
-    Stmt    *Stmt1;	/*  really an exp   */
-    Stmt    *Stmt2;	/*  code    */
+    Stmt    *Stmt0;     /*  available for initial jump  */
+    Stmt    *Stmt1;     /*  really an exp   */
+    Stmt    *Stmt2;     /*  code    */
 } WhileStmt;
 
 typedef struct DoStmt {
     StmtHdr Hdr;
     struct BlockStmt *Block;
-    Stmt    *Stmt0;	/*  available for initial jump	XXX */
-    Stmt    *Stmt1;	/*  code    */
-    Stmt    *Stmt2;	/*  test    */
+    Stmt    *Stmt0;     /*  available for initial jump  XXX */
+    Stmt    *Stmt1;     /*  code    */
+    Stmt    *Stmt2;     /*  test    */
 } DoStmt;
 
 typedef struct IfStmt {
     StmtHdr Hdr;
-    Stmt    *Stmt1;	/*  cond	    */
-    Stmt    *StmtT;	/*  if true	    */
-    Stmt    *StmtF;	/*  if false/NULL   */
+    Stmt    *Stmt1;     /*  cond            */
+    Stmt    *StmtT;     /*  if true         */
+    Stmt    *StmtF;     /*  if false/NULL   */
     int32_t    LabelIf;
     int32_t    LabelElse;
     int32_t    LabelEnd;
@@ -116,19 +116,19 @@ typedef struct IfStmt {
 typedef struct SwitchStmt {
     StmtHdr Hdr;
     struct BlockStmt *Block;
-    Stmt    *Stmt1;		/*  switch exp		    */
-    int32_t    NumCases;		/*  number of cases	    */
-    int32_t    DefCaseNo;		/*  default case insertion  */
-    int32_t    *Cases;		/*  switch constants	    */
-    struct BlockStmt **CaseAry; /*  cases for switch	    */
+    Stmt    *Stmt1;             /*  switch exp              */
+    int32_t    NumCases;                /*  number of cases         */
+    int32_t    DefCaseNo;               /*  default case insertion  */
+    int32_t    *Cases;          /*  switch constants        */
+    struct BlockStmt **CaseAry; /*  cases for switch        */
     struct BlockStmt *DefBlock; /*  case for default/NULL   */
     struct BlockStmt *BeforeBlock; /*  Code which appears before any case   */
-    int32_t    *Labels;		/*  label id's              */
+    int32_t    *Labels;         /*  label id's              */
 } SwitchStmt;
 
 typedef struct ReturnStmt {
     StmtHdr Hdr;
-    Stmt    *Stmt1;	    /*	return expression	*/
+    Stmt    *Stmt1;         /*  return expression       */
 } ReturnStmt;
 
 typedef struct BreakPointStmt {
@@ -152,25 +152,25 @@ typedef struct BreakStmt {
 
 #define BT_PROC     1
 #define BT_BLOCK    2
-#define BT_FOR	    3
+#define BT_FOR      3
 #define BT_WHILE    4
-#define BT_DO	    5
+#define BT_DO       5
 #define BT_SWITCH   6
 
 typedef struct BlockStmt {
     StmtHdr Hdr;
     short   Bid;
     short   Reserved1;
-    Frame   Frame;	    /*	allocation frame	    */
+    Frame   Frame;          /*  allocation frame            */
     struct BlockStmt *Parent;
-    struct Var	*VarBase;   /*	variables declared in block */
-    struct Var	**LastVar;
-    struct Stmt *Base;	    /*	first statement in list     */
-    struct Stmt **Last;     /*	last statement in list	    */
+    struct Var  *VarBase;   /*  variables declared in block */
+    struct Var  **LastVar;
+    struct Stmt *Base;      /*  first statement in list     */
+    struct Stmt **Last;     /*  last statement in list      */
 
     int32_t    LabelLoop;
     int32_t    LabelTest;
     int32_t    LabelBreak;
-    int32_t    LastLexIdx;	    /*  lexical index terminating block */
+    int32_t    LastLexIdx;          /*  lexical index terminating block */
 } BlockStmt;
 

@@ -11,7 +11,7 @@ Insert(struct List *list, struct Node *node, struct Node *lnode)
      */
 
     if (lnode == NULL)
-	lnode = (struct Node *)&list->lh_Head;
+        lnode = (struct Node *)&list->lh_Head;
     node->ln_Pred = lnode;
     node->ln_Succ = lnode->ln_Succ;
     lnode->ln_Succ = node;

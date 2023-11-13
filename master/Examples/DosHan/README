@@ -1,5 +1,5 @@
 
-				DOSHAN
+                                DOSHAN
 
     Example of a DOS handler under DICE.  This handler doesn't do diddly
     but you can see how such a beast is supposed to work.
@@ -36,7 +36,7 @@
     NOTE:  DO NOT USE THIS HANDLER FOR ANYTHING REAL.  It does no
     optimization of any kind and its sole purpose is as an example
 
-			   DOS HANDLER LIMITATIONS
+                           DOS HANDLER LIMITATIONS
 
     There is one major limitation to most dos handler implementations, this
     one included.  Basically, if you use the handler's process message port

@@ -1,5 +1,5 @@
 
-				WEDGE
+                                WEDGE
 
 Format: WEDGE <library> <offset> [regs ptrs] [opt fklnprasxz u t=<tasklist>
         b=<baud> c=<comment> d=<n>]
@@ -45,17 +45,17 @@ Required Arguments (ToolTypes shown in parentheses)
 
 NOTE - All command line options should be lower-case
 
-<library> (LIBRARY=)	Specifies any run-time library (without the
-			".library" suffix).
+<library> (LIBRARY=)    Specifies any run-time library (without the
+                        ".library" suffix).
 
-			Example:	exec		(LIBRARY=exec)
+                        Example:        exec            (LIBRARY=exec)
 
 
-<offset>  (OFFSET=)	Specifies the library base offset of the function
-			being WEDGEd.  It must be expressed as a negative
-			offset in hexadecimal form.
+<offset>  (OFFSET=)     Specifies the library base offset of the function
+                        being WEDGEd.  It must be expressed as a negative
+                        offset in hexadecimal form.
 
-			Example:	0xff28	(OFFSET=0xff28)
+                        Example:        0xff28  (OFFSET=0xff28)
 
 
 Optional Argument Pair
@@ -64,14 +64,14 @@ NOTE:  REGS and PTRS must be used in conjunction with each other.  If you
        supply one option, you MUST supply the other.  They cannot be used
        alone.
 
-<regs>	(REGS=)		Hexadecimal word (format 0xHHHH) representing the
-			registers that should be reported.  Each bit set in
-			the word represents a 68000 register, with the bits
-			from right to left, representing d0 through d7 then
-			a0 through a7.
+<regs>  (REGS=)         Hexadecimal word (format 0xHHHH) representing the
+                        registers that should be reported.  Each bit set in
+                        the word represents a 68000 register, with the bits
+                        from right to left, representing d0 through d7 then
+                        a0 through a7.
 
-			Example: To monitor d0, d1, a0 and a6, the bit
-				 pattern would be:
+                        Example: To monitor d0, d1, a0 and a6, the bit
+                                 pattern would be:
 
                                          a6        a0    d1  d0
                                           \        /      \  /
@@ -86,217 +86,217 @@ NOTE:  REGS and PTRS must be used in conjunction with each other.  If you
                                  0010=2  0110=6  1010=A  1110=E
                                  0011=3  0111=7  1011=B  1111=F
 
-				 This example converted to hex is
+                                 This example converted to hex is
 
                                               HEX 4 1 0 3
 
                                  The regs argument would be:
 
-				 0x4103		(REGS=0x4103)
+                                 0x4103         (REGS=0x4103)
 
 
-<ptrs>    (PTRS=)	The hex word (format 0xHHHH) representing the
-			monitored registers that point to the data you want
-			reported.  This is especially useful for monitoring
-			text strings passed as function arguments. The first
-			16 bytes of the data will be reported in both hex
-			and ASCII.  The hex word is formed the same way as
-			for the REGS option.
+<ptrs>    (PTRS=)       The hex word (format 0xHHHH) representing the
+                        monitored registers that point to the data you want
+                        reported.  This is especially useful for monitoring
+                        text strings passed as function arguments. The first
+                        16 bytes of the data will be reported in both hex
+                        and ASCII.  The hex word is formed the same way as
+                        for the REGS option.
 
-			Example:  If d1 and a0 are pointers:
-				    0x0102	(PTRS=0x0102)
-
-
-
-f  	(FORBID=TRUE)	Causes WEDGE to Forbid() before calling the WEDGEd
-			function.  WEDGE will not call Permit() until Result
-			is returned.  This flag is only meaningful if Result
-			reporting is in effect.  When you are monitoring
-			tasks that are calling the same functions, this flag
-			can help to synchronize Result reports with other
-			WEDGE output by attempting to prevent multitasking
-			until the function returns.  Functions that Wait()
-			and local output will break this Forbid().
+                        Example:  If d1 and a0 are pointers:
+                                    0x0102      (PTRS=0x0102)
 
 
-k	(KILL=TRUE)	Kills this WEDGE.  Use KILL=TRUE for a kill-only
-			icon.  Use KILL=FALSE for an install-only icon.  If
-			a KILL TOOL TYPE is not present, the icon will
-			toggle WEDGE in and out.)
+
+f       (FORBID=TRUE)   Causes WEDGE to Forbid() before calling the WEDGEd
+                        function.  WEDGE will not call Permit() until Result
+                        is returned.  This flag is only meaningful if Result
+                        reporting is in effect.  When you are monitoring
+                        tasks that are calling the same functions, this flag
+                        can help to synchronize Result reports with other
+                        WEDGE output by attempting to prevent multitasking
+                        until the function returns.  Functions that Wait()
+                        and local output will break this Forbid().
 
 
-l  	(LOCAL=TRUE)	Selects studio reporting.  In this mode, WEDGE can
-			only report the function calls of non-FORBIDden
-			processes with available stack of at least 1800
-			bytes.  (Only 300 bytes are needed for serial or
-			parallel output.)  In addition, function calls made
-			by the Local output handler will not be reported.
-			(The Local output handler is usually a window, but
-			it may be another handler if CLI output redirection
-			was used.)
-
-			In all output modes, WEDGE will bypass reporting if
-			the caller's available stack is too low for safe
-			execution of the output function.  All unreported
-			calls are tallied, and a count is presented at the
-			next report. The available stack safety feature may
-			be turned off (at your own risk) with the UNSAFE
-			TOOL TYPE or with the CLI 'U' flag.
+k       (KILL=TRUE)     Kills this WEDGE.  Use KILL=TRUE for a kill-only
+                        icon.  Use KILL=FALSE for an install-only icon.  If
+                        a KILL TOOL TYPE is not present, the icon will
+                        toggle WEDGE in and out.)
 
 
-n	(NOISY=TRUE)	Notifies user of WEDGE installation and removal.
+l       (LOCAL=TRUE)    Selects studio reporting.  In this mode, WEDGE can
+                        only report the function calls of non-FORBIDden
+                        processes with available stack of at least 1800
+                        bytes.  (Only 300 bytes are needed for serial or
+                        parallel output.)  In addition, function calls made
+                        by the Local output handler will not be reported.
+                        (The Local output handler is usually a window, but
+                        it may be another handler if CLI output redirection
+                        was used.)
+
+                        In all output modes, WEDGE will bypass reporting if
+                        the caller's available stack is too low for safe
+                        execution of the output function.  All unreported
+                        calls are tallied, and a count is presented at the
+                        next report. The available stack safety feature may
+                        be turned off (at your own risk) with the UNSAFE
+                        TOOL TYPE or with the CLI 'U' flag.
 
 
-p	(PARALLEL=TRUE) Selects parallel reporting, instead of serial.  By
-			default, all debugging output is directed to the
-			serial port and may be received by a terminal,
-			serial printer or a second computer running terminal
-			software.  Optionally, the output can be directed to
-			the parallel port or displayed locally.
+n       (NOISY=TRUE)    Notifies user of WEDGE installation and removal.
 
 
-r	(RESULT=TRUE)   Monitors the return value of reported functions. An
-			Id number is assigned to each reported function
-			call.  That call's Return value report is tagged
-			with the same Id number. This allows you to match
-			calls and return values, even if multitasking causes
-			other WEDGE reports to be output in between them.
-
-a	(RESULTP=TRUE)	Monitors what the result points to.
+p       (PARALLEL=TRUE) Selects parallel reporting, instead of serial.  By
+                        default, all debugging output is directed to the
+                        serial port and may be received by a terminal,
+                        serial printer or a second computer running terminal
+                        software.  Optionally, the output can be directed to
+                        the parallel port or displayed locally.
 
 
-s	(STACK=TRUE)	Monitors stack limits and pointer.
+r       (RESULT=TRUE)   Monitors the return value of reported functions. An
+                        Id number is assigned to each reported function
+                        call.  That call's Return value report is tagged
+                        with the same Id number. This allows you to match
+                        calls and return values, even if multitasking causes
+                        other WEDGE reports to be output in between them.
+
+a       (RESULTP=TRUE)  Monitors what the result points to.
 
 
-x	(EXCLUDE=TRUE)	Excludes tasks in the tasklist from reporting.
+s       (STACK=TRUE)    Monitors stack limits and pointer.
 
 
-u	(UNSAFE=TRUE)	Reports regardless of the available stack.  Use this
-			option at your own risk.  When WEDGE is run from the
-			CLI, the U flag may not be grouped with other flags
-			(there must be a space before it).
+x       (EXCLUDE=TRUE)  Excludes tasks in the tasklist from reporting.
 
 
-z	(ZAP=TRUE)	When used in conjunction with the k option, z lets
-			you force the unloading of a WEDGE that is still in
-			use.  Generally this is a very dangerous thing to
-			do.  But, occasionally, it is necessary because a
-			WEDGE that is unWEDGEd with kill will not be
-			unloaded if there is still an "occupant" in the
-			WEDGE. This can occur if you have WEDGEd Wait() with
-			Result reporting, and a task calls Wait(0), which
-			will never Return.  In this case, you can use the z
-			option to force the unloading of the Wait() WEDGE.
-			Note:  A new WEDGE may not be installed in a
-			function if an old one has not been unloaded.
-
-				Usage -- CLI:  Opt KZ
-				         TOOL TYPES:	KILL=TRUE
-  							ZAP=TRUE
+u       (UNSAFE=TRUE)   Reports regardless of the available stack.  Use this
+                        option at your own risk.  When WEDGE is run from the
+                        CLI, the U flag may not be grouped with other flags
+                        (there must be a space before it).
 
 
-"b=rate"  (BAUD=RATE)	Sets the serial hardware baud rate.  This option is
-			ignored if Parallel or Local output is requested.
-			The baud rate is determined by the last value stored
-			in the serper register. When you boot your system,
-			the hard ware is set to 9600 baud.  If you use the
-			serial.device or SER: before using WEDGE, the serper
-			(serial period) register may contain a different
-			rate.  Use this option to reset the baud rate for
-			WEDGE.  If run from CLI, the b option without a
-			specified rate will set 9600 baud.  If you also use
-			the d option to enter ROMWACK, you must use 9600
-			baud since ROMWACK forces 9600.  Use quotes if you
-			are passing this parameter to a script.
+z       (ZAP=TRUE)      When used in conjunction with the k option, z lets
+                        you force the unloading of a WEDGE that is still in
+                        use.  Generally this is a very dangerous thing to
+                        do.  But, occasionally, it is necessary because a
+                        WEDGE that is unWEDGEd with kill will not be
+                        unloaded if there is still an "occupant" in the
+                        WEDGE. This can occur if you have WEDGEd Wait() with
+                        Result reporting, and a task calls Wait(0), which
+                        will never Return.  In this case, you can use the z
+                        option to force the unloading of the Wait() WEDGE.
+                        Note:  A new WEDGE may not be installed in a
+                        function if an old one has not been unloaded.
+
+                                Usage -- CLI:  Opt KZ
+                                         TOOL TYPES:    KILL=TRUE
+                                                        ZAP=TRUE
+
+
+"b=rate"  (BAUD=RATE)   Sets the serial hardware baud rate.  This option is
+                        ignored if Parallel or Local output is requested.
+                        The baud rate is determined by the last value stored
+                        in the serper register. When you boot your system,
+                        the hard ware is set to 9600 baud.  If you use the
+                        serial.device or SER: before using WEDGE, the serper
+                        (serial period) register may contain a different
+                        rate.  Use this option to reset the baud rate for
+                        WEDGE.  If run from CLI, the b option without a
+                        specified rate will set 9600 baud.  If you also use
+                        the d option to enter ROMWACK, you must use 9600
+                        baud since ROMWACK forces 9600.  Use quotes if you
+                        are passing this parameter to a script.
 
 
 "c=text" (COMMENT="text") Allows you to include a comment with each report.
-			 The comment is generally the name and register
-			 argument descriptions for the function being
-			 WEDGEd.  From CLI, quotes must be used around the
-			 entire C= string if the comment contains spaces.
-			 If entered from the Workbench, everything to the
-			 right of the = sign should be in quotes.  The WEDGE
-			 comments are displayed when you do a WEDGE List. If
-			 a WEDGE has no comment, its offset and library will
-			 be listed.
+                         The comment is generally the name and register
+                         argument descriptions for the function being
+                         WEDGEd.  From CLI, quotes must be used around the
+                         entire C= string if the comment contains spaces.
+                         If entered from the Workbench, everything to the
+                         right of the = sign should be in quotes.  The WEDGE
+                         comments are displayed when you do a WEDGE List. If
+                         a WEDGE has no comment, its offset and library will
+                         be listed.
 
                               Usage -- CLI:       "c=AvailMem d1=Type"
                                        TOOL TYPE: COMMENT="AvailMem d1=Type"
 
 
-d=n	(DEBUG=n)	Causes a call to Debug() on the nth reported call of
-			the WEDGEd function.  (This option is only valid in
-			a serial WEDGE.)  By default, Debug() invokes the
-			system's built-in 9600 baud serial debugger ROMWACK.
-			Since ROMWACK forces 9600 baud, you should only use
-			this option in a 9600 baud WEDGE (unless you have a
-			resident serial debugger that works at other baud
-			rates).
+d=n     (DEBUG=n)       Causes a call to Debug() on the nth reported call of
+                        the WEDGEd function.  (This option is only valid in
+                        a serial WEDGE.)  By default, Debug() invokes the
+                        system's built-in 9600 baud serial debugger ROMWACK.
+                        Since ROMWACK forces 9600 baud, you should only use
+                        this option in a 9600 baud WEDGE (unless you have a
+                        resident serial debugger that works at other baud
+                        rates).
 
-			If Result reporting (opt r) is in effect, the call
-			to Debug() will be made AFTER the WEDGEd function
-			has been called and its result reported.  If Result
-			reporting is not on, Debug() will be called after
-			the normal WEDGE report and immediately before WEDGE
-			actually calls the function.  This allows you to
-			enter the debugger either before or after the WEDGEd
-			function has been called.  In both cases, you will
-			enter the debugger with all of the function caller's
-			registers intact, except for a6 which will contain
-			ExecBase.  The first two values on the stack will be
-			the return address for Debug() and the caller's a6.
+                        If Result reporting (opt r) is in effect, the call
+                        to Debug() will be made AFTER the WEDGEd function
+                        has been called and its result reported.  If Result
+                        reporting is not on, Debug() will be called after
+                        the normal WEDGE report and immediately before WEDGE
+                        actually calls the function.  This allows you to
+                        enter the debugger either before or after the WEDGEd
+                        function has been called.  In both cases, you will
+                        enter the debugger with all of the function caller's
+                        registers intact, except for a6 which will contain
+                        ExecBase.  The first two values on the stack will be
+                        the return address for Debug() and the caller's a6.
 
-			When you exit the debugger, you will be prompted
-			"Debug again <y or n>?" at the serial terminal.  By
-			entering 'y', you can Debug successive calls to the
-			WEDGEd function.  Note that Debug will not be
-			invoked if the caller is running on the system stack
-			because the caller may be an interrupt.
+                        When you exit the debugger, you will be prompted
+                        "Debug again <y or n>?" at the serial terminal.  By
+                        entering 'y', you can Debug successive calls to the
+                        WEDGEd function.  Note that Debug will not be
+                        invoked if the caller is running on the system stack
+                        because the caller may be an interrupt.
 
-			You will also be asked whether you wish to Wait
-			the calling task.  If you say yes, the calling task
-			will be placed in a  Wait for CTRL-C.  You can
-			then use local debugging tools to examine memory.
-			When you are ready to restart the calling task,
-			you can use BREAK to restart the task (if it
-			was started from CLI) or the Software Tools
-			"breaktask" command to send a CTRL-C to any
-			named Exec task or CLI command.
+                        You will also be asked whether you wish to Wait
+                        the calling task.  If you say yes, the calling task
+                        will be placed in a  Wait for CTRL-C.  You can
+                        then use local debugging tools to examine memory.
+                        When you are ready to restart the calling task,
+                        you can use BREAK to restart the task (if it
+                        was started from CLI) or the Software Tools
+                        "breaktask" command to send a CTRL-C to any
+                        named Exec task or CLI command.
 
-			When run from the CLI, the d option used without an
-			argument is equivalent to "d=1."
+                        When run from the CLI, the d option used without an
+                        argument is equivalent to "d=1."
 
-				Usage -- CLI:  		"d=6" or opt d
-                       	                 TOOL TYPE:	DEBUG=1
+                                Usage -- CLI:           "d=6" or opt d
+                                         TOOL TYPE:     DEBUG=1
 
 
-"t=tasklist"		Limits reporting to the tasks named in Tasklist.
+"t=tasklist"            Limits reporting to the tasks named in Tasklist.
 (TASKS="tasklist")      This is useful for monitoring the function calls of
-			a particular task or group of tasks.  If the x
-			option (EXCLUDE) is used, the tasks in the tasklist
-			are instead excluded from reporting.  This is
-			useful for screening out any Amiga OS tasks that
-			make heavy use of the function being monitored.
+                        a particular task or group of tasks.  If the x
+                        option (EXCLUDE) is used, the tasks in the tasklist
+                        are instead excluded from reporting.  This is
+                        useful for screening out any Amiga OS tasks that
+                        make heavy use of the function being monitored.
 
-			The tasklist should be in quotes, and multiple task
-			names should be separated by a vertical bar.  WEDGE
-			will compare the tasklist names against both Task
-			node names and the command name of any CLI invoked
-			command which calls the WEDGEd function.
+                        The tasklist should be in quotes, and multiple task
+                        names should be separated by a vertical bar.  WEDGE
+                        will compare the tasklist names against both Task
+                        node names and the command name of any CLI invoked
+                        command which calls the WEDGEd function.
 
-			WEDGE also recognizes two special task names:
+                        WEDGE also recognizes two special task names:
 
-				System: Matches any code running on system
-					stack (interrupts, etc.).
+                                System: Matches any code running on system
+                                        stack (interrupts, etc.).
 
-				All: If this is the only task name in the
-				     list, the list is ignored.  This allows
-				     you to disable the TASKS TOOL TYPE
-				     without removing it from the .info file.
+                                All: If this is the only task name in the
+                                     list, the list is ignored.  This allows
+                                     you to disable the TASKS TOOL TYPE
+                                     without removing it from the .info file.
 
-				Usage -- CLI:  	    "t=System|CON|wedge"
-        			         TOOL TYPE: TASKS="System|CON|wedge"
+                                Usage -- CLI:       "t=System|CON|wedge"
+                                         TOOL TYPE: TASKS="System|CON|wedge"
 
 
 EXAMPLE WEDGE COMMAND LINES
@@ -381,17 +381,17 @@ and the key board to add, delete or modify the icon's TOOL TYPE entries.
 The acceptable format for TOOL TYPES entries was included in the explanation
 of each option.  The TOOL TYPES default to:
 
-	AmigaDOS argument		TOOL TYPE Default
+        AmigaDOS argument               TOOL TYPE Default
 
-	<regs> 				REGS=0x0000
-	<ptrs>				PTRS=0x0000
-	l				LOCAL=FALSE
-	p				PARALLEL=FALSE
-	r				RESULT=FALSE
-	a				RESULTP=FALSE
-	s				STACK=FALSE
-	x				EXCLUDE=FALSE
-	"t=tasklist"			TASKS=ALL
+        <regs>                          REGS=0x0000
+        <ptrs>                          PTRS=0x0000
+        l                               LOCAL=FALSE
+        p                               PARALLEL=FALSE
+        r                               RESULT=FALSE
+        a                               RESULTP=FALSE
+        s                               STACK=FALSE
+        x                               EXCLUDE=FALSE
+        "t=tasklist"                    TASKS=ALL
 
 There are no default values for the library and offset arguments. These
 values MUST be supplied.
@@ -404,28 +404,28 @@ The following functions can be specified with a single CLI argument, a TOOL
 TYPES entry, or simply by double-clicking on the corresponding icon in the
 WEDGE window.
 
-CLI Command		TOOL TYPES	Icon		Function
+CLI Command             TOOL TYPES      Icon            Function
 
-WEDGE help		HELP=TRUE	Wedge.Help	Lists WEDGE
-							arguments, TOOL
-							TYPES, and notes.
+WEDGE help              HELP=TRUE       Wedge.Help      Lists WEDGE
+                                                        arguments, TOOL
+                                                        TYPES, and notes.
 
-WEDGE killall		KILLALL=TRUE	Wedge.KillAll	Signals all WEDGEs
-							to remove
-							themselves. If no
-							WEDGEs are currently
-							installed, this
-							option will remove
-							and deallocate the
-							resident
-							"WedgeMaster"
-							Message Port which
-							holds some global
-							information for the
-							WEDGEs.
+WEDGE killall           KILLALL=TRUE    Wedge.KillAll   Signals all WEDGEs
+                                                        to remove
+                                                        themselves. If no
+                                                        WEDGEs are currently
+                                                        installed, this
+                                                        option will remove
+                                                        and deallocate the
+                                                        resident
+                                                        "WedgeMaster"
+                                                        Message Port which
+                                                        holds some global
+                                                        information for the
+                                                        WEDGEs.
 
-WEDGE list		LIST=TRUE	Wedge.List	Lists all WEDGEs
-							currently installed.
+WEDGE list              LIST=TRUE       Wedge.List      Lists all WEDGEs
+                                                        currently installed.
 
 
 WEDGE LIMITATIONS
@@ -449,9 +449,9 @@ functions as possible, there are certain arbitrary limitations.
 
 3.  There are size limits for several WEDGE arguments:
 
-		tasklist	31 task names; 319 characters
-		library		39 characters
-		comment		79 characters
+                tasklist        31 task names; 319 characters
+                library         39 characters
+                comment         79 characters
 
 4.  The maximum size for KILLALL and LIST is 127 WEDGEs.
 
@@ -567,9 +567,9 @@ script.  In order for Execute to find the scripts, you must cd where they
 are or copy them to your s: directory.  Here are some examples of passing
 options to the AvailMem.w script:
 
-execute AvailMem.w prs	(prs = Parallel, Result reports, Stack reports)
-execute AvailMem.w l	(l = Local)
-execute AvailMem.w dr	(dr = Debug on first call, Result reports)
+execute AvailMem.w prs  (prs = Parallel, Result reports, Stack reports)
+execute AvailMem.w l    (l = Local)
+execute AvailMem.w dr   (dr = Debug on first call, Result reports)
 
 
 

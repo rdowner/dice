@@ -16,7 +16,7 @@ fpos_t *pos;
 {
     *pos = ftell(fp);
     if (*pos < 0)
-	return(EOF);
+        return(EOF);
     return(0);
 }
 

@@ -1,5 +1,5 @@
 
-				FSOVL-HANDLER
+                                FSOVL-HANDLER
 
     This is a filesystem overlay handler that provides automatic compression
     and decompression of files.  Openning a file automatically decompresses

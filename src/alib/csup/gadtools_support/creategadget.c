@@ -8,11 +8,11 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 struct Gadget *
 HYPER ## CreateGadget( unsigned long kind, struct Gadget *gad, 
-	struct NewGadget *ng, Tag tag1, ... )
+        struct NewGadget *ng, Tag tag1, ... )
 {
-	return CreateGadgetA(kind,gad,ng,(TagItem *)&tag1);
+        return CreateGadgetA(kind,gad,ng,(TagItem *)&tag1);
 }

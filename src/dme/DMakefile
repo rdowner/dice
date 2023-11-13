@@ -1,6 +1,6 @@
 
-#   DMakefile for DME.	Directories required:
-#	dtmp:dme/	location of objects for DME
+#   DMakefile for DME.  Directories required:
+#       dtmp:dme/       location of objects for DME
 #
 #   note that we place prog-protos.h in the object directory as well,
 #   since this is a generated file.

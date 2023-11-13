@@ -1,23 +1,23 @@
 
-		;   FFPA_SQRT.A
-		;
-		;   D0 = ffpsqrt(D0)
-		;	      4(sp)
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   FFPA_SQRT.A
+                ;
+                ;   D0 = ffpsqrt(D0)
+                ;             4(sp)
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xref	_MathTransBase
-		xref	_LVOSPSqrt
-		xdef	__ffpsqrt
+                xref    _MathTransBase
+                xref    _LVOSPSqrt
+                xdef    __ffpsqrt
 
-__ffpsqrt	move.l	4(sp),D0
-		move.l	A6,-(sp)
-		move.l	_MathTransBase(A4),A6
-		jsr	_LVOSPSqrt(A6)
-		move.l	(sp)+,A6
-		rts
+__ffpsqrt       move.l  4(sp),D0
+                move.l  A6,-(sp)
+                move.l  _MathTransBase(A4),A6
+                jsr     _LVOSPSqrt(A6)
+                move.l  (sp)+,A6
+                rts
 
-		END
+                END
 

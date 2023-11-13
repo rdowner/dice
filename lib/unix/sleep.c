@@ -18,9 +18,9 @@ sleep(n)
 int n;
 {
     while (n) {
-	Delay(50);
-	chkabort();
-	--n;
+        Delay(50);
+        chkabort();
+        --n;
     }
 }
 

@@ -16,8 +16,8 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	TagItem;
-typedef struct Window	Window;
+typedef struct TagItem  TagItem;
+typedef struct Window   Window;
 
 Window *
 HYPER ## OpenWindowTags(nw, tag1, ...)

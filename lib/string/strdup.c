@@ -18,7 +18,7 @@ const char *s;
     char *d;
 
     if (d = malloc(len + 1))
-	strcpy(d, s);
+        strcpy(d, s);
     return(d);
 }
 

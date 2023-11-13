@@ -23,19 +23,19 @@ PROTOS= $(OD)dc1-protos.h
 all: $(PROTOS) $(EXE)
 
 $(EXE) : $(OBJS)
-	cc $(CFLAGS) $(OBJS) -o $(EXE) -lamiga
+        cc $(CFLAGS) $(OBJS) -o $(EXE) -lamiga
 
 $(OBJS) : $(SRCS)
-	cc $(CFLAGS) %(right) -o %(left) -c
+        cc $(CFLAGS) %(right) -o %(left) -c
 
 $(PROTOS) : $(SRCS)
-	rm -f $(PROTOS) $(PROTOS).new
-	fgrep -h Prototype $(SRCS) >$(PROTOS).new
-	mv -f $(PROTOS).new $(PROTOS)
+        rm -f $(PROTOS) $(PROTOS).new
+        fgrep -h Prototype $(SRCS) >$(PROTOS).new
+        mv -f $(PROTOS).new $(PROTOS)
 
 install:
-	install -c -m 0755 $(EXE) $(EXED)
+        install -c -m 0755 $(EXE) $(EXED)
 
 clean:
-	rm -f $(PROTOS) $(OBJS) $(EXE)
+        rm -f $(PROTOS) $(OBJS) $(EXE)
 

@@ -1,8 +1,8 @@
 From uunet!glia.biostr.washington.edu!bjackson Tue, 16 Jun 92 01:28:41 PST
 Received: by overload.Berkeley.CA.US (V1.16/Amiga)
-	id AA00000; Tue, 16 Jun 92 01:28:41 PST
+        id AA00000; Tue, 16 Jun 92 01:28:41 PST
 Received: from UWAVM.U.WASHINGTON.EDU by relay1.UU.NET with SMTP 
-	(5.61/UUNET-internet-primary) id AA27948; Tue, 16 Jun 92 00:40:42 -0400
+        (5.61/UUNET-internet-primary) id AA27948; Tue, 16 Jun 92 00:40:42 -0400
 Received: from glia.biostr.washington.edu by UWAVM.U.WASHINGTON.EDU
    (IBM VM SMTP V2R1) with TCP; Mon, 15 Jun 92 21:40:17 PDT
 Received: by glia.biostr.washington.edu 

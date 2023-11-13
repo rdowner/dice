@@ -16,23 +16,23 @@ register struct Isrvstr *i;
 int (*p)();
 int a;
 {
-	i->code = ttskasm;
-	i->Iptr = i;
-	i->ccode = p;
-	i->Carg = a;
-	AddIntServer(INTB_VERTB,(struct Interrupt *)i);
+        i->code = ttskasm;
+        i->Iptr = i;
+        i->ccode = p;
+        i->Carg = a;
+        AddIntServer(INTB_VERTB,(struct Interrupt *)i);
 }
 
 RemTOF(i)
 struct Isrvstr *i;
 {
-	RemIntServer(INTB_VERTB,(struct Interrupt *)i);
+        RemIntServer(INTB_VERTB,(struct Interrupt *)i);
 }
 
 
 waitbeam(b)
 int b;
 {
-	while (b>VBeamPos());
+        while (b>VBeamPos());
 }
 

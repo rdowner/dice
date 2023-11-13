@@ -14,5 +14,5 @@ typedef struct TagItem TagItem;
 LONG 
 HYPER ## SendAmigaGuideCmd( APTR cl, STRPTR cmd, Tag tag1, ... )
 {
-	return SendAmigaGuideCmdA(cl,cmd,(TagItem *)&tag1);
+        return SendAmigaGuideCmdA(cl,cmd,(TagItem *)&tag1);
 }

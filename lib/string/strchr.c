@@ -19,12 +19,12 @@ const char *toks;
 int c;
 {
     while (*toks) {
-	if (*toks == (char)c)
-	    return(toks);
-	++toks;
+        if (*toks == (char)c)
+            return(toks);
+        ++toks;
     }
     if (c == 0)
-	return(toks);
+        return(toks);
     return(NULL);
 }
 

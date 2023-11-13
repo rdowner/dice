@@ -8,13 +8,13 @@
  */
 
 typedef struct Symbol {
-    struct Symbol *Next;    /*	hash table link 		*/
-    void    *SemBase;	    /*	for semantics junk		*/
-    const char   *Name;	    /*	pointer to unterminated symbol	*/
-    int32_t    Hv; 	    /*	hash value			*/
-    short   Len;	    /*	length of symbol		*/
-    short   LexId;	    /*	currently overloaded id 	*/
-    void    *Data;	    /*	currently overloaded data	*/
+    struct Symbol *Next;    /*  hash table link                 */
+    void    *SemBase;       /*  for semantics junk              */
+    const char   *Name;     /*  pointer to unterminated symbol  */
+    int32_t    Hv;          /*  hash value                      */
+    short   Len;            /*  length of symbol                */
+    short   LexId;          /*  currently overloaded id         */
+    void    *Data;          /*  currently overloaded data       */
 } Symbol;
 
 typedef struct SemInfo {
@@ -37,9 +37,9 @@ typedef struct StrNode {
 /*
  * SemScan*() functions
  */
-#define SSCAN_NAME	0x0001
-#define SSCAN_TOP	0x0002
-#define SSCAN_ARG	0x0004
-#define SSCAN_ERROR	0x0008
-#define SSCAN_ALIGN	0x0010
+#define SSCAN_NAME      0x0001
+#define SSCAN_TOP       0x0002
+#define SSCAN_ARG       0x0004
+#define SSCAN_ERROR     0x0008
+#define SSCAN_ALIGN     0x0010
 

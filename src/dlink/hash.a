@@ -1,38 +1,38 @@
 
-			;   hash.a handles the hash() function which takes
-			;   a huge chunk of cpu, thus it is optimized here.
-			;
-			;   hash(str,len) return value & 1023
-			;
-			;   NOTE, this is a different function than that
-			;   in SYM.C
+                        ;   hash.a handles the hash() function which takes
+                        ;   a huge chunk of cpu, thus it is optimized here.
+                        ;
+                        ;   hash(str,len) return value & 1023
+                        ;
+                        ;   NOTE, this is a different function than that
+                        ;   in SYM.C
 
-			section text,code
+                        section text,code
 
-			xdef	_hash
-			xdef	@hash
+                        xdef    _hash
+                        xdef    @hash
 
 _hash
-			move.l	4(sp),A0
-			move.l	8(sp),D0
+                        move.l  4(sp),A0
+                        move.l  8(sp),D0
 @hash
-			move.l	D2,-(sp)
-			move.l	#$1234FCB4,D1
-			beq	hend
-hloop			asl.l	#5,D1
-			move.b	(A0)+,D2
-			eor.b	D2,D1
-			move.l	D1,D2
-			lsr.l	#7,D2
-			eor.l	D2,D1
-			subq.w	#1,D0
-			bne	hloop
+                        move.l  D2,-(sp)
+                        move.l  #$1234FCB4,D1
+                        beq     hend
+hloop                   asl.l   #5,D1
+                        move.b  (A0)+,D2
+                        eor.b   D2,D1
+                        move.l  D1,D2
+                        lsr.l   #7,D2
+                        eor.l   D2,D1
+                        subq.w  #1,D0
+                        bne     hloop
 
-hend			and.l	#1023,D1
-			move.l	(sp)+,D2
-			move.l	D1,D0
-			rts
+hend                    and.l   #1023,D1
+                        move.l  (sp)+,D2
+                        move.l  D1,D0
+                        rts
 
-			END
+                        END
 
 

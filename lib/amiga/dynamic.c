@@ -11,7 +11,7 @@
 
 #include <exec/types.h>
 #include <clib/dos_protos.h>
-#include <dynamic.h>	    /*	from dinclude:pd/   */
+#include <dynamic.h>        /*  from dinclude:pd/   */
 #include <stdio.h>
 
 __regargs void *
@@ -20,7 +20,7 @@ const char *varName;
 {
     void *ptr = GetHyperSymbolTags(varName, TAG_END);
     if (ptr == NULL)
-	fhprintf(Output(), "run time variable error: %s\n", varName);
+        fhprintf(Output(), "run time variable error: %s\n", varName);
     return(ptr);
 }
 
@@ -31,7 +31,7 @@ const char *funcType;
 {
     void *ptr = GetHyperSymbolTags(funcName, DT_TYPE, funcType, TAG_END);
     if (ptr == NULL)
-	fhprintf(Output(), "run time function error: %s\n", funcName);
+        fhprintf(Output(), "run time function error: %s\n", funcName);
     return(ptr);
 }
 

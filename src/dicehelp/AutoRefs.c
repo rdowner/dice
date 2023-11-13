@@ -33,36 +33,36 @@ char *xav[];
     expand_args(xac, xav, &ac, &av);
 
     if (ac == 1) {
-	puts("autorefs outfile docfile docfile ...");
-	puts("AmigaDOS wildcarding works too, btw");
-	exit(1);
+        puts("autorefs outfile docfile docfile ...");
+        puts("AmigaDOS wildcarding works too, btw");
+        exit(1);
     }
     fo = fopen(av[1], "a");
     if (!fo) {
-	printf("unable to open %s for append\n", av[1]);
-	exit(1);
+        printf("unable to open %s for append\n", av[1]);
+        exit(1);
     }
     for (i = 2; i < ac; ++i) {
-	char *file = av[i];
-	short len = strlen(file);
-	short doth = 0;
+        char *file = av[i];
+        short len = strlen(file);
+        short doth = 0;
 
-	if (len >= 2 && (file[len-1] == 'h' || file[len-1] == 'H') && file[len-2] == '.')
-	    doth = 1;
+        if (len >= 2 && (file[len-1] == 'h' || file[len-1] == 'H') && file[len-2] == '.')
+            doth = 1;
 
-	fi = fopen(file, "r");
-	if (fi) {
-	    if (doth) {
-		printf("Scanning .H  file: %s\n", file);
-		scanhfile(fi, fo, file);
-	    } else {
-		printf("Scanning DOC file: %s\n", file);
-		scandocfile(fi, fo, file);
-	    }
-	    fclose(fi);
-	} else {
-	    printf("Unable to read %s\n", file);
-	}
+        fi = fopen(file, "r");
+        if (fi) {
+            if (doth) {
+                printf("Scanning .H  file: %s\n", file);
+                scanhfile(fi, fo, file);
+            } else {
+                printf("Scanning DOC file: %s\n", file);
+                scandocfile(fi, fo, file);
+            }
+            fclose(fi);
+        } else {
+            printf("Unable to read %s\n", file);
+        }
     }
     return(0);
 }
@@ -83,45 +83,45 @@ char *filename;
     short lastLineFF = 0;
 
     while (fgets(buf, 256, fi)) {
-	short len = strlen(buf) - 1;
-	char *ptr = buf + len;
-	char *bas = buf;
-	char *header, *tail;
+        short len = strlen(buf) - 1;
+        char *ptr = buf + len;
+        char *bas = buf;
+        char *header, *tail;
 
-	buf[len] = 0;
-	while (ptr != buf && ptr[-1] != ' ' && ptr[-1] != 9)
-	    --ptr;
-	while (bas < ptr && *bas == 12)
-	    ++bas;
-	if (ptr != bas && *ptr && strncmp(bas, ptr, strlen(ptr)) == 0) {
-	    if (buf[0] == 12) {
-		++pos;
-		buf[0] = 0;
-	    }
-	    header = ptr;
-	    for (ptr = buf + len; ptr != buf && IsAlphaNum(ptr[-1]); --ptr);
-	    tail = ptr;
-	    fprintf(fo, "%-20s (^l) %s @@%ld\n", tail, filename, pos);
-	} else if (ptr == bas && *ptr && lastLineFF) {
-	    if (buf[0] == 12) {
-		++pos;
-		buf[0] = 0;
-	    }
-	    for (ptr = buf + len; ptr != buf && IsAlphaNum(ptr[-1]); --ptr);
-	    fprintf(fo, "%-20s (^l) %s @@%ld\n", ptr, filename, pos);
-	}
-	if (buf[0] == ('l'&0x1F))
-	    lastLineFF = 1;
-	else
-	    lastLineFF = 0;
-	pos = ftell(fi);
+        buf[len] = 0;
+        while (ptr != buf && ptr[-1] != ' ' && ptr[-1] != 9)
+            --ptr;
+        while (bas < ptr && *bas == 12)
+            ++bas;
+        if (ptr != bas && *ptr && strncmp(bas, ptr, strlen(ptr)) == 0) {
+            if (buf[0] == 12) {
+                ++pos;
+                buf[0] = 0;
+            }
+            header = ptr;
+            for (ptr = buf + len; ptr != buf && IsAlphaNum(ptr[-1]); --ptr);
+            tail = ptr;
+            fprintf(fo, "%-20s (^l) %s @@%ld\n", tail, filename, pos);
+        } else if (ptr == bas && *ptr && lastLineFF) {
+            if (buf[0] == 12) {
+                ++pos;
+                buf[0] = 0;
+            }
+            for (ptr = buf + len; ptr != buf && IsAlphaNum(ptr[-1]); --ptr);
+            fprintf(fo, "%-20s (^l) %s @@%ld\n", ptr, filename, pos);
+        }
+        if (buf[0] == ('l'&0x1F))
+            lastLineFF = 1;
+        else
+            lastLineFF = 0;
+        pos = ftell(fi);
     }
 }
 
 /*
  *  Find each structure definition (stupid search, assume struct on left
  *  hand side) then generate dme.refs entry from the end point of the
- *  previous structure to the beginning of the next structure.	That is,
+ *  previous structure to the beginning of the next structure.  That is,
  *  the reference refers to the structure and all fields before and after
  *  it until the next structure (before and after).
  */
@@ -144,54 +144,54 @@ char *filename;
     short newsname = 0;
 
     while (fgets(buf, 256, fi)) {
-	char *ptr = buf;
+        char *ptr = buf;
 
-	if ((ptr = strstr(buf, "struct")) || (ptr = strstr(buf, "union"))) {
-	    if (ptr[0] == 's')
-		++ptr;
-	    ptr += 5;
+        if ((ptr = strstr(buf, "struct")) || (ptr = strstr(buf, "union"))) {
+            if (ptr[0] == 's')
+                ++ptr;
+            ptr += 5;
 
-	    ptr = SetSName(lname, ptr);
+            ptr = SetSName(lname, ptr);
 
-	    /*
-	     *	search for '{'
-	     */
+            /*
+             *  search for '{'
+             */
 
-	    {
-		while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n' || *ptr == 12)
-		    ++ptr;
-		if (*ptr == 0) {
-		    short c = ' ';
-		    long savpos = ftell(fi);
-		    while (c == ' ' || c == '\t' || c == '\n' || c == 12)
-			c = getc(fi);
-		    ptr[0] = c;
-		    ptr[1] = 0;
-		    fseek(fi, savpos, 0);
-		}
-	    }
+            {
+                while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n' || *ptr == 12)
+                    ++ptr;
+                if (*ptr == 0) {
+                    short c = ' ';
+                    long savpos = ftell(fi);
+                    while (c == ' ' || c == '\t' || c == '\n' || c == 12)
+                        c = getc(fi);
+                    ptr[0] = c;
+                    ptr[1] = 0;
+                    fseek(fi, savpos, 0);
+                }
+            }
 
-	    if (*ptr == '{' && lname[0]) {
-		if (snameisvalid)
-		    fprintf(fo, "%-20s %3ld %s @@%ld\n", sname, lin-lin1, filename, pos1);
-		strcpy(sname, lname);
-		snameisvalid = 0;
-		newsname = 1;
-		pos1 = pos2;
-		lin1 = lin2;
-	    }
-	}
-	pos = ftell(fi);
-	++lin;
+            if (*ptr == '{' && lname[0]) {
+                if (snameisvalid)
+                    fprintf(fo, "%-20s %3ld %s @@%ld\n", sname, lin-lin1, filename, pos1);
+                strcpy(sname, lname);
+                snameisvalid = 0;
+                newsname = 1;
+                pos1 = pos2;
+                lin1 = lin2;
+            }
+        }
+        pos = ftell(fi);
+        ++lin;
 
-	if (strstr(buf, "}")) {
-	    pos2 = pos;
-	    lin2 = lin;
-	    snameisvalid = newsname;
-	}
+        if (strstr(buf, "}")) {
+            pos2 = pos;
+            lin2 = lin;
+            snameisvalid = newsname;
+        }
     }
     if (snameisvalid)
-	fprintf(fo, "%-20s %3ld %s @@%ld\n", sname, lin-lin1, filename, pos1);
+        fprintf(fo, "%-20s %3ld %s @@%ld\n", sname, lin-lin1, filename, pos1);
 }
 
 char *
@@ -199,9 +199,9 @@ SetSName(buf, ptr)
 char *buf, *ptr;
 {
     while (*ptr == ' ' || *ptr == 9)
-	++ptr;
+        ++ptr;
     while (*ptr && *ptr != '\n' && *ptr != ' ' && *ptr != 9 && *ptr != 12)
-	*buf++ = *ptr++;
+        *buf++ = *ptr++;
     *buf = 0;
     return(ptr);
 }
@@ -210,11 +210,11 @@ IsAlphaNum(c)
 char c;
 {
     if ((c >= 'a' && c <= 'z') ||
-	(c >= 'A' && c <= 'Z') ||
-	(c >= '0' && c <= '9') ||
-	(c == '_') || (c == '(') || (c == ')')
+        (c >= 'A' && c <= 'Z') ||
+        (c >= '0' && c <= '9') ||
+        (c == '_') || (c == '(') || (c == ')')
     )
-	return(1);
+        return(1);
     return(0);
 }
 

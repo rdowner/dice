@@ -12,281 +12,281 @@ auto.lib/alib/mathlib.a
 auto.lib/alib/mathtranlib.a
 
 
-alib/doslib						alib/doslib
+alib/doslib                                             alib/doslib
 
    NAME
-	_DOSBase auto-open
+        _DOSBase auto-open
 
    SYNOPSIS
 
    FUNCTION
-	If the _DOSBase base variable is referenced (i.e. extern) but not
-	declared then _DOSBase will be automatically declared in the doslib
-	module of auto.lib.  Additionally, auto.lib adds routines to the
-	autoinit and autoexit sequences called by c.a that automatically
-	opens "dos.library" before _main and closes it after _exit.
+        If the _DOSBase base variable is referenced (i.e. extern) but not
+        declared then _DOSBase will be automatically declared in the doslib
+        module of auto.lib.  Additionally, auto.lib adds routines to the
+        autoinit and autoexit sequences called by c.a that automatically
+        opens "dos.library" before _main and closes it after _exit.
 
-	If the auto-open fails the program will be aborted before _main is
-	ever called.
+        If the auto-open fails the program will be aborted before _main is
+        ever called.
 
-	The autoexit routine that closes the library first checks to see if
-	the base variable is NULL and skips trying to close the library if
-	so.
+        The autoexit routine that closes the library first checks to see if
+        the base variable is NULL and skips trying to close the library if
+        so.
 
    NOTE
-	_DOSBase is normally openned this way for most programs since parts
-	of c.a are normally reference that make dos calls.  In fact, all
-	programs that use the main() entry point since c.lib's _main()
-	entry point references DOS.
+        _DOSBase is normally openned this way for most programs since parts
+        of c.a are normally reference that make dos calls.  In fact, all
+        programs that use the main() entry point since c.lib's _main()
+        entry point references DOS.
 
    EXAMPLE
 
    SEE ALSO
 
 
-alib/gfxlib						alib/gfxlib
+alib/gfxlib                                             alib/gfxlib
 
    NAME
-	_GFXBase auto-open
+        _GFXBase auto-open
 
    SYNOPSIS
 
    FUNCTION
-	If the _GFXBase base variable is referenced (i.e. extern) but not
-	declared then _GFXBase will be automatically declared in the gfxlib
-	module of auto.lib.  Additionally, auto.lib adds routines to the
-	autoinit and autoexit sequences called by c.a that automatically
-	opens "graphics.library" before _main and closes it after _exit.
+        If the _GFXBase base variable is referenced (i.e. extern) but not
+        declared then _GFXBase will be automatically declared in the gfxlib
+        module of auto.lib.  Additionally, auto.lib adds routines to the
+        autoinit and autoexit sequences called by c.a that automatically
+        opens "graphics.library" before _main and closes it after _exit.
 
-	If the auto-open fails the program will be aborted before _main is
-	ever called.
+        If the auto-open fails the program will be aborted before _main is
+        ever called.
 
-	The autoexit routine that closes the library first checks to see if
-	the base variable is NULL and skips trying to close the library if
-	so.
+        The autoexit routine that closes the library first checks to see if
+        the base variable is NULL and skips trying to close the library if
+        so.
 
    NOTE
-	Programs that use this auto-open feature by simply calling graphics
-	library functions without bothering to declare or open the library
-	will only compile under DICE.  When compiled with other compilers a
-	link error will occur since the linker will not be able to find any
-	declared storage for the base variable, only references.
+        Programs that use this auto-open feature by simply calling graphics
+        library functions without bothering to declare or open the library
+        will only compile under DICE.  When compiled with other compilers a
+        link error will occur since the linker will not be able to find any
+        declared storage for the base variable, only references.
 
    EXAMPLE
-	/*
-	 *  Example program which just calls a graphics.library function
-	 *  without bothering to open the library.
-	 */
+        /*
+         *  Example program which just calls a graphics.library function
+         *  without bothering to open the library.
+         */
 
-	main()
-	{
-	    WaitTOF();
-	}
+        main()
+        {
+            WaitTOF();
+        }
 
    SEE ALSO
 
 
-alib/ieeelib						alib/ieeelib
+alib/ieeelib                                            alib/ieeelib
 
    NAME
-	_MathIeeeDoubBasBase auto-open
+        _MathIeeeDoubBasBase auto-open
 
    SYNOPSIS
 
    FUNCTION
-	If the _MathIeeeDoubBasBase base variable is referenced (i.e.
-	extern) but not declared then _MathIeeeDoubBasBase will be
-	automatically declared in the ieeelib module of auto.lib.
-	Additionally, auto.lib adds routines to the autoinit and autoexit
-	sequences called by c.a that automatically opens
-	"mathieeedoubbas.library" before _main and closes it after _exit.
+        If the _MathIeeeDoubBasBase base variable is referenced (i.e.
+        extern) but not declared then _MathIeeeDoubBasBase will be
+        automatically declared in the ieeelib module of auto.lib.
+        Additionally, auto.lib adds routines to the autoinit and autoexit
+        sequences called by c.a that automatically opens
+        "mathieeedoubbas.library" before _main and closes it after _exit.
 
-	If the auto-open fails the program will be aborted before _main is
-	ever called.
+        If the auto-open fails the program will be aborted before _main is
+        ever called.
 
-	The autoexit routine that closes the library first checks to see if
-	the base variable is NULL and skips trying to close the library if
-	so.
+        The autoexit routine that closes the library first checks to see if
+        the base variable is NULL and skips trying to close the library if
+        so.
 
    NOTE
-	DICE uses the autoinit feature to automatically open and close
-	floating point libraries that are indirectly referenced by
-	fp operations.
+        DICE uses the autoinit feature to automatically open and close
+        floating point libraries that are indirectly referenced by
+        fp operations.
 
    EXAMPLE
-	#include <stdlib.h>
+        #include <stdlib.h>
 
-	main()
-	{
-	    double d;
+        main()
+        {
+            double d;
 
-	    d = atof("1.234");
-	}
+            d = atof("1.234");
+        }
 
    SEE ALSO
 
 
-alib/ieeetranlib					alib/ieeetranlib
+alib/ieeetranlib                                        alib/ieeetranlib
 
    NAME
-	_MathIeeeDoubTransBase auto-open
+        _MathIeeeDoubTransBase auto-open
 
    SYNOPSIS
 
    FUNCTION
-	If the _MathIeeeDoubTransBase base variable is referenced (i.e.
-	extern) but not declared then _MathIeeeDoubTransBase will be
-	automatically declared in the ieeetranlib module of auto.lib.
-	Additionally, auto.lib adds routines to the autoinit and autoexit
-	sequences called by c.a that automatically opens
-	"mathieeedoubtrans.library" before _main and closes it after _exit.
+        If the _MathIeeeDoubTransBase base variable is referenced (i.e.
+        extern) but not declared then _MathIeeeDoubTransBase will be
+        automatically declared in the ieeetranlib module of auto.lib.
+        Additionally, auto.lib adds routines to the autoinit and autoexit
+        sequences called by c.a that automatically opens
+        "mathieeedoubtrans.library" before _main and closes it after _exit.
 
-	If the auto-open fails the program will be aborted before _main is
-	ever called.
+        If the auto-open fails the program will be aborted before _main is
+        ever called.
 
-	The autoexit routine that closes the library first checks to see if
-	the base variable is NULL and skips trying to close the library if
-	so.
+        The autoexit routine that closes the library first checks to see if
+        the base variable is NULL and skips trying to close the library if
+        so.
 
    NOTE
-	DICE uses the autoinit feature to automatically open and close
-	floating point libraries that are indirectly referenced by
-	fp operations.
+        DICE uses the autoinit feature to automatically open and close
+        floating point libraries that are indirectly referenced by
+        fp operations.
 
    EXAMPLE
-	#include <stdlib.h>
+        #include <stdlib.h>
 
-	main()
-	{
-	    double d;
+        main()
+        {
+            double d;
 
-	    d = atof("1.234");
-	}
+            d = atof("1.234");
+        }
 
    SEE ALSO
 
 
-alib/intlib						alib/intlib
+alib/intlib                                             alib/intlib
 
    NAME
-	_IntuitionBase auto-open
+        _IntuitionBase auto-open
 
    SYNOPSIS
 
    FUNCTION
-	If the _IntuitionBase base variable is referenced (i.e. extern) but
-	not declared then _IntuitionBase will be automatically declared in
-	the intlib module of auto.lib. Additionally, auto.lib adds routines
-	to the autoinit and autoexit sequences called by c.a that
-	automatically opens "intuition.library" before _main and
-	closes it after _exit.
+        If the _IntuitionBase base variable is referenced (i.e. extern) but
+        not declared then _IntuitionBase will be automatically declared in
+        the intlib module of auto.lib. Additionally, auto.lib adds routines
+        to the autoinit and autoexit sequences called by c.a that
+        automatically opens "intuition.library" before _main and
+        closes it after _exit.
 
-	If the auto-open fails the program will be aborted before _main is
-	ever called.
+        If the auto-open fails the program will be aborted before _main is
+        ever called.
 
-	The autoexit routine that closes the library first checks to see if
-	the base variable is NULL and skips trying to close the library if
-	so.
+        The autoexit routine that closes the library first checks to see if
+        the base variable is NULL and skips trying to close the library if
+        so.
 
    NOTE
-	Programs that use this auto-open feature by simply calling graphics
-	library functions without bothering to declare or open the library
-	will only compile under DICE.  When compiled with other compilers a
-	link error will occur since the linker will not be able to find any
-	declared storage for the base variable, only references.
+        Programs that use this auto-open feature by simply calling graphics
+        library functions without bothering to declare or open the library
+        will only compile under DICE.  When compiled with other compilers a
+        link error will occur since the linker will not be able to find any
+        declared storage for the base variable, only references.
 
    EXAMPLE
-	/*
-	 *  Example program which just calls an intuition.library function
-	 *  without bothering to open the library.
-	 */
+        /*
+         *  Example program which just calls an intuition.library function
+         *  without bothering to open the library.
+         */
 
-	main()
-	{
-	    LockIBase();
-	    UnlockIBase();
-	}
+        main()
+        {
+            LockIBase();
+            UnlockIBase();
+        }
 
    SEE ALSO
 
 
-alib/mathlib						alib/mathlib
+alib/mathlib                                            alib/mathlib
 
    NAME
-	_MathBase auto-open
+        _MathBase auto-open
 
    SYNOPSIS
 
    FUNCTION
-	If the _MathBase base variable is referenced (i.e. extern) but not
-	declared then _MathBase will be automatically declared in the
-	mathlib module of auto.lib. Additionally, auto.lib adds routines to
-	the autoinit and autoexit sequences called by c.a that
-	automatically opens "math.library" before _main and closes it after
-	_exit.
+        If the _MathBase base variable is referenced (i.e. extern) but not
+        declared then _MathBase will be automatically declared in the
+        mathlib module of auto.lib. Additionally, auto.lib adds routines to
+        the autoinit and autoexit sequences called by c.a that
+        automatically opens "math.library" before _main and closes it after
+        _exit.
 
-	If the auto-open fails the program will be aborted before _main is
-	ever called.
+        If the auto-open fails the program will be aborted before _main is
+        ever called.
 
-	The autoexit routine that closes the library first checks to see if
-	the base variable is NULL and skips trying to close the library if
-	so.
+        The autoexit routine that closes the library first checks to see if
+        the base variable is NULL and skips trying to close the library if
+        so.
 
    NOTE
-	DICE uses the autoinit feature to automatically open and close
-	floating point libraries that are indirectly referenced by
-	fp operations.
+        DICE uses the autoinit feature to automatically open and close
+        floating point libraries that are indirectly referenced by
+        fp operations.
 
    EXAMPLE
-	#include <stdlib.h>
+        #include <stdlib.h>
 
-	main()
-	{
-	    float f;
+        main()
+        {
+            float f;
 
-	    f = atof("1.234");
-	}
+            f = atof("1.234");
+        }
 
    SEE ALSO
 
 
-alib/mathtranlib					alib/mathtranlib
+alib/mathtranlib                                        alib/mathtranlib
 
    NAME
-	_MathTransBase auto-open
+        _MathTransBase auto-open
 
    SYNOPSIS
 
    FUNCTION
-	If the _MathTransBase base variable is referenced (i.e. extern) but
-	not declared then _MathTransBase will be automatically declared in
-	the mathlib module of auto.lib. Additionally, auto.lib adds
-	routines to the autoinit and autoexit sequences called by c.a that
-	automatically opens "mathtrans.library" before _main and closes it after
-	_exit.
+        If the _MathTransBase base variable is referenced (i.e. extern) but
+        not declared then _MathTransBase will be automatically declared in
+        the mathlib module of auto.lib. Additionally, auto.lib adds
+        routines to the autoinit and autoexit sequences called by c.a that
+        automatically opens "mathtrans.library" before _main and closes it after
+        _exit.
 
-	If the auto-open fails the program will be aborted before _main is
-	ever called.
+        If the auto-open fails the program will be aborted before _main is
+        ever called.
 
-	The autoexit routine that closes the library first checks to see if
-	the base variable is NULL and skips trying to close the library if
-	so.
+        The autoexit routine that closes the library first checks to see if
+        the base variable is NULL and skips trying to close the library if
+        so.
 
    NOTE
-	DICE uses the autoinit feature to automatically open and close
-	floating point libraries that are indirectly referenced by
-	fp operations.
+        DICE uses the autoinit feature to automatically open and close
+        floating point libraries that are indirectly referenced by
+        fp operations.
 
    EXAMPLE
-	#include <stdlib.h>
-	#include <math.h>
+        #include <stdlib.h>
+        #include <math.h>
 
-	main()
-	{
-	    float f;
+        main()
+        {
+            float f;
 
-	    f = flog(10.0);
-	}
+            f = flog(10.0);
+        }
 
    SEE ALSO
 

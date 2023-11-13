@@ -15,8 +15,8 @@ FILE *fi;
 char *buf;
 {
     if (buf)
-	setvbuf(fi, buf, _IOFBF, _bufsiz);
+        setvbuf(fi, buf, _IOFBF, _bufsiz);
     else
-	setvbuf(fi, NULL, _IONBF, 0);
+        setvbuf(fi, NULL, _IONBF, 0);
 }
 

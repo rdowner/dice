@@ -23,14 +23,14 @@ int whence;
     int n = -1;
 
     if (d = __getfh(fd)) {
-	if (d->fd_Exec)
-	    return((*d->fd_Exec)(d->fd_Fh, IOC_SEEK, (void *)offset, (void *)whence));
-	n = Seek(d->fd_Fh, offset, whence-1);
-	if (n >= 0) {
-	    if (offset || whence != 1)
-		n = Seek(d->fd_Fh, 0L, 0);
-	    return(n);
-	}
+        if (d->fd_Exec)
+            return((*d->fd_Exec)(d->fd_Fh, IOC_SEEK, (void *)offset, (void *)whence));
+        n = Seek(d->fd_Fh, offset, whence-1);
+        if (n >= 0) {
+            if (offset || whence != 1)
+                n = Seek(d->fd_Fh, 0L, 0);
+            return(n);
+        }
     }
     return(n);
 }

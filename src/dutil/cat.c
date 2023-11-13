@@ -25,7 +25,7 @@ char **av;
     int   i;
     char buf[256];
 
-    Ident;		/* references so GNU-C does not complain */
+    Ident;              /* references so GNU-C does not complain */
     DCopyright;
 
 #ifdef AMIGA
@@ -33,19 +33,19 @@ char **av;
 #endif
 
     for (i = 1; i < ac; ++i) {
-	FILE *fi = fopen(av[i], "r");
-	if (fi == NULL) {
-	    fprintf(stderr, "Unable to open %s\n", av[i]);
-	    continue;
-	}
-	while (fgets(buf, sizeof(buf), fi))
-	    fputs(buf, stdout);
-	fclose(fi);
+        FILE *fi = fopen(av[i], "r");
+        if (fi == NULL) {
+            fprintf(stderr, "Unable to open %s\n", av[i]);
+            continue;
+        }
+        while (fgets(buf, sizeof(buf), fi))
+            fputs(buf, stdout);
+        fclose(fi);
     }
     if (ac == 1) {
-	short c;
-	while ((c = getc(stdin)) != EOF)
-	    putc(c, stdout);
+        short c;
+        while ((c = getc(stdin)) != EOF)
+            putc(c, stdout);
     }
     return(0);
 }

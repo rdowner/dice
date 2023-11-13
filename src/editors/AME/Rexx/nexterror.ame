@@ -22,8 +22,8 @@ if (rc = 0) then do
     setprefs READ
     movedown
 /*
-	    if (buffername = 0) then prevwindow
-	    else popbuffer "buffername"
+            if (buffername = 0) then prevwindow
+            else popbuffer "buffername"
 */
     prevwindow
     visit ""file""

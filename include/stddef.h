@@ -9,10 +9,10 @@
 #define STDDEF_H
 
 #ifndef NULL
-#define NULL	((void *)0L)
+#define NULL    ((void *)0L)
 #endif
 #ifndef offsetof
-#define offsetof(sname,fname)	((long)&((sname *)0)->fname)
+#define offsetof(sname,fname)   ((long)&((sname *)0)->fname)
 #endif
 typedef int ptrdiff_t;
 typedef unsigned int size_t;

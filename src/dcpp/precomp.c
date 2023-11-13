@@ -40,7 +40,7 @@ typedef struct TokenNode {
     short   tn_Token;
 } TokenNode;
 
-#define MakeToken(name,token)	{ NULL, name, sizeof(name) - 1, (((token >> 4) & 0xFF00) | (ubyte)token | TOKF_PRIVATE) }
+#define MakeToken(name,token)   { NULL, name, sizeof(name) - 1, (((token >> 4) & 0xFF00) | (ubyte)token | TOKF_PRIVATE) }
 
 TokenNode TokenAry[] = {
     MakeToken("sizeof",     TokSizeof),
@@ -73,9 +73,9 @@ InitPrecomp()
     TokenNode **tp;
 
     for (tn = TokenAry; tn < &TokenAry[arysize(TokenAry)]; ++tn) {
-	tp = &TokenHash[hash(tn->tn_Name, tn->tn_Len) & THASHMASK];
-	tn->tn_Next = *tp;
-	*tp = tn;
+        tp = &TokenHash[hash(tn->tn_Name, tn->tn_Len) & THASHMASK];
+        tn->tn_Next = *tp;
+        *tp = tn;
     }
 }
 
@@ -85,10 +85,10 @@ PreCompSymbol(char *ptr, short len)
     TokenNode *tn;
 
     for (tn = TokenHash[hash(ptr, len) & THASHMASK]; tn; tn = tn->tn_Next) {
-	/*fprintf(stderr, "%d %d %.*s %.*s\n", len, tn->tn_Len, len, ptr, tn->tn_Len, tn->tn_Name);*/
-	if (len == tn->tn_Len && cmpmem(tn->tn_Name, ptr, len) == 0) {
-	    return(tn->tn_Token);
-	}
+        /*fprintf(stderr, "%d %d %.*s %.*s\n", len, tn->tn_Len, len, ptr, tn->tn_Len, tn->tn_Name);*/
+        if (len == tn->tn_Len && cmpmem(tn->tn_Name, ptr, len) == 0) {
+            return(tn->tn_Token);
+        }
     }
     return(0);
 }
@@ -106,57 +106,57 @@ PreCompHdr *pch;
 int fd;
 {
     /*
-     *	copy preprocessor dump
+     *  copy preprocessor dump
      */
 
     if (pch->pc_CppSize) {
-	int32_t bufsiz = ((pch->pc_CppSize > 32768) ? 32768 : pch->pc_CppSize);
-	char *buf;
+        int32_t bufsiz = ((pch->pc_CppSize > 32768) ? 32768 : pch->pc_CppSize);
+        char *buf;
 #if !FASTPRECOMP
-	int32_t bytes = pch->pc_CppSize;
+        int32_t bytes = pch->pc_CppSize;
 #endif
 
-	if ((buf = malloc(bufsiz)) == NULL)
-	    ErrorNoMemory();
+        if ((buf = malloc(bufsiz)) == NULL)
+            ErrorNoMemory();
 #if FASTPRECOMP
-	fprintf(Fo, "#precomp %d %d \"%s\"\n",
-		(int32_t)lseek(fd, 0, 1), pch->pc_CppSize, fileName);
-	lseek(fd, pch->pc_CppSize, 1);
+        fprintf(Fo, "#precomp %d %d \"%s\"\n",
+                (int32_t)lseek(fd, 0, 1), pch->pc_CppSize, fileName);
+        lseek(fd, pch->pc_CppSize, 1);
 #else
-	xxx;
-	bytes -= 4;	/*  don't embed \0's    */
-	while (bytes) {
-	    int32_t n;
+        xxx;
+        bytes -= 4;     /*  don't embed \0's    */
+        while (bytes) {
+            int32_t n;
 
-	    n = read(fd, buf, ((bytes > bufsiz) ? bufsiz : bytes));
-	    if (n < 0)
-		cerror(EFATAL_READ_PRECOMP);
-	    fwrite(buf, n, 1, Fo);
-	    bytes -= n;
-	}
-	free(buf);
+            n = read(fd, buf, ((bytes > bufsiz) ? bufsiz : bytes));
+            if (n < 0)
+                cerror(EFATAL_READ_PRECOMP);
+            fwrite(buf, n, 1, Fo);
+            bytes -= n;
+        }
+        free(buf);
 #endif
     }
 
     /*
-     *	incorporate symbol set	pc_SymSize
+     *  incorporate symbol set  pc_SymSize
      *
-     *	scan symbols in reverse
+     *  scan symbols in reverse
      */
 
     if (pch->pc_SymSize) {
-	char *symData;
-	int32_t i;
-	int32_t j;
+        char *symData;
+        int32_t i;
+        int32_t j;
 
-	if ((symData = malloc(pch->pc_SymSize)) == NULL)
-	    ErrorNoMemory();
-	if (read(fd, symData, pch->pc_SymSize) != pch->pc_SymSize)
-	    cerror(EFATAL_PARSE_PRECOMP);
-	for (i = pch->pc_SymSize - 4; i > 0; i = j - 8) {
-	    j = i - *(int32_t *)(symData + i);
-	    DefinePrecompSymbol((Sym *)(symData + j));
-	}
+        if ((symData = malloc(pch->pc_SymSize)) == NULL)
+            ErrorNoMemory();
+        if (read(fd, symData, pch->pc_SymSize) != pch->pc_SymSize)
+            cerror(EFATAL_PARSE_PRECOMP);
+        for (i = pch->pc_SymSize - 4; i > 0; i = j - 8) {
+            j = i - *(int32_t *)(symData + i);
+            DefinePrecompSymbol((Sym *)(symData + j));
+        }
     }
 }
 
@@ -171,10 +171,10 @@ PreCompNode *pcn;
     PreCompHdr pch;
 
     /*
-     *	dummy header
+     *  dummy header
      */
 
-    pch.pc_Magic = 0;	    /*	bad value for now   */
+    pch.pc_Magic = 0;       /*  bad value for now   */
     pch.pc_SymSize = 0;
     pch.pc_CppSize = 0;
     pch.pc_Version[0] = 0;
@@ -204,7 +204,7 @@ FILE *foOrig;
     pos2 = ftell(Fo);
 
     /*
-     *	fixup header
+     *  fixup header
      */
 
     fseek(Fo, 0L, 0);
@@ -216,26 +216,26 @@ FILE *foOrig;
 
 #if FASTPRECOMP
     fprintf(foOrig, "#precomp %zd %d \"%s\"\n",
-	    sizeof(pch),
-	    pch.pc_CppSize,
-	    pcn->pn_OutName
+            sizeof(pch),
+            pch.pc_CppSize,
+            pcn->pn_OutName
     );
 #else
     {
-	static char XBuf[2048];
-	int32_t n;
-	int32_t s;
+        static char XBuf[2048];
+        int32_t n;
+        int32_t s;
 
-	for (s = pch.pc_CppSize; s; s -= n) {
-	    n = (s < sizeof(XBuf)) ? s : sizeof(XBuf);
-	    if (fread(XBuf, 1, n, Fo) == n) {
-		if (fwrite(XBuf, 1, n, foOrig) != n) {
-		    exit(22);
-		}
-	    } else {
-		exit(22);
-	    }
-	}
+        for (s = pch.pc_CppSize; s; s -= n) {
+            n = (s < sizeof(XBuf)) ? s : sizeof(XBuf);
+            if (fread(XBuf, 1, n, Fo) == n) {
+                if (fwrite(XBuf, 1, n, foOrig) != n) {
+                    exit(22);
+                }
+            } else {
+                exit(22);
+            }
+        }
     }
 #endif
 }
@@ -265,168 +265,168 @@ int32_t endpos;
 
     setmem(SymRefLen, sizeof(SymRefLen), 0);
     if ((fo = fopen(pcn->pn_OutName, "w+")) == NULL)
-	cerror(EFATAL_CANT_CREATE_FILE, pcn->pn_OutName);
+        cerror(EFATAL_CANT_CREATE_FILE, pcn->pn_OutName);
     if (fseek(fi, begpos, 0) < 0)
-	cerror(EFATAL_SEEK_PRECOMP);
+        cerror(EFATAL_SEEK_PRECOMP);
 
     /*
-     *	dummy header
+     *  dummy header
      */
 
-    pch.pc_Magic = 0;	    /*	bad value for now   */
+    pch.pc_Magic = 0;       /*  bad value for now   */
     pch.pc_SymSize = 0;
     pch.pc_CppSize = 0;
     pch.pc_Version[0] = 0;
     fwrite(&pch, 1, sizeof(pch), fo);
 
     /*
-     *	copy preprocessor dump to precomp file, tokenize simple constructs
+     *  copy preprocessor dump to precomp file, tokenize simple constructs
      */
 
     if (endpos != begpos) {
-	char *buf;
-	int32_t bytes = endpos - begpos;
-	int32_t j = 0;
-	short c;
-	short wsFlag = 0;   /*	remove white space flag */
+        char *buf;
+        int32_t bytes = endpos - begpos;
+        int32_t j = 0;
+        short c;
+        short wsFlag = 0;   /*  remove white space flag */
 
-	if ((buf = malloc(bytes)) == NULL)
-	    ErrorNoMemory();
-	if (fread(buf, bytes, 1, fi) != 1)
-	    cerror(EFATAL_READ_PRECOMP);
+        if ((buf = malloc(bytes)) == NULL)
+            ErrorNoMemory();
+        if (fread(buf, bytes, 1, fi) != 1)
+            cerror(EFATAL_READ_PRECOMP);
 
-	pch.pc_CppSize = bytes;
+        pch.pc_CppSize = bytes;
 
-	fwrite(buf, bytes, 1, fo);
+        fwrite(buf, bytes, 1, fo);
 
-#ifdef NOTDEF2	    /*	doesn't help enough */
-	while (j < bytes) {
-	    int32_t i;
+#ifdef NOTDEF2      /*  doesn't help enough */
+        while (j < bytes) {
+            int32_t i;
 
-	    c = buf[j];
+            c = buf[j];
 
-	    /*
-	     *	Scan for symbols.  Ignore symbols that are part of numbers
-	     *	because DC1 cannot parse that.	We must also ignore
-	     *	quoted strings and character constants.
-	     */
+            /*
+             *  Scan for symbols.  Ignore symbols that are part of numbers
+             *  because DC1 cannot parse that.  We must also ignore
+             *  quoted strings and character constants.
+             */
 
-	    switch(CharType[c]) {
-	    case -2:	 /* white space 	    */
-		if (wsFlag) {
-		    --pch.pc_CppSize;
-		} else {
-		    putc(c, fo);
-		    wsFlag = 1;
-		}
-		++j;
-		continue;
-	    case -1:	 /* quote or single quote   */
-		wsFlag = 0;
-		for (i = j, ++j; j < bytes && buf[j] != buf[i]; ++j) {
-		    if (buf[j] == '\\')
-			++j;
-		}
-		++j;
-		fwrite(buf + i, j - i, 1, fo);
-		break;
-	    case 0:	/*  not anything remarkable */
-		wsFlag = 0;
-		putc(c, fo);
-		++j;
-		break;
-	    case 3:
-		for (i = j, ++j; j < bytes && buf[j] != '\n'; ++j)
-		    ;
-		fwrite(buf + i, j - i, 1, fo);
-		break;
-	    case 1:	/*  number		    */
-		/*
-		 *  In parsing a number we skip potential symbols embedded
-		 *  in the number because DC1 cannot handle this case.
-		 */
+            switch(CharType[c]) {
+            case -2:     /* white space             */
+                if (wsFlag) {
+                    --pch.pc_CppSize;
+                } else {
+                    putc(c, fo);
+                    wsFlag = 1;
+                }
+                ++j;
+                continue;
+            case -1:     /* quote or single quote   */
+                wsFlag = 0;
+                for (i = j, ++j; j < bytes && buf[j] != buf[i]; ++j) {
+                    if (buf[j] == '\\')
+                        ++j;
+                }
+                ++j;
+                fwrite(buf + i, j - i, 1, fo);
+                break;
+            case 0:     /*  not anything remarkable */
+                wsFlag = 0;
+                putc(c, fo);
+                ++j;
+                break;
+            case 3:
+                for (i = j, ++j; j < bytes && buf[j] != '\n'; ++j)
+                    ;
+                fwrite(buf + i, j - i, 1, fo);
+                break;
+            case 1:     /*  number                  */
+                /*
+                 *  In parsing a number we skip potential symbols embedded
+                 *  in the number because DC1 cannot handle this case.
+                 */
 
-		wsFlag = 0;
-		for (i = j, ++j; j < bytes && (CharType[c = buf[j]] > 0 || c == '.'); ++j)
-		    ;
-		fwrite(buf + i, j - i, 1, fo);
-		break;
-	    case 2:	/*  symbol		    */
-		/*
-		 *  In parsing a symbol note that numerical types are valid
-		 *  symbol characters after the first character, e.g. A23
-		 */
+                wsFlag = 0;
+                for (i = j, ++j; j < bytes && (CharType[c = buf[j]] > 0 || c == '.'); ++j)
+                    ;
+                fwrite(buf + i, j - i, 1, fo);
+                break;
+            case 2:     /*  symbol                  */
+                /*
+                 *  In parsing a symbol note that numerical types are valid
+                 *  symbol characters after the first character, e.g. A23
+                 */
 
-		wsFlag = 0;
-		{
-		    TokenNode *tn;
-		    char *ptr = buf + j;
+                wsFlag = 0;
+                {
+                    TokenNode *tn;
+                    char *ptr = buf + j;
 
-		    for (i = j, ++j; j < bytes && CharType[buf[j]] > 0; ++j)
-			;
-		    i = j - i;	    /*	i == length of symbol	*/
+                    for (i = j, ++j; j < bytes && CharType[buf[j]] > 0; ++j)
+                        ;
+                    i = j - i;      /*  i == length of symbol   */
 
-		    for (tn = TokenHash[hash(ptr, i) & THASHMASK]; tn; tn = tn->tn_Next) {
-			if (tn->tn_Len == i && cmpmem(ptr, tn->tn_Name, i) == 0)
-			    break;
-		    }
-		    if (tn) {
-			fwrite(&tn->tn_Token, sizeof(tn->tn_Token), 1, fo);
-			pch.pc_CppSize -= i - sizeof(tn->tn_Token);
-			wsFlag = 1;
-		    } else {
+                    for (tn = TokenHash[hash(ptr, i) & THASHMASK]; tn; tn = tn->tn_Next) {
+                        if (tn->tn_Len == i && cmpmem(ptr, tn->tn_Name, i) == 0)
+                            break;
+                    }
+                    if (tn) {
+                        fwrite(&tn->tn_Token, sizeof(tn->tn_Token), 1, fo);
+                        pch.pc_CppSize -= i - sizeof(tn->tn_Token);
+                        wsFlag = 1;
+                    } else {
 #ifdef NOTDEF
-			short idx;
+                        short idx;
 
-			/*
-			 *  check previously used symbols.  When placing
-			 *  a reference use a simple 8 bit hash value but
-			 *  leave room to allow DC1 to change it to a
-			 *  real pointer.
-			 */
+                        /*
+                         *  check previously used symbols.  When placing
+                         *  a reference use a simple 8 bit hash value but
+                         *  leave room to allow DC1 to change it to a
+                         *  real pointer.
+                         */
 
-			for (idx = (symRefIdx - 1) & 255; idx != symRefIdx; idx = (idx - 1) & 255) {
-			    if (i == SymRefLen[idx] && cmpmem(SymRefPtr[idx], ptr, i) == 0)
-				break;
-			}
-			idx = (symRefIdx - idx) & 255;
+                        for (idx = (symRefIdx - 1) & 255; idx != symRefIdx; idx = (idx - 1) & 255) {
+                            if (i == SymRefLen[idx] && cmpmem(SymRefPtr[idx], ptr, i) == 0)
+                                break;
+                        }
+                        idx = (symRefIdx - idx) & 255;
 
-			if (idx > 0 && idx < 128) {
-			    putc(TokCppRef1_Byte, fo);
-			    putc(idx, fo);
-			    pch.pc_CppSize -= i - sizeof(tn->tn_Token);
-			    wsFlag = 1;
-			} else
+                        if (idx > 0 && idx < 128) {
+                            putc(TokCppRef1_Byte, fo);
+                            putc(idx, fo);
+                            pch.pc_CppSize -= i - sizeof(tn->tn_Token);
+                            wsFlag = 1;
+                        } else
 #endif
-			{
+                        {
 #ifdef NOTDEF
-			    SymRefPtr[symRefIdx] = ptr;
-			    SymRefLen[symRefIdx] = i;
-			    symRefIdx = (symRefIdx + 1) & 0xFF;
+                            SymRefPtr[symRefIdx] = ptr;
+                            SymRefLen[symRefIdx] = i;
+                            symRefIdx = (symRefIdx + 1) & 0xFF;
 #endif
-			    fwrite(ptr, i, 1, fo);
-			    wsFlag = 0;
-			}
-		    }
-		}
-		break;
-	    }
-	}
+                            fwrite(ptr, i, 1, fo);
+                            wsFlag = 0;
+                        }
+                    }
+                }
+                break;
+            }
+        }
 #endif
-	free(buf);
+        free(buf);
     }
 
     fseek(fo, 0L, 1);
     pos = ftell(fo);
 
     /*
-     *	dump symbols
+     *  dump symbols
      */
 
     DumpPrecompSymbols(fo);
 
     /*
-     *	fixup header
+     *  fixup header
      */
 
     pch.pc_Magic = PCH_MAGIC;

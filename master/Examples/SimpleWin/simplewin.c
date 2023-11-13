@@ -61,44 +61,44 @@ char *av[];
     atexit(myexit);
 
     if (Scr = OpenScreen(&Ns)) {
-	Nw.TopEdge= 2;	/*  leave 2 pixel screen title so can drag screen */
-	Nw.Height = Scr->Height - Nw.TopEdge;
-	Nw.Width  = Scr->Width;
+        Nw.TopEdge= 2;  /*  leave 2 pixel screen title so can drag screen */
+        Nw.Height = Scr->Height - Nw.TopEdge;
+        Nw.Width  = Scr->Width;
 
-	Nw.Screen = Scr;
+        Nw.Screen = Scr;
 
-	if (Win = OpenWindow(&Nw)) {
-	    while (notDone) {
-		IntuiMessage *imsg;
+        if (Win = OpenWindow(&Nw)) {
+            while (notDone) {
+                IntuiMessage *imsg;
 
-		WaitPort(Win->UserPort);
-		while (imsg = (IntuiMessage *)GetMsg(Win->UserPort)) {
-		    switch(imsg->Class) {
-		    case IDCMP_CLOSEWINDOW:
-			notDone = 0;
-			break;
-		    case IDCMP_MOUSEBUTTONS:
-			switch(imsg->Code) {
-			case SELECTDOWN:
-			    Move(Win->RPort, imsg->MouseX, imsg->MouseY);
-			    down = 1;
-			    break;
-			case SELECTUP:
-			    Draw(Win->RPort, imsg->MouseX, imsg->MouseY);
-			    down = 0;
-			    break;
-			}
-			break;
-		    case IDCMP_MOUSEMOVE:
-			if (down)
-			    Draw(Win->RPort, imsg->MouseX, imsg->MouseY);
-			break;
-		    }
-		    ReplyMsg(&imsg->ExecMessage);
-		    SetAPen(Win->RPort, pen++);
-		}
-	    }
-	}
+                WaitPort(Win->UserPort);
+                while (imsg = (IntuiMessage *)GetMsg(Win->UserPort)) {
+                    switch(imsg->Class) {
+                    case IDCMP_CLOSEWINDOW:
+                        notDone = 0;
+                        break;
+                    case IDCMP_MOUSEBUTTONS:
+                        switch(imsg->Code) {
+                        case SELECTDOWN:
+                            Move(Win->RPort, imsg->MouseX, imsg->MouseY);
+                            down = 1;
+                            break;
+                        case SELECTUP:
+                            Draw(Win->RPort, imsg->MouseX, imsg->MouseY);
+                            down = 0;
+                            break;
+                        }
+                        break;
+                    case IDCMP_MOUSEMOVE:
+                        if (down)
+                            Draw(Win->RPort, imsg->MouseX, imsg->MouseY);
+                        break;
+                    }
+                    ReplyMsg(&imsg->ExecMessage);
+                    SetAPen(Win->RPort, pen++);
+                }
+            }
+        }
     }
     return(0);
 }
@@ -107,12 +107,12 @@ void
 myexit(void)
 {
     if (Win) {
-	CloseWindow(Win);
-	Win = NULL;
+        CloseWindow(Win);
+        Win = NULL;
     }
     if (Scr) {
-	CloseScreen(Scr);
-	Scr = NULL;
+        CloseScreen(Scr);
+        Scr = NULL;
     }
 }
 

@@ -19,7 +19,7 @@ char *buf;
     char *path;
 
     if (path = getcwd(buf, 256))
-	return(path);
+        return(path);
     strcpy(buf, strerror(errno));
     return(NULL);
 }

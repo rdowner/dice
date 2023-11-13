@@ -1,10 +1,10 @@
 
-extensions/extensions					extensions/extensions
-extensions/EXTENSIONS					extensions/EXTENSIONS
+extensions/extensions                                   extensions/extensions
+extensions/EXTENSIONS                                   extensions/EXTENSIONS
 
-			       COMPILER EXTENSIONS
+                               COMPILER EXTENSIONS
 
-			     AUTO LIBRARY OPENNING
+                             AUTO LIBRARY OPENNING
 
     Most Amiga libraries are supported on an autoinit basis.  Normally you
     declare the library base variable then OpenLibrary() it in your main.
@@ -26,337 +26,337 @@ extensions/EXTENSIONS					extensions/EXTENSIONS
     manually.  Declaring a library base variable causes the associated
     autolib routines to NOT be linked into the executable.
 
-		   TYPE QUALIFIER AND STORAGER QUALIFIER EXTENSIONS
+                   TYPE QUALIFIER AND STORAGER QUALIFIER EXTENSIONS
 
     availability:   reg-only = registered users
 
 
-    extension	avail	    comment
+    extension   avail       comment
 
-    volatile	all	    force auto's to NOT be placed in registers
-    const	all	    place data items in the code section (see -ms/-mS)
-    __autoinit	all	    cause a subroutine to be run automatically
-			    before _main (for variables, puts variable in
-			    alternate section)
-    __autoexit	all	    cause a subroutine to be run automatically
-			    before _exit
-    __interrupt all	    NOT AMIGA COMPATIBLE
-    __chip	reg-only    cause storage to be placed in CHIP memory
-    __far	all	    cause storage to be referenced using absolute-long
-    __near	all	    cause storage to be referenced using A4-relative
-    __aligned	all	    cause storage to be aligned on a longword boundry
-    __unaligned all	    allows structures to be byte-aligned (at your own risk)
-    __geta4	reg-only    cause a subroutine to setup the A4 data base
-			    pointer
+    volatile    all         force auto's to NOT be placed in registers
+    const       all         place data items in the code section (see -ms/-mS)
+    __autoinit  all         cause a subroutine to be run automatically
+                            before _main (for variables, puts variable in
+                            alternate section)
+    __autoexit  all         cause a subroutine to be run automatically
+                            before _exit
+    __interrupt all         NOT AMIGA COMPATIBLE
+    __chip      reg-only    cause storage to be placed in CHIP memory
+    __far       all         cause storage to be referenced using absolute-long
+    __near      all         cause storage to be referenced using A4-relative
+    __aligned   all         cause storage to be aligned on a longword boundry
+    __unaligned all         allows structures to be byte-aligned (at your own risk)
+    __geta4     reg-only    cause a subroutine to setup the A4 data base
+                            pointer
 
-    __shared	all	    storage is placed in the code section and thus
-			    is shared between instances of a resident'd
-			    program.  EXPERIMENTAL
+    __shared    all         storage is placed in the code section and thus
+                            is shared between instances of a resident'd
+                            program.  EXPERIMENTAL
 
-    __regargs	all	    specify function takes registered arguments
-			    even if -mr/-mR/-mRR is not used.
+    __regargs   all         specify function takes registered arguments
+                            even if -mr/-mR/-mRR is not used.
 
-    __stkargs	all	    specify function takes normal stack based
-			    args despite the possibility that -mr/-mR/-mRR
-			    has been specified.
+    __stkargs   all         specify function takes normal stack based
+                            args despite the possibility that -mr/-mR/-mRR
+                            has been specified.
 
-    __dynamic	reg-only    dynamic linking of routines/variables at run-
-			    time
+    __dynamic   reg-only    dynamic linking of routines/variables at run-
+                            time
 
-    __noprof	all	    disable profiling for a procedure
+    __noprof    all         disable profiling for a procedure
 
-    __D0-__D7	reg-only    explicit register specification for procedure
-    __A0-__A7		    arguments.
+    __D0-__D7   reg-only    explicit register specification for procedure
+    __A0-__A7               arguments.
 
     volatile
-	This storage qualifier normally specifies that the physical storage
-	is 'synched' at the end of each line of C code.  DICE already does
-	this by virtue of not doing any major optimizations.  Under ANSI
-	this storage qualifier also forces auto variables to NOT be placed
-	in a register.	This can be important if you use <setjmp.h>
-	(see MAN/SETJMP.DOC for more information)
+        This storage qualifier normally specifies that the physical storage
+        is 'synched' at the end of each line of C code.  DICE already does
+        this by virtue of not doing any major optimizations.  Under ANSI
+        this storage qualifier also forces auto variables to NOT be placed
+        in a register.  This can be important if you use <setjmp.h>
+        (see MAN/SETJMP.DOC for more information)
 
     const
-	The const type qualifier can be handled in different ways by DICE.
-	As of the 2.05.11 version of DC1, any const qualified object is
-	placed in the code section.  Before 2.05.11 const qualified
-	objects were only placed in the code section if -ms or -mS was
-	also given to DCC.
+        The const type qualifier can be handled in different ways by DICE.
+        As of the 2.05.11 version of DC1, any const qualified object is
+        placed in the code section.  Before 2.05.11 const qualified
+        objects were only placed in the code section if -ms or -mS was
+        also given to DCC.
 
-	Normally a const qualified item is handled as a near item (pc-rel)
-	within the module that declares it, and handled with absolute-long
-	references in modules that extern it.
+        Normally a const qualified item is handled as a near item (pc-rel)
+        within the module that declares it, and handled with absolute-long
+        references in modules that extern it.
 
-	If -ms is used then string constants are made const.  If -mS is
-	used then all external references to const items use pc-relative
-	instead of the absolute-long addressing mode.  Do NOT use -mS
-	unless your final code size is less than 32KBytes.
+        If -ms is used then string constants are made const.  If -mS is
+        used then all external references to const items use pc-relative
+        instead of the absolute-long addressing mode.  Do NOT use -mS
+        unless your final code size is less than 32KBytes.
 
-	Using -ms can substantially reduce the number of run-time
-	relocations for -r residentable programs as well as the run-time
-	dynamically allocated data+bss space.
+        Using -ms can substantially reduce the number of run-time
+        relocations for -r residentable programs as well as the run-time
+        dynamically allocated data+bss space.
 
-	(refer to DCC.DOC, -ms and -mS options for details)
+        (refer to DCC.DOC, -ms and -mS options for details)
 
     __autoinit
     __autoexit
 
-	These storage qualifiers cause a routine to be called after libraries
-	are openned before _main is called (__autoinit), and just before
-	libraries are closed after _exit is called (__autoexit).  They may
-	be used for low level initialization and shutdown and may not make
-	any c.lib calls (i.e. malloc, fopen, open, etc... may not be called)
+        These storage qualifiers cause a routine to be called after libraries
+        are openned before _main is called (__autoinit), and just before
+        libraries are closed after _exit is called (__autoexit).  They may
+        be used for low level initialization and shutdown and may not make
+        any c.lib calls (i.e. malloc, fopen, open, etc... may not be called)
 
-	__autoinit void
-	fubar()
-	{
-	    NewList(&MyList);
-	}
+        __autoinit void
+        fubar()
+        {
+            NewList(&MyList);
+        }
 
-	__autoinit may be used with a variable declaration.  The variable
-	is placed in an alternate section.  This is mainly of use for
-	ROMable applications to group declared data together, with a base
-	section pointer in the ROM startup object and a 'terminator'
-	in the last object module.  For example, a 'ROM MODULE LIST' may
-	be constructed painlessly using this feature.
+        __autoinit may be used with a variable declaration.  The variable
+        is placed in an alternate section.  This is mainly of use for
+        ROMable applications to group declared data together, with a base
+        section pointer in the ROM startup object and a 'terminator'
+        in the last object module.  For example, a 'ROM MODULE LIST' may
+        be constructed painlessly using this feature.
 
-	__autoinit int a;	    /*	altbss,bss	*/
-	__autoinit int a = 4;	    /*	altdata,data	*/
-	__autoinit const int a;     /*	altcode,code	*/
-	__autoinit const int a = 4; /*	altcode,code	*/
+        __autoinit int a;           /*  altbss,bss      */
+        __autoinit int a = 4;       /*  altdata,data    */
+        __autoinit const int a;     /*  altcode,code    */
+        __autoinit const int a = 4; /*  altcode,code    */
 
-	SUGGESTION:  use dcc -a to oberve the assembly generated.  Note
-	that BSS data verses INITIALIZED data go into different sections.
+        SUGGESTION:  use dcc -a to oberve the assembly generated.  Note
+        that BSS data verses INITIALIZED data go into different sections.
 
     __interrupt
 
-	This storage qualifier for a subroutine causes all used registers to
-	be saved and restored, including the scratch registers, and returns
-	via RTE instead of RTS.
+        This storage qualifier for a subroutine causes all used registers to
+        be saved and restored, including the scratch registers, and returns
+        via RTE instead of RTS.
 
-	THIS KEYWORD IS NOT AMIGA COMPATIBLE
+        THIS KEYWORD IS NOT AMIGA COMPATIBLE
 
     __noprof
 
-	When a source module is compiled with -prof each routine is
-	generally profiled.  The __noprof qualifier for a procedure
-	declaration disables profiling for the routine in question.
-	This is used, specifically, to prevent the profiling routine
-	from profiling itself (result = crash) in the support library.
+        When a source module is compiled with -prof each routine is
+        generally profiled.  The __noprof qualifier for a procedure
+        declaration disables profiling for the routine in question.
+        This is used, specifically, to prevent the profiling routine
+        from profiling itself (result = crash) in the support library.
 
     __chip
 
-	This storage qualifier forces a static or global data item to be
-	placed in CHIP memory.	Normally this precludes being able to make
-	such programs resident (-r option), but if you also use the 'const'
-	type qualifier you can make such programs resident....	The 'const'
-	type qualifier assumes that the contents of the object will NEVER
-	be modified!!!
+        This storage qualifier forces a static or global data item to be
+        placed in CHIP memory.  Normally this precludes being able to make
+        such programs resident (-r option), but if you also use the 'const'
+        type qualifier you can make such programs resident....  The 'const'
+        type qualifier assumes that the contents of the object will NEVER
+        be modified!!!
 
-	__chip short ImageData[] = { ... };	    read-write object
-						    program not residentable
+        __chip short ImageData[] = { ... };         read-write object
+                                                    program not residentable
 
-	__chip const short ImageData[] = { ... };   read-only object
-						    program is residentable
+        __chip const short ImageData[] = { ... };   read-only object
+                                                    program is residentable
 
     __far
 
-	__far int a;
+        __far int a;
 
-	This storage qualifier determines how a data object is to be
-	referenced.  It overides the data model for the reference and
-	forces the ABSOLUTE-LONG addressing mode to be used.
+        This storage qualifier determines how a data object is to be
+        referenced.  It overides the data model for the reference and
+        forces the ABSOLUTE-LONG addressing mode to be used.
 
-	Note that __chip data is automatically forced to be __far.
-	When compiling -mD the default is to use __far references.
+        Note that __chip data is automatically forced to be __far.
+        When compiling -mD the default is to use __far references.
 
-	WARNING:  Using __far addressing on non-const data items precludes
-	the executable from being residentable.
+        WARNING:  Using __far addressing on non-const data items precludes
+        the executable from being residentable.
 
     __near
 
-	__near int a;
+        __near int a;
 
-	This storage qualifier forces a small-data model (A4-Relative)
-	reference to a data object.  When using the -md (default) data
-	model data objects are accessed as near items by default.
+        This storage qualifier forces a small-data model (A4-Relative)
+        reference to a data object.  When using the -md (default) data
+        model data objects are accessed as near items by default.
 
     __aligned
 
-	This storage qualifier forces the static, global, or auto data
-	object to be aligned on a longword boundry.
+        This storage qualifier forces the static, global, or auto data
+        object to be aligned on a longword boundry.
 
-	foo()
-	{
-	    __aligned struct FileInfoBlock fib;
-	    ...
-	}
+        foo()
+        {
+            __aligned struct FileInfoBlock fib;
+            ...
+        }
 
-	WARNING:    __aligned does not work if this subroutine or any
-	higher level subroutine is passed a *structure* where said
-	structure is not aligned.  We are talking about passing actual
-	structures here, not pointers to structures (which work fine
-	with __aligned).  Note that passing char or short integers works
-	just fine with __aligned.
+        WARNING:    __aligned does not work if this subroutine or any
+        higher level subroutine is passed a *structure* where said
+        structure is not aligned.  We are talking about passing actual
+        structures here, not pointers to structures (which work fine
+        with __aligned).  Note that passing char or short integers works
+        just fine with __aligned.
 
     __unaligned
 
-	This storage qualifier allows structures to be byte-aligned in
-	terms of NOT padding them to the nearest word or longword.
+        This storage qualifier allows structures to be byte-aligned in
+        terms of NOT padding them to the nearest word or longword.
 
-	    __unaligned struct foo {
-		char a;
-	    } a, b, c;
+            __unaligned struct foo {
+                char a;
+            } a, b, c;
 
-	In the above example, sizeof(a), sizeof(b), and sizeof(c) is 1.
+        In the above example, sizeof(a), sizeof(b), and sizeof(c) is 1.
 
-	USE AT YOUR OWN RISK.  Accessing word/long/ptr items at odd
-	byte addresses is illegal for the 68000 and will generate an
-	exception.  This qualifier is useful mainly for character
-	structures that must map over a text file.
+        USE AT YOUR OWN RISK.  Accessing word/long/ptr items at odd
+        byte addresses is illegal for the 68000 and will generate an
+        exception.  This qualifier is useful mainly for character
+        structures that must map over a text file.
 
     __geta4
 
-	This storage qualifier on a subroutine definition forces the
-	subroutine to save A4 and then load A4 with the small-data model
-	data pointer on subroutine entry, then restore the original
-	contents of A4 on subroutine exit.  This is useful for
-	inter-context calls when using the small-data model.
+        This storage qualifier on a subroutine definition forces the
+        subroutine to save A4 and then load A4 with the small-data model
+        data pointer on subroutine entry, then restore the original
+        contents of A4 on subroutine exit.  This is useful for
+        inter-context calls when using the small-data model.
 
-	__geta4 void
-	fubar()
-	{
+        __geta4 void
+        fubar()
+        {
 
-	}
+        }
 
-	Unfortunately, using this qualifier precludes being able to
-	generate a residentable executable since a residentable
-	executable's data space pointer is unknown at link time.
+        Unfortunately, using this qualifier precludes being able to
+        generate a residentable executable since a residentable
+        executable's data space pointer is unknown at link time.
 
     __shared
 
-	This storage modifier places the global or static variable
-	declaration into the code segment, thus this variable will be
-	SHARED across multiple running instances of the same program,
-	assuming the program has been made RESIDENT.  A program that has
-	not been made resident will not share variables.
+        This storage modifier places the global or static variable
+        declaration into the code segment, thus this variable will be
+        SHARED across multiple running instances of the same program,
+        assuming the program has been made RESIDENT.  A program that has
+        not been made resident will not share variables.
 
-    __config	(UNDER TESTING, DO NOT USE FOR ANY REAL PROJECT)
+    __config    (UNDER TESTING, DO NOT USE FOR ANY REAL PROJECT)
 
-	This storage modifier generates loading and saving code for all
-	variables in question.	You should not declare any pointers as
-	a saved pointer value will not be valid when the program is run
-	later on.
+        This storage modifier generates loading and saving code for all
+        variables in question.  You should not declare any pointers as
+        a saved pointer value will not be valid when the program is run
+        later on.
 
-	If no configuration file exists the initialized value of the static
-	or global storage is used, for example:
+        If no configuration file exists the initialized value of the static
+        or global storage is used, for example:
 
-	    __config int a = 34;
+            __config int a = 34;
 
-	'a' will be 34 if no configuration file exists.  If a configuration
-	file does exist all __config variables will be overriden with the
-	values stored in the configuration file.
+        'a' will be 34 if no configuration file exists.  If a configuration
+        file does exist all __config variables will be overriden with the
+        values stored in the configuration file.
 
-	The name and version of the configuration file must be specified
-	by the programmer as two initialized global variables or a link
-	error will occur.  For example:
+        The name and version of the configuration file must be specified
+        by the programmer as two initialized global variables or a link
+        error will occur.  For example:
 
-	    char *ConfigFile = "s:myprog.config";
-	    long ConfigVersion = 1;
+            char *ConfigFile = "s:myprog.config";
+            long ConfigVersion = 1;
 
-	DICE configuration code will automatically ignore any configuration
-	file whos version does not equal ConfigVersion.  As a programmer,
-	you must change ConfigVersion if you modify ANY __config
-	declaration, the ordering of any __config declaration, or the
-	ordering of any object modules in your link.  If you fail to do so,
-	the program may attempt to load an invalid configuration.
+        DICE configuration code will automatically ignore any configuration
+        file whos version does not equal ConfigVersion.  As a programmer,
+        you must change ConfigVersion if you modify ANY __config
+        declaration, the ordering of any __config declaration, or the
+        ordering of any object modules in your link.  If you fail to do so,
+        the program may attempt to load an invalid configuration.
 
-	The configuration is automatically loaded on program startup,
-	before _main() (__main from assembly) gets run, and if ConfigFile
-	is non-NULL on program exit (_exit) then the configuration will be
-	saved.	 Thus, __config is supported even if you use the _main()
-	entry point and _exit() exit point.
+        The configuration is automatically loaded on program startup,
+        before _main() (__main from assembly) gets run, and if ConfigFile
+        is non-NULL on program exit (_exit) then the configuration will be
+        saved.   Thus, __config is supported even if you use the _main()
+        entry point and _exit() exit point.
 
-	WARNING: ONLY PROCESSES MAY USE THE __CONFIG TYPE QUALIFIER.  If
-	you plan to run a program as a task instead of a process then you
-	cannot use __config.  Note that any WORKBENCH or CLI run program
-	is a process.  DOS handlers are also processes, but it is not
-	suggested that __config be used for any program that is to be
-	a DOS handler (i.e. a DOS device).  Libraries and exec Devices are
-	NOT processes... not even tasks usually, and thus __config may not
-	be used for such programs.
+        WARNING: ONLY PROCESSES MAY USE THE __CONFIG TYPE QUALIFIER.  If
+        you plan to run a program as a task instead of a process then you
+        cannot use __config.  Note that any WORKBENCH or CLI run program
+        is a process.  DOS handlers are also processes, but it is not
+        suggested that __config be used for any program that is to be
+        a DOS handler (i.e. a DOS device).  Libraries and exec Devices are
+        NOT processes... not even tasks usually, and thus __config may not
+        be used for such programs.
 
     __regargs
     __stkargs
 
-	Normally these qualifiers are used in conjuction with the -mr,
-	-mR, or -mRR flags.  Even so, they are usually used only to
-	force a normal C calling convention for callback functions (when
-	you supply intuition, graphics, exec, or whomever with a callback
-	function the OS will call you with arguments on the stack).
+        Normally these qualifiers are used in conjuction with the -mr,
+        -mR, or -mRR flags.  Even so, they are usually used only to
+        force a normal C calling convention for callback functions (when
+        you supply intuition, graphics, exec, or whomever with a callback
+        function the OS will call you with arguments on the stack).
 
-	Specifying neither causes the routine to default to either stack
-	args or register args depending on the DCC flags.  Specifying
-	__stkargs forces the function to use stack based arguments no
-	matter what options are used.  Specifying __regargs forces the
-	function to use register based arguments in the same manner.
-	Specifying both forces the function to generate two entry points
-	(same thing occurs by default when -mr is used).
+        Specifying neither causes the routine to default to either stack
+        args or register args depending on the DCC flags.  Specifying
+        __stkargs forces the function to use stack based arguments no
+        matter what options are used.  Specifying __regargs forces the
+        function to use register based arguments in the same manner.
+        Specifying both forces the function to generate two entry points
+        (same thing occurs by default when -mr is used).
 
-	Please refer to the discussion in REGARGS.DOC for more information
+        Please refer to the discussion in REGARGS.DOC for more information
 
     __dynamic
 
-	The __dynamic storage qualifier is used to declare routines that
-	do not exist at link or load time but will be loaded run-time.
-	The overall effect is to generate autoinit code to dynamically
-	load an indirect pointer to the declared variable/procedure and
-	autoexit code to release your references on said pointer.
+        The __dynamic storage qualifier is used to declare routines that
+        do not exist at link or load time but will be loaded run-time.
+        The overall effect is to generate autoinit code to dynamically
+        load an indirect pointer to the declared variable/procedure and
+        autoexit code to release your references on said pointer.
 
-	DICE transparently declares the variables/procedures as pointers
-	and transparently indirects whenever they are used in code.  The
-	__dynamic feature is INCREDIBLY POWERFUL, allowing a program to
-	interface to third-party object modules at run-time.  Generally,
-	this type of interface is more desirable than a shared-library
-	when the module in question are huge -- do major things, as well
-	as allowing third-party replacement of modules without effecting
-	program operation or requiring a relinking of the program.
+        DICE transparently declares the variables/procedures as pointers
+        and transparently indirects whenever they are used in code.  The
+        __dynamic feature is INCREDIBLY POWERFUL, allowing a program to
+        interface to third-party object modules at run-time.  Generally,
+        this type of interface is more desirable than a shared-library
+        when the module in question are huge -- do major things, as well
+        as allowing third-party replacement of modules without effecting
+        program operation or requiring a relinking of the program.
 
-	Please refer to DYNAMIC.DOC for a more involved explanation.
+        Please refer to DYNAMIC.DOC for a more involved explanation.
 
     __D0-__D7
     __A0-__A7
 
-	These qualifiers may be used to specify explicit registers that
-	procedure arguments are to be placed in.  This feature is meant
-	for shared libraries and other related things that call procedures
-	via specific registers.  Below is an example of a prototype and
-	a procedure that uses this feature:
+        These qualifiers may be used to specify explicit registers that
+        procedure arguments are to be placed in.  This feature is meant
+        for shared libraries and other related things that call procedures
+        via specific registers.  Below is an example of a prototype and
+        a procedure that uses this feature:
 
-	int fubar(__D0 int, __A2 char *);
+        int fubar(__D0 int, __A2 char *);
 
-	int
-	fubar(n, ptr)
-	__D0 int n;
-	__A2 char *ptr;
-	{
-	    ...
-	    return(0);
-	}
+        int
+        fubar(n, ptr)
+        __D0 int n;
+        __A2 char *ptr;
+        {
+            ...
+            return(0);
+        }
 
-	You can use register storage qualifiers in both old style and new
-	style (ANSI) procedure declarations.  To properly reference the
-	procedure from another module the other module should contain a
-	properly qualified prototype for the procedure.
+        You can use register storage qualifiers in both old style and new
+        style (ANSI) procedure declarations.  To properly reference the
+        procedure from another module the other module should contain a
+        properly qualified prototype for the procedure.
 
-	It is possible to pass arguments in any register except __A7.
-	However, when passing an argument in __A4 the procedure in question
-	must either use the large-data model or the __geta4 storage
-	qualifier to function properly since A4 normally contains the
-	data base for the small data model
+        It is possible to pass arguments in any register except __A7.
+        However, when passing an argument in __A4 the procedure in question
+        must either use the large-data model or the __geta4 storage
+        qualifier to function properly since A4 normally contains the
+        data base for the small data model
 
     --------------------------------------------------------------------
-			   DYNAMIC STACKS (-gs option)
+                           DYNAMIC STACKS (-gs option)
 
     DICE now has a new option, -gs, which generates stack checking code for
     every subroutine.  But, unlike SAS/C or MANX, DICE is able to allocate
@@ -395,15 +395,15 @@ extensions/EXTENSIONS					extensions/EXTENSIONS
     If you DO define a stack_abort() routine, then you must take one
     of two actions:
 
-	(1) abort() or exit() the program
+        (1) abort() or exit() the program
 
-	(2) return (causes DICE to retry allocating the stack)
+        (2) return (causes DICE to retry allocating the stack)
 
     If DICE is unable to reallocate the stack after (2), it will call
     stack_abort() again.
 
     --------------------------------------------------------------------
-			   UNIX COMMON VARIABLES (-mu option)
+                           UNIX COMMON VARIABLES (-mu option)
 
     DICE supports UNIX common variables.  Many UNIX programs declare
     non-extern'd variables in header files (e.g. int a; instead of extern

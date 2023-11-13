@@ -24,7 +24,7 @@ const char *ctl;
     error = _sfmt(ctl, va, fgetc, ungetc, fi, &cnt);
     va_end(va);
     if (error)
-	return(error);
+        return(error);
     return(cnt);
 }
 

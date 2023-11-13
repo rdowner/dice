@@ -7,7 +7,7 @@
 # Obvious Implementations Corp.
 
 SRCS= main.c passa.c passb.c passc.c passg.c lab.c ops.c direct.c exp.c \
-	subs.c sect.c
+        subs.c sect.c
 MODULE= das
 EXE= das
 

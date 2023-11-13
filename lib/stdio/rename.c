@@ -17,7 +17,7 @@ const char *s;
 const char *d;
 {
     if (Rename(s, d))
-	return(0);
+        return(0);
     errno = ENOFILE;
     return(-1);
 }

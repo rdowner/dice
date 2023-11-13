@@ -6,8 +6,8 @@
 /*
 **      $Id: StripADoc.c,v 30.0 1994/06/10 18:05:51 dice Exp $
 **
-**	Process full Commodore AutoDoc files into a reduced version they'll
-**	actually let us ship.
+**      Process full Commodore AutoDoc files into a reduced version they'll
+**      actually let us ship.
 **
 */
 #define D(x)    ;
@@ -22,7 +22,7 @@
 
 #define unless(x)       if(!(x))
 
-#define	FF	12
+#define FF      12
 
 char *SetSName(char *, char *);
 char *TailPath(char *path);
@@ -42,29 +42,29 @@ char *xav[];
 
         // !!! Add ? support
     if (ac < 2) {
-	puts("StripAdoc appendfile <sourcepattern> <sourcepattern>");
-	puts(";Convert full AutoDocs into reduced format");
-	exit(1);
+        puts("StripAdoc appendfile <sourcepattern> <sourcepattern>");
+        puts(";Convert full AutoDocs into reduced format");
+        exit(1);
     }
     fo = fopen(av[1], "a");
     if (!fo) {
-	printf("Error: Unable to open %s for append\n", av[1]);
-	exit(1);
+        printf("Error: Unable to open %s for append\n", av[1]);
+        exit(1);
     }
     for (i = 2; i < ac; ++i) {
-	char *file = av[i];
-	short len = strlen(file);
+        char *file = av[i];
+        short len = strlen(file);
 
-	fi = fopen(file, "r");
-	if (fi)
-	{
-	    printf("Scanning DOC file: %s\n", file);
-	    scandocfile(fi, fo, file);
-	    fclose(fi);
-	} else
-	{
-	    printf("Unable to read %s\n", file);
-	}
+        fi = fopen(file, "r");
+        if (fi)
+        {
+            printf("Scanning DOC file: %s\n", file);
+            scandocfile(fi, fo, file);
+            fclose(fi);
+        } else
+        {
+            printf("Unable to read %s\n", file);
+        }
     }
     return(0);
 }
@@ -72,8 +72,8 @@ char *xav[];
 
 
 
-#define	ST_AFTER_RESULT	0
-#define	ST_AFTER_FF	1
+#define ST_AFTER_RESULT 0
+#define ST_AFTER_FF     1
 
 scandocfile(fi, fo, filename)
 FILE *fi;
@@ -84,32 +84,32 @@ char *filename;
     int  state=ST_AFTER_FF;
 
     while (fgets(buf, 256, fi)) {
-	short len = strlen(buf) - 1;
-	char *bas = buf;
+        short len = strlen(buf) - 1;
+        char *bas = buf;
 
-	buf[len] = 0;
+        buf[len] = 0;
 
-	while( *bas ) {
-		switch( *bas ) {
-			case 'F':
-				if( 0==strncmp(bas,"FUNCTION",8) )
-					state = ST_AFTER_RESULT;
-				break;
-			case 'I':
-				if( 0==strncmp(bas,"INPUT",5) )
-					state = ST_AFTER_RESULT;
-				break;
-			case FF:
-				state = ST_AFTER_FF;
-				break;
-			default:
-		}
-		bas++;
-	}
+        while( *bas ) {
+                switch( *bas ) {
+                        case 'F':
+                                if( 0==strncmp(bas,"FUNCTION",8) )
+                                        state = ST_AFTER_RESULT;
+                                break;
+                        case 'I':
+                                if( 0==strncmp(bas,"INPUT",5) )
+                                        state = ST_AFTER_RESULT;
+                                break;
+                        case FF:
+                                state = ST_AFTER_FF;
+                                break;
+                        default:
+                }
+                bas++;
+        }
 
-	if( state )
-	    fprintf(fo,"%s\n",buf);
-	}
+        if( state )
+            fprintf(fo,"%s\n",buf);
+        }
 
 }
 
@@ -124,8 +124,8 @@ char *strcpyc(char *d, char *s, char c)
             *d = 0;
             break;
             }
-	++s;
-	++d;
+        ++s;
+        ++d;
     }
     return(base);
 }
@@ -139,9 +139,9 @@ SetSName(buf, ptr)
 char *buf, *ptr;
 {
     while (*ptr == ' ' || *ptr == 9)
-	++ptr;
+        ++ptr;
     while (*ptr && *ptr != '\n' && *ptr != ' ' && *ptr != 9 && *ptr != 12)
-	*buf++ = *ptr++;
+        *buf++ = *ptr++;
     *buf = 0;
     return(ptr);
 }
@@ -154,11 +154,11 @@ IsAlphaNum(c)
 char c;
 {
     if ((c >= 'a' && c <= 'z') ||
-	(c >= 'A' && c <= 'Z') ||
-	(c >= '0' && c <= '9') ||
-	(c == '_') || (c == '-') || (c == ',') || (c == '.') || (c == '(') || (c == ')')
+        (c >= 'A' && c <= 'Z') ||
+        (c >= '0' && c <= '9') ||
+        (c == '_') || (c == '-') || (c == ',') || (c == '.') || (c == '(') || (c == ')')
     )
-	return(1);
+        return(1);
     return(0);
 }
 

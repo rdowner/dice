@@ -28,1387 +28,1387 @@ c.lib/string/strtok
 c.lib/string/strtol
 
 
-string/stpcpy						string/stpcpy
+string/stpcpy                                           string/stpcpy
 
    NAME
-	stpcpy	- copy a string returning a pointer to the end of the destination
+        stpcpy  - copy a string returning a pointer to the end of the destination
 
    SYNOPSIS
-	char *ptr = stpcpy(d, s);
-	char *d;
-	char *s;
+        char *ptr = stpcpy(d, s);
+        char *d;
+        char *s;
 
    FUNCTION
-	Copy the nul terminated string pointed to by s to the buffer d.
-	The nul is copied.  A pointer to the nul character at the end
-	of the copied string in d is returned.
+        Copy the nul terminated string pointed to by s to the buffer d.
+        The nul is copied.  A pointer to the nul character at the end
+        of the copied string in d is returned.
 
    NOTE
-	stpcpy() is a non-standard function.  While a stpcpy()/stpcpy()
-	combination is more efficient than a strcpy()/strcat() combination,
-	strcpy() and strcat() are standard functions and thus guarenteed
-	to exist in all enviroments.
+        stpcpy() is a non-standard function.  While a stpcpy()/stpcpy()
+        combination is more efficient than a strcpy()/strcat() combination,
+        strcpy() and strcat() are standard functions and thus guarenteed
+        to exist in all enviroments.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	main()
-	{
-	    char *buf1 = "hello";
-	    char *buf2 = "123";
-	    char dest[32];
-	    char *ptr;
+        main()
+        {
+            char *buf1 = "hello";
+            char *buf2 = "123";
+            char dest[32];
+            char *ptr;
 
-	    ptr = stpcpy(dest, buf1);
-	    stpcpy(ptr,  buf2);
-	    puts(dest);                     /* hello123 */
-	    return(0);
-	}
+            ptr = stpcpy(dest, buf1);
+            stpcpy(ptr,  buf2);
+            puts(dest);                     /* hello123 */
+            return(0);
+        }
 
    INPUTS
-	char *d;	pointer to beginning of destination buffer
-	char *s;	pointer to beginning of source string
+        char *d;        pointer to beginning of destination buffer
+        char *s;        pointer to beginning of source string
 
    RESULTS
-	char *ptr;	pointer to end of data copied to destination buffer
+        char *ptr;      pointer to end of data copied to destination buffer
 
    SEE ALSO
-	strcpy
+        strcpy
 
 
-string/strbpl						string/strbpl
+string/strbpl                                           string/strbpl
 
    NAME
-	strbpl	- unpack a string-array buffer into an array of pointers
+        strbpl  - unpack a string-array buffer into an array of pointers
 
    SYNOPSIS
-	int num = strbpl(av, max, sary)
-	char **av;
-	int max;
-	const char *sary;
+        int num = strbpl(av, max, sary)
+        char **av;
+        int max;
+        const char *sary;
 
    FUNCTION
-	Unpacks a string-array into an array of string pointers.  The
-	string array is a series of nul terminated strings strung together
-	and terminated by a final nul.	A pointer to each string is placed
-	in the arary-of-pointers (av) with a final NULL entry assuming
-	the number of strings does not exceed (max-1)
+        Unpacks a string-array into an array of string pointers.  The
+        string array is a series of nul terminated strings strung together
+        and terminated by a final nul.  A pointer to each string is placed
+        in the arary-of-pointers (av) with a final NULL entry assuming
+        the number of strings does not exceed (max-1)
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	main()
-	{
-	    char *sary = "this\0is\0a\0test\0\0";
-	    char *av[16];
-	    int n;
+        main()
+        {
+            char *sary = "this\0is\0a\0test\0\0";
+            char *av[16];
+            int n;
 
-	    #define arysize(x)  (sizeof(x)/sizeof((x)[0]))
+            #define arysize(x)  (sizeof(x)/sizeof((x)[0]))
 
-	    n = strbpl(av, arysize(av), sary);
-	    assert(n == 4);                     /*  n == 4          */
-	    puts(av[0]);                        /*  this            */
-	    puts(av[1]);                        /*  is              */
-	    puts(av[2]);                        /*  a               */
-	    puts(av[3]);                        /*  test            */
-	    assert(av[4] == NULL);              /*  av[4] == NULL   */
-	    return(0);
-	}
+            n = strbpl(av, arysize(av), sary);
+            assert(n == 4);                     /*  n == 4          */
+            puts(av[0]);                        /*  this            */
+            puts(av[1]);                        /*  is              */
+            puts(av[2]);                        /*  a               */
+            puts(av[3]);                        /*  test            */
+            assert(av[4] == NULL);              /*  av[4] == NULL   */
+            return(0);
+        }
 
    INPUTS
-	char **av;	pointer to a preallocated array of pointers
-	int max;	the maximum number of entries in the above array
-	char *sary;	pointer to a packed string.
+        char **av;      pointer to a preallocated array of pointers
+        int max;        the maximum number of entries in the above array
+        char *sary;     pointer to a packed string.
 
    RESULTS
-	int num;	number of pointers loaded into the av array not
-			including the final NULL.  If num == max then
-			the av array was not large enough to fit all
-			the strings or the final NULL.
+        int num;        number of pointers loaded into the av array not
+                        including the final NULL.  If num == max then
+                        the av array was not large enough to fit all
+                        the strings or the final NULL.
 
    SEE ALSO
 
 
 
-string/strcat						string/strcat
+string/strcat                                           string/strcat
 
    NAME
-	strcat	- concactenate a string to an existing string
+        strcat  - concactenate a string to an existing string
 
    SYNOPSIS
-	char *d = strcat(d, s);
-	char *d;
-	const char *s;
+        char *d = strcat(d, s);
+        char *d;
+        const char *s;
 
    FUNCTION
-	scans the destination buffer for the nul terminator and then
-	appends the source string to the destination buffer (removing
-	the nul terminator and placing one at the end after the
-	concactenation).
+        scans the destination buffer for the nul terminator and then
+        appends the source string to the destination buffer (removing
+        the nul terminator and placing one at the end after the
+        concactenation).
 
-	A pointer to the beginning of the destination buffer is returned.
+        A pointer to the beginning of the destination buffer is returned.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	main()
-	{
-	    char d[32];
-	    char *s1 = "fu";
-	    char *s2 = "bar";
-	    char *p;
+        main()
+        {
+            char d[32];
+            char *s1 = "fu";
+            char *s2 = "bar";
+            char *p;
 
-	    strcpy(d, s1);
-	    p = strcat(d, s2);
+            strcpy(d, s1);
+            p = strcat(d, s2);
 
-	    assert(p == d);         /*  strcat returns its first argument */
-	    puts(d);                /*  fubar       */
-	    return(0);
-	}
+            assert(p == d);         /*  strcat returns its first argument */
+            puts(d);                /*  fubar       */
+            return(0);
+        }
 
    INPUTS
-	char *d;	pointer to destination buffer which already contains
-			a string (which could be just a \0).
+        char *d;        pointer to destination buffer which already contains
+                        a string (which could be just a \0).
 
-	char *s;	pointer to the nul terminated source string
+        char *s;        pointer to the nul terminated source string
 
    RESULTS
-	char *d;	same as the first argument, a pointer to the
-			destination buffer.
+        char *d;        same as the first argument, a pointer to the
+                        destination buffer.
 
    SEE ALSO
-	strncpy, strcpy, strncat
+        strncpy, strcpy, strncat
 
 
-string/strchr						string/strchr
+string/strchr                                           string/strchr
 
    NAME
-	strchr	- search for a character in a string
+        strchr  - search for a character in a string
 
    SYNOPSIS
-	char *ptr = strchr(s, c)
-	const char *s;
-	int c;
+        char *ptr = strchr(s, c)
+        const char *s;
+        int c;
 
    FUNCTION
-	Searches for the character c within the string pointed to by
-	s.  The terminating nul at the end of s is included in the search.
+        Searches for the character c within the string pointed to by
+        s.  The terminating nul at the end of s is included in the search.
 
-	A pointer to the first occurance of c in s is returned or NULL
-	if c could not be found.
+        A pointer to the first occurance of c in s is returned or NULL
+        if c could not be found.
 
-	c is converted to a char by strchr() before beginning the search.
+        c is converted to a char by strchr() before beginning the search.
 
    NOTE
-	while strchr(s, 0); may be used to find the end of the string this
-	is slow compared to using the construction:
+        while strchr(s, 0); may be used to find the end of the string this
+        is slow compared to using the construction:
 
-	    char *ptr = s + strlen(s);    /*  ptr = end of string s       */
+            char *ptr = s + strlen(s);    /*  ptr = end of string s       */
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	main()
-	{
-	    char *s = "this is a test";
-	    char *ptr;
+        main()
+        {
+            char *s = "this is a test";
+            char *ptr;
 
-	    ptr = strchr(s, 'i');
-	    assert(ptr == s + 2);
+            ptr = strchr(s, 'i');
+            assert(ptr == s + 2);
 
-	    puts(ptr);              /*  "is is a test"  */
-	    return(0);
-	}
+            puts(ptr);              /*  "is is a test"  */
+            return(0);
+        }
 
    INPUTS
-	char *s;	pointer to the string to search
-	int c;		character to search for
+        char *s;        pointer to the string to search
+        int c;          character to search for
 
    RESULTS
-	char *ptr;	pointer to the first occurance of character c in
-			s or NULL if c could not be found in s.
+        char *ptr;      pointer to the first occurance of character c in
+                        s or NULL if c could not be found in s.
 
    SEE ALSO
-	strrchr
+        strrchr
 
 
-string/strcmp						string/strcmp
+string/strcmp                                           string/strcmp
 
    NAME
-	strcmp	- compare two strings
+        strcmp  - compare two strings
 
    SYNOPSIS
-	int r = strcmp(s1, s2);
-	const char *s1;
-	const char *s2;
+        int r = strcmp(s1, s2);
+        const char *s1;
+        const char *s2;
 
    FUNCTION
-	Compares two strings, returning:
-	    -1	s1 < s2
-	     0	s1 == s2
-	     1	s1 > s2
+        Compares two strings, returning:
+            -1  s1 < s2
+             0  s1 == s2
+             1  s1 > s2
 
    NOTE
-	strcmp() converts the chars in the string to unsigned quantities
-	when comparing them.  However, for portability you should not
-	strcmp() strings containing negative characters (bit 7 set) for
-	anything other than checking the result against 0.  Use the
-	memcmp() routine instead.
+        strcmp() converts the chars in the string to unsigned quantities
+        when comparing them.  However, for portability you should not
+        strcmp() strings containing negative characters (bit 7 set) for
+        anything other than checking the result against 0.  Use the
+        memcmp() routine instead.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	main()
-	{
-	    char *s1 = "abca";
-	    char *s2 = "abcd";
-	    char *s3 = "abcx";
-	    char *s4 = "abcdx";
-	    char *s5 = "abc";
-	    char *x2 = "abcd";
-	    int r;
+        main()
+        {
+            char *s1 = "abca";
+            char *s2 = "abcd";
+            char *s3 = "abcx";
+            char *s4 = "abcdx";
+            char *s5 = "abc";
+            char *x2 = "abcd";
+            int r;
 
-	    r = strcmp(s2, x2);     /*  string s2 same as string x2 */
-	    assert(r == 0);
+            r = strcmp(s2, x2);     /*  string s2 same as string x2 */
+            assert(r == 0);
 
-	    r = strcmp(s2, s1);     /*  string s2 larger than string s1 */
-	    assert(r > 0);
+            r = strcmp(s2, s1);     /*  string s2 larger than string s1 */
+            assert(r > 0);
 
-	    r = strcmp(s2, s3);
-	    assert(r < 0);
+            r = strcmp(s2, s3);
+            assert(r < 0);
 
-	    r = strcmp(s2, s4);
-	    assert(r < 0);
+            r = strcmp(s2, s4);
+            assert(r < 0);
 
-	    r = strcmp(s2, s5);
-	    assert(r > 0);
+            r = strcmp(s2, s5);
+            assert(r > 0);
 
-	    return(0);
-	}
+            return(0);
+        }
 
    INPUTS
-	char *s1;	pointer to first string
-	char *s2;	pointer to second string
+        char *s1;       pointer to first string
+        char *s2;       pointer to second string
 
    RESULTS
-	int r;		result: -1, 0, or 1.
+        int r;          result: -1, 0, or 1.
 
    SEE ALSO
-	strncmp, stricmp
+        strncmp, stricmp
 
 
-string/strcpy						string/strcpy
+string/strcpy                                           string/strcpy
 
    NAME
-	strcpy	- copy a string returning a pointer to the beginning of the
-		  destination.
+        strcpy  - copy a string returning a pointer to the beginning of the
+                  destination.
 
    SYNOPSIS
-	char *ptr = strcpy(d, s);
-	char *d;
-	char *s;
+        char *ptr = strcpy(d, s);
+        char *d;
+        char *s;
 
    FUNCTION
-	Copy the nul terminated string pointed to by s to the buffer d.
-	The nul is copied.  The first argument is returned (a pointer to
-	the buffer d).
+        Copy the nul terminated string pointed to by s to the buffer d.
+        The nul is copied.  The first argument is returned (a pointer to
+        the buffer d).
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	/*
-	 *  note that the stpcpy() example accomplishes the same thing and
-	 *  is more efficient, but also requires the use of a temporary
-	 *  pointer as well as cluttering the source and being non-standard.
-	 *
-	 *  strcpy()/strcat() is more portable though less efficient.
-	 */
+        /*
+         *  note that the stpcpy() example accomplishes the same thing and
+         *  is more efficient, but also requires the use of a temporary
+         *  pointer as well as cluttering the source and being non-standard.
+         *
+         *  strcpy()/strcat() is more portable though less efficient.
+         */
 
-	main()
-	{
-	    char *buf1 = "hello";
-	    char *buf2 = "123";
-	    char dest[32];
-	    char *ptr;
+        main()
+        {
+            char *buf1 = "hello";
+            char *buf2 = "123";
+            char dest[32];
+            char *ptr;
 
-	    strcpy(dest, buf1);
-	    strcat(dest, buf2);
-	    puts(dest);                     /* hello123 */
-	    return(0);
-	}
+            strcpy(dest, buf1);
+            strcat(dest, buf2);
+            puts(dest);                     /* hello123 */
+            return(0);
+        }
 
    INPUTS
-	char *d;	pointer to beginning of destination buffer
-	char *s;	pointer to beginning of source string
+        char *d;        pointer to beginning of destination buffer
+        char *s;        pointer to beginning of source string
 
    RESULTS
-	char *ptr;	same as the destination buffer pointer (d).
+        char *ptr;      same as the destination buffer pointer (d).
 
    SEE ALSO
-	stpcpy
+        stpcpy
 
 
-string/strcspn						string/strcspn
+string/strcspn                                          string/strcspn
 
    NAME
-	strcspn - scan a string until a character is found that matches
-		  any character in a second string.
+        strcspn - scan a string until a character is found that matches
+                  any character in a second string.
 
    SYNOPSIS
-	int len = strcspn(s, toks)
-	const char *s;
-	const char *toks;
+        int len = strcspn(s, toks)
+        const char *s;
+        const char *toks;
 
    FUNCTION
-	The string s is scanned until a character is found that matches any
-	character in the string toks.  The number of characters skipped is
-	returned.  If no character in s matches any character in toks then
-	the length of the string s is returned.
+        The string s is scanned until a character is found that matches any
+        character in the string toks.  The number of characters skipped is
+        returned.  If no character in s matches any character in toks then
+        the length of the string s is returned.
 
-	This function is normally used to search for whitespace within a
-	string.  Note that in many cases strpbrk() is more useful than
-	strcspn().
+        This function is normally used to search for whitespace within a
+        string.  Note that in many cases strpbrk() is more useful than
+        strcspn().
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	main()
-	{
-	    int len;
+        main()
+        {
+            int len;
 
-	    len = strcspn("hello this is a test", " \tabcd");
-	    assert(len == 5);               /*  stopped at the first space  */
+            len = strcspn("hello this is a test", " \tabcd");
+            assert(len == 5);               /*  stopped at the first space  */
 
-	    len = strcspn("hello this is a test", " abl");
-	    assert(len == 2);               /*  stopped at the first 'l'    */
+            len = strcspn("hello this is a test", " abl");
+            assert(len == 2);               /*  stopped at the first 'l'    */
 
-	    len = strcspn("hello", "abcd");
-	    assert(len == 5);               /*  stopped at end of string 1  */
+            len = strcspn("hello", "abcd");
+            assert(len == 5);               /*  stopped at end of string 1  */
 
-	    return(0);
-	}
+            return(0);
+        }
 
    INPUTS
-	char *s;	pointer to string to scan
-	char *toks;	pointer to string containing characters to compare
-			against
+        char *s;        pointer to string to scan
+        char *toks;     pointer to string containing characters to compare
+                        against
 
    RESULTS
-	int len;	# of characters skipped in s before a match was found
+        int len;        # of characters skipped in s before a match was found
 
    SEE ALSO
-	strpbrk, strspn
+        strpbrk, strspn
 
 
-string/strdup						string/strdup
+string/strdup                                           string/strdup
 
    NAME
-	strdup	- duplicate a string using malloc
+        strdup  - duplicate a string using malloc
 
 
    SYNOPSIS
-	char *s2 = strdup(s1);
-	const char *s1;
+        char *s2 = strdup(s1);
+        const char *s1;
 
    FUNCTION
-	strdup malloc's enough space to hold s1 including the terminating
-	nul and then copies s1 into this space, returning a pointer to
-	the new string.  NULL is returned if space could not be allocated
-	due to low memory conditions.
+        strdup malloc's enough space to hold s1 including the terminating
+        nul and then copies s1 into this space, returning a pointer to
+        the new string.  NULL is returned if space could not be allocated
+        due to low memory conditions.
 
-	free() may be used to free the returned string.  The amount
-	malloc'd is (strlen(s1) + 1).
+        free() may be used to free the returned string.  The amount
+        malloc'd is (strlen(s1) + 1).
 
    NOTE
-	strdup() is a non-standard function and may not exist in other
-	C enviroments.
+        strdup() is a non-standard function and may not exist in other
+        C enviroments.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	/*
-	 *  Modifying string constants (quoted strings) may not be entirely
-	 *  portable.  Normally one does not use strdup() to accomplish the
-	 *  following function but instead declares a char array statically
-	 *  initialized with the string, such as:
-	 *
-	 *  char FuBar[] = { "This is a test" };
-	 *
-	 *  Which can be modified in a portable fashion without having to
-	 *  duplicate the string.
-	 */
+        /*
+         *  Modifying string constants (quoted strings) may not be entirely
+         *  portable.  Normally one does not use strdup() to accomplish the
+         *  following function but instead declares a char array statically
+         *  initialized with the string, such as:
+         *
+         *  char FuBar[] = { "This is a test" };
+         *
+         *  Which can be modified in a portable fashion without having to
+         *  duplicate the string.
+         */
 
-	main()
-	{
-	    char *s1 = "this is a test";
-	    char *s2;
+        main()
+        {
+            char *s1 = "this is a test";
+            char *s2;
 
-	    s2 = strdup(s1);
-	    s2[0] = 'x';
-	    puts(s2);           /*  xhis is a test  */
-	    free(s2);
+            s2 = strdup(s1);
+            s2[0] = 'x';
+            puts(s2);           /*  xhis is a test  */
+            free(s2);
 
-	    s2 = strdup(s1);
-	    s2[1] = '0';
-	    puts(s2);           /*  t0is is a test  */
-	    free(s2);
+            s2 = strdup(s1);
+            s2[1] = '0';
+            puts(s2);           /*  t0is is a test  */
+            free(s2);
 
-	    return(0);
-	}
+            return(0);
+        }
 
    INPUTS
-	char *s1;	pointer to the string to duplicate
+        char *s1;       pointer to the string to duplicate
 
    RESULTS
-	char *s2;	pointer to malloc'd space containing a duplicate
-			of the string s1 or NULL if space could not be
-			malloc'd.
+        char *s2;       pointer to malloc'd space containing a duplicate
+                        of the string s1 or NULL if space could not be
+                        malloc'd.
 
    SEE ALSO
-	malloc, free, strcpy, strlen
+        malloc, free, strcpy, strlen
 
 
-string/strerror 					string/strerror
+string/strerror                                         string/strerror
 
    NAME
-	strerror - return error string associated with error code
+        strerror - return error string associated with error code
 
    SYNOPSIS
-	const char *str = strerror(error);
-	int error;
+        const char *str = strerror(error);
+        int error;
 
    FUNCTION
-	strerror returns a read-only string associated with the specified
-	error, usually taken from errno after some c.lib call fails.
+        strerror returns a read-only string associated with the specified
+        error, usually taken from errno after some c.lib call fails.
 
-	An unknown error will result in the string "unknown error"
+        An unknown error will result in the string "unknown error"
 
    EXAMPLE
-	#include <stdio.h>
-	#include <errno.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <errno.h>
+        #include <assert.h>
 
-	main()
-	{
-	    FILE *fi;
+        main()
+        {
+            FILE *fi;
 
-	    fi = fopen("ThisFileDoesNotExist", "r");
-	    assert(fi == NULL);
-	    puts(strerror(errno));
+            fi = fopen("ThisFileDoesNotExist", "r");
+            assert(fi == NULL);
+            puts(strerror(errno));
 
-	    return(0);
-	}
+            return(0);
+        }
 
    INPUTS
-	int error;	error code
+        int error;      error code
 
    RESULTS
-	char *str;	error string
+        char *str;      error string
 
    SEE ALSO
 
 
-string/stricmp						string/stricmp
+string/stricmp                                          string/stricmp
 
    NAME
-	stricmp  - compare two strings, case insensitive
+        stricmp  - compare two strings, case insensitive
 
    SYNOPSIS
-	int r = stricmp(s1, s2);
-	const char *s1;
-	const char *s2;
+        int r = stricmp(s1, s2);
+        const char *s1;
+        const char *s2;
 
    FUNCTION
-	Compares two strings, returning:
-	    -1	s1 < s2
-	     0	s1 == s2
-	     1	s1 > s2
+        Compares two strings, returning:
+            -1  s1 < s2
+             0  s1 == s2
+             1  s1 > s2
 
-	stricmp differs from strcmp in that case is ignored for alphabetic
-	characters.  i.e. a == A
+        stricmp differs from strcmp in that case is ignored for alphabetic
+        characters.  i.e. a == A
 
    NOTE
-	stricmp() converts the chars in the string to unsigned quantities
-	when comparing them.  However, for portability you should not
-	stricmp() strings containing negative characters (bit 7 set) for
-	anything other than checking the result against 0.  Use the
-	memcmp() routine instead.
+        stricmp() converts the chars in the string to unsigned quantities
+        when comparing them.  However, for portability you should not
+        stricmp() strings containing negative characters (bit 7 set) for
+        anything other than checking the result against 0.  Use the
+        memcmp() routine instead.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	main()
-	{
-	    char *s1 = "abCa";
-	    char *s2 = "aBcD";
-	    char *s3 = "aBCX";
-	    char *s4 = "ABCdx";
-	    char *s5 = "Abc";
-	    char *x2 = "ABCD";
-	    int r;
+        main()
+        {
+            char *s1 = "abCa";
+            char *s2 = "aBcD";
+            char *s3 = "aBCX";
+            char *s4 = "ABCdx";
+            char *s5 = "Abc";
+            char *x2 = "ABCD";
+            int r;
 
-	    r = stricmp(s2, x2);     /*  string s2 same as string x2 */
-	    assert(r == 0);
+            r = stricmp(s2, x2);     /*  string s2 same as string x2 */
+            assert(r == 0);
 
-	    r = stricmp(s2, s1);     /*  string s2 larger than string s1 */
-	    assert(r > 0);
+            r = stricmp(s2, s1);     /*  string s2 larger than string s1 */
+            assert(r > 0);
 
-	    r = stricmp(s2, s3);
-	    assert(r < 0);
+            r = stricmp(s2, s3);
+            assert(r < 0);
 
-	    r = stricmp(s2, s4);
-	    assert(r < 0);
+            r = stricmp(s2, s4);
+            assert(r < 0);
 
-	    r = stricmp(s2, s5);
-	    assert(r > 0);
+            r = stricmp(s2, s5);
+            assert(r > 0);
 
-	    return(0);
-	}
+            return(0);
+        }
 
    INPUTS
-	char *s1;	pointer to first string
-	char *s2;	pointer to second string
+        char *s1;       pointer to first string
+        char *s2;       pointer to second string
 
    RESULTS
-	int r;		result: -1, 0, or 1.
+        int r;          result: -1, 0, or 1.
 
    SEE ALSO
-	strcmp, strncmp
+        strcmp, strncmp
 
 
 
-string/strins						string/strins
+string/strins                                           string/strins
 
    NAME
-	strins - insert one string within another
+        strins - insert one string within another
 
    SYNOPSIS
-	void strins(d, s);
-	char *d;
-	const char *s;
+        void strins(d, s);
+        char *d;
+        const char *s;
 
    FUNCTION
-	strins inserts string s into d by shifting the string in d over
-	strlen(s) spaces and then copying s into the newly made hold (except
-	for the nul, of course).  This result is s inserted into d.
+        strins inserts string s into d by shifting the string in d over
+        strlen(s) spaces and then copying s into the newly made hold (except
+        for the nul, of course).  This result is s inserted into d.
 
    NOTE
-	There must be enough room in d to insert s.  i.e. if d is an array
-	of 32 chars and contains a string of 8 chars you can insert another
-	string of, say, 10 chars, but not of 30 chars.
+        There must be enough room in d to insert s.  i.e. if d is an array
+        of 32 chars and contains a string of 8 chars you can insert another
+        string of, say, 10 chars, but not of 30 chars.
 
-	strins is NOT an ANSI standard function
-
-   EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-
-	main()
-	{
-	    char buf[32];
-
-	    strcpy(buf, "This is a test");
-	    strins(buf + 5, "<gak!> ");
-	    puts(buf);      /*  This <gak!> is a test   */
-
-	    return(0);
-	}
-
-   INPUTS
-	char *d;		destination to insert in front of
-	char *s;		source string to insert
-
-   RESULTS
-	none
-
-   SEE ALSO
-	strcpy, strcat, strlen
-
-
-string/strlen						string/strlen
-
-   NAME
-	strlen - returns length of a string
-
-   SYNOPSIS
-	int len = strlen(s);
-	const char *s;
-
-   FUNCTION
-	The length of the requested string is returned.  The string is
-	scanned until a nul terminator is found and the number of
-	characters (not including the nul) is returned.
+        strins is NOT an ANSI standard function
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
 
-	main()
-	{
-	    char buf[32];
-	    int len;
+        main()
+        {
+            char buf[32];
 
-	    strcpy(buf, "Fu Bar Bear Boo");
-	    len = strlen(buf);
+            strcpy(buf, "This is a test");
+            strins(buf + 5, "<gak!> ");
+            puts(buf);      /*  This <gak!> is a test   */
 
-	    assert(len == 15);
-
-	    strcat(buf, "xx");
-
-	    len = strlen(buf);
-
-	    assert(len == 17);
-
-	    return(0);
-	}
+            return(0);
+        }
 
    INPUTS
-	char *s;		string to obtain length of
+        char *d;                destination to insert in front of
+        char *s;                source string to insert
 
    RESULTS
-	int len;		length of string
+        none
 
    SEE ALSO
-	strcpy, strcat
+        strcpy, strcat, strlen
 
 
-string/strncat						string/strncat
+string/strlen                                           string/strlen
 
    NAME
-	strncat  - concactenate a string to an existing string up to a
-		   maximum number of characters
+        strlen - returns length of a string
 
    SYNOPSIS
-	char *d = strncat(d, s, n);
-	char *d;
-	const char *s;
-	int n;
+        int len = strlen(s);
+        const char *s;
 
    FUNCTION
-	scans the destination buffer for the nul terminator and then
-	appends the source string to the destination buffer (removing
-	the nul terminator and placing one at the end after the
-	concactenation).  However, only up to n characters is concactenated
-	including the nul.  If the source string is exactly n characters
-	long no nul will be appended.  If the source string is longer
-	than n characters then only the first n characters of the source
-	string will be appended (and no nul will be).
-
-	A pointer to the beginning of the destination buffer is returned.
+        The length of the requested string is returned.  The string is
+        scanned until a nul terminator is found and the number of
+        characters (not including the nul) is returned.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	main()
-	{
-	    char d[32];
-	    char *s1 = "fu";
-	    char *s2 = "bar";
-	    char *p;
+        main()
+        {
+            char buf[32];
+            int len;
 
-	    d[2] = 23;
-	    d[5] = 24;
-	    d[6] = 25;
-	    strcpy(d, s1);          /*  overwrites d[2] with a nul  */
-	    assert(d[2] == 0);
+            strcpy(buf, "Fu Bar Bear Boo");
+            len = strlen(buf);
 
-	    p = strncat(d, s2, 3);  /*  does NOT overwrite d[5] with a nul */
-	    assert(d[5] == 24);
-	    assert(p == d);
+            assert(len == 15);
 
-	    strcpy(d, s1);
-	    p = strncat(d, s2, 20); /*  does        */
-	    assert(p == d);
-	    assert(d[5] == 0);
-	    assert(d[6] == 25);     /*  stops at the nul, so d[6] was not modified */
+            strcat(buf, "xx");
 
-	    puts(d);                /*  fubar   */
+            len = strlen(buf);
 
-	    return(0);
-	}
+            assert(len == 17);
+
+            return(0);
+        }
 
    INPUTS
-	char *d;	pointer to destination buffer which already contains
-			a string (which could be just a \0).
-
-	char *s;	pointer to the nul terminated source string
-
-	int n;		maximum number of characters to concactenate
+        char *s;                string to obtain length of
 
    RESULTS
-	char *d;	same as the first argument, a pointer to the
-			destination buffer.
+        int len;                length of string
 
    SEE ALSO
-	strncpy, strcpy, strcat
+        strcpy, strcat
 
 
-string/strncmp						string/strncmp
+string/strncat                                          string/strncat
 
    NAME
-	strncmp  - compare two strings up to a maximum number of characters
+        strncat  - concactenate a string to an existing string up to a
+                   maximum number of characters
 
    SYNOPSIS
-	int r = strncmp(s1, s2, n);
-	const char *s1;
-	const char *s2;
-	int n;
+        char *d = strncat(d, s, n);
+        char *d;
+        const char *s;
+        int n;
 
    FUNCTION
-	Compares two strings, returning:
-	    -1	s1 < s2
-	     0	s1 == s2
-	     1	s1 > s2
+        scans the destination buffer for the nul terminator and then
+        appends the source string to the destination buffer (removing
+        the nul terminator and placing one at the end after the
+        concactenation).  However, only up to n characters is concactenated
+        including the nul.  If the source string is exactly n characters
+        long no nul will be appended.  If the source string is longer
+        than n characters then only the first n characters of the source
+        string will be appended (and no nul will be).
 
-	strncmp() works like strcmp() but only up to n characters will be
-	compared.  If all characters compare when n is reached 0 is
-	returned indicating that the strings matched.  Fewer characters
-	might be compared if either string terminates (w/ a nul) before
-	the maximum is reached or a compare fails (scan is stopped and -1
-	or 1 is returned immediately)
+        A pointer to the beginning of the destination buffer is returned.
+
+   EXAMPLE
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
+
+        main()
+        {
+            char d[32];
+            char *s1 = "fu";
+            char *s2 = "bar";
+            char *p;
+
+            d[2] = 23;
+            d[5] = 24;
+            d[6] = 25;
+            strcpy(d, s1);          /*  overwrites d[2] with a nul  */
+            assert(d[2] == 0);
+
+            p = strncat(d, s2, 3);  /*  does NOT overwrite d[5] with a nul */
+            assert(d[5] == 24);
+            assert(p == d);
+
+            strcpy(d, s1);
+            p = strncat(d, s2, 20); /*  does        */
+            assert(p == d);
+            assert(d[5] == 0);
+            assert(d[6] == 25);     /*  stops at the nul, so d[6] was not modified */
+
+            puts(d);                /*  fubar   */
+
+            return(0);
+        }
+
+   INPUTS
+        char *d;        pointer to destination buffer which already contains
+                        a string (which could be just a \0).
+
+        char *s;        pointer to the nul terminated source string
+
+        int n;          maximum number of characters to concactenate
+
+   RESULTS
+        char *d;        same as the first argument, a pointer to the
+                        destination buffer.
+
+   SEE ALSO
+        strncpy, strcpy, strcat
+
+
+string/strncmp                                          string/strncmp
+
+   NAME
+        strncmp  - compare two strings up to a maximum number of characters
+
+   SYNOPSIS
+        int r = strncmp(s1, s2, n);
+        const char *s1;
+        const char *s2;
+        int n;
+
+   FUNCTION
+        Compares two strings, returning:
+            -1  s1 < s2
+             0  s1 == s2
+             1  s1 > s2
+
+        strncmp() works like strcmp() but only up to n characters will be
+        compared.  If all characters compare when n is reached 0 is
+        returned indicating that the strings matched.  Fewer characters
+        might be compared if either string terminates (w/ a nul) before
+        the maximum is reached or a compare fails (scan is stopped and -1
+        or 1 is returned immediately)
 
    NOTE
-	strncmp() converts the chars in the string to unsigned quantities
-	when comparing them.  However, for portability you should not
-	strncmp() strings containing negative characters (bit 7 set) for
-	anything other than checking the result against 0.  Use the
-	memcmp() routine instead.
+        strncmp() converts the chars in the string to unsigned quantities
+        when comparing them.  However, for portability you should not
+        strncmp() strings containing negative characters (bit 7 set) for
+        anything other than checking the result against 0.  Use the
+        memcmp() routine instead.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	main()
-	{
-	    char *s1 = "abcaq";
-	    char *s2 = "abcdr";
-	    char *s3 = "abcxs";
-	    char *s4 = "abcdxx";
-	    char *s5 = "abc";
-	    char *x2 = "abcdt";
-	    int r;
+        main()
+        {
+            char *s1 = "abcaq";
+            char *s2 = "abcdr";
+            char *s3 = "abcxs";
+            char *s4 = "abcdxx";
+            char *s5 = "abc";
+            char *x2 = "abcdt";
+            int r;
 
-	    r = strncmp(s2, x2, 4);
-	    assert(r == 0);
+            r = strncmp(s2, x2, 4);
+            assert(r == 0);
 
-	    r = strncmp(s2, s1, 4);
-	    assert(r > 0);
+            r = strncmp(s2, s1, 4);
+            assert(r > 0);
 
-	    r = strncmp(s2, s3, 4);
-	    assert(r < 0);
+            r = strncmp(s2, s3, 4);
+            assert(r < 0);
 
-	    r = strncmp(s2, s4, 8);
-	    assert(r < 0);
+            r = strncmp(s2, s4, 8);
+            assert(r < 0);
 
-	    r = strncmp(s2, s5, 4);
-	    assert(r > 0);
+            r = strncmp(s2, s5, 4);
+            assert(r > 0);
 
-	    return(0);
-	}
+            return(0);
+        }
 
    INPUTS
-	char *s1;	pointer to first string
-	char *s2;	pointer to second string
-	int n;		maximum number of characters to compare
+        char *s1;       pointer to first string
+        char *s2;       pointer to second string
+        int n;          maximum number of characters to compare
 
    RESULTS
-	int r;		result: -1, 0, or 1.
+        int r;          result: -1, 0, or 1.
 
    SEE ALSO
-	strncmp, stricmp
+        strncmp, stricmp
 
 
-string/strncpy						string/strncpy
+string/strncpy                                          string/strncpy
 
    NAME
-	strncpy - copy a string returning a pointer to the beginning of the
-		  destination until nul or the specified number of characters
-		  is reached.
+        strncpy - copy a string returning a pointer to the beginning of the
+                  destination until nul or the specified number of characters
+                  is reached.
 
    SYNOPSIS
-	char *ptr = strncpy(d, s, n);
-	char *d;
-	const char *s;
-	int n;
+        char *ptr = strncpy(d, s, n);
+        char *d;
+        const char *s;
+        int n;
 
    FUNCTION
-	Copy the nul terminated string pointed to by s to the buffer d. The
-	nul is normally copied.  The first argument is returned (a pointer
-	to the buffer d).
+        Copy the nul terminated string pointed to by s to the buffer d. The
+        nul is normally copied.  The first argument is returned (a pointer
+        to the buffer d).
 
-	The copy will also be terminated if the specified maximum is reached,
-	in which case the nul is NOT copied.
+        The copy will also be terminated if the specified maximum is reached,
+        in which case the nul is NOT copied.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	/*
-	 *  This is a dumb example
-	 */
+        /*
+         *  This is a dumb example
+         */
 
-	main()
-	{
-	    char *buf1 = "hello";
-	    char *buf2 = "123";
-	    char dest[32];
-	    char *ptr;
+        main()
+        {
+            char *buf1 = "hello";
+            char *buf2 = "123";
+            char dest[32];
+            char *ptr;
 
-	    strncpy(dest, buf1, 8);
-	    strcat(dest, buf2);
-	    puts(dest);                     /* hello123 */
+            strncpy(dest, buf1, 8);
+            strcat(dest, buf2);
+            puts(dest);                     /* hello123 */
 
-	    dest[2] = 23;
-	    strncpy(dest, buf1, 2);
-	    assert(dest[2] == 23);          /* it only copied to chars!     */
+            dest[2] = 23;
+            strncpy(dest, buf1, 2);
+            assert(dest[2] == 23);          /* it only copied to chars!     */
 
-	    dest[2] = 0;		    /*	note we have to add the nul */
-	    strcat(dest, buf2);             /*  he123   */
-	    puts(dest);
+            dest[2] = 0;                    /*  note we have to add the nul */
+            strcat(dest, buf2);             /*  he123   */
+            puts(dest);
 
-	    return(0);
-	}
+            return(0);
+        }
 
    INPUTS
-	char *d;	pointer to beginning of destination buffer
-	char *s;	pointer to beginning of source string
-	int len;	maximum number of characters to copy
+        char *d;        pointer to beginning of destination buffer
+        char *s;        pointer to beginning of source string
+        int len;        maximum number of characters to copy
 
    RESULTS
-	char *ptr;	same as the destination buffer pointer (d).
+        char *ptr;      same as the destination buffer pointer (d).
 
    SEE ALSO
-	stpcpy, strcpy
+        stpcpy, strcpy
 
 
-string/strnicmp 					string/strnicmp
+string/strnicmp                                         string/strnicmp
 
    NAME
-	strnicmp  - compare two strings up to a maximum number of characters
-		    and case insensitive
+        strnicmp  - compare two strings up to a maximum number of characters
+                    and case insensitive
 
    SYNOPSIS
-	int r = strnicmp(s1, s2, n);
-	const char *s1;
-	const char *s2;
-	int n;
+        int r = strnicmp(s1, s2, n);
+        const char *s1;
+        const char *s2;
+        int n;
 
    FUNCTION
-	Compares two strings, returning:
-	    -1	s1 < s2
-	     0	s1 == s2
-	     1	s1 > s2
+        Compares two strings, returning:
+            -1  s1 < s2
+             0  s1 == s2
+             1  s1 > s2
 
-	strnicmp differs from strcmp in that case is ignored for alphabetic
-	characters, i.e. a == A, and only up to n characters are compared.
+        strnicmp differs from strcmp in that case is ignored for alphabetic
+        characters, i.e. a == A, and only up to n characters are compared.
 
-	Refer to stricmp() and strncmp() for other examples
+        Refer to stricmp() and strncmp() for other examples
 
    NOTE
-	strnicmp() converts the chars in the string to unsigned quantities
-	when comparing them.  However, for portability you should not
-	strnicmp() strings containing negative characters (bit 7 set) for
-	anything other than checking the result against 0.  Use the
-	memcmp() routine instead.
+        strnicmp() converts the chars in the string to unsigned quantities
+        when comparing them.  However, for portability you should not
+        strnicmp() strings containing negative characters (bit 7 set) for
+        anything other than checking the result against 0.  Use the
+        memcmp() routine instead.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	main()
-	{
-	    char *s1 = "aBcAQ";
-	    char *s2 = "abCDR";
-	    char *s3 = "ABcXs";
-	    char *s4 = "aBCDxX";
-	    char *s5 = "aBC";
-	    char *x2 = "AbCDt";
-	    int r;
+        main()
+        {
+            char *s1 = "aBcAQ";
+            char *s2 = "abCDR";
+            char *s3 = "ABcXs";
+            char *s4 = "aBCDxX";
+            char *s5 = "aBC";
+            char *x2 = "AbCDt";
+            int r;
 
-	    r = strnicmp(s2, x2, 4);
-	    assert(r == 0);
+            r = strnicmp(s2, x2, 4);
+            assert(r == 0);
 
-	    r = strnicmp(s2, s1, 4);
-	    assert(r > 0);
+            r = strnicmp(s2, s1, 4);
+            assert(r > 0);
 
-	    r = strnicmp(s2, s3, 4);
-	    assert(r < 0);
+            r = strnicmp(s2, s3, 4);
+            assert(r < 0);
 
-	    r = strnicmp(s2, s4, 8);
-	    assert(r < 0);
+            r = strnicmp(s2, s4, 8);
+            assert(r < 0);
 
-	    r = strnicmp(s2, s5, 4);
-	    assert(r > 0);
+            r = strnicmp(s2, s5, 4);
+            assert(r > 0);
 
-	    return(0);
-	}
+            return(0);
+        }
 
    INPUTS
-	char *s1;	pointer to first string
-	char *s2;	pointer to second string
-	int n;		maximum # of characters to compare
+        char *s1;       pointer to first string
+        char *s2;       pointer to second string
+        int n;          maximum # of characters to compare
 
    RESULTS
-	int r;		result: -1, 0, or 1.
+        int r;          result: -1, 0, or 1.
 
    SEE ALSO
-	strcmp, strncmp, stricmp
+        strcmp, strncmp, stricmp
 
 
-string/strpbrk						string/strpbrk
+string/strpbrk                                          string/strpbrk
 
    NAME
-	strpbrk - search for specific character(s) (tokens) in string
+        strpbrk - search for specific character(s) (tokens) in string
 
    SYNOPSIS
-	char *ptr = strpbrk(s, toks)
-	const char *s;
-	char *toks;
+        char *ptr = strpbrk(s, toks)
+        const char *s;
+        char *toks;
 
    FUNCTION
-	Searches the string s for any character in the string toks.  For
-	example, when searching for whitespace in s, toks would contain the
-	space and tab character.
+        Searches the string s for any character in the string toks.  For
+        example, when searching for whitespace in s, toks would contain the
+        space and tab character.
 
-	If no character in s matches any character in toks then NULL is
-	returned.
+        If no character in s matches any character in toks then NULL is
+        returned.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	main()
-	{
-	    char *s = "This  \tis a test";
-	    char *ptr;
+        main()
+        {
+            char *s = "This  \tis a test";
+            char *ptr;
 
-	    ptr = strpbrk(s, " \t");
-	    assert(ptr == s + 4);
+            ptr = strpbrk(s, " \t");
+            assert(ptr == s + 4);
 
-	    ptr = strpbrk(ptr + 1, " \t");
-	    assert(ptr == s + 5);
+            ptr = strpbrk(ptr + 1, " \t");
+            assert(ptr == s + 5);
 
-	    ptr = strpbrk(ptr + 1, " \t");
-	    assert(ptr == s + 6);
+            ptr = strpbrk(ptr + 1, " \t");
+            assert(ptr == s + 6);
 
-	    ptr = strpbrk(ptr + 1, " \t");
-	    assert(ptr == s + 9);
+            ptr = strpbrk(ptr + 1, " \t");
+            assert(ptr == s + 9);
 
-	    ptr = strpbrk(ptr + 1, "xyz");  /*  doesn't find 'm */
-	    assert(ptr == NULL);
+            ptr = strpbrk(ptr + 1, "xyz");  /*  doesn't find 'm */
+            assert(ptr == NULL);
 
-	    return(0);
-	}
+            return(0);
+        }
 
    INPUTS
-	char *s;	pointer to string to scan
-	char *toks;	pointer to string containing tokens to scan for
+        char *s;        pointer to string to scan
+        char *toks;     pointer to string containing tokens to scan for
 
    RESULTS
-	char *ptr;	pointer to point in s where the character matches
-			any character in toks, or NULL if s was exhausted.
+        char *ptr;      pointer to point in s where the character matches
+                        any character in toks, or NULL if s was exhausted.
 
    SEE ALSO
-	strtok
+        strtok
 
 
-string/strrchr						string/strrchr
+string/strrchr                                          string/strrchr
 
    NAME
-	strrchr - search for a character in a string, scan backwards
+        strrchr - search for a character in a string, scan backwards
 
    SYNOPSIS
-	char *ptr = strrchr(s, c)
-	const char *s;
-	int c;
+        char *ptr = strrchr(s, c)
+        const char *s;
+        int c;
 
    FUNCTION
-	Searches for the character c within the string pointed to by
-	s.  The terminating nul at the end of s is included in the search.
-	The string is searched backwards
+        Searches for the character c within the string pointed to by
+        s.  The terminating nul at the end of s is included in the search.
+        The string is searched backwards
 
-	A pointer to the LAST occurance of c in s is returned or NULL
-	if c could not be found.
+        A pointer to the LAST occurance of c in s is returned or NULL
+        if c could not be found.
 
-	c is converted to an 8 bit quantity by strrchr().
+        c is converted to an 8 bit quantity by strrchr().
 
    NOTE
-	The ANSI spec does not say anything about including the nul
-	character in the search for strrchr and some implementation
-	may thus not implement this properly.
+        The ANSI spec does not say anything about including the nul
+        character in the search for strrchr and some implementation
+        may thus not implement this properly.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	main()
-	{
-	    char *s = "this is a test";
-	    char *ptr;
+        main()
+        {
+            char *s = "this is a test";
+            char *ptr;
 
-	    ptr = strrchr(s, 'i');
-	    assert(ptr == s + 5);
+            ptr = strrchr(s, 'i');
+            assert(ptr == s + 5);
 
-	    puts(ptr);              /*  "is a test"  */
+            puts(ptr);              /*  "is a test"  */
 
-	    ptr = strrchr(s, 'x');
-	    assert(ptr == NULL);
+            ptr = strrchr(s, 'x');
+            assert(ptr == NULL);
 
-	    return(0);
-	}
+            return(0);
+        }
 
    INPUTS
-	char *s;	pointer to the string to search
-	int c;		character to search for
+        char *s;        pointer to the string to search
+        int c;          character to search for
 
    RESULTS
-	char *ptr;	pointer to the last occurance of character c in
-			s or NULL if c could not be found in s.
+        char *ptr;      pointer to the last occurance of character c in
+                        s or NULL if c could not be found in s.
 
    SEE ALSO
-	strchr
+        strchr
 
 
-string/strspn						string/strspn
+string/strspn                                           string/strspn
 
    NAME
-	strspn	- scan a string until a character is found that does NOT match
-		  some character in a second string.
+        strspn  - scan a string until a character is found that does NOT match
+                  some character in a second string.
 
    SYNOPSIS
-	int len = strspn(s, toks)
-	const char *s;
-	const char *toks;
+        int len = strspn(s, toks)
+        const char *s;
+        const char *toks;
 
    FUNCTION
-	The string s is scanned until a character is found that does NOT
-	match any character in the string toks.  The number of characters
-	skipped is returned.  If every character in s matches some
-	character in toks then the length of the string s is returned.
+        The string s is scanned until a character is found that does NOT
+        match any character in the string toks.  The number of characters
+        skipped is returned.  If every character in s matches some
+        character in toks then the length of the string s is returned.
 
-	This function is normally used to skip whitespace within a
-	string.
+        This function is normally used to skip whitespace within a
+        string.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	main()
-	{
-	    int len;
+        main()
+        {
+            int len;
 
-	    len = strspn("  \t \t\t abcde test", " \t ");
-	    assert(len == 7);               /*  stopped at the 'a'  */
+            len = strspn("  \t \t\t abcde test", " \t ");
+            assert(len == 7);               /*  stopped at the 'a'  */
 
-	    len = strspn("abcd ", " ");
-	    assert(len == 0);
+            len = strspn("abcd ", " ");
+            assert(len == 0);
 
-	    len = strspn("   \t\t ", " \t");
-	    assert(len == 6);               /*  all match, len = strlen(str);   */
+            len = strspn("   \t\t ", " \t");
+            assert(len == 6);               /*  all match, len = strlen(str);   */
 
-	    return(0);
-	}
+            return(0);
+        }
 
    INPUTS
-	char *s;	pointer to string to scan
-	char *toks;	pointer to string containing characters to compare
-			against
+        char *s;        pointer to string to scan
+        char *toks;     pointer to string containing characters to compare
+                        against
 
    RESULTS
-	int len;	# of characters skipped in s before a match could not
-			be found
+        int len;        # of characters skipped in s before a match could not
+                        be found
 
    SEE ALSO
-	strpbrk, strcspn
+        strpbrk, strcspn
 
 
-string/strstr						string/strstr
+string/strstr                                           string/strstr
 
    NAME
-	strstr	- find sub string within another string
+        strstr  - find sub string within another string
 
 
    SYNOPSIS
-	char *ptr = strstr(s, sub);
-	const char *s;
-	const char *sub;
+        char *ptr = strstr(s, sub);
+        const char *s;
+        const char *sub;
 
    FUNCTION
-	The string s is scanned until the sub string sub matches the string
-	beginning at the current scan point, and a pointer to the sub string
-	within s is returned.  If the sub string could not be found NULL
-	is returned.
+        The string s is scanned until the sub string sub matches the string
+        beginning at the current scan point, and a pointer to the sub string
+        within s is returned.  If the sub string could not be found NULL
+        is returned.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
-	#include <assert.h>
+        #include <stdio.h>
+        #include <string.h>
+        #include <assert.h>
 
-	main()
-	{
-	    char *s = "abcdefghijklmnopqrstuvwxyz";
-	    char *ptr;
+        main()
+        {
+            char *s = "abcdefghijklmnopqrstuvwxyz";
+            char *ptr;
 
-	    ptr = strstr(s, "klm");
-	    assert(ptr == s + 10);
+            ptr = strstr(s, "klm");
+            assert(ptr == s + 10);
 
-	    puts(ptr);          /*  klmnopqrstuvwxyz    */
+            puts(ptr);          /*  klmnopqrstuvwxyz    */
 
-	    return(0);
-	}
+            return(0);
+        }
 
    INPUTS
-	char *s;	pointer to string to scan
-	char *toks;	pointer to string containing characters to compare
-			against
+        char *s;        pointer to string to scan
+        char *toks;     pointer to string containing characters to compare
+                        against
 
    RESULTS
-	char *ptr;	point in s where sub string was found or NULL if
-			sub string could not be found.
+        char *ptr;      point in s where sub string was found or NULL if
+                        sub string could not be found.
 
    SEE ALSO
-	strpbrk, strcspn
+        strpbrk, strcspn
 
 
-string/strtod						string/strtod
+string/strtod                                           string/strtod
 
    NAME
-	strtod	- Convert string to fp double
+        strtod  - Convert string to fp double
 
    SYNOPSIS
-	double d = strtod(s, &tp);
-	const char *s;
-	char *tp;
+        double d = strtod(s, &tp);
+        const char *s;
+        char *tp;
 
    FUNCTION
-	Converts a string to a floating point double.  Initial white space
-	is skipped.  The format of the fp number in the string is then:
+        Converts a string to a floating point double.  Initial white space
+        is skipped.  The format of the fp number in the string is then:
 
-	{+/-/<nothing>}ddddd[.ddddd][E{+/-/<nothing>}dddd]
+        {+/-/<nothing>}ddddd[.ddddd][E{+/-/<nothing>}dddd]
 
-	Example fp strings: " +1.234E-3", "-1234", "6.5676E4", "214.2345"
+        Example fp strings: " +1.234E-3", "-1234", "6.5676E4", "214.2345"
 
    EXAMPLE
 
-	/*
-	 *  compile -lm to include math library
-	 */
+        /*
+         *  compile -lm to include math library
+         */
 
-	#include <stdio.h>
-	#include <string.h>
+        #include <stdio.h>
+        #include <string.h>
 
-	main()
-	{
-	    double d;
-	    char *tp;
+        main()
+        {
+            double d;
+            char *tp;
 
-	    d = strtod("1.2134 3.45E2", &tp);
-	    printf("1.2134 = %lf\n", d);    /*  1.213400    */
+            d = strtod("1.2134 3.45E2", &tp);
+            printf("1.2134 = %lf\n", d);    /*  1.213400    */
 
-	    d = strtod(tp, &tp);
-	    printf("3.45E2 = %lf\n", d);    /*  345.000000  */
+            d = strtod(tp, &tp);
+            printf("3.45E2 = %lf\n", d);    /*  345.000000  */
 
-	    return(0);
-	}
+            return(0);
+        }
 
    INPUTS
-	char *s;	pointer to string containing fp number
+        char *s;        pointer to string containing fp number
 
-	char **tp;	pointer to pointer, the pointer is modified to
-			point to the end of the scanned fp number
+        char **tp;      pointer to pointer, the pointer is modified to
+                        point to the end of the scanned fp number
 
    RESULTS
-	double d;	resulting double
+        double d;       resulting double
 
    SEE ALSO
 
 
-string/strtok						string/strtok
+string/strtok                                           string/strtok
 
    NAME
-	strtok	- Break up a string into arguments
+        strtok  - Break up a string into arguments
 
    SYNOPSIS
-	char *arg = strtok(s, toks)
-	char *s;
-	const char *toks;
+        char *arg = strtok(s, toks)
+        char *s;
+        const char *toks;
 
    FUNCTION
-	strtok() breaks up a string into arguments.  It determines the break
-	point from the 'toks' string which contains a set of white space
-	characters (usually " \t" to mean space and tab).
+        strtok() breaks up a string into arguments.  It determines the break
+        point from the 'toks' string which contains a set of white space
+        characters (usually " \t" to mean space and tab).
 
-	The first call to strtok() should specify the string s and toks.
-	Initial white space is skipped and the string is then scanned
-	until the end of the first argument is found.  The string is
-	then MODIFIED... a nul is placed at the end of the first argument
-	and a pointer to the beginning of the first argument is returned.
+        The first call to strtok() should specify the string s and toks.
+        Initial white space is skipped and the string is then scanned
+        until the end of the first argument is found.  The string is
+        then MODIFIED... a nul is placed at the end of the first argument
+        and a pointer to the beginning of the first argument is returned.
 
-	Further calls to strtok() should pass a NULL for the string s,
-	which tells strtok() to continue scanning the original string (whos
-	pointer was stored in a static char * within strtok).
+        Further calls to strtok() should pass a NULL for the string s,
+        which tells strtok() to continue scanning the original string (whos
+        pointer was stored in a static char * within strtok).
 
-	strtok() returns arguments until the string is exhausted, in which
-	case is returns NULL.  The initial call to strtok() can return NULL
-	if the passed string s contains nothing but whitespace (as specified
-	by toks).
+        strtok() returns arguments until the string is exhausted, in which
+        case is returns NULL.  The initial call to strtok() can return NULL
+        if the passed string s contains nothing but whitespace (as specified
+        by toks).
 
-	You can change the toks string at any time (i.e. pass a different
-	toks string to strtok).
+        You can change the toks string at any time (i.e. pass a different
+        toks string to strtok).
 
    WARNING
-	strtok modifies the source string and returns pointers into it.
+        strtok modifies the source string and returns pointers into it.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
+        #include <stdio.h>
+        #include <string.h>
 
-	main()
-	{
-	    char buf[32];
-	    char *arg;
-	    const char *ws = " \t";
+        main()
+        {
+            char buf[32];
+            char *arg;
+            const char *ws = " \t";
 
-	    /*
-	     *	'This' 'is' 'a' 'test!'
-	     */
+            /*
+             *  'This' 'is' 'a' 'test!'
+             */
 
-	    strcpy(buf, "  This  is \t \t a test!");
-	    for (arg = strtok(buf, ws); arg; arg = strtok(NULL, ws)) {
-		printf("arg = '%s'\n", arg);
-	    }
-	    return(0);
-	}
+            strcpy(buf, "  This  is \t \t a test!");
+            for (arg = strtok(buf, ws); arg; arg = strtok(NULL, ws)) {
+                printf("arg = '%s'\n", arg);
+            }
+            return(0);
+        }
 
    INPUTS
-	char *s;	pointer to string to parse
-	char *toks;	pointer to string containing whitespace characters
-			(argument delimiters)
+        char *s;        pointer to string to parse
+        char *toks;     pointer to string containing whitespace characters
+                        (argument delimiters)
 
    RESULTS
-	char *arg;	pointer into s to next argument that is nul
-			terminated (s is modified).
+        char *arg;      pointer into s to next argument that is nul
+                        terminated (s is modified).
 
    SEE ALSO
-	strspn, strcspn
+        strspn, strcspn
 
 
-string/strtol						string/strtol
+string/strtol                                           string/strtol
 
    NAME
-	strtol	- Convert string to integer
+        strtol  - Convert string to integer
 
    SYNOPSIS
-	long v = strtol(str, &tail, base);
-	const char *str;
-	char *tail;
-	int base;
+        long v = strtol(str, &tail, base);
+        const char *str;
+        char *tail;
+        int base;
 
    FUNCTION
-	strtol() converts a string into an integer using the specified
-	base 0-36.  If a non-zero base is specified conversion is done
-	using that base (hex numbers may still be preceeded by '0x' or
-	'0X').  If 0 is specified for the base then the base is
-	determined from the first one or two characters of the number
-	portion of the string:
+        strtol() converts a string into an integer using the specified
+        base 0-36.  If a non-zero base is specified conversion is done
+        using that base (hex numbers may still be preceeded by '0x' or
+        '0X').  If 0 is specified for the base then the base is
+        determined from the first one or two characters of the number
+        portion of the string:
 
-	    0	    octal
-	    1-9     decimal
-	    0x	    hex (0x or 0X)
+            0       octal
+            1-9     decimal
+            0x      hex (0x or 0X)
 
-	For bases larger than 10, alphabetic characters are used to
-	represent digits.  Either lower case or upper case letters
-	may be used.
+        For bases larger than 10, alphabetic characters are used to
+        represent digits.  Either lower case or upper case letters
+        may be used.
 
-	strtol() stores a pointer to the remainder of the string
-	after the conversion.  strtol() ignores any whitespace at
-	the beginning of the string and also handles an optional
-	negative sign (which may preceed the numerical portion of
-	the string).
+        strtol() stores a pointer to the remainder of the string
+        after the conversion.  strtol() ignores any whitespace at
+        the beginning of the string and also handles an optional
+        negative sign (which may preceed the numerical portion of
+        the string).
 
-	strtol() returns the converted value as a long, 0 if
-	it was unable to convert anything, and an undefined result
-	if the converted value is out of range.
+        strtol() returns the converted value as a long, 0 if
+        it was unable to convert anything, and an undefined result
+        if the converted value is out of range.
 
    NOTE
-	strtol() superceeds atoi() and atol().
+        strtol() superceeds atoi() and atol().
 
    EXAMPLE
-	#include <stdio.h>
-	#include <string.h>
+        #include <stdio.h>
+        #include <string.h>
 
-	main(ac, av)
-	char *av[];
-	{
-	    long v;
-	    char *tail;
+        main(ac, av)
+        char *av[];
+        {
+            long v;
+            char *tail;
 
-	    if (ac != 3) {
-		puts("testprg <string> <base>");
-		puts("testprg 0123abc 0");
-		puts("testprg 0x1000 0");
-		puts("testprg 0123abc 16");
-		exit(1);
-	    }
-	    v = strtol(av[1], &tail, atoi(av[2]));
-	    printf("v = %d, tail = %s\n", v, tail);
-	    return(0);
-	}
+            if (ac != 3) {
+                puts("testprg <string> <base>");
+                puts("testprg 0123abc 0");
+                puts("testprg 0x1000 0");
+                puts("testprg 0123abc 16");
+                exit(1);
+            }
+            v = strtol(av[1], &tail, atoi(av[2]));
+            printf("v = %d, tail = %s\n", v, tail);
+            return(0);
+        }
 
-	1> testprg fffg 16
-	v = 4095, tail = g
-	1> testprg -0x100 0
-	v = -256, tail =
-	1> testprg 118 8
-	v = 9, tail = 8
-	1> testprg 11 0
-	v = 11, tail =
-	1> testprg 011xx 0
-	v = 9, tail = xxx
+        1> testprg fffg 16
+        v = 4095, tail = g
+        1> testprg -0x100 0
+        v = -256, tail =
+        1> testprg 118 8
+        v = 9, tail = 8
+        1> testprg 11 0
+        v = 11, tail =
+        1> testprg 011xx 0
+        v = 9, tail = xxx
 
 
    INPUTS
-	char *str;	    pointer to string to convert
+        char *str;          pointer to string to convert
 
-	char **tail;	    *tail modified to point to just
-			    after last character converted
+        char **tail;        *tail modified to point to just
+                            after last character converted
 
-	int base;	    base of conversion or 0 for
-			    autoselect
+        int base;           base of conversion or 0 for
+                            autoselect
 
    RESULTS
-	long v; 	    converted result, an integer,
-			    or 0 if no conversion could be
-			    done.
+        long v;             converted result, an integer,
+                            or 0 if no conversion could be
+                            done.
 
    SEE ALSO
-	atoi, atol
+        atoi, atol
 
 

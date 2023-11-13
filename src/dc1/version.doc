@@ -1,285 +1,285 @@
 
     DC1
-	C2.06.49
-	    Fixed asm_test() for effective addresses (test constant
-	    address), as well as pc-relative case.
+        C2.06.49
+            Fixed asm_test() for effective addresses (test constant
+            address), as well as pc-relative case.
 
-	C2.06.47
-	    Ident changed to commodore style
+        C2.06.47
+            Ident changed to commodore style
 
-	C2.06.46
-	    Fixed problem with #pragma DCCOPTS
+        C2.06.46
+            Fixed problem with #pragma DCCOPTS
 
-	    Fixed major problem with registerized function pointers that
-	    I introduced when I added inline calls.
+            Fixed major problem with registerized function pointers that
+            I introduced when I added inline calls.
 
-	    before problems fixed,  DME compile time 128 seconds
-	    fflush() optimize	    DME compile time 111 seconds
+            before problems fixed,  DME compile time 128 seconds
+            fflush() optimize       DME compile time 111 seconds
 
-	C2.06.45
-	    Fixed problem with passing a non-longword quantity in an
-	    address register to a routine.
+        C2.06.45
+            Fixed problem with passing a non-longword quantity in an
+            address register to a routine.
 
-	C2.06.44
-	    Fixed line tracking bug w/ embedded strings
+        C2.06.44
+            Fixed line tracking bug w/ embedded strings
 
-	    Fixed bug in structure passing by value
+            Fixed bug in structure passing by value
 
-	C2.06.43
-	    Illegal character error repetition fixed
+        C2.06.43
+            Illegal character error repetition fixed
 
-	    storage qualifier after type (limited SAS/C compat)
+            storage qualifier after type (limited SAS/C compat)
 
-	    U/L terminator for integer constants fixed
+            U/L terminator for integer constants fixed
 
-	    ^ error line printing and pointer
+            ^ error line printing and pointer
 
-	    break/continue bounds error message
+            break/continue bounds error message
 
-	C2.06.42
-	    Negative absolute addresses use .W word absolute if in the
-	    range -32768 to -1, previously used long absolute.
+        C2.06.42
+            Negative absolute addresses use .W word absolute if in the
+            range -32768 to -1, previously used long absolute.
 
-	C2.06.41B2
-	    Added inline library calls (also see fdtoinline), #include
-	    <protos/fubar_protos.h> ... can include standard
-	    clib/fubar_protos.h as well but must do so before including the
-	    associated protos/ header.
+        C2.06.41B2
+            Added inline library calls (also see fdtoinline), #include
+            <protos/fubar_protos.h> ... can include standard
+            clib/fubar_protos.h as well but must do so before including the
+            associated protos/ header.
 
-	    Rewrite registerized args internals
+            Rewrite registerized args internals
 
-	C2.06.41
-	    Added typeof(exp)
+        C2.06.41
+            Added typeof(exp)
 
 
-				COMMERCIAL BREAKOFF
+                                COMMERCIAL BREAKOFF
 
-	R2.06.40
+        R2.06.40
 
 
-	R2.06.39 (11-Jan-1992)
-	    -mu common storage added
+        R2.06.39 (11-Jan-1992)
+            -mu common storage added
 
-	    explciit register specification for subroutine arguments added,
-	    optimization of registered arguments that are not modified,
-	    integer data in address register, byte size disallowed
+            explciit register specification for subroutine arguments added,
+            optimization of registered arguments that are not modified,
+            integer data in address register, byte size disallowed
 
-	    Better prototype checking added
+            Better prototype checking added
 
-	R2.06.38
-	    an odd-sized char array declared as an auto and initialied
-	    auto-aggregate such as: char fubar[31] = "abcd..."; would crash
-	    due to an odd-aligned longword write used to fill the array.
-	    Introduced in 2.06.37, fixed here (stack-auto-byte-arrays are
-	    forced to short alignment)
+        R2.06.38
+            an odd-sized char array declared as an auto and initialied
+            auto-aggregate such as: char fubar[31] = "abcd..."; would crash
+            due to an odd-aligned longword write used to fill the array.
+            Introduced in 2.06.37, fixed here (stack-auto-byte-arrays are
+            forced to short alignment)
 
-	    Profiling added
+            Profiling added
 
-	R2.06.37
-	    arrays are now aligned the same as their element type
-	    alignment.	Thus, char a[3]; is byte aligned while short a[3];
-	    is word aligned. Previously arrays were always word aligned.
+        R2.06.37
+            arrays are now aligned the same as their element type
+            alignment.  Thus, char a[3]; is byte aligned while short a[3];
+            is word aligned. Previously arrays were always word aligned.
 
-	R2.06.35
-	    fixed bugs in integer multiply & divide, some cases would generate
-	    fatal errors (all caught by DICE)
+        R2.06.35
+            fixed bugs in integer multiply & divide, some cases would generate
+            fatal errors (all caught by DICE)
 
-	    fixed bug &= operator, would generate assembly error in
-	    conditional:    while (x &= (x - 1)) ...
+            fixed bug &= operator, would generate assembly error in
+            conditional:    while (x &= (x - 1)) ...
 
-	    optimizations made to mulitply & divide, handles 16 bit expressions
-	    better.
+            optimizations made to mulitply & divide, handles 16 bit expressions
+            better.
 
-	    fixed up unsigned flag for storage structures used in direct
-	    variable references with casts to unsigned, i.e.  uc = ua / b,
-	    the storage structure for b cast to unsigned was not getting
-	    SF_UNSIGNED set.
+            fixed up unsigned flag for storage structures used in direct
+            variable references with casts to unsigned, i.e.  uc = ua / b,
+            the storage structure for b cast to unsigned was not getting
+            SF_UNSIGNED set.
 
-	R2.06.33
-	    fixed bug in constant address handling for offsetof(), was not
-	    propogated constant through address operator causing an error
-	    for offsetof(struct fubar, array_elm)
+        R2.06.33
+            fixed bug in constant address handling for offsetof(), was not
+            propogated constant through address operator causing an error
+            for offsetof(struct fubar, array_elm)
 
-	R2.06.32
-	R2.06.31 (rcs ci)
+        R2.06.32
+        R2.06.31 (rcs ci)
 
-	R2.06.30
-	    fixed tokenizing bug, case <enum_const>: would fail.
-	    if large-data model used, sticks static/globals in
-	    'fardata' section unless __near is explicitly used.
-	    -- see version.doc --
+        R2.06.30
+            fixed tokenizing bug, case <enum_const>: would fail.
+            if large-data model used, sticks static/globals in
+            'fardata' section unless __near is explicitly used.
+            -- see version.doc --
 
-	R2.06.29
-	    long standing multiply bug found, short x = i * j; where i and j
-	    are memory references.  Improper optimization.
+        R2.06.29
+            long standing multiply bug found, short x = i * j; where i and j
+            are memory references.  Improper optimization.
 
-	R2.06.28
-	    stupid bug in aggregate init, int a = 1, b = 2; fails.
+        R2.06.28
+            stupid bug in aggregate init, int a = 1, b = 2; fails.
 
-	R2.06.27
-	    fixed bug:	static int fio(), fio();  (procedure declared twice
-	    on same line) would force procedure to be non-static.
+        R2.06.27
+            fixed bug:  static int fio(), fio();  (procedure declared twice
+            on same line) would force procedure to be non-static.
 
-	    fixed bug:	__geta4 int fio(), bar(); ... __geta4 would apply
-	    only to first procedure.
+            fixed bug:  __geta4 int fio(), bar(); ... __geta4 would apply
+            only to first procedure.
 
-	    fixed bug w/ labels ...  label: case ...  would generate error
-	    message (case or default following directly after label).  Was
-	    introduced when I initially fixed labels.
+            fixed bug w/ labels ...  label: case ...  would generate error
+            message (case or default following directly after label).  Was
+            introduced when I initially fixed labels.
 
-	    auto-aggregate added, static/global aggregate revamped.
+            auto-aggregate added, static/global aggregate revamped.
 
 
-	R2.06.26
-	    Fixed bug in floating pt compare of the form:  x = (f1 == f2);
-	    i.e. a compare where the result is a boolean 0/1 when not in
-	    a conditional.
+        R2.06.26
+            Fixed bug in floating pt compare of the form:  x = (f1 == f2);
+            i.e. a compare where the result is a boolean 0/1 when not in
+            a conditional.
 
-	    Fixed bug w/ bitfields (was caught by DICE), would give fatal
-	    error if destination was not a register for field extraction.
+            Fixed bug w/ bitfields (was caught by DICE), would give fatal
+            error if destination was not a register for field extraction.
 
-	    added structural return capability to procedures
+            added structural return capability to procedures
 
-	R2.06.25
-	    Redid error reporting
+        R2.06.25
+            Redid error reporting
 
-	R2.06.24
-	    stack allocation changes in R2.06.23 were broken, broke floating point.
-	    (got the stack tracking mixed up w/ variable allocation)
+        R2.06.24
+            stack allocation changes in R2.06.23 were broken, broke floating point.
+            (got the stack tracking mixed up w/ variable allocation)
 
-	    ?: fix in R2.06.23 was broken (sigh), fixed ... 'default:' would
-	    not be properly tokenized.
+            ?: fix in R2.06.23 was broken (sigh), fixed ... 'default:' would
+            not be properly tokenized.
 
-	    *scanf() now supports %e/E/f/g/G and %[..]
+            *scanf() now supports %e/E/f/g/G and %[..]
 
-	R2.06.23 BETA
-	    goto labels are now in their own name space, no more conflicts
-	    with  int a; ... goto a; ... a: ...
+        R2.06.23 BETA
+            goto labels are now in their own name space, no more conflicts
+            with  int a; ... goto a; ... a: ...
 
-	    added stack tracking for fp temporaries, meaning that subroutines
-	    containing floating point expressions do not take up anywhere near
-	    the amount of stack they used to.
+            added stack tracking for fp temporaries, meaning that subroutines
+            containing floating point expressions do not take up anywhere near
+            the amount of stack they used to.
 
-	    allows declarations after switch() { and before first case.
+            allows declarations after switch() { and before first case.
 
-	    fixed problem with	... ? symbol : ...  (symbol was being
-	    interpreted as a label instead of a variable within a ?:
-	    conditional
+            fixed problem with  ... ? symbol : ...  (symbol was being
+            interpreted as a label instead of a variable within a ?:
+            conditional
 
-	    fixed problems with conditional returns from fp operations,
-	    such as:	    double a, b; int c = (a < b);  that must
-	    generate a 0/1 result instead of a branch (as in an if()).
-	    Would generate error before.
+            fixed problems with conditional returns from fp operations,
+            such as:        double a, b; int c = (a < b);  that must
+            generate a 0/1 result instead of a branch (as in an if()).
+            Would generate error before.
 
-	R2.06.22
-	    fixed problem with GOTO labels, a goto label semantically is
-	    not a statement unto itself.  The problem is a line like the
-	    below:
+        R2.06.22
+            fixed problem with GOTO labels, a goto label semantically is
+            not a statement unto itself.  The problem is a line like the
+            below:
 
-		if (i) j = 1; else x: j = 2;
+                if (i) j = 1; else x: j = 2;
 
-	    Currently j = 2; is completely outside the if in DICE.  This
-	    is incorrect,  'x: j = 2;' counts as a single statement.
+            Currently j = 2; is completely outside the if in DICE.  This
+            is incorrect,  'x: j = 2;' counts as a single statement.
 
-	    fixed bug in string constant array initialization,
-	    char x[1] = "a";  previously generated an error
+            fixed bug in string constant array initialization,
+            char x[1] = "a";  previously generated an error
 
-	    fixed infinite ERROR printing loop
+            fixed infinite ERROR printing loop
 
-	    revamped constant-address handling (i.e. when you map a
-	    complex structure over IO space at a known address, useful when
-	    generating ROM'd apps for 68000 based uP's.
+            revamped constant-address handling (i.e. when you map a
+            complex structure over IO space at a known address, useful when
+            generating ROM'd apps for 68000 based uP's.
 
 
-	R2.06.21
-	    fixed bugs in register reallocation, should now do a better
-	    job allocating registers in complex subroutines.  Hopefully
-	    squashed 'maximum retries exceeded' error for all but the
-	    most incredibly complex expressions.
+        R2.06.21
+            fixed bugs in register reallocation, should now do a better
+            job allocating registers in complex subroutines.  Hopefully
+            squashed 'maximum retries exceeded' error for all but the
+            most incredibly complex expressions.
 
-	    fixed bug in int->float conversion, (double)(int * int);,
-	    ex_Type improperly left a double. for * operator.
+            fixed bug in int->float conversion, (double)(int * int);,
+            ex_Type improperly left a double. for * operator.
 
 
-	R2.06.20
-	    bug in if (ptr & 1) and similar constructs doing a logical and
-	    in a compare against a pointer rather than an int produced
-	    bad code caught by DAS.
+        R2.06.20
+            bug in if (ptr & 1) and similar constructs doing a logical and
+            in a compare against a pointer rather than an int produced
+            bad code caught by DAS.
 
-	R2.06.19
-	    bug in register allocation fixed (would cause fatal error
-	    message 'too many retries' sometimes when procedure args
-	    declared as arrays instead of pointers)
+        R2.06.19
+            bug in register allocation fixed (would cause fatal error
+            message 'too many retries' sometimes when procedure args
+            declared as arrays instead of pointers)
 
-	R2.06.18
+        R2.06.18
 
 
-	R2.06.17 :
-	    fixed bug for const objects -- would reference external
-	    const objects using (pc) instead of absolute (very
-	    minor bug)
+        R2.06.17 :
+            fixed bug for const objects -- would reference external
+            const objects using (pc) instead of absolute (very
+            minor bug)
 
-	R2.06.16 :
-	    fixed bug in array indexing combined with *= or /=,
-	    this time would incorrectly store stuff in temporary
-	    regs.  e.g.  temp[i] /= 23;
+        R2.06.16 :
+            fixed bug in array indexing combined with *= or /=,
+            this time would incorrectly store stuff in temporary
+            regs.  e.g.  temp[i] /= 23;
 
-	R2.05.15 :
-	    prototyped procedures that take non-int args (such as
-	    short's are char's), now push longs as usual, but
-	    unused bits are no longer guarenteed to be extended
-	    properly.
+        R2.05.15 :
+            prototyped procedures that take non-int args (such as
+            short's are char's), now push longs as usual, but
+            unused bits are no longer guarenteed to be extended
+            properly.
 
-	R2.05.11 :
-		    const storage qualifier now puts things into the
-		    code section whether -ms or -mS is given or not.
+        R2.05.11 :
+                    const storage qualifier now puts things into the
+                    code section whether -ms or -mS is given or not.
 
-	R2.05.10 :
-		    add __unaligned type qualifier
+        R2.05.10 :
+                    add __unaligned type qualifier
 
-	R2.05.09 :
-		    fixed __geta4, was acting like an interrupt
-		    and save/restoring scratch regs when it should
-		    only save/restore A4.
+        R2.05.09 :
+                    fixed __geta4, was acting like an interrupt
+                    and save/restoring scratch regs when it should
+                    only save/restore A4.
 
-		    switch() generated incorrect code when default: not
-		    last case (when there is a default:)
+                    switch() generated incorrect code when default: not
+                    last case (when there is a default:)
 
-		    comma operator bug fixed (would generate fatal error)
+                    comma operator bug fixed (would generate fatal error)
 
-		    a[i] = a[j] = a[k] = ... 1;  register allocation bug
-		    fixed (would unnecessarily use up registers)
+                    a[i] = a[j] = a[k] = ... 1;  register allocation bug
+                    fixed (would unnecessarily use up registers)
 
-	R2.05.08 :   added -ms -mS options (const support)
+        R2.05.08 :   added -ms -mS options (const support)
 
-		    array of const is a const array (const was not propogated
-		    before, didn't matter then, does now)
+                    array of const is a const array (const was not propogated
+                    before, didn't matter then, does now)
 
-		    storage qualifiers were not propogated properly...
-		    __aligned char x;  OK,  __aligned char *ptr; would
-		    be a pointer to an __aligned char, NOT an __aligned
-		    pointer...	Properly, __aligned char *ptr; is supposed
-		    to be an aligned pointer, which it is now.
+                    storage qualifiers were not propogated properly...
+                    __aligned char x;  OK,  __aligned char *ptr; would
+                    be a pointer to an __aligned char, NOT an __aligned
+                    pointer...  Properly, __aligned char *ptr; is supposed
+                    to be an aligned pointer, which it is now.
 
-		    volatile auto variables no longer assigned to registers
-		    (see setjmp/longjmp manual page for associated problems)
+                    volatile auto variables no longer assigned to registers
+                    (see setjmp/longjmp manual page for associated problems)
 
-	R2.05.07 :   fixed array addressing bug (caused fatal error),
-		    &array[constant] where sizeof(array[0]) != power of 2
-		    would not work in static/global declarations, i.e.
+        R2.05.07 :   fixed array addressing bug (caused fatal error),
+                    &array[constant] where sizeof(array[0]) != power of 2
+                    would not work in static/global declarations, i.e.
 
-		    struct foo *y = &x[0];
+                    struct foo *y = &x[0];
 
-		    added -proto option (generate an error for any function
-		    call that has not been prototyped)
+                    added -proto option (generate an error for any function
+                    call that has not been prototyped)
 
-	R2.05.06 :   fixed type declarators, complex procedural pointers now
-		    work!
+        R2.05.06 :   fixed type declarators, complex procedural pointers now
+                    work!
 
-		    added __aligned keyword (stack, global declarations)
+                    added __aligned keyword (stack, global declarations)
 
-	R2.05.05 :   fixed bug caught by assembly
-		    (a-2)[c] = ...	generates _a+, ... (where'd the -2 go!)
+        R2.05.05 :   fixed bug caught by assembly
+                    (a-2)[c] = ...      generates _a+, ... (where'd the -2 go!)
 
-	R2.05.04 :   fixed massive array bugs
+        R2.05.04 :   fixed massive array bugs
 

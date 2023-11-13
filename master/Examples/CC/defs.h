@@ -16,7 +16,7 @@
 #include <exec/libraries.h>
 #include <libraries/dos.h>
 #include <libraries/dosextens.h>
-#ifdef LATTICE			/*  only req'd for Lattice resident */
+#ifdef LATTICE                  /*  only req'd for Lattice resident */
 #include <proto/exec.h>
 #include <proto/dos.h>
 #define __aligned
@@ -25,7 +25,7 @@
 #include <lib/unix.h>
 #endif
 
-#ifndef INCLUDE_VERSION 	/*  2.0 compilation compat check */
+#ifndef INCLUDE_VERSION         /*  2.0 compilation compat check */
 #define INCLUDE_VERSION     0
 #else
 #include <clib/exec_protos.h>
@@ -69,16 +69,16 @@
 #define BTOC(bptr,ctype)    ((ctype *)((long)bptr << 2))
 #define CTOB(ptr)           ((long)(ptr) >> 2)
 
-typedef unsigned char	ubyte;
-typedef unsigned short	uword;
-typedef unsigned long	ulong;
-typedef struct CommandLineInterface	CLI;
-typedef struct Process	     Process;
-typedef struct List	     List;
+typedef unsigned char   ubyte;
+typedef unsigned short  uword;
+typedef unsigned long   ulong;
+typedef struct CommandLineInterface     CLI;
+typedef struct Process       Process;
+typedef struct List          List;
 typedef struct FileInfoBlock FIB;
-typedef struct Node	     Node;
+typedef struct Node          Node;
 
-#define DICE_C	    0
+#define DICE_C      0
 #define LATTICE_C   1
 #define AZTEC_C     2
 

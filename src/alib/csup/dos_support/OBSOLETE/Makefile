@@ -1,14 +1,14 @@
 ######################################################################
-MAKEMETA=	../../../tools/makemeta
+MAKEMETA=       ../../../tools/makemeta
 
-SUBSYSNAME=	dos_support
+SUBSYSNAME=     dos_support
 
-AFILES= 	namefromanchor.asm
+AFILES=         namefromanchor.asm
 
-CFILES= 	
+CFILES=         
 
-OFILES= 	namefromanchor.obj
+OFILES=         namefromanchor.obj
 
-all quick:	${SUBSYSNAME}_lib.lib
+all quick:      ${SUBSYSNAME}_lib.lib
 
 .INCLUDE=${MAKEMETA}

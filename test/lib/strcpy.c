@@ -5,9 +5,9 @@ char *d;
 char *s;
 {
     while (*s) {
-	*d = *s;
-	++s;
-	++d;
+        *d = *s;
+        ++s;
+        ++d;
     }
     *d = 0;
 }

@@ -24,16 +24,16 @@ size_t bytes;
     long *ptr;
 
     if (bytes == 0)
-	return(NULL);
+        return(NULL);
 
     ptr = AllocMem(bytes + 8, MEMF_PUBLIC);
     if (ptr) {
-	ptr[0] = (long)__MemList;
-	__MemList = ptr;
-	ptr[1] = bytes + 8;
-	ptr += 2;
+        ptr[0] = (long)__MemList;
+        __MemList = ptr;
+        ptr[1] = bytes + 8;
+        ptr += 2;
     } else {
-	errno = ENOMEM;
+        errno = ENOMEM;
     }
     return((void *)ptr);
 }

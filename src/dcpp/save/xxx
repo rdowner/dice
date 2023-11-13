@@ -41,13 +41,13 @@ InitCpp()
     WhiteSpace['l'&31] = 1;
 
     for (i = '0'; i <= '9'; ++i)
-	SymbolChar[i] = 1;
+        SymbolChar[i] = 1;
     for (i = 'a'; i <= 'z'; ++i)
-	SymbolChar[i] = 1;
+        SymbolChar[i] = 1;
     for (i = 'A'; i <= 'Z'; ++i)
-	SymbolChar[i] = 1;
+        SymbolChar[i] = 1;
     SymbolChar['_'] = 1;
-    SymbolChar[1] = 1;	    /*	special for macro replace */
+    SymbolChar[1] = 1;      /*  special for macro replace */
 
     SpecialChar['\''] = 1;
     SpecialChar['\"'] = 1;
@@ -72,230 +72,230 @@ long xbytes;
     Include inc;
 
     if (level >= MAX_INCLUDE_LEVEL)
-	cerror(EFATAL_MAX_INCLUDE, level);
+        cerror(EFATAL_MAX_INCLUDE, level);
 
     if (fi == NULL && xbuf == NULL) {
-	ErrorOpenFailed(file, 0);
-	return(oldi);
+        ErrorOpenFailed(file, 0);
+        return(oldi);
     }
     if (fi) {
-	fprintf(Fo, "# 1 \"%s\" %d\n", file, level);
-	fseek(fi, 0L, 2);
-	len = ftell(fi);
-	if (len < 0) {
-	    cerror(EERROR_FILE_SIZE, file, len);
-	    fclose(fi);
-	    return(oldi);
-	}
-	base = malloc(len+1);
-	if (base == NULL)
-	    ErrorNoMemory();
-	fseek(fi, 0L, 0);
-	{ 
-	    int n;
+        fprintf(Fo, "# 1 \"%s\" %d\n", file, level);
+        fseek(fi, 0L, 2);
+        len = ftell(fi);
+        if (len < 0) {
+            cerror(EERROR_FILE_SIZE, file, len);
+            fclose(fi);
+            return(oldi);
+        }
+        base = malloc(len+1);
+        if (base == NULL)
+            ErrorNoMemory();
+        fseek(fi, 0L, 0);
+        { 
+            int n;
 
-	    if ((n = fread(base, 1, len, fi)) != len) {
-		cerror(EERROR_READ_ERROR, file);
-		fclose(fi);
-		return(oldi);
-	    }
-	}
-	fclose(fi);	 /*  fi no longer valid */
+            if ((n = fread(base, 1, len, fi)) != len) {
+                cerror(EERROR_READ_ERROR, file);
+                fclose(fi);
+                return(oldi);
+            }
+        }
+        fclose(fi);      /*  fi no longer valid */
 
-	base[len] = 0;	 /*  emergency terminator to prevent bad code from crashing us!  */
+        base[len] = 0;   /*  emergency terminator to prevent bad code from crashing us!  */
 
-	/*
-	 *  Check for tri-graphs, modify accordingly
-	 */
+        /*
+         *  Check for tri-graphs, modify accordingly
+         */
 
-	if (TriGraph) {
+        if (TriGraph) {
 #ifdef NO_ASM
-	    char *ptr = base;
-	    char c;
+            char *ptr = base;
+            char c;
 
-	    while (c = *ptr) {
-		++ptr;
-		if (c == '?' && *ptr == '?') {
-		    if (c = TriGraphConvert(ptr[1])) {
-			ptr[-1] = c;
-			len -= 2;
-			movmem(ptr + 2, ptr, len - (ptr - (char *)base));
-		    }
-		}
-	    }
+            while (c = *ptr) {
+                ++ptr;
+                if (c == '?' && *ptr == '?') {
+                    if (c = TriGraphConvert(ptr[1])) {
+                        ptr[-1] = c;
+                        len -= 2;
+                        movmem(ptr + 2, ptr, len - (ptr - (char *)base));
+                    }
+                }
+            }
 #else
-	    len = HandleTriGraphs(base) - base;
+            len = HandleTriGraphs(base) - base;
 #endif
-	}
-    } else {		 /*  else macro  */
-	base = xbuf;
-	len = xbytes;
+        }
+    } else {             /*  else macro  */
+        base = xbuf;
+        len = xbytes;
     }
     dbprintf(("CPP %s (%ld)\n", file, len));
 
     if (PushBase)
-	PushBase->Index = oldi;
+        PushBase->Index = oldi;
 
     inc.Next = PushBase;
     inc.FileName = file;
-    inc.LineNo	 = 1;
-    inc.Level	 = level;
-    inc.IsFile	 = (fi) ? 1 : 0;
+    inc.LineNo   = 1;
+    inc.Level    = level;
+    inc.IsFile   = (fi) ? 1 : 0;
     inc.MaxIndex = len;
-    inc.Base	 = base;
+    inc.Base     = base;
     PushBase = &inc;
 
     {
-	int nl = 1;			    /*	newline just occured */
-	short c;
-	short stringtize = 0;
+        int nl = 1;                         /*  newline just occured */
+        short c;
+        short stringtize = 0;
 
-	for (i = w = 0; i < len; ) {
-	    c = base[i];
+        for (i = w = 0; i < len; ) {
+            c = base[i];
 
-	    if (WhiteSpace[c]) {	    /*	ignore white space   */
-		++i;
-		continue;
-	    }
-	    if (c == '\n') {                /*  newline              */
-		/*
-		 *  handle line concat.  XXX handle escape sequences? ANSI?
-		 */
-		if (w < i && base[i-1] == '\\') {
-		    Dump(base, w, i - 1);
-		    w = i + 1;
-		    ForceLineSpec = 1;
-		} else {
-		    if (ForceLineSpec) {
-			Dump(base, w, i);
-			w = i;
-			DoLineSpec();
-		    }
-		}
-		++inc.LineNo;
-		nl = 1;
-		++i;
-		continue;
-	    }
-	    if (c == '#') {                 /*  directive, token pasting  */
-		if (nl && fi) {
-		    dbprintf(("directive\n"));
-		    Dump(base, w, i);
-						    /*	execute directive    */
-		    w = i = HandleDirective(base, i + 1, len);
-		    continue;
-		} else if (base[i+1] == '#') {
-		    long si = i + 2;
-		    while (i >= w && WhiteSpace[base[--i]]);
-		    ++i;
-		    Dump(base, w, i);
-		    i = si;
-		    while (i < len && WhiteSpace[base[i]])
-			++i;
-		    w = i;
-		    continue;
-		} else if (fi == NULL) {
-		    Dump(base, w, i);
-		    stringtize = 1;
-		    w = ++i;
-		    continue;
-		}
-	    }
-	    nl = 0;			    /*	NOT a directive      */
+            if (WhiteSpace[c]) {            /*  ignore white space   */
+                ++i;
+                continue;
+            }
+            if (c == '\n') {                /*  newline              */
+                /*
+                 *  handle line concat.  XXX handle escape sequences? ANSI?
+                 */
+                if (w < i && base[i-1] == '\\') {
+                    Dump(base, w, i - 1);
+                    w = i + 1;
+                    ForceLineSpec = 1;
+                } else {
+                    if (ForceLineSpec) {
+                        Dump(base, w, i);
+                        w = i;
+                        DoLineSpec();
+                    }
+                }
+                ++inc.LineNo;
+                nl = 1;
+                ++i;
+                continue;
+            }
+            if (c == '#') {                 /*  directive, token pasting  */
+                if (nl && fi) {
+                    dbprintf(("directive\n"));
+                    Dump(base, w, i);
+                                                    /*  execute directive    */
+                    w = i = HandleDirective(base, i + 1, len);
+                    continue;
+                } else if (base[i+1] == '#') {
+                    long si = i + 2;
+                    while (i >= w && WhiteSpace[base[--i]]);
+                    ++i;
+                    Dump(base, w, i);
+                    i = si;
+                    while (i < len && WhiteSpace[base[i]])
+                        ++i;
+                    w = i;
+                    continue;
+                } else if (fi == NULL) {
+                    Dump(base, w, i);
+                    stringtize = 1;
+                    w = ++i;
+                    continue;
+                }
+            }
+            nl = 0;                         /*  NOT a directive      */
 
-	    /*
-	     *	Do not misinterpret a number as a symbol, especially parts
-	     *	of the number that contain characters such as 0x23 or
-	     *	0.234E+4  It will suffice to include '.' in our definition
-	     *	of a symbol for this loop
-	     *
-	     *	Note that embedded characters in numbers will not be handled
-	     *	by DC1 if symbolized for precompiled includes, but the
-	     *	processing of this is handled in PRECOMP.C, not here.
-	     */
+            /*
+             *  Do not misinterpret a number as a symbol, especially parts
+             *  of the number that contain characters such as 0x23 or
+             *  0.234E+4  It will suffice to include '.' in our definition
+             *  of a symbol for this loop
+             *
+             *  Note that embedded characters in numbers will not be handled
+             *  by DC1 if symbolized for precompiled includes, but the
+             *  processing of this is handled in PRECOMP.C, not here.
+             */
 
-	    if (c >= '0' && c <= '9') {
-		for (++i; i < len && (SymbolChar[c = base[i]] || c == '.'); ++i)
-		    ;
-		continue;
-	    }
+            if (c >= '0' && c <= '9') {
+                for (++i; i < len && (SymbolChar[c = base[i]] || c == '.'); ++i)
+                    ;
+                continue;
+            }
 
-	    /*
-	     *	symbol?
-	     */
+            /*
+             *  symbol?
+             */
 
-	    if (IfEnabled && SymbolChar[c]) {
-		long b = i;
-		Sym *node;
+            if (IfEnabled && SymbolChar[c]) {
+                long b = i;
+                Sym *node;
 
-		i = ExtSymbol(base, i, len);	/*  extract symbol	 */
-		if (node = FindSymbol(base + b, i - b)) {
-		    if (node->Type && SF_MACROARG && stringtize)
-			node->Type |= SF_STRINGIZE;
-		    Dump(base, w, b);
-		    w = i = HandleSymbol(node, base, i, len);
-		    node->Type &= ~SF_STRINGIZE;
-		} else if (PreCompFlag) {
-		    short t;
+                i = ExtSymbol(base, i, len);    /*  extract symbol       */
+                if (node = FindSymbol(base + b, i - b)) {
+                    if (node->Type && SF_MACROARG && stringtize)
+                        node->Type |= SF_STRINGIZE;
+                    Dump(base, w, b);
+                    w = i = HandleSymbol(node, base, i, len);
+                    node->Type &= ~SF_STRINGIZE;
+                } else if (PreCompFlag) {
+                    short t;
 
-		    /*
-		     *	Precomp optimization
-		     */
+                    /*
+                     *  Precomp optimization
+                     */
 
-		    if (t = PreCompSymbol(base + b, i - b)) {
-			Dump(base, w, b);
-			w = i;
-			putc(((char *)&t)[0], Fo);
-			putc(((char *)&t)[1], Fo);
-		    }
-		}
-		stringtize = 0;
-		continue;
-	    }				    /*	delete comments      */
-	    if (stringtize)
-		cerror(EERROR_STRINGTIZE);
+                    if (t = PreCompSymbol(base + b, i - b)) {
+                        Dump(base, w, b);
+                        w = i;
+                        putc(((char *)&t)[0], Fo);
+                        putc(((char *)&t)[1], Fo);
+                    }
+                }
+                stringtize = 0;
+                continue;
+            }                               /*  delete comments      */
+            if (stringtize)
+                cerror(EERROR_STRINGTIZE);
 
-	    if (SpecialChar[c]) {
-		if (c == '\'') {
-		    i = SkipSingleSpec(base, i + 1, len);
-		    continue;
-		}
-		if (c == '\"') {
-		    i = SkipString(base, i + 1, len);
-		    continue;
-		}
-		if (c == '/') {
-		    if (base[i+1] == '*') {
-			Dump(base, w, i);
-			w = i = SkipComment(base, i + 2, len);
-			putc(' ', Fo);
-			continue;
-		    }
-		    if (base[i+1] == '/' && SlashSlashOpt) {
-			Dump(base, w, i);
-			w = i = SkipCommentLine(base, i + 2, len);
-			continue;
-		    }
-		}
-	    }
-	    ++i;
-	}
-	Dump(base, w, i);
-	/* w = i */
+            if (SpecialChar[c]) {
+                if (c == '\'') {
+                    i = SkipSingleSpec(base, i + 1, len);
+                    continue;
+                }
+                if (c == '\"') {
+                    i = SkipString(base, i + 1, len);
+                    continue;
+                }
+                if (c == '/') {
+                    if (base[i+1] == '*') {
+                        Dump(base, w, i);
+                        w = i = SkipComment(base, i + 2, len);
+                        putc(' ', Fo);
+                        continue;
+                    }
+                    if (base[i+1] == '/' && SlashSlashOpt) {
+                        Dump(base, w, i);
+                        w = i = SkipCommentLine(base, i + 2, len);
+                        continue;
+                    }
+                }
+            }
+            ++i;
+        }
+        Dump(base, w, i);
+        /* w = i */
     }
 
     if (xbuf == NULL)
-	free(base);
+        free(base);
 
     if (IfIndex != ifIndex)
-	cerror(EWARN_IFS_LEFT_PENDING, IfIndex, ifIndex);
+        cerror(EWARN_IFS_LEFT_PENDING, IfIndex, ifIndex);
 
     PushBase = inc.Next;
 
     if (PushBase) {
-	if (fi)
-	    DoLineSpec();
-	return(PushBase->Index);
+        if (fi)
+            DoLineSpec();
+        return(PushBase->Index);
     }
     return(0);
 }
@@ -307,9 +307,9 @@ long i;
 long max;
 {
     while (i < max && base[i] != '\n')
-	++i;
+        ++i;
     if (i == max)
-	cerror(EERROR_UNEXPECTED_EOF);
+        cerror(EERROR_UNEXPECTED_EOF);
     return(i);
 }
 
@@ -322,23 +322,23 @@ long max;
     char c;
 
     while (i < max) {
-	c = base[i];
-	if (c == '/' && base[i+1] == '*')
-	    cerror(EWARN_NESTED_COMMENT);
-	if (c == '*' && base[i+1] == '/')
-	    break;
-	if (c == '\n') {
-	    ++PushBase->LineNo;
-	    putc('\n', Fo);
-	}
-	++i;
+        c = base[i];
+        if (c == '/' && base[i+1] == '*')
+            cerror(EWARN_NESTED_COMMENT);
+        if (c == '*' && base[i+1] == '/')
+            break;
+        if (c == '\n') {
+            ++PushBase->LineNo;
+            putc('\n', Fo);
+        }
+        ++i;
     }
     if (i == max) {
-	cerror(EERROR_UNEXPECTED_EOF);
+        cerror(EERROR_UNEXPECTED_EOF);
     } else {
-	i += 2;
-	if (i > max)
-	    cerror(EFATAL_SOFTERROR_177);
+        i += 2;
+        if (i > max)
+            cerror(EFATAL_SOFTERROR_177);
     }
     return(i);
 }
@@ -353,7 +353,7 @@ long max;
     char *sc = SymbolChar;
 
     while (i < max && sc[base[i]])
-	++i;
+        ++i;
 
     dbprintf(("ExtSymbol: %.*s\n", i - b, base + b));
 
@@ -376,26 +376,26 @@ long bytes;
     long b;
 
     for (i = 0; i < bytes; ++i) {
-	if (buf[i] == '/' && i + 1 < bytes) {
-	    if (buf[i+1] == '*') {
-		b = i;
-		i += 2;
-		while (i < bytes) {
-		    if (buf[i] == '*' && buf[i+1] == '/' && i + 1 < bytes) {
-			i += 2;
-			break;
-		    }
-		    ++i;
-		}
-		setmem(buf + b, i - b, ' ');
-	    } else if (buf[i+1] == '/' && SlashSlashOpt) {
-		b = i;
-		while (i < bytes && buf[i] != '\n')
-		    ++i;
-		setmem(buf + b, i - b, ' ');
-		--i;
-	    }
-	}
+        if (buf[i] == '/' && i + 1 < bytes) {
+            if (buf[i+1] == '*') {
+                b = i;
+                i += 2;
+                while (i < bytes) {
+                    if (buf[i] == '*' && buf[i+1] == '/' && i + 1 < bytes) {
+                        i += 2;
+                        break;
+                    }
+                    ++i;
+                }
+                setmem(buf + b, i - b, ' ');
+            } else if (buf[i+1] == '/' && SlashSlashOpt) {
+                b = i;
+                while (i < bytes && buf[i] != '\n')
+                    ++i;
+                setmem(buf + b, i - b, ' ');
+                --i;
+            }
+        }
     }
 }
 
@@ -405,27 +405,27 @@ long
 SkipString(char *base, long i, long max)
 {
     while (i < max && base[i] != '\"') {
-	/*
-	 *  Embedded newline with no previous backslash
-	 */
+        /*
+         *  Embedded newline with no previous backslash
+         */
 
-	if (base[i] == '\n') {
-	    cerror(EERROR_UNTERMINATED_STRING);
-	    break;
-	}
+        if (base[i] == '\n') {
+            cerror(EERROR_UNTERMINATED_STRING);
+            break;
+        }
 
-	/*
-	 *  Leave backslashes alone.  The specical case of a \ followed
-	 *  by a newline is handled by DC1
-	 */
+        /*
+         *  Leave backslashes alone.  The specical case of a \ followed
+         *  by a newline is handled by DC1
+         */
 
-	if (base[i] == '\\') {
-	    ++i;
-	}
-	++i;
+        if (base[i] == '\\') {
+            ++i;
+        }
+        ++i;
     }
     if (i < max)
-	++i;
+        ++i;
     return(i);
 }
 
@@ -433,16 +433,16 @@ long
 SkipSingleSpec(char *base, long i, long max)
 {
     while (i < max && base[i] != '\'') {
-	if (base[i] == '\n') {
-	    cerror(EERROR_UNTERMINATED_CHARCONST);
-	    break;
-	}
-	if (base[i] == '\\')
-	    ++i;
-	++i;
+        if (base[i] == '\n') {
+            cerror(EERROR_UNTERMINATED_CHARCONST);
+            break;
+        }
+        if (base[i] == '\\')
+            ++i;
+        ++i;
     }
     if (i < max)
-	++i;
+        ++i;
     return(i);
 }
 
@@ -453,27 +453,27 @@ long w;
 long i;
 {
     if (w < i) {
-	if (IfEnabled) {
-	    if (GlobalStringize) {
-		long n;
-		for (n = w; n < i; ++n) {
-		    char c = base[n];
-		    if (c < 32 || c == '\"' || c == '\'' /* || c == '\\'*/) {
-			fprintf(Fo, "\\%03o", (ubyte)c);
-		    } else {
-			putc(c, Fo);
-		    }
-		}
-	    } else {
-		fwrite(base + w, 1, i - w, Fo);
-	    }
-	} else {
-	    while (w < i) {
-		if (base[w] == '\n')
-		    fputc('\n', Fo);
-		++w;
-	    }
-	}
+        if (IfEnabled) {
+            if (GlobalStringize) {
+                long n;
+                for (n = w; n < i; ++n) {
+                    char c = base[n];
+                    if (c < 32 || c == '\"' || c == '\'' /* || c == '\\'*/) {
+                        fprintf(Fo, "\\%03o", (ubyte)c);
+                    } else {
+                        putc(c, Fo);
+                    }
+                }
+            } else {
+                fwrite(base + w, 1, i - w, Fo);
+            }
+        } else {
+            while (w < i) {
+                if (base[w] == '\n')
+                    fputc('\n', Fo);
+                ++w;
+            }
+        }
     }
 }
 

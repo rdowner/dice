@@ -1,5 +1,5 @@
 
-			 USING THE _MAIN ENTRY POINT
+                         USING THE _MAIN ENTRY POINT
 
     DICE uses a general startup code module that supports CLI programs,
     workbench startup, residentable code, and custom configurations
@@ -9,7 +9,7 @@
     automatically bring in code during linking to perform appropriate
     operations.  For example, if you use floating point, DICE will
     automatically bring in routines to open and close the floating point
-    libraries.	If you do NOT use floating point, these routines are NOT
+    libraries.  If you do NOT use floating point, these routines are NOT
     brought in.
 
     You may have read about DICE's ability to automatically open the
@@ -36,35 +36,35 @@
     work differently:
 
     (1) DOS.LIBRARY is now openned automatically only if you makes calls
-	that need it.  (i.e. you don't have to worry about it)
+        that need it.  (i.e. you don't have to worry about it)
 
     (2) STDIO's stdin, stdout, and stderr are not set up, but you can
-	still use STDIO on FILE *'s that you explicitly fopen().
+        still use STDIO on FILE *'s that you explicitly fopen().
 
     (3) DESCRIPTORS 0, 1, and 2 are not set up but you can still use
-	low level open(), read(), write(), etc... calls for descriptors
-	you open yourself.
+        low level open(), read(), write(), etc... calls for descriptors
+        you open yourself.
 
     (4) MEMORY MANAGEMENT still works fine
 
     (5) WORKBENCH PROCESSING WILL NOT BE DONE BY DEFAULT, there is
-	no wbmain() and autoinit code normally brought in by C.LIB's
-	_main() to WaitPort()/GetMsg() the workbench message (if
-	workbench startup is detected) will NOT be brought in by
-	default.
+        no wbmain() and autoinit code normally brought in by C.LIB's
+        _main() to WaitPort()/GetMsg() the workbench message (if
+        workbench startup is detected) will NOT be brought in by
+        default.
 
-		      HOW DO I HAVE A _MAIN FOR PROGRAMS
-			RUN FROM THE WORKBENCH?
+                      HOW DO I HAVE A _MAIN FOR PROGRAMS
+                        RUN FROM THE WORKBENCH?
 
     The answer is, a simple trick.  You must make a dummy reference
     by having the following dummy code in your program:
 
-	routing_that_is_never_called()
-	{
-	    _waitwbmsg();
-	}
+        routing_that_is_never_called()
+        {
+            _waitwbmsg();
+        }
 
-    NEVER CALL THIS PROCEDURE!	It's only the reference that counts,
+    NEVER CALL THIS PROCEDURE!  It's only the reference that counts,
     because ALIB/WBMAIN.A which contains _waitwbmsg() brings it in
     as autoinit code which is run automatically by C.O
 
@@ -73,7 +73,7 @@
 
     To process this message your _main() must check the _WBMsg variable.
     If this variable is non-NULL, the program was started from the
-    workbench.	If it is NULL the program was started from a CLI.  Note
+    workbench.  If it is NULL the program was started from a CLI.  Note
     that the arguments (len, arg) passed to _main() are ONLY VALID FOR
     CLI RUN PROGRAMS.  They will contain garbage for workbench run
     programs.
@@ -85,8 +85,8 @@
     C.O's _exit() call.
 
 
-		WHY ISN'T THE WORKBENCH CHECKED FOR BY DEFAULT
-		 WHEN _main() is OVERRIDEN BY THE PROGRAMMER?
+                WHY ISN'T THE WORKBENCH CHECKED FOR BY DEFAULT
+                 WHEN _main() is OVERRIDEN BY THE PROGRAMMER?
 
     The answer is, to suport custom processes and tasks.  A custom
     process created with CreateProc() or CreateNewProc() (2.0) looks
@@ -95,7 +95,7 @@
     default it would incorrectly handle custom processes.
 
 
-		    DO YOU REALLY WANT TO USE _main() ?
+                    DO YOU REALLY WANT TO USE _main() ?
 
     No, you do not.  I strongly suggest that you use the standard
     main() and wbmain() entry points for all normal programs.

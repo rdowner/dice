@@ -40,30 +40,30 @@ do_aslload()
 
     splitpath(Ep->Name, file, dir);
 
-    if (FReq) { 	       /* If we have asl.library & requester */
-	if (AslRequestTags((APTR)FReq,
-			    ASL_Hail,	    "DME Load New File",
-			    ASL_OKText,     "Load",         /* ASL_Window, window,    ASL_FuncFlags, ((win)&&(win->UserPort)) ? 0 : FILF_NEWIDCMP,*/
-			    ASL_FuncFlags,  FILF_NEWIDCMP,  /* no window tag */
-			    ASL_Dir,	    dir,
-			    ASL_File,	    file,
-			    TAG_DONE )) {
+    if (FReq) {                /* If we have asl.library & requester */
+        if (AslRequestTags((APTR)FReq,
+                            ASL_Hail,       "DME Load New File",
+                            ASL_OKText,     "Load",         /* ASL_Window, window,    ASL_FuncFlags, ((win)&&(win->UserPort)) ? 0 : FILF_NEWIDCMP,*/
+                            ASL_FuncFlags,  FILF_NEWIDCMP,  /* no window tag */
+                            ASL_Dir,        dir,
+                            ASL_File,       file,
+                            TAG_DONE )) {
 
-	    BPTR newlock;
+            BPTR newlock;
 
-	    if (newlock = Lock( FReq->rf_Dir, SHARED_LOCK)) {
-		UnLock(CurrentDir(oldlock));
-		Ep->dirlock = (long)newlock;
-		/* fixfile(FReq->rf_File,FReq->rf_Dir); */
-		av[0] = (ubyte *)"n";
-		av[1] = (ubyte *) FReq->rf_File;
-		do_edit();
-		return;
-	    }
-	}
-	CurrentDir(oldlock);
-    } else {		  /* no asl.library? try ARP */
-	do_arpload();
+            if (newlock = Lock( FReq->rf_Dir, SHARED_LOCK)) {
+                UnLock(CurrentDir(oldlock));
+                Ep->dirlock = (long)newlock;
+                /* fixfile(FReq->rf_File,FReq->rf_Dir); */
+                av[0] = (ubyte *)"n";
+                av[1] = (ubyte *) FReq->rf_File;
+                do_edit();
+                return;
+            }
+        }
+        CurrentDir(oldlock);
+    } else {              /* no asl.library? try ARP */
+        do_arpload();
     }
 }
 
@@ -77,23 +77,23 @@ do_aslsave()
 
     splitpath(Ep->Name, file, dir);
     if (FReq) {
-	if (AslRequestTags( (APTR)FReq,
-			    ASL_Hail,	    "DME Save File",
-			    ASL_OKText,     "Save",
-			    ASL_FuncFlags,  FILF_NEWIDCMP | FILF_SAVE,	/* no window tag! */
-			    ASL_Dir,	    dir,
-			    ASL_File,	    file,
-			    TAG_DONE )) {
+        if (AslRequestTags( (APTR)FReq,
+                            ASL_Hail,       "DME Save File",
+                            ASL_OKText,     "Save",
+                            ASL_FuncFlags,  FILF_NEWIDCMP | FILF_SAVE,  /* no window tag! */
+                            ASL_Dir,        dir,
+                            ASL_File,       file,
+                            TAG_DONE )) {
 
-	    CurrentDir(oldlock);
-	    fixfile( FReq->rf_File, FReq->rf_Dir);
-	    av[1] = (ubyte *)FReq->rf_File;
-	    do_saveas();
-	} else {
-	    CurrentDir(oldlock);
-	}
+            CurrentDir(oldlock);
+            fixfile( FReq->rf_File, FReq->rf_Dir);
+            av[1] = (ubyte *)FReq->rf_File;
+            do_saveas();
+        } else {
+            CurrentDir(oldlock);
+        }
     } else {
-	do_arpsave();
+        do_arpsave();
     }
 }
 
@@ -106,24 +106,24 @@ do_aslinsfile()
 
     splitpath(Ep->Name, file, dir);
     if (FReq) {
-	if (AslRequestTags( (APTR)FReq,
-			    ASL_Hail,	    "DME Insert File",
-			    ASL_OKText,     "Load",
-			    ASL_FuncFlags,  FILF_NEWIDCMP,  /* no window tag */
-			    ASL_Dir,	    dir,
-			    ASL_File,	    file,
-			    TAG_DONE )) {
+        if (AslRequestTags( (APTR)FReq,
+                            ASL_Hail,       "DME Insert File",
+                            ASL_OKText,     "Load",
+                            ASL_FuncFlags,  FILF_NEWIDCMP,  /* no window tag */
+                            ASL_Dir,        dir,
+                            ASL_File,       file,
+                            TAG_DONE )) {
 
-	    CurrentDir(oldlock);
-	    fixfile( FReq->rf_File, FReq->rf_Dir);
-	    av[0] = (ubyte *)"i";
-	    av[1] = (ubyte *)FReq->rf_File;
-	    do_edit();
-	    return;
-	}
-	CurrentDir(oldlock);
+            CurrentDir(oldlock);
+            fixfile( FReq->rf_File, FReq->rf_Dir);
+            av[0] = (ubyte *)"i";
+            av[1] = (ubyte *)FReq->rf_File;
+            do_edit();
+            return;
+        }
+        CurrentDir(oldlock);
     } else {
-	do_arpinsfile();
+        do_arpinsfile();
     }
 }
 
@@ -132,50 +132,50 @@ do_aslinsfile()
  *  I wanted to put it after *fontreq, below....
  */
 
-struct TagItem FontTags[] = {	ASL_Hail,	(ULONG)"DME fixed width font",
-				ASL_FuncFlags,	FONF_FIXEDWIDTH,
-				ASL_MinHeight,	6,
-				ASL_MaxHeight,	24,	/* >reasonable, eh? */
-				TAG_DONE };
+struct TagItem FontTags[] = {   ASL_Hail,       (ULONG)"DME fixed width font",
+                                ASL_FuncFlags,  FONF_FIXEDWIDTH,
+                                ASL_MinHeight,  6,
+                                ASL_MaxHeight,  24,     /* >reasonable, eh? */
+                                TAG_DONE };
 
 void
 do_aslfont()
 {
     if (FReq) {
-	struct FontRequester *fontreq;
+        struct FontRequester *fontreq;
 
-	if (fontreq = (struct FontRequester *)
-		      AllocAslRequest(ASL_FontRequest,FontTags) ) {
+        if (fontreq = (struct FontRequester *)
+                      AllocAslRequest(ASL_FontRequest,FontTags) ) {
 
-	    if (AslRequest(fontreq, NULL)) {
+            if (AslRequest(fontreq, NULL)) {
 
-		/*  Since we have GetFont() already, just pass
-		 *   the name and size from fontreq's TextAttr to it.
-		 *
-		 *  What follows mimics SETFONT (in cmnd3.c)
-		 */
+                /*  Since we have GetFont() already, just pass
+                 *   the name and size from fontreq's TextAttr to it.
+                 *
+                 *  What follows mimics SETFONT (in cmnd3.c)
+                 */
 
-		FONT *font = (FONT *)GetFont( fontreq->fo_Attr.ta_Name,
-					     (short) fontreq->fo_Attr.ta_YSize );
-		ED *ep = Ep;
-		if (font) {
-		    text_sync();
-		    if (ep->Font)
-			CloseFont(ep->Font);
-		    ep->Font = font;
-		    SetFont(ep->Win->RPort, font);
-		    SetRast(ep->Win->RPort, 0);
-		    RefreshWindowFrame(ep->Win);
-		    set_window_params();
-		    text_redisplay();
-		} else {
-		    title("Unable to find font");
-		}
-	    }
-	    FreeAslRequest(fontreq);
-	}
+                FONT *font = (FONT *)GetFont( fontreq->fo_Attr.ta_Name,
+                                             (short) fontreq->fo_Attr.ta_YSize );
+                ED *ep = Ep;
+                if (font) {
+                    text_sync();
+                    if (ep->Font)
+                        CloseFont(ep->Font);
+                    ep->Font = font;
+                    SetFont(ep->Win->RPort, font);
+                    SetRast(ep->Win->RPort, 0);
+                    RefreshWindowFrame(ep->Win);
+                    set_window_params();
+                    text_redisplay();
+                } else {
+                    title("Unable to find font");
+                }
+            }
+            FreeAslRequest(fontreq);
+        }
     } else {
-	title("Need ASL.LIBRARY for Font Requester!");
+        title("Need ASL.LIBRARY for Font Requester!");
     }
 }
 
@@ -189,12 +189,12 @@ do_arpinsfile()
 
     splitpath(Ep->Name, file, dir);
     if (arpreq("Insert File", file, dir, NULL)) {
-	CurrentDir(oldlock);
-	fixfile(file, dir);
-	av[0] = (ubyte *)"i";
-	av[1] = (ubyte *)file;
-	do_edit();
-	return;
+        CurrentDir(oldlock);
+        fixfile(file, dir);
+        av[0] = (ubyte *)"i";
+        av[1] = (ubyte *)file;
+        do_edit();
+        return;
     }
     CurrentDir(oldlock);
 }
@@ -208,18 +208,18 @@ do_arpload()
 
     splitpath(Ep->Name, file, dir);
     if (arpreq("New File", file, dir, NULL)) {
-	BPTR newlock;
-	if (newlock = Lock(dir, SHARED_LOCK)) {
-	    UnLock(CurrentDir(oldlock));
-	    Ep->dirlock = (long)newlock;
-	    /*
-	    fixfile(file,dir);
-	    */
-	    av[0] = (ubyte *)"n";
-	    av[1] = (ubyte *)file;
-	    do_edit();
-	    return;
-	}
+        BPTR newlock;
+        if (newlock = Lock(dir, SHARED_LOCK)) {
+            UnLock(CurrentDir(oldlock));
+            Ep->dirlock = (long)newlock;
+            /*
+            fixfile(file,dir);
+            */
+            av[0] = (ubyte *)"n";
+            av[1] = (ubyte *)file;
+            do_edit();
+            return;
+        }
     }
     CurrentDir(oldlock);
 }
@@ -233,12 +233,12 @@ do_arpsave()
 
     splitpath(Ep->Name, file, dir);
     if (arpreq("Save File", file, dir, NULL)) {
-	CurrentDir(oldlock);
-	fixfile(file,dir);
-	av[1] = (ubyte *)file;
-	do_saveas();
+        CurrentDir(oldlock);
+        fixfile(file,dir);
+        av[1] = (ubyte *)file;
+        do_saveas();
     } else {
-	CurrentDir(oldlock);
+        CurrentDir(oldlock);
     }
 }
 
@@ -251,25 +251,25 @@ char *file,*dir;
     char hasdev = 0;
 
     /*
-     *	do we need to add a slash to the directory spec?
+     *  do we need to add a slash to the directory spec?
      */
 
     if (len && dir[len-1] != '/' && dir[len-1] != ':') {
-	dir[len++] = '/';
-	dir[len] = 0;
+        dir[len++] = '/';
+        dir[len] = 0;
     }
 
     /*
-     *	Is file spec really a full path spec?
+     *  Is file spec really a full path spec?
      */
 
     for (ptr = file; *ptr; ++ptr) {
-	if (ptr[0] == ':')
-	    hasdev = 1;
+        if (ptr[0] == ':')
+            hasdev = 1;
     }
     if (!hasdev) {
-	movmem(file,file+len,strlen(file)+1);
-	movmem(dir,file,len);
+        movmem(file,file+len,strlen(file)+1);
+        movmem(dir,file,len);
     }
 }
 
@@ -286,9 +286,9 @@ char *file, *dir;
 {
     short i;
 
-    for (i = strlen(name); i >= 0; --i) {	/* was (incorrectly) "i > 0" */
-	if (name[i] == ':' || name[i] == '/')
-	    break;
+    for (i = strlen(name); i >= 0; --i) {       /* was (incorrectly) "i > 0" */
+        if (name[i] == ':' || name[i] == '/')
+            break;
     }
     ++i;
     strcpy(file, name + i);

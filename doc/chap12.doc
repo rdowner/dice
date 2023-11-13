@@ -68,10 +68,10 @@
         :: functions are thus identical.
 
     INPUTS
-        int n; 	integer
+        int n;  integer
 
     RESULTS
-        int r; 	absolute value of integer
+        int r;  absolute value of integer
 
     SEE ALSO
         TBA
@@ -118,12 +118,12 @@
         4  check read permission for file
 
     INPUTS
-        char *filename; 	file to check
+        char *filename;         file to check
 
-        int mode; 	modes as specified above
+        int mode;       modes as specified above
 
     RESULTS
-        int r;  	0 if modes available, -1 if not
+        int r;          0 if modes available, -1 if not
 
     SEE ALSO
         open, fopen
@@ -179,10 +179,10 @@
         acos returns the arc cosine of a double quantity.
 
     INPUTS
-        double b;	 double floating point value
+        double b;        double floating point value
 
     RESULTS
-        double a;  	result double floating point value
+        double a;       result double floating point value
 
     SEE ALSO
         asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan, facos,
@@ -279,10 +279,10 @@
         ctime and so will be overwritten whenever either function is called.
 
     INPUTS
-        struct tm *ts;	pointer to a broken down time structure
+        struct tm *ts;  pointer to a broken down time structure
 
     RESULTS
-        char *str;	pointer to static string
+        char *str;      pointer to static string
 
     SEE ALSO
         time, localtime, asctime, strftime, ctime, clock
@@ -324,7 +324,7 @@
         string.
 
     INPUTS
-        expression;	an expression which the macro converts into
+        expression;     an expression which the macro converts into
         an if(!(expression)).
 
     RESULTS
@@ -362,10 +362,10 @@
         asin takes the arc sine of a floating point quantity.
 
     INPUTS
-        double b;	double floating point value
+        double b;       double floating point value
 
     RESULTS
-        double a;	result double floating point value
+        double a;       result double floating point value
 
     SEE ALSO
         acos, cos, exp, fabs, log, log10, pow, sin, sqrt, tan facos, fasin,
@@ -408,10 +408,10 @@
         atan takes the arc tangent of a floating point quantity.
 
     INPUTS
-        double b;	double floating point value
+        double b;       double floating point value
 
     RESULTS
-        double a;	result double floating point value
+        double a;       result double floating point value
 
     SEE ALSO
         acos, asin, cos, exp, fabs, log, log10, pow, sin, sqrt, tan facos,
@@ -462,11 +462,11 @@
         one you should check the return value.
 
     INPUTS
-        void (*funcptr)(void);   	routine to add to exit call list, takes no
+        void (*funcptr)(void);          routine to add to exit call list, takes no
         arguments and returns nothing.
 
     RESULTS
-        int error;	0 on success, -1 on failure.
+        int error;      0 on success, -1 on failure.
 
     SEE ALSO
         onbreak
@@ -550,10 +550,10 @@
         more information.
 
     INPUTS
-        char *str;	string, like "1.234E-4";
+        char *str;      string, like "1.234E-4";
 
     RESULTS
-        double d;	double fp representation of string
+        double d;       double fp representation of string
 
     SEE ALSO
         strtod
@@ -587,10 +587,10 @@
         :: atol are exactly the same.
 
     INPUTS
-        char *str;	string to convert to int
+        char *str;      string to convert to int
 
     RESULTS
-        int x;	integer result long y; integer result
+        int x;  integer result long y; integer result
 
     SEE ALSO
         strtol
@@ -631,12 +631,12 @@
         base.
 
     INPUTS
-        char *str;	string to convert to int
+        char *str;      string to convert to int
 
     RESULTS
-        int x;	integer result
+        int x;  integer result
 
-        long y;	integer result
+        long y; integer result
 
     SEE ALSO
         strtol
@@ -700,14 +700,14 @@
         the two buffers are the same.
 
     INPUTS
-        void *s1;	pointer to first buffer
+        void *s1;       pointer to first buffer
 
-        void *s2;	pointer to second buffer
+        void *s2;       pointer to second buffer
 
-        size_t bytes;	size of each buffer
+        size_t bytes;   size of each buffer
 
     RESULTS
-        int r;	 -1 if buf s1 < buf s2, 0 if buf s1 == buf s2, 1 if buf s1 >
+        int r;   -1 if buf s1 < buf s2, 0 if buf s1 == buf s2, 1 if buf s1 >
         buf s2.
 
     SEE ALSO
@@ -840,12 +840,12 @@
         cannot be allocated.
 
     INPUTS
-        size_t objsize;	size of each object
+        size_t objsize; size of each object
 
-        size_t numobjs;	number of objects to allocate
+        size_t numobjs; number of objects to allocate
 
     RESULTS
-        void *ptr;	pointer to first object
+        void *ptr;      pointer to first object
 
     SEE ALSO
         malloc, strdup
@@ -901,10 +901,10 @@
         :: restored.
 
     INPUTS
-        char *path;	path to chdir into
+        char *path;     path to chdir into
 
     RESULTS
-        int r;	return value, 0 if ok, -1 if error
+        int r;  return value, 0 if ok, -1 if error
 
     SEE ALSO
         getcwd
@@ -992,10 +992,10 @@
         :: information.
 
     INPUTS
-        FILE *fp; 	file pointer to clear the error on.
+        FILE *fp;       file pointer to clear the error on.
 
     RESULTS
-        none; 	the error and EOF indicators are cleared
+        none;   the error and EOF indicators are cleared
 
     SEE ALSO
         feof, ferror, rewind, fseek
@@ -1023,7 +1023,7 @@
         none
 
     RESULTS
-        clock_t clk; 	system clock time value
+        clock_t clk;    system clock time value
 
     SEE ALSO
         time, localtime, asctime, strftime, ctime, clock
@@ -1067,11 +1067,11 @@
         :: be returned.
 
     INPUTS
-        int fd; 	file descriptor to close, the file descriptor becomes invalid
+        int fd;         file descriptor to close, the file descriptor becomes invalid
         after this call
 
     RESULTS
-        int r; 	return value, 0 == ok, non-zero == error
+        int r;  return value, 0 == ok, non-zero == error
 
     SEE ALSO
         creat, fcntl, fdtofh, ioctl, isatty, lseek, mkdir, open, read, rmdir,
@@ -1119,14 +1119,14 @@
         the two buffers are the same.
 
     INPUTS
-        void *s1;	pointer to first buffer
+        void *s1;       pointer to first buffer
 
-        void *s2;	pointer to second buffer
+        void *s2;       pointer to second buffer
 
-        size_t bytes;	size of each buffer
+        size_t bytes;   size of each buffer
 
     RESULTS
-        int r;	-1 if buf s1 < buf s2, 0 if buf s1 == buf s2, 1 if buf s1 > buf
+        int r;  -1 if buf s1 < buf s2, 0 if buf s1 == buf s2, 1 if buf s1 > buf
         s2.
 
     SEE ALSO
@@ -1177,10 +1177,10 @@
         cos returns the cosine of a floating point quantity.
 
     INPUTS
-        double b; 	double floating point value
+        double b;       double floating point value
 
     RESULTS
-        double a; 	 result double floating point value
+        double a;        result double floating point value
 
     SEE ALSO
         acos, asin, atan, exp, fabs, log, log10, pow, sin, sqrt, tan facos,
@@ -1231,10 +1231,10 @@
         :: if illegal.
 
     INPUTS
-        char *file; 	nul terminated string that is the filename
+        char *file;     nul terminated string that is the filename
 
     RESULTS
-        int  fd; 	file descriptor if >= 0, error if < 0.
+        int  fd;        file descriptor if >= 0, error if < 0.
 
     SEE ALSO
         close, fcntl, fdtofh, ioctl, isatty, lseek, mkdir, open, read, rmdir,
@@ -1279,10 +1279,10 @@
         ctime and so will be overwritten whenever either function is called.
 
     INPUTS
-        time_t *t;  	pointer to a time_t value
+        time_t *t;      pointer to a time_t value
 
      RESULTS
-        char *str; 	pointer to static string
+        char *str;      pointer to static string
 
     SEE ALSO
         time, localtime, asctime, strftime, ctime, clock
@@ -1630,10 +1630,10 @@
         exp returns e to the power of the floating point quantity.
 
     INPUTS
-        double b; 	double floating point value
+        double b;       double floating point value
 
     RESULTS
-        double a; 	result double floating point value
+        double a;       result double floating point value
 
     SEE ALSO
         acos, asin, atan, cos, fabs, log, log10, pow, sin,  sqrt, tan facos,
@@ -1699,16 +1699,16 @@
         run with at least 8K of stack.
 
     INPUTS
-        int  xac; 	original argc
+        int  xac;       original argc
 
-        char **xav; 	original argv
+        char **xav;     original argv
 
-        int  *ac; 	pointer to new argc
+        int  *ac;       pointer to new argc
 
-        char ***av; 	pointer to new argv
+        char ***av;     pointer to new argv
 
     RESULTS
-        int error; 	0 if all went well, non-zero otherwise
+        int error;      0 if all went well, non-zero otherwise
 
     SEE ALSO
         TBA
@@ -1746,12 +1746,12 @@
         fabs returns the absolute value of a floating point quantity.
 
     INPUTS
-        float d; 	float floating point value
+        float d;        float floating point value
 
     RESULTS
-        int arg; 	control argument
+        int arg;        control argument
 
-        int r;  	result, error if less than 0.
+        int r;          result, error if less than 0.
 
     SEE ALSO
     EXAMPLE
@@ -1791,10 +1791,10 @@
         facos returns the arc cosine of a floating point quantity.
 
     INPUTS
-        float d;   	float floating point value
+        float d;        float floating point value
 
     RESULTS
-        result float;	floating point value
+        result float;   floating point value
 
     SEE ALSO
         acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan,
@@ -1836,10 +1836,10 @@
         fasin returns the arc sine of a floating point quantity.
 
     INPUTS
-        float d; 	float floating point value
+        float d;        float floating point value
 
     RESULTS
-        float c; 	result float loating point value
+        float c;        result float loating point value
 
     SEE ALSO
         acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
@@ -1882,10 +1882,10 @@
         fatan returns the arc tan of a floating point quantity.
 
     INPUTS
-        float d; 	float floating point value
+        float d;        float floating point value
 
     RESULTS
-        float c; 	result float floating point value
+        float c;        result float floating point value
 
     SEE ALSO
         acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
@@ -1922,7 +1922,7 @@
     SYNTAX
         #include <stdio.h>
         int error = fclose(fp);
-        FILE 	*fp;
+        FILE    *fp;
 
     DESCRIPTION
         fclose flushes any data remaining in the file pointer's output buffer
@@ -1943,10 +1943,10 @@
         || file_pointer manual page for general information
 
     INPUTS
-        FILE *F; 	file pointer
+        FILE *F;        file pointer
 
     RESULTS
-        int error; 	error on fclose, or 0 if none
+        int error;      error on fclose, or 0 if none
 
     SEE ALSO
         fopen, fread, fwrite, fgets, fputs
@@ -1981,14 +1981,14 @@
         :: returned.
 
     INPUTS
-        int fd;    	file descriptor to operate on
+        int fd;         file descriptor to operate on
 
-        int req;   	request from <fcntl.h> (F_* defines)
+        int req;        request from <fcntl.h> (F_* defines)
 
-        int arg;	control argument
+        int arg;        control argument
 
     RESULTS
-        int r;	result, error if less than 0
+        int r;  result, error if less than 0
 
     SEE ALSO
         close, creat, fcntl, fdtofh, ioctl, isatty, lseek, mkdir, open, read,
@@ -2014,10 +2014,10 @@
         fcos returns the cosine of a floating point quantity.
 
     INPUTS
-        float d; 	float floating point value
+        float d;        float floating point value
 
      RESULTS
-        float c; 	result float  floating point value
+        float c;        result float  floating point value
 
     SEE ALSO
         acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
@@ -2070,12 +2070,12 @@
         :: general information
 
     INPUTS
-        int fd;	file descriptor to associated with a new file pointer
+        int fd; file descriptor to associated with a new file pointer
 
-        char *modes;	modes string, such as "r+".
+        char *modes;    modes string, such as "r+".
 
     RESULTS
-        FILE *fp; 	new file pointer or NULL if an error occured
+        FILE *fp;       new file pointer or NULL if an error occured
 
     SEE ALSO
         fopen, fread, fwrite, fgets, fputs
@@ -2096,16 +2096,16 @@
         BPTR fh = fdtofh(fd);
         int fd;
 
-     	DESCRIPTION
+        DESCRIPTION
         fdtofh returns the AmigaDOS file handle associated with a file
         descriptor or NULL if the file descriptor is illegal or simulated. 
         You may then make AmigaDOS library calls using the file handle.
 
     INPUTS
-        int fd;	file descriptor
+        int fd; file descriptor
 
     RESULTS
-        BPTR fh;	associated file handle or NULL
+        BPTR fh;        associated file handle or NULL
 
       SEE ALSO
         close, creat, fcntl, ioctl, isatty, lseek, mkdir, open, read, rmdir,
@@ -2147,13 +2147,13 @@
         :: information.
 
     INPUTS
-        FILE *fp; 	file pointer
+        FILE *fp;       file pointer
 
     RESULTS
-        int r;  	0 if no EOF condition exists, != 0 if an EOF condition exists
+        int r;          0 if no EOF condition exists, != 0 if an EOF condition exists
         (not necessarily 1 or -1).
 
-     	SEE ALSO
+        SEE ALSO
         fopen, fclose, fread, fwrite, fgets, fputs
 
     EXAMPLE
@@ -2180,10 +2180,10 @@
         :: information.
 
     INPUTS
-        FILE *fp;  	file pointer
+        FILE *fp;       file pointer
 
     RESULTS
-        int r; 	0 if no ERROR condition exists, != 0 if an ERROR condition
+        int r;  0 if no ERROR condition exists, != 0 if an ERROR condition
         exists (not necessarily 1 or -1).
 
     SEE ALSO
@@ -2209,10 +2209,10 @@
         fexp returns e to the power of the floating point quantity
 
     INPUTS
-        float d;	float floating point value
+        float d;        float floating point value
 
     RESULTS
-        float c;	result float  floating point value
+        float c;        result float  floating point value
 
     SEE ALSO
         acos, asin, atan, cos, exp, fabs, log, log10, pow, sin,  sqrt, tan
@@ -2256,12 +2256,12 @@
         ffabs returns the absolute value of a floating point quantity.
 
     INPUTS
-        float d; 	float floating point value
+        float d;        float floating point value
 
     RESULTS
-        int arg; 	control argument
+        int arg;        control argument
 
-        int r; 	result, error if less than 0.
+        int r;  result, error if less than 0.
 
     SEE ALSO
         acos, asin, atan, cos, exp, fabs, log, log10, pow, sin,  sqrt, tan
@@ -2311,10 +2311,10 @@
         :: information.
 
     INPUTS
-        FILE *fp; 	file pointer
+        FILE *fp;       file pointer
 
     RESULTS
-        int  error;	0 if no error, -1 on error.
+        int  error;     0 if no error, -1 on error.
 
     SEE ALSO
         fopen, fclose, fread, fwrite, fgets, fputs
@@ -2369,7 +2369,7 @@
         file pointer
 
     RESULTS
-        int c; 	character 0 to 255, or EOF (-1).
+        int c;  character 0 to 255, or EOF (-1).
 
      SEE ALSO
         putc, fputc, fread, fwrite
@@ -2403,12 +2403,12 @@
     LIBRARY
         TBA
 
-     	 SYNTAX
+         SYNTAX
         #include <stdio.h>
         int error = fgetpos(fp, &pos);
         fpos_t pos;
 
-     	DESCRIPTION
+        DESCRIPTION
         fgetpos returns the current seek position and is roughly equivalent to
         ftell.  fgetpos is a new ANSI call to better support C compilers that
         use 16 bit integers.  DICE uses 32 bit integers so fgetpos is not so
@@ -2420,13 +2420,13 @@
         :: information.
 
     INPUTS
-        FILE *fp; 	file pointer
+        FILE *fp;       file pointer
 
-        fpos_t *pos; 	pointer to an fpos_t type that the position is loaded
+        fpos_t *pos;    pointer to an fpos_t type that the position is loaded
         into.
 
     RESULTS
-        int error; 	0 if no error, non-zero on error
+        int error;      0 if no error, non-zero on error
 
     SEE ALSO
         ftell, rewind, fseek, rewind
@@ -2499,16 +2499,16 @@
         :: information.
 
     INPUTS
-        char *buf;	buffer
+        char *buf;      buffer
 
-        int  maxlen;	maximum buffer size
+        int  maxlen;    maximum buffer size
 
-        FILE *fp;	file pointer
+        FILE *fp;       file pointer
 
      RESULTS
-        char *ptr;	buf if all is well, or NULL if error or EOF
+        char *ptr;      buf if all is well, or NULL if error or EOF
 
-     	SEE ALSO
+        SEE ALSO
         gets, puts, fputs, fread, getc, fgetc
 
      EXAMPLE
@@ -2548,12 +2548,12 @@
         useful when debugging libraries and such.
 
     INPUTS
-        BPTR fh; 	DOS file handle
+        BPTR fh;        DOS file handle
 
-        const char *ctl;	format string, see printf()
+        const char *ctl;        format string, see printf()
 
     RESULTS
-        int n;	number of characters output
+        int n;  number of characters output
 
     SEE ALSO
         printf, sprintf, vsprintf, fprintf, vfprintf
@@ -2611,12 +2611,12 @@
         :: information.
 
     INPUTS
-        FILE *fp;	file pointer
+        FILE *fp;       file pointer
 
      RESULTS
-        int  fd;	associated file descriptor
+        int  fd;        associated file descriptor
 
-     	SEE ALSO
+        SEE ALSO
         fdopen, fopen, fclose, open, close
 
     EXAMPLE
@@ -2690,12 +2690,12 @@
         :: information.
 
     INPUTS
-        char *filename; 	file name to open
+        char *filename;         file name to open
 
-        char *modes;	open modes string
+        char *modes;    open modes string
 
     RESULTS
-        	 FILE *fp;	new file pointer
+                 FILE *fp;      new file pointer
 
     SEE ALSO
         fdopen, fclose, open, close
@@ -2712,13 +2712,13 @@
     LIBRARY
         TBA
 
-     	 SYNTAX
+         SYNTAX
         #include <stdio.h>
         int c = fputc(c, fp);
         int c = putc(c, fp);
         FILE *fp;
 
-     	DESCRIPTION
+        DESCRIPTION
         fputc writes a single character to a file pointer.  If all goes well
         the character is returned, else EOF is returned. fputc is a function
         call while putc is a macro
@@ -2727,12 +2727,12 @@
         :: information.
 
     INPUTS
-        int c;	character to write
+        int c;  character to write
 
-        FILE *fp;	file pointer
+        FILE *fp;       file pointer
 
     RESULTS
-        int c; 	character written (same as first argument) or EOF if error.
+        int c;  character written (same as first argument) or EOF if error.
 
     SEE ALSO
         getc, putc, fputc, fread, fwrite, puts, fputs, gets, fgets
@@ -2787,19 +2787,19 @@
         the newline from an input line while fgets does not.
 
     INPUTS
-        char *s; 	string to write
+        char *s;        string to write
 
-        FILE *fp; 	file pointer
+        FILE *fp;       file pointer
 
     RESULTS
-        int  error; 	0 or positive if all went ok, else negative. Note that
+        int  error;     0 or positive if all went ok, else negative. Note that
         unlike *printf() routines the numberr of chars written out is NOT
         returned.
 
     SEE ALSO
         getc, putc, fputc, fread, fwrite, gets, fgets
 
-     	EXAMPLE
+        EXAMPLE
         #include <stdio.h>
         main()
         {
@@ -2853,14 +2853,14 @@
         :: fseek flushes any buffered write data before seeking.
 
     INPUTS
-        FILE *fp; 	file pointer to seek
+        FILE *fp;       file pointer to seek
 
-        long offset; 	offset relative to how
+        long offset;    offset relative to how
 
-        int how; 	0, 1, or 2 (absolute, relative, end- relative)
+        int how;        0, 1, or 2 (absolute, relative, end- relative)
 
     RESULTS
-        	int error;
+                int error;
 
     SEE ALSO
         ftell, fgetpos, fsetpos, rewind
@@ -2898,16 +2898,16 @@
         :: bytes into the specified buffer.
 
     INPUTS
-        void   *buf;	buffer to load data into
+        void   *buf;    buffer to load data into
 
-        size_t objsize;	size of one object
+        size_t objsize; size of one object
 
-        size_t nobjs;	number of objects to read
+        size_t nobjs;   number of objects to read
 
-        FILE   *fp;	file pointer to read objects from
+        FILE   *fp;     file pointer to read objects from
 
     RESULTS
-        	  size_t robjs;	number of objects actually read or 0 if EOF or ERROR.
+                  size_t robjs; number of objects actually read or 0 if EOF or ERROR.
 
     SEE ALSO
         fwrite, fopen, fclose, fseek, ftell, rewind
@@ -2935,7 +2935,7 @@
         :: pointer or NULL, it will freeze the process by calling wait(0L).
 
     INPUTS
-        void *ptr;	pointer to memory to free
+        void *ptr;      pointer to memory to free
 
     RESULTS
         none
@@ -2984,14 +2984,14 @@
         :: NOTE Refer to the file_pointer manual page for general information
 
     INPUTS
-        char *filename;	file name to open
+        char *filename; file name to open
 
-        char*modes;	open modes string
+        char*modes;     open modes string
 
-        FILE *ofp;	open file pointer to reuse
+        FILE *ofp;      open file pointer to reuse
 
     RESULTS
-        FILE *fp; 	same as ofp if the new open worked, NULL otherwise
+        FILE *fp;       same as ofp if the new open worked, NULL otherwise
 
     SEE ALSO
         fdopen, fopen, fclose, open, close
@@ -3045,14 +3045,14 @@
         need not make any direct reference to the contents of the fpos_t type.
 
     INPUTS
-        FILE *fp;	file pointer to seek
+        FILE *fp;       file pointer to seek
 
-        fpos_t *pos;	pointer to fpos_t type previously
+        fpos_t *pos;    pointer to fpos_t type previously
 
         initialized by a fgetpos() call.
 
     RESULTS
-        int error;	0 if no error, < 0 if error
+        int error;      0 if no error, < 0 if error
 
     SEE ALSO
         ftell, fsetpos, fseek, rewind
@@ -3131,12 +3131,12 @@
         :: directory if the file was open for exclusive access.
 
     INPUTS
-        int  fd;	file descriptor to stat
+        int  fd;        file descriptor to stat
 
-        struct stat *sbuf;  	address of stat structure that will be filled in
+        struct stat *sbuf;      address of stat structure that will be filled in
 
     RESULTS
-        int error; 	0 on success, < 0 on error
+        int error;      0 on success, < 0 on error
 
     SEE ALSO
         chdir
@@ -3190,10 +3190,10 @@
         ftell returns the current absolute seek offset within a file pointer.
 
     INPUTS
-        FILE *fp;	file pointer retrieve seek position from
+        FILE *fp;       file pointer retrieve seek position from
 
     RESULTS
-        long pos;	current absolute seek position in file
+        long pos;       current absolute seek position in file
 
     SEE ALSO
         ftell, fgetpos, fsetpos, fseek, rewind
@@ -3277,16 +3277,16 @@
         :: objects of size 1.
 
     INPUTS
-        void *buf;	buffer to copy data from
+        void *buf;      buffer to copy data from
 
-        size_t objsize;	 size of one object
+        size_t objsize;  size of one object
 
-        size_t nobjs; 	number of objects to write
+        size_t nobjs;   number of objects to write
 
-        FILE *fp; 	file pointer to read objects from
+        FILE *fp;       file pointer to read objects from
 
     RESULTS
-        size_t robjs;	number of objects actually written (0 or EOF on error)
+        size_t robjs;   number of objects actually written (0 or EOF on error)
 
     SEE ALSO
         fread, fopen, fclose, fseek, ftell, rewind
@@ -3355,7 +3355,7 @@
         none
 
     RESULTS
-        int c;	character 0 to 255, or EOF (-1) returned from stdin
+        int c;  character 0 to 255, or EOF (-1) returned from stdin
 
     SEE ALSO
         putc, putchar, fputc, fread, fwrite, getc
@@ -3407,13 +3407,13 @@
         returned if any error occurs (such as malloc failing)
 
     INPUTS
-        char *buf;	buffer to place current directory path into or NULL if you
+        char *buf;      buffer to place current directory path into or NULL if you
         want getcwd to allocate one
 
-        int max; 	maximum size of buffer
+        int max;        maximum size of buffer
 
     RESULTS
-        char *path; 	returns allocated buffer if you passed NULL for buf, else
+        char *path;     returns allocated buffer if you passed NULL for buf, else
         returns the first argument.  Returns NULL on error.
 
     SEE ALSO
@@ -3452,11 +3452,11 @@
         exit.  Do not attempt to free a getenv'd variable!!
 
     INPUTS
-        char *name;  	Name of enviroment variable, on the Amiga this is not
+        char *name;     Name of enviroment variable, on the Amiga this is not
         case sensitive. On UNIX systems it is.
 
     RESULTS
-        char *var;	Contents of enviroment variable or NULL if the variable
+        char *var;      Contents of enviroment variable or NULL if the variable
         could not be found.
 
     SEE ALSO
@@ -3510,16 +3510,16 @@
         :: better function function to use if you want a list of files & dirs.
 
     INPUTS
-        const char *pat;	pattern to scan for (anchored)
+        const char *pat;        pattern to scan for (anchored)
 
-        char *buf;	buffer to put results in
+        char *buf;      buffer to put results in
 
-        int bufsize;	size of buffer
+        int bufsize;    size of buffer
 
-        int attr;  	attribes (0 or 1)
+        int attr;       attribes (0 or 1)
 
     RESULTS
-        int n;	number of file names in buffer or -1 on error
+        int n;  number of file names in buffer or -1 on error
 
     SEE ALSO
         strbpl, wildcard
@@ -3585,13 +3585,13 @@
         :: though easily written.
 
     INPUTS
-        struct List *list;	list to get head or tail node from
+        struct List *list;      list to get head or tail node from
 
-        struct Node *oldNode;	node from which to get relative successor or
+        struct Node *oldNode;   node from which to get relative successor or
         predecessor from
 
     RESULTS
-        struct Node *node;	returned node or NULL
+        struct Node *node;      returned node or NULL
 
     SEE ALSO
         TBA
@@ -3727,10 +3727,10 @@
         :: information.
 
     INPUTS
-        char *buf;	buffer, must be able to hold 256 characters
+        char *buf;      buffer, must be able to hold 256 characters
 
     RESULTS
-        char *ptr;	buf if all is well, or NULL if error or EOF
+        char *ptr;      buf if all is well, or NULL if error or EOF
 
     SEE ALSO
         gets, puts, fputs, fread, getc, fgetc
@@ -3862,10 +3862,10 @@
         :: is a valid input an always returns false
 
     INPUTS
-        int c;	character that we are checking
+        int c;  character that we are checking
 
     RESULTS
-        int r;	0 if the check failed, non-zero if the check is true
+        int r;  0 if the check failed, non-zero if the check is true
 
     SEE ALSO
         isalpha, iscntrl, isdigit, isgraph, islower, isprint, ispunct,
@@ -3903,10 +3903,10 @@
         :: is a valid input an always returns false.
 
     INPUTS
-        int c;	character that we are checking
+        int c;  character that we are checking
 
     RESULTS
-        int r;	0 if the check failed, non-zero if the check is true
+        int r;  0 if the check failed, non-zero if the check is true
 
     SEE ALSO
         isalnum, iscntrl, isdigit, isgraph, islower, isprint, ispunct,
@@ -3954,7 +3954,7 @@
         int fd;  file descriptor
 
     RESULTS
-        int r;	result, 1 if a tty, 0 if not, or -1 if error
+        int r;  result, 1 if a tty, 0 if not, or -1 if error
 
     SEE ALSO
         close, creat, fcntl, fdtofh, getfh, ioctl, lseek, mkdir, open, read,
@@ -3992,16 +3992,16 @@
         :: EOF is a valid input an always returns false.
 
     INPUTS
-        int c;	character that we are checking
+        int c;  character that we are checking
 
     RESULTS
-        int r;	0 if the check failed, non-zero if the check is true
+        int r;  0 if the check failed, non-zero if the check is true
 
     SEE ALSO
         isalnum, isalpha, isdigit, isgraph, islower, isprint, ispunct,
         isspace, isupper, isxdigit, tolower, toupper
 
-     	EXAMPLE
+        EXAMPLE
         #include <ctype.h>
         #include <assert.h>
         
@@ -4042,10 +4042,10 @@
         :: is a valid input an always returns false.
 
     INPUTS
-        int c;	character that we are checking
+        int c;  character that we are checking
 
     RESULTS
-        int r;	0 if the check failed, non-zero if the check is true
+        int r;  0 if the check failed, non-zero if the check is true
 
     SEE ALSO
         isalnum, isalpha, iscntrl, isgraph, islower, isprint, ispunct,
@@ -4084,10 +4084,10 @@
         :: is a valid input an always returns false.
 
     INPUTS
-        int c;	character that we are checking
+        int c;  character that we are checking
 
     RESULTS
-        int r;	0 if the check failed, non-zero if the check is true
+        int r;  0 if the check failed, non-zero if the check is true
 
     SEE ALSO
         isalnum, isalpha, iscntrl, isdigit, islower, isprint, ispunct,
@@ -4134,10 +4134,10 @@
         :: is a valid input an always returns false
 
     INPUTS
-        int c;	character that we are checking
+        int c;  character that we are checking
 
     RESULTS
-        int r;	0 if the check failed, non-zero if the check is true
+        int r;  0 if the check failed, non-zero if the check is true
 
     SEE ALSO
         isalnum, isalpha, iscntrl, isdigit, isgraph, isprint, ispunct,
@@ -4185,10 +4185,10 @@
         :: is a valid input an always returns false
 
     INPUTS
-        int c;	character that we are checking
+        int c;  character that we are checking
 
     RESULTS
-        int r;	0 if the check failed, non-zero if the check is true
+        int r;  0 if the check failed, non-zero if the check is true
 
     SEE ALSO
         isalnum, isalpha, iscntrl, isdigit, isgraph, islower, ispunct,
@@ -4235,10 +4235,10 @@
         :: is a valid input an always returns false.
 
     INPUTS
-        int c;	character that we are checking
+        int c;  character that we are checking
 
     RESULTS
-        int r;	0 if the check failed, non-zero if the check is true
+        int r;  0 if the check failed, non-zero if the check is true
 
     SEE ALSO
         isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint,
@@ -4285,10 +4285,10 @@
         :: is a valid input an always returns false.
 
     INPUTS
-        int c;	character that we are checking
+        int c;  character that we are checking
 
     RESULTS
-        int r;	0 if the check failed, non-zero if the check is true
+        int r;  0 if the check failed, non-zero if the check is true
 
     SEE ALSO
         isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint,
@@ -4329,16 +4329,16 @@
         controls are implemented.
 
     INPUTS
-        int fd;	file descriptor
+        int fd; file descriptor
 
-        int req;	request from <ioctl.h>
+        int req;        request from <ioctl.h>
 
-        int *parg1;	address of argument #1
+        int *parg1;     address of argument #1
 
-        int *parg2;	address of argument #2
+        int *parg2;     address of argument #2
 
     RESULTS
-        int r;	result, error if < 0.
+        int r;  result, error if < 0.
 
     SEE ALSO
         close, creat, fcntl, fdtofh, getfh, isatty, lseek, mkdir, open, read,
@@ -4384,13 +4384,13 @@
         };
 
     INPUTS
-        time_t *t;	pointer to a time_t
+        time_t *t;      pointer to a time_t
 
     RESULTS
-        struct tm *tp;  	pointer to a struct tm structure filled out according
+        struct tm *tp;          pointer to a struct tm structure filled out according
         to the
 
-        	 passed time.
+                 passed time.
 
     SEE ALSO
         time, asctime, strftime, ctime, clock
@@ -4457,13 +4457,13 @@
         || WARNING!  DO NOT RELEASE A LOCK YOU DO NOT HAVE!
 
     INPUTS
-        long *lck;	a pointer to two longwords, initially zero'd
+        long *lck;      a pointer to two longwords, initially zero'd
 
-        -int bitno;	lock # ... up to 8 independant locks exist for each lck
+        -int bitno;     lock # ... up to 8 independant locks exist for each lck
         structure
 
     RESULTS
-        int r;	(TryLock only), -1 on failure, 1 on success.
+        int r;  (TryLock only), -1 on failure, 1 on success.
 
     SEE ALSO
         TBA
@@ -4559,11 +4559,11 @@
         the latter returns the log of the float quantity, base e.
 
     INPUTS
-        double b;	double floating point value float d; float floating point
+        double b;       double floating point value float d; float floating point
         value
 
     RESULTS
-        double a;	result double floating point value float c; result float 
+        double a;       result double floating point value float c; result float 
         floating point value
 
     SEE ALSO
@@ -4594,14 +4594,14 @@
         the log of the floating point quantity, base 10.
 
     INPUTS
-        double b;	double floating point value
+        double b;       double floating point value
 
-        float d;   	float floating point value
+        float d;        float floating point value
 
     RESULTS
-        double a;	result double floating point value
+        double a;       result double floating point value
 
-        float c; 	result float  floating point value
+        float c;        result float  floating point value
 
     SEE ALSO
         acos, asin, atan, cos, exp, fabs, log, pow, sin, sqrt, tan facos,
@@ -4667,14 +4667,14 @@
         :: error if illegal.
 
     INPUTS
-        int fd;	file descriptor
+        int fd; file descriptor
 
-        long offset;	offset relative to how
+        long offset;    offset relative to how
 
-        int how; 	0 = rel beginning, 1 = rel middle, 2 = rel end
+        int how;        0 = rel beginning, 1 = rel middle, 2 = rel end
 
     RESULTS
-        int newpos;	new position in file (absolute) or < 0 if error
+        int newpos;     new position in file (absolute) or < 0 if error
 
     SEE ALSO
         close, creat, fcntl, fdtofh, getfh, ioctl, isatty, mkdir, open, read,
@@ -4886,9 +4886,9 @@
         library which simply exits out of the program.
 
     INPUTS
-        int argc;   	number of arguments
+        int argc;       number of arguments
 
-        char *argv;      	array pointer to arguments
+        char *argv;             array pointer to arguments
 
     RESULTS
         none
@@ -5002,12 +5002,12 @@
         :: returns.
 
     INPUTS
-        size_t bytes; 	number of bytes to allocate
+        size_t bytes;   number of bytes to allocate
 
     RESULTS
-        void *ptr; 	pointer to base of allocated memory.
+        void *ptr;      pointer to base of allocated memory.
 
-        	The memory is not zero'd.
+                The memory is not zero'd.
 
     SEE ALSO
         calloc, strdup
@@ -5039,14 +5039,14 @@
         the two buffers are the same.
 
     INPUTS
-        void *s1; 	pointer to first buffer
+        void *s1;       pointer to first buffer
 
-        void *s2; 	pointer to second buffer
+        void *s2;       pointer to second buffer
 
-        size_t bytes; 	size of each buffer
+        size_t bytes;   size of each buffer
 
     RESULTS
-        int r; 	-1 if buf s1 < buf s2, 0 if buf s1 == buf s2, 1 if buf s1 >
+        int r;  -1 if buf s1 < buf s2, 0 if buf s1 == buf s2, 1 if buf s1 >
         buf s2.
 
     SEE ALSO
@@ -5125,12 +5125,12 @@
         :: used with new programs.
 
     INPUTS
-        void *s; 	source buffer
+        void *s;        source buffer
 
-        void *d; 	destination buffer
+        void *d;        destination buffer
 
     RESULTS
-        void *ptr; 	pointer to the destination buffer(d)
+        void *ptr;      pointer to the destination buffer(d)
 
     SEE ALSO
         memset, setmem, bzero, clrmem, cmpmem, memcmp
@@ -5204,14 +5204,14 @@
         calls.
 
     INPUTS
-        void *buf; 	pointer to buffer to fill
+        void *buf;      pointer to buffer to fill
 
-        int  c;   	character to copy into buffer
+        int  c;         character to copy into buffer
 
-        (setmem, memset) size_t n;  	# of bytes to fill
+        (setmem, memset) size_t n;      # of bytes to fill
 
     RESULTS
-        void *ptr; 	pointer to buffer (== buf).
+        void *ptr;      pointer to buffer (== buf).
 
     SEE ALSO
         malloc, calloc, strdup, movmem, cmpmem
@@ -5250,10 +5250,10 @@
         (with errno set to an error code).
 
     INPUTS
-        char *dirname;  	filename of directory to create
+        char *dirname;          filename of directory to create
 
     RESULTS
-        int r;   	0 if no error, < 0 if error
+        int r;          0 if no error, < 0 if error
 
     SEE ALSO
         close, creat, fcntl, fdtofh, getfh, ioctl, isatty, lseek, mkdir, open,
@@ -5466,11 +5466,11 @@
         open opens a file of the specified name using the specified modes. 
         The combinations yield different results as described below:
 
-         	O_RDONLY open file for reading only
-        	O_WRONLY open file for writing only
-        	O_RDWR open file for reading and writing
-        	O_NDELAY open file non-blocking (not implemented)
-        	O_APPEND open file for writing only and force all writes to append to
+                O_RDONLY open file for reading only
+                O_WRONLY open file for writing only
+                O_RDWR open file for reading and writing
+                O_NDELAY open file non-blocking (not implemented)
+                O_APPEND open file for writing only and force all writes to append to
         the file regardless of the current seek position.
 
         O_CREAT creates the file if it does not exist; O_TRUNC truncates the
@@ -5487,12 +5487,12 @@
         :: if illegal.
 
     INPUTS
-        char *name;  	filename to open
+        char *name;     filename to open
 
-        long modes; 	modes to open the file with
+        long modes;     modes to open the file with
 
     RESULTS
-        int fd; 	A file descriptor if >= 0, an error if < 0.
+        int fd;         A file descriptor if >= 0, an error if < 0.
 
     SEE ALSO
         close, creat, fcntl, fdtofh, ioctl, isatty, lseek, mkdir, read, rmdir,
@@ -5544,7 +5544,7 @@
         messages due to IO failures.
 
     INPUTS
-        char *str; 	string message to include in error output
+        char *str;      string message to include in error output
 
     RESULTS
         none
@@ -5588,18 +5588,18 @@
         to the power of another.
 
      INPUTS
-        double b; 	double floating point value (base)
+        double b;       double floating point value (base)
 
-        double bp; 	double floating point value (exponent)
+        double bp;      double floating point value (exponent)
 
-        float d;   	float floating point value (base)
+        float d;        float floating point value (base)
 
-        float dp; 	float floating point value (exponent)
+        float dp;       float floating point value (exponent)
 
     RESULTS
-        double a; 	double floating point value
+        double a;       double floating point value
 
-        float c; 	float floating point value
+        float c;        float floating point value
 
     SEE ALSO
         acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
@@ -5683,79 +5683,79 @@
 
         FLAGS:
 
-        	- 	left justify text within its field, otherwise output is right
+                -       left justify text within its field, otherwise output is right
          justified
-        	+ 	precede a signed number with a plus sign if it is positive
+                +       precede a signed number with a plus sign if it is positive
          (negative
-        		numbers are always preceded with a minus sign).
-        	<space>	precede a positive signed number with a space so the
+                        numbers are always preceded with a minus sign).
+                <space> precede a positive signed number with a space so the
          number's
-        		width matches that of itself if it were negative.
-        	#	force numeric data items to be formatted such that their type is
+                        width matches that of itself if it were negative.
+                #       force numeric data items to be formatted such that their type is
          known.
         The following effects occur given a conversion specifier:
-        	e, E, f, F	always retains decimal point
-        	g, G	always retains decimal point 
-        		and trailing zeros are kept
-        	x, X	prints '0x' and '0X' respectively before the number
-        		(currently not implemented by DICE) 	0	pad with zeros instead of
+                e, E, f, F      always retains decimal point
+                g, G    always retains decimal point 
+                        and trailing zeros are kept
+                x, X    prints '0x' and '0X' respectively before the number
+                        (currently not implemented by DICE)     0       pad with zeros instead of
          spaces.  Ignored if a precision is specified
-        		or if the '-' flag is specified.
-        		(currently partially implemented by DICE) MODIFIERS
-        	h 	indicates the corresponding integer argument is a short or an
+                        or if the '-' flag is specified.
+                        (currently partially implemented by DICE) MODIFIERS
+                h       indicates the corresponding integer argument is a short or an
          unsigned short.
-         		Under DICE, this has no effect since integers are 32 bits
-        	l	Indicates the corresponding integer argument is a long or unsigned
-        long. 			Indicates floating point argument is a double (else is a
-        float) under DICE, 			for integers, this is superfluous, but for
-        portability reasons you want to 			specify it when an argument is
+                        Under DICE, this has no effect since integers are 32 bits
+                l       Indicates the corresponding integer argument is a long or unsigned
+        long.                   Indicates floating point argument is a double (else is a
+        float) under DICE,                      for integers, this is superfluous, but for
+        portability reasons you want to                         specify it when an argument is
          explicitly a long.
-        	L	indicates the corresponding floating point argument is a long
+                L       indicates the corresponding floating point argument is a long
         double (16 byte quantity)  (currently not implemented by DICE)
-        CONVERSION SPECIFIER 	c 	Output the character represented by the
+        CONVERSION SPECIFIER    c       Output the character represented by the
          integer quantity|
-         	d	Output a signed integer
-        	e	Output a double quantity in exponential form, the format: The
-        precision 			specifies the number of digits beyond the decimal point
+                d       Output a signed integer
+                e       Output a double quantity in exponential form, the format: The
+        precision                       specifies the number of digits beyond the decimal point
          to print
-        		 [-]d.dddddde+/-dd
-         	E	e conversion but use upper case E in exponent: E+/-dd
-        	f	Output a double quantity in the form:  The precision specifies the
-         number 			of digits beyond the decimal point to print [-]d.dddddd\
-        	g	Output a double quantity using either the 'e' or 'f' form,
-         depending on the 			exponent.
-        	G	Output a double quantity using either the 'E' or 'f' form,
-         depending on the 			exponent.
-         	i	same as 'd'
-        	n	The argument is a pointer to an integer which is used to set the
-        integer to 			the bytes written out so far. This is especially useful
-        with sprintf to 			determine where a particular part of the format
+                         [-]d.dddddde+/-dd
+                E       e conversion but use upper case E in exponent: E+/-dd
+                f       Output a double quantity in the form:  The precision specifies the
+         number                         of digits beyond the decimal point to print [-]d.dddddd\
+                g       Output a double quantity using either the 'e' or 'f' form,
+         depending on the                       exponent.
+                G       Output a double quantity using either the 'E' or 'f' form,
+         depending on the                       exponent.
+                i       same as 'd'
+                n       The argument is a pointer to an integer which is used to set the
+        integer to                      the bytes written out so far. This is especially useful
+        with sprintf to                         determine where a particular part of the format
          begins in the output buffer.
-         	o	The unsigned integer quantity is converted to ASCII-octal
-         	p	The pointer is printed (basically the address is printed)
-         	s	The string represented by the character pointer is printed
-         	u	The unsigned integer quantity is converted to ASCII-decimal
-        	x	The unsigned integer quantity is converted to ASCII-hex using
-        '0'-'9', 'a'-'f'. 	X	The unsigned integer quantity is converted to
+                o       The unsigned integer quantity is converted to ASCII-octal
+                p       The pointer is printed (basically the address is printed)
+                s       The string represented by the character pointer is printed
+                u       The unsigned integer quantity is converted to ASCII-decimal
+                x       The unsigned integer quantity is converted to ASCII-hex using
+        '0'-'9', 'a'-'f'.       X       The unsigned integer quantity is converted to
          ASCII-hex using upper case
-        		 A-F instead of lower case.
+                         A-F instead of lower case.
 
     INPUTS
-        FILE *fp; 	file pointer (fprintf, vfprintf)
+        FILE *fp;       file pointer (fprintf, vfprintf)
 
-        char *fmt; 	format string, e.g. "Answer is %d\n"
+        char *fmt;      format string, e.g. "Answer is %d\n"
 
-        char *buf;  	buffer (sprintf, vsprintf)
+        char *buf;      buffer (sprintf, vsprintf)
 
-        va_list argvect; 	arg list (vprintf, vfprintf, vsprintf)
+        va_list argvect;        arg list (vprintf, vfprintf, vsprintf)
 
     RESULTS
-        int n;  	number of characters written if successful, a negative
+        int n;          number of characters written if successful, a negative
 
-        	number if not.  For sprintf and vsprintf the NULL character at the
+                number if not.  For sprintf and vsprintf the NULL character at the
         end
 
-        	 of the string is NOT included in the count.
+                 of the string is NOT included in the count.
 
     SEE ALSO
         puts, fputs, fwrite
@@ -5828,10 +5828,10 @@
         :: information.
 
     INPUTS
-        int c; 	character to output, 0 to 255
+        int c;  character to output, 0 to 255
 
     RESULTS
-        int r;   	same as c unless error occured in which case EOF.
+        int r;          same as c unless error occured in which case EOF.
 
     SEE ALSO
         putc, fputc, fread, fwrite, getc, getchar
@@ -5887,15 +5887,15 @@
         might use a massive amount of stack.
 
     INPUTS
-        void *array; 	pointer to base of array of objects
+        void *array;    pointer to base of array of objects
 
-        size_t numElem; 	number of elements in the array
+        size_t numElem;         number of elements in the array
 
-        size_t elemSize;  	size, in bytes, of each element
+        size_t elemSize;        size, in bytes, of each element
 
-        int (*compare_func)() 	function pointer to compare function given
+        int (*compare_func)()   function pointer to compare function given
 
-        	pointers to two of the elements
+                pointers to two of the elements
 
     RESULTS
         none
@@ -5947,10 +5947,10 @@
         with signal from your signal handler before it returns.
 
     INPUTS
-        int signo;	signal to cause
+        int signo;      signal to cause
 
     RESULTS
-        int r;   	0 on success, -1 if signo is out of range.
+        int r;          0 on success, -1 if signo is out of range.
 
     SEE ALSO
         signal
@@ -5998,7 +5998,7 @@
         none
 
     RESULTS
-        int n;  	returned by rand(), this number will be a positive integer.
+        int n;          returned by rand(), this number will be a positive integer.
 
     SEE ALSO
         TBA
@@ -6074,15 +6074,15 @@
         :: if illegal.
 
     INPUTS
-        int fd; 	file descriptor to read from
+        int fd;         file descriptor to read from
 
-        void *buf; 	pointer to buffer to read data into
+        void *buf;      pointer to buffer to read data into
 
-        int len; 	maximum number of bytes to read
+        int len;        maximum number of bytes to read
 
     RESULTS
-        int r;   	number of bytes actually read (could be less than len or 0),
-        @RESULTS = 	or < 0 if error.
+        int r;          number of bytes actually read (could be less than len or 0),
+        @RESULTS =      or < 0 if error.
 
     SEE ALSO
         close, creat, fcntl, fdtofh, ioctl, isatty, lseek, mkdir, open, read,
@@ -6138,12 +6138,12 @@
         first argument to realloc which basically makes realloc a malloc.
 
     INPUTS
-        void *oldptr;	pointer to original allocated buffer
+        void *oldptr;   pointer to original allocated buffer
 
-        size_t bytes;    	size of new buffer
+        size_t bytes;           size of new buffer
 
     RESULTS
-        void *newptr; 	pointer to new buffer
+        void *newptr;   pointer to new buffer
 
     SEE ALSO
         malloc, calloc, strdup
@@ -6224,10 +6224,10 @@
         is a UNIX-compatible function.
 
     INPUTS
-        char *filename; 	filename to delete
+        char *filename;         filename to delete
 
     RESULTS
-        int error; 	0 on success, a negative number on failure
+        int error;      0 on success, a negative number on failure
 
     SEE ALSO
         unlink
@@ -6270,12 +6270,12 @@
         rename returns 0 on success, a negative number on failure.
 
     INPUTS
-        const char *origname; 	existing file const char
+        const char *origname;   existing file const char
 
-        *newname; 	new filename and/or path
+        *newname;       new filename and/or path
 
     RESULTS
-        int error;	0 on success, a negative number on failure
+        int error;      0 on success, a negative number on failure
 
     SEE ALSO
         rewind
@@ -6338,7 +6338,7 @@
         :: information.
 
     INPUTS
-        FILE *fp; 	file pointer to rewind
+        FILE *fp;       file pointer to rewind
 
     RESULTS
         none
@@ -6395,10 +6395,10 @@
         unlink.
 
     INPUTS
-        char *dirname; 	name of directory to delete
+        char *dirname;  name of directory to delete
 
     RESULTS
-        int r;   	0 if successful, non-zero if error
+        int r;          0 if successful, non-zero if error
 
     SEE ALSO
         mkdir
@@ -6442,82 +6442,82 @@
         one or more white space characters the scanned text. A % construction
         in the ctl string is formatted as follows:
 
-        	%[*][nnn][h/l/L]<conversion-specifier>
-        	(1) An optional * that tells scanf to skip the specified convresion
+                %[*][nnn][h/l/L]<conversion-specifier>
+                (1) An optional * that tells scanf to skip the specified convresion
         (i.e. you specify no argument for this conversion).  Skipped
          conversions are not included in the return count.
-        	(2) An optional integer that specifies the maximum field width.
-        	(3) An optional modifier h, l, or L:
-        	 	h  When used with d,i,n,o,u,x,X
-        		 	specifies the argument is a pointer to a short integer 
-        			rather than an integer.
-        	 	l   When used with d,i,o,u,x,X
-        			specifies the argument is a pointer to a long integer rather than
+                (2) An optional integer that specifies the maximum field width.
+                (3) An optional modifier h, l, or L:
+                        h  When used with d,i,n,o,u,x,X
+                                specifies the argument is a pointer to a short integer 
+                                rather than an integer.
+                        l   When used with d,i,o,u,x,X
+                                specifies the argument is a pointer to a long integer rather than
          an
-        			integer.
-        	 	L  When used with e,E,f,F,G
-        			specifioes the argument is a pointer to a long double rather than
+                                integer.
+                        L  When used with e,E,f,F,G
+                                specifioes the argument is a pointer to a long double rather than
          a
-        			double.
-        	 (4) A conversion specifier
-        	 	c   Converts the number of characters specified by the field width
-        			(default  1) into an array.  The expected argument is a pointer to
-        			an array of characters.
-        	 	d  Converts a decimal (base 10) number.  The expected argument is
+                                double.
+                 (4) A conversion specifier
+                        c   Converts the number of characters specified by the field width
+                                (default  1) into an array.  The expected argument is a pointer to
+                                an array of characters.
+                        d  Converts a decimal (base 10) number.  The expected argument is
          a
-        			pointer to an integer.
-        	 	e/E/f/g scans a floating point number.  If the 'L' modifier is used
+                                pointer to an integer.
+                        e/E/f/g scans a floating point number.  If the 'L' modifier is used
          a long 
-        			double pointer is expected (not implemented in DICE yet). 
-        			Otherwise a double is expected.
-        	 	i   Converts a number to an integer.  The format should be
+                                double pointer is expected (not implemented in DICE yet). 
+                                Otherwise a double is expected.
+                        i   Converts a number to an integer.  The format should be
          equivalent to
-        			that expected by strtol with a base argument of 0 (i.e. allows any
-        			base construction).
-        	 	n   This does not read any text, but stores the number of
+                                that expected by strtol with a base argument of 0 (i.e. allows any
+                                base construction).
+                        n   This does not read any text, but stores the number of
          characters *scanf
-        			has read up to this point into the integer argument.
-        	 	o   Converts a number to an octal integer.
-        	 	p   Reads a sequence of characters in the same format as printf's
+                                has read up to this point into the integer argument.
+                        o   Converts a number to an octal integer.
+                        p   Reads a sequence of characters in the same format as printf's
          %p
-        			specifier and store into a pointer.  The corresponding argument is
-        			passed as a void **.
-        	 	s   Reads a string of non-white space characters and copy into the
+                                specifier and store into a pointer.  The corresponding argument is
+                                passed as a void **.
+                        s   Reads a string of non-white space characters and copy into the
          array
-        			specified by the argument.  The argument should be of type (char
-        			*) and have enough space to handle the string plus a NULL
-        			terminator.
-        	 	x   Reads a base 16 number (hex) and copy into the passed integer. 
+                                specified by the argument.  The argument should be of type (char
+                                *) and have enough space to handle the string plus a NULL
+                                terminator.
+                        x   Reads a base 16 number (hex) and copy into the passed integer. 
          This is
-        			equivalent to calling strtol with a base of 16.
-        	   	%  (i.e. %%) matches a single %
-        		[/] Scan a scanset.  Scan the input stream and place the characters
+                                equivalent to calling strtol with a base of 16.
+                        %  (i.e. %%) matches a single %
+                        [/] Scan a scanset.  Scan the input stream and place the characters
          into a
-        			char * buffer until a character is read that does not match the
-        			scanset.  If a scan set begins with ^ (as in [^abcd]) then all
-        			characters are allowed EXCEPT those specified in the scanset.  If
+                                char * buffer until a character is read that does not match the
+                                scanset.  If a scan set begins with ^ (as in [^abcd]) then all
+                                characters are allowed EXCEPT those specified in the scanset.  If
          a
-        			scanset begins as []abcd] or [^]abcd] then the ']' character is
-        			included in the scan set and the set is terminated by the next ']'
-        			character.
+                                scanset begins as []abcd] or [^]abcd] then the ']' character is
+                                included in the scan set and the set is terminated by the next ']'
+                                character.
 
         :: NOTE:  Refer to the file_pointer manual page for general
         :: information.  All pointers to floating point storage must be
         :: pointers to doubles.
 
     INPUTS
-        char *ctl;  	format control string
+        char *ctl;      format control string
 
-        FILE *fp;	(fscanf) file pointer, (read to obtain text to format)
+        FILE *fp;       (fscanf) file pointer, (read to obtain text to format)
 
-        char *str; 	 (sscanf) string pointer, text to format
+        char *str;       (sscanf) string pointer, text to format
 
     RESULTS
-        int n;  	# of conversions that occured, -1 if no conversions could be
+        int n;          # of conversions that occured, -1 if no conversions could be
 
-        	done (usually means EOF). May return less than the number requested
+                done (usually means EOF). May return less than the number requested
 
-        	and this value does   not reflect any %* forms.
+                and this value does   not reflect any %* forms.
 
     SEE ALSO
         sprintf, printf, fprintf
@@ -6646,9 +6646,9 @@
         :: information.
 
     INPUTS
-        FILE *fp;	file pointer to rewind
+        FILE *fp;       file pointer to rewind
 
-        char\*buf;    	buffer the file pointer uses instead of its own or NULL
+        char\*buf;      buffer the file pointer uses instead of its own or NULL
         to
 
         make the file pointer unbuffered.
@@ -6719,15 +6719,15 @@
         register.
 
     INPUTS
-        jmp_buf enviro; 	enviroment structure
+        jmp_buf enviro;         enviroment structure
 
-        int rval;  	return value (longjmp call)
+        int rval;       return value (longjmp call)
 
     RESULTS
-        (setjmp) int r; 	 0 when called directly, rval when enviroment
+        (setjmp) int r;          0 when called directly, rval when enviroment
         restored
 
-        	by a longjmp
+                by a longjmp
 
     SEE ALSO
         onbreak, signal
@@ -6792,9 +6792,9 @@
         new buffer of any size, change the buffering mode of the file pointer
         to fully buffered, line buffered, or unbuffered mode:
 
-         	_IOFBF  fully buffered (output flushed only if buffer full)
-        	_IOLBF line buffered (output flushed every newline)
-        	_IONBF unbuffered (no buffering at all)
+                _IOFBF  fully buffered (output flushed only if buffer full)
+                _IOLBF line buffered (output flushed every newline)
+                _IONBF unbuffered (no buffering at all)
 
         For _IOFBF and _IOLBF, buf should point to the buffer you wish the
         file pointer to use and size should be the size of that buffer (any
@@ -6808,16 +6808,16 @@
         || buffered as well.
 
     INPUTS
-        FILE *fp;	file pointer to change buffering options on
+        FILE *fp;       file pointer to change buffering options on
 
-        char *buf; 	new buffer or NULL (_IONBF)
+        char *buf;      new buffer or NULL (_IONBF)
 
-        int mode;  	buffering mode size
+        int mode;       buffering mode size
 
-        _t size;    	size of new buffer if not NULL, else 0
+        _t size;        size of new buffer if not NULL, else 0
 
     RESULTS
-        int error; 	0 on success, a negative number on error (such as illegal
+        int error;      0 on success, a negative number on error (such as illegal
         arguments)
 
     SEE ALSO
@@ -6863,11 +6863,11 @@
         Currently only SIGINT causes any semi-asynchronous action to occur.
         You may pass newfunc as your own signal function or one of:
 
-        	SIG_ERR	error (exit program)
+                SIG_ERR error (exit program)
 
-        	SIG_DFL	default (for break, normal operation)
+                SIG_DFL default (for break, normal operation)
 
-        	SIG_IGN	ignore signal (for break, ^C is now ignored)
+                SIG_IGN ignore signal (for break, ^C is now ignored)
 
         when a signal occurs, the signal is set back to its default condition
         before the handler is called.  Thus, if you are allowing multiple
@@ -6884,12 +6884,12 @@
         :: typedefs.  Unlike onbreak, a signal function returns no value.
 
     INPUTS
-        int signo; 	signal to modify, usually SIGINT __sigfunc
+        int signo;      signal to modify, usually SIGINT __sigfunc
 
-        newfunc; 	signal function or SIG_ERR, SIG_DFL, SIG_IGN
+        newfunc;        signal function or SIG_ERR, SIG_DFL, SIG_IGN
 
     RESULTS
-        __sigfunc oldfunc;  	previous signal function
+        __sigfunc oldfunc;      previous signal function
 
     SEE ALSO
         raise
@@ -6944,14 +6944,14 @@
         floating point quantity.
 
     INPUTS
-        double b; 	double floating point value
+        double b;       double floating point value
 
-        float d;   	float floating point value
+        float d;        float floating point value
 
     RESULTS
-        double a; 	result double floating point value
+        double a;       result double floating point value
 
-        float c; 	result float floating point value
+        float c;        result float floating point value
 
     SEE ALSO
         acos, asin, atan, cos, exp, fabs, log, log10, pow, sqrt, tan, facos,
@@ -6981,7 +6981,7 @@
         :: sleep is implemented with a loop of delay(50); calls.
 
     INPUTS
-        int n;     	number of seconds to sleep
+        int n;          number of seconds to sleep
 
     RESULTS
         none
@@ -7021,14 +7021,14 @@
         square root of a floating point quantity.
 
     INPUTS
-        double b; 	double floating point value
+        double b;       double floating point value
 
-        float d;   	float floating point value
+        float d;        float floating point value
 
     RESULTS
-        double a; 	double floating point value
+        double a;       double floating point value
 
-        float c; 	float floating point value
+        float c;        float floating point value
 
     SEE ALSO
         acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, tan, facos,
@@ -7073,7 +7073,7 @@
         srand initializes the seed for function rand.
 
     INPUTS
-        unsigned int seed; 	an unsigned integer used to seed the pseudo-random
+        unsigned int seed;      an unsigned integer used to seed the pseudo-random
 
         number generator via srand.
 
@@ -7184,23 +7184,23 @@
         the file represented by its name. If 0 is returned, stat succeeded and
         the fields will be filled in as follows:
 
-        st_mode	flags:
-        S_IFDIR	if directory
-        S_IFREG	if regular file
-        S_IREAD	if readable
-        S_IWRITE	if writable
-        S_IEXEC	if executable
-        st_size 	size of the file, in bytes
-        st_blksize	512 (for now)
-        st_blocks 	a guess at the number of actual blocks the file takes up,
+        st_mode flags:
+        S_IFDIR if directory
+        S_IFREG if regular file
+        S_IREAD if readable
+        S_IWRITE        if writable
+        S_IEXEC if executable
+        st_size         size of the file, in bytes
+        st_blksize      512 (for now)
+        st_blocks       a guess at the number of actual blocks the file takes up,
          including headers
-        		and side sectors
-        st_ctime	time the file was last modified
-        st_mtime	same as st_ctime
-        st_dev  	physical device ID (do not try to interpret this field, but
+                        and side sectors
+        st_ctime        time the file was last modified
+        st_mtime        same as st_ctime
+        st_dev          physical device ID (do not try to interpret this field, but
          it does represent
-        		the DOS handler)
-        st_ino  	inode ID (usually a file block number on the Amiga)
+                        the DOS handler)
+        st_ino          inode ID (usually a file block number on the Amiga)
 
         :: NOTE: On the Amiga one normally cannot directly examine a file that
         :: is exclusively locked.  If this case occurs, stat will attempt to
@@ -7208,12 +7208,12 @@
         :: returns -1.
 
     INPUTS
-        char *name; 	name of file to stat
+        char *name;     name of file to stat
 
-        struct stat *sbuf; 	address of stat structure that will be filled in
+        struct stat *sbuf;      address of stat structure that will be filled in
 
     RESULTS
-        int error; 	0 on success, < 0 on error
+        int error;      0 on success, < 0 on error
 
     SEE ALSO
         chdir
@@ -7305,12 +7305,12 @@
         :: all environments.
 
     INPUTS
-        char *d; 	pointer to beginning of destination buffer
+        char *d;        pointer to beginning of destination buffer
 
-        char *s; 	pointer to beginning of source string
+        char *s;        pointer to beginning of source string
 
     RESULTS
-        char *ptr; 	pointer to end of data copied to destination buffer
+        char *ptr;      pointer to end of data copied to destination buffer
 
     SEE ALSO
         strcpy, strbpl
@@ -7354,14 +7354,14 @@
         of strings does not exceed (max-1).
 
     INPUTS
-        char **av; 	pointer to a preallocated array of pointers
+        char **av;      pointer to a preallocated array of pointers
 
-        int max; 	the maximum number of entries in the above array
+        int max;        the maximum number of entries in the above array
 
-        char *sary; 	pointer to a packed string.
+        char *sary;     pointer to a packed string.
 
     RESULTS
-        int num; 	number of pointers loaded into the av array not including
+        int num;        number of pointers loaded into the av array not including
         the final NULL.  If num == max then the av array was not large enough
         to fit all the strings or the final NULL.
 
@@ -7409,13 +7409,13 @@
         pointer to the beginning of the destination buffer is returned.
 
     INPUTS
-        char *d; 	pointer to destination buffer which already contains a
+        char *d;        pointer to destination buffer which already contains a
         string (which could be just a \0).
 
-        char *s; 	pointer to the NULL terminated source string
+        char *s;        pointer to the NULL terminated source string
 
     RESULTS
-        char *d; 	same as the first argument, a pointer to the destination
+        char *d;        same as the first argument, a pointer to the destination
         buffer.
 
     SEE ALSO
@@ -7464,12 +7464,12 @@
         :: strlen(s);  /*  ptr = end of string s */.
 
     INPUTS
-        char *s; 	pointer to the string to search
+        char *s;        pointer to the string to search
 
-        int c;	character to search for.
+        int c;  character to search for.
 
     RESULTS
-        char *ptr; 	pointer to the first occurance of character c in s or NULL
+        char *ptr;      pointer to the first occurance of character c in s or NULL
         if c could not be found in s.
 
     SEE ALSO
@@ -7514,12 +7514,12 @@
         :: the memcmp routine instead.
 
     INPUTS
-        char *s1; 	pointer to first string
+        char *s1;       pointer to first string
 
-        char *s2; 	pointer to second string
+        char *s2;       pointer to second string
 
     RESULTS
-        int r; 	-1, 0, or 1.
+        int r;  -1, 0, or 1.
 
     SEE ALSO
         strncmp, stricmp
@@ -7569,12 +7569,12 @@
         the buffer d).
 
     INPUTS
-        char *d; 	pointer to beginning of destination buffer
+        char *d;        pointer to beginning of destination buffer
 
-        char *s; 	pointer to beginning of source string
+        char *s;        pointer to beginning of source string
 
     RESULTS
-        char *ptr; 	same as the destination buffer pointer (d).
+        char *ptr;      same as the destination buffer pointer (d).
 
     SEE ALSO
         stpcpy
@@ -7627,13 +7627,13 @@
         Note that in many cases strpbrk is more useful than strcspn.
 
     INPUTS
-        char *s; 	pointer to string to scan
+        char *s;        pointer to string to scan
 
-        char *toks; 	pointer to string containing characters to compare
+        char *toks;     pointer to string containing characters to compare
         against
 
     RESULTS
-        int len; 	# of characters skipped in s before a match was found.
+        int len;        # of characters skipped in s before a match was found.
 
     SEE ALSO
         strpbrk, strspn
@@ -7678,10 +7678,10 @@
         :: environments.
 
     INPUTS
-        char *s1; 	pointer to the string to duplicate
+        char *s1;       pointer to the string to duplicate
 
     RESULTS
-        char *s2; 	pointer to malloc'd space containing a duplicate of the
+        char *s2;       pointer to malloc'd space containing a duplicate of the
          string
         s1 or NULL if space could not be malloc'd.
 
@@ -7735,10 +7735,10 @@
         unknown error will result in the string "unknown error."
 
     INPUTS
-        int error; 	error code
+        int error;      error code
 
     RESULTS
-        char *str; 	error string
+        char *str;      error string
 
     SEE ALSO
         perror
@@ -7776,47 +7776,47 @@
         format string fmt.  The fmt string looks like a the format for a
         printf except with different control definitions:
 
-         	%%  - a literal '%' character
-        	%a  - The locale's abbreviated name for the day of week 
-        	%A  - The locale's full name for the  day of week 
-        	%b - The locale's abbr. name for the month 
-        	%B  - The locale's full name for the month 
-        	%c  - The locale's default representation for the date & time
+                %%  - a literal '%' character
+                %a  - The locale's abbreviated name for the day of week 
+                %A  - The locale's full name for the  day of week 
+                %b - The locale's abbr. name for the month 
+                %B  - The locale's full name for the month 
+                %c  - The locale's default representation for the date & time
          (ctime)
-        	%d  - The day of the month 01-31
-        	%H  -The hour 00-23 (24 hour time) 
-        	%I  - The hour 01-12  (12 hour time) 
-        	%j  - The day in the year 001-366 
-        	%m  - The month 01-12 
-        	%M  - The minute 00-59 
-        	%p - Indication of morning or afternoon.  In the US: "AM" or "PM" 
-        	%S - The second 00-59 
-        	%U  - The week of the year 00-53, Sunday is the first day in a week 
-        	%w - The day of the week 0-6, Sunday=0 (standard) 
-        	%W -The day of the week 0-6, monday=0 
-        	%x - The locale's default representation for the date only 
-        	%X  - The locale's default representation for the time only 
-        	%y  - The year mod 100 (00-99) 
-        	%Y -The full year (e.g. 1990) 
-        	%Z  - The name of the locale's time zone, nothing if unknown
+                %d  - The day of the month 01-31
+                %H  -The hour 00-23 (24 hour time) 
+                %I  - The hour 01-12  (12 hour time) 
+                %j  - The day in the year 001-366 
+                %m  - The month 01-12 
+                %M  - The minute 00-59 
+                %p - Indication of morning or afternoon.  In the US: "AM" or "PM" 
+                %S - The second 00-59 
+                %U  - The week of the year 00-53, Sunday is the first day in a week 
+                %w - The day of the week 0-6, Sunday=0 (standard) 
+                %W -The day of the week 0-6, monday=0 
+                %x - The locale's default representation for the date only 
+                %X  - The locale's default representation for the time only 
+                %y  - The year mod 100 (00-99) 
+                %Y -The full year (e.g. 1990) 
+                %Z  - The name of the locale's time zone, nothing if unknown
 
-        			The number of characters written to the string is returned, or 0 if
+                                The number of characters written to the string is returned, or 0 if
         the formatted string exceeds the buffer size.
 
         || WARNING! There must be at least max + 1 bytes in buf or unexpected
         || memory might be overwritten.
 
     INPUTS
-        char *buf; 	buffer to write formatted string into
+        char *buf;      buffer to write formatted string into
 
-        size_t max; 	maximum size of buffer - 1
+        size_t max;     maximum size of buffer - 1
 
-        char *fmt; 	format string
+        char *fmt;      format string
 
-        struct tm *tm; 	broken down time
+        struct tm *tm;  broken down time
 
     RESULTS
-        size_t len; 	length of formatted string in buffer or 0 if the maximum
+        size_t len;     length of formatted string in buffer or 0 if the maximum
         was exceeded.
 
     SEE ALSO
@@ -7862,12 +7862,12 @@
         :: the memcmp routine instead.
 
     INPUTS
-        char *s1; 	pointer to first string
+        char *s1;       pointer to first string
 
-        char *s2; 	pointer to second string
+        char *s2;       pointer to second string
 
     RESULTS
-        int r; 	-1, 0, or 1.
+        int r;  -1, 0, or 1.
 
     SEE ALSO
         strcmp, strncmp
@@ -7923,9 +7923,9 @@
         :: ANSI standard function.
 
     INPUTS
-        char *d; 	destination to insert in front of
+        char *d;        destination to insert in front of
 
-        char *s; 	source string to insert
+        char *s;        source string to insert
 
     RESULTS
         none
@@ -7965,10 +7965,10 @@
         the number of characters (not including the NULL) is returned.
 
     INPUTS
-        char *s; 	string to obtain length of
+        char *s;        string to obtain length of
 
     RESULTS
-        int len; 	length of string
+        int len;        length of string
 
     SEE ALSO
         strcpy, strcat
@@ -8018,15 +8018,15 @@
         is returned.
 
     INPUTS
-        char *d; 	pointer to destination buffer which already contains a
+        char *d;        pointer to destination buffer which already contains a
         string (which could be just a \0).
 
-        char *s; 	pointer to the NULL terminated source string
+        char *s;        pointer to the NULL terminated source string
 
-        int n;    	maximum number of characters to concactenate
+        int n;          maximum number of characters to concactenate
 
     RESULTS
-        char *d; 	same as the first argument, a pointer to the destination
+        char *d;        same as the first argument, a pointer to the destination
         buffer.
 
     SEE ALSO
@@ -8092,14 +8092,14 @@
         :: the memcmp routine instead.
 
     INPUTS
-        char *s1; 	pointer to first string
+        char *s1;       pointer to first string
 
-        char * s2;	pointer to second string
+        char * s2;      pointer to second string
 
-        int n;	maximum number of characters to compare
+        int n;  maximum number of characters to compare
 
     RESULTS
-        int r;   	-1, 0, or 1.
+        int r;          -1, 0, or 1.
 
     SEE ALSO
         stricmp
@@ -8152,14 +8152,14 @@
         specified maximum is reached, in which case the NULL is NOT copied.
 
     INPUTS
-        char *d; 	pointer to beginning of destination buffer
+        char *d;        pointer to beginning of destination buffer
 
-        char *s; 	pointer to beginning of source string
+        char *s;        pointer to beginning of source string
 
-        int len;   	maximum number of characters to copy
+        int len;        maximum number of characters to copy
 
     RESULTS
-        char *ptr; 	same as the destination buffer pointer (d).
+        char *ptr;      same as the destination buffer pointer (d).
 
     SEE ALSO
         stpcpy, strcpy
@@ -8221,14 +8221,14 @@
         :: the memcmp routine instead.
 
     INPUTS
-        char *s1; 	pointer to first string
+        char *s1;       pointer to first string
 
-        char *s2; 	pointer to second string
+        char *s2;       pointer to second string
 
-        int n;     	maximum # of characters to compare
+        int n;          maximum # of characters to compare
 
     RESULTS
-        int r; 	-1, 0, or 1.
+        int r;  -1, 0, or 1.
 
     SEE ALSO
         strcmp, strncmp, stricmp
@@ -8280,15 +8280,15 @@
         character in toks then NULL is returned.
 
     INPUTS
-        char *s; 	pointer to string to scan
+        char *s;        pointer to string to scan
 
-        char *toks;  	pointer to string containing tokens to scan for
+        char *toks;     pointer to string containing tokens to scan for
 
     RESULTS
-        char *ptr; 	pointer to point in s where the character matches any
+        char *ptr;      pointer to point in s where the character matches any
         character
 
-        	in toks, or NULL if s was exhausted.
+                in toks, or NULL if s was exhausted.
 
     SEE ALSO
         strtok
@@ -8340,15 +8340,15 @@
         :: thus not implement this properly.
 
     INPUTS
-        char *s; 	pointer to the string to search
+        char *s;        pointer to the string to search
 
-        int c; 	character to search for
+        int c;  character to search for
 
     RESULTS
-        char *ptr; 	pointer to the last occurance of character c in s or NULL
+        char *ptr;      pointer to the last occurance of character c in s or NULL
         if c
 
-        	could not be found in s.
+                could not be found in s.
 
     SEE ALSO
         strchr
@@ -8393,16 +8393,16 @@
         strspn is normally used to skip whitespace within a string.
 
     INPUTS
-        char *s; 	pointer to string to scan
+        char *s;        pointer to string to scan
 
-        char *toks; 	pointer to string containing
+        char *toks;     pointer to string containing
 
-        	characters to compare against
+                characters to compare against
 
     RESULTS
-        int len; 	# of characters skipped in s before a match could not be
+        int len;        # of characters skipped in s before a match could not be
 
-        	found
+                found
 
     SEE ALSO
         strpbrk, strcspn
@@ -8447,13 +8447,13 @@
         returned.
 
     INPUTS
-        char *s; 	pointer to string to scan
+        char *s;        pointer to string to scan
 
-        char *toks; 	pointer to string containing characters to compare
+        char *toks;     pointer to string containing characters to compare
         against
 
     RESULTS
-        char *ptr; 	point in s where sub string was found or NULL if sub
+        char *ptr;      point in s where sub string was found or NULL if sub
         string could not be found.
 
     SEE ALSO
@@ -8498,13 +8498,13 @@
         Example fp strings: " +1.234E-3", "-1234", "6.5676E4", "214.2345"
 
     INPUTS
-        char *s; 	pointer to string containing fp number
+        char *s;        pointer to string containing fp number
 
-        char **tp; 	pointer to pointer, the pointer is modified to point to
+        char **tp;      pointer to pointer, the pointer is modified to point to
         the end of the scanned fp number.
 
     RESULTS
-        double d; 	resulting double
+        double d;       resulting double
 
     SEE ALSO
         TBA
@@ -8563,13 +8563,13 @@
         || into it.
 
     INPUTS
-        char *s; 	pointer to string to parse
+        char *s;        pointer to string to parse
 
-        char *toks;  	pointer to string containing whitespace characters
+        char *toks;     pointer to string containing whitespace characters
         (argument delimiters)
 
     RESULTS
-        char *arg; 	pointer into s to next argument that is NULL terminated (s
+        char *arg;      pointer into s to next argument that is NULL terminated (s
         is modified).
 
     SEE ALSO
@@ -8618,9 +8618,9 @@
         or two characters of the number portion of the string:
 
         
-         	0	octal
-        	1-9	decimal
-        	0x	hex (0x or 0X)
+                0       octal
+                1-9     decimal
+                0x      hex (0x or 0X)
 
         For bases larger than 10, alphabetic characters are used to represent
         digits. Either lower case or upper case letters may be used.  strtol
@@ -8635,15 +8635,15 @@
         :: NOTE:  strtol supersedes atoi and atol.
 
     INPUTS
-        char *str; 	pointer to string to convert
+        char *str;      pointer to string to convert
 
-        char **tail; 	*tail modified to point to just after last character
+        char **tail;    *tail modified to point to just after last character
         converted
 
-        int base; 	base of conversion or 0 for autoselect
+        int base;       base of conversion or 0 for autoselect
 
     RESULTS
-        long v; 	converted result, an integer, or 0 if no conversion could be
+        long v;         converted result, an integer, or 0 if no conversion could be
         done.
 
     SEE ALSO
@@ -8704,12 +8704,12 @@
         :: execute if running under 1.3.
 
     INPUTS
-        char *buf; 	command line to run, like a normal AmigaDOS CLI
+        char *buf;      command line to run, like a normal AmigaDOS CLI
 
-        	command line.
+                command line.
 
     RESULTS
-        int r; 	return code
+        int r;  return code
 
     SEE ALSO
         TBA
@@ -8737,14 +8737,14 @@
         of a floating point quantity.
 
     INPUTS
-        double b; 	double floating point value
+        double b;       double floating point value
 
-        float d; 	float floating point value
+        float d;        float floating point value
 
     RESULTS
-        double a; 	double floating point value
+        double a;       double floating point value
 
-        float c; 	float floating point value
+        float c;        float floating point value
 
     SEE ALSO
         acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
@@ -8794,10 +8794,10 @@
         normally an unsigned long.
 
     INPUTS
-        time_t *t; 	pointer to a time_t or NULL
+        time_t *t;      pointer to a time_t or NULL
 
     RESULTS
-        time_t t; 	a time_t
+        time_t t;       a time_t
 
     SEE ALSO
         time, localtime, asctime, strftime, ctime, clock
@@ -8834,7 +8834,7 @@
         none
 
     RESULTS
-        FILE *fp; 	opened temporary file
+        FILE *fp;       opened temporary file
 
     SEE ALSO
         tmpnam, fopen, fclose
@@ -8884,12 +8884,12 @@
         buffer) and return a pointer to that.
 
     INPUTS
-        char *buf;  	optional buffer of at least L_tmpnam bytes to hold the
+        char *buf;      optional buffer of at least L_tmpnam bytes to hold the
         temporary file name or NULL to have tmpnam() use its own internal
         buffer.
 
     RESULTS
-        char *ptr; 	pointer to buffer (buf if buf != NULL)
+        char *ptr;      pointer to buffer (buf if buf != NULL)
 
     SEE ALSO
         tmpfile
@@ -8941,10 +8941,10 @@
         :: EOF is a valid input an always returns false.
 
     INPUTS
-        int c; 	character that we are checking
+        int c;  character that we are checking
 
     RESULTS
-        int r; 	converted character
+        int r;  converted character
 
     SEE ALSO
         isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint,
@@ -8989,10 +8989,10 @@
         :: EOF is a valid input an always returns false.
 
     INPUTS
-        int c; 	character that we are checking
+        int c;  character that we are checking
 
     RESULTS
-        int r; 	converted character
+        int r;  converted character
 
     SEE ALSO
         isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint,
@@ -9036,12 +9036,12 @@
         that character back.
 
     INPUTS
-        int c; 	character to push back onto input stream
+        int c;  character to push back onto input stream
 
-        FILE *fp; 	file pointer stream to push character on to.
+        FILE *fp;       file pointer stream to push character on to.
 
     RESULTS
-        int r; 	pushed character (c) if no error, EOF if error
+        int r;  pushed character (c) if no error, EOF if error
 
     SEE ALSO
         getc, getchar, fread, fgetc
@@ -9125,10 +9125,10 @@
         rmdir to delete a directory if you wish to maintain portability.
 
      INPUTS
-        char *filename; 	name of file to delete
+        char *filename;         name of file to delete
 
     RESULTS
-        int r;   	0 if successful, non-zero if error
+        int r;          0 if successful, non-zero if error
 
     SEE ALSO
         close, creat, fcntl, fdtofh, ioctl, isatty, lseek, mkdir, open, read,
@@ -9235,14 +9235,14 @@
         :: if illegal.
 
     INPUTS
-        int fd; 	file descriptor to write to void
+        int fd;         file descriptor to write to void
 
-        *buf;    	pointer to buffer to write data from
+        *buf;           pointer to buffer to write data from
 
-        int len; 	 number of bytes to write
+        int len;         number of bytes to write
 
     RESULTS
-        int r; 	number of bytes actually written, usually an error if r !=len.
+        int r;  number of bytes actually written, usually an error if r !=len.
 
     SEE ALSO
         close, creat, fcntl, fdtofh, ioctl, isatty, lseek, mkdir, open, read,

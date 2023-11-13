@@ -33,8 +33,8 @@ const char *ptr;
     short i;
 
     for (i = strlen(ptr) - 1; i >= 0; --i) {
-	if (ptr[i] == '/' || ptr[i] == ':')
-	    break;
+        if (ptr[i] == '/' || ptr[i] == ':')
+            break;
     }
     return(ptr + i + 1);
 }
@@ -46,7 +46,7 @@ const char *ptr;
     const char *p = MyFilePart(ptr);
 
     if (p > ptr && p[-1] == '/')
-	--p;
+        --p;
     return(p);
 }
 
@@ -59,9 +59,9 @@ BPTR l2;
     FileLock *lock2 = BTOC(l2);
 
     if (lock1->fl_Volume == lock2->fl_Volume) {
-	if (lock1->fl_Key == lock2->fl_Key)
-	    return(LOCK_SAME);
-	return(LOCK_SAME_HANDLER);
+        if (lock1->fl_Key == lock2->fl_Key)
+            return(LOCK_SAME);
+        return(LOCK_SAME_HANDLER);
     }
     return(LOCK_DIFFERENT);
 }

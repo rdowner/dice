@@ -20,11 +20,11 @@ int fd;
     _IOFDS *d;
 
     if (d = __getfh(fd)) {
-	if (d->fd_Exec)
-	    return((*d->fd_Exec)(d->fd_Fh, IOC_ISATTY, NULL, NULL));
-	if (IsInteractive(d->fd_Fh))
-	    return(1);
-	return(0);
+        if (d->fd_Exec)
+            return((*d->fd_Exec)(d->fd_Fh, IOC_ISATTY, NULL, NULL));
+        if (IsInteractive(d->fd_Fh))
+            return(1);
+        return(0);
     }
     return(-1);
 }

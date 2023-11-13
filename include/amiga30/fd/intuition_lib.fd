@@ -122,7 +122,7 @@ SysReqHandler(window,idcmpPtr,waitInput)(a0/a1,d0)
 OpenWindowTagList(newWindow,tagList)(a0/a1)
 OpenScreenTagList(newScreen,tagList)(a0/a1)
 *
-*	new Image functions
+*       new Image functions
 DrawImageState(rp,image,leftOffset,topOffset,state,drawInfo)(a0/a1,d0/d1/d2/a2)
 PointInImage(point,image)(d0/a0)
 EraseImage(rp,image,leftOffset,topOffset)(a0/a1,d0/d1)
@@ -134,10 +134,10 @@ SetAttrsA(object,tagList)(a0/a1)
 *
 GetAttr(attrID,object,storagePtr)(d0/a0/a1)
 *
-* 	special set attribute call for gadgets
+*       special set attribute call for gadgets
 SetGadgetAttrsA(gadget,window,requester,tagList)(a0/a1/a2/a3)
 *
-*	for class implementors only
+*       for class implementors only
 NextObject(objectPtrPtr)(a0)
 ##private
 intuitionPrivate2()()

@@ -25,7 +25,7 @@ void *fh;
 {
     int r = Write((BPTR)fh, buf, elmsize * elms);
     if (r >= 0)
-	r = r / elmsize;
+        r = r / elmsize;
     return(r);
 }
 

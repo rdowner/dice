@@ -3,15 +3,15 @@
 ;
 ; $Id: Install-DICE,v 30.0 1994/06/10 17:55:02 dice Exp $
 ;
-;	Todo:
-;		For non-installed options, leave a README describing
-;		what they've missed and where to find it.
+;       Todo:
+;               For non-installed options, leave a README describing
+;               what they've missed and where to find it.
 ;
-;		Put source control documentation into source control group
-;		(the documentation is large, and irrelevant if source
-;		 control is not in use).
-;	Bugs:
-;		Installs all docs if you ask for any of the docs.
+;               Put source control documentation into source control group
+;               (the documentation is large, and irrelevant if source
+;                control is not in use).
+;       Bugs:
+;               Installs all docs if you ask for any of the docs.
 ;
 
 (set Dice_Version "V3.0")
@@ -58,33 +58,33 @@
 ;=============================================================================
 (procedure dicehelp
 ;
-;	Build index for online help system (s:DICEHelp.index)
+;       Build index for online help system (s:DICEHelp.index)
 ;
-;	Note: If DiceHelp is already running, the new index file won't
-;	be automatically noticed.  You must break the old DiceHelp.
+;       Note: If DiceHelp is already running, the new index file won't
+;       be automatically noticed.  You must break the old DiceHelp.
 ;
 (complete 85)
 
 (if (askbool
-	(prompt "Install is about to build an index file "
-		"for use by the DICEHelp help system.\n\n"
-		"If you have a copy of the the Amiga \"AutoDoc\", "
-		"files, please push YES then select the location.")
-	 (help  "The \"AutoDoc\" files document every function "
-		"built into the Amiga Operating System.\n\n"
-		"See the DICE manual for information on ordering "
-		"a copy of the \"AutoDocs\" direct from Commodore.\n\n"
-		"The index file will be named s:DiceHelp.index")
-	 (default 0)
+        (prompt "Install is about to build an index file "
+                "for use by the DICEHelp help system.\n\n"
+                "If you have a copy of the the Amiga \"AutoDoc\", "
+                "files, please push YES then select the location.")
+         (help  "The \"AutoDoc\" files document every function "
+                "built into the Amiga Operating System.\n\n"
+                "See the DICE manual for information on ordering "
+                "a copy of the \"AutoDocs\" direct from Commodore.\n\n"
+                "The index file will be named s:DiceHelp.index")
+         (default 0)
     )
     (set adoc_source
-	(askdir
-	    (prompt "Please select the directory containing your copy of "
-		    "the Commodore \"AutoDoc\" files.")
-	    (help   "See the DICE manual for information on ordering "
-		    "a copy of the \"AutoDocs\" direct from Commodore.\n")
-	    (default "work:doc")
-	)
+        (askdir
+            (prompt "Please select the directory containing your copy of "
+                    "the Commodore \"AutoDoc\" files.")
+            (help   "See the DICE manual for information on ordering "
+                    "a copy of the \"AutoDocs\" direct from Commodore.\n")
+            (default "work:doc")
+        )
     )
 )
 (complete 90)
@@ -97,8 +97,8 @@
 )
 (run
     (cat  (tackon dice_dest "bin/Makeindex")
-	  " >con:0/0/640/63/DiceHelp_Index_Builder/INACTIVE "
-	  "s:DiceHelp.index " (tackon dice_dest "doc/#?.doc ") adoc_source
+          " >con:0/0/640/63/DiceHelp_Index_Builder/INACTIVE "
+          "s:DiceHelp.index " (tackon dice_dest "doc/#?.doc ") adoc_source
     )
 )
 (complete 95)
@@ -106,28 +106,28 @@
 
 (working "Building index file : Includes & Structures")
 ;
-;	Choose the latest installed version of the includes.
+;       Choose the latest installed version of the includes.
 ;
 (if (exists (tackon dice_dest "include/amiga13"))
-	(set idoc_source (tackon dice_dest "include/amiga13/#?/#?.h"))
+        (set idoc_source (tackon dice_dest "include/amiga13/#?/#?.h"))
 )
 (if (exists (tackon dice_dest "include/amiga20"))
-	(set idoc_source (tackon dice_dest "include/amiga20/#?/#?.h"))
+        (set idoc_source (tackon dice_dest "include/amiga20/#?/#?.h"))
 )
 (if (exists (tackon dice_dest "include/amiga30"))
-	(set idoc_source (tackon dice_dest "include/amiga30/#?/#?.h"))
+        (set idoc_source (tackon dice_dest "include/amiga30/#?/#?.h"))
 )
 (run
     (cat  (tackon dice_dest "bin/Makeindex")
-	  " >con:0/0/640/79/DiceHelp_Index_Builder/INACTIVE "
-	  "s:DiceHelp.index "
-	  (tackon dice_dest "include/#?.h ")
-	  (tackon dice_dest "include/#?/#?.h ")
-	  idoc_source
+          " >con:0/0/640/79/DiceHelp_Index_Builder/INACTIVE "
+          "s:DiceHelp.index "
+          (tackon dice_dest "include/#?.h ")
+          (tackon dice_dest "include/#?/#?.h ")
+          idoc_source
     )
 )
 
-)	;End procedure dicehelp
+)       ;End procedure dicehelp
 ;=============================================================================
 ;=============================================================================
 ;=============================================================================
@@ -148,15 +148,15 @@
    (askchoice
       (prompt "What type of install would you like?")
       (help "For a complete installation, DICE should not currently be "
-	    "installed on your system.  Delete or rename the directory, "
-	    "and remove the assigns from the "s:user-startup" file.\n"
-	    "You may add modules to an existing installation at any time.\n"
-	    "If documentation files change, you will need to refresh the "
-	    "index file used by the online help system."
+            "installed on your system.  Delete or rename the directory, "
+            "and remove the assigns from the "s:user-startup" file.\n"
+            "You may add modules to an existing installation at any time.\n"
+            "If documentation files change, you will need to refresh the "
+            "index file used by the online help system."
       )
       (choices  "Complete installation"
-		"Add modules to existing installation"
-		"Refresh DICEHelp index file")
+                "Add modules to existing installation"
+                "Refresh DICEHelp index file")
       (default is_update)
    )
 )
@@ -167,34 +167,34 @@
 ;***********************************************************************
 
 (if (= inst_level sb_indexupdate)
-	(
-	(dicehelp)
-	(exit)
-	)
+        (
+        (dicehelp)
+        (exit)
+        )
 )
 
 (if (= inst_level sb_full)
     (if dice_dest
        (if (askbool
-	       (prompt "There appears to be a current copy of DICE in "
-		 "the drawer named \"" dice_dest "\""".\n\n"
-		 "Please rename or remove this copy before installing. "
-		 "You may also need to delete the DCC: assign from your "
-		 "\"s:user-startup\" file and reboot."
-	       )
-	       (help
-		 "The installer has determined that you may already have a "
-		 "copy of DICE installed on your system.  Delete the \"DCC:\" "
-		 "assign with \"assign DCC: remove\" to fool the installer."
-	       )
-	       (choices "Exit" "Continue Anyway")
-	   )
-	   (exit)
+               (prompt "There appears to be a current copy of DICE in "
+                 "the drawer named \"" dice_dest "\""".\n\n"
+                 "Please rename or remove this copy before installing. "
+                 "You may also need to delete the DCC: assign from your "
+                 "\"s:user-startup\" file and reboot."
+               )
+               (help
+                 "The installer has determined that you may already have a "
+                 "copy of DICE installed on your system.  Delete the \"DCC:\" "
+                 "assign with \"assign DCC: remove\" to fool the installer."
+               )
+               (choices "Exit" "Continue Anyway")
+           )
+           (exit)
        )
     )
 )
 
-;	If there is not already a destination, ask for one.
+;       If there is not already a destination, ask for one.
 ;
 ;
 (if dice_dest
@@ -202,13 +202,13 @@
    (
    (set dice_dest
       (tackon
-	 (askdir
-	    (prompt "Please select a location for DICE.  A subdirectory named "
-		"\"Dice\" will be created.")
-	    (help @askdir-help)
-	    (default @default-dest)
-	 )
-	 "Dice"
+         (askdir
+            (prompt "Please select a location for DICE.  A subdirectory named "
+                "\"Dice\" will be created.")
+            (help @askdir-help)
+            (default @default-dest)
+         )
+         "Dice"
       )
    )
    (set is_update 0)
@@ -238,14 +238,14 @@
 (set targ_os
    (askoptions
       (prompt "Installer has determined you are currently running "
-	      "Amiga OS version " running_os ". What version of "
-	      "include files and link libraries do you want installed?\n\n"
-	      "Note: If you are not sure, just click proceed.")
+              "Amiga OS version " running_os ". What version of "
+              "include files and link libraries do you want installed?\n\n"
+              "Note: If you are not sure, just click proceed.")
 
       (help @askchoice-help)
       (choices "1.3 Includes and Libraries"
-	       "2.0 Includes and Libraries"
-	       "3.0 Includes and Libraries")
+               "2.0 Includes and Libraries"
+               "3.0 Includes and Libraries")
       (default default_os)
    )
 )
@@ -272,16 +272,16 @@
    (askoptions
       (prompt "Which DICE features do you wish to install?")
       (help  "If you have limimted hard disk space, you may wish "
-	     "to trim away certain features."
-	     )
+             "to trim away certain features."
+             )
       (choices  "Basic DICE Compiler              290K"
-		"Extended Tools                   350K"
-		"Debugger                         180K"
-		"Online Documentation             488K"
-		"Resource Control System (RCS)    465K"
-		"Advanced Developer Tools         441K"
-		"Example Source Code        629K-1309K"
-		"ROM Development Support           50K")
+                "Extended Tools                   350K"
+                "Debugger                         180K"
+                "Online Documentation             488K"
+                "Resource Control System (RCS)    465K"
+                "Advanced Developer Tools         441K"
+                "Example Source Code        629K-1309K"
+                "ROM Development Support           50K")
       (default inst_groups)
    )
 )
@@ -293,7 +293,7 @@
 ;
 ; NOTE: There were too many options for Installer to handle.  So
 ; I broke the source into three groups.  You could add finer selection
-; to each group, especially the Example group.	There should be a
+; to each group, especially the Example group.  There should be a
 ; separate selection for the "amiga" portions of the library source;
 ; the startups, c.a, x.a, etc.
 ;
@@ -308,14 +308,14 @@
 (if (in inst_groups ib_esource)
    (
       (set examp_groups
-	 (askoptions
-	    (prompt "Which example groups would you like installed?")
-	    (help @askoptions-help)
-	    (choices "Example Source         680K"
-		     "Library Source         629K"
-	    )
-	    (default examp_groups)
-	 )
+         (askoptions
+            (prompt "Which example groups would you like installed?")
+            (help @askoptions-help)
+            (choices "Example Source         680K"
+                     "Library Source         629K"
+            )
+            (default examp_groups)
+         )
       )
    )
 )
@@ -336,40 +336,40 @@
 (if (in inst_groups ib_docs)
    (
       (set doc_groups
-	 (askoptions
-	    (prompt "What online documentation would you like installed?")
-	    (help @askoptions-help)
-	    (choices "DICE Commands            175K"
-		     "DICE Library Functions   270K"
-		     "Amiga Quick Reference      8K"
-		     "Debugger                  35K")
-	    (default doc_groups)
-	 )
+         (askoptions
+            (prompt "What online documentation would you like installed?")
+            (help @askoptions-help)
+            (choices "DICE Commands            175K"
+                     "DICE Library Functions   270K"
+                     "Amiga Quick Reference      8K"
+                     "Debugger                  35K")
+            (default doc_groups)
+         )
       )
    )
 )
 (debug "Doc groups " doc_groups)
 
 ;
-;	Documentation is found in these files:
+;       Documentation is found in these files:
 ;
-;		dice_libraries.doc	; All of manual chapter 11 (VSuck'ed)
-;		dice_commands.doc	; All of manual chapter 07 (VSuck'ed)
-;		dice_extras.doc 	; Extra bits, not found elsewhere
-;		dice_debugger.doc	; The debugger
+;               dice_libraries.doc      ; All of manual chapter 11 (VSuck'ed)
+;               dice_commands.doc       ; All of manual chapter 07 (VSuck'ed)
+;               dice_extras.doc         ; Extra bits, not found elsewhere
+;               dice_debugger.doc       ; The debugger
 ;
-;	These could be split up into categories, given VSuck hints in the
-;	Ventura source.
+;       These could be split up into categories, given VSuck hints in the
+;       Ventura source.
 ;
 (if (<> doc_groups 0)
    (
       (set doc_list
-	 (cat
-	    (if (in doc_groups db_command  ) "dice_commands.doc ")
-	    (if (in doc_groups db_library  ) "dice_libraries.doc ")
-	    (if (in doc_groups db_quickref ) "dice_extras.doc ")
-	    (if (in doc_groups db_debugger ) "dice_debugger.doc ")
-	 )
+         (cat
+            (if (in doc_groups db_command  ) "dice_commands.doc ")
+            (if (in doc_groups db_library  ) "dice_libraries.doc ")
+            (if (in doc_groups db_quickref ) "dice_extras.doc ")
+            (if (in doc_groups db_debugger ) "dice_debugger.doc ")
+         )
       )
    )
 )
@@ -390,11 +390,11 @@
       (prompt "Which Library Models do you want installed?")
       (help @askoptions-help)
       (choices "Small Data Model"
-	       "Registerized Parameters"
-	       "General Profiling"
-	       "Amiga Library Profiling"
-	       "Unix Common Model Data"
-	       "Large Data Model")
+               "Registerized Parameters"
+               "General Profiling"
+               "Amiga Library Profiling"
+               "Unix Common Model Data"
+               "Large Data Model")
       (default lib_default)
    )
 )
@@ -408,48 +408,48 @@
 (if (in targ_os 2)                      (set tgroup (+ tgroup 512)))
 (debug "Library Groups" lib_groups "Tgroup Calculation" tgroup)
 
-;		     /---------------------------------   1 - Small Data Model
-;		     |	 /-----------------------------   2 - Reg Parms
-;		     |	 |   /-------------------------   4 - General Profiling
-;		     |	 |   |	 /---------------------   8 - Amiga Profiling
-;		     |	 |   |	 |   /-----------------  16 - Umix common
-;		     |	 |   |	 |   |	 /-------------  32 - Large Data Model
-;		     |	 |   |	 |   |	 |   /---------  64 - 1.3
-;		     |	 |   |	 |   |	 |   |	 /----- 128 - 2.0
-;		     |	 |   |	 |   |	 |   |	 |   /- 256 - Rom Library
-;		     |	 |   |	 |   |	 |   |	 |   |
-;		     v	 v   v	 v   v	 v   v	 v   v
-;		     1	 2   4	 8: 16	32  64 128:256 512  - 3.0
-;amiga13l.lib	 96		  :	 x   x	  :
-;amiga20l.lib	160		  :	 x	 x:
-;amiga13s.lib	 65  x		  :	     x	  :
-;amiga20s.lib	129  x		  :		 x:
+;                    /---------------------------------   1 - Small Data Model
+;                    |   /-----------------------------   2 - Reg Parms
+;                    |   |   /-------------------------   4 - General Profiling
+;                    |   |   |   /---------------------   8 - Amiga Profiling
+;                    |   |   |   |   /-----------------  16 - Umix common
+;                    |   |   |   |   |   /-------------  32 - Large Data Model
+;                    |   |   |   |   |   |   /---------  64 - 1.3
+;                    |   |   |   |   |   |   |   /----- 128 - 2.0
+;                    |   |   |   |   |   |   |   |   /- 256 - Rom Library
+;                    |   |   |   |   |   |   |   |   |
+;                    v   v   v   v   v   v   v   v   v
+;                    1   2   4   8: 16  32  64 128:256 512  - 3.0
+;amiga13l.lib    96               :      x   x    :
+;amiga20l.lib   160               :      x       x:
+;amiga13s.lib    65  x            :          x    :
+;amiga20s.lib   129  x            :              x:
 ;cs.lib___________1__x____________:_______________:______
-;ms.lib 	  1  x		  :		  :
-;roms.lib	257  x		  :		  :  x
-;ucs.lib	 17  x		  :  x		  :
-;amiga13sp.lib	 73  x		 x:	     x	  :
+;ms.lib           1  x            :               :
+;roms.lib       257  x            :               :  x
+;ucs.lib         17  x            :  x            :
+;amiga13sp.lib   73  x           x:          x    :
 ;amiga20sp.lib__137__x___________x:______________x:______
-;amiga20sr.lib	131  x	 x	  :		 x:
-;csr.lib	  3  x	 x	  :		  :
-;msr.lib	  3  x	 x	  :		  :
-;romsr.lib	259  x	 x	  :		  :  x
+;amiga20sr.lib  131  x   x        :              x:
+;csr.lib          3  x   x        :               :
+;msr.lib          3  x   x        :               :
+;romsr.lib      259  x   x        :               :  x
 ;ucsr.lib________19__x___x________:__x____________:______
-;amiga20srp.lib 139  x	 x	 x:		 x:
-;csp.lib	  5  x	     x	  :		  :
-;msp.lib	  5  x	     x	  :		  :
-;csrp.lib	  7  x	 x   x	  :		  :
+;amiga20srp.lib 139  x   x       x:              x:
+;csp.lib          5  x       x    :               :
+;msp.lib          5  x       x    :               :
+;csrp.lib         7  x   x   x    :               :
 ;msrp.lib_________7__x___x___x____:_______________:______
-;		     0	 1   2	 3   4	 5   6	 7   8	# bit number
+;                    0   1   2   3   4   5   6   7   8  # bit number
 
 ;
-;	The following libraries are shipped uncompressed:
-;c.o		     *		  :		  :
-;c_pi.o 	     *		  :		  :
-;c_pr.o 	     *		  :		  :
-;x.o		     *		  :		  :
-;autos.lib	     *		  :		  :
-;amiga20s.lib	     *		  :		  :
+;       The following libraries are shipped uncompressed:
+;c.o                 *            :               :
+;c_pi.o              *            :               :
+;c_pr.o              *            :               :
+;x.o                 *            :               :
+;autos.lib           *            :               :
+;amiga20s.lib        *            :               :
 ;
 ;     (if tgroup ("c.o\n" "c_pi.o\n" "c_pr.o\n" "x.o\n" "autos.lib\n"))
 ;     (if (= (in tgroup 0 7)     129) "amiga20s.lib\n")
@@ -519,32 +519,32 @@
 (set @default-dest dice_dest)
 
     (
-	(makedir dice_dest (infos))
-	(makedir (tackon dice_dest "Bin"     ) (infos))
-	(makedir (tackon dice_dest "Tools"   ) (infos))
-	(makedir (tackon dice_dest "Config"  ) (infos))
-	(makedir (tackon dice_dest "User"    ) (infos))
-	(makedir (tackon dice_dest "Examples") (infos))
-	(makedir (tackon dice_dest "dtmp"))
-	(makedir (tackon dice_dest "lib"))
-	(makedir (tackon dice_dest "doc"))
-	(makedir (tackon dice_dest "s"))
-	(makedir (tackon dice_dest "Rexx"))
-	(makedir (tackon dice_dest "Include"))
-	(makedir (tackon dice_dest "Dlib"))
+        (makedir dice_dest (infos))
+        (makedir (tackon dice_dest "Bin"     ) (infos))
+        (makedir (tackon dice_dest "Tools"   ) (infos))
+        (makedir (tackon dice_dest "Config"  ) (infos))
+        (makedir (tackon dice_dest "User"    ) (infos))
+        (makedir (tackon dice_dest "Examples") (infos))
+        (makedir (tackon dice_dest "dtmp"))
+        (makedir (tackon dice_dest "lib"))
+        (makedir (tackon dice_dest "doc"))
+        (makedir (tackon dice_dest "s"))
+        (makedir (tackon dice_dest "Rexx"))
+        (makedir (tackon dice_dest "Include"))
+        (makedir (tackon dice_dest "Dlib"))
     )
 
 
 ;***********************************************************************
-;			       Install Disk 1
+;                              Install Disk 1
 ;***********************************************************************
 (complete 1)
 
 (askdisk
    (prompt "Please insert the disk labeled " Disk1 ".\n"
-	   "(disk insertion is automatically detected)" )
+           "(disk insertion is automatically detected)" )
    (help   "The DICE program and other tools will be copied "
-	   "from the Disk " Disk1 " into your system.")
+           "from the Disk " Disk1 " into your system.")
    (dest Disk1)
 )
 
@@ -556,21 +556,21 @@
 (if (exists (tackon dice_dest "bin/lhex"))
     (
     (debug "dice_destbin/lhex exists")
-	(copyfiles
-	(source (tackon dice_dest "Bin/"))
-	(dest "ram:")
-	(choices  "lhex")
-	(safe)
-	)
+        (copyfiles
+        (source (tackon dice_dest "Bin/"))
+        (dest "ram:")
+        (choices  "lhex")
+        (safe)
+        )
     )
     (
     (debug "dice_destbin/lhex not found - copying from source")
-	(copyfiles
-	(source (cat Disk1: "bin/"))
-	(dest "ram:")
-	(choices  "lhex")
-	(safe)
-	)
+        (copyfiles
+        (source (cat Disk1: "bin/"))
+        (dest "ram:")
+        (choices  "lhex")
+        (safe)
+        )
     )
 )
 (set lhopt "ram:lhex >CON:0/0/640/40/Unpacker/INACTIVE -faw=%s xv %s")
@@ -578,261 +578,261 @@
 (complete 3)
 
     (
-	(if (in inst_groups ib_basic)
-	    (
-		(copyfiles
-		    (source Disk1:)
-		    (dest dice_dest)
-		    (choices "bin" "config" "rexx" "s" "l" "libs")
-		    (infos)
-		)
-		(copyfiles
-		   (source Disk1:)
-		   (dest dice_dest)
-		   (choices "About_Dice" "Known_Buglist" "Release_Notes" "Copyright_Information")
-		   (infos)
-		)
-	    )
-	)
-	(complete 5)
+        (if (in inst_groups ib_basic)
+            (
+                (copyfiles
+                    (source Disk1:)
+                    (dest dice_dest)
+                    (choices "bin" "config" "rexx" "s" "l" "libs")
+                    (infos)
+                )
+                (copyfiles
+                   (source Disk1:)
+                   (dest dice_dest)
+                   (choices "About_Dice" "Known_Buglist" "Release_Notes" "Copyright_Information")
+                   (infos)
+                )
+            )
+        )
+        (complete 5)
 
-	(if (in targ_os 0)      ; 1.3 Includes
-	    (
-	    (working "Installing Commodore 1.3 Include Files")
-	    (run (lhopt (tackon dice_dest "Include/") (cat Disk1: "include_13.lha")))
-	    )
-	)
-	(complete 7)
+        (if (in targ_os 0)      ; 1.3 Includes
+            (
+            (working "Installing Commodore 1.3 Include Files")
+            (run (lhopt (tackon dice_dest "Include/") (cat Disk1: "include_13.lha")))
+            )
+        )
+        (complete 7)
 
-	(if (in targ_os 1)      ; 2.0 Includes
-	    (
-	    (working "Installing Commodore 2.x Include Files")
-	    (run (lhopt (tackon dice_dest "Include/ ") (cat Disk1: "include_20.lha") ))
-	    )
-	)
-	(complete 9)
+        (if (in targ_os 1)      ; 2.0 Includes
+            (
+            (working "Installing Commodore 2.x Include Files")
+            (run (lhopt (tackon dice_dest "Include/ ") (cat Disk1: "include_20.lha") ))
+            )
+        )
+        (complete 9)
 
-	(if (in inst_groups ib_extended)
-	    (
-	    (working "Installing extended tools")
-	    (run (lhopt (tackon dice_dest "Bin/") (cat Disk1: "extended_tools.lha")))
-	    )
-	)
-	(complete 11)
+        (if (in inst_groups ib_extended)
+            (
+            (working "Installing extended tools")
+            (run (lhopt (tackon dice_dest "Bin/") (cat Disk1: "extended_tools.lha")))
+            )
+        )
+        (complete 11)
     )
 
 ;***********************************************************************
-;			       Install Disk 2
+;                              Install Disk 2
 ;***********************************************************************
 
 
 (askdisk
    (prompt "Please insert the disk labeled " Disk2 ".\n"
-	   "(disk insertion is automatically detected)" )
+           "(disk insertion is automatically detected)" )
    (help   "Some DICE Libraries, Source code, Documentation and Includes"
-	   "will be copied from the Disk "  Disk2 " into your system.")
+           "will be copied from the Disk "  Disk2 " into your system.")
    (dest Disk2)
 )
 
     (
-	(if targ_os
-	    (
-	    (working "Installing Common Include Files")
-	    (run (lhopt (tackon dice_dest "Include/") (cat Disk2: "include_common.lha")))
-	    )
-	)
-	(complete 14)
+        (if targ_os
+            (
+            (working "Installing Common Include Files")
+            (run (lhopt (tackon dice_dest "Include/") (cat Disk2: "include_common.lha")))
+            )
+        )
+        (complete 14)
 
-	(if (in targ_os 2)      ; 3.0 Includes
-	    (
-	    (working "Installing Commodore 3.x Include Files")
-		    (run (lhopt (tackon dice_dest "Include/") (cat Disk2: "include_30.lha")))
-	    )
-	)
-	(complete 20)
+        (if (in targ_os 2)      ; 3.0 Includes
+            (
+            (working "Installing Commodore 3.x Include Files")
+                    (run (lhopt (tackon dice_dest "Include/") (cat Disk2: "include_30.lha")))
+            )
+        )
+        (complete 20)
 
-	(if LIBLISTDICE
-	    (
-		(working "Installing DICE Link Libraries")
-		(textfile
-		    (dest "ram:lhex.list")
-		    (append LIBLISTDICE)
-		    (safe)
-		)
-		(run
-		    (lhext (dice_dest) (cat Disk2: "dice_linklibs.lha"))
-		)
-		(delete "ram:lhex.list" (safe))
-	    )
-	)
-	(complete 30)
+        (if LIBLISTDICE
+            (
+                (working "Installing DICE Link Libraries")
+                (textfile
+                    (dest "ram:lhex.list")
+                    (append LIBLISTDICE)
+                    (safe)
+                )
+                (run
+                    (lhext (dice_dest) (cat Disk2: "dice_linklibs.lha"))
+                )
+                (delete "ram:lhex.list" (safe))
+            )
+        )
+        (complete 30)
     )
 
 
 ;***********************************************************************
-;			       Install Disk 3
+;                              Install Disk 3
 ;***********************************************************************
 
 
 (askdisk
    (prompt "Please insert the disk labeled " Disk3 ".\n"
-	   "(disk insertion is automatically detected)" )
+           "(disk insertion is automatically detected)" )
    (help   "The remaining DICE Libraries and Examples will be copied "
-	   "from the Disk "  Disk3 " into your system.")
+           "from the Disk "  Disk3 " into your system.")
    (dest Disk3)
 )
 
     (
-	(if LIBLISTAMIGA12
-	    (
-		(working "Installing Amiga Link Libraries")
-		(textfile
-		    (dest "ram:lhex.list")
-		    (append LIBLISTAMIGA12)
-		    (safe)
-		)
-		(run
-		    (lhext (dice_dest) (cat Disk3: "amiga12_linklibs.lha"))
-		)
-		(delete "ram:lhex.list" (safe))
-	    )
-	)
-	(complete 52)
+        (if LIBLISTAMIGA12
+            (
+                (working "Installing Amiga Link Libraries")
+                (textfile
+                    (dest "ram:lhex.list")
+                    (append LIBLISTAMIGA12)
+                    (safe)
+                )
+                (run
+                    (lhext (dice_dest) (cat Disk3: "amiga12_linklibs.lha"))
+                )
+                (delete "ram:lhex.list" (safe))
+            )
+        )
+        (complete 52)
 
-	(if (in inst_groups ib_rcs)
-	    (
-	    (working "Installing the Resource Control System (RCS)")
-	    (run (lhopt (tackon dice_dest "Bin/") (cat Disk3: "source_control.lha")))
-	    )
-	)
-	(complete 54)
+        (if (in inst_groups ib_rcs)
+            (
+            (working "Installing the Resource Control System (RCS)")
+            (run (lhopt (tackon dice_dest "Bin/") (cat Disk3: "source_control.lha")))
+            )
+        )
+        (complete 54)
 
-	(if (in inst_groups ib_docs)
-	    (
-	    (working "Installing online help tools")
-	    (run (lhopt (dice_dest) (cat Disk3: "online_help2.lha")))
-	    )
-	)
-	(complete 57)
+        (if (in inst_groups ib_docs)
+            (
+            (working "Installing online help tools")
+            (run (lhopt (dice_dest) (cat Disk3: "online_help2.lha")))
+            )
+        )
+        (complete 57)
 
-	(if (in inst_groups ib_romstuff)
-	    (
-	    (working "Installing ROM tools")
-	    (run (lhopt (tackon dice_dest "Bin/") (cat Disk3: "rom_tools.lha")))
-	    )
-	)
-	(complete 58)
+        (if (in inst_groups ib_romstuff)
+            (
+            (working "Installing ROM tools")
+            (run (lhopt (tackon dice_dest "Bin/") (cat Disk3: "rom_tools.lha")))
+            )
+        )
+        (complete 58)
 
-	(if (in examp_groups eb_library)  ; Library source code
-	    (
-	    (working "Installing DICE Library Source Code")
-	    (run (lhopt (dice_dest) (cat Disk3: "library_source.lha")))
-	    )
-	)
+        (if (in examp_groups eb_library)  ; Library source code
+            (
+            (working "Installing DICE Library Source Code")
+            (run (lhopt (dice_dest) (cat Disk3: "library_source.lha")))
+            )
+        )
 
-	(complete 61)
+        (complete 61)
 
     )
 
 ;***********************************************************************
-;			       Install Disk 4
+;                              Install Disk 4
 ;***********************************************************************
 
 
 (askdisk
    (prompt "Please insert the disk labeled " Disk4 ".\n"
-	   "(disk insertion is automatically detected)" )
+           "(disk insertion is automatically detected)" )
    (help   "The remaining Libraries, Binaries and Examples will be copied "
-	 "from the Disk "  Disk4 " into your system.")
+         "from the Disk "  Disk4 " into your system.")
    (dest Disk4)
 )
    (
 
-	(if LIBLISTAMIGA30
-	    (
-		(working "Installing Amiga 3.0 Link Libraries")
-		(textfile
-		    (dest "ram:lhex.list")
-		    (append LIBLISTAMIGA30)
-		    (safe)
-		)
-		(run
-		    (lhext (dice_dest) (cat Disk4: "amiga30_linklibs.lha"))
-		)
-		(delete "ram:lhex.list" (safe))
-	    )
-	)
-	(complete 80)
+        (if LIBLISTAMIGA30
+            (
+                (working "Installing Amiga 3.0 Link Libraries")
+                (textfile
+                    (dest "ram:lhex.list")
+                    (append LIBLISTAMIGA30)
+                    (safe)
+                )
+                (run
+                    (lhext (dice_dest) (cat Disk4: "amiga30_linklibs.lha"))
+                )
+                (delete "ram:lhex.list" (safe))
+            )
+        )
+        (complete 80)
 
-	(if (in inst_groups ib_debugger)
-	    (
-	    (working "Installing debugger")
-	    (run (lhopt (dice_dest) (cat Disk4: "debugger.lha")))
-	    )
-	)
-	(complete 82)
+        (if (in inst_groups ib_debugger)
+            (
+            (working "Installing debugger")
+            (run (lhopt (dice_dest) (cat Disk4: "debugger.lha")))
+            )
+        )
+        (complete 82)
 
-	(if (in inst_groups ib_mmutool)
-	    (
-	    (working "Installing Memory Management Unit (MMU) tools")
-	    (run (lhopt (dice_dest) (cat Disk4: "mmu_tools.lha")))
-	    )
-	)
-	(complete 85)
+        (if (in inst_groups ib_mmutool)
+            (
+            (working "Installing Memory Management Unit (MMU) tools")
+            (run (lhopt (dice_dest) (cat Disk4: "mmu_tools.lha")))
+            )
+        )
+        (complete 85)
 
-	(if (in inst_groups ib_basic)
-	    (
-	    (working "Installing Miscellaneous Files")
-	    (run (lhopt (dice_dest) (cat Disk4: "miscellaneous.lha")))
-	    (copylib
-		(source (tackon dice_dest "libs/dicecache.library"))
-		(dest "libs:")
-	      )
-	    )
-	)
-	(complete 38)
+        (if (in inst_groups ib_basic)
+            (
+            (working "Installing Miscellaneous Files")
+            (run (lhopt (dice_dest) (cat Disk4: "miscellaneous.lha")))
+            (copylib
+                (source (tackon dice_dest "libs/dicecache.library"))
+                (dest "libs:")
+              )
+            )
+        )
+        (complete 38)
 
-	(if (in examp_groups eb_examples)
-	    (
-	    (working "Installing Example Source Code")
-	    (run (lhopt (dice_dest) (cat Disk4: "example_source.lha")))
-	    )
-	)
-	(complete 92)
+        (if (in examp_groups eb_examples)
+            (
+            (working "Installing Example Source Code")
+            (run (lhopt (dice_dest) (cat Disk4: "example_source.lha")))
+            )
+        )
+        (complete 92)
    )
 
 
 
 ;***********************************************************************
-;			       Install Disk 5
+;                              Install Disk 5
 ;***********************************************************************
 
 (askdisk
    (prompt "Please insert the disk labeled " Disk5 ".\n"
-	   "(disk insertion is automatically detected)" )
+           "(disk insertion is automatically detected)" )
    (help   "The remaining Docs and Binaries will be copied "
-	 "from the Disk "  Disk5 " into your system.")
+         "from the Disk "  Disk5 " into your system.")
    (dest Disk5)
 )
 
-	(if (in inst_groups ib_docs)
-	    (
-	    (working "Installing online help files")
-	    (run (lhopt (dice_dest) (cat Disk5: "online_help1.lha")))
-	    )
-	)
-	(complete 96)
+        (if (in inst_groups ib_docs)
+            (
+            (working "Installing online help files")
+            (run (lhopt (dice_dest) (cat Disk5: "online_help1.lha")))
+            )
+        )
+        (complete 96)
 
-	(if (in inst_groups ib_basic)
-	    (
-	    (working "Installing basic tools")
-	    (run (lhopt (tackon dice_dest "Bin/") (cat Disk5: "basic_tools.lha")))
-	    )
-	)
+        (if (in inst_groups ib_basic)
+            (
+            (working "Installing basic tools")
+            (run (lhopt (tackon dice_dest "Bin/") (cat Disk5: "basic_tools.lha")))
+            )
+        )
         (complete 98)
 
 ;***********************************************************************
-;		Install EDITOR Stuff
+;               Install EDITOR Stuff
 ;***********************************************************************
 (set ed_nothing 0)
 (set ed_ttx     1)
@@ -851,28 +851,28 @@
 (set editor
    (askchoice
       (prompt "Which editor will you usually use with DICE?\n"
-	      "Scripts will be installed to make this editor work "
-	      "with the DICE Integrated Development Environment.\n\n"
-	      "Note: If you are not sure, just click proceed.")
+              "Scripts will be installed to make this editor work "
+              "with the DICE Integrated Development Environment.\n\n"
+              "Note: If you are not sure, just click proceed.")
       (help   "The editor you choose is the editor you will be using "
-	      "to edit C source files, compiling etc. with DICE. "
-	      "AME, DME come with DICE."
-	      )
+              "to edit C source files, compiling etc. with DICE. "
+              "AME, DME come with DICE."
+              )
       (choices  "Don't change editor setup"
-		"TurboText (not included)"
-		"AME - Advanced MicroEmacs (included)"
-		"DICE Editor DME (included)"
-		"Cygnus ED (not included)"
-		)
+                "TurboText (not included)"
+                "AME - Advanced MicroEmacs (included)"
+                "DICE Editor DME (included)"
+                "Cygnus ED (not included)"
+                )
       (default ed_default)
    )
 )
 
 (set edhelp (cat "The files \"dcc:config/dcc.config\" and "
-		 "\"dcc:config/vmake.config\" will be set to use your "
-		 "chosen editor.\n\n"
-		 "See your editor manual for details on binding keys to "
-		 "REXX scripts.")
+                 "\"dcc:config/vmake.config\" will be set to use your "
+                 "chosen editor.\n\n"
+                 "See your editor manual for details on binding keys to "
+                 "REXX scripts.")
 )
 
 ;
@@ -883,18 +883,18 @@
 (if (= editor ed_ttx)
   (
     (if (askbool
-	(prompt "-= TurboText Editor Installation =-\n\n"
-		"A menu and several key defintions have been "
-		"prepared for use with TurboText. "
-		"Please edit the file "
-		"\"TurboText:support/ttx_startup.dfn\" now. "
-		"You must add the line \"dcc:config/TTX_DICE.dfn\" "
-		"at the end, in the LINK section. "
-		"Do this now."
-	)
-	(help edhelp)
-	(choices "I'm done" "")
-	)
+        (prompt "-= TurboText Editor Installation =-\n\n"
+                "A menu and several key defintions have been "
+                "prepared for use with TurboText. "
+                "Please edit the file "
+                "\"TurboText:support/ttx_startup.dfn\" now. "
+                "You must add the line \"dcc:config/TTX_DICE.dfn\" "
+                "at the end, in the LINK section. "
+                "Do this now."
+        )
+        (help edhelp)
+        (choices "I'm done" "")
+        )
     )
     (run (lhopt (dice_dest) (cat Disk5: "ttx_config.lha")))
   )
@@ -904,20 +904,20 @@
 (if (= editor ed_ame)
   (
     (if (askbool
-	(prompt "-= Advanced MicroEmacs Installation =-\n\n"
-		"A menu and several key defintions have been "
-		"prepared for use with AME. "
-		"File \"s:ame_pro.ame\" will be overwritten if it "
+        (prompt "-= Advanced MicroEmacs Installation =-\n\n"
+                "A menu and several key defintions have been "
+                "prepared for use with AME. "
+                "File \"s:ame_pro.ame\" will be overwritten if it "
                 "exists and you select OK, otherwise a copy will "
                 "be placed in directory DCC:s for you to view."
-	)
-	(help edhelp)
-	(choices "OK" "Do not overwrite")
-	)
+        )
+        (help edhelp)
+        (choices "OK" "Do not overwrite")
+        )
         (
            (run (lhopt (dice_dest) (cat Disk5: "ame_config.lha")))
            (copyfiles
-	      (source (tackon dice_dest "s/"))
+              (source (tackon dice_dest "s/"))
               (dest "s:")
               (choices "ame_pro.ame")
            )
@@ -932,13 +932,13 @@
 (if (= editor ed_dme)
   (
     (if (askbool
-	(prompt "-= DME Editor Installation =-\n\n"
-		"We're sorry, but the editor you have selected "
-		"is unavailable or out of service. [TBA]"
-	)
-	(help edhelp)
-	(choices "OK" "")
-	)
+        (prompt "-= DME Editor Installation =-\n\n"
+                "We're sorry, but the editor you have selected "
+                "is unavailable or out of service. [TBA]"
+        )
+        (help edhelp)
+        (choices "OK" "")
+        )
     )
     (run (lhopt (dice_dest) (cat Disk5: "dme_config.lha")))
   )
@@ -947,14 +947,14 @@
 (if (= editor ed_ced)
   (
     (if (askbool
-	(prompt "-= CygnusED Editor Installation =-\n\n"
-		"Use the \"Special\" menu item, then select "
-		"\"DOS/AREXX Interface\".  You can load in the default "
-		"arexx bindings from DCC:S/RexxCommands "
-	)
-	(help edhelp)
-	(choices "I'll do it" "")
-	)
+        (prompt "-= CygnusED Editor Installation =-\n\n"
+                "Use the \"Special\" menu item, then select "
+                "\"DOS/AREXX Interface\".  You can load in the default "
+                "arexx bindings from DCC:S/RexxCommands "
+        )
+        (help edhelp)
+        (choices "I'll do it" "")
+        )
     )
     (run (lhopt (dice_dest) (cat Disk5: "ced_config.lha")))
   )
@@ -962,15 +962,15 @@
 
 
    ;***********************************************************************
-   ;	    Build index file if any online docs were installed.
+   ;        Build index file if any online docs were installed.
    ;***********************************************************************
 (if (in inst_groups ib_docs)
-	(dicehelp)
+        (dicehelp)
 )
 
    ;***********************************************************************
    ;***********************************************************************
-   ;	    Final Installation Including modifying s:user-startup
+   ;        Final Installation Including modifying s:user-startup
    ;***********************************************************************
 (if (in inst_groups ib_basic)
 (
@@ -1011,20 +1011,20 @@
 (if (getassign "ENV" "a") (run "Setenv DCCOPTS -2.0 -// -f -R"))
 
    ;***********************************************************************
-   ;	    End game
+   ;        End game
    ;***********************************************************************
 (complete 100)
 (askbool
    (prompt "All the required Assigns have been set for you to run DICE. "
-	   "Your startup script automatically adds DICE to the path. "
-	   "Until you reboot, you need to issue the command: PATH ADD DCC:BIN "
-	   "in any shell you wish to run DICE from.\n\n"
-	   "** IMPORTANT ** Please read the \"Release Notes\" file "
-	   "for important information, including how to hook your "
-	   "editor into the DICE system."
+           "Your startup script automatically adds DICE to the path. "
+           "Until you reboot, you need to issue the command: PATH ADD DCC:BIN "
+           "in any shell you wish to run DICE from.\n\n"
+           "** IMPORTANT ** Please read the \"Release Notes\" file "
+           "for important information, including how to hook your "
+           "editor into the DICE system."
    )
    (help   "You may wish to check the s:User-Startup file to be sure "
-	   "everything is in the proper place.")
+           "everything is in the proper place.")
    (choices "Thank You" "")
    (default 0)
 )

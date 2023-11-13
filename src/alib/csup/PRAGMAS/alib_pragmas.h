@@ -1,9 +1,9 @@
 /*
-**	$Id: alib_pragmas.h,v 30.0 1994/06/10 18:10:33 dice Exp $
+**      $Id: alib_pragmas.h,v 30.0 1994/06/10 18:10:33 dice Exp $
 **
-**	SAS/C format pragma files.
+**      SAS/C format pragma files.
 **
-**	Contains private definitions. COMMODORE INTERNAL USE ONLY!
+**      Contains private definitions. COMMODORE INTERNAL USE ONLY!
 */
 
 /* "amiga.lib" */

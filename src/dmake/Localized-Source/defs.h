@@ -39,13 +39,13 @@ typedef unsigned long ulong;
 
 #define Prototype extern
 
-#define FATAL	0
-#define WARN	1
-#define DEBUG	2
+#define FATAL   0
+#define WARN    1
+#define DEBUG   2
 
 #define PBUFSIZE 256
 
-#define NT_RESOLVED	0x01
+#define NT_RESOLVED     0x01
 
 #if USE_DEBUG
 #define dbprintf(x)  { if (DDebug) printf x;}
@@ -65,7 +65,7 @@ typedef unsigned long ulong;
 
 typedef struct DepNode {
     Node    dn_Node;
-    List    dn_DepCmdList;	/*  list of lists   */
+    List    dn_DepCmdList;      /*  list of lists   */
     time_t  dn_Time;
     short   dn_Symbolic;
     short   dn_Reserved;
@@ -77,9 +77,9 @@ typedef struct DepRef  {
 } DepRef;
 
 typedef struct DepCmdList {
-    Node    dc_Node;		/*  greater link node	*/
-    List    dc_RhsList; 	/*  right hand side(s)	*/
-    List    *dc_CmdList;	 /*  command buf list	 */
+    Node    dc_Node;            /*  greater link node   */
+    List    dc_RhsList;         /*  right hand side(s)  */
+    List    *dc_CmdList;         /*  command buf list    */
 } DepCmdList;
 
 #define NT_CMDEOL   0x01

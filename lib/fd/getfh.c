@@ -23,14 +23,14 @@ int ifd;
     else if (ifd == (int)stdout)d = &_IoStaticFD[1];
     else if (ifd == (int)stderr)d = &_IoStaticFD[2];
     else if ((unsigned)fd >= _IoFDLimit) {
-	errno = EBADF;
-	return(NULL);
+        errno = EBADF;
+        return(NULL);
     }
     else d = _IoFD + fd;
 
     if ((d->fd_Flags & O_ISOPEN) == 0) {
-	errno = EBADF;
-	return(NULL);
+        errno = EBADF;
+        return(NULL);
     }
     return(d);
 }

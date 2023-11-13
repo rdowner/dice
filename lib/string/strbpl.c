@@ -22,14 +22,14 @@ const char *sary;
     int i;
 
     for (i = 0; i < max; ++i) {
-	if (*sary == 0) {
-	    *av++ = NULL;
-	    return(i);
-	}
-	*av++ = sary;
-	while (*sary)
-	    ++sary;
-	++sary;
+        if (*sary == 0) {
+            *av++ = NULL;
+            return(i);
+        }
+        *av++ = sary;
+        while (*sary)
+            ++sary;
+        ++sary;
     }
     return(-1);
 }

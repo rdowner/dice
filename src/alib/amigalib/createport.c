@@ -6,7 +6,7 @@
 #include <exec/types.h>
 #include <exec/ports.h>
 #include <exec/memory.h>
-#ifdef INCLUDE_VERSION	    /*	2.0 */
+#ifdef INCLUDE_VERSION      /*  2.0 */
 #include <clib/exec_protos.h>
 #include <clib/alib_protos.h>
 #else
@@ -24,7 +24,7 @@ extern void *FindTask(char *);
 #define HYPER
 #endif
 
-typedef struct MsgPort	MsgPort;
+typedef struct MsgPort  MsgPort;
 
 MsgPort *
 HYPER ## CreatePort(name, pri)
@@ -34,19 +34,19 @@ long pri;
     MsgPort *port;
 
     if (port = AllocMem(sizeof(MsgPort), MEMF_PUBLIC | MEMF_CLEAR)) {
-	if ((char)(port->mp_SigBit = AllocSignal(-1)) >= 0) {
-	    port->mp_Node.ln_Pri = pri;
-	    port->mp_Node.ln_Type = NT_MSGPORT;
-	    port->mp_Node.ln_Name = name;
-	    port->mp_Flags   = PA_SIGNAL;
-	    port->mp_SigTask = FindTask(NULL);
-	    NewList(&port->mp_MsgList);
-	    if (name)
-		AddPort(port);
-	} else {
-	    FreeMem(port, sizeof(MsgPort));
-	    port = NULL;
-	}
+        if ((char)(port->mp_SigBit = AllocSignal(-1)) >= 0) {
+            port->mp_Node.ln_Pri = pri;
+            port->mp_Node.ln_Type = NT_MSGPORT;
+            port->mp_Node.ln_Name = name;
+            port->mp_Flags   = PA_SIGNAL;
+            port->mp_SigTask = FindTask(NULL);
+            NewList(&port->mp_MsgList);
+            if (name)
+                AddPort(port);
+        } else {
+            FreeMem(port, sizeof(MsgPort));
+            port = NULL;
+        }
     }
     return(port);
 }
@@ -56,13 +56,13 @@ DeletePort(port)
 MsgPort *port;
 {
     if (port) {
-	if (port->mp_Node.ln_Name)
-	    RemPort(port);
-	if ((port->mp_Flags & PF_ACTION) == PA_SIGNAL) {
-	    FreeSignal(port->mp_SigBit);
-	    port->mp_Flags = PA_IGNORE;
-	}
-	FreeMem(port, sizeof(MsgPort));
+        if (port->mp_Node.ln_Name)
+            RemPort(port);
+        if ((port->mp_Flags & PF_ACTION) == PA_SIGNAL) {
+            FreeSignal(port->mp_SigBit);
+            port->mp_Flags = PA_IGNORE;
+        }
+        FreeMem(port, sizeof(MsgPort));
     }
 }
 

@@ -1,25 +1,25 @@
 
-dcc/fdtoinline						      dcc/fdtoinline
+dcc/fdtoinline                                                dcc/fdtoinline
 
-			       FDTOINLINE.DOC
+                               FDTOINLINE.DOC
 
 
 SYNOPSIS
     FDTOINLINE fdfile hdrfile [-o inline_header_file]
 
     For FDTOINLINE to operate properly two files are required -- the .FD
-    file for the library and a prototype file for the library.	The exact
+    file for the library and a prototype file for the library.  The exact
     path specification of the prototype file is also important as it is
     used verbatim by the generated inline header file.
 
-    fdfile		specifies the .FD file we wish to generate inline
-			calls for
+    fdfile              specifies the .FD file we wish to generate inline
+                        calls for
 
-    hdrfile		specifies the prototype file describing the
-			library functions via standard ANSI C prototypes.
+    hdrfile             specifies the prototype file describing the
+                        library functions via standard ANSI C prototypes.
 
-    -o inline_hdr	specifies the output file that FDTOINLINE is
-			to create.
+    -o inline_hdr       specifies the output file that FDTOINLINE is
+                        to create.
 
 DESCRIPTION
     FDTOINLINE will generate an inline header file based on two input
@@ -47,7 +47,7 @@ DESCRIPTION
     code.  A random source file would include the commodore standard
     prototypes in the following manner:
 
-	#include <clib/exec_protos.h>
+        #include <clib/exec_protos.h>
 
     Since DICE scans DINCLUDE: before it scans DINCLUDE:AMIGA20, our
     generated prototype files (DINCLUDE:CLIB/*_PROTOS.H) will overide the
@@ -87,10 +87,10 @@ GENERATING PROTOTYPE FILES FOR CUSTOM LIBRARIES
     (3) MakeDir DINCLUDE:pd/clib   if it does not already exist
 
     (4) Place the prototype file provided along with the library in
-	DINCLUDE:PD/PROTOS.  For example, DINCLUDE:PD/PROTOS/FUBAR_PROTOS.H
+        DINCLUDE:PD/PROTOS.  For example, DINCLUDE:PD/PROTOS/FUBAR_PROTOS.H
 
     (5) Place the .FD file provided along with the library in
-	DINCLUDE:PD/FD.
+        DINCLUDE:PD/FD.
 
     (6) CD DINCLUDE:PD
 
@@ -112,40 +112,40 @@ PROBLEMS WITH CUSTOM PROTOTYPE FILES
     problems below.
 
     (1) No .FD file came with the library.  Unfortunately there is not much
-	that can be done if you do not have the .FD file.  The .FD file is
-	the Commodore standard for all shared libraries and any library
-	distributed to the general public should also include an associated
-	.FD file.  Your only recourse here is to ask the author of the
-	library to provide the appropriate file!
+        that can be done if you do not have the .FD file.  The .FD file is
+        the Commodore standard for all shared libraries and any library
+        distributed to the general public should also include an associated
+        .FD file.  Your only recourse here is to ask the author of the
+        library to provide the appropriate file!
 
     (2) No prototype file came with the library.  Again, this is something
-	that the author should have provided but all is not lost if it
-	doesn't exist.  You simply have to create a prototype of your and
-	assign your best guess for argument types in each library call.
-	For example, if a library call returns a string and takes three
-	integer arguments you could construct a prototype as follows:
+        that the author should have provided but all is not lost if it
+        doesn't exist.  You simply have to create a prototype of your and
+        assign your best guess for argument types in each library call.
+        For example, if a library call returns a string and takes three
+        integer arguments you could construct a prototype as follows:
 
-	char *NameOfCall(long, long, long);
+        char *NameOfCall(long, long, long);
 
     (3) The prototype file that came with the library requires other
-	#include's to be brought in before it.  There will be many cases
-	where an author will assume that <exec/types.h> and other
-	standard includes have already been #include'd by a source file
-	before the author's own prototype file is included.  This is
-	incorrect thinking on the authors part and makes use of his
-	prototype file difficult.
+        #include's to be brought in before it.  There will be many cases
+        where an author will assume that <exec/types.h> and other
+        standard includes have already been #include'd by a source file
+        before the author's own prototype file is included.  This is
+        incorrect thinking on the authors part and makes use of his
+        prototype file difficult.
 
-	The workaround is to MODIFY the author's prototype file to make it
-	self contained.  For example, if the author's prototype file
-	required <exec/types.h> then you would prepend the following to
-	his prototype file:
+        The workaround is to MODIFY the author's prototype file to make it
+        self contained.  For example, if the author's prototype file
+        required <exec/types.h> then you would prepend the following to
+        his prototype file:
 
-	#ifndef EXEC_TYPES_H
-	#include <exec/types.h>
-	#endif
+        #ifndef EXEC_TYPES_H
+        #include <exec/types.h>
+        #endif
 
-	The conditional #ifndef/#endif is not necessary but will improve
-	compilation speed by not including header files that have already
-	been included.
+        The conditional #ifndef/#endif is not necessary but will improve
+        compilation speed by not including header files that have already
+        been included.
 
 

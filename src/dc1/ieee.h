@@ -9,7 +9,7 @@
  *    DICE-LICENSE.TXT.
  */
 
-#define float	int32_t
+#define float   int32_t
 
 extern __stkargs double IEEEDPFlt(int32_t);
 extern __stkargs double IEEEDPAdd(double, double);
@@ -18,10 +18,10 @@ extern __stkargs double IEEEDPDiv(double, double);
 extern __stkargs double IEEEDPPow(double, double);
 extern __stkargs double IEEEDPNeg(double);
 
-extern __stkargs float	IEEESPFlt(int32_t);
-extern __stkargs float	IEEESPAdd(float, float);
-extern __stkargs float	IEEESPMul(float, float);
-extern __stkargs float	IEEESPDiv(float, float);
-extern __stkargs float	IEEESPPow(float, float);
-extern __stkargs float	IEEESPNeg(float);
+extern __stkargs float  IEEESPFlt(int32_t);
+extern __stkargs float  IEEESPAdd(float, float);
+extern __stkargs float  IEEESPMul(float, float);
+extern __stkargs float  IEEESPDiv(float, float);
+extern __stkargs float  IEEESPPow(float, float);
+extern __stkargs float  IEEESPNeg(float);
 

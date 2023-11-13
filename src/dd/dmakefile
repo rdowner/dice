@@ -1,22 +1,22 @@
-PRE=	t:ddefs.m
+PRE=    t:ddefs.m
 
-CCFLG=	-mRR -proto -H$(PRE)=defs.h -2.0 -d1 -s
-#CCFLG=	-proto -R -H$(PRE)=defs.h -2.0 -d1 -s
+CCFLG=  -mRR -proto -H$(PRE)=defs.h -2.0 -d1 -s
+#CCFLG= -proto -R -H$(PRE)=defs.h -2.0 -d1 -s
 
 OD=
 #XLIBS = -l dlib:place.o lib:debug.lib
 XLIBS =
 #-l lib:debug.lib
 
-DBUG=	dd
+DBUG=   dd
 
-DBUGC=	umain.c lists.c dbug.c cexp.c commands.c loadseg.c\
-	breakpoints.c hex.c mixed.c dism.c registers.c watchpoints.c \
-	menu.c rexxfunc.c
+DBUGC=  umain.c lists.c dbug.c cexp.c commands.c loadseg.c\
+        breakpoints.c hex.c mixed.c dism.c registers.c watchpoints.c \
+        menu.c rexxfunc.c
 
 DBUGCO= $(DBUGC:*.c:"$(OD)%1.o")
 
-DBUGA=	dbuglib.asm dasm.asm
+DBUGA=  dbuglib.asm dasm.asm
 
 DBUGAO= $(DBUGA:*.asm:"$(OD)%1.o")
 
@@ -24,30 +24,30 @@ HELLOC= hello.c hello2.c
 
 HELLOCO= $(HELLOC:*.c:%1.o)
 
-all:	$(OD) dbug_protos.h $(DBUG) hello
+all:    $(OD) dbug_protos.h $(DBUG) hello
 
 $(PRE): defs.h localdefs.h
 
-dbug_protos.h:	$(DBUGC) console.c
-	makeproto -o dbug_protos.h $(DBUGC) console.c
+dbug_protos.h:  $(DBUGC) console.c
+        makeproto -o dbug_protos.h $(DBUGC) console.c
 
-$(DBUG):	$(DBUGCO) $(DBUGAO) console.o
-	dcc $(CCFLG) $(DBUGCO) console.o $(DBUGAO) -o $(DBUG) $(XLIBS)
+$(DBUG):        $(DBUGCO) $(DBUGAO) console.o
+        dcc $(CCFLG) $(DBUGCO) console.o $(DBUGAO) -o $(DBUG) $(XLIBS)
 
-hello:	$(HELLOCO)
-	dcc -R -d1 $(CCFLG) $(HELLOCO) -o hello
+hello:  $(HELLOCO)
+        dcc -R -d1 $(CCFLG) $(HELLOCO) -o hello
 
-console.o:	console.c dd_rev.h
-	dcc -c $(CCFLG) %(right) -o %(left)
+console.o:      console.c dd_rev.h
+        dcc -c $(CCFLG) %(right) -o %(left)
 
-$(DBUGCO):	$(DBUGC)
-	dcc -c $(CCFLG) %(right) -o %(left)
+$(DBUGCO):      $(DBUGC)
+        dcc -c $(CCFLG) %(right) -o %(left)
 
-$(DBUGAO):	$(DBUGA)
-	a68k -iV:include/ -o%(left) %(right)
+$(DBUGAO):      $(DBUGA)
+        a68k -iV:include/ -o%(left) %(right)
 
-$(HELLOCO):	$(HELLOC)
-	dcc -c -R -d1 $(CCFLG) %(right) -o %(left)
+$(HELLOCO):     $(HELLOC)
+        dcc -c -R -d1 $(CCFLG) %(right) -o %(left)
 
 #$(OD) : $(OD)
 #    makedir %(left:*/:*)

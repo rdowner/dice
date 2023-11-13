@@ -23,13 +23,13 @@ size_t n;
     char *base = d;
 
     while(n && (c = *s)) {
-	*d = c;
-	++s;
-	++d;
-	--n;
+        *d = c;
+        ++s;
+        ++d;
+        --n;
     }
     if (n)
-	*d = 0;
+        *d = 0;
     return(base);
 }
 

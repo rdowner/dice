@@ -11,7 +11,7 @@
 #include <exec/lists.h>
 #include <exec/ports.h>
 
-#define __DICE_INLINE	    /*	force inline calls for autoinit stuff */
+#define __DICE_INLINE       /*  force inline calls for autoinit stuff */
 
 #include <clib/exec_protos.h>
 #include <clib/alib_protos.h>
@@ -23,11 +23,11 @@
 #include <string.h>
 #include <lib/rexx.h>
 
-typedef struct MsgPort	MsgPort;
-typedef struct Message	Message;
-typedef struct List	List;
-typedef struct Node	Node;
-typedef struct RexxMsg	RexxMsg;
+typedef struct MsgPort  MsgPort;
+typedef struct Message  Message;
+typedef struct List     List;
+typedef struct Node     Node;
+typedef struct RexxMsg  RexxMsg;
 
 typedef struct RexxIPNode {
     Node    rip_Node;

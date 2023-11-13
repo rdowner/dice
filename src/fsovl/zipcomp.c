@@ -10,7 +10,7 @@
 
 #include "defs.h"
 
-#define BITS  14	/* compression size */
+#define BITS  14        /* compression size */
 
 Prototype int Compress(BPTR fh, char *buf, long bytes);
 Prototype void DeCompress(BPTR fh, char *buf, long bytes);
@@ -50,19 +50,19 @@ zfwrite(void *buf, long blkSize, long numBlks, void *fo)
     long n = blkSize * numBlks;
 
     while (n) {
-	long r;
+        long r;
 
-	if ((r = sizeof(Buf) - BufIdx) == 0) {
-	    WritePacket(Fh, Buf, sizeof(Buf));
-	    BufIdx = 0;
-	    r = sizeof(Buf);
-	}
-	if (n < r)
-	    r = n;
-	movmem(buf, Buf + BufIdx, r);
-	buf = (void *)((char *)buf + r);
-	n -= r;
-	BufIdx += r;
+        if ((r = sizeof(Buf) - BufIdx) == 0) {
+            WritePacket(Fh, Buf, sizeof(Buf));
+            BufIdx = 0;
+            r = sizeof(Buf);
+        }
+        if (n < r)
+            r = n;
+        movmem(buf, Buf + BufIdx, r);
+        buf = (void *)((char *)buf + r);
+        n -= r;
+        BufIdx += r;
     }
     return(numBlks);
 }
@@ -94,10 +94,10 @@ int
 ReadByte(short *v)
 {
     if (BufIdx == BufLen) {
-	BufIdx = 0;
-	BufLen = ReadPacket(Fh, Buf, sizeof(Buf));
-	if (BufLen == 0)
-	    return(0);
+        BufIdx = 0;
+        BufLen = ReadPacket(Fh, Buf, sizeof(Buf));
+        if (BufLen == 0)
+            return(0);
     }
     *v = Buf[BufIdx++];
     return(8);
@@ -109,22 +109,22 @@ readbuf(ubyte *buf, long n)
     long ttl = 0;
 
     while (n) {
-	long r = BufLen - BufIdx;
+        long r = BufLen - BufIdx;
 
-	if (r == 0) {
-	    BufIdx = 0;
-	    BufLen = ReadPacket(Fh, Buf, sizeof(Buf));
-	    if (BufLen == 0)
-		break;
-	    r = BufLen;
-	}
-	if (n < r)
-	    r = n;
-	movmem(Buf + BufIdx, buf, r);
-	buf += r;
-	n -= r;
-	BufIdx += r;
-	ttl += r;
+        if (r == 0) {
+            BufIdx = 0;
+            BufLen = ReadPacket(Fh, Buf, sizeof(Buf));
+            if (BufLen == 0)
+                break;
+            r = BufLen;
+        }
+        if (n < r)
+            r = n;
+        movmem(Buf + BufIdx, buf, r);
+        buf += r;
+        n -= r;
+        BufIdx += r;
+        ttl += r;
     }
     return(ttl);
 }

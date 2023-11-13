@@ -1,13 +1,13 @@
 #ifndef  CLIB_ALIB_PROTOS_H
 #define  CLIB_ALIB_PROTOS_H
 /*
-**	$VER: alib_protos.h 1.5 (25.08.92)
-**	Includes Release 39.108
+**      $VER: alib_protos.h 1.5 (25.08.92)
+**      Includes Release 39.108
 **
-**	C prototypes. For use with 32 bit integers only.
+**      C prototypes. For use with 32 bit integers only.
 **
-**	(C) Copyright 1990-1992 Commodore-Amiga, Inc.
-**	    All Rights Reserved
+**      (C) Copyright 1990-1992 Commodore-Amiga, Inc.
+**          All Rights Reserved
 */
 #ifndef  EXEC_TYPES_H
 #include <exec/types.h>
@@ -41,7 +41,7 @@ struct IORequest *CreateExtIO( struct MsgPort *port, long ioSize );
 struct MsgPort *CreatePort( STRPTR name, long pri );
 struct IOStdReq *CreateStdIO( struct MsgPort *port );
 struct Task *CreateTask( STRPTR name, long pri, APTR initPC,
-	unsigned long stackSize );
+        unsigned long stackSize );
 void DeleteExtIO( struct IORequest *ioReq );
 void DeletePort( struct MsgPort *ioReq );
 void DeleteStdIO( struct IOStdReq *ioReq );
@@ -96,7 +96,7 @@ void FreeIEvents( struct InputEvent *events );
 BOOL CheckRexxMsg( struct Message *rexxmsg );
 LONG GetRexxVar( struct Message *rexxmsg, UBYTE *name, UBYTE **result );
 LONG SetRexxVar( struct Message *rexxmsg, UBYTE *name, UBYTE *value,
-	long length );
+        long length );
 
 /*  Intuition hook and boopsi support functions in amiga.lib  */
 /*  These functions require ROM V36 and higher only. */
@@ -107,10 +107,10 @@ ULONG DoMethodA( Object *obj, Msg message );
 ULONG DoMethod( Object *obj, unsigned long MethodID, ... );
 ULONG DoSuperMethodA( struct IClass *cl, Object *obj, Msg message );
 ULONG DoSuperMethod( struct IClass *cl, Object *obj, unsigned long MethodID,
-	... );
+        ... );
 ULONG CoerceMethodA( struct IClass *cl, Object *obj, Msg message );
 ULONG CoerceMethod( struct IClass *cl, Object *obj, unsigned long MethodID,
-	... );
+        ... );
 ULONG SetSuperAttrs( struct IClass *cl, Object *obj, unsigned long Tag1,
-	... );
-#endif	 /* CLIB_ALIB_PROTOS_H */
+        ... );
+#endif   /* CLIB_ALIB_PROTOS_H */

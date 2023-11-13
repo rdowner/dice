@@ -25,7 +25,7 @@ typedef struct Sym {
     struct Sym *sm_Next;
     char       *sm_VarName;
     char       *sm_Data;
-    long	sm_DataLen;
+    long        sm_DataLen;
 } Sym;
 
 Sym *_Env_SymBase = NULL;
@@ -39,35 +39,35 @@ const char *varName;
     Sym *sym;
 
     for (sym = _Env_SymBase; sym; sym = sym->sm_Next) {
-	if (stricmp(varName, sym->sm_VarName) == 0)
-	    break;
+        if (stricmp(varName, sym->sm_VarName) == 0)
+            break;
     }
     if (sym == NULL) {
-	if (sym = malloc(sizeof(Sym) + strlen(varName) + 1)) {
-	    sym->sm_DataLen = -1;
-	    sym->sm_VarName = (char *)(sym + 1);
-	    strcpy(sym->sm_VarName, varName);
+        if (sym = malloc(sizeof(Sym) + strlen(varName) + 1)) {
+            sym->sm_DataLen = -1;
+            sym->sm_VarName = (char *)(sym + 1);
+            strcpy(sym->sm_VarName, varName);
 
 #if INCLUDE_VERSION >= 36
-	    if (SysBase->lib_Version >= 37) {
-		char buf[2];
-		long len;
+            if (SysBase->lib_Version >= 37) {
+                char buf[2];
+                long len;
 
-		if (GetVar(varName, buf, sizeof(buf) - 1, 0) >= 0) {
-		    len = IoErr();
-		    if (sym->sm_Data = malloc(len + 1)) {
-			if ((len = GetVar(varName, sym->sm_Data, len + 1, 0)) >= 0) {
-			    sym->sm_DataLen = len;
-			} else {
-			    free(sym->sm_Data);
-			}
-		    }
-		}
-	    } else
+                if (GetVar(varName, buf, sizeof(buf) - 1, 0) >= 0) {
+                    len = IoErr();
+                    if (sym->sm_Data = malloc(len + 1)) {
+                        if ((len = GetVar(varName, sym->sm_Data, len + 1, 0)) >= 0) {
+                            sym->sm_DataLen = len;
+                        } else {
+                            free(sym->sm_Data);
+                        }
+                    }
+                }
+            } else
 #endif
-	    {
-		char *ptr = malloc(strlen(varName) + 8);
-		long fh;
+            {
+                char *ptr = malloc(strlen(varName) + 8);
+                long fh;
 
                 if (ptr)
                 {
@@ -94,25 +94,25 @@ const char *varName;
                         free(ptr);
                     }
                 }
-	    }
-	    {
-		long len;
+            }
+            {
+                long len;
 
-		if ((len = sym->sm_DataLen) >= 0) {
-		    sym->sm_Next = _Env_SymBase;
-		    _Env_SymBase = sym;
-		    if (len && sym->sm_Data[len-1] == '\n')
-			--len;
-		    sym->sm_Data[len] = 0;
-		} else {
-		    free(sym);
-		    sym = NULL;
-		}
-	    }
-	}
+                if ((len = sym->sm_DataLen) >= 0) {
+                    sym->sm_Next = _Env_SymBase;
+                    _Env_SymBase = sym;
+                    if (len && sym->sm_Data[len-1] == '\n')
+                        --len;
+                    sym->sm_Data[len] = 0;
+                } else {
+                    free(sym);
+                    sym = NULL;
+                }
+            }
+        }
     }
     if (sym)
-	return(sym->sm_Data);
+        return(sym->sm_Data);
     return(NULL);
 }
 

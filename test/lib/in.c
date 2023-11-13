@@ -9,7 +9,7 @@ char *av[];
     short i;
 
     for (i = 1; i < ac; ++i) {
-	puts(av[i]);
+        puts(av[i]);
     }
     puts("input:");
     gets(buf);

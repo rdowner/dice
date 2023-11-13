@@ -9,12 +9,12 @@ extern double IEEEDPPow();
 main(ac, av)
 char *av[];
 {
-    double acc; 	/*  accumulated value	*/
+    double acc;         /*  accumulated value   */
     double ten = IEEEDPFlt(10);
     short x;
 
     /*
-     *	.<TmpBuf> x 10^X    Convert a digit at a time.
+     *  .<TmpBuf> x 10^X    Convert a digit at a time.
      */
 
     strcpy(TmpBuf, av[1]);
@@ -22,13 +22,13 @@ char *av[];
 
     clrmem(&acc, sizeof(acc));
     {
-	char c;
-	short i;
+        char c;
+        short i;
 
-	for (i = 0; c = TmpBuf[i]; ++i) {
-	    acc = IEEEDPAdd(IEEEDPMul(acc, ten), IEEEDPFlt(c - '0'));
-	}
-	/*x -= i;	  /*  adjust exponent */
+        for (i = 0; c = TmpBuf[i]; ++i) {
+            acc = IEEEDPAdd(IEEEDPMul(acc, ten), IEEEDPFlt(c - '0'));
+        }
+        /*x -= i;         /*  adjust exponent */
     }
     acc = IEEEDPMul(acc, IEEEDPPow(IEEEDPFlt(atoi(av[2])), ten));
 

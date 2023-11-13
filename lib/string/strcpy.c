@@ -22,8 +22,8 @@ const char *s;
     char *base = d;
 
     while (*d = *s) {
-	++s;
-	++d;
+        ++s;
+        ++d;
     }
     return(base);
 }

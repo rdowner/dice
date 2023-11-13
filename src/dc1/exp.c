@@ -29,12 +29,12 @@ Exp *exp;
     Assert(exp);
 
     GenPass = 0;
-    (*exp->ex_Func)(&exp);  /*	last arg illegal ptr */
+    (*exp->ex_Func)(&exp);  /*  last arg illegal ptr */
     GenPass = genPass;
 
     if (exp->ex_Stor.st_Type != ST_IntConst) {
-	yerror(exp->ex_LexIdx, EERROR_EXPECTED_INT_CONST);
-	return(0);
+        yerror(exp->ex_LexIdx, EERROR_EXPECTED_INT_CONST);
+        return(0);
     }
     value = exp->ex_Stor.st_IntConst;
     return(value);
@@ -49,12 +49,12 @@ Exp *exp;
     Assert(exp);
 
     GenPass = 0;
-    (*exp->ex_Func)(&exp);  /*	last arg illegal ptr */
+    (*exp->ex_Func)(&exp);  /*  last arg illegal ptr */
     GenPass = genPass;
 
     if (exp->ex_Type == NULL) {
-	yerror(exp->ex_LexIdx, EERROR_ILLEGAL_RETURN_TYPE);
-	return(&VoidType);
+        yerror(exp->ex_LexIdx, EERROR_ILLEGAL_RETURN_TYPE);
+        return(&VoidType);
     }
     return(exp->ex_Type);
 }
@@ -76,12 +76,12 @@ Type *type;
 
 #ifdef NOTDEF
     /*
-     *	Propogate const class for string constants
+     *  Propogate const class for string constants
      */
 
     if (exp->ex_Stor.st_Type == ST_StrConst && type->Id == TID_PTR) {
-	if (type->SubType->Flags & TF_CONST)
-	    exp->ex_Flags |= EF_CONST;
+        if (type->SubType->Flags & TF_CONST)
+            exp->ex_Flags |= EF_CONST;
     }
 #endif
 
@@ -93,18 +93,18 @@ Type *type;
 
     *stor = exp->ex_Stor;
     if (stor->st_Type == ST_IntConst || stor->st_Type == ST_StrConst || stor->st_Type == ST_FltConst) {
-	stor->st_Size = *type->Size;
-	return;
+        stor->st_Size = *type->Size;
+        return;
     }
     if (exp->ex_Type->Id == TID_ARY) {
-	stor->st_Flags |= SF_LEA;
-	return;
+        stor->st_Flags |= SF_LEA;
+        return;
     }
 
     if ((stor->st_Flags & SF_LEA) == 0)
-	yerror(exp->ex_LexIdx, EERROR_NOT_LVALUE);
+        yerror(exp->ex_LexIdx, EERROR_NOT_LVALUE);
     if (stor->st_Type == ST_RelReg || stor->st_Type == ST_RelArg)
-	yerror(exp->ex_LexIdx, EERROR_NOT_LVALUE);
+        yerror(exp->ex_LexIdx, EERROR_NOT_LVALUE);
 }
 
 /*
@@ -125,102 +125,102 @@ Type *type;
 
     Assert(etype);
 
-    if (etype->Id == TID_BITFIELD)	/*  force the cast  */
-	goto force;
+    if (etype->Id == TID_BITFIELD)      /*  force the cast  */
+        goto force;
 
     /*
-     *	Conversions that require no modifications other then unsignedness,
-     *	which is handled by other routines (example: GenVarRef checks for
-     *	ex_Type changes)
+     *  Conversions that require no modifications other then unsignedness,
+     *  which is handled by other routines (example: GenVarRef checks for
+     *  ex_Type changes)
      */
 
     if (*type->Size == *etype->Size && etype->Id == type->Id && (type->Id == TID_INT || type->Id == TID_FLT)) {
-	e1->ex_Type = type;
-	return;
+        e1->ex_Type = type;
+        return;
     }
 
     /*
-     *	Integer  Constant to (Integer | Pointer)
-     *	Floating Constant to (Integer | Pointer)
+     *  Integer  Constant to (Integer | Pointer)
+     *  Floating Constant to (Integer | Pointer)
      */
 
 
     if (type->Id == TID_INT || type->Id == TID_PTR) {
-	if (e1->ex_Stor.st_Type == ST_IntConst) {
-	    short sv = *type->Size;
+        if (e1->ex_Stor.st_Type == ST_IntConst) {
+            short sv = *type->Size;
 
-	    if (type->Flags & TF_UNSIGNED)
-		sv |= 256;
-	    switch(sv) {
-	    case 0:
-		e1->ex_Stor.st_IntConst = 0;
-		/* XXX */
-		break;
-	    case 1:
-		e1->ex_Stor.st_IntConst = (int32_t)(char)e1->ex_Stor.st_IntConst;
-		break;
-	    case 2:
-		e1->ex_Stor.st_IntConst = (int32_t)(short)e1->ex_Stor.st_IntConst;
-		break;
-	    case 4:
-		break;
-	    case 256:
-		/* XXX */
-		e1->ex_Stor.st_IntConst = 0;
-		break;
-	    case 256|1:
-		e1->ex_Stor.st_IntConst = (int32_t)(unsigned char)e1->ex_Stor.st_IntConst;
-		break;
-	    case 256|2:
-		e1->ex_Stor.st_IntConst = (int32_t)(unsigned short)e1->ex_Stor.st_IntConst;
-		break;
-	    case 256|4:
-		break;
-	    case 8:	/* XXX */
-	    case 256|8:	/* XXX */
-	    default:
-		dbprintf(("InsertCast: bad size const-cast: %ld\n",*type->Size));
-	    	Assert(0);
-		break;
-	    }
-	    e1->ex_Type = type;
-	    return;
-	}
+            if (type->Flags & TF_UNSIGNED)
+                sv |= 256;
+            switch(sv) {
+            case 0:
+                e1->ex_Stor.st_IntConst = 0;
+                /* XXX */
+                break;
+            case 1:
+                e1->ex_Stor.st_IntConst = (int32_t)(char)e1->ex_Stor.st_IntConst;
+                break;
+            case 2:
+                e1->ex_Stor.st_IntConst = (int32_t)(short)e1->ex_Stor.st_IntConst;
+                break;
+            case 4:
+                break;
+            case 256:
+                /* XXX */
+                e1->ex_Stor.st_IntConst = 0;
+                break;
+            case 256|1:
+                e1->ex_Stor.st_IntConst = (int32_t)(unsigned char)e1->ex_Stor.st_IntConst;
+                break;
+            case 256|2:
+                e1->ex_Stor.st_IntConst = (int32_t)(unsigned short)e1->ex_Stor.st_IntConst;
+                break;
+            case 256|4:
+                break;
+            case 8:     /* XXX */
+            case 256|8: /* XXX */
+            default:
+                dbprintf(("InsertCast: bad size const-cast: %ld\n",*type->Size));
+                Assert(0);
+                break;
+            }
+            e1->ex_Type = type;
+            return;
+        }
 
-	/*
-	 *  Floating constant to integer
-	 *
-	 *  e1->ex_StrConst  e1->ex_StrLen
-	 */
+        /*
+         *  Floating constant to integer
+         *
+         *  e1->ex_StrConst  e1->ex_StrLen
+         */
 
-	if (e1->ex_Token == TokFltConst) {
-	    AllocConstStor(&e1->ex_Stor, FPStrToInt(e1, e1->ex_Stor.st_FltConst, e1->ex_Stor.st_FltLen), type);
-	    e1->ex_Token = TokIntConst;
-	    e1->ex_Func = GenIntConst;
-	    e1->ex_Type = type;
-	    return;
-	}
+        if (e1->ex_Token == TokFltConst) {
+            AllocConstStor(&e1->ex_Stor, FPStrToInt(e1, e1->ex_Stor.st_FltConst, e1->ex_Stor.st_FltLen), type);
+            e1->ex_Token = TokIntConst;
+            e1->ex_Func = GenIntConst;
+            e1->ex_Type = type;
+            return;
+        }
     }
 
     /*
-     *	Floating Constant to Floating	(no chg)
-     *	Integer Constant to  Floating	??
+     *  Floating Constant to Floating   (no chg)
+     *  Integer Constant to  Floating   ??
      */
 
     if (type->Id == TID_FLT) {
-	if (e1->ex_Stor.st_Type == ST_IntConst) {
-	    e1->ex_Stor.st_FltConst = IntToFPStr(e1->ex_Stor.st_IntConst, e1->ex_Stor.st_Flags & SF_UNSIGNED, &e1->ex_Stor.st_FltLen);
-	    e1->ex_Type = type;
-	    e1->ex_Stor.st_Size = *e1->ex_Type->Size;
-	    e1->ex_Stor.st_Type = ST_FltConst;
-	    e1->ex_Token = TokFltConst;
-	    e1->ex_Func  = GenFltConst;
-	    return;
-	}
-	if (e1->ex_Token == TokFltConst) {
-	    e1->ex_Type = type;
-	    return;
-	}
+        if (e1->ex_Stor.st_Type == ST_IntConst) {
+            e1->ex_Stor.st_FltConst = IntToFPStr(e1->ex_Stor.st_IntConst, e1->ex_Stor.st_Flags & SF_UNSIGNED, &e1->ex_Stor.st_FltLen);
+            e1->ex_Type = type;
+            e1->ex_Stor.st_Size = *e1->ex_Type->Size;
+            e1->ex_Stor.st_Type = ST_FltConst;
+            e1->ex_Token = TokFltConst;
+            e1->ex_Func  = GenFltConst;
+            return;
+        }
+        if (e1->ex_Token == TokFltConst) {
+            e1->ex_Type = type;
+            return;
+        }
     }
 
 force:
@@ -274,9 +274,9 @@ int32_t label;
     exp = AllocStructure(Exp);
     exp->ex_Func = GenCondBranch;
     if (cond >= 0)
-	exp->ex_LabelT= label;
+        exp->ex_LabelT= label;
     else
-	exp->ex_LabelF= label;
+        exp->ex_LabelF= label;
     exp->ex_Cond = cond;
     exp->ex_ExpL = e1;
     exp->ex_LexIdx = e1->ex_LexIdx;
@@ -293,7 +293,7 @@ InsertAssign(pexp, var)
 Exp **pexp;
 Var *var;
 {
-    Exp *exp =	AllocStructure(Exp);
+    Exp *exp =  AllocStructure(Exp);
     Exp *evar = AllocStructure(Exp);
     Exp *e1 = *pexp;
 
@@ -306,9 +306,9 @@ Var *var;
     evar->ex_LexIdx = e1->ex_LexIdx;
 
     if (e1->ex_Token == TokExpAssBlock)
-	exp->ex_Func = GenBracEq;
+        exp->ex_Func = GenBracEq;
     else
-	exp->ex_Func = GenEq;
+        exp->ex_Func = GenEq;
     exp->ex_ExpL = evar;
     exp->ex_ExpR = e1;
     exp->ex_LexIdx= (*pexp)->ex_LexIdx;
@@ -329,9 +329,9 @@ Exp *exp;
 
     Assert(type);
     if (type->Id == TID_PTR)
-	return(*type->SubType->Size);
+        return(*type->SubType->Size);
     if (type->Id == TID_INT)
-	return(1);
+        return(1);
     yerror(exp->ex_LexIdx, EERROR_NOT_LVALUE);
     return(0);
 }

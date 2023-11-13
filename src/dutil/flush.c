@@ -28,8 +28,8 @@ main(int ac, char **av)
     char *ptr;
 
     if (ptr = AllocMem(0x7FFFFFFF, MEMF_PUBLIC)) {
-	main(0, NULL);
-	FreeMem(ptr, 0x7FFFFFFF);
+        main(0, NULL);
+        FreeMem(ptr, 0x7FFFFFFF);
     }
 #endif
     return(0);

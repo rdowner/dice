@@ -36,19 +36,19 @@ C.LIB:
 
 AUTO.LIB:
     text,code
-    ai0,code	    (library openning)
-    ae0,code	    (library closing)
+    ai0,code        (library openning)
+    ae0,code        (library closing)
 
 X.O:
-    ai0,code	    (RTS)
-    ai1,code	    (RTS)
-    ae0,code	    (RTS)
-    ae1,code	    (RTS)
-    ac,code	    (RTS)
+    ai0,code        (RTS)
+    ai1,code        (RTS)
+    ae0,code        (RTS)
+    ae1,code        (RTS)
+    ac,code         (RTS)
 
 ------------------------------------------------------------------------
-			    LINK STEP 1
-			  LIKE-NAMED SECTIONS
+                            LINK STEP 1
+                          LIKE-NAMED SECTIONS
 
     C:text PRG1:text PRG2:text C.LIB:text AMIGA.LIB:text AUTO.LIB:text
 
@@ -62,18 +62,18 @@ X.O:
 
     C:ac   X.O:ac  (rts)
 
-    C:libdata	C.LIB:libdata
+    C:libdata   C.LIB:libdata
 
-    C:libbss	C.LIB:libbss
+    C:libbss    C.LIB:libbss
 
     PRG1:data  PRG2:data
 
     PRG1:bss   PRG2:bss
 
 ------------------------------------------------------------------------
-			    LINK STEP 2
-			   GROUP BY TYPE
-	     (ORDER COMBINED SECTIONS ACCORDING TO FIRST-ENCOUNTERED)
+                            LINK STEP 2
+                           GROUP BY TYPE
+             (ORDER COMBINED SECTIONS ACCORDING TO FIRST-ENCOUNTERED)
 
 
     C:text PRG1:text PRG2:text C.LIB:text AMIGA.LIB:text AUTO.LIB:text +
@@ -83,38 +83,38 @@ X.O:
     C:ae1  X.O:ae1 (rts) +
     C:ac   X.O:ac  (rts) +
 
-    C:libdata	C.LIB:libdata +
+    C:libdata   C.LIB:libdata +
     PRG1:data  PRG2:data
 
 
-    C:libbss	C.LIB:libbss +
+    C:libbss    C.LIB:libbss +
     PRG1:bss   PRG2:bss
 
 ------------------------------------------------------------------------
-			    LINK STEP 3
-		       GROUP ACCORDING TO MODEL
-		( SMALL DATA, SMALL CODE MODEL LETS SAY)
+                            LINK STEP 3
+                       GROUP ACCORDING TO MODEL
+                ( SMALL DATA, SMALL CODE MODEL LETS SAY)
 
-    [ALL CODE GROUPS]			    -> CODE HUNK
+    [ALL CODE GROUPS]                       -> CODE HUNK
 
     [[ALL DATA GROUPS] [ALL BSS GROUPS] ]   -> DATA HUNK
     [---------- small data section -----]
 
 ------------------------------------------------------------------------
-	(another example of another possible final-merge.  Dice has an
-	option to do put everything into a single hunk, i.e. put the
-	read-only initialized data section into the code hunk for a
-	residentable program)
+        (another example of another possible final-merge.  Dice has an
+        option to do put everything into a single hunk, i.e. put the
+        read-only initialized data section into the code hunk for a
+        residentable program)
 
-			    LINK STEP 3
-		       GROUP ACCORDING TO MODEL
-	(SMALL DATA, SMALL CODE, RESIDENTABLE, SINGLE-HUNK EXAMPLE)
+                            LINK STEP 3
+                       GROUP ACCORDING TO MODEL
+        (SMALL DATA, SMALL CODE, RESIDENTABLE, SINGLE-HUNK EXAMPLE)
 
     [ALL CODE GROUPS] [ALL DATA GROUPS]     -> CODE HUNK
-		       (read only copy)
-		     ^
-		     Nominal linker-defined symbols created to point
-		     here, give the size of the data and bss , etc...
+                       (read only copy)
+                     ^
+                     Nominal linker-defined symbols created to point
+                     here, give the size of the data and bss , etc...
 
 
 Basically, all DLink needs to do is guarentee that like-named sections
@@ -158,11 +158,11 @@ before bss,bss ...  This guarentees that if my c.lib contains only
 initialized data declarations they will ALWAYS be in range of the small-data
 model even if the user declares >64K of initialized data (data,data).
 
-This may be confusing.	c.o declares libdata,data and libbss,bss, and
+This may be confusing.  c.o declares libdata,data and libbss,bss, and
 a program module declares data,data and bss,bss .  The final result is
 actually libdata+data+libbss+bss because the merge is a two step
 process -- first all inZtialized data sections and then all bss sections,
-finally merge the two groups together to get the final result.	(also,
+finally merge the two groups together to get the final result.  (also,
 obviously libdata+data must come before libbss+bss to take advantage of
 the use-bigger-length-in-header trick for non-residentable programs so
 dlink forces that).
@@ -216,7 +216,7 @@ module inclusion follows normal library rules for libraries... I did not
 need to implement any kind of loose binding in dlink.  The reason for this
 is obvious.  Take, for example, auto.lib ... auto.lib is how I indirectly
 open libraries whos base variables are referenced but not declares.  A
-module in auto.lib declares the base variable.	If the base variable has
+module in auto.lib declares the base variable.  If the base variable has
 been referenced but not declared
 then normal library rules cause the auto.lib module to be included.  But
 since autoinit sections are also part of the module, they get
@@ -225,7 +225,7 @@ one gets direct action out of an indirect reference... a sort of loose
 binding implemented a different way.  Even more loose than what you were
 planning I think!
 
-								  -Matt
+                                                                  -Matt
 
 -------- Original Message --------
 

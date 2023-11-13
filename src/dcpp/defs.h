@@ -14,7 +14,7 @@
 #include <time.h>
 #include <fcntl.h>
 #include <sys/file.h>
-#include <include/lib/version.h>	/* DICE specific include */
+#include <include/lib/version.h>        /* DICE specific include */
 
 #ifdef AMIGA
 
@@ -44,10 +44,10 @@
 
 #define Prototype   extern
 #define Local
-#define arysize(ary)	(sizeof(ary)/sizeof((ary)[0]))
+#define arysize(ary)    (sizeof(ary)/sizeof((ary)[0]))
 
-typedef unsigned char	ubyte;
-typedef unsigned short	uword;
+typedef unsigned char   ubyte;
+typedef unsigned short  uword;
 
 typedef struct Node Node;
 typedef struct MinNode MinNode;
@@ -60,26 +60,26 @@ typedef struct Include {
     int32_t    LineNo;
     int32_t    Level;
 
-    int32_t    Index;	    /*	set for prev cpp by push    */
-    int32_t    MaxIndex;	    /*	set by cpp() before scan    */
-    char    *Base;	    /*	set by cpp() before scan    */
+    int32_t    Index;       /*  set for prev cpp by push    */
+    int32_t    MaxIndex;            /*  set by cpp() before scan    */
+    char    *Base;          /*  set by cpp() before scan    */
 
-    char    IsFile;	    /*	vs macro replace	    */
+    char    IsFile;         /*  vs macro replace            */
     char    Reserved1;
     char    Reserved2;
     char    Reserved3;
 } Include;
 
 typedef struct PreCompNode {
-    struct PreCompNode	*pn_Next;
+    struct PreCompNode  *pn_Next;
     char    *pn_HeadName;
     char    *pn_OutName;
 } PreCompNode;
 
 typedef struct PreCompHdr {
     uint32_t   pc_Magic;
-    int32_t    pc_CppSize;     /*	preprocessed dump file	*/
-    int32_t    pc_SymSize;     /*	symbol table size	*/
+    int32_t    pc_CppSize;     /*       preprocessed dump file  */
+    int32_t    pc_SymSize;     /*       symbol table size       */
     char    pc_Version[32];
 } PreCompHdr;
 
@@ -89,33 +89,33 @@ typedef struct PreCompHdr {
  *  Symbol Type
  */
 
-#define SF_RECURSE	0x01
-#define SF_STRINGIZE	0x02
-#define SF_SPECIAL	0x04
-#define SF_MACROARG	0x08	/*  macro-arg, temp enable higher-up macro IDs	*/
-#define SF_LITERAL	0x10
+#define SF_RECURSE      0x01
+#define SF_STRINGIZE    0x02
+#define SF_SPECIAL      0x04
+#define SF_MACROARG     0x08    /*  macro-arg, temp enable higher-up macro IDs  */
+#define SF_LITERAL      0x10
 
 typedef struct Sym {
-    struct Sym *Next;	/*  next in hash		*/
-    struct Sym *Creator;/*  SF_MACROARG 		*/
+    struct Sym *Next;   /*  next in hash                */
+    struct Sym *Creator;/*  SF_MACROARG                 */
     char    *SymName;
     short   SymLen;
-    short   Type;	/*  type of symbol		*/
-    short   NumArgs;	/*  if a macro, else -1 	*/
-    char    **Args;	/*  names of args for replace	*/
-    short   *ArgsLen;	/*  lengths of args for replace */
-    char    *Text;	/*  contents of symbol		*/
+    short   Type;       /*  type of symbol              */
+    short   NumArgs;    /*  if a macro, else -1         */
+    char    **Args;     /*  names of args for replace   */
+    short   *ArgsLen;   /*  lengths of args for replace */
+    char    *Text;      /*  contents of symbol          */
     int32_t    TextLen;
-    int32_t    SymGroup;	/*  for precompiled headers	*/
-    short   Hv; 	/*  hash value			*/
+    int32_t    SymGroup;        /*  for precompiled headers     */
+    short   Hv;         /*  hash value                  */
 } Sym;
 
-#define HSIZE	1024	/*  symbol hash table		*/
-#define HMASK	(HSIZE-1)
+#define HSIZE   1024    /*  symbol hash table           */
+#define HMASK   (HSIZE-1)
 
-#define MAX_IF_LEVEL	    256
+#define MAX_IF_LEVEL        256
 #define MAX_INCLUDE_LEVEL   32
-#define MAX_ARGS	    256
+#define MAX_ARGS            256
 
 #define ZA_SIZE 8192
 

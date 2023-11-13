@@ -23,7 +23,7 @@ __closeall(void)
     short fd;
 
     for (fd = 0; fd < _IoFDLimit; ++fd)
-	close(fd);
+        close(fd);
 }
 
 int
@@ -34,22 +34,22 @@ int fd;
     int r = -1;
 
     if (d = __getfh(fd)) {
-	if (__InUnixFork)
-	    return(0);
+        if (__InUnixFork)
+            return(0);
 
-	if (d->fd_FileName)
-	    free(d->fd_FileName);
-	if (d->fd_Exec) {                       /*  special */
-	    r = (*d->fd_Exec)(d->fd_Fh, IOC_CLOSE, NULL, NULL);
-	} else {
-	    r = 0;
-	    if ((d->fd_Flags & O_NOCLOSE) == 0)
-		Close(d->fd_Fh);
-	}
-	d->fd_Flags = 0;
-	d->fd_Exec  = NULL;
-	d->fd_Fh    = NULL;
-	d->fd_FileName = NULL;
+        if (d->fd_FileName)
+            free(d->fd_FileName);
+        if (d->fd_Exec) {                       /*  special */
+            r = (*d->fd_Exec)(d->fd_Fh, IOC_CLOSE, NULL, NULL);
+        } else {
+            r = 0;
+            if ((d->fd_Flags & O_NOCLOSE) == 0)
+                Close(d->fd_Fh);
+        }
+        d->fd_Flags = 0;
+        d->fd_Exec  = NULL;
+        d->fd_Fh    = NULL;
+        d->fd_FileName = NULL;
     }
     return(r);
 }

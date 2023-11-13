@@ -1,132 +1,132 @@
 
-		;   MOVMEM.A
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   MOVMEM.A
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		;   movmem(src, dst, len)   (ANSI)
-		;   bcopy(src, dst, len)    (UNIX)
-		;	    A0	A1   D0     DICE-REG
-		;	    A0	A1   D0     internal
-		;	 4(sp) 8(sp) 12(sp)
-		;
-		;   The memory move algorithm is somewhat more of a mess
-		;   since we must do it either ascending or decending.
+                ;   movmem(src, dst, len)   (ANSI)
+                ;   bcopy(src, dst, len)    (UNIX)
+                ;           A0  A1   D0     DICE-REG
+                ;           A0  A1   D0     internal
+                ;        4(sp) 8(sp) 12(sp)
+                ;
+                ;   The memory move algorithm is somewhat more of a mess
+                ;   since we must do it either ascending or decending.
 
-		xdef	_movmem
-		xdef	_hyper_movmem
-		xdef	_bcopy		; UNIX
-		xdef	_hyper_bcopy	; UNIX
-		xdef	@movmem
-		xdef	@bcopy	    ; UNIX
+                xdef    _movmem
+                xdef    _hyper_movmem
+                xdef    _bcopy          ; UNIX
+                xdef    _hyper_bcopy    ; UNIX
+                xdef    @movmem
+                xdef    @bcopy      ; UNIX
 
 
 _hyper_bcopy:
 _hyper_movmem:
 _bcopy:
-_movmem:	move.l	4(sp),A0
-		move.l	8(sp),A1
-		move.l	12(sp),D0
+_movmem:        move.l  4(sp),A0
+                move.l  8(sp),A1
+                move.l  12(sp),D0
 @bcopy:
 @movmem:
-		move.l	A1,-(sp)        ; save return value
-		cmp.l	A0,A1		;move to self
-		beq	xbmend
-		bls	xbmup
-xbmdown 	adda.l	D0,A0		;descending copy
-		adda.l	D0,A1
-		move.w	A0,D1		;CHECK WORD ALIGNED
-		lsr.l	#1,D1
-		bcs	xbmdown1
-		move.w	A1,D1
-		lsr.l	#1,D1
-		bcs	xbmdown1
-		cmp.l	#259,D0 	    ;chosen by calculation.
-		bcs	xbmdown8
+                move.l  A1,-(sp)        ; save return value
+                cmp.l   A0,A1           ;move to self
+                beq     xbmend
+                bls     xbmup
+xbmdown         adda.l  D0,A0           ;descending copy
+                adda.l  D0,A1
+                move.w  A0,D1           ;CHECK WORD ALIGNED
+                lsr.l   #1,D1
+                bcs     xbmdown1
+                move.w  A1,D1
+                lsr.l   #1,D1
+                bcs     xbmdown1
+                cmp.l   #259,D0             ;chosen by calculation.
+                bcs     xbmdown8
 
-		move.l	D0,D1		    ;overhead for bmd44: ~360
-		divu	#44,D1
-		bvs	xbmdown8	    ;too big (> 2,883,540)
-		movem.l D2-D7/A2-A6,-(sp)   ;use D2-D7/A2-A6 (11 regs)
-		move.l	#44,D0
-		bra	xbmd44b
-xbmd44a 	sub.l	D0,A0		    ;8		total 214/44bytes
-		movem.l (A0),D2-D7/A2-A6    ;12 + 8*11  4.86 cycles/byte
-		movem.l D2-D7/A2-A6,-(A1)   ; 8 + 8*11
-xbmd44b 	dbf	D1,xbmd44a	    ;10
-		swap	D1		    ;D0<15:7> already contain 0
-		move.w	D1,D0		    ;D0 = remainder
-		movem.l (sp)+,D2-D7/A2-A6
+                move.l  D0,D1               ;overhead for bmd44: ~360
+                divu    #44,D1
+                bvs     xbmdown8            ;too big (> 2,883,540)
+                movem.l D2-D7/A2-A6,-(sp)   ;use D2-D7/A2-A6 (11 regs)
+                move.l  #44,D0
+                bra     xbmd44b
+xbmd44a         sub.l   D0,A0               ;8          total 214/44bytes
+                movem.l (A0),D2-D7/A2-A6    ;12 + 8*11  4.86 cycles/byte
+                movem.l D2-D7/A2-A6,-(A1)   ; 8 + 8*11
+xbmd44b         dbf     D1,xbmd44a          ;10
+                swap    D1                  ;D0<15:7> already contain 0
+                move.w  D1,D0               ;D0 = remainder
+                movem.l (sp)+,D2-D7/A2-A6
 
-xbmdown8	move.w	D0,D1		    ;D1<2:0> = #bytes left later
-		lsr.l	#3,D0		    ;divide by 8
-		bra	xbmd8b
-xbmd8a		move.l	-(A0),-(A1)         ;20         total 50/8bytes
-		move.l	-(A0),-(A1)         ;20         = 6.25 cycles/byte
-xbmd8b		dbf	D0,xbmd8a	    ;10
-		sub.l	#$10000,D0
-		bcc	xbmd8a
-		move.w	D1,D0		    ;D0 = 0 to 7 bytes
-		and.l	#7,D0
-		bne	xbmdown1
+xbmdown8        move.w  D0,D1               ;D1<2:0> = #bytes left later
+                lsr.l   #3,D0               ;divide by 8
+                bra     xbmd8b
+xbmd8a          move.l  -(A0),-(A1)         ;20         total 50/8bytes
+                move.l  -(A0),-(A1)         ;20         = 6.25 cycles/byte
+xbmd8b          dbf     D0,xbmd8a           ;10
+                sub.l   #$10000,D0
+                bcc     xbmd8a
+                move.w  D1,D0               ;D0 = 0 to 7 bytes
+                and.l   #7,D0
+                bne     xbmdown1
 xbmend
-		move.l	(sp)+,D0
-		rts
+                move.l  (sp)+,D0
+                rts
 
-xbmd1a		move.b	-(A0),-(A1)         ;12         total 22/byte
-xbmdown1				    ;		= 22 cycles/byte
-xbmd1b		dbf	D0,xbmd1a	    ;10
-		sub.l	#$10000,D0
-		bcc	xbmd1a
-		move.l	(sp)+,D0
-		rts
+xbmd1a          move.b  -(A0),-(A1)         ;12         total 22/byte
+xbmdown1                                    ;           = 22 cycles/byte
+xbmd1b          dbf     D0,xbmd1a           ;10
+                sub.l   #$10000,D0
+                bcc     xbmd1a
+                move.l  (sp)+,D0
+                rts
 
-xbmup		move.w	A0,D1		    ;CHECK WORD ALIGNED
-		lsr.l	#1,D1
-		bcs	xbmup1
-		move.w	A1,D1
-		lsr.l	#1,D1
-		bcs	xbmup1
-		cmp.l	#259,D0 	    ;chosen by calculation
-		bcs	xbmup8
+xbmup           move.w  A0,D1               ;CHECK WORD ALIGNED
+                lsr.l   #1,D1
+                bcs     xbmup1
+                move.w  A1,D1
+                lsr.l   #1,D1
+                bcs     xbmup1
+                cmp.l   #259,D0             ;chosen by calculation
+                bcs     xbmup8
 
-		move.l	D0,D1		    ;overhead for bmu44: ~360
-		divu	#44,D1
-		bvs	xbmup8		    ;too big (> 2,883,540)
-		movem.l D2-D7/A2-A6,-(sp)   ;use D2-D7/A2-A6 (11 regs)
-		move.l	#44,D0
-		bra	xbmu44b
-xbmu44a 	movem.l (A0)+,D2-D7/A2-A6   ;12 + 8*11  ttl 214/44bytes
-		movem.l D2-D7/A2-A6,(A1)    ;8  + 8*11  4.86 cycles/byte
-		add.l	D0,A1		    ;8
-xbmu44b 	dbf	D1,xbmu44a	    ;10
-		swap	D1		    ;D0<15:7> already contain 0
-		move.w	D1,D0		    ;D0 = remainder
-		movem.l (sp)+,D2-D7/A2-A6
+                move.l  D0,D1               ;overhead for bmu44: ~360
+                divu    #44,D1
+                bvs     xbmup8              ;too big (> 2,883,540)
+                movem.l D2-D7/A2-A6,-(sp)   ;use D2-D7/A2-A6 (11 regs)
+                move.l  #44,D0
+                bra     xbmu44b
+xbmu44a         movem.l (A0)+,D2-D7/A2-A6   ;12 + 8*11  ttl 214/44bytes
+                movem.l D2-D7/A2-A6,(A1)    ;8  + 8*11  4.86 cycles/byte
+                add.l   D0,A1               ;8
+xbmu44b         dbf     D1,xbmu44a          ;10
+                swap    D1                  ;D0<15:7> already contain 0
+                move.w  D1,D0               ;D0 = remainder
+                movem.l (sp)+,D2-D7/A2-A6
 
-xbmup8		move.w	D0,D1		    ;D1<2:0> = #bytes left later
-		lsr.l	#3,D0		    ;divide by 8
-		bra	xbmu8b
-xbmu8a		move.l	(A0)+,(A1)+         ;20         total 50/8bytes
-		move.l	(A0)+,(A1)+         ;20         = 6.25 cycles/byte
-xbmu8b		dbf	D0,xbmu8a	    ;10
-		sub.l	#$10000,D0
-		bcc	xbmu8a
-		move.w	D1,D0		    ;D0 = 0 to 7 bytes
-		and.l	#7,D0
-		bne	xbmup1
-		move.l	(sp)+,D0
-		rts
+xbmup8          move.w  D0,D1               ;D1<2:0> = #bytes left later
+                lsr.l   #3,D0               ;divide by 8
+                bra     xbmu8b
+xbmu8a          move.l  (A0)+,(A1)+         ;20         total 50/8bytes
+                move.l  (A0)+,(A1)+         ;20         = 6.25 cycles/byte
+xbmu8b          dbf     D0,xbmu8a           ;10
+                sub.l   #$10000,D0
+                bcc     xbmu8a
+                move.w  D1,D0               ;D0 = 0 to 7 bytes
+                and.l   #7,D0
+                bne     xbmup1
+                move.l  (sp)+,D0
+                rts
 
-xbmu1a		move.b	(A0)+,(A1)+
+xbmu1a          move.b  (A0)+,(A1)+
 xbmup1
-xbmu1b		dbf	D0,xbmu1a
-		sub.l	#$10000,D0
-		bcc	xbmu1a
-		move.l	(sp)+,D0
-		rts
+xbmu1b          dbf     D0,xbmu1a
+                sub.l   #$10000,D0
+                bcc     xbmu1a
+                move.l  (sp)+,D0
+                rts
 
-		END
+                END
 
 

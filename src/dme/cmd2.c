@@ -73,7 +73,7 @@ ED *ep;
     text_init(Ep, NULL, NULL);
     ep = Ep;
     if (ep->Font)
-	CloseFont(ep->Font);
+        CloseFont(ep->Font);
     ep->Win = win;
     ep->Font = font;
 
@@ -103,29 +103,29 @@ do_wleft()
     int i;
 
     for (;;) {
-	i = ep->Column;
-	if (i == 0)
-	    goto prevline;
-	--i;
-	while (i && Current[i] == ' ')
-	    --i;
-	if (i == 0 && Current[0] == ' ') {
+        i = ep->Column;
+        if (i == 0)
+            goto prevline;
+        --i;
+        while (i && Current[i] == ' ')
+            --i;
+        if (i == 0 && Current[0] == ' ') {
 prevline:
-	    if (Comlinemode || ep->Line == 0) {
-		i = ep->Column;
-		break;
-	    }
-	    text_sync();
-	    --ep->Line;
-	    text_load();
-	    ep->Column = Clen;
-	    continue;
-	}
-	while (i && Current[i] != ' ')
-	    --i;
-	if (Current[i] == ' ')
-	    ++i;
-	break;
+            if (Comlinemode || ep->Line == 0) {
+                i = ep->Column;
+                break;
+            }
+            text_sync();
+            --ep->Line;
+            text_load();
+            ep->Column = Clen;
+            continue;
+        }
+        while (i && Current[i] != ' ')
+            --i;
+        if (Current[i] == ' ')
+            ++i;
+        break;
     }
     ep->Column = i;
     text_sync();
@@ -138,35 +138,35 @@ do_wright()
     int i;
 
     for (;;) {
-	i = ep->Column;
-	if (i == Clen)
-	    goto nextline;
-	while (i != Clen && Current[i] != ' ')  /* skip past current word */
-	    ++i;
-	while (i != Clen && Current[i] == ' ')  /* to beg. of next word   */
-	    ++i;
-	if (i == Clen) {
+        i = ep->Column;
+        if (i == Clen)
+            goto nextline;
+        while (i != Clen && Current[i] != ' ')  /* skip past current word */
+            ++i;
+        while (i != Clen && Current[i] == ' ')  /* to beg. of next word   */
+            ++i;
+        if (i == Clen) {
 nextline:
-	    if (Comlinemode || ep->Line == ep->Lines - 1) {
-		i = ep->Column;
-		break;
-	    }
-	    text_sync();
-	    ++ep->Line;
-	    text_load();
-	    ep->Column = i = 0;
-	    if (Current[0] != ' ')
-		break;
-	    continue;
-	}
-	break;
+            if (Comlinemode || ep->Line == ep->Lines - 1) {
+                i = ep->Column;
+                break;
+            }
+            text_sync();
+            ++ep->Line;
+            text_load();
+            ep->Column = i = 0;
+            if (Current[0] != ' ')
+                break;
+            continue;
+        }
+        break;
     }
     ep->Column = i;
     text_sync();
 }
 
 void
-do_split()		/* split line in two at cursor pos */
+do_split()              /* split line in two at cursor pos */
 {
     ubyte buf[256];
     ED *ep = Ep;
@@ -178,7 +178,7 @@ do_split()		/* split line in two at cursor pos */
     text_sync();
     SetAPen(rp, ep->BGPen);
     if (Nsu == 0)
-	RectFill(rp, COL(0), ROW(ep->Line-ep->Topline), Xbase+Xpixs-1, ROW(ep->Line-ep->Topline+1)-1);
+        RectFill(rp, COL(0), ROW(ep->Line-ep->Topline), Xbase+Xpixs-1, ROW(ep->Line-ep->Topline+1)-1);
     SetAPen(rp, ep->FGPen);
     text_displayseg(ep->Line - ep->Topline, 1);
 
@@ -186,7 +186,7 @@ do_split()		/* split line in two at cursor pos */
 
     do_downadd();
     if (!onLastLine)
-	do_insline();
+        do_insline();
     strcpy(Current, buf);
     Clen = strlen(Current);
     text_sync();
@@ -200,24 +200,24 @@ do_join()
     ED *ep = Ep;
 
     if (ep->Line + 1 < ep->Lines && strlen(ep->List[ep->Line+1])+i <= 253) {
-	if (i && Current[i-1] != ' ')
-	    Current[i++] = ' ';
-	strcpy(Current+i, ep->List[ep->Line+1]);
-	for (j = i; Current[j] == ' '; ++j);
-	for (; i >= 0 && Current[i] == ' '; --i);
-	if (j > i+2)
-	    movmem(Current+j, Current+i+2, strlen(Current+j)+1);
-	Clen = strlen(Current);
-	text_sync();
-	text_displayseg(ep->Line - ep->Topline, 1);
-	{
-	    int l = text_lineno();
-	    do_down();
-	    do_deline();
-	    if (l != text_lineno())
-		do_up();
-	}
-	return(1);
+        if (i && Current[i-1] != ' ')
+            Current[i++] = ' ';
+        strcpy(Current+i, ep->List[ep->Line+1]);
+        for (j = i; Current[j] == ' '; ++j);
+        for (; i >= 0 && Current[i] == ' '; --i);
+        if (j > i+2)
+            movmem(Current+j, Current+i+2, strlen(Current+j)+1);
+        Clen = strlen(Current);
+        text_sync();
+        text_displayseg(ep->Line - ep->Topline, 1);
+        {
+            int l = text_lineno();
+            do_down();
+            do_deline();
+            if (l != text_lineno())
+                do_up();
+        }
+        return(1);
     }
     return(0);
 }
@@ -234,15 +234,15 @@ do_wordwrap()
     ED *ep = Ep;
 
     if (av[1][1] == 'n')
-	ep->Wordwrap = 1;
+        ep->Wordwrap = 1;
     if (av[1][1] == 'f')
-	ep->Wordwrap = 0;
+        ep->Wordwrap = 0;
     if (av[1][0] == 't')
-	ep->Wordwrap = 1 - ep->Wordwrap;
+        ep->Wordwrap = 1 - ep->Wordwrap;
     if (ep->Wordwrap)
-	title("Wordwrap ON");
+        title("Wordwrap ON");
     else
-	title("Wordwrap OFF");
+        title("Wordwrap OFF");
 }
 
 void
@@ -252,8 +252,8 @@ do_setparcol()
 }
 
 /*
- * n == -1  :	force reformat entire paragraph
- * n ==  0  :	only until line equalizes (from text_write())
+ * n == -1  :   force reformat entire paragraph
+ * n ==  0  :   only until line equalizes (from text_write())
  *
  * What is a paragraph?   A paragraph ends whenever the left justification
  * gets larger, or on a blank line.
@@ -270,133 +270,133 @@ do_reformat(n)
     int srow   = ep->Line;
     int crow   = srow;
     int erow   = srow;
-    short dins = 0;	    /* relative insert lines/delete lines   */
-    char moded = 0;	    /* any modifications done at all?	    */
-    char checked = 0;	    /* for cursor positioning.		    */
+    short dins = 0;         /* relative insert lines/delete lines   */
+    char moded = 0;         /* any modifications done at all?       */
+    char checked = 0;       /* for cursor positioning.              */
 
     if (ep->Margin == 0)
-	ep->Margin = 75;
+        ep->Margin = 75;
 
     ++Nsu;
     for (;;) {
-	str = (char *)ep->List[ep->Line+1];
-	fnst = 0;
-	fnsc = firstns(Current);
-	nlok = (ep->Line + 1 < ep->Lines && fnsc >= (fnst=firstns(str)));
-	if (ep->WWCol >= 0)
-	    fnst = fnsc = ep->WWCol;
-	if (nlok && str[0] == 0)
-	    nlok = 0;
-	lnsc = lastns(Current);
-	if (lnsc < ep->Margin) {    /* space at end of line for marg-lnsc-2 letter word   */
-	    if (nlok == 0)	  /* but no more data to joinup   */
-		break;		  /* done */
-	    if (ep->Margin - lnsc - 2 >= wordlen(str+fnst)) {
-		ep->Column = 0;
-		Clen = lastns(Current);
-		if (Current[Clen])
-		    ++Clen;
-		moded = 1;
-		--dins;
-		if (do_join())
-		    continue;
-		++dins;
-		title("Error, Margin > 124");
-		break;
-	    }
-	    if (n == 0)        /* if couldn't mod line, and text_write, don't update any more */
-		break;
-	    do_down();
-	    erow = ep->Line;
-	    continue;
-	}
-				/* no space, need to split	*/
-				/* find start of prev word	*/
-	for (;;) {
-	    int i = lnsc;
-	    while (i && Current[i] != ' ')
-		--i;
-	    lnsc = i;
-	    if (i >= ep->Margin) {
-		while (i && Current[i] == ' ')
-		    --i;
-		if (i < ep->Margin)
-		    break;
-		lnsc = i;
-		continue;
-	    }
-	    break;
-	}
-	if (lnsc) {		/* ok to split at word		*/
-	    ++lnsc;
-	    ++dins;
-	    ep->Column = lnsc;
-	    do_split(); /* Split at point LNSC		*/
-	    do_down();		/* must insert proper amount?	*/
-	    {
-		int indent = (nlok == 0) ? fnsc : fnst;
-		if (ep->WWCol >= 0)
-		    indent = ep->WWCol;
-		if (!checked) {
-		    checked = 1;
-		    if (lnsc <= column) {   /* if split before cursor	*/
-			column = column - ep->Column + indent;
-			++crow;
-		    }
-		}
-		if (Clen + indent < 253) {
-		    movmem(Current, Current + indent, strlen(Current)+1);
-		    setmem(Current, indent, ' ');
-		    Clen += indent;
-		}
-	    }
-	    erow = ep->Line;
-	    continue;
-	}
-	if (n == 0)
-	    break;
-	do_down();
+        str = (char *)ep->List[ep->Line+1];
+        fnst = 0;
+        fnsc = firstns(Current);
+        nlok = (ep->Line + 1 < ep->Lines && fnsc >= (fnst=firstns(str)));
+        if (ep->WWCol >= 0)
+            fnst = fnsc = ep->WWCol;
+        if (nlok && str[0] == 0)
+            nlok = 0;
+        lnsc = lastns(Current);
+        if (lnsc < ep->Margin) {    /* space at end of line for marg-lnsc-2 letter word   */
+            if (nlok == 0)        /* but no more data to joinup   */
+                break;            /* done */
+            if (ep->Margin - lnsc - 2 >= wordlen(str+fnst)) {
+                ep->Column = 0;
+                Clen = lastns(Current);
+                if (Current[Clen])
+                    ++Clen;
+                moded = 1;
+                --dins;
+                if (do_join())
+                    continue;
+                ++dins;
+                title("Error, Margin > 124");
+                break;
+            }
+            if (n == 0)        /* if couldn't mod line, and text_write, don't update any more */
+                break;
+            do_down();
+            erow = ep->Line;
+            continue;
+        }
+                                /* no space, need to split      */
+                                /* find start of prev word      */
+        for (;;) {
+            int i = lnsc;
+            while (i && Current[i] != ' ')
+                --i;
+            lnsc = i;
+            if (i >= ep->Margin) {
+                while (i && Current[i] == ' ')
+                    --i;
+                if (i < ep->Margin)
+                    break;
+                lnsc = i;
+                continue;
+            }
+            break;
+        }
+        if (lnsc) {             /* ok to split at word          */
+            ++lnsc;
+            ++dins;
+            ep->Column = lnsc;
+            do_split(); /* Split at point LNSC          */
+            do_down();          /* must insert proper amount?   */
+            {
+                int indent = (nlok == 0) ? fnsc : fnst;
+                if (ep->WWCol >= 0)
+                    indent = ep->WWCol;
+                if (!checked) {
+                    checked = 1;
+                    if (lnsc <= column) {   /* if split before cursor   */
+                        column = column - ep->Column + indent;
+                        ++crow;
+                    }
+                }
+                if (Clen + indent < 253) {
+                    movmem(Current, Current + indent, strlen(Current)+1);
+                    setmem(Current, indent, ' ');
+                    Clen += indent;
+                }
+            }
+            erow = ep->Line;
+            continue;
+        }
+        if (n == 0)
+            break;
+        do_down();
     }
     if (column < 0 || column > 200)
-	column = 0;
+        column = 0;
     if (srow >= ep->Lines) {
-	srow = ep->Lines - 1;
-	goto ra;
+        srow = ep->Lines - 1;
+        goto ra;
     }
     if (dins || srow < ep->Topline || srow >= ep->Topline + Rows) {
 ra:
-	text_sync();
-	--Nsu;
-	ep->Line = crow;
-	ep->Column = column;
-	text_load();
-	if (!text_sync())
-	    text_redisplay();
+        text_sync();
+        --Nsu;
+        ep->Line = crow;
+        ep->Column = column;
+        text_load();
+        if (!text_sync())
+            text_redisplay();
     } else {
-	text_sync();
-	--Nsu;
-	ep->Line = crow;
-	ep->Column = column;
-	text_load();
-	if (erow != srow) {
-	    if (!text_sync()) {
-		++erow;
-		if (erow - ep->Topline > Rows)
-		    erow = ep->Topline + Rows;
-		SetAPen(rp, ep->BGPen);
-		RectFill(rp, COL(0), ROW(srow - ep->Topline), Xbase+Xpixs-1, ROW(erow - ep->Topline)-1);
-		SetAPen(rp, ep->FGPen);
-		text_displayseg(srow - ep->Topline, erow - srow);
-	    }
-	} else {
-	    text_sync();
-	    if (moded)
-		text_redisplaycurrline();
-	}
+        text_sync();
+        --Nsu;
+        ep->Line = crow;
+        ep->Column = column;
+        text_load();
+        if (erow != srow) {
+            if (!text_sync()) {
+                ++erow;
+                if (erow - ep->Topline > Rows)
+                    erow = ep->Topline + Rows;
+                SetAPen(rp, ep->BGPen);
+                RectFill(rp, COL(0), ROW(srow - ep->Topline), Xbase+Xpixs-1, ROW(erow - ep->Topline)-1);
+                SetAPen(rp, ep->FGPen);
+                text_displayseg(srow - ep->Topline, erow - srow);
+            }
+        } else {
+            text_sync();
+            if (moded)
+                text_redisplaycurrline();
+        }
     }
     if (column > Clen) {
-	setmem(Current+Clen, column - Clen, ' ');
-	Current[column] = 0;
+        setmem(Current+Clen, column - Clen, ' ');
+        Current[column] = 0;
     }
     ep->Column = column;
 }
@@ -413,21 +413,21 @@ do_insertmode()
     ED *ep = Ep;
 
     if (av[1][0]) {
-	switch(av[1][1] & 0x1F) {
-	case 'n'&0x1F:
-	    ep->Insertmode = 1;
-	    break;
-	case 'f'&0x1F:
-	    ep->Insertmode = 0;
-	    break;
-	case 'o'&0x1F:
-	    ep->Insertmode = 1 - ep->Insertmode;
-	    break;
-	}
-	if (ep->Insertmode)
-	    title("Insert mode on");
-	else
-	    title("Insert mode off");
+        switch(av[1][1] & 0x1F) {
+        case 'n'&0x1F:
+            ep->Insertmode = 1;
+            break;
+        case 'f'&0x1F:
+            ep->Insertmode = 0;
+            break;
+        case 'o'&0x1F:
+            ep->Insertmode = 1 - ep->Insertmode;
+            break;
+        }
+        if (ep->Insertmode)
+            title("Insert mode on");
+        else
+            title("Insert mode off");
     }
 }
 
@@ -441,22 +441,22 @@ do_insline()
     ep->Modified = 1;
     text_sync();
     if (makeroom(32) && (ptr = allocb(1))) {
-	bmovl(ep->List+ep->Line, ep->List+ep->Line+1,ep->Lines-ep->Line);
-	ep->List[ep->Line] = ptr;
-	*ptr = 0;
-	++ep->Lines;
-	if (BEp == ep) {
-	    if (ep->Line < BSline)
-		++BSline;
-	    if (ep->Line <= BEline)
-		++BEline;
-	}
+        bmovl(ep->List+ep->Line, ep->List+ep->Line+1,ep->Lines-ep->Line);
+        ep->List[ep->Line] = ptr;
+        *ptr = 0;
+        ++ep->Lines;
+        if (BEp == ep) {
+            if (ep->Line < BSline)
+                ++BSline;
+            if (ep->Line <= BEline)
+                ++BEline;
+        }
     } else {
-	nomemory();
+        nomemory();
     }
     text_load();
     if (Nsu == 0)
-	ScrollRaster(rp,0,-Ysize, COL(0), ROW(ep->Line-ep->Topline), COL(Columns)-1, ROW(Rows)-1);
+        ScrollRaster(rp,0,-Ysize, COL(0), ROW(ep->Line-ep->Topline), COL(Columns)-1, ROW(Rows)-1);
     text_displayseg(ep->Line - ep->Topline, 1);
 }
 
@@ -469,39 +469,39 @@ do_deline()
 
     strcpy(Deline, Current);
     if (ep->Lines > 1) {
-	ep->Modified = 1;
-	text_sync();
+        ep->Modified = 1;
+        text_sync();
 
-	FreeMem(ep->List[ep->Line], strlen(ep->List[ep->Line])+1);
-	bmovl(ep->List+ep->Line+1, ep->List+ep->Line,ep->Lines-ep->Line-1);
-	if (BEp == ep) {
-	    if (ep->Line < BSline)
-		--BSline;
-	    if (ep->Line <= BEline)
-		--BEline;
-	}
-	delline = ep->Line;
-	if (ep->Line >= --ep->Lines) {
-	    --ep->Line;
-	    text_load();
-	    if (ep->Line < ep->Topline) {
-		if (Nsu == 0) {
-		    ep->Topline = ep->Line - (Rows>>1);
-		    if (ep->Topline < 0)
-			ep->Topline = 0;
-		    text_redisplay();
-		}
-		return;
-	    }
-	}
-	text_load();
-	if (Nsu == 0)
-	    ScrollRaster(rp,0,Ysize, COL(0), ROW(delline-ep->Topline), COL(Columns)-1, ROW(Rows)-1);
-	text_displayseg(Rows-1, 1);
+        FreeMem(ep->List[ep->Line], strlen(ep->List[ep->Line])+1);
+        bmovl(ep->List+ep->Line+1, ep->List+ep->Line,ep->Lines-ep->Line-1);
+        if (BEp == ep) {
+            if (ep->Line < BSline)
+                --BSline;
+            if (ep->Line <= BEline)
+                --BEline;
+        }
+        delline = ep->Line;
+        if (ep->Line >= --ep->Lines) {
+            --ep->Line;
+            text_load();
+            if (ep->Line < ep->Topline) {
+                if (Nsu == 0) {
+                    ep->Topline = ep->Line - (Rows>>1);
+                    if (ep->Topline < 0)
+                        ep->Topline = 0;
+                    text_redisplay();
+                }
+                return;
+            }
+        }
+        text_load();
+        if (Nsu == 0)
+            ScrollRaster(rp,0,Ysize, COL(0), ROW(delline-ep->Topline), COL(Columns)-1, ROW(Rows)-1);
+        text_displayseg(Rows-1, 1);
     } else {
-	do_firstcolumn();
-	do_remeol();
-	ep->Modified = 0;
+        do_firstcolumn();
+        do_remeol();
+        ep->Modified = 0;
     }
 }
 
@@ -526,73 +526,73 @@ do_edit()
 
     text_sync();
     if (*av[0] == 'n') {        /* newfile or insfile   */
-	if (ep->Modified && getyn("Delete modified Image?") == 0)
-	    return;
-	ep = uninit_init(ep);
-	strncpy(ep->Name, av[1], 63);
+        if (ep->Modified && getyn("Delete modified Image?") == 0)
+            return;
+        ep = uninit_init(ep);
+        strncpy(ep->Name, av[1], 63);
     } else {
-	ep->Modified = 1;
+        ep->Modified = 1;
     }
     lines = ep->Lines;
     oldlock = CurrentDir((BPTR)ep->dirlock);
     if (fi = fopen(av[1], "r")) {
-	int len;
-	char oktitle = 1;
+        int len;
+        char oktitle = 1;
 
-	title("Loading...");
-	while ((len = xefgets(fi, buf, 255)) >= 0) {
-	    failed = 0;
-	    if (makeroom(256) && (ptr = allocb(len+1))) {
-		ep->List[ep->Lines++] = ptr;
-		movmem(buf, ptr, len+1);
-	    } else {
-		set_window_params();
-		nomemory();
-		oktitle = 0;
-		break;
-	    }
-	}
-	set_window_params();
-	if (oktitle)
-	    title("OK");
+        title("Loading...");
+        while ((len = xefgets(fi, buf, 255)) >= 0) {
+            failed = 0;
+            if (makeroom(256) && (ptr = allocb(len+1))) {
+                ep->List[ep->Lines++] = ptr;
+                movmem(buf, ptr, len+1);
+            } else {
+                set_window_params();
+                nomemory();
+                oktitle = 0;
+                break;
+            }
+        }
+        set_window_params();
+        if (oktitle)
+            title("OK");
     } else {
-	title("File Not Found");
+        title("File Not Found");
 #if AREXX
-	CmdErr = 5;
+        CmdErr = 5;
 #endif
     }
     if (fi)
-	fclose(fi);
+        fclose(fi);
     CurrentDir(oldlock);
     if (ep->Lines != 1 && lines == 1 && ep->List[0][0] == 0) {
-	ep->Modified = 0;
-	ep->Line = 0;
-	FreeMem(ep->List[0], strlen(ep->List[0])+1);
-	bmovl(ep->List+1, ep->List,--ep->Lines);
+        ep->Modified = 0;
+        ep->Line = 0;
+        FreeMem(ep->List[0], strlen(ep->List[0])+1);
+        bmovl(ep->List+1, ep->List,--ep->Lines);
     } else {
-	if (!failed && lines <= ep->Lines - 1) {
-	    long bsline, beline;
-	    short bschar, bechar;
-	    ED *bep = BEp;
+        if (!failed && lines <= ep->Lines - 1) {
+            long bsline, beline;
+            short bschar, bechar;
+            ED *bep = BEp;
 
-	    bsline = BSline;
-	    beline = BEline;
-	    bschar = BSchar;
-	    bechar = BEchar;
+            bsline = BSline;
+            beline = BEline;
+            bschar = BSchar;
+            bechar = BEchar;
 
-	    BEp = ep;
-	    BSline = lines;
-	    BEline = ep->Lines - 1;
-	    do_bmove();
+            BEp = ep;
+            BSline = lines;
+            BEline = ep->Lines - 1;
+            do_bmove();
 
-	    if (bep && bep != ep) {
-		BSline = bsline;
-		BEline = beline;
-		bschar = BSchar;
-		bechar = BEchar;
-		BEp = bep;
-	    }
-	}
+            if (bep && bep != ep) {
+                BSline = bsline;
+                BEline = beline;
+                bschar = BSchar;
+                bechar = BEchar;
+                BEp = bep;
+            }
+        }
     }
     set_window_params();
     text_load();
@@ -659,116 +659,116 @@ do_saveas()
 
     bm = blockmode;
     if (blockmode && blockok()) {
-	xs = BSline;
-	xe = BEline + 1;
-	ep = BEp;
+        xs = BSline;
+        xe = BEline + 1;
+        ep = BEp;
     } else {
-	xs = 0;
-	xe = Ep->Lines;
-	ep = Ep;
+        xs = 0;
+        xe = Ep->Lines;
+        ep = Ep;
     }
     blockmode = 0;
     text_sync();
     oldlock = CurrentDir((BPTR)Ep->dirlock);
-    if (IconSaveOpt && IconBase) {	/* Write out .info file */
-	DISKOBJ sdo, *d;
-	clrmem(&sdo, sizeof(sdo));
-	if ((d = GetDiskObject(av[1])) == NULL) {
-	    if (Wbs == NULL || getpathto(Wbs->sm_ArgList[0].wa_Lock, Wbs->sm_ArgList[0].wa_Name, buf) == 0)
-		strcpy(buf, "DME");
-	    sdo.do_Magic = WB_DISKMAGIC;
-	    sdo.do_Version = WB_DISKVERSION;
-	    makemygadget(&sdo.do_Gadget);
-	    sdo.do_Type = WBPROJECT;
-	    sdo.do_DefaultTool = (char *)buf;
-	    sdo.do_ToolTypes = NULL;
-	    sdo.do_CurrentX = NO_ICON_POSITION;
-	    sdo.do_CurrentY = NO_ICON_POSITION;
-	    sdo.do_DrawerData = NULL;
-	    sdo.do_ToolWindow = NULL;
-	    sdo.do_StackSize = 8192;
-	    PutDiskObject(av[1], &sdo);
-	} else {
-	    FreeDiskObject(d);
-	}
+    if (IconSaveOpt && IconBase) {      /* Write out .info file */
+        DISKOBJ sdo, *d;
+        clrmem(&sdo, sizeof(sdo));
+        if ((d = GetDiskObject(av[1])) == NULL) {
+            if (Wbs == NULL || getpathto(Wbs->sm_ArgList[0].wa_Lock, Wbs->sm_ArgList[0].wa_Name, buf) == 0)
+                strcpy(buf, "DME");
+            sdo.do_Magic = WB_DISKMAGIC;
+            sdo.do_Version = WB_DISKVERSION;
+            makemygadget(&sdo.do_Gadget);
+            sdo.do_Type = WBPROJECT;
+            sdo.do_DefaultTool = (char *)buf;
+            sdo.do_ToolTypes = NULL;
+            sdo.do_CurrentX = NO_ICON_POSITION;
+            sdo.do_CurrentY = NO_ICON_POSITION;
+            sdo.do_DrawerData = NULL;
+            sdo.do_ToolWindow = NULL;
+            sdo.do_StackSize = 8192;
+            PutDiskObject(av[1], &sdo);
+        } else {
+            FreeDiskObject(d);
+        }
     }
     if (fi = fopen(av[1], openmode)) {
-	if (openmode[0] == 'a')
-	    title("Appending...");
-	else
-	    title("Saving...");
-	for (i = xs; i < xe; ++i) {
-	    ptr = ep->List[i];
-	    if (Savetabs) {
-		for (bp = buf, j = 0; *ptr; ++ptr, ++bp, j = (j+1)&7) {
-		    *bp = *ptr;
-		    if (j == 7 && *bp == ' ' && *(bp-1) == ' ') {
-			k = j;
-			while (k-- >= 0 && *bp == ' ')
-			    --bp;
-			*++bp = 9;
-		    } else {
+        if (openmode[0] == 'a')
+            title("Appending...");
+        else
+            title("Saving...");
+        for (i = xs; i < xe; ++i) {
+            ptr = ep->List[i];
+            if (Savetabs) {
+                for (bp = buf, j = 0; *ptr; ++ptr, ++bp, j = (j+1)&7) {
+                    *bp = *ptr;
+                    if (j == 7 && *bp == ' ' && *(bp-1) == ' ') {
+                        k = j;
+                        while (k-- >= 0 && *bp == ' ')
+                            --bp;
+                        *++bp = 9;
+                    } else {
 #ifdef NOTDEF
-			if (*bp < 32 || *bp == '\"' || *bp == '\'' || *bp == '\`' || *bp == '(')
-			    break;
+                        if (*bp < 32 || *bp == '\"' || *bp == '\'' || *bp == '\`' || *bp == '(')
+                            break;
 #else
-			if (*bp < 32 || *bp == '\"' || *bp == '\'' || *bp == '\`')
-			    break;
+                        if (*bp < 32 || *bp == '\"' || *bp == '\'' || *bp == '\`')
+                            break;
 #endif
-		    }
-		}
-		strcpy(bp, ptr);
-		ptr = buf;
-	    }
-	    fputs(ptr, fi);
-	    fputc('\n', fi);
-	}
-	if (fclose(fi)) {
-err:	    Abortcommand = 1;
-	    title("WRITE FAILED!");
-	} else {
-	    ep->Modified &= bm;
-	    title("OK");
-	}
+                    }
+                }
+                strcpy(bp, ptr);
+                ptr = buf;
+            }
+            fputs(ptr, fi);
+            fputc('\n', fi);
+        }
+        if (fclose(fi)) {
+err:        Abortcommand = 1;
+            title("WRITE FAILED!");
+        } else {
+            ep->Modified &= bm;
+            title("OK");
+        }
     } else {
-	title("Unable to open write file");
-	Abortcommand = 1;
+        title("Unable to open write file");
+        Abortcommand = 1;
     }
     CurrentDir(oldlock);
 }
 
 void
-do_block()	    /* block, unblock	*/
+do_block()          /* block, unblock   */
 {
     text_sync();
 
     switch(av[0][0]) {
     case 'b':
-	if (BSline < 0) {
+        if (BSline < 0) {
 bstart:
-	    BEp = Ep;
-	    BSline = Ep->Line;
-	    title("Block Begin");
-	} else {
-	    if (BEline > -1) {
-		title("Block Already Marked");
-		break;
-	    }
-	    if (BEp != Ep)
-		goto bstart;
-	    title("Block End");
-	    BEline = Ep->Line;
-	    if (BSline > BEline) {
-		BEline = BSline;
-		BSline = Ep->Line;
-	    }
-	    text_redrawblock(1);
-	}
-	break;
+            BEp = Ep;
+            BSline = Ep->Line;
+            title("Block Begin");
+        } else {
+            if (BEline > -1) {
+                title("Block Already Marked");
+                break;
+            }
+            if (BEp != Ep)
+                goto bstart;
+            title("Block End");
+            BEline = Ep->Line;
+            if (BSline > BEline) {
+                BEline = BSline;
+                BSline = Ep->Line;
+            }
+            text_redrawblock(1);
+        }
+        break;
     case 'u':
-	text_redrawblock(0);
-	title ("Block Unmarked");
-	break;
+        text_redrawblock(0);
+        title ("Block Unmarked");
+        break;
     }
 }
 
@@ -776,7 +776,7 @@ bstart:
 blockok()
 {
     if (BEp && BSline >= 0 && BSline <= BEline && BEline < BEp->Lines)
-	return(1);
+        return(1);
     BEp = NULL;
     BSline = BEline = -1;
     title("Block Not Specified");
@@ -791,31 +791,31 @@ do_bdelete()
     WIN *savewin = Ep->Win;
 
     if (blockok()) {
-	text_switch(bep->Win);
-	n = BEline - BSline + 1;
-	if (bep->Line >= BSline && bep->Line <= BEline)
-	    bep->Line = BSline;
-	if (bep->Line > BEline)
-	    bep->Line -= n;
-	freelist(bep->List + BSline, BEline - BSline + 1);
-	bmovl(bep->List+BEline+1,bep->List+BSline,(bep->Lines-BEline-1));
-	bep->Lines -= n;
-	bep->Modified = 1;
-	if (bep->Line >= bep->Lines)
-	    bep->Line = bep->Lines - 1;
-	if (bep->Line < 0)
-	    bep->Line = 0;
-	if (bep->Lines == 0) {
-	    ++bep->Lines;
-	    bep->List[0] = allocb(1);
-	    bep->List[0][0] = 0;
-	}
-	text_load();
-	BEp = NULL;
-	BSline = BEline = -1;
-	if (!text_sync())
-	    text_redisplay();
-	text_switch(savewin);
+        text_switch(bep->Win);
+        n = BEline - BSline + 1;
+        if (bep->Line >= BSline && bep->Line <= BEline)
+            bep->Line = BSline;
+        if (bep->Line > BEline)
+            bep->Line -= n;
+        freelist(bep->List + BSline, BEline - BSline + 1);
+        bmovl(bep->List+BEline+1,bep->List+BSline,(bep->Lines-BEline-1));
+        bep->Lines -= n;
+        bep->Modified = 1;
+        if (bep->Line >= bep->Lines)
+            bep->Line = bep->Lines - 1;
+        if (bep->Line < 0)
+            bep->Line = 0;
+        if (bep->Lines == 0) {
+            ++bep->Lines;
+            bep->List[0] = allocb(1);
+            bep->List[0][0] = 0;
+        }
+        text_load();
+        BEp = NULL;
+        BSline = BEline = -1;
+        if (!text_sync())
+            text_redisplay();
+        text_switch(savewin);
     }
 }
 
@@ -828,40 +828,40 @@ do_bcopy()
 
     text_sync();
     if (!blockok())
-	return;
+        return;
     if (ep == BEp && ep->Line > BSline && ep->Line <= BEline) {
-	title("Cannot Move into self");
-	return;
+        title("Cannot Move into self");
+        return;
     }
     lines = BEline - BSline + 1;
     if (extend(ep, lines)) {
-	if (list = (ubyte **)allocl(lines)) {
-	    bmovl(BEp->List+BSline,list,lines);
-	    bmovl(ep->List+ep->Line, ep->List+ep->Line+lines, ep->Lines-ep->Line);
-	    for (i = 0; i < lines; ++i) {
-		ubyte *str = allocb(strlen(list[i])+1);
-		if (!str) {
-		    nomemory();
-		    FreeMem(list, lines * sizeof(char *));
-		    freelist(ep->List + Ep->Line, i);
-		    bmovl(ep->List+ep->Line+lines, ep->List+ep->Line, ep->Lines-ep->Line);
-		    return;
-		}
-		strcpy(str, list[i]);
-		ep->List[ep->Line+i] = str;
-	    }
-	    FreeMem(list, lines * sizeof(char *));
-	}
+        if (list = (ubyte **)allocl(lines)) {
+            bmovl(BEp->List+BSline,list,lines);
+            bmovl(ep->List+ep->Line, ep->List+ep->Line+lines, ep->Lines-ep->Line);
+            for (i = 0; i < lines; ++i) {
+                ubyte *str = allocb(strlen(list[i])+1);
+                if (!str) {
+                    nomemory();
+                    FreeMem(list, lines * sizeof(char *));
+                    freelist(ep->List + Ep->Line, i);
+                    bmovl(ep->List+ep->Line+lines, ep->List+ep->Line, ep->Lines-ep->Line);
+                    return;
+                }
+                strcpy(str, list[i]);
+                ep->List[ep->Line+i] = str;
+            }
+            FreeMem(list, lines * sizeof(char *));
+        }
     }
     if (ep == BEp && ep->Line <= BSline) {
-	BSline += lines;
-	BEline += lines;
+        BSline += lines;
+        BEline += lines;
     }
     ep->Modified = 1;
     ep->Lines += lines;
     text_load();
     if (!text_sync())
-	text_redisplay();
+        text_redisplay();
 }
 
 
@@ -874,58 +874,58 @@ do_bmove()
 
     text_sync();
     if (!blockok())
-	return;
+        return;
     if (BEp == ep && ep->Line >= BSline && ep->Line <= BEline) {
-	title("Cannot Move into self");
-	return;
+        title("Cannot Move into self");
+        return;
     }
     lines = BEline - BSline + 1;
     if (!(list = (ubyte **)allocl(lines))) {
-	nomemory();
-	return;
+        nomemory();
+        return;
     }
     BEp->Modified = ep->Modified = 1;
     bmovl(BEp->List + BSline, list, lines);
     if (ep == BEp) {
-	if (ep->Line > BSline) {
-	    bmovl(ep->List+BEline+1, ep->List+BSline, ep->Line-BEline-1);
-	    bmovl(list, ep->List + ep->Line - lines, lines);
-	} else {
-	    bmovl(ep->List+ep->Line, ep->List+ep->Line+lines, BSline-ep->Line);
-	    bmovl(list, ep->List + ep->Line, lines);
-	}
+        if (ep->Line > BSline) {
+            bmovl(ep->List+BEline+1, ep->List+BSline, ep->Line-BEline-1);
+            bmovl(list, ep->List + ep->Line - lines, lines);
+        } else {
+            bmovl(ep->List+ep->Line, ep->List+ep->Line+lines, BSline-ep->Line);
+            bmovl(list, ep->List + ep->Line, lines);
+        }
     } else {
-	WIN *savewin = ep->Win;
-	if (extend(ep, lines)) {
-	    bmovl(BEp->List+BEline+1, BEp->List+BSline, BEp->Lines-BEline-1);
-	    bmovl(ep->List+ep->Line, ep->List+ep->Line+lines, ep->Lines-ep->Line);
-	    bmovl(list, ep->List+ep->Line, lines);
-	    ep->Lines += lines;
-	    BEp->Lines -= lines;
-	    if (BEp->Line >= BSline && BEp->Line <= BEline)
-		BEp->Line = BSline - 1;
-	    if (BEp->Line > BEline)
-		BEp->Line -= lines;
-	    if (BEp->Line < 0)
-		BEp->Line = 0;
-	    BSline = BEline = -1;
-	    if (BEp->Lines == 0) {
-		ubyte *ptr = allocb(1);
-		BEp->List[0] = ptr;
-		*ptr = 0;
-		++BEp->Lines;
-	    }
-	    text_load();
-	    text_switch(BEp->Win);
-	    BEp = NULL;
-	    ep = Ep;
-	    if (!ep->iconmode) {
-		if (!text_sync())
-		    text_redisplay();
-	    }
-	    text_switch(savewin);
-	    ep = Ep;
-	}
+        WIN *savewin = ep->Win;
+        if (extend(ep, lines)) {
+            bmovl(BEp->List+BEline+1, BEp->List+BSline, BEp->Lines-BEline-1);
+            bmovl(ep->List+ep->Line, ep->List+ep->Line+lines, ep->Lines-ep->Line);
+            bmovl(list, ep->List+ep->Line, lines);
+            ep->Lines += lines;
+            BEp->Lines -= lines;
+            if (BEp->Line >= BSline && BEp->Line <= BEline)
+                BEp->Line = BSline - 1;
+            if (BEp->Line > BEline)
+                BEp->Line -= lines;
+            if (BEp->Line < 0)
+                BEp->Line = 0;
+            BSline = BEline = -1;
+            if (BEp->Lines == 0) {
+                ubyte *ptr = allocb(1);
+                BEp->List[0] = ptr;
+                *ptr = 0;
+                ++BEp->Lines;
+            }
+            text_load();
+            text_switch(BEp->Win);
+            BEp = NULL;
+            ep = Ep;
+            if (!ep->iconmode) {
+                if (!text_sync())
+                    text_redisplay();
+            }
+            text_switch(savewin);
+            ep = Ep;
+        }
     }
     BSline = BEline = -1;
     BEp = NULL;
@@ -933,31 +933,31 @@ do_bmove()
     ep->Modified = 1;
     text_load();
     if (!text_sync())
-	text_redisplay();
+        text_redisplay();
 }
 
 
 /*
  * IF condition trueaction, IFELSE condition trueaction falseaction
  *
- *  condition:	!condition NOT the specified condition.
- *		#	   toggle number is SET
- *		top	   top of file (on first line)
- *		bot	   end of file (on last line)
- *		left	   start of line (leftmost column)
- *		right	   end of line (nothing but spaces under and to the right)
- *		modified   text has been modified
- *		insert	   currently in insert mode
- *		y[<=>]#    cursor is (any OR combo of <,>,=) row #  (line numbers start at 1)
- *		x[<=>]#    cursor is (<,>,<=,>=,<>) column #	    (columns start at 1)
- *			    <> means 'not equal'
+ *  condition:  !condition NOT the specified condition.
+ *              #          toggle number is SET
+ *              top        top of file (on first line)
+ *              bot        end of file (on last line)
+ *              left       start of line (leftmost column)
+ *              right      end of line (nothing but spaces under and to the right)
+ *              modified   text has been modified
+ *              insert     currently in insert mode
+ *              y[<=>]#    cursor is (any OR combo of <,>,=) row #  (line numbers start at 1)
+ *              x[<=>]#    cursor is (<,>,<=,>=,<>) column #        (columns start at 1)
+ *                          <> means 'not equal'
  *
- *		cl	   char under cursor is lower case
- *		cu	   char under cursor is upper case
- *		ca	   char under cursor is alpha
- *		cn	   char under cursor is numeric
- *		cb	   char within selected block
- *		c[<=>]#    char under cursor is (combo of <,>,and =) #
+ *              cl         char under cursor is lower case
+ *              cu         char under cursor is upper case
+ *              ca         char under cursor is alpha
+ *              cn         char under cursor is numeric
+ *              cb         char within selected block
+ *              c[<=>]#    char under cursor is (combo of <,>,and =) #
  */
 
 void
@@ -975,16 +975,16 @@ do_if()
     buf1 = (ubyte *)malloc(256);
     buf2 = (ubyte *)malloc(256);
     if (buf1 == NULL || buf2 == NULL) {
-	if (buf1) free(buf1);
-	if (buf2) free(buf2);
-	title("No Memory!");
-	return;
+        if (buf1) free(buf1);
+        if (buf2) free(buf2);
+        title("No Memory!");
+        return;
     }
     breakreset();
     ptr = av[1];
     if (*ptr == '!') {
-	notop = 1;
-	++ptr;
+        notop = 1;
+        ++ptr;
     }
     c = ptr[0];
     cn= atoi(ptr);
@@ -997,109 +997,109 @@ loop:
     i = 0;
     switch(c) {
     case 'x':
-	i = ep->Column + 1;
+        i = ep->Column + 1;
     case 'y':
-	if (!i)
-	    i = ep->Line + 1;
+        if (!i)
+            i = ep->Line + 1;
 conditional:
-	{
-	    int j, n;
-	    char any = 0;
+        {
+            int j, n;
+            char any = 0;
 
-	    for (j = 1; ptr[j] && (ptr[j]<'0'||ptr[j]>'9'); ++j);
-	    n = atoi(ptr+j);
-	    for (j = 1; ptr[j]; ++j) {
-		switch(ptr[j]) {
-		case '<':
-		    any = 1;
-		    if (i < n)
-			istrue = 1;
-		    break;
-		case '=':
-		    any = 1;
-		    if (i == n)
-			istrue = 1;
-		    break;
-		case '>':
-		    any = 1;
-		    if (i > n)
-			istrue = 1;
-		    break;
-		}
-	    }
-	    if (!any && i == n)  /* default is equivalence   */
-		istrue = 1;
-	}
-	break;
+            for (j = 1; ptr[j] && (ptr[j]<'0'||ptr[j]>'9'); ++j);
+            n = atoi(ptr+j);
+            for (j = 1; ptr[j]; ++j) {
+                switch(ptr[j]) {
+                case '<':
+                    any = 1;
+                    if (i < n)
+                        istrue = 1;
+                    break;
+                case '=':
+                    any = 1;
+                    if (i == n)
+                        istrue = 1;
+                    break;
+                case '>':
+                    any = 1;
+                    if (i > n)
+                        istrue = 1;
+                    break;
+                }
+            }
+            if (!any && i == n)  /* default is equivalence   */
+                istrue = 1;
+        }
+        break;
     case 't':
-	istrue = ep->Line == 0;
-	break;
+        istrue = ep->Line == 0;
+        break;
     case 'b':
-	istrue = ep->Line == ep->Lines-1;
-	break;
+        istrue = ep->Line == ep->Lines-1;
+        break;
     case 'l':
-	istrue = ep->Column == 0;
-	break;
+        istrue = ep->Column == 0;
+        break;
     case 'r':
-	istrue = ep->Column == Clen;
-	break;
+        istrue = ep->Column == Clen;
+        break;
     case 'm':
-	text_sync();
-	istrue = ep->Modified != 0;
-	break;
+        text_sync();
+        istrue = ep->Modified != 0;
+        break;
     case 'e':
-	istrue = Comlinemode != 0;
-	break;
+        istrue = Comlinemode != 0;
+        break;
     case 'i':
-	istrue = ep->Insertmode != 0;
-	break;
+        istrue = ep->Insertmode != 0;
+        break;
     case 'c':
-	cc = Current[ep->Column];
-	switch(cx) {
-	case 'b':
-	    istrue = BEp == ep && ep->Line >= BSline && ep->Line <= BEline;
-	    break;
-	case 'l':
-	    istrue = cc >= 'a' && cc <= 'z';
-	    break;
-	case 'u':
-	    istrue = cc >= 'A' && cc <= 'Z';
-	    break;
-	case 'a':
-	    istrue = (cc>='a'&&cc<='z')||(cc>='A'&&cc<='Z')||(cc>='0'&&cc<='9');
-	    break;
-	case 'n':
-	    istrue = (cc >= '0' && cc <= '9');
-	    break;
-	default:		/* c[<=>]#  */
-	    i = Current[ep->Column];
-	    goto conditional;
-	    break;
-	}
-	break;
+        cc = Current[ep->Column];
+        switch(cx) {
+        case 'b':
+            istrue = BEp == ep && ep->Line >= BSline && ep->Line <= BEline;
+            break;
+        case 'l':
+            istrue = cc >= 'a' && cc <= 'z';
+            break;
+        case 'u':
+            istrue = cc >= 'A' && cc <= 'Z';
+            break;
+        case 'a':
+            istrue = (cc>='a'&&cc<='z')||(cc>='A'&&cc<='Z')||(cc>='0'&&cc<='9');
+            break;
+        case 'n':
+            istrue = (cc >= '0' && cc <= '9');
+            break;
+        default:                /* c[<=>]#  */
+            i = Current[ep->Column];
+            goto conditional;
+            break;
+        }
+        break;
     default:
-	if (c >= '0' && c <= '9')
-	    istrue = do_toggle(cn) != 0;
-	else
-	    title("bad conditional");
-	break;
+        if (c >= '0' && c <= '9')
+            istrue = do_toggle(cn) != 0;
+        else
+            title("bad conditional");
+        break;
     }
     istrue ^= notop;
     if (istrue) {
-	strcpy(buf2, buf1);	/* could be executed multiple times */
-	if (do_command(buf2) == 0)
-	    goto done;
-	if (iswhile) {
-	    if (breakcheck())
-		Abortcommand = 1;
-	    else
-		goto loop;
-	}
+        strcpy(buf2, buf1);     /* could be executed multiple times */
+        if (do_command(buf2) == 0)
+            goto done;
+        if (iswhile) {
+            if (breakcheck())
+                Abortcommand = 1;
+            else
+                goto loop;
+        }
     } else {
-	if (haselse) {		/* only executed once */
-	    strcpy(buf2, av[3]);
-	    do_command(buf2);
-	}
+        if (haselse) {          /* only executed once */
+            strcpy(buf2, av[3]);
+            do_command(buf2);
+        }
     }
 done:
     free(buf1);
@@ -1117,23 +1117,23 @@ do_toggle(n)
     int i;
 
     if (n >= 0) {
-	if (n >= MAXTOGGLE)
-	    return(0);
-	return((int)tg[n]);
+        if (n >= MAXTOGGLE)
+            return(0);
+        return((int)tg[n]);
     }
     i = atoi(av[1]);
     if (i >= 0 && i < MAXTOGGLE) {
-	switch(av[0][0]) {
-	case 't':
-	    tg[i] = !tg[i];
-	    break;
-	case 's':
-	    tg[i] = 1;
-	    break;
-	case 'r':
-	    tg[i] = 0;
-	    break;
-	}
+        switch(av[0][0]) {
+        case 't':
+            tg[i] = !tg[i];
+            break;
+        case 's':
+            tg[i] = 1;
+            break;
+        case 'r':
+            tg[i] = 0;
+            break;
+        }
     }
 }
 
@@ -1146,25 +1146,25 @@ do_tlate()
     char c = Current[ep->Column];
 
     if (c == 0)
-	c = ' ';
+        c = ' ';
     if (ptr[0] == '+')
-	c += atoi(ptr+1);
+        c += atoi(ptr+1);
     else
     if (ptr[0] == '-')
-	c -= atoi(ptr+1);
+        c -= atoi(ptr+1);
     else
-	c = atoi(ptr);
+        c = atoi(ptr);
     if (c) {
-	if (Current[ep->Column] == 0) {
-	    Clen = ep->Column + 1;
-	    Current[Clen] = 0;
-	}
-	Current[ep->Column] = c;
-	if (Nsu == 0) {
-	    movetocursor();
-	    setpen(ep->Line);
-	    Text(ep->Win->RPort, Current+ep->Column, 1);
-	}
+        if (Current[ep->Column] == 0) {
+            Clen = ep->Column + 1;
+            Current[Clen] = 0;
+        }
+        Current[ep->Column] = c;
+        if (Nsu == 0) {
+            movetocursor();
+            setpen(ep->Line);
+            Text(ep->Win->RPort, Current+ep->Column, 1);
+        }
     }
 }
 
@@ -1183,15 +1183,15 @@ do_bsource()
     int i, sl, se;
 
     if (blockok()) {
-	sl = BSline;
-	se = BEline + 1;
-	for (i = sl; BEp && i < se && i < BEp->Lines; ++i) {
-	    text_sync();	/* make sure we are using latest text */
-	    strcpy(buf, BEp->List[i]);
-	    if (do_command(buf) == 0)
-		break;
-	}
-	text_redrawblock(0);
+        sl = BSline;
+        se = BEline + 1;
+        for (i = sl; BEp && i < se && i < BEp->Lines; ++i) {
+            text_sync();        /* make sure we are using latest text */
+            strcpy(buf, BEp->List[i]);
+            if (do_command(buf) == 0)
+                break;
+        }
+        text_redrawblock(0);
     }
 }
 
@@ -1210,7 +1210,7 @@ do_scanf()
     buf[0] = 0;
     sscanf(Current+Ep->Column,av[1],buf,buf,buf,buf,buf,buf,buf);
     if (String)
-	free(String);
+        free(String);
     String = (char *)malloc(strlen(buf)+1);
     strcpy(String,buf);
     title(String);
@@ -1230,16 +1230,16 @@ ED *ep;
     ubyte **list;
 
     if (lines > extra) {
-	lines += ep->Lines;
-	if (list = (ubyte **)allocl(lines)) {
-	    bmovl(ep->List, list, ep->Lines);
-	    FreeMem(ep->List, sizeof(char *) * ep->Maxlines);
-	    ep->Maxlines = lines;
-	    ep->List = list;
-	    return(1);
-	}
-	nomemory();
-	return(0);
+        lines += ep->Lines;
+        if (list = (ubyte **)allocl(lines)) {
+            bmovl(ep->List, list, ep->Lines);
+            FreeMem(ep->List, sizeof(char *) * ep->Maxlines);
+            ep->Maxlines = lines;
+            ep->List = list;
+            return(1);
+        }
+        nomemory();
+        return(0);
     }
     return(1);
 }
@@ -1248,7 +1248,7 @@ makeroom(n)
 {
     ED *ep = Ep;
     if (ep->Lines >= ep->Maxlines)
-	return(extend(ep, n));
+        return(extend(ep, n));
     return(1);
 }
 
@@ -1257,9 +1257,9 @@ freelist(list, n)
 char **list;
 {
     while (n) {
-	FreeMem(list[0], strlen(list[0])+1);
-	++list;
-	--n;
+        FreeMem(list[0], strlen(list[0])+1);
+        ++list;
+        --n;
     }
 }
 

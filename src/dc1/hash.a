@@ -1,28 +1,28 @@
 ;xxxx Prototype long hash(register ubyte *buf, register short bytes);
 ;XXX deleted, prototype is in sym.c
 
-		;   HASH.A
-		;
-		;
+                ;   HASH.A
+                ;
+                ;
 
-		section text,code
+                section text,code
 
-		xdef	_hash
-		xdef	@hash
+                xdef    _hash
+                xdef    @hash
 
-_hash		move.l	4(sp),A0
-		move.l	8(sp),D0
+_hash           move.l  4(sp),A0
+                move.l  8(sp),D0
 @hash
-		move.l	D2,-(sp)
-		moveq.l #0,D1	    ; v
-		bra	henter
-hloop		rol.w	#5,D1
-		move.b	(A0)+,D2
-		eor.b	D2,D1
-henter		dbf	D0,hloop
-		move.l	D1,D0
-		move.l	(sp)+,D2
-		rts
+                move.l  D2,-(sp)
+                moveq.l #0,D1       ; v
+                bra     henter
+hloop           rol.w   #5,D1
+                move.b  (A0)+,D2
+                eor.b   D2,D1
+henter          dbf     D0,hloop
+                move.l  D1,D0
+                move.l  (sp)+,D2
+                rts
 
-		END
+                END
 

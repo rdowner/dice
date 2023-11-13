@@ -1,6 +1,6 @@
 
-				DICE-LICENSE
-			       17 October 2023
+                                DICE-LICENSE
+                               17 October 2023
 
     As of 17 October 2023 I (Matthew Dillon) have changed all DICE source
     code licensing to the BSD license upon the request of enthusiasts!

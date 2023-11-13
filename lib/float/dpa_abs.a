@@ -1,23 +1,23 @@
 
-		;   DABS.A
-		;
-		;   D0/D1 = fabs(D0/D1)
-		;		4(sp)
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   DABS.A
+                ;
+                ;   D0/D1 = fabs(D0/D1)
+                ;               4(sp)
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xref	_MathIeeeDoubBasBase
-		xref	_LVOIEEEDPAbs
-		xdef	_fabs
+                xref    _MathIeeeDoubBasBase
+                xref    _LVOIEEEDPAbs
+                xdef    _fabs
 
-_fabs		movem.l 4(sp),D0/D1
-		move.l	A6,-(sp)
-		move.l	_MathIeeeDoubBasBase(A4),A6
-		jsr	_LVOIEEEDPAbs(A6)
-		move.l	(sp)+,A6
-		rts
+_fabs           movem.l 4(sp),D0/D1
+                move.l  A6,-(sp)
+                move.l  _MathIeeeDoubBasBase(A4),A6
+                jsr     _LVOIEEEDPAbs(A6)
+                move.l  (sp)+,A6
+                rts
 
-		END
+                END
 

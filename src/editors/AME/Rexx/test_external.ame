@@ -15,19 +15,19 @@ do forever
    t = waitpkt(WEDGEPORT)
 
    do ff = 1
- 	p = getpkt(WEDGEPORT)
-	if c2d(p) = 0 then leave ff
-  	line = getarg(p)
+        p = getpkt(WEDGEPORT)
+        if c2d(p) = 0 then leave ff
+        line = getarg(p)
 
-	parse var line command code f n .
-	k= x2d(code)
-	if code = 71 then quitflag = 1
-	else do
-	    if ((k > 64) & (k < 91)) | ((k > 96) & (k < 123)) then k = k+1
-	    'executekey' f n k
-	    end
-	t=reply(p,0)
-	end
+        parse var line command code f n .
+        k= x2d(code)
+        if code = 71 then quitflag = 1
+        else do
+            if ((k > 64) & (k < 91)) | ((k > 96) & (k < 123)) then k = k+1
+            'executekey' f n k
+            end
+        t=reply(p,0)
+        end
     end
 
 'unsetprefs' ext

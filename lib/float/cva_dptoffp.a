@@ -1,29 +1,29 @@
 
-		;   CVA_DPTOFFP.A
-		;
-		;   A0 = &arg	(4 bytes)
-		;
-		;   result in D0/D1
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   CVA_DPTOFFP.A
+                ;
+                ;   A0 = &arg   (4 bytes)
+                ;
+                ;   result in D0/D1
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xref	_MathTransBase
-		xref	_MathIeeeDoubTransBase
+                xref    _MathTransBase
+                xref    _MathIeeeDoubTransBase
 
-		xref	_LVOIEEEDPTieee ; MathIeeeDoubTransBase (ieee.doub->ieee.sing)
-		xref	_LVOSPFieee	; MathTransBase (ieee.sing -> ffp)
-		xdef	__cvdptoffp_a
+                xref    _LVOIEEEDPTieee ; MathIeeeDoubTransBase (ieee.doub->ieee.sing)
+                xref    _LVOSPFieee     ; MathTransBase (ieee.sing -> ffp)
+                xdef    __cvdptoffp_a
 
-__cvdptoffp_a	move.l	A6,-(sp)
-		move.l	_MathIeeeDoubTransBase(A4),A6
-		movem.l (A0),D0/D1          ; get ieee.double value
-		jsr	_LVOIEEEDPTieee(A6) ; convert ieee.doub->ieee.sing
-		move.l	_MathTransBase(A4),A6
-		jsr	_LVOSPFieee(A6)     ; convert ieee.sing -> ffp
-		move.l	(sp)+,A6
-		rts
+__cvdptoffp_a   move.l  A6,-(sp)
+                move.l  _MathIeeeDoubTransBase(A4),A6
+                movem.l (A0),D0/D1          ; get ieee.double value
+                jsr     _LVOIEEEDPTieee(A6) ; convert ieee.doub->ieee.sing
+                move.l  _MathTransBase(A4),A6
+                jsr     _LVOSPFieee(A6)     ; convert ieee.sing -> ffp
+                move.l  (sp)+,A6
+                rts
 
-		END
+                END
 

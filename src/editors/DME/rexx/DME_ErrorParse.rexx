@@ -1,12 +1,12 @@
 /*
-**	$Id: DME_ErrorParse.rexx,v 30.0 1994/06/10 18:06:11 dice Exp $
+**      $Id: DME_ErrorParse.rexx,v 30.0 1994/06/10 18:06:11 dice Exp $
 **
-**	DICEHelp help system.  Script for DME
+**      DICEHelp help system.  Script for DME
 **
-**	Rexx script modeled after version by David Joiner
+**      Rexx script modeled after version by David Joiner
 **
 **  Notes: This assumes that your DCC:Config/DCC.Config file contains the
-**	   following line:
+**         following line:
 **  cmd= rx DCC:Rexx/DME_ErrorParse.rexx %e "%c" "%f" "%0"
 */
 
@@ -23,16 +23,16 @@ if ~show('p',portname) then
       address COMMAND 'RUN >NIL: <NIL: DError REXXSTARTUP'
 
       do i = 1 to 6
-	 if ~show('p',portname) then
-	    address COMMAND 'wait 1'
+         if ~show('p',portname) then
+            address COMMAND 'wait 1'
       end
 
       if ~show('p',portname) then
-	 do
-	    say "Dice Error Parser (DERROR) program not found!"
-	    address COMMAND 'type' EFile
-	    exit
-	 end
+         do
+            say "Dice Error Parser (DERROR) program not found!"
+            address COMMAND 'type' EFile
+            exit
+         end
    end
 
 /**
@@ -50,8 +50,8 @@ ADDRESS COMMAND 'Delete' EFile
 
 IF ~show('p','DME.01') THEN
     DO
-	address COMMAND 'RUN >NIL: <NIL: DME'
-	address COMMAND 'Wait 5'
+        address COMMAND 'RUN >NIL: <NIL: DME'
+        address COMMAND 'Wait 5'
     END
 
 ADDRESS DME.01 title "( Hit F7 for first error, F8 for next )"

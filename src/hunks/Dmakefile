@@ -21,7 +21,7 @@
 
 SRCS=  hunks.c
 
-RSRCS= 	hunks.c
+RSRCS=  hunks.c
 
 
 MODULE= dutil

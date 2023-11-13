@@ -14,5 +14,5 @@ typedef struct TagItem TagItem;
 LONG 
 HYPER ## SendAmigaGuideContext( APTR cl, Tag tag1, ... )
 {
-	return SendAmigaGuideContextA(cl,(TagItem *)&tag1);
+        return SendAmigaGuideContextA(cl,(TagItem *)&tag1);
 }

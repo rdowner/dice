@@ -1,13 +1,13 @@
 
-libtos/libtos							libtos/libtos
+libtos/libtos                                                   libtos/libtos
 
-				  LIBTOS
+                                  LIBTOS
 
     1> cd DLIB:
     1> LIBTOS amiga.lib amigas.lib
 
     This program converts the Commodore supplied amiga.lib from large data
-    model to small data model.	You must convert amiga.lib before you can
+    model to small data model.  You must convert amiga.lib before you can
     use it with the DICE system to generate residentable programs.
 
     Note that this isn't required, but a small-data amiga.lib will generate

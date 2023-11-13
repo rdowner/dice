@@ -4,64 +4,64 @@
 OUTDIRS= ulib ubin dlib obj
 ISUBDIRS= config include dlib lib bin
 
-all:	$(OUTDIRS)
-	( cd suplib; dxmake; dxmake install )
-	( cd src; dxmake )
-	( cd lib; dxmake all )
-	( cd include; dxmake )
-	( cd config; dxmake )
+all:    $(OUTDIRS)
+        ( cd suplib; dxmake; dxmake install )
+        ( cd src; dxmake )
+        ( cd lib; dxmake all )
+        ( cd include; dxmake )
+        ( cd config; dxmake )
 
 $(OUTDIRS) : $(OUTDIRS)
-	mkdir %(left)
+        mkdir %(left)
 
-install:	$(INSTDIR) $(ISUBDIRS:"*":"$(INSTDIR)/*") dummy
-	-mkdir $(INSTDIR)
-	-mkdir $(INSTDIR)/config
-	-mkdir $(INSTDIR)/include
-	-mkdir $(INSTDIR)/dlib
-	-mkdir $(INSTDIR)/lib
-	-mkdir $(INSTDIR)/bin
-	chmod 755 $(INSTDIR)
-	chmod 755 $(INSTDIR)/config
-	chmod 755 $(INSTDIR)/include
-	chmod 755 $(INSTDIR)/dlib
-	chmod 755 $(INSTDIR)/lib
-	chmod 755 $(INSTDIR)/bin
-	( cd src; dxmake install )
-	( cd lib; dxmake install )
-	( cd include; dxmake install )
-	( cd config; dxmake install )
+install:        $(INSTDIR) $(ISUBDIRS:"*":"$(INSTDIR)/*") dummy
+        -mkdir $(INSTDIR)
+        -mkdir $(INSTDIR)/config
+        -mkdir $(INSTDIR)/include
+        -mkdir $(INSTDIR)/dlib
+        -mkdir $(INSTDIR)/lib
+        -mkdir $(INSTDIR)/bin
+        chmod 755 $(INSTDIR)
+        chmod 755 $(INSTDIR)/config
+        chmod 755 $(INSTDIR)/include
+        chmod 755 $(INSTDIR)/dlib
+        chmod 755 $(INSTDIR)/lib
+        chmod 755 $(INSTDIR)/bin
+        ( cd src; dxmake install )
+        ( cd lib; dxmake install )
+        ( cd include; dxmake install )
+        ( cd config; dxmake install )
 
 dummy:
 
 $(ISUBDIRS:"*":"$(INSTDIR)/*"): $(INSTDIR)
-	mkdir %(left)
+        mkdir %(left)
 
 $(INSTDIR): $(INSTDIR)
-	mkdir %(left)
+        mkdir %(left)
 
 clean:
-	( cd suplib; dxmake clean )
-	( cd src; dxmake clean )
-	( cd lib; dxmake clean )
-	rm -f dlib/*.o dlib/*.lib
-	rm -rf $(OUTDIRS)
+        ( cd suplib; dxmake clean )
+        ( cd src; dxmake clean )
+        ( cd lib; dxmake clean )
+        rm -f dlib/*.o dlib/*.lib
+        rm -rf $(OUTDIRS)
 
 zip:
-	-rm dice_binary.zip
-	-rm -rf binrel
-	mkdir binrel
-	cp -r README.BINARY DICE-LICENSE.TXT suplib/ dlib/ doc/ ubin/ ulib/ lib/ binrel/
-	mkdir binrel/config
-	cp config/dice.errors binrel/config
-	mkdir binrel/include
-	cp include/*.h binrel/include
-	cp -r include/lib binrel/include
-	-find binrel -name CVS -exec rm -rf {} \;
-	rm -rf binrel/include/amiga20
-	rm -rf binrel/include/amiga30
-	rm -rf binrel/lib/obj3
-	cd binrel; zip -r ../dice_binary.zip *
-	#rm -rf binrel
+        -rm dice_binary.zip
+        -rm -rf binrel
+        mkdir binrel
+        cp -r README.BINARY DICE-LICENSE.TXT suplib/ dlib/ doc/ ubin/ ulib/ lib/ binrel/
+        mkdir binrel/config
+        cp config/dice.errors binrel/config
+        mkdir binrel/include
+        cp include/*.h binrel/include
+        cp -r include/lib binrel/include
+        -find binrel -name CVS -exec rm -rf {} \;
+        rm -rf binrel/include/amiga20
+        rm -rf binrel/include/amiga30
+        rm -rf binrel/lib/obj3
+        cd binrel; zip -r ../dice_binary.zip *
+        #rm -rf binrel
 
 

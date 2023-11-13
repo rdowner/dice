@@ -1,23 +1,23 @@
 
-		;   DLOG10.A
-		;
-		;   D0/D1 = log10(D0/D1)
-		;		4(sp)
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   DLOG10.A
+                ;
+                ;   D0/D1 = log10(D0/D1)
+                ;               4(sp)
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xref	_MathIeeeDoubTransBase
-		xref	_LVOIEEEDPLog10
-		xdef	_log10
+                xref    _MathIeeeDoubTransBase
+                xref    _LVOIEEEDPLog10
+                xdef    _log10
 
-_log10		movem.l 4(sp),D0/D1
-		move.l	A6,-(sp)
-		move.l	_MathIeeeDoubTransBase(A4),A6
-		jsr	_LVOIEEEDPLog10(A6)
-		move.l	(sp)+,A6
-		rts
+_log10          movem.l 4(sp),D0/D1
+                move.l  A6,-(sp)
+                move.l  _MathIeeeDoubTransBase(A4),A6
+                jsr     _LVOIEEEDPLog10(A6)
+                move.l  (sp)+,A6
+                rts
 
-		END
+                END
 

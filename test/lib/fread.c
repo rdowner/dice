@@ -28,16 +28,16 @@ main()
     fo = fopen("T:x1", "w");
     printf("fo = %08lx\n", fo);
     if (fo) {
-	n = fwrite(q, sizeof(q[0]), 2, fo);
-	printf("n = %ld\n", n);
-	fclose(fo);
+        n = fwrite(q, sizeof(q[0]), 2, fo);
+        printf("n = %ld\n", n);
+        fclose(fo);
     }
     fi = fopen("T:x1", "r");
     printf("fi = %08lx\n", fi);
     if (fi) {
-	n = fread(r, sizeof(r[0]), 2, fi);
-	printf("n = %ld\n", n);
-	fclose(fi);
+        n = fread(r, sizeof(r[0]), 2, fi);
+        printf("n = %ld\n", n);
+        fclose(fi);
     }
     printf("%d == %d\n", q[0].a, r[0].a);
     printf("%d == %d\n", q[0].b, r[0].b);

@@ -9,9 +9,9 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 struct DataType *ObtainDataType( unsigned long type, APTR handle, Tag Tag1, ... )
 {
-	return ObtainDataTypeA(type, handle, (TagItem *)&Tag1);
+        return ObtainDataTypeA(type, handle, (TagItem *)&Tag1);
 }

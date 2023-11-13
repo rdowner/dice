@@ -22,8 +22,8 @@ OS2_0()
     char *str = "Runs under 2.0 only\n";
 
     if (SysBase->lib_Version < 36) {
-	Write(Output(), str, strlen(str));
-	exit(1);
+        Write(Output(), str, strlen(str));
+        exit(1);
     }
 }
 

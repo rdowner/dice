@@ -2,5 +2,5 @@
 
 fclose( long stream )
 {
-	Close( stream );
-}	/* fclose() */
+        Close( stream );
+}       /* fclose() */

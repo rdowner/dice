@@ -18,7 +18,7 @@
  * 
  */
 
-EXT FILE *pfp INIT(Nullfp);		/* patch file pointer */
+EXT FILE *pfp INIT(Nullfp);             /* patch file pointer */
 
 void re_patch();
 void open_patch_file();

@@ -24,13 +24,13 @@
 
 typedef struct DosLibrary   DosLibrary;
 typedef struct RootNode     RootNode;
-typedef struct DosInfo	    DosInfo;
+typedef struct DosInfo      DosInfo;
 typedef struct CommandLineInterface CLI;
 
-typedef struct MsgPort	    MsgPort;
-typedef struct Message	    Message;
-typedef struct Task	    Task;
-typedef struct Process	    Process;
+typedef struct MsgPort      MsgPort;
+typedef struct Message      Message;
+typedef struct Task         Task;
+typedef struct Process      Process;
 
 typedef struct SegNode {
     BPTR    NextEntry;
@@ -57,17 +57,17 @@ char *cmd;
 
     Forbid();
     for (node = BTOC(di->di_NetHand, SegNode); node; node = BTOC(node->NextEntry, SegNode)) {
-	if (node->SegName[0] == len) {
-	    short i;
-	    for (i = 0; i < len; ++i) {
-		if ((node->SegName[1+i] ^ cmd[i]) & ~0x20)
-		    break;
-	    }
-	    if (i == len) {
-		Permit();
-		return((long)node->SegPtr);
-	    }
-	}
+        if (node->SegName[0] == len) {
+            short i;
+            for (i = 0; i < len; ++i) {
+                if ((node->SegName[1+i] ^ cmd[i]) & ~0x20)
+                    break;
+            }
+            if (i == len) {
+                Permit();
+                return((long)node->SegPtr);
+            }
+        }
     }
     Permit();
     return(0);

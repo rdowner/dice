@@ -77,8 +77,8 @@ Prototype Type LongDoubleType;
 
 Prototype Type DefaultProcType;
 
-Prototype int	StackAlign;
-Prototype int	CodeAlign;
+Prototype int   StackAlign;
+Prototype int   CodeAlign;
 
 typedef struct SUSym {
     struct SUSym *Next;
@@ -88,61 +88,61 @@ typedef struct SUSym {
 
 int32_t NumTypesAlloc;
 
-#define HSIZE	256
-#define HMASK	(HSIZE-1)
+#define HSIZE   256
+#define HMASK   (HSIZE-1)
 
 /*
  * 68K defaults
  */
-int	PointerAlign = 2;
-int	VoidAlign = 1;
-int	CharAlign = 1;
-int	ShortAlign = 2;
-int	IntAlign = 2;
-int	LongAlign = 2;
-int	QuadAlign = 2;
-int	FloatAlign = 2;
-int	DoubleAlign = 2;
-int	LongDoubleAlign = 2;
-int	BitFieldAlign = 2;
-int	StackAlign = 4;
-int	CodeAlign = 4;
-int	StructAlign = 2;
-int	ProcAlign = 4;
+int     PointerAlign = 2;
+int     VoidAlign = 1;
+int     CharAlign = 1;
+int     ShortAlign = 2;
+int     IntAlign = 2;
+int     LongAlign = 2;
+int     QuadAlign = 2;
+int     FloatAlign = 2;
+int     DoubleAlign = 2;
+int     LongDoubleAlign = 2;
+int     BitFieldAlign = 2;
+int     StackAlign = 4;
+int     CodeAlign = 4;
+int     StructAlign = 2;
+int     ProcAlign = 4;
 
-int	PointerSize = 4;
-int	VoidSize = 0;
-int	CharSize = 1;
-int	ShortSize = 2;
-int	IntSize = 4;
-int	LongSize = 4;
-int	QuadSize = 4;
-int	FloatSize = 4;
-int	DoubleSize = 8;
-int	LongDoubleSize = 8;
-int	ProcSize = 4;	/* dummy, just shouldn't be 0 */
+int     PointerSize = 4;
+int     VoidSize = 0;
+int     CharSize = 1;
+int     ShortSize = 2;
+int     IntSize = 4;
+int     LongSize = 4;
+int     QuadSize = 4;
+int     FloatSize = 4;
+int     DoubleSize = 8;
+int     LongDoubleSize = 8;
+int     ProcSize = 4;   /* dummy, just shouldn't be 0 */
 
-int	Size4 = 4;
+int     Size4 = 4;
 
-Type VoidType	    = { TID_INT,    &VoidAlign,		0,	&VoidSize };
-Type CharType	    = { TID_INT,    &CharAlign,		0,	&CharSize };
-Type ShortType	    = { TID_INT,    &ShortAlign,	0,	&ShortSize };
-Type LongType	    = { TID_INT,    &IntAlign,		0,	&IntSize };
-Type LongLongType   = { TID_INT,    &QuadAlign,		0,	&QuadSize };
-Type CharPtrType    = { TID_PTR,    &IntAlign,		TF_UNSIGNED, &IntSize };
-Type CharAryType    = { TID_ARY,    &CharAlign,		TF_UNSIGNED, &IntSize };
-Type VoidPtrType    = { TID_PTR,    &PointerAlign,	TF_UNSIGNED, &PointerSize };
-Type LongPtrType    = { TID_PTR,    &PointerAlign,	TF_UNSIGNED, &LongSize };
+Type VoidType       = { TID_INT,    &VoidAlign,         0,      &VoidSize };
+Type CharType       = { TID_INT,    &CharAlign,         0,      &CharSize };
+Type ShortType      = { TID_INT,    &ShortAlign,        0,      &ShortSize };
+Type LongType       = { TID_INT,    &IntAlign,          0,      &IntSize };
+Type LongLongType   = { TID_INT,    &QuadAlign,         0,      &QuadSize };
+Type CharPtrType    = { TID_PTR,    &IntAlign,          TF_UNSIGNED, &IntSize };
+Type CharAryType    = { TID_ARY,    &CharAlign,         TF_UNSIGNED, &IntSize };
+Type VoidPtrType    = { TID_PTR,    &PointerAlign,      TF_UNSIGNED, &PointerSize };
+Type LongPtrType    = { TID_PTR,    &PointerAlign,      TF_UNSIGNED, &LongSize };
 
-Type UCharType	    = { TID_INT,    &CharAlign,		TF_UNSIGNED, &CharSize };
-Type UShortType     = { TID_INT,    &ShortAlign,	TF_UNSIGNED, &ShortSize };
-Type ULongType	    = { TID_INT,    &LongAlign,		TF_UNSIGNED, &LongSize };
-Type ULongLongType  = { TID_INT,    &QuadAlign,		TF_UNSIGNED, &QuadSize };
+Type UCharType      = { TID_INT,    &CharAlign,         TF_UNSIGNED, &CharSize };
+Type UShortType     = { TID_INT,    &ShortAlign,        TF_UNSIGNED, &ShortSize };
+Type ULongType      = { TID_INT,    &LongAlign,         TF_UNSIGNED, &LongSize };
+Type ULongLongType  = { TID_INT,    &QuadAlign,         TF_UNSIGNED, &QuadSize };
 
-Type FloatType	    = { TID_FLT,    &FloatAlign,	0,	&FloatSize };
-Type DoubleType     = { TID_FLT,    &DoubleAlign,	0,	&DoubleSize };
-Type LongDoubleType = { TID_FLT,    &LongDoubleAlign,	0,	&LongDoubleSize };
-Type DefaultProcType= { TID_PROC,   &ProcAlign,		0,	&ProcSize };
+Type FloatType      = { TID_FLT,    &FloatAlign,        0,      &FloatSize };
+Type DoubleType     = { TID_FLT,    &DoubleAlign,       0,      &DoubleSize };
+Type LongDoubleType = { TID_FLT,    &LongDoubleAlign,   0,      &LongDoubleSize };
+Type DefaultProcType= { TID_PROC,   &ProcAlign,         0,      &ProcSize };
 
 static Type *SBitfieldType[32];
 static Type *UBitfieldType[32];
@@ -187,42 +187,42 @@ InitTypes(int enab)
      * AllocInt preload
      */
     for (i = 0; i < arysize(IntConstAry); ++i)
-	IntConstAry[i] = i;
+        IntConstAry[i] = i;
 
     /*
      * Adjust alignments and sizes when in -CTOD mode
      */
     if (CToDClass) {
-	PointerAlign = sizeof(void *);
-	IntAlign = sizeof(int);
-	LongAlign = sizeof(int);
-	QuadAlign = sizeof(int);
-	FloatAlign = sizeof(int);
-	DoubleAlign = sizeof(int);
-	LongDoubleAlign = sizeof(int);
-	PointerSize = sizeof(void *);
-	IntSize = sizeof(int);
-	LongSize = sizeof(long);	/* Rune ifc to machine native */
-	QuadSize = sizeof(quad_t);	/* Rune ifc to machine native */
-	FloatSize = sizeof(float);
-	DoubleSize = sizeof(double);
-	LongDoubleSize = sizeof(long double);
+        PointerAlign = sizeof(void *);
+        IntAlign = sizeof(int);
+        LongAlign = sizeof(int);
+        QuadAlign = sizeof(int);
+        FloatAlign = sizeof(int);
+        DoubleAlign = sizeof(int);
+        LongDoubleAlign = sizeof(int);
+        PointerSize = sizeof(void *);
+        IntSize = sizeof(int);
+        LongSize = sizeof(long);        /* Rune ifc to machine native */
+        QuadSize = sizeof(quad_t);      /* Rune ifc to machine native */
+        FloatSize = sizeof(float);
+        DoubleSize = sizeof(double);
+        LongDoubleSize = sizeof(long double);
     }
 
     DefaultProcType.Args = -1;
     if (enab == 1 && Refs++ == 0) {
-	TypeLink(&CharType, &CharPtrType);
-	TypeLink(&CharType, &CharAryType);
-	TypeLink(&VoidType, &VoidPtrType);
-	TypeLink(&LongType, &LongPtrType);
-	TypeLink(&LongType, &DefaultProcType);
-	LooseTypeLink(&CharType,  &UCharType);
-	LooseTypeLink(&ShortType, &UShortType);
-	LooseTypeLink(&LongType,  &ULongType);
-	LooseTypeLink(&LongLongType,  &ULongLongType);
+        TypeLink(&CharType, &CharPtrType);
+        TypeLink(&CharType, &CharAryType);
+        TypeLink(&VoidType, &VoidPtrType);
+        TypeLink(&LongType, &LongPtrType);
+        TypeLink(&LongType, &DefaultProcType);
+        LooseTypeLink(&CharType,  &UCharType);
+        LooseTypeLink(&ShortType, &UShortType);
+        LooseTypeLink(&LongType,  &ULongType);
+        LooseTypeLink(&LongLongType,  &ULongLongType);
     }
     if (enab == 0 && --Refs == 0) {
-	;
+        ;
     }
 }
 
@@ -232,7 +232,7 @@ AllocInt(int n)
     int *ptr;
 
     if ((unsigned int)n < arysize(IntConstAry))
-	return(&IntConstAry[n]);
+        return(&IntConstAry[n]);
     ptr = malloc(sizeof(int));
     *ptr = n;
     return(ptr);
@@ -284,8 +284,8 @@ Type *type;
     Type *t;
 
     for (t = type->PList; t; t = t->Next) {
-	if (t->Id == TID_PTR && t->SubType == type)
-	    return(t);
+        if (t->Id == TID_PTR && t->SubType == type)
+            return(t);
     }
     ++NumTypesAlloc;
     t = AllocStructure(Type);
@@ -306,21 +306,21 @@ int32_t entries;
     Type *t;
 
     if (exp)
-	entries = ExpToConstant(exp);
+        entries = ExpToConstant(exp);
     size = entries * *type->Size;
     if (entries) {
-	for (t = type->PList; t; t = t->Next) {
-	    if (t->Id == TID_ARY && size == *t->Size && t->SubType == type)
-		return(t);
-	}
+        for (t = type->PList; t; t = t->Next) {
+            if (t->Id == TID_ARY && size == *t->Size && t->SubType == type)
+                return(t);
+        }
     }
     ++NumTypesAlloc;
     t = AllocStructure(Type);
     t->Id = TID_ARY;
     t->Align = type->Align;
     t->Size = AllocInt(size);
-    if (type->Flags & TF_CONST)     /*	array of const is const array	*/
-	t->Flags |= TF_CONST;
+    if (type->Flags & TF_CONST)     /*  array of const is const array   */
+        t->Flags |= TF_CONST;
     TypeLink(type, t);
     return(t);
 }
@@ -344,45 +344,45 @@ TypeToProcType(Type *type, Var **vars, short n, int32_t flags)
     Type *t;
 
     for (t = type->PList; t; t = t->Next) {
-	if (t->Id == TID_PROC && t->SubType == type) {
-	    if (t->Args == n && (t->Flags & -1) == (flags & -1)) {  /* XXX */
-		short i;
-		for (i = 0; i < n; ++i) {
-		    Var *v1 = vars[i];
-		    Var *v2 = t->Vars[i];
+        if (t->Id == TID_PROC && t->SubType == type) {
+            if (t->Args == n && (t->Flags & -1) == (flags & -1)) {  /* XXX */
+                short i;
+                for (i = 0; i < n; ++i) {
+                    Var *v1 = vars[i];
+                    Var *v2 = t->Vars[i];
 
-		    if (v1->Type != v2->Type || v1->u.Block != v2->u.Block || v1->Sym)
-			break;
-		    if ((v1->RegFlags ^ v2->RegFlags) & (RF_REGISTER|RF_REGMASK))
-			break;
-		}
-		if (n < 0 || i == n)
-		    return(t);
-	    }
-	}
+                    if (v1->Type != v2->Type || v1->u.Block != v2->u.Block || v1->Sym)
+                        break;
+                    if ((v1->RegFlags ^ v2->RegFlags) & (RF_REGISTER|RF_REGMASK))
+                        break;
+                }
+                if (n < 0 || i == n)
+                    return(t);
+            }
+        }
     }
     {
-	short i;
-	Var **tvars = NULL;
-	Var *xvars = NULL;
+        short i;
+        Var **tvars = NULL;
+        Var *xvars = NULL;
 
-	if (n > 0) {
-	    tvars = zalloc(sizeof(Var *) * n);
-	    xvars = zalloc(sizeof(Var) * n);
-	}
-	for (i = 0; i < n; ++i) {
-	    *xvars = *vars[i];
-	    tvars[i] = xvars++;
-	}
-	++NumTypesAlloc;
-	t = AllocStructure(Type);
-	t->Id = TID_PROC;
-	t->Align = &ProcAlign;
-	t->Size = &Size4; /* non-zero so asm_getind() does not complain */
-	t->Vars = tvars;
-	t->Args = n;
-	t->Flags= flags;
-	TypeLinkEnd(type, t);
+        if (n > 0) {
+            tvars = zalloc(sizeof(Var *) * n);
+            xvars = zalloc(sizeof(Var) * n);
+        }
+        for (i = 0; i < n; ++i) {
+            *xvars = *vars[i];
+            tvars[i] = xvars++;
+        }
+        ++NumTypesAlloc;
+        t = AllocStructure(Type);
+        t->Id = TID_PROC;
+        t->Align = &ProcAlign;
+        t->Size = &Size4; /* non-zero so asm_getind() does not complain */
+        t->Vars = tvars;
+        t->Args = n;
+        t->Flags= flags;
+        TypeLinkEnd(type, t);
     }
     return(t);
 }
@@ -400,17 +400,17 @@ int32_t  flags;
     Type *t;
 
     for (t = type->PList; t; t = t->Next) {
-	if (*t->Align == *type->Align && t->Flags == flags && *t->Size == *type->Size &&
-	    t->Id == type->Id && t->SubType == type->SubType && t->Args == type->Args &&
-	    t->Vars == type->Vars
-	) {
-	    return(t);
-	}
+        if (*t->Align == *type->Align && t->Flags == flags && *t->Size == *type->Size &&
+            t->Id == type->Id && t->SubType == type->SubType && t->Args == type->Args &&
+            t->Vars == type->Vars
+        ) {
+            return(t);
+        }
     }
 
     /*
-     *	note that SubType is not altered.. what if the type is a pointer or
-     *	something!
+     *  note that SubType is not altered.. what if the type is a pointer or
+     *  something!
      *
      *  Note that the t->Size pointer is shared with the parent.
      */
@@ -436,9 +436,9 @@ FindStructUnionType(Symbol *sym, int32_t isUnion)
     SUSym *su = SUHash[sym->Hv & HMASK];
 
     while (su && su->Sym != sym)
-	su = su->Next;
+        su = su->Next;
     if (su) {
-	return(su->Type);
+        return(su->Type);
     }
     return(NULL);
 }
@@ -451,10 +451,10 @@ Type *type;
     short i;
 
     for (i = 0; i < HSIZE; ++i) {
-	for (su = SUHash[i]; su; su = su->Next) {
-	    if (su->Type == type)
-		return(su->Sym);
-	}
+        for (su = SUHash[i]; su; su = su->Next) {
+            if (su->Type == type)
+                return(su->Sym);
+        }
     }
     return(NULL);
 }
@@ -469,19 +469,19 @@ int *pbfo;
 
     exp->ex_Type = NULL;
     if (type->Id == TID_PTR)
-	type = type->SubType;
+        type = type->SubType;
 
     if (type->Id != TID_STRUCT && type->Id != TID_UNION) {
-	yerror(exp->ex_LexIdx, EERROR_NOT_STRUCT_UNION);
-	return(0);
+        yerror(exp->ex_LexIdx, EERROR_NOT_STRUCT_UNION);
+        return(0);
     }
     for (i = 0; i < type->Args; ++i) {
-	Var *var = type->Vars[i];
-	if (var->Sym == exp->ex_Symbol) {
-	    exp->ex_Type = var->Type;
-	    *pbfo = var->u.BOffset;
-	    return(var->var_Stor.st_Offset);
-	}
+        Var *var = type->Vars[i];
+        if (var->Sym == exp->ex_Symbol) {
+            exp->ex_Type = var->Type;
+            *pbfo = var->u.BOffset;
+            return(var->var_Stor.st_Offset);
+        }
     }
     yerror(exp->ex_LexIdx, EERROR_UNDEFINED_ELEMENT, SymToString(exp->ex_Symbol));
     return(0);
@@ -534,79 +534,79 @@ int32_t flags;
     size = 0;
     boffset = IntSize * 8;
     if (flags & TF_UNALIGNED)
-	align = 1;
+        align = 1;
 
     for (i = 0; i < nv; ++i) {
-	Var *var = vars[i];
-	type = var->Type;
+        Var *var = vars[i];
+        type = var->Type;
 
-	if (var->Flags & TF_ALIGNED) {
-	    size = Align(size, 4);
-	    boffset = IntSize * 8; /* XXX */
-	}
-	if ((type->Id == TID_STRUCT || type->Id == TID_UNION) && *type->Size == 0)
-	{
-	    Undefined_Tag(type, NULL, LFBase ? LFBase->lf_Index: 0);
-	}
+        if (var->Flags & TF_ALIGNED) {
+            size = Align(size, 4);
+            boffset = IntSize * 8; /* XXX */
+        }
+        if ((type->Id == TID_STRUCT || type->Id == TID_UNION) && *type->Size == 0)
+        {
+            Undefined_Tag(type, NULL, LFBase ? LFBase->lf_Index: 0);
+        }
 
-	if (align < *type->Align && !(flags & TF_UNALIGNED))
-	    align = *type->Align;
-	if (t->Id == TID_STRUCT) {
-	    if (type->Id == TID_BITFIELD) {
-		/*
-		 *  alignment if bitfield does not fit or : 0 field.
-		 */
-		if (*type->Size > boffset || *type->Size == 0) {
-		    if (boffset >= BitFieldAlign * 8) {
-			size += BitFieldAlign;
-			boffset = IntSize * 8;
-		    } else {
-			size += IntSize;
-			boffset = IntSize * 8;
-		    }
-		}
-		size = Align(size, *type->Align);
-		boffset -= *type->Size;
-		var->u.BOffset = boffset;
-		var->var_Stor.st_Offset = size;
-	    } else {
-		if (boffset != IntSize * 8) {
-		    if (boffset >= BitFieldAlign * 8) {
-			size += BitFieldAlign;
-			boffset = IntSize * 8;
-		    } else {
-			size += IntSize;
-			boffset = IntSize * 8;
-		    }
-		}
-		if (!(flags & TF_UNALIGNED))
-		    size = Align(size, *type->Align);
-		var->var_Stor.st_Offset = size;
-		size += *type->Size;
-	    }
-	} else {
-	    if (type->Id == TID_BITFIELD) {
-		var->u.BOffset = 0;
-		if (boffset > IntSize * 8 - *type->Size)
-		    boffset = IntSize * 8 - *type->Size;
-	    } else {
-		if (size < *type->Size)
-		    size = *type->Size;
-	    }
-	}
+        if (align < *type->Align && !(flags & TF_UNALIGNED))
+            align = *type->Align;
+        if (t->Id == TID_STRUCT) {
+            if (type->Id == TID_BITFIELD) {
+                /*
+                 *  alignment if bitfield does not fit or : 0 field.
+                 */
+                if (*type->Size > boffset || *type->Size == 0) {
+                    if (boffset >= BitFieldAlign * 8) {
+                        size += BitFieldAlign;
+                        boffset = IntSize * 8;
+                    } else {
+                        size += IntSize;
+                        boffset = IntSize * 8;
+                    }
+                }
+                size = Align(size, *type->Align);
+                boffset -= *type->Size;
+                var->u.BOffset = boffset;
+                var->var_Stor.st_Offset = size;
+            } else {
+                if (boffset != IntSize * 8) {
+                    if (boffset >= BitFieldAlign * 8) {
+                        size += BitFieldAlign;
+                        boffset = IntSize * 8;
+                    } else {
+                        size += IntSize;
+                        boffset = IntSize * 8;
+                    }
+                }
+                if (!(flags & TF_UNALIGNED))
+                    size = Align(size, *type->Align);
+                var->var_Stor.st_Offset = size;
+                size += *type->Size;
+            }
+        } else {
+            if (type->Id == TID_BITFIELD) {
+                var->u.BOffset = 0;
+                if (boffset > IntSize * 8 - *type->Size)
+                    boffset = IntSize * 8 - *type->Size;
+            } else {
+                if (size < *type->Size)
+                    size = *type->Size;
+            }
+        }
     }
     if (boffset != IntSize * 8) {    /*  finish up bitfield  */
-	if (t->Id == TID_STRUCT) {
-	    if (boffset >= BitFieldAlign * 8)
-		size += BitFieldAlign;
-	    else
-		size += IntSize;
-	} else {
-	    if (boffset >= BitFieldAlign * 8 && size < StructAlign)
-		size = StructAlign;
-	    if (boffset < BitFieldAlign * 8 && size < IntSize)
-		size = IntSize;
-	}
+        if (t->Id == TID_STRUCT) {
+            if (boffset >= BitFieldAlign * 8)
+                size += BitFieldAlign;
+            else
+                size += IntSize;
+        } else {
+            if (boffset >= BitFieldAlign * 8 && size < StructAlign)
+                size = StructAlign;
+            if (boffset < BitFieldAlign * 8 && size < IntSize)
+                size = IntSize;
+        }
     }
     size = Align(size, align);
     t->Size = AllocInt(size);
@@ -618,10 +618,10 @@ int32_t flags;
         if (*type->Size) continue;
         if (type->Id != t->Id) continue;
         if (type->SubType != t->SubType) continue;
-    	type->Align = t->Align;
-    	type->Size  = t->Size;
-    	type->Args  = t->Args;
-    	type->Vars  = t->Vars;
+        type->Align = t->Align;
+        type->Size  = t->Size;
+        type->Args  = t->Args;
+        type->Vars  = t->Vars;
     }
 }
 
@@ -638,11 +638,11 @@ int bits;
     Type *t;
 
     if (*pt == NULL) {
-	*pt = t = AllocStructure(Type);
-	t->Id = TID_BITFIELD;
-	t->Flags = flags & TF_UNSIGNED;
-	t->Size = AllocInt(bits); 	/*  only type whos size is in bits */
-	t->Align= &BitFieldAlign;
+        *pt = t = AllocStructure(Type);
+        t->Id = TID_BITFIELD;
+        t->Flags = flags & TF_UNSIGNED;
+        t->Size = AllocInt(bits);       /*  only type whos size is in bits */
+        t->Align= &BitFieldAlign;
     }
     return(*pt);
 }
@@ -684,31 +684,31 @@ Type *type;
 
     switch(type->Id) {
     case TID_INT:
-	if (*type->Size == 0)
-	    return(&VoidType);
-	if (*type->Size < 4)
-	    return(&LongType);	/* XXX 68K C, int32_t == int */
-	/* fall through return the actual type */
+        if (*type->Size == 0)
+            return(&VoidType);
+        if (*type->Size < 4)
+            return(&LongType);  /* XXX 68K C, int32_t == int */
+        /* fall through return the actual type */
     case TID_PTR:
-	return(type);
+        return(type);
     case TID_FLT:
-	return(type);
-	/*
-	if ((proctype->Flags & TF_PROTOTYPE) || type != &FloatType)
-	    return(type);
-	return(&DoubleType);
-	*/
+        return(type);
+        /*
+        if ((proctype->Flags & TF_PROTOTYPE) || type != &FloatType)
+            return(type);
+        return(&DoubleType);
+        */
     case TID_STRUCT:
     case TID_UNION:
-	return(type);
+        return(type);
     case TID_ARY:
     case TID_PROC:
-	yerror(stmt->st_LexIdx, EERROR_UNSUPPORTED_RETURN_TYPE);
-	return(type);
+        yerror(stmt->st_LexIdx, EERROR_UNSUPPORTED_RETURN_TYPE);
+        return(type);
     }
     dbprintf(("ActualReturnType: unknown type id %d\n", type->Id));
     Assert(0);
-    return(0);	/* not reached */
+    return(0);  /* not reached */
 }
 
 /*
@@ -726,31 +726,31 @@ int afterEnd;
 {
     switch(type->Id) {
     case TID_BITFIELD:
-	type = &LongType;
-	break;
-    case TID_INT:	/*  automatically cast to int32_t by GenCall   */
-	if (afterEnd && *type->Size != IntSize) {
-	    type = &LongType;
-	    break;
-	}
+        type = &LongType;
+        break;
+    case TID_INT:       /*  automatically cast to int32_t by GenCall   */
+        if (afterEnd && *type->Size != IntSize) {
+            type = &LongType;
+            break;
+        }
     case TID_PTR:
-	break;
+        break;
     case TID_FLT:
-	if (afterEnd && type == &FloatType)
-	    return(&DoubleType);
-	if ((proctype->Flags & TF_PROTOTYPE) || type != &FloatType)
-	    return(type);
-	return(&DoubleType);
+        if (afterEnd && type == &FloatType)
+            return(&DoubleType);
+        if ((proctype->Flags & TF_PROTOTYPE) || type != &FloatType)
+            return(type);
+        return(&DoubleType);
     case TID_ARY:
-	return(TypeToPtrType(type->SubType));
+        return(TypeToPtrType(type->SubType));
     case TID_PROC:
     case TID_STRUCT:
     case TID_UNION:
-	break;
+        break;
     default:
         dbprintf(("ActualPassType: unknown type id %d\n", type->Id));
-    	Assert(0);
-	break;
+        Assert(0);
+        break;
     }
     return(type);
 }
@@ -771,8 +771,8 @@ ActualArgType(type)
 Type *type;
 {
     if (type->Id == TID_FLT) {
-	if (type == &FloatType)
-	    type = &DoubleType;
+        if (type == &FloatType)
+            type = &DoubleType;
     }
     return(type);
 }
@@ -792,7 +792,7 @@ Type *t2;
     if (t1 == t2 ||
         t1 == &VoidPtrType ||
         t2 == &VoidPtrType)
-	return;
+        return;
 
     /* Well, they don't strictly match.  See if we just happened to have */
     /* a simple type that has a difference of opinion about const.  You  */
@@ -836,32 +836,32 @@ Var *var;
     Assert(var->Sym);
 
     if (RegSpecOutputOpt == 1) {
-	char prgno[16];
-	void *pragma_call = TestPragmaCall(var, prgno);
+        char prgno[16];
+        void *pragma_call = TestPragmaCall(var, prgno);
 
-	if (pragma_call || (var->Flags & TF_REGCALL)) {
-	    printf("##regspec @%s(", SymToString(var->Sym));
+        if (pragma_call || (var->Flags & TF_REGCALL)) {
+            printf("##regspec @%s(", SymToString(var->Sym));
 
-	    RegCallOrder(var->Type, ano, ((pragma_call) ? prgno : NULL));
-	    for (i = 0; i < 16 && ano[i] >= 0; ++i) {
-		if (i)
-		    printf(",");
-		if (ano[i] < RB_ADDR)
-		    printf("D%d", ano[i]);
-		else
-		    printf("A%d", ano[i] - RB_ADDR);
-	    }
-	    puts(")");
-	} else {
-	    printf("##regspec _%s(*)\n", SymToString(var->Sym));
-	}
+            RegCallOrder(var->Type, ano, ((pragma_call) ? prgno : NULL));
+            for (i = 0; i < 16 && ano[i] >= 0; ++i) {
+                if (i)
+                    printf(",");
+                if (ano[i] < RB_ADDR)
+                    printf("D%d", ano[i]);
+                else
+                    printf("A%d", ano[i] - RB_ADDR);
+            }
+            puts(")");
+        } else {
+            printf("##regspec _%s(*)\n", SymToString(var->Sym));
+        }
     } else {
-	short i;
+        short i;
 
-	printf("##typespec (%s)(%s)", SymToString(var->Sym), TypeToProtoStr(var->Type->SubType, 0));
-	for (i = 0; i < var->Type->Args; ++i)
-	    printf("(%s)", TypeToProtoStr(var->Type->Vars[i]->Type, 0));
-	puts("");
+        printf("##typespec (%s)(%s)", SymToString(var->Sym), TypeToProtoStr(var->Type->SubType, 0));
+        for (i = 0; i < var->Type->Args; ++i)
+            printf("(%s)", TypeToProtoStr(var->Type->Vars[i]->Type, 0));
+        puts("");
     }
 }
 
@@ -872,16 +872,16 @@ ScanStructUnionTypes(void (*func)(Type *type, const char *name, int flags))
     short i;
 
     for (i = 0; i < HSIZE; ++i) {
-	for (su = SUHash[i]; su; su = su->Next) {
-	    char *name;
+        for (su = SUHash[i]; su; su = su->Next) {
+            char *name;
 
-	    if (su->Sym == NULL)
-		continue;
+            if (su->Sym == NULL)
+                continue;
 
-	    asprintf(&name, "%*.*s", su->Sym->Len, su->Sym->Len, su->Sym->Name);
-	    func(su->Type, name, SSCAN_TOP|SSCAN_NAME);
-	    free(name);
-	}
+            asprintf(&name, "%*.*s", su->Sym->Len, su->Sym->Len, su->Sym->Name);
+            func(su->Type, name, SSCAN_TOP|SSCAN_NAME);
+            free(name);
+        }
     }
 }
 
@@ -895,7 +895,7 @@ Symbol *sym;
 int32_t lexIdx;
 {
     if (sym == NULL)
-	sym = FindStructUnionTag(type);
+        sym = FindStructUnionTag(type);
 
     yerror(lexIdx, EERROR_UNDEFINED_TAG, SymToString(sym));
 }

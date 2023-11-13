@@ -99,14 +99,14 @@ unregex = 'unsetprefs'
 
 
 if compare(caseflag,"CASE") = 0 then do
-	res = SetGadget(AMESEARCH, 0, "ON")
-	uncase = 'setprefs'
-	end
+        res = SetGadget(AMESEARCH, 0, "ON")
+        uncase = 'setprefs'
+        end
 
 if compare(regexflag,"REGEX") = 0 then do
-	res = SetGadget(AMESEARCH, 1, "ON")
-	unregex = 'setprefs'
-	end
+        res = SetGadget(AMESEARCH, 1, "ON")
+        unregex = 'setprefs'
+        end
 
 res = SetGadget(AMESEARCH, 3, "ON" )
 
@@ -129,9 +129,9 @@ do forever
  */
       if cmd = "CANCEL" then do
          call CloseWindow(AMESEARCH)
-	 /* cancel changes in find preferences */
-	 uncase "CASE"
-	 unregex "REGEX"
+         /* cancel changes in find preferences */
+         uncase "CASE"
+         unregex "REGEX"
          quitflag = 1
       end
       else if cmd = "USE" | cmd = "CLOSEWINDOW" then do
@@ -139,43 +139,43 @@ do forever
          quitflag = 1
       end
       else if cmd = "2" | cmd = 4 then do
-	if direct = 1 then 'find' findstring
-	else 'findprev' findstring
-	if rc ~= 0 then 'beepscreen'
+        if direct = 1 then 'find' findstring
+        else 'findprev' findstring
+        if rc ~= 0 then 'beepscreen'
       end
       else if cmd = "0" then do
-	if compare(caseflag,"CASE") = 0 then do
-		call SetGadget(AMESEARCH, cmd, "OFF")
-		'unsetprefs' "CASE"
-	end
-	else do
-		call SetGadget(AMESEARCH, cmd, "ON")
-		'setprefs' "CASE"
-	end
-		'getprefs' "CASE"
-		caseflag = result
+        if compare(caseflag,"CASE") = 0 then do
+                call SetGadget(AMESEARCH, cmd, "OFF")
+                'unsetprefs' "CASE"
+        end
+        else do
+                call SetGadget(AMESEARCH, cmd, "ON")
+                'setprefs' "CASE"
+        end
+                'getprefs' "CASE"
+                caseflag = result
       end
       else if cmd = "1" then do
-	if compare(regexflag,"REGEX") = 0 then do
-		call SetGadget(AMESEARCH, cmd, "OFF")
-		'unsetprefs' "REGEX"
-	end
-	else do
-		call SetGadget(AMESEARCH, cmd, "ON")
-		'setprefs' "REGEX"
-	end
-		'getprefs' "REGEX"
-		regexflag = result
+        if compare(regexflag,"REGEX") = 0 then do
+                call SetGadget(AMESEARCH, cmd, "OFF")
+                'unsetprefs' "REGEX"
+        end
+        else do
+                call SetGadget(AMESEARCH, cmd, "ON")
+                'setprefs' "REGEX"
+        end
+                'getprefs' "REGEX"
+                regexflag = result
       end
       else if cmd = "3" then do
-	if direct = 0 then do
-		direct = 1
-		call SetGadget(AMESEARCH, cmd, "ON")
-	end
-	else do
-		call SetGadget(AMESEARCH, cmd, "OFF")
-	   	direct = 0
-	end
+        if direct = 0 then do
+                direct = 1
+                call SetGadget(AMESEARCH, cmd, "ON")
+        end
+        else do
+                call SetGadget(AMESEARCH, cmd, "OFF")
+                direct = 0
+        end
       end
    end
 end

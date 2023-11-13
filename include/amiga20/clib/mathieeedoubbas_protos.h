@@ -1,15 +1,15 @@
 #ifndef  CLIB_MATHIEEEDOUBBAS_PROTOS_H
 #define  CLIB_MATHIEEEDOUBBAS_PROTOS_H
 /*
-**	$Filename: clib/mathieeedoubbas_protos.h $
-**	$Release: 2.04 $
-**	$Revision: 30.156 $
-**	$Date: 1995/01/11 05:18:11 $
+**      $Filename: clib/mathieeedoubbas_protos.h $
+**      $Release: 2.04 $
+**      $Revision: 30.156 $
+**      $Date: 1995/01/11 05:18:11 $
 **
-**	C prototypes. For use with 32 bit integers only.
+**      C prototypes. For use with 32 bit integers only.
 **
-**	(C) Copyright 1990 Commodore-Amiga, Inc.
-**	    All Rights Reserved
+**      (C) Copyright 1990 Commodore-Amiga, Inc.
+**          All Rights Reserved
 */
 /* "mathieeedoubbas.library" */
 #ifndef  EXEC_TYPES_H
@@ -28,4 +28,4 @@ DOUBLE IEEEDPDiv( DOUBLE dividend, DOUBLE divisor );
 /*--- functions in V33 or higher (distributed as Release 1.2) ---*/
 DOUBLE IEEEDPFloor( DOUBLE parm );
 DOUBLE IEEEDPCeil( DOUBLE parm );
-#endif	 /* CLIB_MATHIEEEDOUBBAS_PROTOS_H */
+#endif   /* CLIB_MATHIEEEDOUBBAS_PROTOS_H */

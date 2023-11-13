@@ -1,6 +1,6 @@
 
 /*
- *  PRINTF.C	dos.library var-args interface to VPrintf()
+ *  PRINTF.C    dos.library var-args interface to VPrintf()
  *
  *    (c)Copyright 1992-1997 Obvious Implementations Corp.  Redistribution and
  *    use is allowed under the terms of the DICE-LICENSE FILE,

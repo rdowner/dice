@@ -1,13 +1,13 @@
 #ifndef  CLIB_IFFPARSE_PROTOS_H
 #define  CLIB_IFFPARSE_PROTOS_H
 /*
-**	$VER: iffparse_protos.h 39.1 (01.06.92)
-**	Includes Release 39.108
+**      $VER: iffparse_protos.h 39.1 (01.06.92)
+**      Includes Release 39.108
 **
-**	C prototypes. For use with 32 bit integers only.
+**      C prototypes. For use with 32 bit integers only.
 **
-**	(C) Copyright 1990-1992 Commodore-Amiga, Inc.
-**	    All Rights Reserved
+**      (C) Copyright 1990-1992 Commodore-Amiga, Inc.
+**          All Rights Reserved
 */
 #ifndef  EXEC_TYPES_H
 #include <exec/types.h>
@@ -30,9 +30,9 @@ void FreeIFF( struct IFFHandle *iff );
 LONG ReadChunkBytes( struct IFFHandle *iff, APTR buf, long numBytes );
 LONG WriteChunkBytes( struct IFFHandle *iff, APTR buf, long numBytes );
 LONG ReadChunkRecords( struct IFFHandle *iff, APTR buf, long bytesPerRecord,
-	long numRecords );
+        long numRecords );
 LONG WriteChunkRecords( struct IFFHandle *iff, APTR buf, long bytesPerRecord,
-	long numRecords );
+        long numRecords );
 
 /* Context entry/exit */
 
@@ -42,9 +42,9 @@ LONG PopChunk( struct IFFHandle *iff );
 /* Low-level handler installation */
 
 LONG EntryHandler( struct IFFHandle *iff, long type, long id, long position,
-	struct Hook *handler, APTR object );
+        struct Hook *handler, APTR object );
 LONG ExitHandler( struct IFFHandle *iff, long type, long id, long position,
-	struct Hook *handler, APTR object );
+        struct Hook *handler, APTR object );
 
 /* Built-in chunk/property handlers */
 
@@ -54,14 +54,14 @@ LONG StopChunk( struct IFFHandle *iff, long type, long id );
 LONG StopChunks( struct IFFHandle *iff, LONG *propArray, long numPairs );
 LONG CollectionChunk( struct IFFHandle *iff, long type, long id );
 LONG CollectionChunks( struct IFFHandle *iff, LONG *propArray,
-	long numPairs );
+        long numPairs );
 LONG StopOnExit( struct IFFHandle *iff, long type, long id );
 
 /* Context utilities */
 
 struct StoredProperty *FindProp( struct IFFHandle *iff, long type, long id );
 struct CollectionItem *FindCollection( struct IFFHandle *iff, long type,
-	long id );
+        long id );
 struct ContextNode *FindPropContext( struct IFFHandle *iff );
 struct ContextNode *CurrentChunk( struct IFFHandle *iff );
 struct ContextNode *ParentChunk( struct ContextNode *contextNode );
@@ -69,18 +69,18 @@ struct ContextNode *ParentChunk( struct ContextNode *contextNode );
 /* LocalContextItem support functions */
 
 struct LocalContextItem *AllocLocalItem( long type, long id, long ident,
-	long dataSize );
+        long dataSize );
 APTR LocalItemData( struct LocalContextItem *localItem );
 void SetLocalItemPurge( struct LocalContextItem *localItem,
-	struct Hook *purgeHook );
+        struct Hook *purgeHook );
 void FreeLocalItem( struct LocalContextItem *localItem );
 struct LocalContextItem *FindLocalItem( struct IFFHandle *iff, long type,
-	long id, long ident );
+        long id, long ident );
 LONG StoreLocalItem( struct IFFHandle *iff, struct LocalContextItem *localItem,
-	long position );
+        long position );
 void StoreItemInContext( struct IFFHandle *iff,
-	struct LocalContextItem *localItem,
-	struct ContextNode *contextNode );
+        struct LocalContextItem *localItem,
+        struct ContextNode *contextNode );
 
 /* IFFHandle initialization */
 
@@ -98,4 +98,4 @@ void CloseClipboard( struct ClipboardHandle *clipHandle );
 LONG GoodID( long id );
 LONG GoodType( long type );
 STRPTR IDtoStr( long id, STRPTR buf );
-#endif	 /* CLIB_IFFPARSE_PROTOS_H */
+#endif   /* CLIB_IFFPARSE_PROTOS_H */

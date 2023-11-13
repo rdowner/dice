@@ -34,10 +34,10 @@ bindkey "unfold F10"
 
 /* AME standard options (commented out).  Uncomment any you like. */
 
-/* rx "dcc:rexx/me_menu.ame"	/* Use MEMACS 2.04 style menus */ */
-/* rx "dcc:rexx/setoldfind.ame"	/* Switch to non-incremental find */ */
-/* rx "dcc:rexx/multiwindow.ame"	/* Switch AME to multiwindow mode */ */
-/* rx "dcc:rexx/auxinit.ame"	/* Init options for AME remote use */ */
+/* rx "dcc:rexx/me_menu.ame"    /* Use MEMACS 2.04 style menus */ */
+/* rx "dcc:rexx/setoldfind.ame" /* Switch to non-incremental find */ */
+/* rx "dcc:rexx/multiwindow.ame"        /* Switch AME to multiwindow mode */ */
+/* rx "dcc:rexx/auxinit.ame"    /* Init options for AME remote use */ */
 /* rx "dcc:rexx/vactive.ame"    /* Add menu items for AME requesters */ */
 
 

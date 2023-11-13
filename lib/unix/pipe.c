@@ -31,12 +31,12 @@ int *fda;
     fda[1] = open(buf, O_CREAT|O_TRUNC|O_WRONLY|O_BINARY);
 
     if (fda[0] < 0 || fda[1] < 0) {
-	if (fda[0] >= 0)
-	    close(fda[0]);
-	if (fda[1] >= 0)
-	    close(fda[1]);
-	fda[0] = fda[1] = -1;
-	return(-1);
+        if (fda[0] >= 0)
+            close(fda[0]);
+        if (fda[1] >= 0)
+            close(fda[1]);
+        fda[0] = fda[1] = -1;
+        return(-1);
     }
     return(0);
 }

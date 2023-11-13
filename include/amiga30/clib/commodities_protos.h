@@ -1,13 +1,13 @@
 #ifndef  CLIB_COMMODITIES_PROTOS_H
 #define  CLIB_COMMODITIES_PROTOS_H
 /*
-**	$VER: commodities_protos.h 38.3 (24.10.91)
-**	Includes Release 39.108
+**      $VER: commodities_protos.h 38.3 (24.10.91)
+**      Includes Release 39.108
 **
-**	C prototypes. For use with 32 bit integers only.
+**      C prototypes. For use with 32 bit integers only.
 **
-**	(C) Copyright 1990-1992 Commodore-Amiga, Inc.
-**	    All Rights Reserved
+**      (C) Copyright 1990-1992 Commodore-Amiga, Inc.
+**          All Rights Reserved
 */
 #ifndef  EXEC_TYPES_H
 #include <exec/types.h>
@@ -67,9 +67,9 @@ void DisposeCxMsg( CxMsg *cxm );
 /*  INPUT EVENT HANDLING */
 
 BOOL InvertKeyMap( unsigned long ansiCode, struct InputEvent *event,
-	struct KeyMap *km );
+        struct KeyMap *km );
 void AddIEvents( struct InputEvent *events );
 /*--- functions in V38 or higher (distributed as Release 2.1) ---*/
 /*  MORE INPUT EVENT HANDLING */
 BOOL MatchIX( struct InputEvent *event, IX *ix );
-#endif	 /* CLIB_COMMODITIES_PROTOS_H */
+#endif   /* CLIB_COMMODITIES_PROTOS_H */

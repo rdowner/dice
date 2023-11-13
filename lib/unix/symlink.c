@@ -26,8 +26,8 @@ char *linkName;
     int r = -1;
 
     if (DOSBase->dl_lib.lib_Version >= 37) {
-	if (MakeLink(UnixToAmigaPath(linkName), (long)UnixToAmigaPath(fileName), 1))
-	    r = 0;
+        if (MakeLink(UnixToAmigaPath(linkName), (long)UnixToAmigaPath(fileName), 1))
+            r = 0;
     }
     return(r);
 }

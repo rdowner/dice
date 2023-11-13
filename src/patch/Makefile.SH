@@ -60,24 +60,24 @@ addedbyconf = Makefile.old bsd config.h config.sh eunice loc pdp11 usg v7
 SHELL = /bin/sh
 
 .c.o:
-	$(CC) -c $(CFLAGS) $(LARGE) $*.c
+        $(CC) -c $(CFLAGS) $(LARGE) $*.c
 
 all: $(public) $(private) $(util)
-	@echo Done.
+        @echo Done.
 
 patch: $(obj)
-	$(CC) $(LDFLAGS) $(obj) $(libs) -o patch
+        $(CC) $(LDFLAGS) $(obj) $(libs) -o patch
 
 config.h: config.h.SH
-	sh config.h.SH
+        sh config.h.SH
 
 # won't work with csh
 install: patch
-	export PATH || exit 1
-	- mv $(bin)/patch $(bin)/patch.old
-	- if test `pwd` != $(bin); then cp $(public) $(bin); fi
-	cd $(bin); chmod 755 $(public)
-	- if test `pwd` != $(mansrc); then \
+        export PATH || exit 1
+        - mv $(bin)/patch $(bin)/patch.old
+        - if test `pwd` != $(bin); then cp $(public) $(bin); fi
+        cd $(bin); chmod 755 $(public)
+        - if test `pwd` != $(mansrc); then \
 for page in $(manpages); do \
 rm -f $(mansrc)/../cat$(manext)/`basename $$page .man`.$(manext); \
 cp $$page $(mansrc)/`basename $$page .man`.$(manext); \
@@ -85,10 +85,10 @@ done; \
 fi
 
 clean:
-	rm -f *.o *.orig core
+        rm -f *.o *.orig core
 
 realclean:
-	rm -f patch *.o *.orig *~ core $(addedbyconf)
+        rm -f patch *.o *.orig *~ core $(addedbyconf)
 
 # The following lint has practically everything turned on.  Unfortunately,
 # you have to wade through a lot of mumbo jumbo that can't be suppressed.
@@ -96,7 +96,7 @@ realclean:
 # for that spot.
 
 lint:
-	lint $(lintflags) $(defs) $(c) > patch.fuzz
+        lint $(lintflags) $(defs) $(c) > patch.fuzz
 
 patch.o: config.h common.h patch.c inp.h pch.h util.h version.h
 pch.o: config.h common.h pch.c pch.h util.h

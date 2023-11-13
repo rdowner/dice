@@ -42,15 +42,15 @@ chkabort(void)
     struct Task *task = SysBase->ThisTask;
 
     if (_AbortLockout == 0) {
-	++_AbortLockout;
-	if (task->tc_SigRecvd & SIGBREAKF_CTRL_C) {
-	    SetSignal(0, SIGBREAKF_CTRL_C);
-	    if ((*_BrkFunc)()) {
-		write(2, "^C\n", 3);
-		exit(EXIT_FAILURE);
-	    }
-	}
-	--_AbortLockout;
+        ++_AbortLockout;
+        if (task->tc_SigRecvd & SIGBREAKF_CTRL_C) {
+            SetSignal(0, SIGBREAKF_CTRL_C);
+            if ((*_BrkFunc)()) {
+                write(2, "^C\n", 3);
+                exit(EXIT_FAILURE);
+            }
+        }
+        --_AbortLockout;
     }
 }
 
@@ -58,8 +58,8 @@ static int
 brk()
 {
     if (_SigIntFunc) {
-	(*_SigIntFunc)(SIGINT);     /*	func might exit     */
-	return(0);		    /*	do not exit	    */
+        (*_SigIntFunc)(SIGINT);     /*  func might exit     */
+        return(0);                  /*  do not exit         */
     }
     return(1);
 }
@@ -71,9 +71,9 @@ fptr func;
     fptr old = _BrkFunc;
 
     if (func == NULL) {
-	_BrkFunc = brk;
+        _BrkFunc = brk;
     } else {
-	_BrkFunc = func;
+        _BrkFunc = func;
     }
     return(old);
 }

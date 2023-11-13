@@ -7,112 +7,112 @@
 ; All calls assume that the external _RexxSysBase has been set to the
 ; ARexx SYstems library base by a call to OpenLibrary.
 
-	section text,CODE
+        section text,CODE
 
-	    XREF     _RexxSysBase
+            XREF     _RexxSysBase
 
-_LVOCreateRexxMsg	equ	-$90
-_LVODeleteArgstring	equ	-$84
-_LVODeleteRexxMsg	equ	-$96
-_LVOFreePort		equ	-$EA
-_LVOInitPort		equ	-$E4
-_LVOIsRexxMsg		equ	-$A8
-_LVOCreateArgstring	equ	-$7E
-_LVOClearMem		equ	-$D8
+_LVOCreateRexxMsg       equ     -$90
+_LVODeleteArgstring     equ     -$84
+_LVODeleteRexxMsg       equ     -$96
+_LVOFreePort            equ     -$EA
+_LVOInitPort            equ     -$E4
+_LVOIsRexxMsg           equ     -$A8
+_LVOCreateArgstring     equ     -$7E
+_LVOClearMem            equ     -$D8
 
 ; First calling convention:
 ; 1, 2, or 3 parameters in (A0,A1,D0), return value in D0.
 
-	 ; msgptr = CreateRexxMsg(&replyport,&fileext,&hostname)
+         ; msgptr = CreateRexxMsg(&replyport,&fileext,&hostname)
 
-	 XDEF	  _CreateRexxMsg
+         XDEF     _CreateRexxMsg
 _CreateRexxMsg:
-	 move.w   #_LVOCreateRexxMsg,d1
-	 bra	  CallSeq1
+         move.w   #_LVOCreateRexxMsg,d1
+         bra      CallSeq1
 
 
-	 ; DeleteArgstring(argptr)
+         ; DeleteArgstring(argptr)
 
-	 XDEF	  _DeleteArgstring
+         XDEF     _DeleteArgstring
 _DeleteArgstring:
-	 move.w   #_LVODeleteArgstring,d1
-	 bra	  CallSeq1
+         move.w   #_LVODeleteArgstring,d1
+         bra      CallSeq1
 
 
-	 ; DeleteRexxMsg(msgptr)
+         ; DeleteRexxMsg(msgptr)
 
-	 XDEF	  _DeleteRexxMsg
+         XDEF     _DeleteRexxMsg
 _DeleteRexxMsg:
-	 move.w   #_LVODeleteRexxMsg,d1
-	 bra	  CallSeq1
+         move.w   #_LVODeleteRexxMsg,d1
+         bra      CallSeq1
 
 
-	 ; FreePort(&msgport)
+         ; FreePort(&msgport)
 
-	 XDEF	  _FreePort
+         XDEF     _FreePort
 _FreePort:
-	 move.w   #_LVOFreePort,d1
-	 bra	  CallSeq1
+         move.w   #_LVOFreePort,d1
+         bra      CallSeq1
 
 
-	 ; signal = InitPort(&replyport)
+         ; signal = InitPort(&replyport)
 
-	 XDEF	  _InitPort
+         XDEF     _InitPort
 _InitPort:
-	 move.w   #_LVOInitPort,d1
-	 bra	  CallSeq1
+         move.w   #_LVOInitPort,d1
+         bra      CallSeq1
 
 
-	 ; boolean = IsRexxMsg(msgptr)
+         ; boolean = IsRexxMsg(msgptr)
 
-	 XDEF	  _IsRexxMsg
+         XDEF     _IsRexxMsg
 _IsRexxMsg:
-	 move.w   #_LVOIsRexxMsg,d1
-	 bra	  CallSeq1
+         move.w   #_LVOIsRexxMsg,d1
+         bra      CallSeq1
 
-	 ; Load three arguments into (A0,A1,D0)
+         ; Load three arguments into (A0,A1,D0)
 
-	 nop	    ;fix lattice assembler bug
+         nop        ;fix lattice assembler bug
 
 CallSeq1 movea.l  4(sp),a0
-	 movea.l  8(sp),a1
-	 move.l   12(sp),d0
+         movea.l  8(sp),a1
+         move.l   12(sp),d0
 
 
-	 ; Call the library function
+         ; Call the library function
 
 CallFunc move.l   a6,-(sp)
-	 movea.l  _RexxSysBase(A4),a6
-	 jsr	  0(a6,d1.w)
-	 movea.l  (sp)+,a6
-	 rts
+         movea.l  _RexxSysBase(A4),a6
+         jsr      0(a6,d1.w)
+         movea.l  (sp)+,a6
+         rts
 
 
 ; Second calling convention:  2 parameters in (A0,D0), return value in D0.
 
-	 ; argptr = CreateArgstring(&string,length)
+         ; argptr = CreateArgstring(&string,length)
 
-	 XDEF	  _CreateArgstring
+         XDEF     _CreateArgstring
 _CreateArgstring:
-	 moveq	  #_LVOCreateArgstring,d1
-	 bra	  CallSeq2
+         moveq    #_LVOCreateArgstring,d1
+         bra      CallSeq2
 
 
-	 ; ClearMem(address,length)
+         ; ClearMem(address,length)
 
-	 XDEF	  _ClearMem
+         XDEF     _ClearMem
 _ClearMem:
-	 move.w   #_LVOClearMem,d1
-	 bra	  CallSeq2
+         move.w   #_LVOClearMem,d1
+         bra      CallSeq2
 
 
-	 ; Load two arguments (A0,D0)
+         ; Load two arguments (A0,D0)
 
-	 nop	;fix lattice assembler bug
+         nop    ;fix lattice assembler bug
 
 CallSeq2 movea.l  4(sp),a0
-	 move.l   8(sp),d0
-	 bra	  CallFunc
+         move.l   8(sp),d0
+         bra      CallFunc
 
-	 END
+         END
 

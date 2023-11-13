@@ -1,7 +1,7 @@
 After all the patch kits are run you should have the following files:
 
-Filename		Kit Description
---------		--- -----------
+Filename                Kit Description
+--------                --- -----------
 Configure                1 A shell script that installs everything system dependent.
 EXTERN.h                 4 Toggle .h files to look foreign.
 INTERN.h                 4 Toggle .h files to look domestic.

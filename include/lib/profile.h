@@ -20,9 +20,9 @@ typedef struct ProfHdr {
 } ProfHdr;
 
 typedef struct ProfSym {
-    struct ProfSym *ps_Link;	/*  hash link		*/
-    struct ProfSym *ps_SibLink; /*  different parents	*/
-    struct ProfSym *ps_Parent;	/*  parent		*/
+    struct ProfSym *ps_Link;    /*  hash link           */
+    struct ProfSym *ps_SibLink; /*  different parents   */
+    struct ProfSym *ps_Parent;  /*  parent              */
     unsigned short   ps_Size;
     unsigned short   ps_Id;
     long    ps_TimeStamp;
@@ -31,7 +31,7 @@ typedef struct ProfSym {
     long    ps_NumCalls;
     void    *ps_BegId;
     void    *ps_EndId;
-    char    ps_FuncName[4];	/*  extended structure	*/
+    char    ps_FuncName[4];     /*  extended structure  */
 } ProfSym;
 
 

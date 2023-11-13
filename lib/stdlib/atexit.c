@@ -18,10 +18,10 @@ void (*func)(void);
     AtExit *at = malloc(sizeof(AtExit));
 
     if (at) {
-	at->Next = _ExitBase;
-	at->Func = func;
-	_ExitBase = at;
-	return(0);
+        at->Next = _ExitBase;
+        at->Func = func;
+        _ExitBase = at;
+        return(0);
     }
     return(-1);
 }

@@ -10,7 +10,7 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 APTR
 HYPER ## AllocAslRequestTags(type, tag1, ...)

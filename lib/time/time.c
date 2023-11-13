@@ -21,11 +21,11 @@ time_t *pt;
 
     DateStamp((struct DateStamp *)v);
 
-    /*	days		     mins	  ticks */
+    /*  days                 mins         ticks */
 
     t = v[0] * (1440 * 60) + v[1] * 60 + v[2] / 50 + _TimeCompensation;
     if (pt)
-	*pt = t;
+        *pt = t;
     return(t);
 }
 

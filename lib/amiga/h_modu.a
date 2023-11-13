@@ -1,23 +1,23 @@
 
-		;   MODU.A
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
-		;
-		;   D0/D1 -> 32 signed modulus
-		;   32/32 -> 32 signed modulus
-		;
-		;   HYPER module, cannot use pc-relative
+                ;   MODU.A
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;
+                ;   D0/D1 -> 32 signed modulus
+                ;   32/32 -> 32 signed modulus
+                ;
+                ;   HYPER module, cannot use pc-relative
 
-		section text,code
+                section text,code
 
-		xdef	__modu
-		xdef	_hyper__modu
-		xref	__divu
+                xdef    __modu
+                xdef    _hyper__modu
+                xref    __divu
 
 _hyper__modu:
-__modu: 	jsr	__divu
-		move.l	D1,D0		; modulus return
-		rts
+__modu:         jsr     __divu
+                move.l  D1,D0           ; modulus return
+                rts
 
-		END
+                END
 

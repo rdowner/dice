@@ -1,13 +1,13 @@
 #ifndef  CLIB_MATHFFP_PROTOS_H
 #define  CLIB_MATHFFP_PROTOS_H
 /*
-**	$VER: mathffp_protos.h 1.4 (03.05.90)
-**	Includes Release 39.108
+**      $VER: mathffp_protos.h 1.4 (03.05.90)
+**      Includes Release 39.108
 **
-**	C prototypes. For use with 32 bit integers only.
+**      C prototypes. For use with 32 bit integers only.
 **
-**	(C) Copyright 1990-1992 Commodore-Amiga, Inc.
-**	    All Rights Reserved
+**      (C) Copyright 1990-1992 Commodore-Amiga, Inc.
+**          All Rights Reserved
 */
 #ifndef  EXEC_TYPES_H
 #include <exec/types.h>
@@ -25,4 +25,4 @@ FLOAT SPDiv( FLOAT leftParm, FLOAT rightParm );
 /*--- functions in V33 or higher (distributed as Release 1.2) ---*/
 FLOAT SPFloor( FLOAT parm );
 FLOAT SPCeil( FLOAT parm );
-#endif	 /* CLIB_MATHFFP_PROTOS_H */
+#endif   /* CLIB_MATHFFP_PROTOS_H */

@@ -1,65 +1,65 @@
-#include	"defs.h"
-#include	"dbug_protos.h"
+#include        "defs.h"
+#include        "dbug_protos.h"
 
 // ************************************************************************
 
-Prototype WORD		RefreshSource(WORD maxLines, BOOL fullRefresh);
+Prototype WORD          RefreshSource(WORD maxLines, BOOL fullRefresh);
 
 // ************************************************************************
 
 
-	DEBUG	*debug = FindDebug(windowTop);
-	SOURCE	*source;
+        DEBUG   *debug = FindDebug(windowTop);
+        SOURCE  *source;
 
-	if (!debug) return FALSE;
-	source = FindSource(debug, windowTop);
-	while (source != debug->tableEnd) {
-		if (source->address != windowTop) {
-			windowTop = source->address;
-			RefreshWindow(TRUE);
-			return TRUE;
-		}
-		++source;
-	}
-	return FALSE;
+        if (!debug) return FALSE;
+        source = FindSource(debug, windowTop);
+        while (source != debug->tableEnd) {
+                if (source->address != windowTop) {
+                        windowTop = source->address;
+                        RefreshWindow(TRUE);
+                        return TRUE;
+                }
+                ++source;
+        }
+        return FALSE;
 }
 
-WORD	RefreshSource(WORD maxLines, BOOL fullRefresh) {
-	ULONG	address = windowTop;
-	WORD	count = 0;
-	char	*line, *lineEnd;
-	SOURCE	*source, *nextSource;
-	DEBUG	*debug;
-	ULONG	lineNum;
+WORD    RefreshSource(WORD maxLines, BOOL fullRefresh) {
+        ULONG   address = windowTop;
+        WORD    count = 0;
+        char    *line, *lineEnd;
+        SOURCE  *source, *nextSource;
+        DEBUG   *debug;
+        ULONG   lineNum;
 
-	if (maxLines) {
-		ScrPuts("\x9b0m\x9b7mSOURCE MODE");
-		count++; Newline(); maxLines--;
-	}
+        if (maxLines) {
+                ScrPuts("\x9b0m\x9b7mSOURCE MODE");
+                count++; Newline(); maxLines--;
+        }
 
-	debug = FindDebug(address);
-	if (!debug || !debug->source) return count;
-	source = FindSource(debug, address);
-	while (maxLines > 0 && source != debug->tableEnd) {
-		address = source->address;
-		nextSource = &source[1];
-		if (address == programPC) ScrHighlight();
-		if (IsBreakpoint(address)) ScrItalics();
-		line = FindSourceLine(debug, source);
-		windowBottom = address;
-		lineNum = source->lineNumber;
-		while (maxLines > 0) {
-			lineEnd = line;
-			while (*lineEnd && *lineEnd != '\n') lineEnd++;
-			ScrPrintf("%6d. ", lineNum); // PrintAddress(address);
-			ScrWrite(line, lineEnd-line);
-			line = lineEnd;
-			if (*line) line++; else return count;
-			Newline(); count++; maxLines--;
-			lineNum++; if (nextSource != debug->tableEnd && lineNum >= nextSource->lineNumber) break;
-		}
-		source = nextSource;
-	}
-	return count;
+        debug = FindDebug(address);
+        if (!debug || !debug->source) return count;
+        source = FindSource(debug, address);
+        while (maxLines > 0 && source != debug->tableEnd) {
+                address = source->address;
+                nextSource = &source[1];
+                if (address == programPC) ScrHighlight();
+                if (IsBreakpoint(address)) ScrItalics();
+                line = FindSourceLine(debug, source);
+                windowBottom = address;
+                lineNum = source->lineNumber;
+                while (maxLines > 0) {
+                        lineEnd = line;
+                        while (*lineEnd && *lineEnd != '\n') lineEnd++;
+                        ScrPrintf("%6d. ", lineNum); // PrintAddress(address);
+                        ScrWrite(line, lineEnd-line);
+                        line = lineEnd;
+                        if (*line) line++; else return count;
+                        Newline(); count++; maxLines--;
+                        lineNum++; if (nextSource != debug->tableEnd && lineNum >= nextSource->lineNumber) break;
+                }
+                source = nextSource;
+        }
+        return count;
 }
 

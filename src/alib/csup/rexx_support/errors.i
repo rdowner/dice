@@ -1,12 +1,12 @@
          IFND     REXX_ERRORS_I
 REXX_ERRORS_I SET      1
 **
-**	$Id: errors.i,v 30.0 1994/06/10 18:10:49 dice Exp $
+**      $Id: errors.i,v 30.0 1994/06/10 18:10:49 dice Exp $
 **
-**	Definitions for ARexx error codes
+**      Definitions for ARexx error codes
 **
-**	(C) Copyright 1986,1987,1988,1989,1990 William S. Hawes.
-**		All Rights Reserved
+**      (C) Copyright 1986,1987,1988,1989,1990 William S. Hawes.
+**              All Rights Reserved
 **
 
 ERRC_MSG    EQU   0                 ; error code offset

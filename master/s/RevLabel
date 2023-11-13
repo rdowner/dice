@@ -4,15 +4,15 @@
 ;
 ; $VER: RevLabel 1.1 (13.11.91)
 ;
-;	RevLabel for Amiga.  Assigns symbolic label "label" to all
-;	files in directory "RCS/#?".  Use this command to "freeze" or
-;	identify major releases.
+;       RevLabel for Amiga.  Assigns symbolic label "label" to all
+;       files in directory "RCS/#?".  Use this command to "freeze" or
+;       identify major releases.
 ;
-;	Written for AmigaWorld Tech Journal by Bryce Nesbitt.
+;       Written for AmigaWorld Tech Journal by Bryce Nesbitt.
 ;
-;	WARNING: Amiga shell command lines start truncating at 256
-;	characters.  The commented-out section deals with this
-;	limitation at the cost of execution speed.
+;       WARNING: Amiga shell command lines start truncating at 256
+;       characters.  The commented-out section deals with this
+;       limitation at the cost of execution speed.
 ;
 echo "*NPreparing to mark all RCS files with label *"{label}*"."
 echo "Checking for locked files:*N"

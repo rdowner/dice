@@ -1,26 +1,26 @@
 
-		;   APROF.A
-		;
-		;   Profiler tags
+                ;   APROF.A
+                ;
+                ;   Profiler tags
 
-		section text,code
+                section text,code
 
-		xdef	__ProfInit
-		xdef	__ProfExec
+                xdef    __ProfInit
+                xdef    __ProfExec
 
-		xref	@_CProfInit
-		xref	@_CProfExec
+                xref    @_CProfInit
+                xref    @_CProfExec
 
-__ProfInit	move.l	A6,A1
-		jsr	@_CProfInit(pc)
-		moveq.l #0,D0
-		rts
+__ProfInit      move.l  A6,A1
+                jsr     @_CProfInit(pc)
+                moveq.l #0,D0
+                rts
 
-__ProfExec	movem.l D0/D1/A0/A1,-(sp)
-		move.l	16(sp),A0           ; return address (subroutine id)
-		jsr	@_CProfExec(pc)
-		movem.l (sp)+,D0/D1/A0/A1
-		rts
+__ProfExec      movem.l D0/D1/A0/A1,-(sp)
+                move.l  16(sp),A0           ; return address (subroutine id)
+                jsr     @_CProfExec(pc)
+                movem.l (sp)+,D0/D1/A0/A1
+                rts
 
-		END
+                END
 

@@ -46,7 +46,7 @@
 
 #include "defs.h"
 #ifdef _DCC
-#include <lib/misc.h>	/*  get _parseargs1() & 2   */
+#include <lib/misc.h>   /*  get _parseargs1() & 2   */
 #include <ioctl.h>
 #include <clib/dicecache_protos.h>
 #endif
@@ -79,13 +79,13 @@ Prototype char *TokenToStr(short);
 Prototype int32_t FindLexFileLine(int32_t, char **, int32_t *, int32_t *);
 Prototype short FindLexCharAt(int32_t);
 
-Prototype int32_t	  LexIntConst;
-Prototype char	  *LexStrConst;   /*  also flt constant   */
-Prototype int32_t	  LexStrLen;
+Prototype int32_t         LexIntConst;
+Prototype char    *LexStrConst;   /*  also flt constant   */
+Prototype int32_t         LexStrLen;
 Prototype Symbol  *LexSym;
-Prototype void	  *LexData;
-Prototype char	  LexHackColon;
-Prototype char	  LexUnsigned;
+Prototype void    *LexData;
+Prototype char    LexHackColon;
+Prototype char    LexUnsigned;
 
 Prototype char FileName[128];
 Prototype ubyte SymbolSpace[256];
@@ -102,57 +102,57 @@ Prototype short (*LexDispatch[256])(void);
 
 LexFileNode *LFBase;
 
-int32_t	LexIntConst;
-char	*LexStrConst;	/*  also flt constant	*/
-int32_t	LexStrLen;
-Symbol	*LexSym;
-void	*LexData;
-char	LexHackColon;
-char	LexUnsigned;
+int32_t LexIntConst;
+char    *LexStrConst;   /*  also flt constant   */
+int32_t LexStrLen;
+Symbol  *LexSym;
+void    *LexData;
+char    LexHackColon;
+char    LexUnsigned;
 
 char FileName[128];
 ubyte SymbolSpace[256];
 int32_t Depth;
 
-int32_t	LexCacheHits;
-int32_t	LexCacheMisses;
+int32_t LexCacheHits;
+int32_t LexCacheMisses;
 
 #ifdef NOTDEF
 xSymbol  *LexSymRefSym[256];
-xshort	 LexSymRefIdx;
+xshort   LexSymRefIdx;
 #endif
 
-short	ErrorInFileValid;
+short   ErrorInFileValid;
 
-#define TLF	 1
-#define TWHITE	 2
-#define TLEX	 3
-#define TALPHA	 4
-#define TZERO	 5
-#define TNUM	 6
-#define TCHARC	 7
-#define TSTRC	 8
-#define TTOKEN	 9
+#define TLF      1
+#define TWHITE   2
+#define TLEX     3
+#define TALPHA   4
+#define TZERO    5
+#define TNUM     6
+#define TCHARC   7
+#define TSTRC    8
+#define TTOKEN   9
 #define TALPHX  10
 
 static const ubyte TokenType[256] = {
-/*00*/	0,	0,	0,	0,	0,	0,	0,	0,
-	0,	TWHITE, TLF,	0,	TWHITE, TWHITE, 0,	0,
-/*10*/	0,	0,	0,	0,	0,	0,	0,	0,
-	0,	0,	0,	0,	0,	0,	0,	0,
-/*20*/	TWHITE, 0,	TSTRC,	0,	0,	0,	0,	TCHARC,
-	0,	0,	0,	0,	0,	0,	0,	0,
-/*30*/	TZERO,	TNUM,	TNUM,	TNUM,	TNUM,	TNUM,	TNUM,	TNUM,
-	TNUM,	TNUM,	0,	0,	0,	0,	0,	0,
-/*40*/	0     , TALPHX, TALPHX, TALPHX, TALPHX, TALPHX, TALPHX, TALPHA,
-	TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA,
-/*50*/	TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA,
-	TALPHA, TALPHA, TALPHA, 0,	0,	0,	0,	TALPHA,
-/*60*/	0     , TALPHX, TALPHX, TALPHX, TALPHX, TALPHX, TALPHX, TALPHA,
-	TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA,
-/*70*/	TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA,
-	TALPHA, TALPHA, TALPHA, 0,	0,	0,	0,	0,
-/*80*/	TTOKEN, TTOKEN, TTOKEN, TTOKEN, TTOKEN, TTOKEN, TTOKEN, TTOKEN
+/*00*/  0,      0,      0,      0,      0,      0,      0,      0,
+        0,      TWHITE, TLF,    0,      TWHITE, TWHITE, 0,      0,
+/*10*/  0,      0,      0,      0,      0,      0,      0,      0,
+        0,      0,      0,      0,      0,      0,      0,      0,
+/*20*/  TWHITE, 0,      TSTRC,  0,      0,      0,      0,      TCHARC,
+        0,      0,      0,      0,      0,      0,      0,      0,
+/*30*/  TZERO,  TNUM,   TNUM,   TNUM,   TNUM,   TNUM,   TNUM,   TNUM,
+        TNUM,   TNUM,   0,      0,      0,      0,      0,      0,
+/*40*/  0     , TALPHX, TALPHX, TALPHX, TALPHX, TALPHX, TALPHX, TALPHA,
+        TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA,
+/*50*/  TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA,
+        TALPHA, TALPHA, TALPHA, 0,      0,      0,      0,      TALPHA,
+/*60*/  0     , TALPHX, TALPHX, TALPHX, TALPHX, TALPHX, TALPHX, TALPHA,
+        TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA,
+/*70*/  TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA, TALPHA,
+        TALPHA, TALPHA, TALPHA, 0,      0,      0,      0,      0,
+/*80*/  TTOKEN, TTOKEN, TTOKEN, TTOKEN, TTOKEN, TTOKEN, TTOKEN, TTOKEN
 };
 
 /*short LexDispatch*/
@@ -177,21 +177,21 @@ InitLex(void)
 {
     short i;
 
-    Assert(1);	/* filler to avoid gnu compiler warnings */
+    Assert(1);  /* filler to avoid gnu compiler warnings */
 
     {
-	ubyte *ss = SymbolSpace;
+        ubyte *ss = SymbolSpace;
 
-	for (i = 'a'; i <= 'z'; ++i)
-	    ss[i] = 1;
-	for (i = 'A'; i <= 'Z'; ++i)
-	    ss[i] = 1;
-	for (i = '0'; i <= '9'; ++i)
-	    ss[i] = 1;
-	ss['_'] = 1;
+        for (i = 'a'; i <= 'z'; ++i)
+            ss[i] = 1;
+        for (i = 'A'; i <= 'Z'; ++i)
+            ss[i] = 1;
+        for (i = '0'; i <= '9'; ++i)
+            ss[i] = 1;
+        ss['_'] = 1;
     }
     for (i = 0; i < 256; ++i)
-	LexDispatch[i] = LexFuncTable[(short)TokenType[i]];
+        LexDispatch[i] = LexFuncTable[(short)TokenType[i]];
 }
 
 
@@ -205,24 +205,24 @@ PushLexFile(char *name, short nameLen, int32_t begPos, int32_t bytes)
     LexFileNode *lf = zalloc(sizeof(LexFileNode) + nameLen + 1);
 
     if (bytes == -2) {
-	lf->lf_FileName = "";
-	lf->lf_Fi = (FILE *)name;
+        lf->lf_FileName = "";
+        lf->lf_Fi = (FILE *)name;
     } else {
-	lf->lf_FileName = (char *)(lf + 1);
-	movmem(name, lf->lf_FileName, nameLen);
-	lf->lf_FileName[nameLen] = 0;
+        lf->lf_FileName = (char *)(lf + 1);
+        movmem(name, lf->lf_FileName, nameLen);
+        lf->lf_FileName[nameLen] = 0;
 
-	if ((lf->lf_Fi = fopen(lf->lf_FileName, "r")) == NULL)
-	    zerror(EFATAL_CANT_OPEN_FILE, lf->lf_FileName);
+        if ((lf->lf_Fi = fopen(lf->lf_FileName, "r")) == NULL)
+            zerror(EFATAL_CANT_OPEN_FILE, lf->lf_FileName);
     }
 
     if (bytes < 0) {
-	fseek(lf->lf_Fi, 0L, 2);
-	if ((bytes = ftell(lf->lf_Fi)) < 0)
-	    zerror(EFATAL_INPUT_NOT_SEEKABLE);
-	fseek(lf->lf_Fi, begPos, 0);
+        fseek(lf->lf_Fi, 0L, 2);
+        if ((bytes = ftell(lf->lf_Fi)) < 0)
+            zerror(EFATAL_INPUT_NOT_SEEKABLE);
+        fseek(lf->lf_Fi, begPos, 0);
     } else {
-	fseek(lf->lf_Fi, begPos, 0);
+        fseek(lf->lf_Fi, begPos, 0);
     }
 #ifdef MINIDICE2
     if (bytes > 65530) {
@@ -235,13 +235,13 @@ PushLexFile(char *name, short nameLen, int32_t begPos, int32_t bytes)
      *        return it for cached files.
      */
     if (ioctl(fileno(lf->lf_Fi), IOC_DOMAIN, NULL) != IODOM_AMIGADOS) {
-	/*
-	 *  DICECACHE support - directly reference the cache.  Note that
-	 *  we cannot close the file handle without invalidating our
-	 *  cache entry and, since we reference pointers into the buffer,
-	 *  that means we cannot close any handles until the program is
-	 *  done.
-	 */
+        /*
+         *  DICECACHE support - directly reference the cache.  Note that
+         *  we cannot close the file handle without invalidating our
+         *  cache entry and, since we reference pointers into the buffer,
+         *  that means we cannot close any handles until the program is
+         *  done.
+         */
 
         struct {
             void *cfh_Cn;    // dicecache.library descriptor
@@ -249,20 +249,20 @@ PushLexFile(char *name, short nameLen, int32_t begPos, int32_t bytes)
             int32_t  cfh_Pos;
         } *cfh = (void *)ioctl(fileno(lf->lf_Fi), IOC_GETDESC, NULL);
 
-	lf->lf_Buf = DiceCacheSeek(cfh->cfh_Cn, begPos, &lf->lf_Size);
-	lf->lf_Size = bytes;	/* XXX check against lf_Size	*/
-	/*fprintf(stderr, "PUSH-CACHED %08lx %d\n", lf->lf_Buf, lf->lf_Size);*/
+        lf->lf_Buf = DiceCacheSeek(cfh->cfh_Cn, begPos, &lf->lf_Size);
+        lf->lf_Size = bytes;    /* XXX check against lf_Size    */
+        /*fprintf(stderr, "PUSH-CACHED %08lx %d\n", lf->lf_Buf, lf->lf_Size);*/
     } else
 #endif
     {
-	/*fprintf(stderr, "PUSH-UNCACHED %d\n", bytes);*/
-	if ((lf->lf_Buf = malloc(bytes + 4)) != NULL) {
-	    fread(lf->lf_Buf, bytes, 1, lf->lf_Fi);
-	    clrmem(lf->lf_Buf + bytes, 4);
-	    lf->lf_Size = bytes;
-	} else {
-	    NoMem();
-	}
+        /*fprintf(stderr, "PUSH-UNCACHED %d\n", bytes);*/
+        if ((lf->lf_Buf = malloc(bytes + 4)) != NULL) {
+            fread(lf->lf_Buf, bytes, 1, lf->lf_Fi);
+            clrmem(lf->lf_Buf + bytes, 4);
+            lf->lf_Size = bytes;
+        } else {
+            NoMem();
+        }
     }
 
     lf->lf_Next = LFBase;
@@ -278,16 +278,16 @@ PopLexFile(void)
     /*fprintf(stderr, "POPLEX %d\n", LFBase->lf_Index);*/
 
     if (LFBase) {
-	LexFileNode *lf;
+        LexFileNode *lf;
 
-	if ((lf = LFBase->lf_Next) != NULL) {
-	    LFBase = lf;
-	    return(1);
-	}
-	/*
-	 *  don't clear out last LFBase because lexical routines presume
-	 *  one exists!
-	 */
+        if ((lf = LFBase->lf_Next) != NULL) {
+            LFBase = lf;
+            return(1);
+        }
+        /*
+         *  don't clear out last LFBase because lexical routines presume
+         *  one exists!
+         */
     }
     return(0);
 }
@@ -302,11 +302,11 @@ LexToken(void)
 
 #ifdef NOTDEF
 x    if (*ptr == TokCppRef_Byte) {
-x	 return(LexSymbolRef(ptr[1], i + 2));
+x        return(LexSymbolRef(ptr[1], i + 2));
 x    } else
 #endif
     {
-	return((ptr[0] << 12) | ptr[1]);
+        return((ptr[0] << 12) | ptr[1]);
     }
 }
 
@@ -318,7 +318,7 @@ LexLineFeed(void)
     char *base;
 
     do {
-	base = ptr;
+        base = ptr;
 
         while (*ptr == '\n')    /*  optimize \n\n\n...  */
             ++ptr;
@@ -415,7 +415,7 @@ LexWhiteSpace(void)
     const char *ptr = LFBase->lf_Buf + LFBase->lf_Index;
 
     while (tt[(ubyte)*ptr] == TWHITE)
-	++ptr;
+        ++ptr;
     LFBase->lf_Index = (char *)ptr - (char *)LFBase->lf_Buf;
     return(GetToken());
 }
@@ -438,10 +438,10 @@ LexSymbol(void)
     const char *ptr = base;
 
     {
-	ubyte *ss = SymbolSpace;
+        ubyte *ss = SymbolSpace;
 
-	while (ss[(ubyte)*ptr])
-	    ++ptr;
+        while (ss[(ubyte)*ptr])
+            ++ptr;
     }
     LexSym = MakeSymbol(base, ptr - base, TokId, NULL);
     LexData= LexSym->Data;
@@ -452,28 +452,28 @@ x    LexSymRefIdx = (LexSymRefIdx + 1) & 0xFF;
 #endif
 
     {
-	const ubyte *tt = TokenType;
+        const ubyte *tt = TokenType;
 
-	while (tt[(ubyte)*ptr] == TWHITE)
-	    ++ptr;
+        while (tt[(ubyte)*ptr] == TWHITE)
+            ++ptr;
     }
     LFBase->lf_Index = (char *)ptr - (char *)LFBase->lf_Buf;
 
     if (*ptr != ':') {
-	LexHackColon = 0;
-	return(LexSym->LexId);
+        LexHackColon = 0;
+        return(LexSym->LexId);
     } else {
-	LexHackColon = 1;
+        LexHackColon = 1;
 
-	switch(LexSym->LexId) {
-	case TokVarId:
-	case TokCase:
-	case TokDefault:
-	case TokEnumConst:
-	    return(LexSym->LexId);
-	default:
-	    return(TokId);
-	}
+        switch(LexSym->LexId) {
+        case TokVarId:
+        case TokCase:
+        case TokDefault:
+        case TokEnumConst:
+            return(LexSym->LexId);
+        default:
+            return(TokId);
+        }
     }
 }
 
@@ -499,20 +499,20 @@ x#endif
 x    LexData = LexSym->Data;
 x
 x    if (LexBuf[i] == ':') {
-x	 LexHackColon = 1;
+x        LexHackColon = 1;
 x
-x	 switch(LexSym->LexId) {
-x	 case TokVarId:
-x	 case TokCase:
-x	 case TokDefault:
-x	 case TokEnumConst:
-x	     return(LexSym->LexId);
-x	 default:
-x	     return(TokId);
-x	 }
+x        switch(LexSym->LexId) {
+x        case TokVarId:
+x        case TokCase:
+x        case TokDefault:
+x        case TokEnumConst:
+x            return(LexSym->LexId);
+x        default:
+x            return(TokId);
+x        }
 x    } else {
-x	 LexHackColon = 0;
-x	 return(LexSym->LexId);
+x        LexHackColon = 0;
+x        return(LexSym->LexId);
 x    }
 x}
 x
@@ -526,10 +526,10 @@ short
 LexInteger(void)
 {
     int32_t i = LFBase->lf_Index + 1;
-    ubyte c = LFBase->lf_Buf[i++];	    /*	second char */
+    ubyte c = LFBase->lf_Buf[i++];          /*  second char */
 
     if (c == 'x' || c == 'X')
-	return(LexHex(LFBase->lf_Buf[i], i + 1));
+        return(LexHex(LFBase->lf_Buf[i], i + 1));
     return(LexOctal(c, i));
 }
 
@@ -537,24 +537,24 @@ short
 LexOctal(ubyte c, int32_t i)
 {
     int32_t v = 0;
-    int32_t b = i - 2;	/*  if flt  */
+    int32_t b = i - 2;  /*  if flt  */
     char *lexBuf = LFBase->lf_Buf;
 
     LexUnsigned = 0;
     while (c >= '0' && c <= '7') {
-	v = (v << 3) + (c - '0');
-	c = lexBuf[i++];
+        v = (v << 3) + (c - '0');
+        c = lexBuf[i++];
     }
     if (v & 0x80000000)
-	LexUnsigned = 1;
+        LexUnsigned = 1;
 
     while (c == 'L' || c == 'l' || c == 'U' || c == 'u') {
-	if (c == 'u' || c == 'U')
-	    LexUnsigned = 1;
-	c = lexBuf[i++];
+        if (c == 'u' || c == 'U')
+            LexUnsigned = 1;
+        c = lexBuf[i++];
     }
     if (c == '.' || c == 'e' || c == 'E')
-	return(LexFloating(b, i));
+        return(LexFloating(b, i));
 
     LFBase->lf_Index = i - 1;
     LexIntConst = v;
@@ -568,23 +568,23 @@ LexDecimal(void)
     int32_t i = LFBase->lf_Index;
     ubyte c = lexBuf[i++];
     int32_t v = 0;
-    int32_t b = i - 1;	/*  if flt  */
+    int32_t b = i - 1;  /*  if flt  */
 
     LexUnsigned = 0;
     while (c >= '0' && c <= '9') {
-	v = (v * 10) + (c - '0');
-	c = lexBuf[i++];
+        v = (v * 10) + (c - '0');
+        c = lexBuf[i++];
     }
     if (v & 0x80000000)
-	LexUnsigned = 1;
+        LexUnsigned = 1;
 
     while (c == 'L' || c == 'l' || c == 'U' || c == 'u') {
-	if (c == 'u' || c == 'U')
-	    LexUnsigned = 1;
-	c = lexBuf[i++];
+        if (c == 'u' || c == 'U')
+            LexUnsigned = 1;
+        c = lexBuf[i++];
     }
     if (c == '.' || c == 'e' || c == 'E')
-	return(LexFloating(b, i - 1));
+        return(LexFloating(b, i - 1));
     LFBase->lf_Index = i - 1;
     LexIntConst = v;
     return(TokIntConst);
@@ -597,18 +597,18 @@ LexHex(ubyte c, int32_t i)
     char *lexBuf = LFBase->lf_Buf;
 
     for (;;) {
-	if (c >= '0' && c <= '9')
-	    v = (v << 4) + (c - '0');
-	else if (c >= 'a' && c <= 'f')
-	    v = (v << 4) + (c - 'a' + 10);
-	else if (c >= 'A' && c <= 'F')
-	    v = (v << 4) + (c - 'A' + 10);
-	else
-	    break;
-	c = lexBuf[i++];
+        if (c >= '0' && c <= '9')
+            v = (v << 4) + (c - '0');
+        else if (c >= 'a' && c <= 'f')
+            v = (v << 4) + (c - 'a' + 10);
+        else if (c >= 'A' && c <= 'F')
+            v = (v << 4) + (c - 'A' + 10);
+        else
+            break;
+        c = lexBuf[i++];
     }
     while (c == 'L' || c == 'l' || c == 'U' || c == 'u')
-	c = lexBuf[i++];
+        c = lexBuf[i++];
     LFBase->lf_Index = i - 1;
     LexIntConst = v;
     LexUnsigned = 1;
@@ -625,21 +625,21 @@ int32_t b, i;
     LexStrConst = lexBuf + b;
 
     if (c == '.')
-	c = lexBuf[i++];
+        c = lexBuf[i++];
 
     while (c >= '0' && c <= '9')
-	c = lexBuf[i++];
+        c = lexBuf[i++];
     if (c == 'e' || c == 'E') {     /*  En E+n E-n  */
-	/*
-	 * used to set lexBuf[-1] to 'E' to fix bug in afp()
-	 * but no longer since lexBuf may be direct from the cache!
-	 */
+        /*
+         * used to set lexBuf[-1] to 'E' to fix bug in afp()
+         * but no longer since lexBuf may be direct from the cache!
+         */
 
-	c = lexBuf[i++];
-	if (c == '+' || c == '-')
-	    c = lexBuf[i++];
-	while (c >= '0' && c <= '9')
-	    c = lexBuf[i++];
+        c = lexBuf[i++];
+        if (c == '+' || c == '-')
+            c = lexBuf[i++];
+        while (c >= '0' && c <= '9')
+            c = lexBuf[i++];
     }
 
     LexStrLen = i - b - 1;
@@ -648,14 +648,14 @@ int32_t b, i;
     switch(c) {
     case 'f':
     case 'F':
-	LexData = &FloatType;
-	++i;
-	break;
+        LexData = &FloatType;
+        ++i;
+        break;
     case 'l':
     case 'L':
-	LexData = &LongDoubleType;
-	++i;
-	break;
+        LexData = &LongDoubleType;
+        ++i;
+        break;
     }
     LFBase->lf_Index = i - 1;
 
@@ -672,24 +672,24 @@ LexCharConst(void)
     int32_t v = 0;
 
     while (c != '\'') {
-	if (c == 0)
-	    zerror(EFATAL_UNEXPECTED_EOF);
-	if (c == '\\') {
-	    if (lexBuf[i] == '\n') {
-		c = lexBuf[i+1];
-		i += 2;
-		continue;
-	    }
-	    c = SpecialChar(&i);
-	}
-	v = (v << 8) | c;
-	++cnt;
-	c = lexBuf[i++];
+        if (c == 0)
+            zerror(EFATAL_UNEXPECTED_EOF);
+        if (c == '\\') {
+            if (lexBuf[i] == '\n') {
+                c = lexBuf[i+1];
+                i += 2;
+                continue;
+            }
+            c = SpecialChar(&i);
+        }
+        v = (v << 8) | c;
+        ++cnt;
+        c = lexBuf[i++];
     }
     if (cnt > 4)
-	zerror(EWARN_CHAR_CONST_TOO_LONG);
+        zerror(EWARN_CHAR_CONST_TOO_LONG);
     if (cnt == 1)
-	v = (char)v;
+        v = (char)v;
     LFBase->lf_Index = i;
     LexIntConst = v;
     LexUnsigned = 0;
@@ -714,43 +714,43 @@ LexString(void)
     char *lexBuf = LFBase->lf_Buf;
 
     for (pass = 0; pass < 2; ++pass) {
-	i = LFBase->lf_Index;
-	n = 0;
+        i = LFBase->lf_Index;
+        n = 0;
 
-	for (;;) {
-	    for (++i; (c = lexBuf[i]) != '\"'; ++i) {
-		if (c == 0)
-		    zerror(EFATAL_UNEXPECTED_EOF);
-		if (c == '\n' && nlisc == 0) {
-		    nlisc = 1;
-		    zerror(EWARN_NEWLINE_IN_STRING_CONST);
-		}
-		if (c == '\\') {
-		    ++i;
-		    if (lexBuf[i] == '\n')
-			continue;
-		    c = SpecialChar(&i);
-		    --i;
-		}
-		if (ptr)
-		    ptr[n] = c;
-		++n;
-	    }
+        for (;;) {
+            for (++i; (c = lexBuf[i]) != '\"'; ++i) {
+                if (c == 0)
+                    zerror(EFATAL_UNEXPECTED_EOF);
+                if (c == '\n' && nlisc == 0) {
+                    nlisc = 1;
+                    zerror(EWARN_NEWLINE_IN_STRING_CONST);
+                }
+                if (c == '\\') {
+                    ++i;
+                    if (lexBuf[i] == '\n')
+                        continue;
+                    c = SpecialChar(&i);
+                    --i;
+                }
+                if (ptr)
+                    ptr[n] = c;
+                ++n;
+            }
 
-	    /*
-	     *	Check for concactenated strings
-	     */
+            /*
+             *  Check for concactenated strings
+             */
 
-	    for (c = lexBuf[++i]; TokenType[c] == TWHITE || TokenType[c] == TLF; c = lexBuf[++i])
-		;
-	    if (c != '\"')
-		break;
-	}
-	if (pass == 0)
-	    ptr = zalloc(n + 1);
-	else
-	    ptr[n] = 0;
-	++n;
+            for (c = lexBuf[++i]; TokenType[c] == TWHITE || TokenType[c] == TLF; c = lexBuf[++i])
+                ;
+            if (c != '\"')
+                break;
+        }
+        if (pass == 0)
+            ptr = zalloc(n + 1);
+        else
+            ptr[n] = 0;
+        ++n;
     }
     LFBase->lf_Index = i;
     LexStrConst = ptr;
@@ -771,42 +771,42 @@ x    int32_t j = i;     /*  actual write idx    */
 x    int32_t appnl = 0;
 x
 x    for (;;) {
-x	 c = LexBuf[i++];
+x        c = LexBuf[i++];
 x
-x	 while (c != '\"') {
-x	     if (c == 0)
-x		 zerror(EFATAL_UNEXPECTED_EOF);
-x	     if (c == '\n' && nlisc == 0) {
-x		 nlisc = 1;
-x		 zerror(EWARN_NEWLINE_IN_STRING_CONST);
-x	     }
-x	     if (c == '\\') {
-x		 if (LexBuf[i] == '\n') {
-x		     c = LexBuf[i+1];
-x		     i += 2;
-x		     ++appnl;
-x		     continue;
-x		 }
-x		 c = SpecialChar(&i);
-x	     }
-x	     LexBuf[j++] = c;
-x	     c = LexBuf[i++];
-x	 }
-x	 /*
-x	  *  string LexBuf + b of length (j - b).  Check for concactenated strs
-x	  *  as per ANSI.  Track file line numbering so we can recover it
-x	  *  later.
-x	  */
+x        while (c != '\"') {
+x            if (c == 0)
+x                zerror(EFATAL_UNEXPECTED_EOF);
+x            if (c == '\n' && nlisc == 0) {
+x                nlisc = 1;
+x                zerror(EWARN_NEWLINE_IN_STRING_CONST);
+x            }
+x            if (c == '\\') {
+x                if (LexBuf[i] == '\n') {
+x                    c = LexBuf[i+1];
+x                    i += 2;
+x                    ++appnl;
+x                    continue;
+x                }
+x                c = SpecialChar(&i);
+x            }
+x            LexBuf[j++] = c;
+x            c = LexBuf[i++];
+x        }
+x        /*
+x         *  string LexBuf + b of length (j - b).  Check for concactenated strs
+x         *  as per ANSI.  Track file line numbering so we can recover it
+x         *  later.
+x         */
 x
-x	 c = LexBuf[i];
-x	 while (TokenType[c] == TWHITE || TokenType[c] == TLF) {
-x	     if (c == '\n')
-x		 ++appnl;
-x	     c = LexBuf[++i];
-x	 }
-x	 if (c != '\"')
-x	     break;
-x	 ++i;
+x        c = LexBuf[i];
+x        while (TokenType[c] == TWHITE || TokenType[c] == TLF) {
+x            if (c == '\n')
+x                ++appnl;
+x            c = LexBuf[++i];
+x        }
+x        if (c != '\"')
+x            break;
+x        ++i;
 x    }
 x
 x    /*
@@ -818,14 +818,14 @@ x
 x    LexBuf[j++] = 0;
 x    LexIdx = i;
 x    LexStrConst = (char *)LexBuf + b;
-x    LexStrLen	 = j - b;
+x    LexStrLen   = j - b;
 x
 x    /*
 x     *  Clear out extra junk
 x     */
 x
 x    while (j + appnl < i)
-x	 LexBuf[j++] = ' ';
+x        LexBuf[j++] = ' ';
 x
 x    /*
 x     *  Mark area as munged
@@ -839,7 +839,7 @@ x     *  number tracking doesn't screw up
 x     */
 x
 x    while (appnl--)
-x	 LexBuf[j++] = '\n';
+x        LexBuf[j++] = '\n';
 x
 x    return(TokStrConst);
 x}
@@ -857,204 +857,204 @@ LexSimpleToken(void)
 
     switch(ptr[-1]) {
     case '!':   /*  !, !=   */
-	if (*ptr == '=') {
-	    token = TokNotEq;
-	    ++ptr;
-	    break;
-	}
-	token = TokNot;
-	break;
+        if (*ptr == '=') {
+            token = TokNotEq;
+            ++ptr;
+            break;
+        }
+        token = TokNot;
+        break;
     case '%':   /*  %, %=   */
-	if (*ptr == '=') {
-	    token = TokPercentEq;
-	    ++ptr;
-	    break;
-	}
-	token = TokPercent;
-	break;
+        if (*ptr == '=') {
+            token = TokPercentEq;
+            ++ptr;
+            break;
+        }
+        token = TokPercent;
+        break;
     case '&':   /*  &, &&, &=   */
-	if (*ptr == '&') {
-	    token = TokAndAnd;
-	    ++ptr;
-	    break;
-	}
-	if (*ptr == '=') {
-	    token = TokAndEq;
-	    ++ptr;
-	    break;
-	}
-	token = TokAnd;
-	break;
+        if (*ptr == '&') {
+            token = TokAndAnd;
+            ++ptr;
+            break;
+        }
+        if (*ptr == '=') {
+            token = TokAndEq;
+            ++ptr;
+            break;
+        }
+        token = TokAnd;
+        break;
     case '(':
-	token = TokLParen;
-	break;
+        token = TokLParen;
+        break;
     case ')':
-	token = TokRParen;
-	break;
+        token = TokRParen;
+        break;
     case '*':   /*  *, *=   */
-	if (*ptr == '=') {
-	    token = TokStarEq;
-	    ++ptr;
-	    break;
-	}
-	token = TokStar;
-	break;
+        if (*ptr == '=') {
+            token = TokStarEq;
+            ++ptr;
+            break;
+        }
+        token = TokStar;
+        break;
     case '+':   /*  +, ++, +=   */
-	if (*ptr == '+') {
-	    token = TokPlPl;
-	    ++ptr;
-	    break;
-	}
-	if (*ptr == '=') {
-	    token = TokPlEq;
-	    ++ptr;
-	    break;
-	}
-	token = TokPl;
-	break;
+        if (*ptr == '+') {
+            token = TokPlPl;
+            ++ptr;
+            break;
+        }
+        if (*ptr == '=') {
+            token = TokPlEq;
+            ++ptr;
+            break;
+        }
+        token = TokPl;
+        break;
     case ',':
-	token = TokComma;
-	break;
+        token = TokComma;
+        break;
     case '-':   /*  -, --, -=, ->   */
-	switch(*ptr) {
-	case '-':
-	    token = TokMiMi;
-	    ++ptr;
-	    break;
-	case '=':
-	    token = TokMiEq;
-	    ++ptr;
-	    break;
-	case '>':
-	    token = TokStrInd;
-	    ++ptr;
-	    break;
-	default:
-	    token = TokMi;
-	    break;
-	}
-	break;
+        switch(*ptr) {
+        case '-':
+            token = TokMiMi;
+            ++ptr;
+            break;
+        case '=':
+            token = TokMiEq;
+            ++ptr;
+            break;
+        case '>':
+            token = TokStrInd;
+            ++ptr;
+            break;
+        default:
+            token = TokMi;
+            break;
+        }
+        break;
     case '.':
-	if (*ptr >= '0' && *ptr <= '9') {
-	    int32_t i = (char *)ptr - (char *)LFBase->lf_Buf - 1;
-	    return(LexFloating(i, i));
-	}
-	if (*ptr == '.' && ptr[1] == '.') {
-	    token = TokDotDotDot;
-	    ptr += 2;
-	    break;
-	}
-	token = TokStrElm;
-	break;
+        if (*ptr >= '0' && *ptr <= '9') {
+            int32_t i = (char *)ptr - (char *)LFBase->lf_Buf - 1;
+            return(LexFloating(i, i));
+        }
+        if (*ptr == '.' && ptr[1] == '.') {
+            token = TokDotDotDot;
+            ptr += 2;
+            break;
+        }
+        token = TokStrElm;
+        break;
     case '/':   /*  /, /=   */
-	if (*ptr == '=') {
-	    token = TokDivEq;
-	    ++ptr;
-	    break;
-	}
-	token = TokDiv;
-	break;
+        if (*ptr == '=') {
+            token = TokDivEq;
+            ++ptr;
+            break;
+        }
+        token = TokDiv;
+        break;
     case '<':   /*  <, <<, <<=, <=  */
-	if (*ptr == '<') {
-	    if (ptr[1] == '=') {
-		token = TokLtLtEq;
-		ptr += 2;
-		break;
-	    }
-	    token = TokLtLt;
-	    ++ptr;
-	    break;
-	}
-	if (*ptr == '=') {
-	    token = TokLtEq;
-	    ++ptr;
-	    break;
-	}
-	token = TokLt;
-	break;
+        if (*ptr == '<') {
+            if (ptr[1] == '=') {
+                token = TokLtLtEq;
+                ptr += 2;
+                break;
+            }
+            token = TokLtLt;
+            ++ptr;
+            break;
+        }
+        if (*ptr == '=') {
+            token = TokLtEq;
+            ++ptr;
+            break;
+        }
+        token = TokLt;
+        break;
     case '=':
-	if (*ptr == '=') {
-	    token = TokEqEq;
-	    ++ptr;
-	    break;
-	}
-	token = TokEq;
-	break;
+        if (*ptr == '=') {
+            token = TokEqEq;
+            ++ptr;
+            break;
+        }
+        token = TokEq;
+        break;
     case '>':
-	if (*ptr == '>') {
-	    if (ptr[1] == '=') {
-		token = TokGtGtEq;
-		ptr += 2;
-		break;
-	    }
-	    token = TokGtGt;
-	    ++ptr;
-	    break;
-	}
-	if (*ptr == '=') {
-	    token = TokGtEq;
-	    ++ptr;
-	    break;
-	}
-	token = TokGt;
-	break;
+        if (*ptr == '>') {
+            if (ptr[1] == '=') {
+                token = TokGtGtEq;
+                ptr += 2;
+                break;
+            }
+            token = TokGtGt;
+            ++ptr;
+            break;
+        }
+        if (*ptr == '=') {
+            token = TokGtEq;
+            ++ptr;
+            break;
+        }
+        token = TokGt;
+        break;
     case '?':
-	token = TokQuestion;
-	break;
+        token = TokQuestion;
+        break;
     case ':':
-	token = TokColon;
-	break;
+        token = TokColon;
+        break;
     case '[':
-	token = TokLBracket;
-	break;
+        token = TokLBracket;
+        break;
     case ']':
-	token = TokRBracket;
-	break;
+        token = TokRBracket;
+        break;
     case '^':
-	if (*ptr == '=') {
-	    token = TokCaratEq;
-	    ++ptr;
-	    break;
-	}
-	token = TokCarat;
-	break;
+        if (*ptr == '=') {
+            token = TokCaratEq;
+            ++ptr;
+            break;
+        }
+        token = TokCarat;
+        break;
     case '|':
-	if (*ptr == '|') {
-	    token = TokOrOr;
-	    ++ptr;
-	    break;
-	}
-	if (*ptr == '=') {
-	    token = TokOrEq;
-	    ++ptr;
-	    break;
-	}
-	token = TokOr;
-	break;
+        if (*ptr == '|') {
+            token = TokOrOr;
+            ++ptr;
+            break;
+        }
+        if (*ptr == '=') {
+            token = TokOrEq;
+            ++ptr;
+            break;
+        }
+        token = TokOr;
+        break;
     case '~':
-	token = TokTilde;
-	break;
+        token = TokTilde;
+        break;
     case '{':
-	token = TokLBrace;
-	break;
+        token = TokLBrace;
+        break;
     case '}':
-	token = TokRBrace;
-	break;
+        token = TokRBrace;
+        break;
     case ';':
-	token = TokSemi;
-	break;
-    case 0:	/*  force table lookup for critical code */
-	if (PopLexFile()) {
-	    return(GetToken());
-	}
-	/*
-	 *  Do not update LexIdx
-	 */
-	return(0);
+        token = TokSemi;
+        break;
+    case 0:     /*  force table lookup for critical code */
+        if (PopLexFile()) {
+            return(GetToken());
+        }
+        /*
+         *  Do not update LexIdx
+         */
+        return(0);
     case '#':   /*  hack to handle # directive on line 1   */
-	if (LFBase->lf_Index == 0)
-	    return(LexLineFeed());
-	/* fall through */
+        if (LFBase->lf_Index == 0)
+            return(LexLineFeed());
+        /* fall through */
     case 1:
     case 2:
     case 3:
@@ -1139,9 +1139,9 @@ LexSimpleToken(void)
     case 'Y':
     case 'Z':
     default:
-	zerror(EWARN_ILLEGAL_CHAR, ptr[-1], ptr[-1]);
-	token = TokSemi;
-	break;
+        zerror(EWARN_ILLEGAL_CHAR, ptr[-1], ptr[-1]);
+        token = TokSemi;
+        break;
     }
     LFBase->lf_Index = (char *)ptr - (char *)LFBase->lf_Buf;
     return(token);
@@ -1163,51 +1163,51 @@ int32_t *pi;
     *pi = ++i;
 
     switch(c) {
-    case 10:	/*  a newline!	*/
-	c = LFBase->lf_Buf[i];
-	*pi = ++i;
-	return(c);
-	break;
+    case 10:    /*  a newline!  */
+        c = LFBase->lf_Buf[i];
+        *pi = ++i;
+        return(c);
+        break;
     case 'n':
-	return(10);
+        return(10);
     case 'r':
-	return(13);
+        return(13);
     case 't':
-	return(9);
+        return(9);
     case 'f':
-	return(12);
+        return(12);
     case 'v':
-	return(11);
+        return(11);
     case 'a':
-	return(7);
+        return(7);
     case 'b':
-	return(8);
+        return(8);
     case 'x':
         for(;;)
         {
-	    c = LFBase->lf_Buf[i];
-	    switch(TokenType[c])
-	    {
-		case TALPHX:
-		    c = (c & 7) + 9;	/* The & 7 makes the Upper and lower case */
-					/* characters appear the same             */
-		    break;
-		case TNUM:
-		case TZERO:
-		    c -= '0';
-		    break;
-		default:
+            c = LFBase->lf_Buf[i];
+            switch(TokenType[c])
+            {
+                case TALPHX:
+                    c = (c & 7) + 9;    /* The & 7 makes the Upper and lower case */
+                                        /* characters appear the same             */
+                    break;
+                case TNUM:
+                case TZERO:
+                    c -= '0';
+                    break;
+                default:
                     if ((i - *pi) > 2)
                     {
                        zerror(EWARN_HEX_CONST_TRUNCATED);
                     }
-		    *pi = i;
-		    return(v);
-	    }
+                    *pi = i;
+                    return(v);
+            }
             i++;
             v <<= 4;
             v += c;
-	}
+        }
     default:
         {
            int cnt = 0;
@@ -1233,7 +1233,7 @@ int32_t
 CharToNibble(short c)
 {
     if (c >= '0' && c <= '9')
-	return(c - '0');
+        return(c - '0');
     return((c | 0x20) - 'a' + 10);
 }
 
@@ -1241,7 +1241,7 @@ short
 SkipToken(short t, short expect)
 {
     if (t == expect)
-	return(GetToken());
+        return(GetToken());
     zerror(EERROR_UNEXPECTED_TOKEN, TokenToStr(t), TokenToStr(expect));
     return(t);
 }
@@ -1251,25 +1251,25 @@ TokenToStr(short t)
 {
     switch(t) {
     case TokComma:
-	return(",");
+        return(",");
     case TokSemi:
-	return(";");
+        return(";");
     case TokLParen:
-	return("(");
+        return("(");
     case TokRParen:
-	return(")");
+        return(")");
     case TokLBrace:
-	return("{");
+        return("{");
     case TokRBrace:
-	return("}");
+        return("}");
     case TokColon:
-	return(":");
+        return(":");
     case TokLBracket:
-	return("[");
+        return("[");
     case TokRBracket:
-	return("]");
+        return("]");
     default:
-	return("<unknown>");
+        return("<unknown>");
     }
 }
 
@@ -1296,68 +1296,68 @@ int32_t *plexIdxBeg;
     printf("FINDLINE lexIdx %d %s\n", lexIdx, CacheLexFile);
 
     /*
-     *	find start of line
+     *  find start of line
      */
 
     *plexIdxBeg = lexIdx;
     *plexFile = "";
 
     if (LFBase == NULL)
-	return(0);
+        return(0);
 
     for (i = lexIdx, ptr = LFBase->lf_Buf + i; i > 0; --i) {
-	if (ptr[-1] == '\n' /*&& !OffsetMunged(i-1)*/) {
-	    *plexIdxBeg = i;
-	    break;
-	}
-	--ptr;
+        if (ptr[-1] == '\n' /*&& !OffsetMunged(i-1)*/) {
+            *plexIdxBeg = i;
+            break;
+        }
+        --ptr;
     }
     /*printf(";i %d/%d:%c\n", i, LFBase->lf_Buf[i], LFBase->lf_Buf[i]);*/
 
     if (i == CacheLexIdx) {
-	*plexFile	= CacheLexFile;
-	*plexFileNameLen= CacheLexFileNameLen;
-	*plexIdxBeg	= i;
-	return(CacheLexLine);
+        *plexFile       = CacheLexFile;
+        *plexFileNameLen= CacheLexFileNameLen;
+        *plexIdxBeg     = i;
+        return(CacheLexLine);
     }
 
     /*
-     *	reverse scan for '# <line> "<file>"'
+     *  reverse scan for '# <line> "<file>"'
      */
 
     while (i >= 0) {
-	if (i == CacheLexIdx) {
-	    *plexFile = CacheLexFile;
-	    *plexFileNameLen = CacheLexFileNameLen;
-	    lexLine += CacheLexLine + 1;
-	    ++LexCacheHits;
-	    break;
-	}
-	if (*ptr == '#' && (i == 0 || (ptr[-1] == '\n' /*&& !OffsetMunged(i)*/))) {
-	    short j;
-	    char c;
+        if (i == CacheLexIdx) {
+            *plexFile = CacheLexFile;
+            *plexFileNameLen = CacheLexFileNameLen;
+            lexLine += CacheLexLine + 1;
+            ++LexCacheHits;
+            break;
+        }
+        if (*ptr == '#' && (i == 0 || (ptr[-1] == '\n' /*&& !OffsetMunged(i)*/))) {
+            short j;
+            char c;
 
-	    for (j = 1; (c = ptr[j]) == ' ' || c == '\t'; ++j)
-		;
-	    if ((c >= '0' && c <= '9') || c == '-') {
-		lexLine += atoi(ptr + j);
-		while ((c = ptr[j]) && c != '\"')
-		    ++j;
-		*plexFile = ptr + j + 1;
-		*plexFileNameLen = strchr(*plexFile, '\"') - *plexFile;
-		if (*plexFileNameLen < 0)
-		    *plexFileNameLen = 0;
-		CacheLexFile = *plexFile;
-		CacheLexFileNameLen = *plexFileNameLen;
-		++LexCacheMisses;
-		break;
+            for (j = 1; (c = ptr[j]) == ' ' || c == '\t'; ++j)
+                ;
+            if ((c >= '0' && c <= '9') || c == '-') {
+                lexLine += atoi(ptr + j);
+                while ((c = ptr[j]) && c != '\"')
+                    ++j;
+                *plexFile = ptr + j + 1;
+                *plexFileNameLen = strchr(*plexFile, '\"') - *plexFile;
+                if (*plexFileNameLen < 0)
+                    *plexFileNameLen = 0;
+                CacheLexFile = *plexFile;
+                CacheLexFileNameLen = *plexFileNameLen;
+                ++LexCacheMisses;
+                break;
 
-	    }
-	}
-	if (*ptr == '\n'/* && !OffsetMunged(i)*/)
-	    ++lexLine;
-	--i;
-	--ptr;
+            }
+        }
+        if (*ptr == '\n'/* && !OffsetMunged(i)*/)
+            ++lexLine;
+        --i;
+        --ptr;
     }
     CacheLexLine = lexLine;
     CacheLexIdx = *plexIdxBeg;
@@ -1370,9 +1370,9 @@ FindLexCharAt(i)
 int32_t i;
 {
     if (LFBase) {
-    	if (ftell(LFBase->lf_Fi) != i)
-	    fseek(LFBase->lf_Fi, i, 0);
-	return(getc(LFBase->lf_Fi));
+        if (ftell(LFBase->lf_Fi) != i)
+            fseek(LFBase->lf_Fi, i, 0);
+        return(getc(LFBase->lf_Fi));
     }
     return(EOF);
 }

@@ -1,12 +1,12 @@
 ######################################################################
-MAKEMETA=	../../tools/makemeta
+MAKEMETA=       ../../tools/makemeta
 
-SUBSYSNAME=	hardware
+SUBSYSNAME=     hardware
 
-AFILES=		cia.asm custom.asm memmap.asm
+AFILES=         cia.asm custom.asm memmap.asm
 
-OFILES= 	cia.obj custom.obj memmap.obj
+OFILES=         cia.obj custom.obj memmap.obj
 
-all quick:	${SUBSYSNAME}_lib.lib
+all quick:      ${SUBSYSNAME}_lib.lib
 
 .INCLUDE=${MAKEMETA}

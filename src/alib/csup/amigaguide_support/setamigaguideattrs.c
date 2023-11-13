@@ -14,5 +14,5 @@ typedef struct TagItem TagItem;
 LONG 
 HYPER ## SetAmigaGuideAttrs( APTR cl, Tag tag1, ... )
 {
-	return SetAmigaGuideAttrsA(cl,(TagItem *)&tag1);
+        return SetAmigaGuideAttrsA(cl,(TagItem *)&tag1);
 }

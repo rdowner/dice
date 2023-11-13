@@ -27,315 +27,315 @@ c.lib/extra/wildcard
 c.lib/extra/fhprintf
 
 
-extra/expand_args					extra/expand_args
+extra/expand_args                                       extra/expand_args
 
    NAME
-	expand_args   - expand command line argument wildcards
+        expand_args   - expand command line argument wildcards
 
    SYNOPSIS
-	int error = expand_args(xac, xav, &ac, &av);
-	int xac;
-	const char **xav;
-	int ac;
-	char **av;
+        int error = expand_args(xac, xav, &ac, &av);
+        int xac;
+        const char **xav;
+        int ac;
+        char **av;
 
    FUNCTION
-	expand_args() takes an argc/argv list and expands any wildcard
-	arguments by scanning the appropriate directory.  expand_args()
-	malloc()s however much memory it needs to create the new list and
-	ignores xav[0] (i.e. just copies it to the returned av[0] without
-	doing a wildcard expansion).
+        expand_args() takes an argc/argv list and expands any wildcard
+        arguments by scanning the appropriate directory.  expand_args()
+        malloc()s however much memory it needs to create the new list and
+        ignores xav[0] (i.e. just copies it to the returned av[0] without
+        doing a wildcard expansion).
 
-	expand_args() fills in the ac and av variables with its own
-	malloc()d version of the argument list, now completely expanded.
-	There is no limit to the number of files that may be in this
-	result list (you could conceivably have THOUSANDS).
+        expand_args() fills in the ac and av variables with its own
+        malloc()d version of the argument list, now completely expanded.
+        There is no limit to the number of files that may be in this
+        result list (you could conceivably have THOUSANDS).
 
-	expand_args() may be used to expand arbitrary AmigaDOS wildcards
-	and is not limited to an anchored search.  For example, you could
-	specify:
+        expand_args() may be used to expand arbitrary AmigaDOS wildcards
+        and is not limited to an anchored search.  For example, you could
+        specify:
 
-	    sys:#?/#?
+            sys:#?/#?
 
-	In which case a list of a second level files/dirs will be generated.
-	expand_args in the above case scans sys: then scans any sub directories
-	found in sys:
+        In which case a list of a second level files/dirs will be generated.
+        expand_args in the above case scans sys: then scans any sub directories
+        found in sys:
 
-	Generic AmigaDOS wildcarding is used and incredibly complex wildcards
-	may be specified.  However, please note that any wildcard elements
-	containing #? in combination with other elements (such as (a|b|c))
-	will cause HUGE amounts of stack to be used and also quite a bit
-	of memory during the scan.  expand_args() limits itself to 4K
-	of stack before giving up.
+        Generic AmigaDOS wildcarding is used and incredibly complex wildcards
+        may be specified.  However, please note that any wildcard elements
+        containing #? in combination with other elements (such as (a|b|c))
+        will cause HUGE amounts of stack to be used and also quite a bit
+        of memory during the scan.  expand_args() limits itself to 4K
+        of stack before giving up.
 
-	Any program that uses expand_args() should be run with at least
-	8K of stack.
+        Any program that uses expand_args() should be run with at least
+        8K of stack.
 
    EXAMPLE
-	#include <stdio.h>
+        #include <stdio.h>
 
-	main(xac, xav)
-	int xac;
-	char **xav;
-	{
-	    int ac;
-	    char **av;
-	    short i;
+        main(xac, xav)
+        int xac;
+        char **xav;
+        {
+            int ac;
+            char **av;
+            short i;
 
-	    int error = expand_args(xac, xav, &ac, &av);
-	    for (i = 1; i < ac; ++i) {
-		printf("%s\n", av[i]);
-	    }
-	}
+            int error = expand_args(xac, xav, &ac, &av);
+            for (i = 1; i < ac; ++i) {
+                printf("%s\n", av[i]);
+            }
+        }
 
    INPUTS
-	int xac;	    original argc
-	char **xav;	    original argv
-	int *ac;	    pointer to new argc
-	char ***av;	    pointer to new argv
+        int xac;            original argc
+        char **xav;         original argv
+        int *ac;            pointer to new argc
+        char ***av;         pointer to new argv
 
    RESULTS
-	int error;	    0 if all went well, non-zero otherwise
+        int error;          0 if all went well, non-zero otherwise
 
    SEE ALSO
 
 
 
-extra/getfnl						extra/getfnl
+extra/getfnl                                            extra/getfnl
 
    NAME
-	getfnl - get file name list.  Scan a directory and return list of
-		 files that match the optional wildcard
+        getfnl - get file name list.  Scan a directory and return list of
+                 files that match the optional wildcard
 
-	This is a non-standard function and exists for compatibility with
-	other commercial compilers.
+        This is a non-standard function and exists for compatibility with
+        other commercial compilers.
 
    SYNOPSIS
-	int n = getfnl(pat, buf, bufsize, attr);
-	const char *pat;
-	char *buf;
-	int bufsize;
-	int attr;
+        int n = getfnl(pat, buf, bufsize, attr);
+        const char *pat;
+        char *buf;
+        int bufsize;
+        int attr;
 
    FUNCTION
-	getfnl() scans the specified anchored AmigaDOS pattern and fills
-	the specified buffer (up to bufsize bytes) with file names
-	separated by a nul character (\0), ending the list with a double
-	nul (\0\0).  getfnl() returns the number of files/dirs in the buffer
-	or -1 if there was not enough room
+        getfnl() scans the specified anchored AmigaDOS pattern and fills
+        the specified buffer (up to bufsize bytes) with file names
+        separated by a nul character (\0), ending the list with a double
+        nul (\0\0).  getfnl() returns the number of files/dirs in the buffer
+        or -1 if there was not enough room
 
-	The pattern pat is an AmigaDOS pattern such as "df0:#?.c".  buf
-	is a buffer of bufsize bytes.  attr determines what kinds of
-	files are valid:
+        The pattern pat is an AmigaDOS pattern such as "df0:#?.c".  buf
+        is a buffer of bufsize bytes.  attr determines what kinds of
+        files are valid:
 
-	    0	normal files only
-	    1	files and directories
+            0   normal files only
+            1   files and directories
 
    NOTE
-	getfnl() exists for compatibility, but expand_args() is a much
-	better function to use if you want a list of files & dirs.
+        getfnl() exists for compatibility, but expand_args() is a much
+        better function to use if you want a list of files & dirs.
 
    EXAMPLE
-	#include <stdio.h>
+        #include <stdio.h>
 
-	char Buf[4096];
+        char Buf[4096];
 
-	main(ac, av)
-	int ac;
-	char *av[];
-	{
-	    int n;
+        main(ac, av)
+        int ac;
+        char *av[];
+        {
+            int n;
 
-	    if (ac != 2) {
-		puts("Expected an anchored wildcard such as '#?'");
-		exit(1);
-	    }
-	    n = getfnl(av[1], Buf, sizeof(Buf), 1);
-	    {
-		char *ptr = Buf;
-		while (*ptr) {              /*  look for \0\0   */
-		    puts(ptr);
-		    ptr += strlen(ptr) + 1; /*  skip first \0   */
-		}
-	    }
-	    return(0);
-	}
+            if (ac != 2) {
+                puts("Expected an anchored wildcard such as '#?'");
+                exit(1);
+            }
+            n = getfnl(av[1], Buf, sizeof(Buf), 1);
+            {
+                char *ptr = Buf;
+                while (*ptr) {              /*  look for \0\0   */
+                    puts(ptr);
+                    ptr += strlen(ptr) + 1; /*  skip first \0   */
+                }
+            }
+            return(0);
+        }
 
 
    INPUTS
-	const char *pat;    pattern to scan for (anchored)
-	char *buf;	    buffer to put results in
-	int bufsize;	    size of buffer
-	int attr;	    attribes (0 or 1)
+        const char *pat;    pattern to scan for (anchored)
+        char *buf;          buffer to put results in
+        int bufsize;        size of buffer
+        int attr;           attribes (0 or 1)
 
    RESULTS
-	int n;		    number of file names in buffer or -1 on error
+        int n;              number of file names in buffer or -1 on error
 
    SEE ALSO
-	strbpl, wildcard
+        strbpl, wildcard
 
 
 
-extra/GetHead						extra/GetHead
-extra/GetTail						extra/GetTail
-extra/GetSucc						extra/GetSucc
-extra/GetPred						extra/GetPred
+extra/GetHead                                           extra/GetHead
+extra/GetTail                                           extra/GetTail
+extra/GetSucc                                           extra/GetSucc
+extra/GetPred                                           extra/GetPred
 
    NAME
-	GetHead     -	get first element in EXEC list
-	GetTail     -	get last element in EXEC list
-	GetSucc     -	get next element after some element (node)
-	GetPred     -	get previous element before some element (node)
+        GetHead     -   get first element in EXEC list
+        GetTail     -   get last element in EXEC list
+        GetSucc     -   get next element after some element (node)
+        GetPred     -   get previous element before some element (node)
 
    SYNOPSIS
-	struct Node *node = GetHead(list);
-	struct Node *node = GetTail(list);
-	struct Node *node = GetSucc(oldNode);
-	struct Node *node = GetPred(oldNode);
+        struct Node *node = GetHead(list);
+        struct Node *node = GetTail(list);
+        struct Node *node = GetSucc(oldNode);
+        struct Node *node = GetPred(oldNode);
 
-	const struct Node *oldNode;
-	const struct List *list;
+        const struct Node *oldNode;
+        const struct List *list;
 
    FUNCTION
-	These functions allow scannig of EXEC style lists (which are also
-	useful for many programs having nothing to do with EXEC)
+        These functions allow scannig of EXEC style lists (which are also
+        useful for many programs having nothing to do with EXEC)
 
-	GetHead() returns the first node in a list or NULL if the list is
-		  empty
+        GetHead() returns the first node in a list or NULL if the list is
+                  empty
 
-	GetTail() returns the last node in a list or NULL if the list is
-		  empty
+        GetTail() returns the last node in a list or NULL if the list is
+                  empty
 
-	GetSucc() returns the next node in a list (given some intermediate
-		  node) or NULL when we reach the end of the list
+        GetSucc() returns the next node in a list (given some intermediate
+                  node) or NULL when we reach the end of the list
 
-	GetPred() returns the previous node in a list before some intermediate
-		  node or NULL when we reach the beginning of the list
+        GetPred() returns the previous node in a list before some intermediate
+                  node or NULL when we reach the beginning of the list
 
    NOTE
-	These are DICE functions and do not exist outside of DICE, though
-	easily written.
+        These are DICE functions and do not exist outside of DICE, though
+        easily written.
 
    EXAMPLE
-	/*
-	 *  Stupid symbol create/delete/list program.  Note that for a real
-	 *  symbol table you want to use hash tables.
-	 */
+        /*
+         *  Stupid symbol create/delete/list program.  Note that for a real
+         *  symbol table you want to use hash tables.
+         */
 
-	#include <lists.h>	/*  non-standard header file	*/
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <string.h>
+        #include <lists.h>      /*  non-standard header file    */
+        #include <stdio.h>
+        #include <stdlib.h>
+        #include <string.h>
 
-	typedef struct List List;
-	typedef struct Node Node;
+        typedef struct List List;
+        typedef struct Node Node;
 
-	List	SymList;
+        List    SymList;
 
-	void AddSymbol(char *);
-	void DelSymbol(char *);
-	Node *FindSymbol(char *);
+        void AddSymbol(char *);
+        void DelSymbol(char *);
+        Node *FindSymbol(char *);
 
-	main()
-	{
-	    char buf[256];
-	    char symBuf[256];
-	    short notDone = 1;
+        main()
+        {
+            char buf[256];
+            char symBuf[256];
+            short notDone = 1;
 
-	    NewList(&SymList);
+            NewList(&SymList);
 
-	    puts("(return for help)");
+            puts("(return for help)");
 
-	    while (notDone) {
-		printf("Enter Command: ");
-		fflush(stdout);
-		if (gets(buf) == NULL)
-		    break;
-		switch(buf[0]) {
-		case 'a':
-		    if (sscanf(buf + 1, "%s", symBuf) == 1)
-			AddSymbol(symBuf);
-		    break;
-		case 'd':
-		    if (sscanf(buf + 1, "%s", symBuf) == 1)
-			DelSymbol(symBuf);
-		    break;
-		case 'l':
-		    {
-			Node *node;
-			for (node = GetHead(&SymList); node; node = GetSucc(node))
-			    puts(node->ln_Name);
-		    }
-		    break;
-		case 'q':
-		    notDone = 0;
-		    break;
-		default:
-		    puts("<return>      -help   ");
-		    puts("a name        -add symbol");
-		    puts("d name        -delete symbol");
-		    puts("l             -list symbols");
-		    puts("q             -quit");
-		    break;
-		}
-	    }
-	    puts("bye!");
-	    return(0);
-	}
+            while (notDone) {
+                printf("Enter Command: ");
+                fflush(stdout);
+                if (gets(buf) == NULL)
+                    break;
+                switch(buf[0]) {
+                case 'a':
+                    if (sscanf(buf + 1, "%s", symBuf) == 1)
+                        AddSymbol(symBuf);
+                    break;
+                case 'd':
+                    if (sscanf(buf + 1, "%s", symBuf) == 1)
+                        DelSymbol(symBuf);
+                    break;
+                case 'l':
+                    {
+                        Node *node;
+                        for (node = GetHead(&SymList); node; node = GetSucc(node))
+                            puts(node->ln_Name);
+                    }
+                    break;
+                case 'q':
+                    notDone = 0;
+                    break;
+                default:
+                    puts("<return>      -help   ");
+                    puts("a name        -add symbol");
+                    puts("d name        -delete symbol");
+                    puts("l             -list symbols");
+                    puts("q             -quit");
+                    break;
+                }
+            }
+            puts("bye!");
+            return(0);
+        }
 
-	void
-	AddSymbol(name)
-	char *name;
-	{
-	    Node *node;
-	    if (FindSymbol(name)) {
-		puts("already exists!");
-		exit(1);
-	    }
-	    if (node = malloc(sizeof(Node))) {
-		AddTail(&SymList, node);
-		node->ln_Name = strdup(name);   /* bad code, not checking */
-						/* for error result!	  */
-	    }
-	}
+        void
+        AddSymbol(name)
+        char *name;
+        {
+            Node *node;
+            if (FindSymbol(name)) {
+                puts("already exists!");
+                exit(1);
+            }
+            if (node = malloc(sizeof(Node))) {
+                AddTail(&SymList, node);
+                node->ln_Name = strdup(name);   /* bad code, not checking */
+                                                /* for error result!      */
+            }
+        }
 
-	void
-	DelSymbol(name)
-	char *name;
-	{
-	    Node *node;
+        void
+        DelSymbol(name)
+        char *name;
+        {
+            Node *node;
 
-	    if (node = FindSymbol(name)) {
-		Remove(node);           /*  take out of list    */
-		free(node->ln_Name);    /*  free name           */
-		free(node);             /*  free node last      */
-		puts("ok");
-	    } else {
-		puts("Couldn't find it!");
-	    }
-	}
+            if (node = FindSymbol(name)) {
+                Remove(node);           /*  take out of list    */
+                free(node->ln_Name);    /*  free name           */
+                free(node);             /*  free node last      */
+                puts("ok");
+            } else {
+                puts("Couldn't find it!");
+            }
+        }
 
-	Node *
-	FindSymbol(name)
-	char *name;
-	{
-	    Node *node;
-	    for (node = GetHead(&SymList); node; node = GetSucc(node)) {
-		if (strcmp(node->ln_Name, name) == 0)
-		    return(node);
-	    }
-	    return(NULL);
-	}
+        Node *
+        FindSymbol(name)
+        char *name;
+        {
+            Node *node;
+            for (node = GetHead(&SymList); node; node = GetSucc(node)) {
+                if (strcmp(node->ln_Name, name) == 0)
+                    return(node);
+            }
+            return(NULL);
+        }
 
 
    INPUTS
-	struct List *list;	list to get head or tail node from
+        struct List *list;      list to get head or tail node from
 
-	struct Node *oldNode;	node from which to get relative successor or
-				predecessor from
+        struct Node *oldNode;   node from which to get relative successor or
+                                predecessor from
 
    RESULTS
-	struct Node *node;	returned node or NULL
+        struct Node *node;      returned node or NULL
 
    SEE ALSO
 
@@ -348,192 +348,192 @@ c.lib/extra/UnlockAddr
 c.lib/extra/UnlockAddrB
 
 
-extra/LockAddr						extra/LockAddr
-extra/LockAddrB 					extra/LockAddrB
-extra/TryLockAddr					extra/TryLockAddr
-extra/TryLockAddrB					extra/TryLockAddrB
-extra/UnlockAddr					extra/UnlockAddr
-extra/UnlockAddrB					extra/UnlockAddrB
+extra/LockAddr                                          extra/LockAddr
+extra/LockAddrB                                         extra/LockAddrB
+extra/TryLockAddr                                       extra/TryLockAddr
+extra/TryLockAddrB                                      extra/TryLockAddrB
+extra/UnlockAddr                                        extra/UnlockAddr
+extra/UnlockAddrB                                       extra/UnlockAddrB
 
    NAME
-	LockAddr	-   Gain Exclusive, Fast semaphore (bit 0)
-	LockAddrB	-   Gain Exclusive, Fast semaphore (bit n 0-7)
-	TryLockAddr	-   Non-Blocking version of LockAddr
-	TryLockAddrB	-   Non-Blocking version of LockAddrB
-	UnlockAddr	-   Release exclusive semaphore, bit 0
-	UnlockAddrB	-   Release exclusive semaphore, bit n 0-7
+        LockAddr        -   Gain Exclusive, Fast semaphore (bit 0)
+        LockAddrB       -   Gain Exclusive, Fast semaphore (bit n 0-7)
+        TryLockAddr     -   Non-Blocking version of LockAddr
+        TryLockAddrB    -   Non-Blocking version of LockAddrB
+        UnlockAddr      -   Release exclusive semaphore, bit 0
+        UnlockAddrB     -   Release exclusive semaphore, bit n 0-7
 
    SYNOPSIS
-	void LockAddr(lck);
-	void LockAddrB(bitno, lck);
-	int r = TryLockAddr(lck);
-	int r = TryLockAddrB(bitno, lck);
+        void LockAddr(lck);
+        void LockAddrB(bitno, lck);
+        int r = TryLockAddr(lck);
+        int r = TryLockAddrB(bitno, lck);
 
-	void UnlockAddr(lck);
-	void UnlockAddrB(bitno, lck);
+        void UnlockAddr(lck);
+        void UnlockAddrB(bitno, lck);
 
-	long lck[2];
+        long lck[2];
 
    FUNCTION
-	These are custom DICE functions used for inter-task locking semaphores
-	in programs that need such functions.  These routines are somewhat
-	faster than standard Amiga semaphore routines and take less memory,
-	though at the cost of DICE specific.
+        These are custom DICE functions used for inter-task locking semaphores
+        in programs that need such functions.  These routines are somewhat
+        faster than standard Amiga semaphore routines and take less memory,
+        though at the cost of DICE specific.
 
-	To use an inter-task lock one first initializes an lck array to
-	0's.  long lck[2]; is an array of two longwords that the lock
-	routines will use to perform their stuff.  This array should be
-	zero'd only once at program initialization time (the master task
-	before any other tasks are created that use it).
+        To use an inter-task lock one first initializes an lck array to
+        0's.  long lck[2]; is an array of two longwords that the lock
+        routines will use to perform their stuff.  This array should be
+        zero'd only once at program initialization time (the master task
+        before any other tasks are created that use it).
 
-	Each lck array may hold up to 8 locks, hence the LockAddrB() calls.
-	The non-B calls use lock #0 for simplicity.  For simplicity we
-	will only discuss non-B calls.	To gain a lock you may call
-	LockAddr() with the address of the lck array (which, being an array,
-	does not need the & in the call).  This routine will not return
-	until the lock can be obtained.
+        Each lck array may hold up to 8 locks, hence the LockAddrB() calls.
+        The non-B calls use lock #0 for simplicity.  For simplicity we
+        will only discuss non-B calls.  To gain a lock you may call
+        LockAddr() with the address of the lck array (which, being an array,
+        does not need the & in the call).  This routine will not return
+        until the lock can be obtained.
 
-	You may also use TryLockAddr() to attempt to gain a lock.  The
-	return value is:
+        You may also use TryLockAddr() to attempt to gain a lock.  The
+        return value is:
 
-	    -1	    Unable to obtain the lock, it is in use
-	    1	    Lock obtained
+            -1      Unable to obtain the lock, it is in use
+            1       Lock obtained
 
-	To release an obtained lock you call UnlockAddr(lck).  DO NOT RELEASE
-	A LOCK YOU DO NOT HAVE!
+        To release an obtained lock you call UnlockAddr(lck).  DO NOT RELEASE
+        A LOCK YOU DO NOT HAVE!
 
    EXAMPLE
-	/*
-	 *  This program obtains a lock based at a public message port and
-	 *  holds it for ten seconds before releasing it.  The public message
-	 *  port is left in memory (but only exists once no matter how many
-	 *  programs you run).
-	 *
-	 *  To test locking, open up two or more CLI's and run the program
-	 *  simultaniously (or as close as your fingers can make it) two or
-	 *  more times.  Only one program will 'have' the lock at a time.
-	 *
-	 *  we use AllocMem() so the port survives the program
-	 */
+        /*
+         *  This program obtains a lock based at a public message port and
+         *  holds it for ten seconds before releasing it.  The public message
+         *  port is left in memory (but only exists once no matter how many
+         *  programs you run).
+         *
+         *  To test locking, open up two or more CLI's and run the program
+         *  simultaniously (or as close as your fingers can make it) two or
+         *  more times.  Only one program will 'have' the lock at a time.
+         *
+         *  we use AllocMem() so the port survives the program
+         */
 
-	#include <exec/types.h>
-	#include <exec/ports.h>
-	#include <exec/memory.h>
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <assert.h>
+        #include <exec/types.h>
+        #include <exec/ports.h>
+        #include <exec/memory.h>
+        #include <stdio.h>
+        #include <stdlib.h>
+        #include <assert.h>
 
-	typedef struct {
-	    struct MsgPort Port;
-	    long	   Lock[2];
-	} MyPort;
+        typedef struct {
+            struct MsgPort Port;
+            long           Lock[2];
+        } MyPort;
 
-	extern void *FindPort();
-	extern void *CreatePort();
-	extern void *AllocMem();
+        extern void *FindPort();
+        extern void *CreatePort();
+        extern void *AllocMem();
 
-	MyPort *Port;
-	short HaveLock;
+        MyPort *Port;
+        short HaveLock;
 
-	int
-	brk()
-	{
-	    if (HaveLock)
-		UnlockAddr(Port->Lock);
-	    return(1);      /*  abort   */
-	}
+        int
+        brk()
+        {
+            if (HaveLock)
+                UnlockAddr(Port->Lock);
+            return(1);      /*  abort   */
+        }
 
-	main()
-	{
-	    char *portName = "Lock-Test";
+        main()
+        {
+            char *portName = "Lock-Test";
 
-	    onbreak(brk);
+            onbreak(brk);
 
-	    Forbid();
-	    if ((Port = FindPort(portName)) == NULL) {
-		MyPort *port;
-		port = AllocMem(sizeof(MyPort) + strlen(portName) + 1, MEMF_PUBLIC | MEMF_CLEAR);
-		assert(port);
+            Forbid();
+            if ((Port = FindPort(portName)) == NULL) {
+                MyPort *port;
+                port = AllocMem(sizeof(MyPort) + strlen(portName) + 1, MEMF_PUBLIC | MEMF_CLEAR);
+                assert(port);
 
-		port->Port.mp_Node.ln_Name = (char *)(port + 1);
-		port->Port.mp_Node.ln_Type = NT_MSGPORT;
-		strcpy(port->Port.mp_Node.ln_Name, portName);
-		AddPort(port);
+                port->Port.mp_Node.ln_Name = (char *)(port + 1);
+                port->Port.mp_Node.ln_Type = NT_MSGPORT;
+                strcpy(port->Port.mp_Node.ln_Name, portName);
+                AddPort(port);
 
-		Port = port;
-	    }
-	    Permit();
+                Port = port;
+            }
+            Permit();
 
-	    puts("getting lock");
-	    LockAddr(Port->Lock);
-	    HaveLock = 1;
-	    puts("Got the lock!, sleeping for 10 seconds");
-	    sleep(10);
-	    UnlockAddr(Port->Lock);
-	    HaveLock = 0;
-	    puts("released lock");
-	    return(0);
-	}
+            puts("getting lock");
+            LockAddr(Port->Lock);
+            HaveLock = 1;
+            puts("Got the lock!, sleeping for 10 seconds");
+            sleep(10);
+            UnlockAddr(Port->Lock);
+            HaveLock = 0;
+            puts("released lock");
+            return(0);
+        }
 
    INPUTS
-	long *lck;	    A pointer to two longwords, initially zero'd
+        long *lck;          A pointer to two longwords, initially zero'd
 
-	int bitno;	    lock # ... up to 8 independant locks exist for
-			    each lck structure
+        int bitno;          lock # ... up to 8 independant locks exist for
+                            each lck structure
 
    RESULTS
-	int r;		    (TryLock only), -1 on failure, 1 on success.
+        int r;              (TryLock only), -1 on failure, 1 on success.
 
    SEE ALSO
 
 
-extra/fhprintf						extra/fhprintf
+extra/fhprintf                                          extra/fhprintf
 
    NAME
-	fhprintf - formatted printing to a DOS file handle
+        fhprintf - formatted printing to a DOS file handle
 
    SYNOPSIS
-	int n = fhprintf(fh, ctl, ...);
-	BPTR fh;
-	const char *ctl;
+        int n = fhprintf(fh, ctl, ...);
+        BPTR fh;
+        const char *ctl;
 
    FUNCTION
-	fhprintf() provides a method of using DICE's pfmt lib to do
-	formatted printing to a file handle instead of a stdio file
-	pointer.  Output is unbuffered and thus not very efficient,
-	but the call can be extremely useful when debugging libraries
-	and such.
+        fhprintf() provides a method of using DICE's pfmt lib to do
+        formatted printing to a file handle instead of a stdio file
+        pointer.  Output is unbuffered and thus not very efficient,
+        but the call can be extremely useful when debugging libraries
+        and such.
 
    EXAMPLE
 
-	void
-	_main(ac, av)
-	int ac;
-	char *av[];
-	{
-	    fhprintf(Output(), "hello world %d!\n", 23);
-	}
+        void
+        _main(ac, av)
+        int ac;
+        char *av[];
+        {
+            fhprintf(Output(), "hello world %d!\n", 23);
+        }
 
    INPUTS
-	BPTR fh;	    DOS file handle
-	const char *ctl;    format string, see printf()
+        BPTR fh;            DOS file handle
+        const char *ctl;    format string, see printf()
 
    RESULTS
-	int n;		    number of characters output
+        int n;              number of characters output
 
    SEE ALSO
-	printf, sprintf, vsprintf, fprintf, vfprintf
+        printf, sprintf, vsprintf, fprintf, vfprintf
 
 
 
-extra/MulDiv						extra/MulDiv
-extra/MulDivU						extra/MulDivU
-extra/OS2_0						extra/OS2_0
-extra/AutoAllocMiscResource				extra/AutoAllocMiscResource
-extra/AutoFreeMiscResource				extra/AutoFreeMiscResource
-extra/SetFileDate					extra/SetFileDate
-extra/strupper						extra/strupper
-extra/wildcard						extra/wildcard
+extra/MulDiv                                            extra/MulDiv
+extra/MulDivU                                           extra/MulDivU
+extra/OS2_0                                             extra/OS2_0
+extra/AutoAllocMiscResource                             extra/AutoAllocMiscResource
+extra/AutoFreeMiscResource                              extra/AutoFreeMiscResource
+extra/SetFileDate                                       extra/SetFileDate
+extra/strupper                                          extra/strupper
+extra/wildcard                                          extra/wildcard
 
     These manual pages have not been written yet, sorry!
 

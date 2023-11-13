@@ -69,7 +69,7 @@
 /* if neither of the above work, join all multi-line macro calls. */
 #endif
 
-EXT char serrbuf[BUFSIZ];		/* buffer for stderr */
+EXT char serrbuf[BUFSIZ];               /* buffer for stderr */
 
 char *fetchname();
 int move_file();

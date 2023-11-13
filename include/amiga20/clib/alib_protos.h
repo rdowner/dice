@@ -1,15 +1,15 @@
 #ifndef  CLIB_ALIB_PROTOS_H
 #define  CLIB_ALIB_PROTOS_H
 /*
-**	$Filename: clib/alib_protos.h $
-**	$Release: 2.04 $
-**	$Revision: 30.156 $
-**	$Date: 1995/01/11 05:18:06 $
+**      $Filename: clib/alib_protos.h $
+**      $Release: 2.04 $
+**      $Revision: 30.156 $
+**      $Date: 1995/01/11 05:18:06 $
 **
-**	C prototypes. For use with 32 bit integers only.
+**      C prototypes. For use with 32 bit integers only.
 **
-**	(C) Copyright 1990 Commodore-Amiga, Inc.
-**	    All Rights Reserved
+**      (C) Copyright 1990 Commodore-Amiga, Inc.
+**          All Rights Reserved
 */
 #ifndef  EXEC_TYPES_H
 #include <exec/types.h>
@@ -29,7 +29,7 @@ struct IORequest *CreateExtIO( struct MsgPort *msg, long size );
 struct MsgPort *CreatePort( UBYTE *name, long pri );
 struct IOStdReq *CreateStdIO( struct MsgPort *msg );
 struct Task *CreateTask( UBYTE *name, long pri, APTR initPC,
-	unsigned long stackSize );
+        unsigned long stackSize );
 void DeleteExtIO( struct IORequest *io );
 void DeletePort( struct MsgPort *io );
 void DeleteStdIO( struct IOStdReq *io );
@@ -61,11 +61,11 @@ struct InputEvent *InvertString( UBYTE *arg1, ULONG *arg2 );
 /**/
 /* Macros */
 /**/
-/* CxObj  *CxCustom(LONG(*)(),LONG)		      (A0,D0) */
-/* CxObj  *CxDebug(LONG)			      (D0) */
-/* CxObj  *CxFilter(BYTE *)			      (A0) */
-/* CxObj  *CxSender(struct MsgPort *,LONG)	      (A0,D0) */
-/* CxObj  *CxSignal(struct Task *,LONG)	      (A0,D0) */
-/* CxObj  *CxTranslate(struct InputEvent *)	      (A0) */
-/* CxObj  *CxTypeFilter(LONG)			      (D0) */
-#endif	 /* CLIB_ALIB_PROTOS_H */
+/* CxObj  *CxCustom(LONG(*)(),LONG)                   (A0,D0) */
+/* CxObj  *CxDebug(LONG)                              (D0) */
+/* CxObj  *CxFilter(BYTE *)                           (A0) */
+/* CxObj  *CxSender(struct MsgPort *,LONG)            (A0,D0) */
+/* CxObj  *CxSignal(struct Task *,LONG)       (A0,D0) */
+/* CxObj  *CxTranslate(struct InputEvent *)           (A0) */
+/* CxObj  *CxTypeFilter(LONG)                         (D0) */
+#endif   /* CLIB_ALIB_PROTOS_H */

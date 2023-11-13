@@ -22,7 +22,7 @@ Prototype void asm_regentry(Var *);
 Prototype void asm_proclink(Var *);
 Prototype void asm_procend(Var *, short);
 Prototype void asm_returnstorage(Exp *);
-Prototype void asm_dynamictag(Var *);	/* XXX */
+Prototype void asm_dynamictag(Var *);   /* XXX */
 Prototype void asm_segment(Var *);
 Prototype void asm_align(long);
 Prototype void asm_ds(Symbol *, long);
@@ -167,7 +167,7 @@ Prototype long AutoIncDecSize(Exp *);
 Prototype Var *ProcVar;
 Prototype short GenPass;
 Prototype short ForceLinkFlag;
-Prototype short GenGlobal;  /*	global data gen for genass.c	*/
+Prototype short GenGlobal;  /*  global data gen for genass.c    */
 Prototype long AllocLabel(void);
 Prototype void InitGen(long);
 Prototype void GenerateVar(Var *);
@@ -283,15 +283,15 @@ Prototype int SpecialChar(long *);
 Prototype long CharToNibble(short);
 Prototype short SkipToken(short, short);
 Prototype char *TokenToStr(short);
-Prototype long	FindLexFileLine(long, char **, long *, long *);
+Prototype long  FindLexFileLine(long, char **, long *, long *);
 Prototype short FindLexCharAt(long);
-Prototype long	  LexIntConst;
-Prototype char	  *LexStrConst;   /*  also flt constant   */
-Prototype long	  LexStrLen;
+Prototype long    LexIntConst;
+Prototype char    *LexStrConst;   /*  also flt constant   */
+Prototype long    LexStrLen;
 Prototype Symbol  *LexSym;
-Prototype void	  *LexData;
-Prototype char	  LexHackColon;
-Prototype char	  LexUnsigned;
+Prototype void    *LexData;
+Prototype char    LexHackColon;
+Prototype char    LexUnsigned;
 Prototype char FileName[128];
 Prototype char SymbolSpace[256];
 Prototype long Depth;
@@ -327,18 +327,18 @@ Prototype short UnixCommonOpt;
 Prototype short DebugOpt;
 Prototype short AsmOnlyOpt;
 Prototype short ErrorOpt;
-Prototype long	ZAllocs;
-Prototype long	TAllocs;
-Prototype long	ZChunks, ZAloneChunks;
-Prototype long	TChunks, TAloneChunks;
-Prototype long	SymAllocs;
-Prototype long	ExitCode;
-Prototype long	RetryCount;
-Prototype char	*OutFileName;
-Prototype char	*InFileName;
-Prototype Var	DummyDataVar;
-Prototype Var	DummyCodeVar;
-Prototype char	*ErrorFile;
+Prototype long  ZAllocs;
+Prototype long  TAllocs;
+Prototype long  ZChunks, ZAloneChunks;
+Prototype long  TChunks, TAloneChunks;
+Prototype long  SymAllocs;
+Prototype long  ExitCode;
+Prototype long  RetryCount;
+Prototype char  *OutFileName;
+Prototype char  *InFileName;
+Prototype Var   DummyDataVar;
+Prototype Var   DummyCodeVar;
+Prototype char  *ErrorFile;
 Prototype int main(int, char **);
 Prototype void help(void);
 Prototype void _Assert(const char *, long);
@@ -365,7 +365,7 @@ Prototype   int     AllocDataRegister(Stor *, long);
 Prototype   int     AllocDataRegisterAbs(Stor *, long, int);
 Prototype   int     AllocAddrRegister(Stor *);
 Prototype   int     AllocAddrRegisterAbs(Stor *, int);
-Prototype   void    FreeRegister(Stor *);	/*  single registers only */
+Prototype   void    FreeRegister(Stor *);       /*  single registers only */
 Prototype   void    LockStorage(Stor *);
 Prototype   void    UnlockStorage(Stor *);
 Prototype   void    RegDisableRegs(ulong);
@@ -386,7 +386,7 @@ Prototype   int     asm_restore_regs(ulong);
 Prototype   void    RegFlagTryAgain(void);
 Prototype   void    PushStackStorage(void);
 Prototype   void    PopStackStorage(void);
-Prototype ulong   RegAlloc;	/*  protos for debugging only	*/
+Prototype ulong   RegAlloc;     /*  protos for debugging only   */
 Prototype ulong   RegLocked;
 Prototype ulong   RegUsed;
 

@@ -1091,7 +1091,7 @@ int init_gad_sizes()
    global.width = width;
    global.height = height;
 
-   /* Now sizes for special string gadgets			*/
+   /* Now sizes for special string gadgets                      */
    global.titsize[2] = text_width(global.text[TEXT_FILEREQ]);
    global.cycsize[2] = global.width - global.ri.WindowLeft
                         - global.ri.WindowRight - 100;

@@ -55,19 +55,19 @@
 #include <mk3c.h>
 
 #define BUFFER_SIZE 512
-#define MAX_USERS 100			  /* Max number of users on CB */
-#define HANDLE_LEN 16+1 		  /* Max length of handle      */
-#define USERID_LEN 7+1			  /* 7 chars null terminated   */
+#define MAX_USERS 100                     /* Max number of users on CB */
+#define HANDLE_LEN 16+1                   /* Max length of handle      */
+#define USERID_LEN 7+1                    /* 7 chars null terminated   */
 
 /* Automata States */
-#define LOGON	 0			  /* Ready to receive log-on   */
-#define HANDLE	 1			  /* Requesting handle	       */
-#define IDLE	 2			  /* Term ok to receive msgs.  */
-#define LOGOFF	 3			  /* Term is logging off       */
-#define NO_ECHO  4			  /* Term does not want echo   */
+#define LOGON    0                        /* Ready to receive log-on   */
+#define HANDLE   1                        /* Requesting handle         */
+#define IDLE     2                        /* Term ok to receive msgs.  */
+#define LOGOFF   3                        /* Term is logging off       */
+#define NO_ECHO  4                        /* Term does not want echo   */
 
-int number_of_users;			  /* number of users logged on */
-int MAX_ON;				  /* highest index so far      */
+int number_of_users;                      /* number of users logged on */
+int MAX_ON;                               /* highest index so far      */
 
 void allow_logon();                       /* functions called in this  */
 void broadcast();                         /* source module             */
@@ -85,7 +85,7 @@ char *getuser();
 
 extern void sig_handler();                /* GEnie provided routine    */
 
-struct {				  /* user table 	       */
+struct {                                  /* user table                */
     FILE *fp;
     int  state;
     char handle[HANDLE_LEN];
@@ -93,18 +93,18 @@ struct {				  /* user table 	       */
     int echo;
 } user[MAX_USERS];
 
-char buffer[BUFFER_SIZE];		  /* input buffer	       */
-char string[BUFFER_SIZE+81];		  /* output buffer	       */
-char helpmsg[350];			  /* help message buffer       */
+char buffer[BUFFER_SIZE];                 /* input buffer              */
+char string[BUFFER_SIZE+81];              /* output buffer             */
+char helpmsg[350];                        /* help message buffer       */
 
 /************************************************************************
 * main()                                                                *
-*		 main program and main processing loop			*
+*                main program and main processing loop                  *
 ************************************************************************/
 main ()
 {
-  struct next *np;			  /* pointer for nextinput     */
-  int index;				  /* index into user table     */
+  struct next *np;                        /* pointer for nextinput     */
+  int index;                              /* index into user table     */
 
   uinitialize();                          /* initialization routine    */
 
@@ -112,38 +112,38 @@ main ()
     np = nextinput(60, 0);                /* for nextimput to return   */
 
     if (np->file_pointer)
-	index = fileno(np->file_pointer);     /* fileno is index into aray */
+        index = fileno(np->file_pointer);     /* fileno is index into aray */
     else
-	index = 0;
+        index = 0;
     /*
     printf("fp %08lx index %d status %d\n", np->file_pointer, index, np->status);
     */
 
     switch (np->status) {                 /* what did nextinput return?*/
 
-      case S_DATA:			  /* there's data, call udata  */
-	udata(index);                     /* pass index into table     */
+      case S_DATA:                        /* there's data, call udata  */
+        udata(index);                     /* pass index into table     */
       break;
 
-      case S_CONNECT:			  /* someone connected	       */
-	uconnect(np->file_pointer,index); /* pass file pointer & index */
+      case S_CONNECT:                     /* someone connected         */
+        uconnect(np->file_pointer,index); /* pass file pointer & index */
       break;
 
-      case S_BREAK:			  /* break, acknowledge it     */
-	ubreak(index);                    /* pass index into table     */
+      case S_BREAK:                       /* break, acknowledge it     */
+        ubreak(index);                    /* pass index into table     */
       break;
 
-      case S_DISC:			  /* disconnect 	       */
-	udisconnect(index);               /* pass index into table     */
+      case S_DISC:                        /* disconnect                */
+        udisconnect(index);               /* pass index into table     */
       break;
 
-      case S_TIMEOUT:			  /* input time out	       */
+      case S_TIMEOUT:                     /* input time out            */
       break;
 
-      default:				  /* no activity	       */
-	delrt();                          /* tell GEnie we're down     */
-	comm_down();                      /* just in case, relog users */
-	exit();                           /* and terminate             */
+      default:                            /* no activity               */
+        delrt();                          /* tell GEnie we're down     */
+        comm_down();                      /* just in case, relog users */
+        exit();                           /* and terminate             */
       break;
 
     } /* end of switch */
@@ -154,7 +154,7 @@ main ()
 
 /************************************************************************
 *  uinitialize()                                                        *
-*   called once upon program startup; do any necessary initialization	*
+*   called once upon program startup; do any necessary initialization   *
 ************************************************************************/
 void uinitialize()
 {
@@ -192,79 +192,79 @@ int index;
 
   fgets(buffer,BUFFER_SIZE,user[index].fp);
   switch (user[index].state) {
-    case IDLE:				  /* idle state 	       */
+    case IDLE:                            /* idle state                */
       if (*buffer == '/')  {              /* is this a command?        */
-	strupper(buffer);
-	if (!strncmp(buffer,"/HELP",4)) {
-	  fputs(helpmsg,user[index].fp);
-	  fflush(user[index].fp);
-	  }
-	else if (!strncmp(buffer,"/STATUS",4)) {    /* STATUS request? */
-	  fprintf(user[index].fp,
-		  "These are the users on the CB:\n\n");
-	  fputs("   Handle            U#\n\n",user[index].fp);
-	  for (i=1; i < MAX_USERS; i++)
-	    if (user[i].state == IDLE)
-	      fprintf(user[index].fp,"   %-16.16s  %s\n",
-		      user[i].handle,user[i].uid);
-	  fputc('\n',user[index].fp);
-	  fflush(user[index].fp);
-	  }
-	else if (!strncmp(buffer,"/TIME",4)) {      /* TIME request?   */
-	  fputs("Today is: ",user[index].fp);
-	  time(&dtnum);
-	  fputs(ctime(&dtnum),user[index].fp);
-	  fflush(user[index].fp);
-	  }
-	else if (!strncmp(buffer,"/ECHO",4)) {      /* ECHO request?   */
-	  if (user[index].echo)
-	    user[index].echo = FALSE;
-	  else
-	    user[index].echo = TRUE;
-	  if (user[index].echo)
-	    fputs("Echo is on.\n",user[index].fp);
-	  else
-	    fputs("Echo off.\n",user[index].fp);
-	  fflush(user[index].fp);
-	 }
-	else if (!strncmp(buffer,"/BYE",4)) {      /* LOG-OFF request? */
-	  fputs("Logging off, have a nice day.\n",user[index].fp);
-	  user[index].state = LOGOFF;	  /* place in log-off state    */
-	  sprintf(string,"*<%s> is off\n",user[index].handle);
-	  broadcast(string,index);        /* tell the world            */
-	  logoff(index);                  /* log-off the user          */
-	  }
-	else {
-	  fputs("Invalid command, type /HELP for list of valid commands.\n",
-		user[index].fp);
-	  fflush(user[index].fp);
-	  }
-	}
-      else {				  /* send message to everyone  */
-	sprintf(string,"<%s> %s",user[index].handle,buffer);
-	broadcast(string,index);
+        strupper(buffer);
+        if (!strncmp(buffer,"/HELP",4)) {
+          fputs(helpmsg,user[index].fp);
+          fflush(user[index].fp);
+          }
+        else if (!strncmp(buffer,"/STATUS",4)) {    /* STATUS request? */
+          fprintf(user[index].fp,
+                  "These are the users on the CB:\n\n");
+          fputs("   Handle            U#\n\n",user[index].fp);
+          for (i=1; i < MAX_USERS; i++)
+            if (user[i].state == IDLE)
+              fprintf(user[index].fp,"   %-16.16s  %s\n",
+                      user[i].handle,user[i].uid);
+          fputc('\n',user[index].fp);
+          fflush(user[index].fp);
+          }
+        else if (!strncmp(buffer,"/TIME",4)) {      /* TIME request?   */
+          fputs("Today is: ",user[index].fp);
+          time(&dtnum);
+          fputs(ctime(&dtnum),user[index].fp);
+          fflush(user[index].fp);
+          }
+        else if (!strncmp(buffer,"/ECHO",4)) {      /* ECHO request?   */
+          if (user[index].echo)
+            user[index].echo = FALSE;
+          else
+            user[index].echo = TRUE;
+          if (user[index].echo)
+            fputs("Echo is on.\n",user[index].fp);
+          else
+            fputs("Echo off.\n",user[index].fp);
+          fflush(user[index].fp);
+         }
+        else if (!strncmp(buffer,"/BYE",4)) {      /* LOG-OFF request? */
+          fputs("Logging off, have a nice day.\n",user[index].fp);
+          user[index].state = LOGOFF;     /* place in log-off state    */
+          sprintf(string,"*<%s> is off\n",user[index].handle);
+          broadcast(string,index);        /* tell the world            */
+          logoff(index);                  /* log-off the user          */
+          }
+        else {
+          fputs("Invalid command, type /HELP for list of valid commands.\n",
+                user[index].fp);
+          fflush(user[index].fp);
+          }
+        }
+      else {                              /* send message to everyone  */
+        sprintf(string,"<%s> %s",user[index].handle,buffer);
+        broadcast(string,index);
       }
       break;
 
-    case HANDLE:			  /* handle entered state      */
+    case HANDLE:                          /* handle entered state      */
       if (*buffer == '\n') {
-	fputs("Please enter a handle: ",user[index].fp);
-	fflush(user[index].fp);
-	}
+        fputs("Please enter a handle: ",user[index].fp);
+        fflush(user[index].fp);
+        }
       else {
-	buffer[strlen(buffer)-1] = '\0';  /* get rid of newline        */
-	strncpy(user[index].handle,buffer,HANDLE_LEN);
-	sprintf(string,"%s, You are now logged on.  ",user[index].handle);
-	strcat(string,"For a list of valid commands, type /HELP\n");
-	fputs(string,user[index].fp);
-	fflush(user[index].fp);
-	sprintf(string,"*<%s> is on\n",user[index].handle);
-	broadcast(string,index);          /* tell the world            */
-	user[index].state = IDLE;	  /* place in idle mode        */
-	}
+        buffer[strlen(buffer)-1] = '\0';  /* get rid of newline        */
+        strncpy(user[index].handle,buffer,HANDLE_LEN);
+        sprintf(string,"%s, You are now logged on.  ",user[index].handle);
+        strcat(string,"For a list of valid commands, type /HELP\n");
+        fputs(string,user[index].fp);
+        fflush(user[index].fp);
+        sprintf(string,"*<%s> is on\n",user[index].handle);
+        broadcast(string,index);          /* tell the world            */
+        user[index].state = IDLE;         /* place in idle mode        */
+        }
       break;
 
-    default:				  /* error, won't happen       */
+    default:                              /* error, won't happen       */
       fprintf(user[index].fp,
       "Error, took default branch state is  %d\n",user[index].state);
       fflush(user[index].fp);
@@ -274,13 +274,13 @@ int index;
 
 /************************************************************************
 * uconnect()                                                            *
-*	       called when a user attaches to the program		*
+*              called when a user attaches to the program               *
 ************************************************************************/
 void uconnect(fp,index)
 FILE *fp; int index;
 {
-struct streamio sio;			  /* will be filled via ioctl  */
-char *uid_ptr;				  /* will point to u#	       */
+struct streamio sio;                      /* will be filled via ioctl  */
+char *uid_ptr;                            /* will point to u#          */
 int t;
 
   time(&t);
@@ -295,18 +295,18 @@ int t;
     fprintf(fp,"\nSorry, user limit exceeded, try again later\n");
     fclose(fp);                           /* close stream              */
     }
-  else {				  /* tell the world of log-on  */
+  else {                                  /* tell the world of log-on  */
     if (index > MAX_ON)                   /* MAX_ON is the highest     */
-      MAX_ON = index;			  /* index since pgm startup   */
-    user[index].fp = fp;		  /* put new user into table   */
-    number_of_users++;			  /* increment number of users */
-    user[index].state = HANDLE; 	  /* state is request handle   */
+      MAX_ON = index;                     /* index since pgm startup   */
+    user[index].fp = fp;                  /* put new user into table   */
+    number_of_users++;                    /* increment number of users */
+    user[index].state = HANDLE;           /* state is request handle   */
     fputs("\n*** Welcome to the mini-CB ***\n\nEnter your handle: ",fp);
     fflush(fp);
     ioctl(fileno(fp),O_GETP,&sio);        /* get I/O parameters        */
-    sio.input_time_out = 8*60;		  /* input timeout = 8 minutes */
-    sio.typeahead_size = 31;		  /* set to max buffers        */
-    sio.writes_queued = 32;		  /* maximum queued writes     */
+    sio.input_time_out = 8*60;            /* input timeout = 8 minutes */
+    sio.typeahead_size = 31;              /* set to max buffers        */
+    sio.writes_queued = 32;               /* maximum queued writes     */
     ioctl(fileno(fp),O_SETP,&sio);        /* set I/O parameters        */
     uid_ptr = getuser(fp);                /* GEnie routine to log user */
     memcpy(user[index].uid,uid_ptr,8);    /* save users U#             */
@@ -316,7 +316,7 @@ int t;
 
 /************************************************************************
 *  ubreak()                                                             *
-*    called when user hits the break key, just acknowledge we got it	*
+*    called when user hits the break key, just acknowledge we got it    *
 ************************************************************************/
 void ubreak(index)
 int index;
@@ -328,7 +328,7 @@ int index;
 
 /************************************************************************
 *  disconnect()                                                         *
-*	     called when we get a disconnect event			*
+*            called when we get a disconnect event                      *
 ************************************************************************/
 void udisconnect(index)
 int index;
@@ -342,7 +342,7 @@ int index;
 
 /************************************************************************
 *  timeout()                                                            *
-*	    called when we get a timeout event, log off user		*
+*           called when we get a timeout event, log off user            *
 ************************************************************************/
 void utimeout(index)
 int index;
@@ -354,16 +354,16 @@ int index;
 
 /************************************************************************
 * allow_logon()                                                         *
-*	allow another terminal to log on, terminate if we can't         *
+*       allow another terminal to log on, terminate if we can't         *
 ************************************************************************/
 void allow_logon()
   {
-    int flags;				  /* flags for open statement  */
-					  /* set up flags:	       */
-    flags  = O_RDWR |			  /*	 read and write access */
-	     O_NDELAY | 		  /*	 unroadblocked I/O     */
-	     O_NO_SIGNAL |		  /*	 don't give me signals */
-	     O_NO_DISC; 		  /*	 give U#= on close     */
+    int flags;                            /* flags for open statement  */
+                                          /* set up flags:             */
+    flags  = O_RDWR |                     /*     read and write access */
+             O_NDELAY |                   /*     unroadblocked I/O     */
+             O_NO_SIGNAL |                /*     don't give me signals */
+             O_NO_DISC;                   /*     give U#= on close     */
     if (!(openport(flags, 0)))  {         /* open a port for a log-on  */
       comm_down();                        /* if error, boot everyone   */
       delrt();                            /* tell GEnie we're down     */
@@ -373,7 +373,7 @@ void allow_logon()
 
 /************************************************************************
 * logoff()                                                              *
-*	  relog the user, close the stream. and clear out array 	*
+*         relog the user, close the stream. and clear out array         *
 ************************************************************************/
 void logoff(index)
   int index;
@@ -381,14 +381,14 @@ void logoff(index)
   {
     touser(user[index].fp);               /* return user to GEnie      */
     fclose(user[index].fp);               /* close the stream          */
-    number_of_users--;			  /* decrement number of users */
-    user[index].fp = 0; 		  /* make table entry available*/
-    user[index].state = LOGON;		  /* put in not connected state*/
+    number_of_users--;                    /* decrement number of users */
+    user[index].fp = 0;                   /* make table entry available*/
+    user[index].state = LOGON;            /* put in not connected state*/
   } /* end logoff() */
 
 /************************************************************************
 * broadcast()                                                           *
-*		Broadcast a message to every user online		*
+*               Broadcast a message to every user online                *
 ************************************************************************/
 void broadcast(stringy,index)
   char *stringy;
@@ -398,17 +398,17 @@ void broadcast(stringy,index)
     int i;
     int save;
 
-    save = user[index].state;		  /* save this user's state    */
+    save = user[index].state;             /* save this user's state    */
     if (!(user[index].echo))              /* does user want echo?      */
-      user[index].state = NO_ECHO;	  /* no, change state	       */
+      user[index].state = NO_ECHO;        /* no, change state          */
 
     for( i = 0; i <= MAX_ON; i++)         /* for any users online      */
       if (user[i].state == IDLE)  {       /* if idle user, write msg   */
-	fputs(stringy,user[i].fp);
-	fflush(user[i].fp);
+        fputs(stringy,user[i].fp);
+        fflush(user[i].fp);
       }
 
-    user[index].state = save;		  /* restore user state        */
+    user[index].state = save;             /* restore user state        */
     } /* end broadcast() */
 
 /************************************************************************
@@ -423,8 +423,8 @@ void comm_down()
     "<PROCESSOR MESSAGE> Going down for maintainence.  Please relogon.");
     for( i = 0; i <= MAX_ON; i++)         /* for all users online      */
       if (user[i].state != LOGON)  {      /* send message and log-off  */
-	fputs(string,user[i].fp);
-	logoff(i);
+        fputs(string,user[i].fp);
+        logoff(i);
       }
 } /* end comm_dowm() */
 

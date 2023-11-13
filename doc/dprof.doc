@@ -1,7 +1,7 @@
 
-dprof/dprof							dprof/dprof
+dprof/dprof                                                     dprof/dprof
 
-			       DPROF.DOC
+                               DPROF.DOC
 
     DPROF <proffile> [-call]
 
@@ -11,9 +11,9 @@ dprof/dprof							dprof/dprof
     In order to use DPROF you must compile your program with the -prof
     option. There are three levels of profiling:
 
-    -prof1	profile only your code (same as -prof with no numerical level)
-    -prof2	profile your code and the standard C library
-    -prof3	profile your code, the C library, and the amiga library tags
+    -prof1      profile only your code (same as -prof with no numerical level)
+    -prof2      profile your code and the standard C library
+    -prof3      profile your code, the C library, and the amiga library tags
 
     To use -prof2 you must have DLIB:CSP.LIB (small data profiled c.lib)
     or DLIB:CSRP.LIB (small data profiled c.lib for registered arguments).
@@ -25,10 +25,10 @@ dprof/dprof							dprof/dprof
     Other combinations are possible depending on the options you use for
     linking.  These libraries will not necessarily exist on DCC1:, they are
     most likely lharc'd in DCC2:DLIB or DCC3:DLIB depending on how I've
-    arranged the distribution.	Registered users can make other library
+    arranged the distribution.  Registered users can make other library
     combinations directly from the library source.
 
-				USAGE WARNINGS
+                                USAGE WARNINGS
 
     The profiling code is accurate to 20 microseconds under 2.0, 1/60
     second under 1.3.  The profiling code itself will slow down a program
@@ -51,49 +51,49 @@ dprof/dprof							dprof/dprof
     at full speed while only profiling a small part of it at a time.
 
 
-				     EXAMPLE
+                                     EXAMPLE
 
     EXAMPLE: -------------------------
 
-	void	fubar1(void);
-	void	fubar2(void);
-	void	loop(long);
+        void    fubar1(void);
+        void    fubar2(void);
+        void    loop(long);
 
-	main(ac, av)
-	char *av[];
-	{
-	    short i;
+        main(ac, av)
+        char *av[];
+        {
+            short i;
 
-	    for (i = 0; i < 100; ++i) {
-		fubar1();
-		fubar2();
-	    }
-	    loop(10);
-	    fubar1();
-	    fubar2();
-	}
+            for (i = 0; i < 100; ++i) {
+                fubar1();
+                fubar2();
+            }
+            loop(10);
+            fubar1();
+            fubar2();
+        }
 
-	void
-	fubar1()
-	{
-	    short j;
-	    for (j = 0; j < 10000; ++j);
-	    fubar2();
-	}
+        void
+        fubar1()
+        {
+            short j;
+            for (j = 0; j < 10000; ++j);
+            fubar2();
+        }
 
-	void
-	fubar2()
-	{
-	    short j;
-	    for (j = 0; j < 100; ++j);
-	}
+        void
+        fubar2()
+        {
+            short j;
+            for (j = 0; j < 100; ++j);
+        }
 
-	void
-	loop(n)
-	{
-	    if (n)
-		loop(n - 1);
-	}
+        void
+        loop(n)
+        {
+            if (n)
+                loop(n - 1);
+        }
 
     ----------------------------------
 
@@ -112,92 +112,92 @@ GrandTotal:   539.53 mS
 
 **** BY ROUTINE ****
 
-_main	calls=1      total=  539.53 mS (100.00%) local=   10.37 mS (  1.92%)
+_main   calls=1      total=  539.53 mS (100.00%) local=   10.37 mS (  1.92%)
 _fubar1 calls=101    total=  517.45 mS ( 95.90%) local=  507.75 mS ( 94.10%)
 _fubar2 calls=202    total=   20.44 mS (  3.79%) local=   20.44 mS (  3.79%)
-_loop	calls=11     total=    0.96 mS (  0.17%) local=    0.96 mS (  0.17%)
-	\_______/    \_________________________/ \__________________________/
-		       total amount of time	    amount of time spent in the routine
-      the number of    spent in the routing	    not including profiled subroutine
+_loop   calls=11     total=    0.96 mS (  0.17%) local=    0.96 mS (  0.17%)
+        \_______/    \_________________________/ \__________________________/
+                       total amount of time         amount of time spent in the routine
+      the number of    spent in the routing         not including profiled subroutine
       calls made to    including all subroutine     calls it may make.
       the routine      calls.
-						    The percentage is relative to
-			Percentage is relative to   the grand total run time
-			the grand total
+                                                    The percentage is relative to
+                        Percentage is relative to   the grand total run time
+                        the grand total
 
 **** BY PARENT ****
 
-	total number of calls made to fubar2()
-	and total running time, same as from
-	the first table
-	 ____________________________
-	/			     \
+        total number of calls made to fubar2()
+        and total running time, same as from
+        the first table
+         ____________________________
+        /                            \
 _fubar2 calls=202    total=   20.44 mS
-    From _fubar1 calls=101    total=	9.69 mS ( 47.43%)
-    From _main	 calls=101    total=   10.75 mS ( 52.56%)
+    From _fubar1 calls=101    total=    9.69 mS ( 47.43%)
+    From _main   calls=101    total=   10.75 mS ( 52.56%)
 
-    \_____________________/	\________________________/
+    \_____________________/     \________________________/
 
-     number of calls made to	    time spent in fubar2() for calls
+     number of calls made to        time spent in fubar2() for calls
      fubar2() from fubar1() and     made from fubar1() and main(), adds
      main() respectively            up to the total on the first line.
 
 
 
-_loop	calls=11     total=    0.96 mS
-    From _main	 calls=1      total=	0.96 mS (100.00%)
-    From _loop	 calls=1      total=	0.04 mS (  4.65%)
-    From _loop	 calls=1      total=	0.13 mS ( 13.95%)
-    From _loop	 calls=1      total=	0.22 mS ( 23.25%)
-    From _loop	 calls=1      total=	0.31 mS ( 32.55%)
-    From _loop	 calls=1      total=	0.40 mS ( 41.86%)
-    From _loop	 calls=1      total=	0.49 mS ( 51.16%)
-    From _loop	 calls=1      total=	0.60 mS ( 62.79%)
-    From _loop	 calls=1      total=	0.69 mS ( 72.09%)
-    From _loop	 calls=1      total=	0.78 mS ( 81.39%)
-    From _loop	 calls=1      total=	0.87 mS ( 90.69%)
+_loop   calls=11     total=    0.96 mS
+    From _main   calls=1      total=    0.96 mS (100.00%)
+    From _loop   calls=1      total=    0.04 mS (  4.65%)
+    From _loop   calls=1      total=    0.13 mS ( 13.95%)
+    From _loop   calls=1      total=    0.22 mS ( 23.25%)
+    From _loop   calls=1      total=    0.31 mS ( 32.55%)
+    From _loop   calls=1      total=    0.40 mS ( 41.86%)
+    From _loop   calls=1      total=    0.49 mS ( 51.16%)
+    From _loop   calls=1      total=    0.60 mS ( 62.79%)
+    From _loop   calls=1      total=    0.69 mS ( 72.09%)
+    From _loop   calls=1      total=    0.78 mS ( 81.39%)
+    From _loop   calls=1      total=    0.87 mS ( 90.69%)
 
 **** COMBINED CALL TREE ****
 
 
-	Top line contains the same information from table 1
+        Top line contains the same information from table 1
        ________________________________________________________
-      / 						       \
-_main	calls=1     tot=  539.53 (100.00)  loc=   10.37 (  1.92)
-    _fubar1 calls=101	tot=  517.45 ( 95.90)  loc=  507.75 ( 94.10)
-    _fubar2 calls=101	tot=   10.75 (  1.99)  loc=   10.75 (  1.99)
-    _loop   calls=1	tot=	0.96 (  0.17)  loc=    0.08 (  0.01)
+      /                                                        \
+_main   calls=1     tot=  539.53 (100.00)  loc=   10.37 (  1.92)
+    _fubar1 calls=101   tot=  517.45 ( 95.90)  loc=  507.75 ( 94.10)
+    _fubar2 calls=101   tot=   10.75 (  1.99)  loc=   10.75 (  1.99)
+    _loop   calls=1     tot=    0.96 (  0.17)  loc=    0.08 (  0.01)
      \___________________________________________________________/
 
-	main() calls fubar1() 101 times, fubar1() takes 517 mS total
-	time over these calls.	main() calls fubar2() directly 101
-	times and fubar2() takes 10 mS over these calls.  Note that
-	fubar2()'s time is not the same as in table 1 because only
-	those calls made from main() are counted here.
+        main() calls fubar1() 101 times, fubar1() takes 517 mS total
+        time over these calls.  main() calls fubar2() directly 101
+        times and fubar2() takes 10 mS over these calls.  Note that
+        fubar2()'s time is not the same as in table 1 because only
+        those calls made from main() are counted here.
 
-	Percentages are relative to main()
+        Percentages are relative to main()
 
 
 
-	fubar1() calls fubar2() 101 times.  percentages are relative
-	to fubar1()'s total time.  Note that if you add fubar2()'s
-	number of calls and total time to the fubar2() entry above
-	you will get the grand total for fubar2() shown in the first
-	table.
+        fubar1() calls fubar2() 101 times.  percentages are relative
+        to fubar1()'s total time.  Note that if you add fubar2()'s
+        number of calls and total time to the fubar2() entry above
+        you will get the grand total for fubar2() shown in the first
+        table.
 
-	 _____________________________________________________
-	/						      \
+         _____________________________________________________
+        /                                                     \
 _fubar1 calls=101   tot=  517.45 (100.00)  loc=  507.75 ( 98.12)
-    _fubar2 calls=101	tot=	9.69 (  1.87)  loc=    9.69 (  1.87)
+    _fubar2 calls=101   tot=    9.69 (  1.87)  loc=    9.69 (  1.87)
 
 _fubar2 calls=202   tot=   20.44 (100.00)  loc=   20.44 (100.00)
 
-_loop	calls=11    tot=    0.96 (100.00)  loc=    0.96 (100.00)
+_loop   calls=11    tot=    0.96 (100.00)  loc=    0.96 (100.00)
     <SELF>  calls=10
     \_____________/
 
-	The profiled data includes the entire call tree but for
-	simplicity, recursive calls are simply shown as above.
+        The profiled data includes the entire call tree but for
+        simplicity, recursive calls are simply shown as above.
 
 
     You can also request DPROF to print out the entire call tree.  This is
@@ -212,31 +212,31 @@ _loop	calls=11    tot=    0.96 (100.00)  loc=    0.96 (100.00)
 
 **** CALL TREE ****
 
-_main	calls=1     tot=  539.53 (100.00)  loc=   10.37 (  1.92) {
-    _fubar1 calls=101	tot=  517.45 ( 95.90)  loc=  507.75 ( 94.10) {
-	_fubar2 calls=101   tot=    9.69 (  1.79)  loc=    9.69 (  1.79)
+_main   calls=1     tot=  539.53 (100.00)  loc=   10.37 (  1.92) {
+    _fubar1 calls=101   tot=  517.45 ( 95.90)  loc=  507.75 ( 94.10) {
+        _fubar2 calls=101   tot=    9.69 (  1.79)  loc=    9.69 (  1.79)
     }
-    _fubar2 calls=101	tot=   10.75 (  1.99)  loc=   10.75 (  1.99)
-    _loop   calls=1	tot=	0.96 (  0.17)  loc=    0.08 (  0.01) {
-	_loop	calls=1     tot=    0.87 (  0.16)  loc=    0.08 (  0.01) {
-	    _loop   calls=1	tot=	0.78 (  0.14)  loc=    0.08 (  0.01) {
-		_loop	calls=1     tot=    0.69 (  0.12)  loc=    0.08 (  0.01) {
-		    _loop   calls=1	tot=	0.60 (  0.11)  loc=    0.11 (  0.02) {
-			_loop	calls=1     tot=    0.49 (  0.09)  loc=    0.08 (  0.01) {
-			    _loop   calls=1	tot=	0.40 (  0.07)  loc=    0.08 (  0.01) {
-				_loop	calls=1     tot=    0.31 (  0.05)  loc=    0.08 (  0.01) {
-				    _loop   calls=1	tot=	0.22 (  0.04)  loc=    0.08 (  0.01) {
-					_loop	calls=1     tot=    0.13 (  0.02)  loc=    0.08 (  0.01) {
-					    _loop   calls=1	tot=	0.04 (  0.00)  loc=    0.04 (  0.00)
-					}
-				    }
-				}
-			    }
-			}
-		    }
-		}
-	    }
-	}
+    _fubar2 calls=101   tot=   10.75 (  1.99)  loc=   10.75 (  1.99)
+    _loop   calls=1     tot=    0.96 (  0.17)  loc=    0.08 (  0.01) {
+        _loop   calls=1     tot=    0.87 (  0.16)  loc=    0.08 (  0.01) {
+            _loop   calls=1     tot=    0.78 (  0.14)  loc=    0.08 (  0.01) {
+                _loop   calls=1     tot=    0.69 (  0.12)  loc=    0.08 (  0.01) {
+                    _loop   calls=1     tot=    0.60 (  0.11)  loc=    0.11 (  0.02) {
+                        _loop   calls=1     tot=    0.49 (  0.09)  loc=    0.08 (  0.01) {
+                            _loop   calls=1     tot=    0.40 (  0.07)  loc=    0.08 (  0.01) {
+                                _loop   calls=1     tot=    0.31 (  0.05)  loc=    0.08 (  0.01) {
+                                    _loop   calls=1     tot=    0.22 (  0.04)  loc=    0.08 (  0.01) {
+                                        _loop   calls=1     tot=    0.13 (  0.02)  loc=    0.08 (  0.01) {
+                                            _loop   calls=1     tot=    0.04 (  0.00)  loc=    0.04 (  0.00)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

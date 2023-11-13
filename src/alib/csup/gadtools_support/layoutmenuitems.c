@@ -8,10 +8,10 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 BOOL 
 HYPER ## LayoutMenuItems( struct MenuItem *firstitem, APTR vi, Tag tag1, ... )
 {
-	return LayoutMenuItemsA(firstitem,vi,(TagItem *)&tag1);
+        return LayoutMenuItemsA(firstitem,vi,(TagItem *)&tag1);
 }

@@ -196,4 +196,4 @@ sm_alldone:     move.l  d4,d0           ;Return what we found
 
                 movem.l (sp)+,d2-d7/a2-a6
                 rts
-		end
+                end

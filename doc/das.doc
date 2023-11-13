@@ -1,15 +1,15 @@
 
-das/das 							das/das
+das/das                                                         das/das
 
-			DAS ASSEMBLY DOCUMENTATION
+                        DAS ASSEMBLY DOCUMENTATION
 
 
-			      Matthew Dillon
-			      891 Regal Rd.
-			      Berkeley, Ca. 94708
-			      USA
+                              Matthew Dillon
+                              891 Regal Rd.
+                              Berkeley, Ca. 94708
+                              USA
 
-			      uunet.uu.net!overload!dillon
+                              uunet.uu.net!overload!dillon
 
 
 
@@ -20,34 +20,34 @@ das/das 							das/das
     DAS SHOULD NOT BE USED FOR ASSEMBLY PROJECTS, IT IS MEANT SOLELY TO DEAL
     WITH THE OUTPUT FROM THE COMPILER.
 
-				OPTIONS
+                                OPTIONS
 
-    -o objfile		specify object file, else uses asmfile.o (after
-			removing any trailer after the .)
+    -o objfile          specify object file, else uses asmfile.o (after
+                        removing any trailer after the .)
 
-    -F errorfile	specify file for errors, else stderr is used
+    -F errorfile        specify file for errors, else stderr is used
 
-    -nu 		specify that the HUNK_UNIT have no name (for
-			libraries, to make the library smaller)
+    -nu                 specify that the HUNK_UNIT have no name (for
+                        libraries, to make the library smaller)
 
-    -I incdir		specify search directory(ies) for includes.
+    -I incdir           specify search directory(ies) for includes.
 
 
     NOTE:
-	    Das does not assign normal precedence in expressions.  It is
-	    first occurance, first evaluation.  Only one address label is
-	    allowed per expression (i.e.  value unknown until link or load).
-	    (see below for special considerations and operators)
+            Das does not assign normal precedence in expressions.  It is
+            first occurance, first evaluation.  Only one address label is
+            allowed per expression (i.e.  value unknown until link or load).
+            (see below for special considerations and operators)
 
-	    Das does not understand integral types other than decimal and hex.
+            Das does not understand integral types other than decimal and hex.
 
-	    Das does not understand strings 'string'.
+            Das does not understand strings 'string'.
 
-	    Das cannot export EQU labels (i.e. ABS references).
+            Das cannot export EQU labels (i.e. ABS references).
 
-	    Das has no macro facilities
+            Das has no macro facilities
 
-				    FEATURES
+                                    FEATURES
 
     Das includes optimization features used by the compiler.  Also, Das can
     handle arbitrary forward referenced REG labels for MOVEM which most
@@ -62,61 +62,61 @@ das/das 							das/das
 
     DAS handles the following directives:
 
-	DC		declare data
-	DS		declare space / align
+        DC              declare data
+        DS              declare space / align
 
-	SECTION 	declare a section.  Sections may be repeated to flip
-			back and forth between them.  A third argument
-			may contain a value to be ORd with the hunk
-			type field, usually used to specify special
-			hunk flags (i.e. hunk to chip memory, etc...)
+        SECTION         declare a section.  Sections may be repeated to flip
+                        back and forth between them.  A third argument
+                        may contain a value to be ORd with the hunk
+                        type field, usually used to specify special
+                        hunk flags (i.e. hunk to chip memory, etc...)
 
-	XREF		import a label
-	XDEF		export a label
-	EQU		declare a constant (must be a numerical constant)
-	REG		declare zero or more registers in register list
+        XREF            import a label
+        XDEF            export a label
+        EQU             declare a constant (must be a numerical constant)
+        REG             declare zero or more registers in register list
 
-	PROCSTART	used to determine procedure boundries for A5 check/
-	PROCEND 	link/unlk removal.  Also automatically sets optimization
-			option to 1 if 0.
+        PROCSTART       used to determine procedure boundries for A5 check/
+        PROCEND         link/unlk removal.  Also automatically sets optimization
+                        option to 1 if 0.
 
-	INCLUDE		include another assembly file
+        INCLUDE         include another assembly file
 
     DAS handles the following constant expression operators:
 
-	& (and), | (or), ^ (eor), +, -, *, /, - (negation),  ~ (complement),
+        & (and), | (or), ^ (eor), +, -, *, /, - (negation),  ~ (complement),
         > (right shift) and < (left shift).   Any number of defined (EQU) 
-	labels are allowed, either forward or reversed reference.  Precedence
-	is first come first evaluated so use caution when mixing multiple 
-	operators.
+        labels are allowed, either forward or reversed reference.  Precedence
+        is first come first evaluated so use caution when mixing multiple 
+        operators.
 
-	Only one relocatable label is allowed in an expression.  Due to 
+        Only one relocatable label is allowed in an expression.  Due to 
         limitations in the assembler, das requires that the operators 
-	used in a relocatable expression will evaluate to a '+' or '-'
+        used in a relocatable expression will evaluate to a '+' or '-'
         offset.  This is because the location is still undetermined
-	prior to linking. 
+        prior to linking. 
 
     Optimization level 0 (default unless PROCSTART exists in file)
 
-	* MOVEM's using 'reg' labels are optimized to either a MOVE or by
-	  removing the MOVEM entirely (reg labels that specify no registers).
+        * MOVEM's using 'reg' labels are optimized to either a MOVE or by
+          removing the MOVEM entirely (reg labels that specify no registers).
 
-	* BRANCHES to BRAs are optimized (up to 20 hops)
-	* unsized BRANCHES are optimized to byte branches if possible
-	* BRANCHES to the next instruction are deleted
+        * BRANCHES to BRAs are optimized (up to 20 hops)
+        * unsized BRANCHES are optimized to byte branches if possible
+        * BRANCHES to the next instruction are deleted
 
     Optimization level 1  (automatic if PROCSTART exists in file)
 
-	* LINK/UNLK within PROCSTART/PROCEND bounds is removed if the link
-	  register (currently hardwired to be A5) is never referenced AND if
-	  no subroutine calls are made within the procedure (JSR's or BSR's)
+        * LINK/UNLK within PROCSTART/PROCEND bounds is removed if the link
+          register (currently hardwired to be A5) is never referenced AND if
+          no subroutine calls are made within the procedure (JSR's or BSR's)
 
-	  This allows support of stack backtraces while optimizing most low
-	  level routines written in C.	Removal of LINK/UNLK in routines that
-	  make other subroutine calls does not yield much of an efficiency
-	  boost anyway.
+          This allows support of stack backtraces while optimizing most low
+          level routines written in C.  Removal of LINK/UNLK in routines that
+          make other subroutine calls does not yield much of an efficiency
+          boost anyway.
 
-				    PROBLEMS
+                                    PROBLEMS
 
     DAS Uses an incredible amount of memory due to efficiency considerations
     in the optimization and myself wanting to keep it FAST.  <<<---- NOTE!
@@ -133,29 +133,29 @@ das/das 							das/das
     This is why the startup c.a references the autoinit sections with
     absolute calls instead of PC-relative calls.
 
-				SYNONYMS
+                                SYNONYMS
 
-    DBRA		synonym for DBF
-    <opcode> An		synonym for <opcode>A An
-    <opcode> #imm	synonym for <opcode>I #imm
+    DBRA                synonym for DBF
+    <opcode> An         synonym for <opcode>A An
+    <opcode> #imm       synonym for <opcode>I #imm
 
-			   EFFECTIVE ADDRESS
+                           EFFECTIVE ADDRESS
 
-    Dn	- data register D0-D7
-    An	- addr register D0-D7
-    .z	- size (.W or .L)
-    *s	- 68020 scale (*1, *2, *4, *8)
+    Dn  - data register D0-D7
+    An  - addr register D0-D7
+    .z  - size (.W or .L)
+    *s  - 68020 scale (*1, *2, *4, *8)
 
-    bd	- base displacement expression, Usually followed by base
-	  displacement size or (A4) to indicate a data-relative
-	  relocation.  Example:   xx+4.L  xx.W	 23+xx(A4)
+    bd  - base displacement expression, Usually followed by base
+          displacement size or (A4) to indicate a data-relative
+          relocation.  Example:   xx+4.L  xx.W   23+xx(A4)
 
-    od	- outer displacement expression, like bd.  Only allowed if an
-	  indirection [] is used.
+    od  - outer displacement expression, like bd.  Only allowed if an
+          indirection [] is used.
 
-			    68000   68020/030
-    Dn			      x 	x
-    An			      x 	x
+                            68000   68020/030
+    Dn                        x         x
+    An                        x         x
     (An)                      x         x
     (An)+                     x         x
     -(An)                     x         x
@@ -164,8 +164,8 @@ das/das 							das/das
     d8(An,Dn.z*s)                       x
     (bd.z/(A4),An,Dn.z*s)               x     all items optional
 
-	example: (foo(A4),A4,D0.W*8)
-		 (bar.L,D2.W*8)
+        example: (foo(A4),A4,D0.W*8)
+                 (bar.L,D2.W*8)
 
     ([bd.z/(A4),An],Dn.z*s,od)          x
     ([bd.Z/(A4),An,Dn.z*s],od)          x

@@ -14,24 +14,24 @@
 
 union wait {
     struct {
-	char wu_termsig;
-	char wu_stopval;
-	char wu_flags;
-	char wu_status;
-	long wu_retcode;
-	char wu_stopsig;
-	char wu_reserved;
+        char wu_termsig;
+        char wu_stopval;
+        char wu_flags;
+        char wu_status;
+        long wu_retcode;
+        char wu_stopsig;
+        char wu_reserved;
     } u;
 };
 
-#define WF_EXITED   0x0001	/*  DICE private    */
+#define WF_EXITED   0x0001      /*  DICE private    */
 
 #define w_termsig u.wu_termsig
 #define w_stopval u.wu_stopval
 #define w_retcode u.wu_retcode
 #define w_status  u.wu_status
 #define w_stopsig u.wu_stopsig
-#define w_coredump u.wu_termsig     /*	0   */
+#define w_coredump u.wu_termsig     /*  0   */
 
 #define WNOHANG     0x0001
 #define WUNTRACED   0x0002

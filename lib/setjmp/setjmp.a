@@ -1,45 +1,45 @@
 
-		;   SETJMP.A
-		;
-		;   (c)Copyright 1990-91, Matthew Dillon, All Rights Reserved
-		;
-		;   revised to add current __stk_base
+                ;   SETJMP.A
+                ;
+                ;   (c)Copyright 1990-91, Matthew Dillon, All Rights Reserved
+                ;
+                ;   revised to add current __stk_base
 
-		section text,code
+                section text,code
 
-		xdef	_setjmp
-		xdef	_longjmp
-		xref	__stk_base
-		xref	__CStackFree
-		xref	__AbortLockout
+                xdef    _setjmp
+                xdef    _longjmp
+                xref    __stk_base
+                xref    __CStackFree
+                xref    __AbortLockout
 
 _setjmp
-		move.l	4(sp),A0	    ; jmp_buf (16 longwords)
-		move.l	(sp),A1 	    ; return address
-		movem.l D2-D7/A1-A7,(A0)
-		move.l	__stk_base(A4),52(A0)   ;[4] = current stk base
-		moveq.l #0,D0		    ; direct call returns 0
-		rts
+                move.l  4(sp),A0            ; jmp_buf (16 longwords)
+                move.l  (sp),A1             ; return address
+                movem.l D2-D7/A1-A7,(A0)
+                move.l  __stk_base(A4),52(A0)   ;[4] = current stk base
+                moveq.l #0,D0               ; direct call returns 0
+                rts
 
 _longjmp
-		move.w	#0,__AbortLockout(A4)	; clear abort lockout
-		addq.l	#4,sp		    ; skip rts
-		move.l	(sp)+,A2	    ; jmp_buf
-		move.l	(sp)+,D2	    ; ret-value, disallow 0
-		bne	lj0
-		moveq.l #1,D2
-lj0		move.l	48(A2),A7	  ; restore stack immediately
-		move.l	52(A2),A3	  ; original stack base
-lj1		cmp.l	__stk_base(A4),A3
-		beq	lj10
-		jsr	__CStackFree(pc)    ; free stacks until ok
-		bra	lj1
+                move.w  #0,__AbortLockout(A4)   ; clear abort lockout
+                addq.l  #4,sp               ; skip rts
+                move.l  (sp)+,A2            ; jmp_buf
+                move.l  (sp)+,D2            ; ret-value, disallow 0
+                bne     lj0
+                moveq.l #1,D2
+lj0             move.l  48(A2),A7         ; restore stack immediately
+                move.l  52(A2),A3         ; original stack base
+lj1             cmp.l   __stk_base(A4),A3
+                beq     lj10
+                jsr     __CStackFree(pc)    ; free stacks until ok
+                bra     lj1
 lj10
-		move.l	A2,A0		    ; restore frame
-		move.l	D2,D0
-		movem.l (A0),D2-D7/A1-A7
-		move.l	A1,(sp) 	    ; set up return address
-		rts
+                move.l  A2,A0               ; restore frame
+                move.l  D2,D0
+                movem.l (A0),D2-D7/A1-A7
+                move.l  A1,(sp)             ; set up return address
+                rts
 
-		END
+                END
 

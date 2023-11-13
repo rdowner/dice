@@ -15,7 +15,7 @@ OpenFont(textAttr)(a0)
 CloseFont(textFont)(a1)
 AskSoftStyle(rp)(a1)
 SetSoftStyle(rp,style,enable)(a1,d0/d1)
-*------	Gels routines ------
+*------ Gels routines ------
 AddBob(bob,rp)(a0/a1)
 AddVSprite(vSprite,rp)(a0/a1)
 DoCollision(rp)(a1)
@@ -30,7 +30,7 @@ AddAnimOb(anOb,anKey,rp)(a0/a1/a2)
 Animate(anKey,rp)(a0/a1)
 GetGBuffers(anOb,rp,flag)(a0/a1,d0)
 InitGMasks(anOb)(a0)
-*------	General graphics routines ------
+*------ General graphics routines ------
 DrawEllipse(rp,xCenter,yCenter,a,b)(a1,d0/d1/d2/d3)
 AreaEllipse(rp,xCenter,yCenter,a,b)(a1,d0/d1/d2/d3)
 LoadRGB4(vp,colors,count)(a0/a1,d0)

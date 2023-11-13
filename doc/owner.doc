@@ -36,10 +36,10 @@ Address  - Owner
 --------   -----------
 
 003297A6 - in MsgPort 003297A4: LOGHOST signals to
-			  Process  0x00326998: ARexx - CLI ()
+                          Process  0x00326998: ARexx - CLI ()
 
 00329FEA - in MsgPort 00329FE8: LOGPORT signals to
-			  Process  0x002DB470: ARexx - CLI ()
+                          Process  0x002DB470: ARexx - CLI ()
 
 /* If SegTracker is running, can find in library/device/handler seglists */
 00593A5A - in SegList  of LIBS:test.library   Hunk 0000 Offset 00000002
@@ -49,10 +49,10 @@ Address  - Owner
 
 
 002CC98B - in MsgPort 002CC986: FizEd *PRIVATE* Port signals to
-			  Process  0x002CE820: FizEd Master Process
+                          Process  0x002CE820: FizEd Master Process
 
 00292A55 - in MsgPort 00292A50: Timer signals to
-			  Process  0x002A9A50: PopUpMenu
+                          Process  0x002A9A50: PopUpMenu
 
 00208F42 - in -TCB-    of Task     0x00208F3E: trackdisk.device
 00208F42 - in MemList  of Task     0x00208F3E: trackdisk.device

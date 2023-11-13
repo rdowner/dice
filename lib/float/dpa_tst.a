@@ -1,24 +1,24 @@
 
-		;   DPA_TST.A
-		;
-		;   A0	arg1	(8 bytes)
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   DPA_TST.A
+                ;
+                ;   A0  arg1    (8 bytes)
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xref	_MathIeeeDoubBasBase
-		xref	_LVOIEEEDPTst
-		xdef	__dptst_a
+                xref    _MathIeeeDoubBasBase
+                xref    _LVOIEEEDPTst
+                xdef    __dptst_a
 
-__dptst_a	;movem.l D0/D1/A0/A1/A6,-(sp)
-		move.l	A6,-(sp)
-		move.l	_MathIeeeDoubBasBase(A4),A6
-		movem.l (A0),D0/D1
-		jsr	_LVOIEEEDPTst(A6)
-		;movem.l  (sp)+,D0/D1/A0/A1/A6
-		move.l	(sp)+,A6
-		rts
+__dptst_a       ;movem.l D0/D1/A0/A1/A6,-(sp)
+                move.l  A6,-(sp)
+                move.l  _MathIeeeDoubBasBase(A4),A6
+                movem.l (A0),D0/D1
+                jsr     _LVOIEEEDPTst(A6)
+                ;movem.l  (sp)+,D0/D1/A0/A1/A6
+                move.l  (sp)+,A6
+                rts
 
-		END
+                END
 

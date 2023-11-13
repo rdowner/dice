@@ -15,8 +15,8 @@ int c;
 FILE *fi;
 {
     if (fi->sd_UC < 0) {
-	fi->sd_UC = c;
-	return(c);
+        fi->sd_UC = c;
+        return(c);
     }
     return(EOF);
 }

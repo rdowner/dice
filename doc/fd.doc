@@ -19,7 +19,7 @@ c.lib/fd/unlink
 c.lib/fd/write
 
 
-fd/file_descriptor					fd/file_descriptor
+fd/file_descriptor                                      fd/file_descriptor
 
     A file descriptor is the lowest portable access to the file system a
     C program may make.  file descriptors are used with open, read, write,
@@ -30,686 +30,686 @@ fd/file_descriptor					fd/file_descriptor
     (see the file_pointer manual page) and an AmigaDOS file handle.
 
 
-fd/close						fd/close
+fd/close                                                fd/close
 
    NAME
-	close - close a file descriptor
+        close - close a file descriptor
 
    SYNOPSIS
-	int r = close(fd);
-	int fd;
+        int r = close(fd);
+        int fd;
 
    FUNCTION
-	The specified file descriptor is closed.  If an error occurs on
-	close or the descriptor is invalid a non-zero return code will
-	result and errno will be set to the appropriate error condition.
+        The specified file descriptor is closed.  If an error occurs on
+        close or the descriptor is invalid a non-zero return code will
+        result and errno will be set to the appropriate error condition.
 
    NOTE
-	refer to the file_descriptor manual page for general information
+        refer to the file_descriptor manual page for general information
 
-	Unlike file pointers and file handles, the file descriptor is
-	checked for validity and will simply return an error if illegal.
+        Unlike file pointers and file handles, the file descriptor is
+        checked for validity and will simply return an error if illegal.
 
    EXAMPLE
-	#include <fcntl.h>
+        #include <fcntl.h>
 
-	main()
-	{
-	    int fd;
+        main()
+        {
+            int fd;
 
-	    fd = open("T:xx", O_WRONLY|O_CREAT|O_TRUNC);
-	    if (fd >= 0) {
-		puts("created empty file T:xx");
-		close(fd);
-	    } else {
-		puts("unable to create T:xx");
-	    }
-	    return(0);
-	}
+            fd = open("T:xx", O_WRONLY|O_CREAT|O_TRUNC);
+            if (fd >= 0) {
+                puts("created empty file T:xx");
+                close(fd);
+            } else {
+                puts("unable to create T:xx");
+            }
+            return(0);
+        }
 
    INPUTS
-	int fd; 	file descriptor to close, the file descriptor becomes
-			invalid after this call
+        int fd;         file descriptor to close, the file descriptor becomes
+                        invalid after this call
 
    RESULTS
-	int r;		return value, 0 == ok, non-zero == error
+        int r;          return value, 0 == ok, non-zero == error
 
    SEE ALSO
-	close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
-	mkdir, open, read, rmdir, unlink, write
+        close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
+        mkdir, open, read, rmdir, unlink, write
 
 
-fd/creat						fd/creat
+fd/creat                                                fd/creat
 
    NAME
-	creat - create a file
+        creat - create a file
 
    SYNOPSIS
-	int fd = creat(file);
-	char *file;
+        int fd = creat(file);
+        char *file;
 
    FUNCTION
-	Creates a new file and returns a file descriptor for it.  This call
-	is equivalent to open(file, O_CREAT|O_TRUNC|O_RDWR);
+        Creates a new file and returns a file descriptor for it.  This call
+        is equivalent to open(file, O_CREAT|O_TRUNC|O_RDWR);
 
-	This is an obsolete function and should not be used.
+        This is an obsolete function and should not be used.
 
    NOTE
-	refer to the file_descriptor manual page for general information
+        refer to the file_descriptor manual page for general information
 
-	Unlike file pointers and file handles, the file descriptor is
-	checked for validity and will simply return an error if illegal.
+        Unlike file pointers and file handles, the file descriptor is
+        checked for validity and will simply return an error if illegal.
 
    EXAMPLE
-	#include <fcntl.h>
+        #include <fcntl.h>
 
-	main()
-	{
-	    int fd;
+        main()
+        {
+            int fd;
 
-	    fd = creat("T:xx");
-	    if (fd >= 0) {
-		puts("created empty file T:xx");
-		close(fd);
-	    } else {
-		puts("unable to create T:xx");
-	    }
-	    return(0);
-	}
+            fd = creat("T:xx");
+            if (fd >= 0) {
+                puts("created empty file T:xx");
+                close(fd);
+            } else {
+                puts("unable to create T:xx");
+            }
+            return(0);
+        }
 
    INPUTS
-	char *file;	nul terminated string that is the filename
+        char *file;     nul terminated string that is the filename
 
    RESULTS
-	int fd; 	file descriptor if >= 0, error if < 0.
+        int fd;         file descriptor if >= 0, error if < 0.
 
    SEE ALSO
-	close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
-	mkdir, open, read, rmdir, unlink, write
+        close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
+        mkdir, open, read, rmdir, unlink, write
 
 
-fd/fcntl						fd/fcntl
+fd/fcntl                                                fd/fcntl
 
    NAME
-	fcntl - file control on a file
+        fcntl - file control on a file
 
    SYNOPSIS
-	int r = fcntl(fd, req, arg)
-	int fd;
-	int req;
-	int arg;
+        int r = fcntl(fd, req, arg)
+        int fd;
+        int req;
+        int arg;
 
    FUNCTION
-	fcntl() may be used to control various aspects of an FD and is a
-	higher level call than ioctl().
+        fcntl() may be used to control various aspects of an FD and is a
+        higher level call than ioctl().
 
-	CURRENTLY, NOTHING REAL IS DOABLE BY THE FCNTL() CALL for files.
-	However, fcntl fully supports programmer simulated file descriptors.
+        CURRENTLY, NOTHING REAL IS DOABLE BY THE FCNTL() CALL for files.
+        However, fcntl fully supports programmer simulated file descriptors.
 
    NOTE
-	refer to the file_descriptor manual page for general information
+        refer to the file_descriptor manual page for general information
 
-	Unlike file pointers and file handles, the file descriptor is
-	checked for validity and will simply return an error if illegal.
-
-   EXAMPLE
-	#include <fcntl.h>
-
-   INPUTS
-	int fd; 	file descriptor to operate on
-	int req;	request from <fcntl.h> (F_* defines)
-	int arg;	control argument
-
-   RESULTS
-	int r;		result, error if less than 0.
-
-   SEE ALSO
-	close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
-	mkdir, open, read, rmdir, unlink, write
-
-
-fd/fdtofh						fd/fdtofh
-
-   NAME
-	fdtofh - return AmigaDOS file handle for file descriptor
-
-   SYNOPSIS
-	BPTR fh = fdtofh(fd);
-	int fd;
-
-   FUNCTION
-	Returns the AmigaDOS file handle associated with a file descriptor
-	or NULL if the file descriptor is illegal or simulated.  You may then
-	make AmigaDOS library calls using the file handle
+        Unlike file pointers and file handles, the file descriptor is
+        checked for validity and will simply return an error if illegal.
 
    EXAMPLE
-
-	#include <exec/types.h>
-
-	main()
-	{
-	    BPTR fh;
-
-	    write(1, "FuBar\n", 6);
-
-	    if (fh = fdtofh(1))
-		Write(fh, "FuBar\n", 6);
-
-	    return(0);
-	}
+        #include <fcntl.h>
 
    INPUTS
-	int fd; 	file descriptor
+        int fd;         file descriptor to operate on
+        int req;        request from <fcntl.h> (F_* defines)
+        int arg;        control argument
 
    RESULTS
-	BPTR fh;	associated file handle or NULL
+        int r;          result, error if less than 0.
 
    SEE ALSO
-	close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
-	mkdir, open, read, rmdir, unlink, write
+        close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
+        mkdir, open, read, rmdir, unlink, write
 
 
-fd/ioctl						fd/ioctl
+fd/fdtofh                                               fd/fdtofh
 
    NAME
-	ioctl - IO control on file descriptor
+        fdtofh - return AmigaDOS file handle for file descriptor
 
    SYNOPSIS
-	int r = ioctl(fd, req, parg1, parg2);
-	int fd;
-	int req;
-	int *parg1;
-	int *parg2;
+        BPTR fh = fdtofh(fd);
+        int fd;
 
    FUNCTION
-	execute an IO control on the file descriptor.  Currently no IO
-	controls are implemented.
+        Returns the AmigaDOS file handle associated with a file descriptor
+        or NULL if the file descriptor is illegal or simulated.  You may then
+        make AmigaDOS library calls using the file handle
 
    EXAMPLE
 
+        #include <exec/types.h>
+
+        main()
+        {
+            BPTR fh;
+
+            write(1, "FuBar\n", 6);
+
+            if (fh = fdtofh(1))
+                Write(fh, "FuBar\n", 6);
+
+            return(0);
+        }
+
    INPUTS
-	int fd; 	file descriptor
-	int req;	request from <ioctl.h>
-	int *parg1;	address of argument #1
-	int *parg2;	address of argument #2
+        int fd;         file descriptor
 
    RESULTS
-	int r;		result, error if < 0.
+        BPTR fh;        associated file handle or NULL
 
    SEE ALSO
-	close, creat, fcntl, fdtofh, getfh, ioctl, isatty, lseek,
-	mkdir, open, read, rmdir, unlink, write
+        close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
+        mkdir, open, read, rmdir, unlink, write
 
 
-fd/isatty						fd/isatty
+fd/ioctl                                                fd/ioctl
 
    NAME
-	isatty - Is a file descriptor a TTY ?
+        ioctl - IO control on file descriptor
 
    SYNOPSIS
-	int r = isatty(fd);
-	int fd;
+        int r = ioctl(fd, req, parg1, parg2);
+        int fd;
+        int req;
+        int *parg1;
+        int *parg2;
 
    FUNCTION
-	Returns TRUE (1) if the file descriptor is associated with a
-	console, FALSE (0) if not, or -1 if an error condition occurs
-	(such as illegal file descriptor).
+        execute an IO control on the file descriptor.  Currently no IO
+        controls are implemented.
+
+   EXAMPLE
+
+   INPUTS
+        int fd;         file descriptor
+        int req;        request from <ioctl.h>
+        int *parg1;     address of argument #1
+        int *parg2;     address of argument #2
+
+   RESULTS
+        int r;          result, error if < 0.
+
+   SEE ALSO
+        close, creat, fcntl, fdtofh, getfh, ioctl, isatty, lseek,
+        mkdir, open, read, rmdir, unlink, write
+
+
+fd/isatty                                               fd/isatty
+
+   NAME
+        isatty - Is a file descriptor a TTY ?
+
+   SYNOPSIS
+        int r = isatty(fd);
+        int fd;
+
+   FUNCTION
+        Returns TRUE (1) if the file descriptor is associated with a
+        console, FALSE (0) if not, or -1 if an error condition occurs
+        (such as illegal file descriptor).
 
    NOTE
-	the standard input (0), standard output (1), and standard error (2)
-	can all return different values for isatty() depending on how the
-	program is redirected.	A program whos standard in and standard out
-	is redirected may still have a standard error that is connected to
-	the console.
+        the standard input (0), standard output (1), and standard error (2)
+        can all return different values for isatty() depending on how the
+        program is redirected.  A program whos standard in and standard out
+        is redirected may still have a standard error that is connected to
+        the console.
 
-	refer to the file_descriptor manual page for general information
+        refer to the file_descriptor manual page for general information
 
-	Unlike file pointers and file handles, the file descriptor is
-	checked for validity and will simply return an error if illegal.
+        Unlike file pointers and file handles, the file descriptor is
+        checked for validity and will simply return an error if illegal.
 
    EXAMPLE
-	#include <stdio.h>
+        #include <stdio.h>
 
-	main()
-	{
-	    if (isatty(1)) {
-		puts("input is a TTY");
-	    } else {
-		puts("input is not a TTY");
-	    }
-	}
+        main()
+        {
+            if (isatty(1)) {
+                puts("input is a TTY");
+            } else {
+                puts("input is not a TTY");
+            }
+        }
 
-	1> testprg
-	input is a TTY
-	1> echo >t:x	    ; create dummy file
-	1> testprg <t:x
-	input is not a TTY
-	1>
+        1> testprg
+        input is a TTY
+        1> echo >t:x        ; create dummy file
+        1> testprg <t:x
+        input is not a TTY
+        1>
 
    INPUTS
-	int fd; 	file descriptor
+        int fd;         file descriptor
 
    RESULTS
-	int r;		result, 1 if a tty, 0 if not, or -1 if error
+        int r;          result, 1 if a tty, 0 if not, or -1 if error
 
    SEE ALSO
-	close, creat, fcntl, fdtofh, getfh, ioctl, isatty, lseek,
-	mkdir, open, read, rmdir, unlink, write
+        close, creat, fcntl, fdtofh, getfh, ioctl, isatty, lseek,
+        mkdir, open, read, rmdir, unlink, write
 
 
-fd/lseek						fd/lseek
+fd/lseek                                                fd/lseek
 
    NAME
-	lseek  - Seek within a file descriptor
+        lseek  - Seek within a file descriptor
 
    SYNOPSIS
-	long newpos = lseek(fd, offset, how)
-	int fd;
-	long offset;
-	int how;
+        long newpos = lseek(fd, offset, how)
+        int fd;
+        long offset;
+        int how;
 
    FUNCTION
-	lseek() changes where the file descriptor points to within the
-	open file.  You may specify an offset relative to the beginning
-	of the file, the current position in the file, or the end of the
-	file:
+        lseek() changes where the file descriptor points to within the
+        open file.  You may specify an offset relative to the beginning
+        of the file, the current position in the file, or the end of the
+        file:
 
-	how		offset
-	---		------
-	 0		absolute offset (relative to the beginning of the file)
-	 1		offset relative to the current position in the file
-	 2		offset relative to the end of the file
+        how             offset
+        ---             ------
+         0              absolute offset (relative to the beginning of the file)
+         1              offset relative to the current position in the file
+         2              offset relative to the end of the file
 
-	Negative offsets may be specified when relative modes are used.
+        Negative offsets may be specified when relative modes are used.
 
-	lseek() returns the new position in the file relative to the
-	beginning of the file (i.e. an absolute offset).
+        lseek() returns the new position in the file relative to the
+        beginning of the file (i.e. an absolute offset).
 
    NOTE
-	offsets are relative the how.  So, for example, if you want to seek
-	to the 4 character from the end of the file you would
-	lseek(fd, -4L, 2);
+        offsets are relative the how.  So, for example, if you want to seek
+        to the 4 character from the end of the file you would
+        lseek(fd, -4L, 2);
 
-	refer to the file_descriptor manual page for general information
+        refer to the file_descriptor manual page for general information
 
-	Unlike file pointers and file handles, the file descriptor is
-	checked for validity and will simply return an error if illegal.
-
-   EXAMPLE
-	#include <fcntl.h>
-
-	main()
-	{
-	    int fd;
-
-	    fd = open("t:xx", O_CREAT|O_TRUNC|O_RDWR);
-	    if (fd >= 0) {
-		write(fd, "0123456789", 10);
-		lseek(fd, -1L, 1);
-		write(fd, "J", 1);  /*  overwrites the 9    */
-		lseek(fd, -1L, 1);
-		write(fd, "j", 1);  /*  overwrites the J    */
-		lseek(fd, -4L, 2);  /*  position over the 6 */
-		write(fd, "g", 1);  /*  overwrite with g, now over the 7 */
-		lseek(fd, 0L, 0);   /*  position over the 0 */
-		write(fd, "a", 1);
-		close(fd);
-	    } else {
-		puts("Unable to create T:xx");
-	    }
-	}
-
-	1> testprg
-	1> type t:xx
-	a12345g78j
-	1>
-
-   INPUTS
-	int fd; 	file descriptor
-	long offset;	offset relative to how
-	int how;	0 = rel beginning, 1 = rel middle, 2 = rel end
-
-   RESULTS
-	int newpos;	new position in file (absolute) or < 0 if error
-
-   SEE ALSO
-	close, creat, fcntl, fdtofh, getfh, ioctl, isatty, lseek,
-	mkdir, open, read, rmdir, unlink, write
-
-
-fd/mkdir						fd/mkdir
-
-   NAME
-	mkdir  - Create a directory
-
-   SYNOPSIS
-	int error = mkdir(dirname)
-	char *dirname;
-
-   FUNCTION
-	mkdir creates a new directory.	It returns 0 if successful, -1
-	if not (with errno set to an error code).
+        Unlike file pointers and file handles, the file descriptor is
+        checked for validity and will simply return an error if illegal.
 
    EXAMPLE
-	main()
-	{
-	    int r;
+        #include <fcntl.h>
 
-	    r = mkdir("T:tmpdir");
-	    if (r == 0)
-		puts("Created T:tmpdir successfully");
-	    else
-		puts("Unable to create directory T:tmpdir");
-	}
+        main()
+        {
+            int fd;
+
+            fd = open("t:xx", O_CREAT|O_TRUNC|O_RDWR);
+            if (fd >= 0) {
+                write(fd, "0123456789", 10);
+                lseek(fd, -1L, 1);
+                write(fd, "J", 1);  /*  overwrites the 9    */
+                lseek(fd, -1L, 1);
+                write(fd, "j", 1);  /*  overwrites the J    */
+                lseek(fd, -4L, 2);  /*  position over the 6 */
+                write(fd, "g", 1);  /*  overwrite with g, now over the 7 */
+                lseek(fd, 0L, 0);   /*  position over the 0 */
+                write(fd, "a", 1);
+                close(fd);
+            } else {
+                puts("Unable to create T:xx");
+            }
+        }
+
+        1> testprg
+        1> type t:xx
+        a12345g78j
+        1>
 
    INPUTS
-	char *dirname;	filename of directory to create
+        int fd;         file descriptor
+        long offset;    offset relative to how
+        int how;        0 = rel beginning, 1 = rel middle, 2 = rel end
 
    RESULTS
-	int r;		0 if no error, < 0 if error
+        int newpos;     new position in file (absolute) or < 0 if error
 
    SEE ALSO
-	close, creat, fcntl, fdtofh, getfh, ioctl, isatty, lseek,
-	mkdir, open, read, rmdir, unlink, write
+        close, creat, fcntl, fdtofh, getfh, ioctl, isatty, lseek,
+        mkdir, open, read, rmdir, unlink, write
 
 
-fd/open 						fd/open
+fd/mkdir                                                fd/mkdir
 
    NAME
-	open  - open a file
+        mkdir  - Create a directory
 
    SYNOPSIS
-	#include <fcntl.h>
-
-	int fd = open(name, modes);
-	char *name;
-	int modes;
+        int error = mkdir(dirname)
+        char *dirname;
 
    FUNCTION
-	Open a file of the specified name using the specified modes.  The
-	modes combinations yield different results as described below:
+        mkdir creates a new directory.  It returns 0 if successful, -1
+        if not (with errno set to an error code).
 
-	O_RDONLY    open file for reading only
-	O_WRONLY    open file for writing only
-	O_RDWR	    open file for reading and writing
-	O_NDELAY    open file non-blocking (not implemented)
-	O_APPEND    open file for writing only and force all writes to
-		     append to the file regardless of the current seek
-		     position.
-	O_CREAT     create the file if it DOES NOT exist
-	O_TRUNC     truncate the file if it DOES exist
-	O_EXCL	    used only with O_CREAT, if the file already exists the
-		    open will fail
+   EXAMPLE
+        main()
+        {
+            int r;
 
-	O_BINARY    open file for binary reading and writing, vs text.	This
-		    flag is ignored by DICE since there is no difference on
-		    the Amiga.	However, on IBM systems CR-LF must be
-		    converted to an LF when reading text files.
+            r = mkdir("T:tmpdir");
+            if (r == 0)
+                puts("Created T:tmpdir successfully");
+            else
+                puts("Unable to create directory T:tmpdir");
+        }
 
-	open returns a descriptor (>= 0) or error (< 0) on failure.
+   INPUTS
+        char *dirname;  filename of directory to create
+
+   RESULTS
+        int r;          0 if no error, < 0 if error
+
+   SEE ALSO
+        close, creat, fcntl, fdtofh, getfh, ioctl, isatty, lseek,
+        mkdir, open, read, rmdir, unlink, write
+
+
+fd/open                                                 fd/open
+
+   NAME
+        open  - open a file
+
+   SYNOPSIS
+        #include <fcntl.h>
+
+        int fd = open(name, modes);
+        char *name;
+        int modes;
+
+   FUNCTION
+        Open a file of the specified name using the specified modes.  The
+        modes combinations yield different results as described below:
+
+        O_RDONLY    open file for reading only
+        O_WRONLY    open file for writing only
+        O_RDWR      open file for reading and writing
+        O_NDELAY    open file non-blocking (not implemented)
+        O_APPEND    open file for writing only and force all writes to
+                     append to the file regardless of the current seek
+                     position.
+        O_CREAT     create the file if it DOES NOT exist
+        O_TRUNC     truncate the file if it DOES exist
+        O_EXCL      used only with O_CREAT, if the file already exists the
+                    open will fail
+
+        O_BINARY    open file for binary reading and writing, vs text.  This
+                    flag is ignored by DICE since there is no difference on
+                    the Amiga.  However, on IBM systems CR-LF must be
+                    converted to an LF when reading text files.
+
+        open returns a descriptor (>= 0) or error (< 0) on failure.
 
    NOTE
-	refer to the file_descriptor manual page for general information
+        refer to the file_descriptor manual page for general information
 
-	Unlike file pointers and file handles, the file descriptor is
-	checked for validity and will simply return an error if illegal.
+        Unlike file pointers and file handles, the file descriptor is
+        checked for validity and will simply return an error if illegal.
 
    EXAMPLE
-	#include <fcntl.h>
-	#include <assert.h>
+        #include <fcntl.h>
+        #include <assert.h>
 
-	main()
-	{
-	    int fd;
+        main()
+        {
+            int fd;
 
-	    fd = open("T:xx", O_WRONLY|O_CREAT|O_TRUNC);
-	    assert(fd >= 0);
-	    close(fd);
+            fd = open("T:xx", O_WRONLY|O_CREAT|O_TRUNC);
+            assert(fd >= 0);
+            close(fd);
 
-	    fd = open("T:xx", O_CREAT|O_EXCL|O_TRUNC|O_WRONLY);
-	    assert(fd < 0);     /*  should fail, file already exists */
-	    remove("T:xx");
+            fd = open("T:xx", O_CREAT|O_EXCL|O_TRUNC|O_WRONLY);
+            assert(fd < 0);     /*  should fail, file already exists */
+            remove("T:xx");
 
-	    fd = open("T:xx", O_CREAT|O_TRUNC|O_WRONLY);
-	    assert(fd >= 0);    /*  should work     */
-	    write(fd, "FuBar\n", 6);
-	    close(fd);
+            fd = open("T:xx", O_CREAT|O_TRUNC|O_WRONLY);
+            assert(fd >= 0);    /*  should work     */
+            write(fd, "FuBar\n", 6);
+            close(fd);
 
-	    fd = open("T:xx", O_APPEND|O_WRONLY);
-	    assert(fd >= 0);
-	    write(fd, "BxBar\n", 6);
-	    close(fd);
+            fd = open("T:xx", O_APPEND|O_WRONLY);
+            assert(fd >= 0);
+            write(fd, "BxBar\n", 6);
+            close(fd);
 
-	    return(0);
-	}
+            return(0);
+        }
 
-	1> sampleprg
-	1> type t:xx
-	FuBar
-	BxBar
-	1>
+        1> sampleprg
+        1> type t:xx
+        FuBar
+        BxBar
+        1>
 
    INPUTS
-	char *name;	    filename to open
-	long modes;	    modes to open the file with
+        char *name;         filename to open
+        long modes;         modes to open the file with
 
    RESULTS
-	int fd; 	    A file descriptor if >= 0, an error if < 0.
+        int fd;             A file descriptor if >= 0, an error if < 0.
 
    SEE ALSO
-	close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
-	mkdir, open, read, rmdir, unlink, write
+        close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
+        mkdir, open, read, rmdir, unlink, write
 
 
-fd/read 						fd/read
+fd/read                                                 fd/read
 
    NAME
-	read  - read data from a file
+        read  - read data from a file
 
    SYNOPSIS
-	int r = read(fd, buf, bytes);
-	int fd;
-	void *buf;
-	int bytes;
+        int r = read(fd, buf, bytes);
+        int fd;
+        void *buf;
+        int bytes;
 
    FUNCTION
-	read data from a file starting at the current seek position.  read
-	returns the number of bytes read or -1 if a read error occurs.
+        read data from a file starting at the current seek position.  read
+        returns the number of bytes read or -1 if a read error occurs.
 
-	With normal files, read will always return the number of bytes
-	requested until the end of file is reached, in which case read
-	may return fewer than the number of bytes requested.  If at the
-	end of a file, read will return 0.
+        With normal files, read will always return the number of bytes
+        requested until the end of file is reached, in which case read
+        may return fewer than the number of bytes requested.  If at the
+        end of a file, read will return 0.
 
-	With devices read may or may not return the number of bytes
-	requested depending on the device.
+        With devices read may or may not return the number of bytes
+        requested depending on the device.
 
    NOTE
-	refer to the file_descriptor manual page for general information
+        refer to the file_descriptor manual page for general information
 
-	Unlike file pointers and file handles, the file descriptor is
-	checked for validity and will simply return an error if illegal.
-
-   EXAMPLE
-	#include <fcntl.h>
-	#include <assert.h>
-
-	main()
-	{
-	    int fd;
-	    int r;
-	    char buf[32];
-
-	    fd = open("T:xx", O_WRONLY|O_CREAT|O_TRUNC);
-	    assert(fd >= 0);
-	    write(fd, "FuBar\n", 6);
-	    close(fd);
-
-	    fd = open("T:xx", O_RDONLY);
-	    assert(fd >= 0);
-	    r = read(fd, buf, sizeof(buf));     /*  sizeof(buf) == 32   */
-	    close(fd);
-	    assert(r == 6);
-
-	    /*
-	     *	note that the buffer is not terminated with a nul, but since
-	     *	we are using write() which requires a length it does not matter
-	     */
-
-	    write(1, buf, r);
-	}
-
-   INPUTS
-	int fd; 	file descriptor to read from
-	void *buf;	pointer to buffer to read data into
-	int len;	maximum number of bytes to read
-
-   RESULTS
-	int r;		number of bytes actually read (could be less than
-			len or 0), or < 0 if error.
-
-   SEE ALSO
-	close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
-	mkdir, open, read, rmdir, unlink, write
-
-
-fd/rmdir						fd/rmdir
-
-   NAME
-	rmdir - delete a directory
-
-   SYNOPSIS
-	int r = rmdir(dirname);
-	char *dirname;
-
-   FUNCTION
-	delete a directory.  The directory must be empty for the deletion to
-	work.
-
-	On the Amiga this call is equivalent to remove() or unlink().
+        Unlike file pointers and file handles, the file descriptor is
+        checked for validity and will simply return an error if illegal.
 
    EXAMPLE
-	#include <assert.h>
+        #include <fcntl.h>
+        #include <assert.h>
 
-	main()
-	{
-	    int r;
+        main()
+        {
+            int fd;
+            int r;
+            char buf[32];
 
-	    r = mkdir("T:tmpdir");
-	    assert(r == 0);
-	    r = rmdir("T:tmpdir");
-	    assert(r == 0);
-	}
+            fd = open("T:xx", O_WRONLY|O_CREAT|O_TRUNC);
+            assert(fd >= 0);
+            write(fd, "FuBar\n", 6);
+            close(fd);
+
+            fd = open("T:xx", O_RDONLY);
+            assert(fd >= 0);
+            r = read(fd, buf, sizeof(buf));     /*  sizeof(buf) == 32   */
+            close(fd);
+            assert(r == 6);
+
+            /*
+             *  note that the buffer is not terminated with a nul, but since
+             *  we are using write() which requires a length it does not matter
+             */
+
+            write(1, buf, r);
+        }
 
    INPUTS
-	char *dirname;	    name of directory to delete
+        int fd;         file descriptor to read from
+        void *buf;      pointer to buffer to read data into
+        int len;        maximum number of bytes to read
 
    RESULTS
-	int r;		    0 if successful, non-zero if error
+        int r;          number of bytes actually read (could be less than
+                        len or 0), or < 0 if error.
 
    SEE ALSO
-	close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
-	mkdir, open, read, rmdir, unlink, write
+        close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
+        mkdir, open, read, rmdir, unlink, write
 
 
-fd/unlink						fd/unlink
+fd/rmdir                                                fd/rmdir
 
    NAME
-	unlink - delete a file
+        rmdir - delete a directory
 
    SYNOPSIS
-	int r = unlink(filename);
-	char *filename;
-
-	UNIX compatibility call, use remove() for ANSI compatibility.
+        int r = rmdir(dirname);
+        char *dirname;
 
    FUNCTION
-	delete a file, equivalent to remove(filename).  This call deletes
-	a file from the filesystem.
+        delete a directory.  The directory must be empty for the deletion to
+        work.
+
+        On the Amiga this call is equivalent to remove() or unlink().
 
    EXAMPLE
-	main()
-	{
-	    int r;
-	    r = unlink("T:xx");
-	    if (r == 0)
-		puts("deleted T:xx");
-	    else
-		puts("unable to delete t:xx or it does not exist");
-	}
+        #include <assert.h>
+
+        main()
+        {
+            int r;
+
+            r = mkdir("T:tmpdir");
+            assert(r == 0);
+            r = rmdir("T:tmpdir");
+            assert(r == 0);
+        }
 
    INPUTS
-	char *filename;     name of file to delete
+        char *dirname;      name of directory to delete
 
    RESULTS
-	int r;		    0 if successful, non-zero if error
+        int r;              0 if successful, non-zero if error
 
    SEE ALSO
-	close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
-	mkdir, open, read, rmdir, unlink, write
+        close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
+        mkdir, open, read, rmdir, unlink, write
 
 
-fd/write						fd/write
+fd/unlink                                               fd/unlink
 
    NAME
-	write - write data to a file
+        unlink - delete a file
 
    SYNOPSIS
-	int r = write(fd, buf, bytes);
-	int fd;
-	void *buf;
-	int bytes;
+        int r = unlink(filename);
+        char *filename;
+
+        UNIX compatibility call, use remove() for ANSI compatibility.
 
    FUNCTION
-	writes data to a file starting at the current seek position.  This
-	call extends the file if necessary, else writes over existing data.
+        delete a file, equivalent to remove(filename).  This call deletes
+        a file from the filesystem.
 
-	With normal files, write will always return the number of bytes
-	requested and fewer only if an error occurs.
+   EXAMPLE
+        main()
+        {
+            int r;
+            r = unlink("T:xx");
+            if (r == 0)
+                puts("deleted T:xx");
+            else
+                puts("unable to delete t:xx or it does not exist");
+        }
 
-	With devices write may or may not return the number of bytes
-	requested depending on the device, though usually it does.
+   INPUTS
+        char *filename;     name of file to delete
+
+   RESULTS
+        int r;              0 if successful, non-zero if error
+
+   SEE ALSO
+        close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
+        mkdir, open, read, rmdir, unlink, write
+
+
+fd/write                                                fd/write
+
+   NAME
+        write - write data to a file
+
+   SYNOPSIS
+        int r = write(fd, buf, bytes);
+        int fd;
+        void *buf;
+        int bytes;
+
+   FUNCTION
+        writes data to a file starting at the current seek position.  This
+        call extends the file if necessary, else writes over existing data.
+
+        With normal files, write will always return the number of bytes
+        requested and fewer only if an error occurs.
+
+        With devices write may or may not return the number of bytes
+        requested depending on the device, though usually it does.
 
    NOTE
-	refer to the file_descriptor manual page for general information
+        refer to the file_descriptor manual page for general information
 
-	Unlike file pointers and file handles, the file descriptor is
-	checked for validity and will simply return an error if illegal.
+        Unlike file pointers and file handles, the file descriptor is
+        checked for validity and will simply return an error if illegal.
 
    EXAMPLE
-	#include <fcntl.h>
-	#include <assert.h>
+        #include <fcntl.h>
+        #include <assert.h>
 
-	main()
-	{
-	    int fd;
-	    int r;
+        main()
+        {
+            int fd;
+            int r;
 
-	    fd = open("T:xx", O_WRONLY|O_CREAT|O_TRUNC);
-	    assert(fd >= 0);
-	    r = write(fd, "FuBar\n", 6);
-	    assert(r == 6);
-	    lseek(fd, 0L, 0);       /*  seek back to beginning of file */
-	    r = write(fd, "XX", 2);
-	    assert(r == 2);
-	    close(fd);
-	}
+            fd = open("T:xx", O_WRONLY|O_CREAT|O_TRUNC);
+            assert(fd >= 0);
+            r = write(fd, "FuBar\n", 6);
+            assert(r == 6);
+            lseek(fd, 0L, 0);       /*  seek back to beginning of file */
+            r = write(fd, "XX", 2);
+            assert(r == 2);
+            close(fd);
+        }
 
-	1> sampleprg
-	1> type t:xx
-	XXBar
-	1>
+        1> sampleprg
+        1> type t:xx
+        XXBar
+        1>
 
    INPUTS
-	int fd; 	file descriptor to write to
-	void *buf;	pointer to buffer to write data from
-	int len;	number of bytes to write
+        int fd;         file descriptor to write to
+        void *buf;      pointer to buffer to write data from
+        int len;        number of bytes to write
 
    RESULTS
-	int r;		number of bytes actually written, usually an
-			error if r != len.
+        int r;          number of bytes actually written, usually an
+                        error if r != len.
 
    SEE ALSO
-	close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
-	mkdir, open, read, rmdir, unlink, write
+        close, creat, fcntl, fdtofh, ioctl, isatty, lseek,
+        mkdir, open, read, rmdir, unlink, write
 

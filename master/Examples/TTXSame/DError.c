@@ -712,7 +712,7 @@ char *do_ttx(char *file, char *project, char *macro)
           if (FindPort("TURBOTEXT") != NULL) break;
           if (Port_Find == FIND_ITERATIONS)  // First time through
              Execute("Turbotext:TTX BACKGROUND NOWINDOW", 0L, 0L);
-	  Delay(50);
+          Delay(50);
       }
       //
       // Make sure that we were acutally able to start turbotext before

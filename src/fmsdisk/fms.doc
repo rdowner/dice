@@ -1,7 +1,7 @@
 
-			       FMS.DOC
+                               FMS.DOC
 
-		    FILE BASED TRACKDISK SIMULATOR
+                    FILE BASED TRACKDISK SIMULATOR
 
     * Useful for creating a floppy-like partition on your harddisk
       (so you can diskcopy to a floppy) WITHOUT actually having to
@@ -35,7 +35,7 @@
     own file systems, as the disk file used may be examined at any time
     through normal programs while the 'filesystem' is running.
 
-			   INSTALLATION
+                           INSTALLATION
 
     copy fmsdisk.device devs:
 
@@ -52,19 +52,19 @@
 
     Repeat above two lines for each simulated partition you wish to add.
 
-			------------------
-			 VERSION HISTORY
+                        ------------------
+                         VERSION HISTORY
 
 3.0
-	- major performance increase under the OFS via new caching.
+        - major performance increase under the OFS via new caching.
 
 2.0
-	- doesn't Seek() if the file is already positioned at the
-	  requested next read/write sector.
+        - doesn't Seek() if the file is already positioned at the
+          requested next read/write sector.
 
-	- default buffers set to 10 instead of 2
+        - default buffers set to 10 instead of 2
 
-	- overall performance and efficiency increased.
+        - overall performance and efficiency increased.
 
-1.0	First release
+1.0     First release
 

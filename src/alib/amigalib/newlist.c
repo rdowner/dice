@@ -6,7 +6,7 @@
 
 #include <exec/types.h>
 #include <exec/lists.h>
-#ifdef INCLUDE_VERSION	    /*	2.0 */
+#ifdef INCLUDE_VERSION      /*  2.0 */
 #include <clib/alib_protos.h>
 #endif
 

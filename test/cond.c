@@ -4,35 +4,35 @@ main()
     int i, j, k;
 
     if (i == j)
-	k = 1;
+        k = 1;
     else
-	k = 2;
+        k = 2;
 
     if (i != j)
-	k = 1;
+        k = 1;
     else
-	k = 2;
+        k = 2;
 
     if (i == j)
-	k = 3;
+        k = 3;
     if (i != j)
-	k = 4;
+        k = 4;
     if (i < j)
-	k = 5;
+        k = 5;
     if (i <= j)
-	k = 6;
+        k = 6;
     if (i > j)
-	k = 7;
+        k = 7;
     if (i >= j)
-	k = 8;
+        k = 8;
     if (i)
-	k = 9;
+        k = 9;
     if (!i)
-	k = 10;
+        k = 10;
 
     if (!(i == j))
-	k = 11;
+        k = 11;
     else
-	k = 12;
+        k = 12;
 }
 

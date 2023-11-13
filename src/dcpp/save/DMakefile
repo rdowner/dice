@@ -7,7 +7,7 @@
 # Obvious Implementations Corp.
 
 SRCS= main.c sym.c include.c direct.c define.c cpp.c cexp.c subs.c precomp.c \
-	asubs.a
+        asubs.a
 MODULE= cpp
 EXE= dcpp
 

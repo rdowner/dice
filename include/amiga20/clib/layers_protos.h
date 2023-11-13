@@ -1,15 +1,15 @@
 #ifndef  CLIB_LAYERS_PROTOS_H
 #define  CLIB_LAYERS_PROTOS_H
 /*
-**	$Filename: clib/layers_protos.h $
-**	$Release: 2.04 $
-**	$Revision: 30.156 $
-**	$Date: 1995/01/11 05:18:10 $
+**      $Filename: clib/layers_protos.h $
+**      $Release: 2.04 $
+**      $Revision: 30.156 $
+**      $Date: 1995/01/11 05:18:10 $
 **
-**	C prototypes. For use with 32 bit integers only.
+**      C prototypes. For use with 32 bit integers only.
 **
-**	(C) Copyright 1990 Commodore-Amiga, Inc.
-**	    All Rights Reserved
+**      (C) Copyright 1990 Commodore-Amiga, Inc.
+**          All Rights Reserved
 */
 /* "layers.library" */
 #ifndef  EXEC_TYPES_H
@@ -29,9 +29,9 @@
 #endif
 void InitLayers( struct Layer_Info *li );
 struct Layer *CreateUpfrontLayer( struct Layer_Info *li, struct BitMap *bm,
-	long x0, long y0, long x1, long y1, long flags, struct BitMap *bm2 );
+        long x0, long y0, long x1, long y1, long flags, struct BitMap *bm2 );
 struct Layer *CreateBehindLayer( struct Layer_Info *li, struct BitMap *bm,
-	long x0, long y0, long x1, long y1, long flags, struct BitMap *bm2 );
+        long x0, long y0, long x1, long y1, long flags, struct BitMap *bm2 );
 LONG UpfrontLayer( long dummy, struct Layer *layer );
 LONG BehindLayer( long dummy, struct Layer *layer );
 LONG MoveLayer( long dummy, struct Layer *layer, long dx, long dy );
@@ -53,15 +53,15 @@ void DisposeLayerInfo( struct Layer_Info *li );
 LONG FattenLayerInfo( struct Layer_Info *li );
 void ThinLayerInfo( struct Layer_Info *li );
 LONG MoveLayerInFrontOf( struct Layer *layer_to_move,
-	struct Layer *other_layer );
+        struct Layer *other_layer );
 struct Region *InstallClipRegion( struct Layer *layer,
-	struct Region *region );
+        struct Region *region );
 LONG MoveSizeLayer( struct Layer *layer, long dx, long dy, long dw, long dh );
 struct Layer *CreateUpfrontHookLayer( struct Layer_Info *li, struct BitMap *bm,
-	long x0, long y0, long x1, long y1, long flags, struct Hook *hook,
-	struct BitMap *bm2 );
+        long x0, long y0, long x1, long y1, long flags, struct Hook *hook,
+        struct BitMap *bm2 );
 struct Layer *CreateBehindHookLayer( struct Layer_Info *li, struct BitMap *bm,
-	long x0, long y0, long x1, long y1, long flags, struct Hook *hook,
-	struct BitMap *bm2 );
+        long x0, long y0, long x1, long y1, long flags, struct Hook *hook,
+        struct BitMap *bm2 );
 struct Hook *InstallLayerHook( struct Layer *layer, struct Hook *hook );
-#endif	 /* CLIB_LAYERS_PROTOS_H */
+#endif   /* CLIB_LAYERS_PROTOS_H */

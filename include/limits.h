@@ -19,7 +19,7 @@
 #define LONG_MIN    -2147483648
 
 #ifndef MB_LEN_MAX
-#define MB_LEN_MAX	2	/*  also set in stdlib.h    */
+#define MB_LEN_MAX      2       /*  also set in stdlib.h    */
 #endif
 
 #define SCHAR_MAX   127

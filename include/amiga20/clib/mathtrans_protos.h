@@ -1,15 +1,15 @@
 #ifndef  CLIB_MATHTRANS_PROTOS_H
 #define  CLIB_MATHTRANS_PROTOS_H
 /*
-**	$Filename: clib/mathtrans_protos.h $
-**	$Release: 2.04 $
-**	$Revision: 30.156 $
-**	$Date: 1995/01/11 05:18:11 $
+**      $Filename: clib/mathtrans_protos.h $
+**      $Release: 2.04 $
+**      $Revision: 30.156 $
+**      $Date: 1995/01/11 05:18:11 $
 **
-**	C prototypes. For use with 32 bit integers only.
+**      C prototypes. For use with 32 bit integers only.
 **
-**	(C) Copyright 1990 Commodore-Amiga, Inc.
-**	    All Rights Reserved
+**      (C) Copyright 1990 Commodore-Amiga, Inc.
+**          All Rights Reserved
 */
 /* "mathtrans.library" */
 #ifndef  EXEC_TYPES_H
@@ -33,4 +33,4 @@ FLOAT SPFieee( FLOAT parm );
 FLOAT SPAsin( FLOAT parm );
 FLOAT SPAcos( FLOAT parm );
 FLOAT SPLog10( FLOAT parm );
-#endif	 /* CLIB_MATHTRANS_PROTOS_H */
+#endif   /* CLIB_MATHTRANS_PROTOS_H */

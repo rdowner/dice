@@ -20,19 +20,19 @@
 #define IOC_CEXEC   6
 #define IOC_MODES   7
 
-#define IOC_SIO     8	    /*	MS support */
+#define IOC_SIO     8       /*  MS support */
 
 #define IOC_ISATTY  9
 
-#define IOC_SIGNAL	10  /*	signal bit for fd	*/
-#define IOC_POST_BREAK	11  /*	propogate ^C through fd */
-#define IOC_DOMAIN	12  /*	what kind of descriptor are we? */
-#define IOC_GETDESC	13  /*	get actual low level desc.	*/
+#define IOC_SIGNAL      10  /*  signal bit for fd       */
+#define IOC_POST_BREAK  11  /*  propogate ^C through fd */
+#define IOC_DOMAIN      12  /*  what kind of descriptor are we? */
+#define IOC_GETDESC     13  /*  get actual low level desc.      */
 
-#define IOC_MAPADDR 14	    /*	request map address (dicecache) */
+#define IOC_MAPADDR 14      /*  request map address (dicecache) */
 
-#define IODOM_AMIGADOS	0   /*	AmigaDOS descriptor	*/
-#define IODOM_MS	1   /*	multi-stream descriptor */
+#define IODOM_AMIGADOS  0   /*  AmigaDOS descriptor     */
+#define IODOM_MS        1   /*  multi-stream descriptor */
 
 
 //extern int ioctl(int, int, void *, void *);

@@ -19,13 +19,13 @@ int
 HYPER(stricmp)(const char *s, const char *d)
 {
     while (tolower(*(ubyte *)s) == tolower(*(ubyte *)d)) {
-	if (*s == 0)
-	    return(0);
-	++s;
-	++d;
+        if (*s == 0)
+            return(0);
+        ++s;
+        ++d;
     }
     if (tolower(*(ubyte *)s) < tolower(*(ubyte *)d))
-	return(-1);
+        return(-1);
     return(1);
 }
 

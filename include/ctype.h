@@ -21,18 +21,18 @@ extern _CTYPE_NEAR const unsigned char __CLToU[257];
 
 #undef _CTYPE_NEAR
 
-#define __CF_ISALNUM	0x01
-#define __CF_ISALPHA	0x02
-#define __CF_ISCNTRL	0x04
-#define __CF_ISDIGIT	0x08
-#define __CF_ISGRAPH	0x10
-#define __CF_ISLOWER	0x20
-#define __CF_ISSPACE	0x40
-#define __CF_ISUPPER	0x80
+#define __CF_ISALNUM    0x01
+#define __CF_ISALPHA    0x02
+#define __CF_ISCNTRL    0x04
+#define __CF_ISDIGIT    0x08
+#define __CF_ISGRAPH    0x10
+#define __CF_ISLOWER    0x20
+#define __CF_ISSPACE    0x40
+#define __CF_ISUPPER    0x80
 
-#define __CF_ISPUNCT	0x01
-#define __CF_ISXDIGIT	0x02
-#define __CF_ISPRINT	0x04
+#define __CF_ISPUNCT    0x01
+#define __CF_ISXDIGIT   0x02
+#define __CF_ISPRINT    0x04
 
 extern int isalnum(int);
 extern int isalpha(int);

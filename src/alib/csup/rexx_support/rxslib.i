@@ -1,15 +1,15 @@
          IFND     REXX_RXSLIB_I
 REXX_RXSLIB_I  SET   1
 **
-**	$Filename: rexx/rxslib.i $
-**	$Release: 2.0 revision 2$
-**	$Revision: 30.0 $
-**	$Date: 1994/06/10 18:10:50 $
+**      $Filename: rexx/rxslib.i $
+**      $Release: 2.0 revision 2$
+**      $Revision: 30.0 $
+**      $Date: 1994/06/10 18:10:50 $
 **
-**	Include file for the REXX Systems Library
+**      Include file for the REXX Systems Library
 **
-**	(C) Copyright 1986,1987,1988,1989,1990 William S. Hawes.
-**		All Rights Reserved
+**      (C) Copyright 1986,1987,1988,1989,1990 William S. Hawes.
+**              All Rights Reserved
 **
 
          IFND     REXX_STORAGE_I

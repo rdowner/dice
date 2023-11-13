@@ -3,7 +3,7 @@
  *  CREATETASK.C
  *
  *
- *  in-memory:	[memList][stack][Task]
+ *  in-memory:  [memList][stack][Task]
  */
 
 #include <exec/types.h>
@@ -30,23 +30,23 @@ unsigned long stackSize;
     totalSize = sizeof(MemList) + sizeof(Task) + stackSize;
 
     if (memList = AllocMem(totalSize, MEMF_PUBLIC|MEMF_CLEAR)) {
-	memList->ml_NumEntries = 1;
-	memList->ml_ME[0].me_Addr = (APTR)(memList + 1);
-	memList->ml_ME[0].me_Length = totalSize - sizeof(MemList);
+        memList->ml_NumEntries = 1;
+        memList->ml_ME[0].me_Addr = (APTR)(memList + 1);
+        memList->ml_ME[0].me_Length = totalSize - sizeof(MemList);
 
-	task = (struct task *)memList + sizeof(MemList) + stackSize;
-	task->tc_Node.ln_Pri  = pri;
-	task->tc_Node.ln_Type = NT_TASK;
-	task->tc_Node.ln_Name = name;
-	task->tc_SPLower = (char *)memList + sizeof(MemList);
-	task->tc_SPUpper = (char *)task->tc_SPLower + stackSize;
-	task->tc_SPReg	 = task->tc_SPUpper;
-	NewList(&task->tc_MemEntry);
-	AddTail(&task->tc_MemEntry, &memList->ml_Node);
-	if (AddTask(task, initPC, NULL) == 0) {
-	    FreeEntry(memList);
-	    task = NULL;
-	}
+        task = (struct task *)memList + sizeof(MemList) + stackSize;
+        task->tc_Node.ln_Pri  = pri;
+        task->tc_Node.ln_Type = NT_TASK;
+        task->tc_Node.ln_Name = name;
+        task->tc_SPLower = (char *)memList + sizeof(MemList);
+        task->tc_SPUpper = (char *)task->tc_SPLower + stackSize;
+        task->tc_SPReg   = task->tc_SPUpper;
+        NewList(&task->tc_MemEntry);
+        AddTail(&task->tc_MemEntry, &memList->ml_Node);
+        if (AddTask(task, initPC, NULL) == 0) {
+            FreeEntry(memList);
+            task = NULL;
+        }
     }
     return(task);
 }

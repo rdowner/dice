@@ -1,6 +1,6 @@
 /***********************************************************************
 *
-*	Exec Support Functions -- Standard IO Requests
+*       Exec Support Functions -- Standard IO Requests
 *
 ***********************************************************************/
 
@@ -15,26 +15,26 @@ extern VOID DeleteExtIO(struct IORequest *);
 ******* amiga.lib/CreateStdIO ************************************************
 *
 *   NAME
-*	CreateStdIO -- create an IOStdReq structure
+*       CreateStdIO -- create an IOStdReq structure
 *
 *   SYNOPSIS
-*	ioReq = CreateStdIO(port);
+*       ioReq = CreateStdIO(port);
 *
-*	struct IOStdReq *CreateStdIO(struct MsgPort *)
+*       struct IOStdReq *CreateStdIO(struct MsgPort *)
 *
 *   FUNCTION
-*	Allocates memory for and initializes a new IOStdReq structure.
+*       Allocates memory for and initializes a new IOStdReq structure.
 *
 *   INPUTS
-*	port - an already initialized message port to be used for this IO
-*	       request's reply port. If this is NULL this function fails.
+*       port - an already initialized message port to be used for this IO
+*              request's reply port. If this is NULL this function fails.
 *
 *   RESULT
-*	ioReq - a new IOStdReq structure, or NULL if there was not enough
-*		memory
+*       ioReq - a new IOStdReq structure, or NULL if there was not enough
+*               memory
 *
 *   SEE ALSO
-*	DeleteStdIO(), CreateExtIO(), exec.library/CreateIORequest()
+*       DeleteStdIO(), CreateExtIO(), exec.library/CreateIORequest()
 *
 ******************************************************************************
 */
@@ -44,7 +44,7 @@ CreateStdIO( ioReplyPort )
     struct MsgPort *ioReplyPort;
 {
     return( (struct IOStdReq *)
-	CreateExtIO( ioReplyPort, sizeof( struct IOStdReq ) ) );
+        CreateExtIO( ioReplyPort, sizeof( struct IOStdReq ) ) );
 }
 
 
@@ -52,21 +52,21 @@ CreateStdIO( ioReplyPort )
 ******* amiga.lib/DeleteStdIO ************************************************
 *
 *   NAME
-*	DeleteStdIO - return memory allocated for IOStdReq
+*       DeleteStdIO - return memory allocated for IOStdReq
 *
 *   SYNOPSIS
-*	DeleteStdIO(ioReq);
+*       DeleteStdIO(ioReq);
 *
-*	VOID DeleteStdIO(struct IOStdReq *);
+*       VOID DeleteStdIO(struct IOStdReq *);
 *
 *   FUNCTION
-*	Frees up an IOStdReq as allocated by CreateStdIO().
+*       Frees up an IOStdReq as allocated by CreateStdIO().
 *
 *   INPUTS
-*	ioReq - the IORequest block to be freed, or NULL.
+*       ioReq - the IORequest block to be freed, or NULL.
 *
 *   SEE ALSO
-*	CreateStdIO(), DeleteExtIO(), exec.library/CreateIORequest()
+*       CreateStdIO(), DeleteExtIO(), exec.library/CreateIORequest()
 *
 ******************************************************************************
 */

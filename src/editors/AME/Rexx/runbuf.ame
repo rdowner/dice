@@ -10,7 +10,7 @@ saveas name
 parse arg program line
 if program = "" then do
     requeststring "Program: "
-	if rc ~= 0 then exit
+        if rc ~= 0 then exit
     program = result
     end
 

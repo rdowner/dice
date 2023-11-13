@@ -8,10 +8,10 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 void 
 HYPER ## SetRPAttrs( struct RastPort *rp, unsigned long tag1Type, ... )
 {
-	SetRPAttrsA(rp, (TagItem *)&tag1Type );
+        SetRPAttrsA(rp, (TagItem *)&tag1Type );
 }

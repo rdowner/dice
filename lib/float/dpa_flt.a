@@ -1,22 +1,22 @@
 
-		;   DPA_FLT.A
-		;
-		;   D0 = arg1
-		;   result in D0/D1
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   DPA_FLT.A
+                ;
+                ;   D0 = arg1
+                ;   result in D0/D1
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xref	_MathIeeeDoubBasBase
-		xref	_LVOIEEEDPFlt
-		xdef	__dpflt_a
+                xref    _MathIeeeDoubBasBase
+                xref    _LVOIEEEDPFlt
+                xdef    __dpflt_a
 
-__dpflt_a	move.l	A6,-(sp)
-		move.l	_MathIeeeDoubBasBase(A4),A6
-		jsr	_LVOIEEEDPFlt(A6)
-		move.l	(sp)+,A6
-		rts
+__dpflt_a       move.l  A6,-(sp)
+                move.l  _MathIeeeDoubBasBase(A4),A6
+                jsr     _LVOIEEEDPFlt(A6)
+                move.l  (sp)+,A6
+                rts
 
-		END
+                END
 

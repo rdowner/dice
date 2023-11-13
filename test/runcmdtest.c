@@ -31,36 +31,36 @@ char *av[];
     long r;
     BPTR seg;
 
-    onbreak(brk);   /*	disable break	*/
+    onbreak(brk);   /*  disable break   */
 
     if (ac == 1)
-	n = 5;
+        n = 5;
     else
-	n = strtol(av[1], NULL, 0);
+        n = strtol(av[1], NULL, 0);
 
     for (j = 0; j < n; ++j) {
-	printf("%s %d", av[0], n);
-	fflush(stdout);
+        printf("%s %d", av[0], n);
+        fflush(stdout);
 
-	sprintf(Buf, "%d\n\r", n - 1);
-	if (seg = LoadSeg(av[0])) {
-	    if (GetProgramName(Name, sizeof(Name))) {
-		if (SetProgramName(Name)) {
-		    puts("");
-		    r = RunCommand(seg, 8192, Buf, strlen(Buf) - 1);
-		    SetProgramName(Name);
-		    printf("r = %d", r);
-		} else {
-		    printf(" setprgname failed");
-		}
-	    } else {
-		printf(" getprgname failed");
-	    }
-	    UnLoadSeg(seg);
-	} else {
-	    printf(" ldseg failed");
-	}
-	puts("");
+        sprintf(Buf, "%d\n\r", n - 1);
+        if (seg = LoadSeg(av[0])) {
+            if (GetProgramName(Name, sizeof(Name))) {
+                if (SetProgramName(Name)) {
+                    puts("");
+                    r = RunCommand(seg, 8192, Buf, strlen(Buf) - 1);
+                    SetProgramName(Name);
+                    printf("r = %d", r);
+                } else {
+                    printf(" setprgname failed");
+                }
+            } else {
+                printf(" getprgname failed");
+            }
+            UnLoadSeg(seg);
+        } else {
+            printf(" ldseg failed");
+        }
+        puts("");
     }
     return(n + 100);
 }

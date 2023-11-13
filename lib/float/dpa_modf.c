@@ -17,9 +17,9 @@ double value;
 double *ip;
 {
     if (value >= 0.0)
-	*ip = floor(value);
+        *ip = floor(value);
     else
-	*ip = ceil(value);
+        *ip = ceil(value);
     return(value - *ip);
 }
 

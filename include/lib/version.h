@@ -36,16 +36,16 @@
 #endif
 #endif
 
-#define _STRING(label)		#label
-#define _STRING_EVAL(label)	_STRING(label)
-#define INSTDIR			_STRING_EVAL(_INSTDIR)
+#define _STRING(label)          #label
+#define _STRING_EVAL(label)     _STRING(label)
+#define INSTDIR                 _STRING_EVAL(_INSTDIR)
 
 #ifdef AMIGA
-#define DCC		"dcc:"
-#define DCC_CONFIG	"dcc_config:"
+#define DCC             "dcc:"
+#define DCC_CONFIG      "dcc_config:"
 #else
-#define DCC		INSTDIR
-#define DCC_CONFIG	DCC "config/"
+#define DCC             INSTDIR
+#define DCC_CONFIG      DCC "config/"
 #endif
 
 #ifdef INTELBYTEORDER
@@ -54,10 +54,10 @@ extern unsigned int ToMsbOrder(unsigned int);
 extern unsigned short FromMsbOrderShort(unsigned short);
 extern unsigned short ToMsbOrderShort(unsigned short);
 #else
-#define FromMsbOrder(n)		(n)
-#define ToMsbOrder(n)		(n)
-#define FromMsbOrderShort(n)	(n)
-#define ToMsbOrderShort(n)	(n)
+#define FromMsbOrder(n)         (n)
+#define ToMsbOrder(n)           (n)
+#define FromMsbOrderShort(n)    (n)
+#define ToMsbOrderShort(n)      (n)
 #endif
 
 #endif

@@ -20,17 +20,17 @@ char *buf;
     char *base = buf;
 
     while ((c = getc(stdin)) != EOF) {
-	*buf++ = c;
-	if (c != '\n' && cnt < BUFSIZ) {
-	    ++cnt;
-	    continue;
-	}
-	buf[-1] = 0;
-	return(base);
-	break;
+        *buf++ = c;
+        if (c != '\n' && cnt < BUFSIZ) {
+            ++cnt;
+            continue;
+        }
+        buf[-1] = 0;
+        return(base);
+        break;
     }
     if (buf == base)
-	return(NULL);
+        return(NULL);
     buf[0] = 0;
     return(base);
 }

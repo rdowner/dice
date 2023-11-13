@@ -19,14 +19,14 @@
  *  open for the duration of the program, so multiple system() calls
  *  will be efficient.
  *
- *	D0 - scratch
- *	D1 - scratch
+ *      D0 - scratch
+ *      D1 - scratch
  *
- *	A0 - scratch
- *	A1 - server is_Data pointer (scratch)
+ *      A0 - scratch
+ *      A1 - server is_Data pointer (scratch)
  *
- *	A5 - jump vector register (scratch)
- *	A6 - scratch
+ *      A5 - jump vector register (scratch)
+ *      A6 - scratch
  *
  */
 
@@ -65,18 +65,18 @@
 typedef struct DosPacket    DosPacket;
 typedef struct FileHandle   FileHandle;
 typedef struct DeviceNode   DeviceNode;
-typedef struct Process	    Process;
-typedef struct MinNode	    Node;
-typedef struct List	    List;
-typedef struct Node	    MaxNode;
-typedef struct MsgPort	    MsgPort;
-typedef struct Message	    Message;
+typedef struct Process      Process;
+typedef struct MinNode      Node;
+typedef struct List         List;
+typedef struct Node         MaxNode;
+typedef struct MsgPort      MsgPort;
+typedef struct Message      Message;
 typedef struct Interrupt    Interrupt;
-typedef struct DosList	    DosList;
+typedef struct DosList      DosList;
 typedef struct RootNode     RootNode;
-typedef struct DosInfo	    DosInfo;
+typedef struct DosInfo      DosInfo;
 typedef struct CommandLineInterface CLI;
-typedef struct Task	    Task;
+typedef struct Task         Task;
 
 typedef struct LockList {
     BPTR    NextPath;
@@ -100,19 +100,19 @@ long _sys13SoftIntA(__A1 void *);
 extern struct DosLibrary *DOSBase;
 
 static DosList *Dl;
-static List	ReqList;	/*  pending read requests on dummy handle */
-static MsgPort	PktPort;
-static Task	*RemShellTask;
-static char	DevName[16];
-static char	DevBuf[128];
-static long	DummyRefs;
-static long	PktMask;
-static long	ReturnCode;
-static short	CmdStatus;	/*  0 none running, 1 in prog, -1 done	*/
-static short	ShellRunning;
-static short	ConsoleTaken;
-static short	TermFlag;
-static long	BreakMask;
+static List     ReqList;        /*  pending read requests on dummy handle */
+static MsgPort  PktPort;
+static Task     *RemShellTask;
+static char     DevName[16];
+static char     DevBuf[128];
+static long     DummyRefs;
+static long     PktMask;
+static long     ReturnCode;
+static short    CmdStatus;      /*  0 none running, 1 in prog, -1 done  */
+static short    ShellRunning;
+static short    ConsoleTaken;
+static short    TermFlag;
+static long     BreakMask;
 static Interrupt DevInt;
 
 #ifdef DEBUG
@@ -159,21 +159,21 @@ sys13_shutdown()
     struct Process *proc = (struct Process *)FindTask(NULL);
 
     if (ShellRunning) {
-	TermFlag = 1;
-	if (StartCommand("endcli") == 0)
-	    WaitCommand();
-	while (DummyRefs)
-	    WaitPktMask();
+        TermFlag = 1;
+        if (StartCommand("endcli") == 0)
+            WaitCommand();
+        while (DummyRefs)
+            WaitPktMask();
     }
     DelDevice();
     if ((char)PktPort.mp_SigBit >= 0) {
-	FreeSignal(PktPort.mp_SigBit);
-	PktPort.mp_SigBit = -1;
+        FreeSignal(PktPort.mp_SigBit);
+        PktPort.mp_SigBit = -1;
     }
 #ifdef DEBUG
     if (DBFh) {
-	Close(DBFh);
-	DBFh = 0;
+        Close(DBFh);
+        DBFh = 0;
     }
 #endif
 }
@@ -196,7 +196,7 @@ const char *buf;
     long r = -1;
 
     if (StartCommand(buf) == 0)
-	r = WaitCommand();
+        r = WaitCommand();
     return(r);
 }
 
@@ -215,101 +215,101 @@ char *buf;
     dbprintf((DBFh, "START1\n"));
 
     if (proc->pr_ConsoleTask == NULL) {
-	proc->pr_ConsoleTask = &PktPort;
-	ConsoleTaken = 1;
+        proc->pr_ConsoleTask = &PktPort;
+        ConsoleTaken = 1;
     }
 
     if (ShellRunning == 0) {
-	/*
-	 *  can't do this in autoinit or _main will think we have a
-	 *  real console and attempt to open it!
-	 */
+        /*
+         *  can't do this in autoinit or _main will think we have a
+         *  real console and attempt to open it!
+         */
 
-	TermFlag = 1;
-	sprintf(DevBuf, "newshell <%s: >%s: %s: from nil:", DevName, DevName, DevName);
-	Execute(DevBuf, 0, 0);
-	/*System(DevBuf, NULL);*/
-	if (IoErr()) {
-	    if (ConsoleTaken) {
-		proc->pr_ConsoleTask = NULL;
-		ConsoleTaken = 0;
-	    }
-	    TermFlag = 0;
-	    return(-1);
-	}
-	ShellRunning = 1;
-	if (StartCommand("") == 0)  /*  synchronize */
-	    WaitCommand();
-	TermFlag = 0;
+        TermFlag = 1;
+        sprintf(DevBuf, "newshell <%s: >%s: %s: from nil:", DevName, DevName, DevName);
+        Execute(DevBuf, 0, 0);
+        /*System(DevBuf, NULL);*/
+        if (IoErr()) {
+            if (ConsoleTaken) {
+                proc->pr_ConsoleTask = NULL;
+                ConsoleTaken = 0;
+            }
+            TermFlag = 0;
+            return(-1);
+        }
+        ShellRunning = 1;
+        if (StartCommand("") == 0)  /*  synchronize */
+            WaitCommand();
+        TermFlag = 0;
 
-	/*
-	 *  If running from the workbench we have no CLI and must copy
-	 *  the path from the workbench process's CLI
-	 */
+        /*
+         *  If running from the workbench we have no CLI and must copy
+         *  the path from the workbench process's CLI
+         */
 
-	if ((((Task *)PktPort.mp_Node.ln_Name)->tc_Node.ln_Type != NT_PROCESS || ((Process *)PktPort.mp_Node.ln_Name)->pr_CLI == NULL) && RemShellTask) {
-	    if (RemShellTask->tc_Node.ln_Type == NT_PROCESS && ((Process *)RemShellTask)->pr_CLI)
-		CopyWorkbenchPath(BTOC(((Process *)RemShellTask)->pr_CLI));
-	}
+        if ((((Task *)PktPort.mp_Node.ln_Name)->tc_Node.ln_Type != NT_PROCESS || ((Process *)PktPort.mp_Node.ln_Name)->pr_CLI == NULL) && RemShellTask) {
+            if (RemShellTask->tc_Node.ln_Type == NT_PROCESS && ((Process *)RemShellTask)->pr_CLI)
+                CopyWorkbenchPath(BTOC(((Process *)RemShellTask)->pr_CLI));
+        }
     }
 
     dbprintf((DBFh, "START2\n"));
 
     /*
-     *	Preset cli_ReturnCode in case command not found
+     *  Preset cli_ReturnCode in case command not found
      */
 
     if (RemShellTask) {
-	CLI *cli = BTOC(((Process *)RemShellTask)->pr_CLI);
-	if (cli)
-	    cli->cli_ReturnCode = 10;
+        CLI *cli = BTOC(((Process *)RemShellTask)->pr_CLI);
+        if (cli)
+            cli->cli_ReturnCode = 10;
     }
 
     /*
-     *	Supply command line by replying to read requests.  Turn off
-     *	signal exceptions to handle it synchronously
+     *  Supply command line by replying to read requests.  Turn off
+     *  signal exceptions to handle it synchronously
      */
 
     {
-	Message *msg;
-	DosPacket *pkt;
-	short len = strlen(buf);
-	short n;
+        Message *msg;
+        DosPacket *pkt;
+        short len = strlen(buf);
+        short n;
 
-	if (len == 0 || buf[len-1] != '\n')
-	    ++len;  /*	virtual newline */
+        if (len == 0 || buf[len-1] != '\n')
+            ++len;  /*  virtual newline */
 
-	while (len) {
-	    for (;;) {
-		Disable();
-		msg = (Message *)RemHead(&ReqList);
-		Enable();
-		if (msg)
-		    break;
-		WaitPktMask();
-	    }
-	    pkt = (DosPacket *)msg->mn_Node.ln_Name;
+        while (len) {
+            for (;;) {
+                Disable();
+                msg = (Message *)RemHead(&ReqList);
+                Enable();
+                if (msg)
+                    break;
+                WaitPktMask();
+            }
+            pkt = (DosPacket *)msg->mn_Node.ln_Name;
 
-	    if (TermFlag == 0 && pkt->dp_Port->mp_SigTask != (Task *)PktPort.mp_Node.ln_Name) {
-		if ((pkt->dp_Port->mp_Flags & PF_ACTION) == PA_SIGNAL && ((Task *)pkt->dp_Port->mp_SigTask)->tc_Node.ln_Type == NT_PROCESS)
-		    RemShellTask = pkt->dp_Port->mp_SigTask;
-	    }
+            if (TermFlag == 0 && pkt->dp_Port->mp_SigTask != (Task *)PktPort.mp_Node.ln_Name) {
+                if ((pkt->dp_Port->mp_Flags & PF_ACTION) == PA_SIGNAL && ((Task *)pkt->dp_Port->mp_SigTask)->tc_Node.ln_Type == NT_PROCESS)
+                    RemShellTask = pkt->dp_Port->mp_SigTask;
+            }
 
-	    /*
-	     *	Handle packet
-	     */
+            /*
+             *  Handle packet
+             */
 
-	    if ((n = pkt->dp_Arg3) > len)
-		n = len;
-	    movmem(buf, (void *)pkt->dp_Arg2, n);
-	    if (len == n)   /*	last char is a newline	*/
-		((char *)pkt->dp_Arg2)[n-1] = '\n';
-	    len -= n;
-	    buf += n;
-	    pkt->dp_Res1 = n;
-	    CmdStatus = 1;	/*  in progress */
-	    ReturnPacket(pkt);
-	}
+            if ((n = pkt->dp_Arg3) > len)
+                n = len;
+            movmem(buf, (void *)pkt->dp_Arg2, n);
+            if (len == n)   /*  last char is a newline  */
+                ((char *)pkt->dp_Arg2)[n-1] = '\n';
+            len -= n;
+            buf += n;
+            pkt->dp_Res1 = n;
+            CmdStatus = 1;      /*  in progress */
+            ReturnPacket(pkt);
+        }
     }
     return(0);
 }
@@ -328,16 +328,16 @@ WaitCommand()
     dbprintf((DBFh, "WAIT1\n"));
 
     while (CmdStatus == 1)
-	WaitPktMask();
+        WaitPktMask();
 
     if (ConsoleTaken) {
-	proc->pr_ConsoleTask = NULL;
-	ConsoleTaken = 0;
+        proc->pr_ConsoleTask = NULL;
+        ConsoleTaken = 0;
     }
     if (BreakMask) {
-	SetSignal(BreakMask, BreakMask);
-	chkabort();
-	BreakMask = 0;
+        SetSignal(BreakMask, BreakMask);
+        chkabort();
+        BreakMask = 0;
     }
     return(ReturnCode);
 }
@@ -353,90 +353,90 @@ _sys13SoftIntC()
     DosPacket *pkt;
 
     while (msg = GetMsg(&PktPort)) {
-	pkt = (DosPacket *)msg->mn_Node.ln_Name;
+        pkt = (DosPacket *)msg->mn_Node.ln_Name;
 
-	pkt->dp_Res2 = 0;
-
-
-	switch(pkt->dp_Type) {
-	case ACTION_READ:
-
-	    AddTail(&ReqList, &((Message *)pkt->dp_Link)->mn_Node);
-
-	    /*
-	     *	Check command competion -- shell's cli_Module set to
-	     *	NULL.  Also handle giving the shell a path
-	     */
-
-	    {
-		Process *proc = pkt->dp_Port->mp_SigTask;
-
-		if (proc->pr_Task.tc_Node.ln_Type == NT_PROCESS && proc->pr_CLI) {
-		    CLI *cli = BTOC(proc->pr_CLI);
-
-		    if (cli->cli_Module == NULL) {
-			if (CmdStatus == 1) {
-			    CmdStatus = -1;
-			    ReturnCode = cli->cli_ReturnCode;
-			}
-		    }
-		}
-	    }
-	    continue;
-	case ACTION_WRITE:
-	    /*
-	     *	Copy any output to our standard out (if we have a
-	     *	standard out).	We have to skip the shell prompts
-	     *	and other garbage which is why the junk.  Note that
-	     *	we always force Res1 = Arg3 so the write 'succeeds'
-	     *
-	     *	we cannot write while running async (exceptions enabled)
-	     *	as a crash would occur if we try to make a dos call
-	     *	over a dos call in progress.
-	     */
+        pkt->dp_Res2 = 0;
 
 
-	    if (CmdStatus == 1 && TermFlag == 0) {
-		Process *proc = (Process *)PktPort.mp_Node.ln_Name;
-		CLI *remCli = BTOC(((Process *)pkt->dp_Port->mp_SigTask)->pr_CLI);
+        switch(pkt->dp_Type) {
+        case ACTION_READ:
 
-		if (remCli && remCli->cli_Module) {
-		    if (proc->pr_Task.tc_Node.ln_Type == NT_PROCESS && proc->pr_COS) {
-			/*
-			 *  forward the packet
-			 */
-			PutMsg(((FileHandle *)BTOC(proc->pr_COS))->fh_Type, msg);
-			continue;
-		    }
-		}
-	    }
-	    pkt->dp_Res1 = pkt->dp_Arg3;
-	    break;
-	case ACTION_FINDUPDATE:
-	case ACTION_FINDINPUT:
-	case ACTION_FINDOUTPUT:
-	    {
-		FileHandle *fh = BTOC(pkt->dp_Arg1);
-		fh->fh_Arg1 = pkt->dp_Arg1;
-		fh->fh_Port = (MsgPort *)DOS_TRUE;
-		pkt->dp_Res1 = DOS_TRUE;
-	    }
-	    ++DummyRefs;
-	    break;
-	case ACTION_END:
-	    pkt->dp_Res1 = DOS_TRUE;
-	    if (--DummyRefs == 0) {	/*  shell shutdown */
-		if (CmdStatus == 1)
-		    CmdStatus = -1;
-		ReturnCode = 0;
-	    }
-	    break;
-	default:
-	    pkt->dp_Res2 = ERROR_ACTION_NOT_KNOWN;
-	    pkt->dp_Res1 = DOS_FALSE;
-	    break;
-	}
-	ReturnPacket(pkt);
+            AddTail(&ReqList, &((Message *)pkt->dp_Link)->mn_Node);
+
+            /*
+             *  Check command competion -- shell's cli_Module set to
+             *  NULL.  Also handle giving the shell a path
+             */
+
+            {
+                Process *proc = pkt->dp_Port->mp_SigTask;
+
+                if (proc->pr_Task.tc_Node.ln_Type == NT_PROCESS && proc->pr_CLI) {
+                    CLI *cli = BTOC(proc->pr_CLI);
+
+                    if (cli->cli_Module == NULL) {
+                        if (CmdStatus == 1) {
+                            CmdStatus = -1;
+                            ReturnCode = cli->cli_ReturnCode;
+                        }
+                    }
+                }
+            }
+            continue;
+        case ACTION_WRITE:
+            /*
+             *  Copy any output to our standard out (if we have a
+             *  standard out).  We have to skip the shell prompts
+             *  and other garbage which is why the junk.  Note that
+             *  we always force Res1 = Arg3 so the write 'succeeds'
+             *
+             *  we cannot write while running async (exceptions enabled)
+             *  as a crash would occur if we try to make a dos call
+             *  over a dos call in progress.
+             */
+
+
+            if (CmdStatus == 1 && TermFlag == 0) {
+                Process *proc = (Process *)PktPort.mp_Node.ln_Name;
+                CLI *remCli = BTOC(((Process *)pkt->dp_Port->mp_SigTask)->pr_CLI);
+
+                if (remCli && remCli->cli_Module) {
+                    if (proc->pr_Task.tc_Node.ln_Type == NT_PROCESS && proc->pr_COS) {
+                        /*
+                         *  forward the packet
+                         */
+                        PutMsg(((FileHandle *)BTOC(proc->pr_COS))->fh_Type, msg);
+                        continue;
+                    }
+                }
+            }
+            pkt->dp_Res1 = pkt->dp_Arg3;
+            break;
+        case ACTION_FINDUPDATE:
+        case ACTION_FINDINPUT:
+        case ACTION_FINDOUTPUT:
+            {
+                FileHandle *fh = BTOC(pkt->dp_Arg1);
+                fh->fh_Arg1 = pkt->dp_Arg1;
+                fh->fh_Port = (MsgPort *)DOS_TRUE;
+                pkt->dp_Res1 = DOS_TRUE;
+            }
+            ++DummyRefs;
+            break;
+        case ACTION_END:
+            pkt->dp_Res1 = DOS_TRUE;
+            if (--DummyRefs == 0) {     /*  shell shutdown */
+                if (CmdStatus == 1)
+                    CmdStatus = -1;
+                ReturnCode = 0;
+            }
+            break;
+        default:
+            pkt->dp_Res2 = ERROR_ACTION_NOT_KNOWN;
+            pkt->dp_Res1 = DOS_FALSE;
+            break;
+        }
+        ReturnPacket(pkt);
     }
     Signal((Task *)PktPort.mp_Node.ln_Name, PktMask);
     return(0);
@@ -481,22 +481,22 @@ DelDevice()
     BPTR    *bpp;
 
     if (dl = Dl) {
-	Forbid();
-	root  = (struct RootNode *)DOSBase->dl_Root;
-	info  = (struct DosInfo  *)BADDR(root->rn_Info);
+        Forbid();
+        root  = (struct RootNode *)DOSBase->dl_Root;
+        info  = (struct DosInfo  *)BADDR(root->rn_Info);
 
-	for (bpp = &info->di_DevInfo; dls = BADDR(*bpp); bpp = &dls->dol_Next) {
-	    if (dls == dl)
-		break;
-	}
-	if (dls == dl) {
-	    *bpp = dls->dol_Next;
-	} else {
-	    Alert(0x07AAAAAA|AT_Recovery);
-	}
-	Permit();
-	DosFree(dl);
-	Dl = NULL;
+        for (bpp = &info->di_DevInfo; dls = BADDR(*bpp); bpp = &dls->dol_Next) {
+            if (dls == dl)
+                break;
+        }
+        if (dls == dl) {
+            *bpp = dls->dol_Next;
+        } else {
+            Alert(0x07AAAAAA|AT_Recovery);
+        }
+        Permit();
+        DosFree(dl);
+        Dl = NULL;
     }
 }
 
@@ -509,8 +509,8 @@ long bytes;
     bytes += 4;
 
     if (ptr = AllocMem(bytes, MEMF_PUBLIC | MEMF_CLEAR)) {
-	*ptr++ = bytes;
-	return((void *)ptr);
+        *ptr++ = bytes;
+        return((void *)ptr);
     }
     Alert(AG_NoMemory|AT_DeadEnd);
 }
@@ -531,9 +531,9 @@ DosPacket *packet;
     Message *mess;
     MsgPort *replyPort;
 
-    replyPort		     = packet->dp_Port;
-    mess		     = packet->dp_Link;
-    packet->dp_Port	     = &PktPort;
+    replyPort                = packet->dp_Port;
+    mess                     = packet->dp_Link;
+    packet->dp_Port          = &PktPort;
     mess->mn_Node.ln_Name    = (char *)packet;
     PutMsg(replyPort, mess);
 }
@@ -551,25 +551,25 @@ CLI *dcli;
     Process *sproc;
 
     if ((sproc = (struct Process *)FindTask("Workbench")) && sproc->pr_Task.tc_Node.ln_Type == NT_PROCESS) {
-	if (scli = BTOC(sproc->pr_CLI)) {
-	    for (lls = BTOC(scli->cli_CommandDir); lls; lls = BTOC(lls->NextPath)) {
-		BPTR lock;
-		LockList *ll;
-		LockList **llast = (LockList **)&dcli->cli_CommandDir;
+        if (scli = BTOC(sproc->pr_CLI)) {
+            for (lls = BTOC(scli->cli_CommandDir); lls; lls = BTOC(lls->NextPath)) {
+                BPTR lock;
+                LockList *ll;
+                LockList **llast = (LockList **)&dcli->cli_CommandDir;
 
-		if (lock = DupLock(lls->PathLock)) {
-		    if (ll = ((LockList *)AllocMem(sizeof(LockList) + 4, MEMF_PUBLIC|MEMF_CLEAR) + 1)) {
-			((long *)ll)[-1] = sizeof(LockList) + 4;
-			ll->NextPath = (BPTR)llast;
-			ll->PathLock = lock;
-			*llast = (LockList *)MKBADDR(ll);
-			llast = (LockList **)&ll->NextPath;
-		    } else {
-			UnLock(lock);
-		    }
-		}
-	    }
-	}
+                if (lock = DupLock(lls->PathLock)) {
+                    if (ll = ((LockList *)AllocMem(sizeof(LockList) + 4, MEMF_PUBLIC|MEMF_CLEAR) + 1)) {
+                        ((long *)ll)[-1] = sizeof(LockList) + 4;
+                        ll->NextPath = (BPTR)llast;
+                        ll->PathLock = lock;
+                        *llast = (LockList *)MKBADDR(ll);
+                        llast = (LockList **)&ll->NextPath;
+                    } else {
+                        UnLock(lock);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -579,13 +579,13 @@ WaitPktMask(void)
     long mask = 0;
 
     while ((mask & PktMask) == 0) {
-	mask = Wait(PktMask | SIGBREAKF_CTRL_C | SIGBREAKF_CTRL_D | SIGBREAKF_CTRL_E | SIGBREAKF_CTRL_F);
-	if (mask & (SIGBREAKF_CTRL_C | SIGBREAKF_CTRL_D | SIGBREAKF_CTRL_E | SIGBREAKF_CTRL_F)) {
-	    if (RemShellTask)
-		Signal(RemShellTask, (mask & (SIGBREAKF_CTRL_C | SIGBREAKF_CTRL_D | SIGBREAKF_CTRL_E | SIGBREAKF_CTRL_F)));
-	    else
-		BreakMask |= mask & (SIGBREAKF_CTRL_C | SIGBREAKF_CTRL_D | SIGBREAKF_CTRL_E | SIGBREAKF_CTRL_F);
-	}
+        mask = Wait(PktMask | SIGBREAKF_CTRL_C | SIGBREAKF_CTRL_D | SIGBREAKF_CTRL_E | SIGBREAKF_CTRL_F);
+        if (mask & (SIGBREAKF_CTRL_C | SIGBREAKF_CTRL_D | SIGBREAKF_CTRL_E | SIGBREAKF_CTRL_F)) {
+            if (RemShellTask)
+                Signal(RemShellTask, (mask & (SIGBREAKF_CTRL_C | SIGBREAKF_CTRL_D | SIGBREAKF_CTRL_E | SIGBREAKF_CTRL_F)));
+            else
+                BreakMask |= mask & (SIGBREAKF_CTRL_C | SIGBREAKF_CTRL_D | SIGBREAKF_CTRL_E | SIGBREAKF_CTRL_F);
+        }
     }
 }
 

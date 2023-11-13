@@ -1,11 +1,11 @@
 
-makeproto/makeproto					    makeproto/makeproto
+makeproto/makeproto                                         makeproto/makeproto
 
-				MAKEPROTO.DOC
+                                MAKEPROTO.DOC
 
-			    GENERAING PROTOTYPES
+                            GENERAING PROTOTYPES
 
-	MAKEPROTO [-o outputfile] srcfile srcfile srcfile...
+        MAKEPROTO [-o outputfile] srcfile srcfile srcfile...
 
 
     This has nothing to do with Lattice's prototype generation options.
@@ -22,12 +22,12 @@ makeproto/makeproto					    makeproto/makeproto
     Basically, each file should include a .H file, lets call it DEFS.H .
     DEFS.H contains the following two defines:
 
-	#define Prototype   extern
-	#define Local	    static
+        #define Prototype   extern
+        #define Local       static
 
     DEFS.H also, at the end, contains a line similar to this:
 
-	#include "prog-protos.h"
+        #include "prog-protos.h"
 
     What you want to do is set up a dependancy in your DMakefile, Makefile,
     or whatever such that whenever any source files change, MAKEPROTO is
@@ -50,14 +50,14 @@ makeproto/makeproto					    makeproto/makeproto
     MyGlobalRoutine(str)
     char *str;
     {
-	SomeForwardRefdRoutine();
-	return(str + 1);
+        SomeForwardRefdRoutine();
+        return(str + 1);
     }
 
     Local void
     SomeForwardRefdRoutine(void)
     {
-	/* whatever */
+        /* whatever */
     }
 
     --------------------

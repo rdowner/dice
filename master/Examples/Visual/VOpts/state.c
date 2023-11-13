@@ -500,17 +500,17 @@ void set_gadlist(struct GADLIST *gadlist,
          }
          else
          {
-	    if (cyc->base.class == CLASS_CHECK)
-	    {
-	       if (cyc->base.state)
-	       {
-		  gad->Flags |= SELECTED;
-	       }
-	       else
-	       {
-		  gad->Flags &= ~SELECTED;
-	       }
-	    }
+            if (cyc->base.class == CLASS_CHECK)
+            {
+               if (cyc->base.state)
+               {
+                  gad->Flags |= SELECTED;
+               }
+               else
+               {
+                  gad->Flags &= ~SELECTED;
+               }
+            }
              RefreshGList(gad, global.window, NULL, 1);
          }
       }

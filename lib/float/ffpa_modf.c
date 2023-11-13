@@ -28,9 +28,9 @@ float value;
 float *ip;
 {
     if (value >= 0.0)
-	*ip = ffloor(value);
+        *ip = ffloor(value);
     else
-	*ip = fceil(value);
+        *ip = fceil(value);
     return(value - *ip);
 }
 

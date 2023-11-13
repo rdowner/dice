@@ -8,10 +8,10 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 ULONG 
 HYPER ## SetAttrs( APTR object, unsigned long tag1, ... )
 {
-	return SetAttrsA( object, (TagItem *)&tag1 );
+        return SetAttrsA( object, (TagItem *)&tag1 );
 }

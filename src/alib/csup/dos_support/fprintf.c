@@ -11,7 +11,7 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 extern LONG VFPrintf( BPTR fh, STRPTR format, LONG *argarray );
 

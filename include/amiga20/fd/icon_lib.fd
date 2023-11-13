@@ -2,7 +2,7 @@
 ##base _IconBase
 ##bias 30
 *--- functions in V36 or higher (distributed as Release 2.0) ---
-*	Use DiskObjects instead of obsolete WBObjects
+*       Use DiskObjects instead of obsolete WBObjects
 ##private
 OBSOLETEGetWBObject(name)(a0)
 OBSOLETEPutWBObject(name,object)(a0/a1)

@@ -25,13 +25,13 @@ unsigned int bytes;
 
     chkabort();
     if (d = __getfh(fd)) {
-	if (!(d->fd_Flags & O_WRONLY)) {
-	    if (d->fd_Exec)
-		return((*d->fd_Exec)(d->fd_Fh, IOC_READ, buf, (void *)bytes));
-	    n = Read(d->fd_Fh, buf, bytes);
-	} else {
-	    errno = ENOPERM;
-	}
+        if (!(d->fd_Flags & O_WRONLY)) {
+            if (d->fd_Exec)
+                return((*d->fd_Exec)(d->fd_Fh, IOC_READ, buf, (void *)bytes));
+            n = Read(d->fd_Fh, buf, bytes);
+        } else {
+            errno = ENOPERM;
+        }
     }
     return(n);
 }

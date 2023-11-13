@@ -1,33 +1,33 @@
 
-romable/romable 					      romable/romable
+romable/romable                                               romable/romable
 
-			      ROMABLE.DOC
+                              ROMABLE.DOC
 
-		       GENERATING ROMABLE FIRMWARE
+                       GENERATING ROMABLE FIRMWARE
 
-			      REFERENCES
+                              REFERENCES
 
     Please refer to the following DCC options:
 
-	-pi	generate position independant code.  All code references
-		forced to PC-relative
+        -pi     generate position independant code.  All code references
+                forced to PC-relative
 
-	-pr	generate residentable position independant code.  Unless
-		-mw is specified A4 relative addressing is used for data
-		items.	All code references forced  to PC-relative.
+        -pr     generate residentable position independant code.  Unless
+                -mw is specified A4 relative addressing is used for data
+                items.  All code references forced  to PC-relative.
 
-	-ma	specify that initialized data + bss will be hardwired to
-		a known address
+        -ma     specify that initialized data + bss will be hardwired to
+                a known address
 
-	-mw	specify that initialized data + bss will be hardwired to
-		a known address and all of data + bss occurs somewhere
-		within the first 32KBytes of the address space
-		(0x0000-0x7FFF).  Also allows DICE to use A4 as a register
-		variable.
+        -mw     specify that initialized data + bss will be hardwired to
+                a known address and all of data + bss occurs somewhere
+                within the first 32KBytes of the address space
+                (0x0000-0x7FFF).  Also allows DICE to use A4 as a register
+                variable.
 
-	-ms	const items go into EPROM in local cases
+        -ms     const items go into EPROM in local cases
 
-	-mS	const items go into EPROM in local and external cases
+        -mS     const items go into EPROM in local and external cases
 
     The following documentation may appear confusing, but only because so
     many possibilities exist when one intends to put code in ROM.  When you
@@ -36,33 +36,33 @@ romable/romable 					      romable/romable
     executable with DOBJ.
 
 
-			  MAKING ROMABLE PROGRAMS
+                          MAKING ROMABLE PROGRAMS
 
     DICE has the capability to generate ROMABLE programs.  That is, program
     binaries that you can use to directly burn an EPROM.  When generating
     ROMABLE code you have more data model options available to you.  The
     basic idea of ROMd code is as follows:
-		       ________________
-FIXED ADDRESS = EPROM | 	       |
-		      | 68000 vectors  |	const data objects
-		      |----------------|
-		      |     CODE       |
-		      |----------------|
-		      |  const DATA    |	string constants and other
-		      | 	       |	const items, stays in eprom.
-		      |----------------|
-		      | read-only copy |
-		      | of initialized |	this is copied to a working
-		      | data	       |	RAM copy by the reset code
-		      |________________|
+                       ________________
+FIXED ADDRESS = EPROM |                |
+                      | 68000 vectors  |        const data objects
+                      |----------------|
+                      |     CODE       |
+                      |----------------|
+                      |  const DATA    |        string constants and other
+                      |                |        const items, stays in eprom.
+                      |----------------|
+                      | read-only copy |
+                      | of initialized |        this is copied to a working
+                      | data           |        RAM copy by the reset code
+                      |________________|
 
-		       ________________
+                       ________________
 FIXED ADDRESS = RAM   | run-time copy  |    (copied from EPROM by startup)
-		      | of initialized |
-		      | data	       |
-		      |----------------|    (cleared by EPROM startup)
-		      | run-time BSS   |
-		      |________________|
+                      | of initialized |
+                      | data           |
+                      |----------------|    (cleared by EPROM startup)
+                      | run-time BSS   |
+                      |________________|
 
 
     From the above you have two basic choices in terms of where your
@@ -84,32 +84,32 @@ FIXED ADDRESS = RAM   | run-time copy  |    (copied from EPROM by startup)
     location, this just refers to accesses of declared variables!  Pointers
     are always 32 bits.
 
-	model		options 	advantages	      disadvantages
+        model           options         advantages            disadvantages
 
-    absolute-word	-mw	-ms	no need for A4	      low 32KBytes only
-					A4 available as
-					reg variable
+    absolute-word       -mw     -ms     no need for A4        low 32KBytes only
+                                        A4 available as
+                                        reg variable
 
-    small-data		-ma	-ms	RAM can be anywhere   requires A4
-							      must use __geta4
+    small-data          -ma     -ms     RAM can be anywhere   requires A4
+                                                              must use __geta4
 
-    large-data		-ma -mD -ms	RAM can be anywhere   code is larger
-							      libs must all be
-							      large-data
+    large-data          -ma -mD -ms     RAM can be anywhere   code is larger
+                                                              libs must all be
+                                                              large-data
 
 
-				CODE MODEL
+                                CODE MODEL
 
     The CODE MODEL is normally left at PC-relative and should not present a
     problem.
 
-				CONST DATA
+                                CONST DATA
 
     You want to use the -ms option or even the -mS option (see DCC.DOC for
     the differences).  This will place all string constants in EPROM and
     IN THE CODE SEGMENT, thus this initialized data will NOT take up space
     in RAM.  Any 'const' initialized data will be placed in the code segment
-    and thus in EPROM.	Any non-const initialized data will be copied from
+    and thus in EPROM.  Any non-const initialized data will be copied from
     EPROM into RAM by your reset-startup code.
 
     Any tables that you declare that you will never modify should be
@@ -119,23 +119,23 @@ FIXED ADDRESS = RAM   | run-time copy  |    (copied from EPROM by startup)
     a lot of RAM.
 
     When your code is less than 32KBytes big you can use -pi or -pr and
-    should definitely use -mS.	When your code is larger than 32KBytes you
+    should definitely use -mS.  When your code is larger than 32KBytes you
     cannot use -mS unless you are absolutely positive pc-relative const
     data references do not exceed the word-relative range.
 
-			  RESET VECTOR, DATA MODEL SETUP
+                          RESET VECTOR, DATA MODEL SETUP
 
     If your EPROM is mapped into low memory on boot you can declare a vector
     table by declaring a CONST LONG array as the first data object in the
     first object module that you link to create the executable:
 
-	const long ROMVectorTable[] = {
-	    InitialSSP,
-	    ResetVector,
-	      .
-	      .
-	      .
-	};
+        const long ROMVectorTable[] = {
+            InitialSSP,
+            ResetVector,
+              .
+              .
+              .
+        };
 
     Remember, this must be the first data declaration in the first object
     module!!!  If you are using the A4-RELATIVE small-data model you must
@@ -145,32 +145,32 @@ FIXED ADDRESS = RAM   | run-time copy  |    (copied from EPROM by startup)
     initializes your RAM DATA & BSS before calling C code.  The assembly
     normally looks like this (this would be the second object in the link):
 
-		;   RESET exception, copy initialized data to RAM and clear
-		;   BSS area before calling rom_main()
-		;
-		;   Assumes less than 256KBytes of data and 256KBytes of BSS
+                ;   RESET exception, copy initialized data to RAM and clear
+                ;   BSS area before calling rom_main()
+                ;
+                ;   Assumes less than 256KBytes of data and 256KBytes of BSS
 
-		xref	__DATA_BAS	    ; linker generated symbols
-		xref	__ABSOLUTE_BAS
-		xref	__DATA_LEN
-		xref	__BSS_LEN
-		xref	_rom_main
+                xref    __DATA_BAS          ; linker generated symbols
+                xref    __ABSOLUTE_BAS
+                xref    __DATA_LEN
+                xref    __BSS_LEN
+                xref    _rom_main
 
 _ResetVector
-		lea	__DATA_BAS,A0	    ; ROM data
-		lea	__ABSOLUTE_BAS,A1   ; RAM data
-		move.w	#__DATA_LEN,D0	    ; long words of data
-		bra	trentry
-trloop		move.l	(A0)+,(A1)+         ; copy EPROM copy to run-time
-trentry 	dbf	D0,trloop	    ; RAM copy.
+                lea     __DATA_BAS,A0       ; ROM data
+                lea     __ABSOLUTE_BAS,A1   ; RAM data
+                move.w  #__DATA_LEN,D0      ; long words of data
+                bra     trentry
+trloop          move.l  (A0)+,(A1)+         ; copy EPROM copy to run-time
+trentry         dbf     D0,trloop           ; RAM copy.
 
-		move.w	#__BSS_LEN,D0	    ; long words of BSS (follows data)
-		moveq.l #0,D1
-		bra	trbentry
-trbloop 	move.l	D1,(A1)+            ; clear run-time RAM
-trbentry	dbf	D0,trbloop
+                move.w  #__BSS_LEN,D0       ; long words of BSS (follows data)
+                moveq.l #0,D1
+                bra     trbentry
+trbloop         move.l  D1,(A1)+            ; clear run-time RAM
+trbentry        dbf     D0,trbloop
 
-		jmp	_rom_main(pc)
+                jmp     _rom_main(pc)
 
     Where rom_main() is your C main routine qualified with __geta4 (if you
     are using the A4-RELATIVE data model).  Any special items, such as
@@ -182,7 +182,7 @@ trbentry	dbf	D0,trbloop
     NORMAL REGISTER VARIABLE.  This gives you an extra register variable if
     you haven't guessed!
 
-			       EXAMPLE PROGRAM
+                               EXAMPLE PROGRAM
 
     Assume the above assembly module has been assembled and is called
     'romc.o'.  The following C program is called 'test.c'.  In all cases
@@ -199,91 +199,91 @@ trbentry	dbf	D0,trbloop
 
     (1) SMALL-DATA-MODEL
 
-	extern void TrapReset();
-	extern char SSp[512];
+        extern void TrapReset();
+        extern char SSp[512];
 
-	const long RomVectors[] = { (long)SSp, (long)TrapReset };
+        const long RomVectors[] = { (long)SSp, (long)TrapReset };
 
-	char SSp[512];	    /*	our supervisor stack in BSS */
+        char SSp[512];      /*  our supervisor stack in BSS */
 
-	__geta4 void
-	rom_main()
-	{
-	    short i;
+        __geta4 void
+        rom_main()
+        {
+            short i;
 
-	    for (;;) {
-		for (i = 0; i < 10000; ++i) {
-		    <do something here with  i>
-		}
-	    }
-	}
-				    note, ram can be beyond 64K
-				    v
+            for (;;) {
+                for (i = 0; i < 10000; ++i) {
+                    <do something here with  i>
+                }
+            }
+        }
+                                    note, ram can be beyond 64K
+                                    v
 
-	COMPILE:    dcc test.c romc.o -ma 0x10000 -o t:test -r -v -lrom
-		    romable t:test -o t:test.bin -D 0x10000 -C 0x0
-		    burn eprom using test.bin
+        COMPILE:    dcc test.c romc.o -ma 0x10000 -o t:test -r -v -lrom
+                    romable t:test -o t:test.bin -D 0x10000 -C 0x0
+                    burn eprom using test.bin
 
 
     (2) ABSOLUTE WORD DATA MODEL
 
-	The source code is the same except you do not need __geta4.  Here
-	I am assuming RAM starts at, say, 0x2000.
+        The source code is the same except you do not need __geta4.  Here
+        I am assuming RAM starts at, say, 0x2000.
 
-	void
-	rom_main()
-	{
-	    ...
-	}
+        void
+        rom_main()
+        {
+            ...
+        }
 
-	COMPILE:    dcc test.c romc.o -mw 0x2000 -o t:test -r -lrom
-		    romable t:test -o t:test.bin -D 0x2000 -C 0x0
-		    burn eprom using test.bin
+        COMPILE:    dcc test.c romc.o -mw 0x2000 -o t:test -r -lrom
+                    romable t:test -o t:test.bin -D 0x2000 -C 0x0
+                    burn eprom using test.bin
 
     (3) ABSOLUTE LONG DATA MODEL
 
-	The source code is the same as for (2).  Here the RAM may start
-	anywhere (also true in (1)).
+        The source code is the same as for (2).  Here the RAM may start
+        anywhere (also true in (1)).
 
-	COMPILE:    dcc test.c romc.o -ma 0x10080 -o t:test -r -lrom
-		    romable t:test -o t:test.bin -D 0x10080 -C 0
-		    burn eprom using test.bin
+        COMPILE:    dcc test.c romc.o -ma 0x10080 -o t:test -r -lrom
+                    romable t:test -o t:test.bin -D 0x10080 -C 0
+                    burn eprom using test.bin
 
     (4) EXAMPLE OF EPROM INITIALLY MAPPED AT 0x0000 BUT REMAPPABLE TO
-	SOMEWHERE ELSE
+        SOMEWHERE ELSE
 
-	In this case the assembly, ROMC.A, must relocate the EPROM back
-	to where it should be before initializing the data segment.  Here
-	your initial CONST data is the EPROM VECTOR TABLE, and your initial
-	non-CONST INITIALIZED data (because BSS gets stuck after all
-	initialized data) will be your RAM VECTOR TABLE.
+        In this case the assembly, ROMC.A, must relocate the EPROM back
+        to where it should be before initializing the data segment.  Here
+        your initial CONST data is the EPROM VECTOR TABLE, and your initial
+        non-CONST INITIALIZED data (because BSS gets stuck after all
+        initialized data) will be your RAM VECTOR TABLE.
 
-	In this example I assume that RAM will be mapped into 0x0000-
-	by the time rom_main() gets called.  Compilation depends on the
-	data model.  The example below uses the ABSOLUTE WORD data model.
+        In this example I assume that RAM will be mapped into 0x0000-
+        by the time rom_main() gets called.  Compilation depends on the
+        data model.  The example below uses the ABSOLUTE WORD data model.
 
-	extern void TrapReset();
-	extern char SSp[512];
+        extern void TrapReset();
+        extern char SSp[512];
 
-	const long RomVectors[] = { (long)SSp, (long)TrapReset };
-	long RamVectors[] = { (long)SSp, (long)TrapReset, ... };
+        const long RomVectors[] = { (long)SSp, (long)TrapReset };
+        long RamVectors[] = { (long)SSp, (long)TrapReset, ... };
 
-	char SSp[512];	    /*	our supervisor stack in BSS */
+        char SSp[512];      /*  our supervisor stack in BSS */
 
-	void
-	rom_main()
-	{
-	    ...
-	}
+        void
+        rom_main()
+        {
+            ...
+        }
 
-	In this compilation example I am assuming the RAM will be at 0x0000 and
-	the ROM, say, at 0x20000 (above the 64KBmark)
+        In this compilation example I am assuming the RAM will be at 0x0000 and
+        the ROM, say, at 0x20000 (above the 64KBmark)
 
-	COMPILE:    dcc test.c romc.o -mw 0 -o t:test -r -lrom
-		    romable t:test -o t:test.bin -D 0 -C 0x20000
-		    burn eprom using test.bin
+        COMPILE:    dcc test.c romc.o -mw 0 -o t:test -r -lrom
+                    romable t:test -o t:test.bin -D 0 -C 0x20000
+                    burn eprom using test.bin
 
-				USING ROM.LIB
+                                USING ROM.LIB
 
     ROM.LIB is generated from LIB/FILES.ROM3LIB and contains those modules
     from C.LIB that do not declare any variables and are position
@@ -302,7 +302,7 @@ trbentry	dbf	D0,trbloop
     absolute-code references to ctype's lookup tables.
 
     ------------------------------------------------------------------------
-				MAKING RAM MODULES
+                                MAKING RAM MODULES
 
     Generating a binary image for an executable that is meant to run from
     RAM instead EPROM is relatively easy.  In many cases you want only a
@@ -324,22 +324,22 @@ trbentry	dbf	D0,trbloop
     the code is completely position independant and references only one set
     of data.
 
-		       ________________
- ANY ADDRESS IN RAM   |startup	       |
-		      |     CODE       |
-		      |----------------|
-		      | initialized    |
-		      |    data        |
-		      |----------------|
-		      | 	       |
-		      |     BSS        |
-		      |----------------|
+                       ________________
+ ANY ADDRESS IN RAM   |startup         |
+                      |     CODE       |
+                      |----------------|
+                      | initialized    |
+                      |    data        |
+                      |----------------|
+                      |                |
+                      |     BSS        |
+                      |----------------|
 
     The code uses a single PC-relative reference to find the start of the
     data, then generates the A4 register to point to the data section.
     NOT A SINGLE 32-BIT REFERENCE EXISTS.
 
-    WARNING:	The module has only one set of data.  Once initialized data
+    WARNING:    The module has only one set of data.  Once initialized data
     is modified it stays modified through multiple invocations of the module
 
     The advantage of using a position independant module is obvious... you
@@ -355,9 +355,9 @@ trbentry	dbf	D0,trbloop
     __DATA_BAS linker symbols in the code section.  Actually, dlink puts
     the entire program into a single CODE hunk!
 
-	dcc -c test.c -pi
-	dlink -pi rampi.o test.o -lrom -o test
-	romable test -o test.bin -pi
+        dcc -c test.c -pi
+        dlink -pi rampi.o test.o -lrom -o test
+        romable test -o test.bin -pi
 
     RAMPI.A is something you have to write, but you do have a template.
     Take a look at LIB/AMIGA/C_PI.A as an example (also note that
@@ -365,11 +365,11 @@ trbentry	dbf	D0,trbloop
     must be entirely supported though not necessarily the autoexit sections,
     it depends on your application.
 
-				USING ROM.LIB
+                                USING ROM.LIB
 
     ROM.LIB is generates from LIB/FILES.ROM3LIB and contains compiler
     support routines that do not require any RAM.  Modules in the library
-    are entirely position independant.	If you use library calls instead
+    are entirely position independant.  If you use library calls instead
     of macros in <ctype.h> for ctype functions those are position
     independant as well ... they use pc-relative to access the lookup
     tables (which are declared const).
@@ -393,36 +393,36 @@ trbentry	dbf	D0,trbloop
     Romable generates a binary image for an executable compiled under DICE
     and is normally used to generate a ROMABLE raw binary output file.
 
-	exeFile 	input executable linked with dlink
+        exeFile         input executable linked with dlink
 
-	-o outFile	output binary (unformatted -- raw).  If TWO -o options
-			are specified the two output files will have even bytes
-			and odd bytes respectively, which is what you need when
-			you must program two eproms (one on the LSB data lines
-			and one on the MSB data lines)
+        -o outFile      output binary (unformatted -- raw).  If TWO -o options
+                        are specified the two output files will have even bytes
+                        and odd bytes respectively, which is what you need when
+                        you must program two eproms (one on the LSB data lines
+                        and one on the MSB data lines)
 
-	    example: -o out1		result: 01 02 03 04
+            example: -o out1            result: 01 02 03 04
 
-	    example: -o out1 -o out2	result (out1):  01 03
-					result (out2):  02 04
+            example: -o out1 -o out2    result (out1):  01 03
+                                        result (out2):  02 04
 
 
-	-C addr 	code start address, 0octal, decimal, or 0xHEX
+        -C addr         code start address, 0octal, decimal, or 0xHEX
 
-	-D addr 	data start address, 0octal, decimal, or 0xHEX
+        -D addr         data start address, 0octal, decimal, or 0xHEX
 
-	-DC		place actual data+bss just after code (i.e. the
-			result is intended to be downloaded into RAM, there
-			is no duplicate data in this case).
+        -DC             place actual data+bss just after code (i.e. the
+                        result is intended to be downloaded into RAM, there
+                        is no duplicate data in this case).
 
-			'-D addr' is not specified in this case
+                        '-D addr' is not specified in this case
 
-	-pi		generate a position independant module.  Neither
-			-C or -D are specified in this case, and ROMABLE
-			will warn you have any absolute references.
+        -pi             generate a position independant module.  Neither
+                        -C or -D are specified in this case, and ROMABLE
+                        will warn you have any absolute references.
 
     Note that your custom startup code determines how much of __autoinit
-    and __autoexit is to be supported.	Note especially that __autoinit0
+    and __autoexit is to be supported.  Note especially that __autoinit0
     MUST BE SUPPORTED because DICE will generate __autoinit0 sections to
     handle 32 bit data relocations run-time.
 

@@ -6,10 +6,10 @@
 **      Rexx script modeled after version by David Joiner
 */
 OPTIONS RESULTS
-           			                     
+                                                     
 'RequestStr prompt "Enter search string  "'
 if (RC > 0) then do
-	exit
+        exit
 end
 searchline = RESULT
 
@@ -18,42 +18,42 @@ portname = 'DICEHELP'           /* DICEHelp's port name */
 tempname = 't:DICEHelp.temp'    /* Temporary file for passing clips */
 
 if ~show('p',portname) then do
-	address COMMAND 'RUN >NIL: <NIL: DICEHelp REXXSTARTUP'
+        address COMMAND 'RUN >NIL: <NIL: DICEHelp REXXSTARTUP'
 
-	do i = 1 to 6
-		if ~show('p',portname) then do
-			address COMMAND 'wait 1'
-		end
-	end
+        do i = 1 to 6
+                if ~show('p',portname) then do
+                        address COMMAND 'wait 1'
+                end
+        end
 
-	if ~show('p',portname) then do
-	    'SetStatusBar "DICEHelp program not found!"'
+        if ~show('p',portname) then do
+            'SetStatusBar "DICEHelp program not found!"'
             exit
-	end
+        end
 end
 
 address value portname
-T searchline		/* Search for searchline, return <T>empfile */
+T searchline            /* Search for searchline, return <T>empfile */
 if RC=0 then do
-	refline   = RESULT
+        refline   = RESULT
         refstring = SUBWORD( refline, 2 )
 
-	address value hostname           /* Back to TTX */
+        address value hostname           /* Back to TTX */
         if WORD( refline, 1 ) = "E" then do
                 'SetStatusBar' refstring
                 exit
-	end
+        end
 
         OPENDOC NAME refstring
-	newport = RESULT		/* get the new editor's port name */
-	if RC > 0 then do		/* if not there, then error       */
+        newport = RESULT                /* get the new editor's port name */
+        if RC > 0 then do               /* if not there, then error       */
             'SetStatusBar' "Error opening" refstring
-	    exit
-	end
+            exit
+        end
         address value newport           /* Address the new window */
         SETREADONLY
 
-	exit
+        exit
 end
 else do
     address value hostname

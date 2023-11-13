@@ -8,7 +8,7 @@
  *    DICE-LICENSE.TXT.
  */
 
-#define SECTBLKSIZE	8192	/*  allocation size */
+#define SECTBLKSIZE     8192    /*  allocation size */
 
 /*
  *  Relocation and section information.  The section is broken up into
@@ -22,8 +22,8 @@
 
 typedef struct Reloc {
     struct Reloc *RNext;
-    Label   *Label;		/*  label we are referencing		    */
-    int32_t    Offset;		/*  offset in section of item to be relocd  */
+    Label   *Label;             /*  label we are referencing                */
+    int32_t    Offset;          /*  offset in section of item to be relocd  */
 } Reloc;
 
 typedef struct DBlock {
@@ -33,9 +33,9 @@ typedef struct DBlock {
     void    *Data;
 } DBlock;
 
-#define RELOC_ABSOLUTE	0x0000
-#define RELOC_DATAREL	0x0100
-#define RELOC_PCREL	0x0200
+#define RELOC_ABSOLUTE  0x0000
+#define RELOC_DATAREL   0x0100
+#define RELOC_PCREL     0x0200
 
 #define SECT_DUMMY  0
 #define SECT_CODE   1
@@ -46,35 +46,35 @@ typedef struct DBlock {
 
 typedef struct Sect {
     struct Sect *Next;
-    short   Hunk;	    /*	starts at 0	    */
-    short   Type;	    /*	code, data, bss, abs*/
+    short   Hunk;           /*  starts at 0         */
+    short   Type;           /*  code, data, bss, abs*/
     int32_t    HunkMask;
-    char    *Name;	    /*	section name	    */
-    int32_t    Addr;	    /*	current addr in sect*/
+    char    *Name;          /*  section name        */
+    int32_t    Addr;        /*  current addr in sect*/
 
-    int32_t    ObjLen;	    /*	size of generated code/data	    */
-    int32_t    DebugLen;	    /*	debug entries			    */
+    int32_t    ObjLen;      /*  size of generated code/data         */
+    int32_t    DebugLen;            /*  debug entries                       */
     int32_t    DebugIdx;
-    DBlock  *Block;	    /*	linked list of generated code/data. NULL if bss */
-    DBlock  *LastBlock;     /*	for appending...		    */
+    DBlock  *Block;         /*  linked list of generated code/data. NULL if bss */
+    DBlock  *LastBlock;     /*  for appending...                    */
 
     Reloc   *RelocAry[10];
-    Label   *XDefLab;	    /*	exported		*/
+    Label   *XDefLab;       /*  exported                */
     struct DebugNode   *DebugAry;
 } Sect;
 
-#define RA_EXT	5
+#define RA_EXT  5
 
-#define r_ByteReloc	    RelocAry[0]
-#define r_WordRelocPc	    RelocAry[1]
-#define r_LongReloc	    RelocAry[2]
+#define r_ByteReloc         RelocAry[0]
+#define r_WordRelocPc       RelocAry[1]
+#define r_LongReloc         RelocAry[2]
 #define r_WordDataReloc     RelocAry[3]
-#define r_LongRelocPc	    RelocAry[4]
-#define r_ExtByteReloc	    RelocAry[5]
+#define r_LongRelocPc       RelocAry[4]
+#define r_ExtByteReloc      RelocAry[5]
 #define r_ExtWordRelocPc    RelocAry[6]
-#define r_ExtLongReloc	    RelocAry[7]
+#define r_ExtLongReloc      RelocAry[7]
 #define r_ExtWordDataReloc  RelocAry[8]
 #define r_ExtLongRelocPc    RelocAry[9]
 
-extern Sect    *CurSection;	/*  current section	*/
-extern Sect    *SectBase;	/*  list of sections	*/
+extern Sect    *CurSection;     /*  current section     */
+extern Sect    *SectBase;       /*  list of sections    */

@@ -22,17 +22,17 @@ void *ptr;
     long *item;
 
     if (ptr == NULL)
-	return;
+        return;
 
     ptr = (void *)((long *)ptr - 2);
 
     while (item = *scan) {
-	if (item == (long *)ptr) {
-	    *scan = *(long **)item;
-	    FreeMem(ptr, ((long *)ptr)[1]);
-	    return;
-	}
-	scan = (long **)item;
+        if (item == (long *)ptr) {
+            *scan = *(long **)item;
+            FreeMem(ptr, ((long *)ptr)[1]);
+            return;
+        }
+        scan = (long **)item;
     }
     Wait(0);
 }

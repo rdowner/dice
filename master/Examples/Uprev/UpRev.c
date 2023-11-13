@@ -82,8 +82,8 @@ int main(int argc, char **argv)
                   while((ln > 1) && (p[ln-1] >= '0') && (p[ln-1] <= '9')) ln--;
                   if ((ln > 1) && (p[ln-1] == '.'))
                   {
-		      ln--;
-	              while((ln > 1) && (p[ln-1] >= '0') && (p[ln-1] <= '9')) ln--;
+                      ln--;
+                      while((ln > 1) && (p[ln-1] >= '0') && (p[ln-1] <= '9')) ln--;
                   }
                   p[ln] = 0;
                   while (*p == ' ' || *p == '\t') p++;

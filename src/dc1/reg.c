@@ -31,7 +31,7 @@ Prototype   int     AllocDataRegister(Stor *, int32_t);
 Prototype   int     AllocDataRegisterAbs(Stor *, int32_t, int);
 Prototype   int     AllocAddrRegister(Stor *);
 Prototype   int     AllocAddrRegisterAbs(Stor *, int);
-Prototype   void    FreeRegister(Stor *);	/*  single registers only */
+Prototype   void    FreeRegister(Stor *);       /*  single registers only */
 Prototype   void    LockStorage(Stor *);
 Prototype   void    UnlockStorage(Stor *);
 Prototype   void    RegDisableRegs(uint32_t);
@@ -56,17 +56,17 @@ Prototype   void    RegFlagTryAgain(void);
 Prototype   void    PushStackStorage(void);
 Prototype   void    PopStackStorage(void);
 
-Prototype uint32_t   RegAlloc;	/*  protos for debugging only	*/
+Prototype uint32_t   RegAlloc;  /*  protos for debugging only   */
 Prototype uint32_t   RegLocked;
 Prototype uint32_t   RegUsed;
 
-uint32_t	RegAlloc;		/*  mask of allocated registers     */
-uint32_t	RegLocked;		/*  (should be static)		    */
-uint32_t	RegUsed;
+uint32_t        RegAlloc;               /*  mask of allocated registers     */
+uint32_t        RegLocked;              /*  (should be static)              */
+uint32_t        RegUsed;
 
 static TmpStack TmpAry[TMP_STACK_MAX];
 
-static short  DataRegCache = RB_D0; /*	cache of last free'd register   */
+static short  DataRegCache = RB_D0; /*  cache of last free'd register   */
 static short  AddrRegCache = RB_A0;
 static short  TryAgainFlag = 0;
 static short  Refs[32];
@@ -100,7 +100,7 @@ ResetRegAlloc()
     TryAgainFlag = 0;
     setmem(Refs, sizeof(Refs), 0);
 
-    Refs[RB_A4] = 1;	    /* XXX hack */
+    Refs[RB_A4] = 1;        /* XXX hack */
     Refs[RB_A5] = 1;
     Refs[RB_A7] = 1;
 
@@ -121,26 +121,26 @@ int32_t flags;
     stor->st_Flags= SF_VAR | SF_NOSA;
 
     if (flags & TF_UNSIGNED)
-	stor->st_Flags |= SF_UNSIGNED;
+        stor->st_Flags |= SF_UNSIGNED;
     if (flags & TF_NEAR) {
-	stor->st_Flags |= SF_NEAR;
+        stor->st_Flags |= SF_NEAR;
     } else if (flags & (TF_FAR | TF_CHIP)) {
-	stor->st_Flags |= SF_FAR;
+        stor->st_Flags |= SF_FAR;
     }
     if (flags & TF_SHARED) {
-	stor->st_Flags |= SF_CODE | SF_FAR;
+        stor->st_Flags |= SF_CODE | SF_FAR;
     }
     if (flags & TF_CONST) {
-	stor->st_Flags |= SF_CODE;
-	if ((stor->st_Flags & (SF_NEAR|SF_FAR)) == 0) {
-	    if (SmallCode == 0 || ((flags & TF_EXTERN) && ConstCode < 2))
-		stor->st_Flags |= SF_FAR;
-	    else
-		stor->st_Flags |= SF_NEAR;
-	}
+        stor->st_Flags |= SF_CODE;
+        if ((stor->st_Flags & (SF_NEAR|SF_FAR)) == 0) {
+            if (SmallCode == 0 || ((flags & TF_EXTERN) && ConstCode < 2))
+                stor->st_Flags |= SF_FAR;
+            else
+                stor->st_Flags |= SF_NEAR;
+        }
     }
     if (type->Id == TID_PROC)
-	stor->st_Flags |= SF_LEA | SF_CODE;
+        stor->st_Flags |= SF_LEA | SF_CODE;
 }
 
 void
@@ -157,24 +157,24 @@ int32_t flags;
     stor->st_Flags= SF_VAR | SF_NOSA;
 
     if (flags & TF_UNSIGNED)
-	stor->st_Flags |= SF_UNSIGNED;
+        stor->st_Flags |= SF_UNSIGNED;
     if (flags & TF_NEAR) {
-	stor->st_Flags |= SF_NEAR;
+        stor->st_Flags |= SF_NEAR;
     } else if (flags & (TF_FAR | TF_CHIP)) {
-	stor->st_Flags |= SF_FAR;
+        stor->st_Flags |= SF_FAR;
     }
     if (flags & TF_SHARED) {
-	stor->st_Flags |= SF_CODE | SF_FAR;
-	stor->st_Flags &= ~SF_NEAR;
+        stor->st_Flags |= SF_CODE | SF_FAR;
+        stor->st_Flags &= ~SF_NEAR;
     }
     if (flags & TF_CONST) {
-	stor->st_Flags |= SF_CODE;
-	if ((flags & (SF_NEAR|SF_FAR)) == 0) {
-	    if (SmallCode)
-		stor->st_Flags |= SF_NEAR;
-	    else
-		stor->st_Flags |= SF_FAR;
-	}
+        stor->st_Flags |= SF_CODE;
+        if ((flags & (SF_NEAR|SF_FAR)) == 0) {
+            if (SmallCode)
+                stor->st_Flags |= SF_NEAR;
+            else
+                stor->st_Flags |= SF_FAR;
+        }
     }
 }
 
@@ -196,7 +196,7 @@ Type *type;
     s->st_IntConst = val;
 
     if (type->Flags & TF_UNSIGNED)
-	s->st_Flags |= SF_UNSIGNED;
+        s->st_Flags |= SF_UNSIGNED;
 }
 
 void
@@ -228,30 +228,30 @@ AllocArgsStorage(Stor *stor, Type *type, int real, int32_t flags)
 
     switch(type->Id) {
     case TID_INT:
-	bytes = Align(*type->Size, 4);
-	break;
+        bytes = Align(*type->Size, 4);
+        break;
     case TID_ARY:
-	bytes = PTR_SIZE;
-	typesize = bytes;
-	break;
+        bytes = PTR_SIZE;
+        typesize = bytes;
+        break;
     default:
-	bytes = *type->Size;
-	break;
+        bytes = *type->Size;
+        break;
     }
     frame->ArgsStackUsed += bytes;
 
     if (real) {
-	stor->st_Type = ST_RelArg;
-	stor->st_RegNo = RB_FP;
+        stor->st_Type = ST_RelArg;
+        stor->st_RegNo = RB_FP;
     } else {
-	stor->st_Type = ST_RelArg;
-	stor->st_RegNo = RB_SP;
+        stor->st_Type = ST_RelArg;
+        stor->st_RegNo = RB_SP;
     }
     stor->st_Size = typesize;
     stor->st_Offset = frame->ArgsStackUsed - typesize;
     stor->st_Flags = SF_VAR | SF_NOSA;
     if (flags & TF_UNSIGNED)
-	stor->st_Flags |= SF_UNSIGNED;
+        stor->st_Flags |= SF_UNSIGNED;
 }
 
 /*
@@ -271,38 +271,38 @@ AllocRegVarStorageReq(Var *var, short reqNo, int32_t skipMask)
     Assert(CurGen);
     alMask = RegAlloc | ~REGREAL;
     if (CurGen->Frame.Flags & FF_CALLMADE)
-	alMask |= REGSCRATCH;
+        alMask |= REGSCRATCH;
     if (*var->Type->Size == 1 && reqNo >= RB_ADDR)
-	alMask |= RF_AREG;
+        alMask |= RF_AREG;
 
     /*
-     *	Attempt to allocate the specific register in question
+     *  Attempt to allocate the specific register in question
      */
 
     if ((alMask & (1 << reqNo)) == 0) {
-	if (reqNo >= RB_ADDR)
-	    AllocAddrRegisterAbs(&var->var_Stor, reqNo);
-	else
-	    AllocDataRegisterAbs(&var->var_Stor, *var->Type->Size, reqNo);
-	var->var_Stor.st_Flags &= ~SF_TMP;
-	var->var_Stor.st_Flags |= SF_VAR;
-	if (var->Type->Flags & TF_UNSIGNED)
-	    var->var_Stor.st_Flags |= SF_UNSIGNED;
+        if (reqNo >= RB_ADDR)
+            AllocAddrRegisterAbs(&var->var_Stor, reqNo);
+        else
+            AllocDataRegisterAbs(&var->var_Stor, *var->Type->Size, reqNo);
+        var->var_Stor.st_Flags &= ~SF_TMP;
+        var->var_Stor.st_Flags |= SF_VAR;
+        if (var->Type->Flags & TF_UNSIGNED)
+            var->var_Stor.st_Flags |= SF_UNSIGNED;
 
-	/*
-	 *  so we don't save/restore passed register variables that are
-	 *  never modified
-	 */
+        /*
+         *  so we don't save/restore passed register variables that are
+         *  never modified
+         */
 
-	if ((var->RegFlags & RF_MODIFIED) == 0)
-	    RegReserved |= 1 << reqNo;
+        if ((var->RegFlags & RF_MODIFIED) == 0)
+            RegReserved |= 1 << reqNo;
 
-	return(1);
+        return(1);
     }
 
     /*
-     *	Attempt to allocate a register not currently being used to pass
-     *	a variable (reduces number of exchanges required)
+     *  Attempt to allocate a register not currently being used to pass
+     *  a variable (reduces number of exchanges required)
      */
 
     alMask = RegAlloc;
@@ -312,14 +312,14 @@ AllocRegVarStorageReq(Var *var, short reqNo, int32_t skipMask)
     r = AllocRegVarStorage(var);
 
     /*
-     *	Give up, normal allocation attempt
+     *  Give up, normal allocation attempt
      */
 
     RegAlloc = alMask | (RegAlloc & ~skipMask);
     RegUsed  = usMask | (RegUsed  & ~skipMask);
 
     if (r == 0)
-	r = AllocRegVarStorage(var);
+        r = AllocRegVarStorage(var);
 
     return(r);
 }
@@ -342,35 +342,35 @@ Var *var;
     Assert(CurGen);
     mask = RegAlloc | ~REGREAL;
     if (CurGen->Frame.Flags & FF_CALLMADE)
-	mask |= REGSCRATCH;
+        mask |= REGSCRATCH;
 
     if (mask != 0xFFFFFFFF) {
-	short regno;
-	short *regptr;
+        short regno;
+        short *regptr;
 
-	if (var->Type->Id == TID_PTR || ((var->Flags & VF_ARG) && var->Type->Id == TID_ARY)) {
-	    for (regptr = RPAddrScan16; (regno = *regptr) >= 0; ++regptr) {
-		if ((mask & (1 << regno)) == 0) {
-		    AllocAddrRegisterAbs(&var->var_Stor, regno);
-		    var->var_Stor.st_Flags &= ~SF_TMP;
-		    var->var_Stor.st_Flags |= SF_VAR;
-		    if (var->Type->Flags & TF_UNSIGNED)
-			var->var_Stor.st_Flags |= SF_UNSIGNED;
-		    return(1);
-		}
-	    }
-	} else {
-	    for (regptr = RPDataScan16; (regno = *regptr) >= 0; ++regptr) {
-		if ((mask & (1 << regno)) == 0) {
-		    AllocDataRegisterAbs(&var->var_Stor, *var->Type->Size, regno);
-		    var->var_Stor.st_Flags &= ~SF_TMP;
-		    var->var_Stor.st_Flags |= SF_VAR;
-		    if (var->Type->Flags & TF_UNSIGNED)
-			var->var_Stor.st_Flags |= SF_UNSIGNED;
-		    return(1);
-		}
-	    }
-	}
+        if (var->Type->Id == TID_PTR || ((var->Flags & VF_ARG) && var->Type->Id == TID_ARY)) {
+            for (regptr = RPAddrScan16; (regno = *regptr) >= 0; ++regptr) {
+                if ((mask & (1 << regno)) == 0) {
+                    AllocAddrRegisterAbs(&var->var_Stor, regno);
+                    var->var_Stor.st_Flags &= ~SF_TMP;
+                    var->var_Stor.st_Flags |= SF_VAR;
+                    if (var->Type->Flags & TF_UNSIGNED)
+                        var->var_Stor.st_Flags |= SF_UNSIGNED;
+                    return(1);
+                }
+            }
+        } else {
+            for (regptr = RPDataScan16; (regno = *regptr) >= 0; ++regptr) {
+                if ((mask & (1 << regno)) == 0) {
+                    AllocDataRegisterAbs(&var->var_Stor, *var->Type->Size, regno);
+                    var->var_Stor.st_Flags &= ~SF_TMP;
+                    var->var_Stor.st_Flags |= SF_VAR;
+                    if (var->Type->Flags & TF_UNSIGNED)
+                        var->var_Stor.st_Flags |= SF_UNSIGNED;
+                    return(1);
+                }
+            }
+        }
     }
     return(0);
 }
@@ -388,7 +388,7 @@ Stor *cache;
         (type->Id == TID_UNION)  ||
         (*type->Size > 4))
     {
-	Assert(0);
+        Assert(0);
     }
 
     if (cache &&
@@ -396,41 +396,41 @@ Stor *cache;
          cache->st_Type == ST_RelReg ||
          cache->st_Type == ST_RegIndex))
     {
-	Assert((unsigned short)cache->st_RegNo < 32);
-	if (RegUsed & (1 << cache->st_RegNo)) {
-	    if (cache->st_RegNo < RB_ADDR)
-		DataRegCache = cache->st_RegNo;
-	    else
-		AddrRegCache = cache->st_RegNo;
-	}
+        Assert((unsigned short)cache->st_RegNo < 32);
+        if (RegUsed & (1 << cache->st_RegNo)) {
+            if (cache->st_RegNo < RB_ADDR)
+                DataRegCache = cache->st_RegNo;
+            else
+                AddrRegCache = cache->st_RegNo;
+        }
     }
 
     {
-	int wantaddr = 0;   /* Assume that we will go for a data register */
-	if (type->Id == TID_PTR)
-	{
-	    /* We prefer to have a pointer register here, but we need      */
-	    /* to ensure that one is free before we will attempt to get it */
-	    if (((RegAlloc | RegLocked) & 0x0FF0000) != 0xFF0000)
-		wantaddr = 1;
-	}
-	else if (((RegAlloc | RegLocked) & 0x0FF) == 0xFF)
-	{
-	   /* we know that it is a data type item but there are no data    */
-	   /* registers free so we will have to try for an address         */
-	   /* register instead.                                            */
-	   wantaddr = 1;
-	}
+        int wantaddr = 0;   /* Assume that we will go for a data register */
+        if (type->Id == TID_PTR)
+        {
+            /* We prefer to have a pointer register here, but we need      */
+            /* to ensure that one is free before we will attempt to get it */
+            if (((RegAlloc | RegLocked) & 0x0FF0000) != 0xFF0000)
+                wantaddr = 1;
+        }
+        else if (((RegAlloc | RegLocked) & 0x0FF) == 0xFF)
+        {
+           /* we know that it is a data type item but there are no data    */
+           /* registers free so we will have to try for an address         */
+           /* register instead.                                            */
+           wantaddr = 1;
+        }
 
-	if (wantaddr)
-	    AllocAddrRegister(stor);
-	else
-	{
-	    AllocDataRegister(stor, *type->Size);
+        if (wantaddr)
+            AllocAddrRegister(stor);
+        else
+        {
+            AllocDataRegister(stor, *type->Size);
 
-	    if (type->Flags & TF_UNSIGNED)
-		stor->st_Flags |= SF_UNSIGNED;
-	}
+            if (type->Flags & TF_UNSIGNED)
+                stor->st_Flags |= SF_UNSIGNED;
+        }
     }
 }
 
@@ -453,63 +453,63 @@ Stor *cache;
     Assert (type);
 
     if (type->Id == TID_STRUCT || type->Id == TID_UNION) {
-	force_stk = 1;
+        force_stk = 1;
     }
 
     if (cache && (cache->st_Type == ST_Reg || cache->st_Type == ST_RelReg || cache->st_Type == ST_RegIndex)) {
-	Assert((unsigned short)cache->st_RegNo < 32);
-	if (RegUsed & (1 << cache->st_RegNo)) {
-	    if (cache->st_RegNo < RB_ADDR)
-		DataRegCache = cache->st_RegNo;
-	    else
-		AddrRegCache = cache->st_RegNo;
-	}
+        Assert((unsigned short)cache->st_RegNo < 32);
+        if (RegUsed & (1 << cache->st_RegNo)) {
+            if (cache->st_RegNo < RB_ADDR)
+                DataRegCache = cache->st_RegNo;
+            else
+                AddrRegCache = cache->st_RegNo;
+        }
     }
 
     if (force_stk == 0) {
-	if (type->Id == TID_PTR) {
-	    AllocAddrRegister(stor);
-	    return;
-	} else if (*type->Size <= 4) {
-	    AllocDataRegister(stor, *type->Size);
-	    if (type->Flags & TF_UNSIGNED)
-		stor->st_Flags |= SF_UNSIGNED;
-	    return;
-	}
+        if (type->Id == TID_PTR) {
+            AllocAddrRegister(stor);
+            return;
+        } else if (*type->Size <= 4) {
+            AllocDataRegister(stor, *type->Size);
+            if (type->Flags & TF_UNSIGNED)
+                stor->st_Flags |= SF_UNSIGNED;
+            return;
+        }
     }
     {
-	TmpStack *ts;
-	int32_t alignment = *type->Align;
+        TmpStack *ts;
+        int32_t alignment = *type->Align;
 
-	if (type->Flags & TF_ALIGNED)
-	    alignment = 4;
+        if (type->Flags & TF_ALIGNED)
+            alignment = 4;
 
-	for (ts = TmpAry; ts->ts_Size; ++ts) {
-	    if (ts->ts_Refs)
-		continue;
-	    if ((ts->ts_Offset & (alignment - 1)) == 0 && ts->ts_Size == *type->Size) {
-		++ts->ts_Refs;
-		stor->st_Type = ST_RelReg;
-		stor->st_RegNo = RB_FP;
-		stor->st_Size = *type->Size;
-		stor->st_Offset = ts->ts_Offset;
-		stor->st_Flags = SF_TMP | SF_NOSA;
-		if (type->Flags & TF_UNSIGNED)
-		    stor->st_Flags |= SF_UNSIGNED;
-		return;
-	    }
-	}
-	if (ts == TmpAry + (TMP_STACK_MAX - 1))
-	    zerror(EFATAL_MAX_TMP_EXCEEDED);	/* XXX */
+        for (ts = TmpAry; ts->ts_Size; ++ts) {
+            if (ts->ts_Refs)
+                continue;
+            if ((ts->ts_Offset & (alignment - 1)) == 0 && ts->ts_Size == *type->Size) {
+                ++ts->ts_Refs;
+                stor->st_Type = ST_RelReg;
+                stor->st_RegNo = RB_FP;
+                stor->st_Size = *type->Size;
+                stor->st_Offset = ts->ts_Offset;
+                stor->st_Flags = SF_TMP | SF_NOSA;
+                if (type->Flags & TF_UNSIGNED)
+                    stor->st_Flags |= SF_UNSIGNED;
+                return;
+            }
+        }
+        if (ts == TmpAry + (TMP_STACK_MAX - 1))
+            zerror(EFATAL_MAX_TMP_EXCEEDED);    /* XXX */
 
-	AllocStackStorage(stor, type, type->Flags);
-	stor->st_Flags |= SF_TMP;
-	stor->st_Flags &= ~SF_VAR;
-	ts->ts_Offset = stor->st_Offset;
-	ts->ts_Size = stor->st_Size;
-	ts->ts_Refs = 1;
-	(ts + 1)->ts_Size = 0;
-	TSMax = (ts - TmpAry) + 1;
+        AllocStackStorage(stor, type, type->Flags);
+        stor->st_Flags |= SF_TMP;
+        stor->st_Flags &= ~SF_VAR;
+        ts->ts_Offset = stor->st_Offset;
+        ts->ts_Size = stor->st_Size;
+        ts->ts_Refs = 1;
+        (ts + 1)->ts_Size = 0;
+        TSMax = (ts - TmpAry) + 1;
     }
 }
 
@@ -520,24 +520,24 @@ Stor *s, *d;
     *d = *s;
 
     if (s->st_Type == ST_RegIndex) {
-	if (s->st_Flags & SF_TMP2) {
-	    ++Refs[s->st_RegNo2];
-	    RegAlloc |= 1 << s->st_RegNo2;
-	    Assert((RegUsed | RegAlloc) == RegUsed);
-	    /* RegUsed |= RegAlloc; */
-	}
+        if (s->st_Flags & SF_TMP2) {
+            ++Refs[s->st_RegNo2];
+            RegAlloc |= 1 << s->st_RegNo2;
+            Assert((RegUsed | RegAlloc) == RegUsed);
+            /* RegUsed |= RegAlloc; */
+        }
     }
     if (s->st_Flags & SF_TMP) {
-	if (s->st_Type == ST_Reg || s->st_Type == ST_RelReg || s->st_Type == ST_RegIndex) {
-	    if (s->st_RegNo == RB_FP) {
-		ReUseStackStorage(s);
-	    } else {
-		++Refs[s->st_RegNo];
-		RegAlloc |= 1 << s->st_RegNo;
-		Assert((RegUsed | RegAlloc) == RegUsed);
-		/* RegUsed |= RegAlloc; */
-	    }
-	}
+        if (s->st_Type == ST_Reg || s->st_Type == ST_RelReg || s->st_Type == ST_RegIndex) {
+            if (s->st_RegNo == RB_FP) {
+                ReUseStackStorage(s);
+            } else {
+                ++Refs[s->st_RegNo];
+                RegAlloc |= 1 << s->st_RegNo;
+                Assert((RegUsed | RegAlloc) == RegUsed);
+                /* RegUsed |= RegAlloc; */
+            }
+        }
     }
 }
 
@@ -546,39 +546,39 @@ FreeStorage(stor)
 Stor *stor;
 {
     /*
-     *	The RegIndex type holds two registers, either of which may actually
-     *	be 'temporary' registers.
+     *  The RegIndex type holds two registers, either of which may actually
+     *  be 'temporary' registers.
      */
 
     if (stor->st_Type == ST_RegIndex) {
-	Stor x;
+        Stor x;
 
-	x.st_Type = ST_Reg;
-	if (stor->st_Flags & SF_TMP) {
-	    if (stor->st_RegNo == RB_FP) {
-		FreeStackStorage(stor);
-	    } else {
-		x.st_RegNo = stor->st_RegNo;
-		FreeRegister(&x);
-	    }
-	}
-	if (stor->st_Flags & SF_TMP2) {
-	    x.st_RegNo = stor->st_RegNo2;
-	    FreeRegister(&x);
-	}
-	return;
+        x.st_Type = ST_Reg;
+        if (stor->st_Flags & SF_TMP) {
+            if (stor->st_RegNo == RB_FP) {
+                FreeStackStorage(stor);
+            } else {
+                x.st_RegNo = stor->st_RegNo;
+                FreeRegister(&x);
+            }
+        }
+        if (stor->st_Flags & SF_TMP2) {
+            x.st_RegNo = stor->st_RegNo2;
+            FreeRegister(&x);
+        }
+        return;
     }
     if (stor->st_Flags & SF_TMP) {
-	if (stor->st_Type == ST_Reg || stor->st_Type == ST_RelReg) {
-	    if (stor->st_RegNo == RB_FP) {
-		FreeStackStorage(stor);
-	    } else {
-		CacheOnFree = 1;
-		FreeRegister(stor);
-		CacheOnFree = 0;
-	    }
-	    return;
-	}
+        if (stor->st_Type == ST_Reg || stor->st_Type == ST_RelReg) {
+            if (stor->st_RegNo == RB_FP) {
+                FreeStackStorage(stor);
+            } else {
+                CacheOnFree = 1;
+                FreeRegister(stor);
+                CacheOnFree = 0;
+            }
+            return;
+        }
     }
 }
 
@@ -597,33 +597,33 @@ int32_t size;
     uword mask = (RegAlloc | RegLocked);
 
     if (mask & (1 << regno)) {
-	regno = 0;
-	if ((mask & 0x00FF) == 0x00FF) {
-	    regno += 8;
-	    mask >>= 8;
-	}
-	if ((mask & 0x000F) == 0x000F) {
-	    regno += 4;
-	    mask >>= 4;
-	}
-	if ((mask & 0x0001) == 0)
-	    regno += 0;
-	else if ((mask & 0x0002) == 0)
-	    regno += 1;
-	else if ((mask & 0x0004) == 0)
-	    regno += 2;
-	else if ((mask & 0x0008) == 0)
-	    regno += 3;
-	else
-	    Assert(0);
+        regno = 0;
+        if ((mask & 0x00FF) == 0x00FF) {
+            regno += 8;
+            mask >>= 8;
+        }
+        if ((mask & 0x000F) == 0x000F) {
+            regno += 4;
+            mask >>= 4;
+        }
+        if ((mask & 0x0001) == 0)
+            regno += 0;
+        else if ((mask & 0x0002) == 0)
+            regno += 1;
+        else if ((mask & 0x0004) == 0)
+            regno += 2;
+        else if ((mask & 0x0008) == 0)
+            regno += 3;
+        else
+            Assert(0);
     }
 
     if ((RegUsed & (1 << regno)) == 0) {
-	RegUsed |= 1 << regno;
-	if (regno >= 8) {
-	    Assert(CurGen);
-	    ++CurGen->Frame.CurDRegOver;
-	}
+        RegUsed |= 1 << regno;
+        if (regno >= 8) {
+            Assert(CurGen);
+            ++CurGen->Frame.CurDRegOver;
+        }
     }
     RegAlloc |= 1 << regno;
     Assert((RegUsed | RegAlloc) == RegUsed);
@@ -632,10 +632,10 @@ int32_t size;
     ++Refs[regno];
 
     if (stor) {
-	stor->st_Flags= SF_TMP;
-	stor->st_Type = ST_Reg;
-	stor->st_RegNo= regno;
-	stor->st_Size = size;
+        stor->st_Flags= SF_TMP;
+        stor->st_Type = ST_Reg;
+        stor->st_RegNo= regno;
+        stor->st_Size = size;
     }
     return((int)regno);
 }
@@ -647,11 +647,11 @@ int32_t size;
 int regno;
 {
     if ((RegUsed & (1 << regno)) == 0) {
-	RegUsed |= 1 << regno;
-	if (regno >= 8) {
-	    Assert(CurGen);
-	    ++CurGen->Frame.CurDRegOver;
-	}
+        RegUsed |= 1 << regno;
+        if (regno >= 8) {
+            Assert(CurGen);
+            ++CurGen->Frame.CurDRegOver;
+        }
     }
     RegAlloc |= 1 << regno;
     Assert((RegUsed | RegAlloc) == RegUsed);
@@ -660,10 +660,10 @@ int regno;
     ++Refs[regno];
 
     if (stor) {
-	stor->st_Flags= SF_TMP;
-	stor->st_Type = ST_Reg;
-	stor->st_RegNo= regno;
-	stor->st_Size = size;
+        stor->st_Flags= SF_TMP;
+        stor->st_Type = ST_Reg;
+        stor->st_RegNo= regno;
+        stor->st_Size = size;
     }
     return((int)regno);
 }
@@ -677,35 +677,35 @@ Stor *stor;
 
     Assert ((unsigned short)regno < 32);
     if (mask & (1 << regno)) {
-	regno = 0;
-	if ((mask & 0x00FF) == 0x00FF) {
-	    regno += 8;
-	    mask >>= 8;
-	}
-	if ((mask & 0x000F) == 0x000F) {
-	    regno += 4;
-	    mask >>= 4;
-	}
-	if ((mask & 0x0001) == 0)
-	    regno += 0;
-	else if ((mask & 0x0002) == 0)
-	    regno += 1;
-	else if ((mask & 0x0004) == 0)
-	    regno += 2;
-	else if ((mask & 0x0008) == 0)
-	    regno += 3;
-	else
-	    Assert(0);
+        regno = 0;
+        if ((mask & 0x00FF) == 0x00FF) {
+            regno += 8;
+            mask >>= 8;
+        }
+        if ((mask & 0x000F) == 0x000F) {
+            regno += 4;
+            mask >>= 4;
+        }
+        if ((mask & 0x0001) == 0)
+            regno += 0;
+        else if ((mask & 0x0002) == 0)
+            regno += 1;
+        else if ((mask & 0x0004) == 0)
+            regno += 2;
+        else if ((mask & 0x0008) == 0)
+            regno += 3;
+        else
+            Assert(0);
     }
 
     regno += 16;
 
     if ((RegUsed & (1 << regno)) == 0) {
-	RegUsed |= 1 << regno;
-	if (regno >= 24) {
-	    Assert(CurGen);
-	    ++CurGen->Frame.CurARegOver;
-	}
+        RegUsed |= 1 << regno;
+        if (regno >= 24) {
+            Assert(CurGen);
+            ++CurGen->Frame.CurARegOver;
+        }
     }
     RegAlloc |= 1 << regno;
     Assert((RegUsed | RegAlloc) == RegUsed);
@@ -714,10 +714,10 @@ Stor *stor;
     ++Refs[regno];
 
     if (stor) {
-	stor->st_Flags= SF_TMP;
-	stor->st_Type = ST_Reg;
-	stor->st_RegNo= regno;
-	stor->st_Size = PTR_SIZE;
+        stor->st_Flags= SF_TMP;
+        stor->st_Type = ST_Reg;
+        stor->st_RegNo= regno;
+        stor->st_Size = PTR_SIZE;
     }
     return((int)regno);
 }
@@ -728,24 +728,24 @@ Stor *stor;
 int regno;
 {
     if ((RegUsed & (1 << regno)) == 0) {
-	RegUsed |= 1 << regno;
-	if (regno >= 24) {
-	    Assert(CurGen);
-	    ++CurGen->Frame.CurARegOver;
-	}
+        RegUsed |= 1 << regno;
+        if (regno >= 24) {
+            Assert(CurGen);
+            ++CurGen->Frame.CurARegOver;
+        }
     }
     RegAlloc |= 1 << regno;
     if ((RegUsed | RegAlloc) != RegUsed) {
-	dbprintf(("RegAll %d %08lx %08lx\n", regno, RegAlloc, RegUsed));
-	Assert(0);
+        dbprintf(("RegAll %d %08lx %08lx\n", regno, RegAlloc, RegUsed));
+        Assert(0);
     }
     ++Refs[regno];
 
     if (stor) {
-	stor->st_Flags= SF_TMP;
-	stor->st_Type = ST_Reg;
-	stor->st_RegNo= regno;
-	stor->st_Size = PTR_SIZE;
+        stor->st_Flags= SF_TMP;
+        stor->st_Type = ST_Reg;
+        stor->st_RegNo= regno;
+        stor->st_Size = PTR_SIZE;
     }
     return((int)regno);
 }
@@ -754,9 +754,9 @@ int
 AllocRegisterAbs(Stor *s, short regno, short size)
 {
     if (regno >= RB_ADDR) {
-	AllocAddrRegisterAbs(s, regno);
+        AllocAddrRegisterAbs(s, regno);
     } else {
-	AllocDataRegisterAbs(s, size, regno);
+        AllocDataRegisterAbs(s, size, regno);
     }
     return(s->st_RegNo);
 }
@@ -772,28 +772,28 @@ AttemptAllocRegisterAbs(Stor *s, short regno, short size)
 {
     uint32_t mask = (RegAlloc | RegLocked);
 
-#ifdef NOTDEF	/* removed, regargs gen handles the case now */
+#ifdef NOTDEF   /* removed, regargs gen handles the case now */
     if (regno >= RB_ADDR && size == 1) {
-	AllocDataRegister(s, size);
+        AllocDataRegister(s, size);
     } else
 #endif
     if (((1 << regno) & mask) == 0) {
-	if (regno >= RB_ADDR)
-	    AllocAddrRegisterAbs(s, regno);
-	else
-	    AllocDataRegisterAbs(s, size, regno);
+        if (regno >= RB_ADDR)
+            AllocAddrRegisterAbs(s, regno);
+        else
+            AllocDataRegisterAbs(s, size, regno);
     } else {
-	/*
-	 *  XXX hack.  Can't allocate address register if size == 1, also
-	 *  addr register routines force size to 4, have to fix that...
-	 */
+        /*
+         *  XXX hack.  Can't allocate address register if size == 1, also
+         *  addr register routines force size to 4, have to fix that...
+         */
 
-	if (size != 1 || ((mask & RF_DREG) == RF_DREG && (mask & RF_AREG) != RF_AREG)) {
-	    AllocDataRegister(s, size);
-	} else {
-	    AllocAddrRegister(s);
-	    s->st_Size = size;
-	}
+        if (size != 1 || ((mask & RF_DREG) == RF_DREG && (mask & RF_AREG) != RF_AREG)) {
+            AllocDataRegister(s, size);
+        } else {
+            AllocAddrRegister(s);
+            s->st_Size = size;
+        }
     }
     return(s->st_RegNo);
 }
@@ -821,34 +821,34 @@ Stor *stor;
     switch(stor->st_Type) {
     case ST_Reg:
     case ST_RelReg:
-	{
-	    short regno = stor->st_RegNo;
-	    uint32_t mask = 1 << regno;
+        {
+            short regno = stor->st_RegNo;
+            uint32_t mask = 1 << regno;
 
-	    Assert ((unsigned short)regno < 32);
-	    if (--Refs[regno] < 0) {
-		zerror(ESOFT_REG_NOT_ALLOCATED, regno);  /* XXX */
-		Refs[regno] = 0;
-	    }
-	    if (Refs[regno] == 0) {
-		if (CacheOnFree) {
-		    if (regno >= RB_ADDR)
-			AddrRegCache = regno;
-		    else
-			DataRegCache = regno;
-		}
-		if (RegAlloc & mask) {
-		    RegAlloc &= ~mask;
-		} else {
-		    zerror(ESOFT_REG_NOT_ALLOCATED, regno); /* XXX */
-		}
-	    }
-	}
-	break;
+            Assert ((unsigned short)regno < 32);
+            if (--Refs[regno] < 0) {
+                zerror(ESOFT_REG_NOT_ALLOCATED, regno);  /* XXX */
+                Refs[regno] = 0;
+            }
+            if (Refs[regno] == 0) {
+                if (CacheOnFree) {
+                    if (regno >= RB_ADDR)
+                        AddrRegCache = regno;
+                    else
+                        DataRegCache = regno;
+                }
+                if (RegAlloc & mask) {
+                    RegAlloc &= ~mask;
+                } else {
+                    zerror(ESOFT_REG_NOT_ALLOCATED, regno); /* XXX */
+                }
+            }
+        }
+        break;
     default:
-	dbprintf(("Bad Free Type: %d\n", stor->st_Type));
-	Assert(0);
-	break;
+        dbprintf(("Bad Free Type: %d\n", stor->st_Type));
+        Assert(0);
+        break;
     }
 }
 
@@ -857,22 +857,22 @@ LockStorage(s)
 Stor *s;
 {
     if (s->st_Type == ST_Reg || s->st_Type == ST_RelReg || s->st_Type == ST_RegIndex) {
-	if ((s->st_Flags & SF_TMP) && s->st_RegNo == RB_FP) {
-	    ReUseStackStorage(s);
-	    return;
-	}
-	{
-	    short regno = s->st_RegNo;
-	    Assert ((unsigned short)regno < 32);
-	    if (Locked[regno]++ == 0)
-		RegLocked |= 1 << regno;
-	}
-	if (s->st_Type == ST_RegIndex) {
-	    short regno = s->st_RegNo2;
-	    Assert ((unsigned short)regno < 32);
-	    if (Locked[regno]++ == 0)
-		RegLocked |= 1 << regno;
-	}
+        if ((s->st_Flags & SF_TMP) && s->st_RegNo == RB_FP) {
+            ReUseStackStorage(s);
+            return;
+        }
+        {
+            short regno = s->st_RegNo;
+            Assert ((unsigned short)regno < 32);
+            if (Locked[regno]++ == 0)
+                RegLocked |= 1 << regno;
+        }
+        if (s->st_Type == ST_RegIndex) {
+            short regno = s->st_RegNo2;
+            Assert ((unsigned short)regno < 32);
+            if (Locked[regno]++ == 0)
+                RegLocked |= 1 << regno;
+        }
     }
 }
 
@@ -881,30 +881,30 @@ UnlockStorage(s)
 Stor *s;
 {
     if (s->st_Type == ST_Reg || s->st_Type == ST_RelReg || s->st_Type == ST_RegIndex) {
-	if ((s->st_Flags & SF_TMP) && s->st_RegNo == RB_FP) {
-	    FreeStackStorage(s);
-	    return;
-	}
-	{
-	    short regno = s->st_RegNo;
-	    if (--Locked[regno] == 0)
-		RegLocked &= ~(1 << regno);
-	    if (Locked[regno] < 0) {
-		dbprintf(("UnlockStorage: too many unls %d\n", regno));
-		Assert(0);
-		Locked[regno] = 0;
-	    }
-	}
-	if (s->st_Type == ST_RegIndex) {
-	    short regno = s->st_RegNo2;
-	    if (--Locked[regno] == 0)
-		RegLocked &= ~(1 << regno);
-	    if (Locked[regno] < 0) {
-		dbprintf(("UnlockStorage2: too many unls %d\n", regno));
-		Assert(0);
-		Locked[regno] = 0;
-	    }
-	}
+        if ((s->st_Flags & SF_TMP) && s->st_RegNo == RB_FP) {
+            FreeStackStorage(s);
+            return;
+        }
+        {
+            short regno = s->st_RegNo;
+            if (--Locked[regno] == 0)
+                RegLocked &= ~(1 << regno);
+            if (Locked[regno] < 0) {
+                dbprintf(("UnlockStorage: too many unls %d\n", regno));
+                Assert(0);
+                Locked[regno] = 0;
+            }
+        }
+        if (s->st_Type == ST_RegIndex) {
+            short regno = s->st_RegNo2;
+            if (--Locked[regno] == 0)
+                RegLocked &= ~(1 << regno);
+            if (Locked[regno] < 0) {
+                dbprintf(("UnlockStorage2: too many unls %d\n", regno));
+                Assert(0);
+                Locked[regno] = 0;
+            }
+        }
     }
 }
 
@@ -921,12 +921,12 @@ uint32_t mask;
     AddrRegCache = RB_A0;
     RegCantUse = mask;
     if (RegCantUse & (RegAlloc | RegLocked)) {
-	if (GenPass > 1)
-	{
-	    dbprintf(("RegDisableRegs, regs in use: %08lx %08lx %08lx\n", RegCantUse, RegAlloc, RegLocked));
-	    Assert(0);
-	}
-	++TryAgainFlag;
+        if (GenPass > 1)
+        {
+            dbprintf(("RegDisableRegs, regs in use: %08lx %08lx %08lx\n", RegCantUse, RegAlloc, RegLocked));
+            Assert(0);
+        }
+        ++TryAgainFlag;
     }
 }
 
@@ -948,7 +948,7 @@ void
 RegFlagTryAgain()
 {
     if (TryAgainFlag == 0)
-	dbprintf(("; TRY AGAIN\n"));
+        dbprintf(("; TRY AGAIN\n"));
     TryAgainFlag = 1;
 }
 
@@ -985,7 +985,7 @@ RegCallUseRegister(short rno)
     int32_t mask = 1 << rno;
 
     if ((RegAlloc|RegReserved) & mask)
-	return(mask);
+        return(mask);
     RegUsed |= mask;
     return(0);
 }
@@ -994,7 +994,7 @@ int
 TooManyRegs()
 {
     if (TryAgainFlag || (RegUsed & 0xFF00FF00))
-	return(1);
+        return(1);
     return(0);
 }
 
@@ -1006,11 +1006,11 @@ CountDRegOver()
     int32_t ru = RegUsed;
 
     if (ru & 0x0000FF00) {
-	short i;
-	for (i = 8; i < 16; ++i) {
-	    if (ru & (1 << i))
-		++cnt;
-	}
+        short i;
+        for (i = 8; i < 16; ++i) {
+            if (ru & (1 << i))
+                ++cnt;
+        }
     }
     return(cnt);
 }
@@ -1022,11 +1022,11 @@ CountARegOver()
     int32_t ru = RegUsed;
 
     if (ru & 0xFF000000) {
-	short i;
-	for (i = 24; i < 32; ++i) {
-	    if (ru & (1 << i))
-		++cnt;
-	}
+        short i;
+        for (i = 24; i < 32; ++i) {
+            if (ru & (1 << i))
+                ++cnt;
+        }
     }
     return(cnt);
 }
@@ -1045,13 +1045,13 @@ uint32_t mask;
     char *regstr;
 
     if (mask) {
-	regstr = RegMaskToString(mask, &cnt);
-	if (cnt > 0) {
-	    if (cnt == 1)
-		printf("\tmove.l\t%s,-(sp)\n", regstr);
-	    else
-		printf("\tmovem.l\t%s,-(sp)\n", regstr);
-	}
+        regstr = RegMaskToString(mask, &cnt);
+        if (cnt > 0) {
+            if (cnt == 1)
+                printf("\tmove.l\t%s,-(sp)\n", regstr);
+            else
+                printf("\tmovem.l\t%s,-(sp)\n", regstr);
+        }
     }
 }
 
@@ -1067,19 +1067,19 @@ uint32_t mask;
     char *regstr;
 
     if (mask) {
-	regstr = RegMaskToString(mask, &cnt);
-	if (cnt > 0) {
-	    if (cnt == 1)
-		printf("\tmove.l\t(sp)+,%s\n", regstr);
-	    else
-		printf("\tmovem.l\t(sp)+,%s\n", regstr);
-	}
+        regstr = RegMaskToString(mask, &cnt);
+        if (cnt > 0) {
+            if (cnt == 1)
+                printf("\tmove.l\t(sp)+,%s\n", regstr);
+            else
+                printf("\tmovem.l\t(sp)+,%s\n", regstr);
+        }
     }
     return((int)cnt);
 }
 
 /*
- *  Ensure that the storage is not a scratch register.	All we are doing
+ *  Ensure that the storage is not a scratch register.  All we are doing
  *  is changing the register, so we do a direct copy ignoring other
  *  parameters (e.g. 4(A0) -> 4(A2)  ==  move.l A0,A2)
  */
@@ -1089,76 +1089,76 @@ UnscratchStorage(exp)
 Exp *exp;
 {
     if (exp->ex_Stor.st_Type == ST_RegIndex) {
-	if ((1 << exp->ex_Stor.st_RegNo) & REGSCRATCH) {
-	    int32_t oldLocked = RegLocked;
-	    Stor st;			    /*	new reg */
-	    Stor sd = exp->ex_Stor;	    /*	old reg */
+        if ((1 << exp->ex_Stor.st_RegNo) & REGSCRATCH) {
+            int32_t oldLocked = RegLocked;
+            Stor st;                        /*  new reg */
+            Stor sd = exp->ex_Stor;         /*  old reg */
 
-	    sd.st_Type = ST_Reg;
-	    sd.st_Size = 4;
-	    sd.st_Flags &= ~SF_LEA;
-	    sd.st_RegNo = exp->ex_Stor.st_RegNo;
+            sd.st_Type = ST_Reg;
+            sd.st_Size = 4;
+            sd.st_Flags &= ~SF_LEA;
+            sd.st_RegNo = exp->ex_Stor.st_RegNo;
 
-	    RegLocked |= REGSCRATCH;
-	    if (exp->ex_Stor.st_RegNo < RB_ADDR) {
-		AllocDataRegister(&st, 4);
-	    } else {
-		AllocAddrRegister(&st);
-	    }
-	    asm_move(exp, &sd, &st);
-	    FreeStorage(&sd);
-	    RegLocked = oldLocked;
-	    exp->ex_Stor.st_RegNo = st.st_RegNo;
-	}
+            RegLocked |= REGSCRATCH;
+            if (exp->ex_Stor.st_RegNo < RB_ADDR) {
+                AllocDataRegister(&st, 4);
+            } else {
+                AllocAddrRegister(&st);
+            }
+            asm_move(exp, &sd, &st);
+            FreeStorage(&sd);
+            RegLocked = oldLocked;
+            exp->ex_Stor.st_RegNo = st.st_RegNo;
+        }
 
-	if ((1 << exp->ex_Stor.st_RegNo2) & REGSCRATCH) {
-	    int32_t oldLocked = RegLocked;
-	    Stor st;			    /*	new reg */
-	    Stor sd = exp->ex_Stor;	    /*	old reg */
+        if ((1 << exp->ex_Stor.st_RegNo2) & REGSCRATCH) {
+            int32_t oldLocked = RegLocked;
+            Stor st;                        /*  new reg */
+            Stor sd = exp->ex_Stor;         /*  old reg */
 
-	    sd.st_Type = ST_Reg;
-	    sd.st_Size = 4;
-	    sd.st_Flags &= ~(SF_LEA|SF_TMP);
-	    sd.st_RegNo = exp->ex_Stor.st_RegNo2;
-	    if (sd.st_Flags & SF_TMP2)	    /*	ST_RegIndex->ST_Reg */
-		sd.st_Flags |= SF_TMP;
+            sd.st_Type = ST_Reg;
+            sd.st_Size = 4;
+            sd.st_Flags &= ~(SF_LEA|SF_TMP);
+            sd.st_RegNo = exp->ex_Stor.st_RegNo2;
+            if (sd.st_Flags & SF_TMP2)      /*  ST_RegIndex->ST_Reg */
+                sd.st_Flags |= SF_TMP;
 
-	    RegLocked |= REGSCRATCH;
-	    if (exp->ex_Stor.st_RegNo2 < RB_ADDR) {
-		AllocDataRegister(&st, 4);
-	    } else {
-		AllocAddrRegister(&st);
-	    }
-	    asm_move(exp, &sd, &st);
+            RegLocked |= REGSCRATCH;
+            if (exp->ex_Stor.st_RegNo2 < RB_ADDR) {
+                AllocDataRegister(&st, 4);
+            } else {
+                AllocAddrRegister(&st);
+            }
+            asm_move(exp, &sd, &st);
 
-	    FreeStorage(&sd);
+            FreeStorage(&sd);
 
-	    RegLocked = oldLocked;
-	    exp->ex_Stor.st_RegNo2 = st.st_RegNo;
-	}
+            RegLocked = oldLocked;
+            exp->ex_Stor.st_RegNo2 = st.st_RegNo;
+        }
     }
 
     if (exp->ex_Stor.st_Type == ST_Reg || exp->ex_Stor.st_Type == ST_RelReg) {
-	if ((1 << exp->ex_Stor.st_RegNo) & REGSCRATCH) {
-	    int32_t oldLocked = RegLocked;
-	    Stor st;
-	    Stor sd = exp->ex_Stor;
+        if ((1 << exp->ex_Stor.st_RegNo) & REGSCRATCH) {
+            int32_t oldLocked = RegLocked;
+            Stor st;
+            Stor sd = exp->ex_Stor;
 
-	    sd.st_Type = ST_Reg;
-	    sd.st_Size = 4;
-	    sd.st_Flags &= ~SF_LEA;
+            sd.st_Type = ST_Reg;
+            sd.st_Size = 4;
+            sd.st_Flags &= ~SF_LEA;
 
-	    RegLocked |= REGSCRATCH;
-	    if (exp->ex_Stor.st_RegNo < RB_ADDR) {
-		AllocDataRegister(&st, 4);
-	    } else {
-		AllocAddrRegister(&st);
-	    }
-	    asm_move(exp, &sd, &st);
-	    FreeStorage(&sd);
-	    RegLocked = oldLocked;
-	    exp->ex_Stor.st_RegNo = st.st_RegNo;
-	}
+            RegLocked |= REGSCRATCH;
+            if (exp->ex_Stor.st_RegNo < RB_ADDR) {
+                AllocDataRegister(&st, 4);
+            } else {
+                AllocAddrRegister(&st);
+            }
+            asm_move(exp, &sd, &st);
+            FreeStorage(&sd);
+            RegLocked = oldLocked;
+            exp->ex_Stor.st_RegNo = st.st_RegNo;
+        }
     }
 }
 
@@ -1185,36 +1185,36 @@ int32_t flags;
 
 
     /*
-     *	fix alignment.	Note that auto char arrays must be aligned on a
-     *	word boundry if they are auto-aggregate initialized.  I do it
-     *	in general to cover the case
+     *  fix alignment.  Note that auto char arrays must be aligned on a
+     *  word boundry if they are auto-aggregate initialized.  I do it
+     *  in general to cover the case
      */
 
     if ((flags & TF_ALIGNED) && alignment < 4)
-	alignment = 4;
+        alignment = 4;
     if (*type->Size > 1 && alignment == 1)
-	alignment = 2;
+        alignment = 2;
     Assert(CurGen);
 
     /*
-     *	type alignment assumes alignment is a power of 2.  First add the
-     *	size of the type to StackUsed.	Since the offset will eventually be
-     *	negative this represents the minimum amount of space required to
-     *	store the item.
+     *  type alignment assumes alignment is a power of 2.  First add the
+     *  size of the type to StackUsed.  Since the offset will eventually be
+     *  negative this represents the minimum amount of space required to
+     *  store the item.
      */
 
     frame->StackUsed += size;
 
     /*
-     *	Additional space may be required to align the item.
+     *  Additional space may be required to align the item.
      */
 
     {
-	if (alignment > 1) {
-	    short n = ((frame->StackParent + frame->StackUsed) & (alignment - 1));
-	    if (n)
-		frame->StackUsed += alignment - n;
-	}
+        if (alignment > 1) {
+            short n = ((frame->StackParent + frame->StackUsed) & (alignment - 1));
+            if (n)
+                frame->StackUsed += alignment - n;
+        }
     }
 
     stor->st_Type = ST_RelReg;
@@ -1223,7 +1223,7 @@ int32_t flags;
     stor->st_Offset = -(frame->StackParent + frame->StackUsed);
     stor->st_Flags = SF_VAR | SF_NOSA;
     if (flags & TF_UNSIGNED)
-	stor->st_Flags |= SF_UNSIGNED;
+        stor->st_Flags |= SF_UNSIGNED;
 
     dbprintf(("; AllocStackStorage(%ld)\n", stor->st_Offset));
 }
@@ -1238,11 +1238,11 @@ Stor *stor;
     dbprintf(("; ReUseStackStorage(%ld)\n", stor->st_Offset));
 
     for (ts = TmpAry; ts->ts_Size; ++ts) {
-	/*if (stor->st_Offset == ts->ts_Offset && stor->st_Size <= ts->ts_Size) {*/
-	if (stor->st_Offset >= ts->ts_Offset && stor->st_Offset < ts->ts_Offset + ts->ts_Size) {
-	    ++ts->ts_Refs;
-	    return;
-	}
+        /*if (stor->st_Offset == ts->ts_Offset && stor->st_Size <= ts->ts_Size) {*/
+        if (stor->st_Offset >= ts->ts_Offset && stor->st_Offset < ts->ts_Offset + ts->ts_Size) {
+            ++ts->ts_Refs;
+            return;
+        }
     }
     dbprintf(("reusetmp %08lx", stor->st_Offset));
     Assert(0);
@@ -1261,15 +1261,15 @@ Stor *stor;
     dbprintf(("; FreeStackStorage(%ld)\n", stor->st_Offset));
 
     for (ts = TmpAry; ts->ts_Size; ++ts) {
-	/*if (stor->st_Offset == ts->ts_Offset) {*/
+        /*if (stor->st_Offset == ts->ts_Offset) {*/
 
-	if (stor->st_Offset >= ts->ts_Offset && stor->st_Offset < ts->ts_Offset + ts->ts_Size) {
-	    --ts->ts_Refs;
-	    if (ts->ts_Refs == 0)
-		dbprintf(("; REFS = 0 OFFSET %04x\n", (uword)stor->st_Offset));
-	    Assert(ts->ts_Refs >= 0);
-	    return;
-	}
+        if (stor->st_Offset >= ts->ts_Offset && stor->st_Offset < ts->ts_Offset + ts->ts_Size) {
+            --ts->ts_Refs;
+            if (ts->ts_Refs == 0)
+                dbprintf(("; REFS = 0 OFFSET %04x\n", (uword)stor->st_Offset));
+            Assert(ts->ts_Refs >= 0);
+            return;
+        }
     }
     dbprintf(("tmpstk %08lx", stor->st_Offset));
     Assert(0);
@@ -1291,15 +1291,15 @@ PushStackStorage(void)
     ++TSIndex;
 
     while (TSIndex < TSMax) {
-	ts->ts_Size = 0;
-	ts->ts_Offset = 0;
-	--TSMax;
-	++ts;
+        ts->ts_Size = 0;
+        ts->ts_Offset = 0;
+        --TSMax;
+        ++ts;
     }
 
     /*
-     *	must guarentee a 0-size structure so other loops do not go beyond
-     *	TSMax
+     *  must guarentee a 0-size structure so other loops do not go beyond
+     *  TSMax
      */
 
     ts->ts_Size = 0;
@@ -1320,15 +1320,15 @@ PopStackStorage(void)
     TmpStack *ts = TmpAry + (TSIndex - 1);
 
     while (ts >= TmpAry) {
-	if (ts->ts_Size == -1) {
-	    ts->ts_Size = 0;
-	    --TSIndex;
-	    return;
-	} else {
-	    /* ts->ts_Size = 0; */
-	    --TSIndex;
-	    --ts;
-	}
+        if (ts->ts_Size == -1) {
+            ts->ts_Size = 0;
+            --TSIndex;
+            return;
+        } else {
+            /* ts->ts_Size = 0; */
+            --TSIndex;
+            --ts;
+        }
     }
     Assert(0);
 }

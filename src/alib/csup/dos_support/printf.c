@@ -1,6 +1,6 @@
 
 /*
- *  PRINTF.C	dos.library var-args interface to VPrintf()
+ *  PRINTF.C    dos.library var-args interface to VPrintf()
  */
 
 #include <stdio.h>

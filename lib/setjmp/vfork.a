@@ -1,36 +1,36 @@
 
-		;   SETJMP/VFORK.A
-		;
-		;   (c)Copyright 1990-91, Matthew Dillon, All Rights Reserved
-		;
-		;   revised to add current __stack_base
+                ;   SETJMP/VFORK.A
+                ;
+                ;   (c)Copyright 1990-91, Matthew Dillon, All Rights Reserved
+                ;
+                ;   revised to add current __stack_base
 
-		section text,code
+                section text,code
 
-		xdef	__amiga_vfork_return
-		xdef	_amiga_vfork
-		xref	__amiga_vfork_returnc
-		xref	__amiga_vforkc
-		xref	__stack_base
-		xref	__CStackFree
+                xdef    __amiga_vfork_return
+                xdef    _amiga_vfork
+                xref    __amiga_vfork_returnc
+                xref    __amiga_vforkc
+                xref    __stack_base
+                xref    __CStackFree
 
-		xref	__amiga_vfork_jmp
+                xref    __amiga_vfork_jmp
 
 __amiga_vfork_return
-		movem.l D0/D1/A0/A4,-(sp)   ; rc, pr, -, -
-		move.l	D1,A0
-		move.l	10(A0),A4
-		jsr	__amiga_vfork_returnc(pc)
-		movem.l (sp)+,D0/D1/A0/A4
-		rts
+                movem.l D0/D1/A0/A4,-(sp)   ; rc, pr, -, -
+                move.l  D1,A0
+                move.l  10(A0),A4
+                jsr     __amiga_vfork_returnc(pc)
+                movem.l (sp)+,D0/D1/A0/A4
+                rts
 
 _amiga_vfork
-		lea	__amiga_vfork_jmp(A4),A0 ; jmp_buf (16 longwords)
-		move.l	(sp),A1             ; return address
-		movem.l D2-D7/A1-A7,(A0)
-		move.l	__stack_base(A4),52(A0)   ;[4] = current stk base
-		jsr	__amiga_vforkc(pc)
-		rts
+                lea     __amiga_vfork_jmp(A4),A0 ; jmp_buf (16 longwords)
+                move.l  (sp),A1             ; return address
+                movem.l D2-D7/A1-A7,(A0)
+                move.l  __stack_base(A4),52(A0)   ;[4] = current stk base
+                jsr     __amiga_vforkc(pc)
+                rts
 
-		END
+                END
 

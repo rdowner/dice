@@ -1,23 +1,23 @@
 
-		;   FTAN.A
-		;
-		;   D0 = ftan(D0)
-		;	      4(sp)
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   FTAN.A
+                ;
+                ;   D0 = ftan(D0)
+                ;             4(sp)
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xref	_MathIeeeSingTransBase
-		xref	_LVOIEEESPTan
-		xdef	__sptan
+                xref    _MathIeeeSingTransBase
+                xref    _LVOIEEESPTan
+                xdef    __sptan
 
-__sptan 	move.l	4(sp),D0
-		move.l	A6,-(sp)
-		move.l	_MathIeeeSingTransBase(A4),A6
-		jsr	_LVOIEEESPTan(A6)
-		move.l	(sp)+,A6
-		rts
+__sptan         move.l  4(sp),D0
+                move.l  A6,-(sp)
+                move.l  _MathIeeeSingTransBase(A4),A6
+                jsr     _LVOIEEESPTan(A6)
+                move.l  (sp)+,A6
+                rts
 
-		END
+                END
 

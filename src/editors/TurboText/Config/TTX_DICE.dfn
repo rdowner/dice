@@ -11,18 +11,18 @@
 
 MENUS: APPEND
    MENU " DICE "
-     ITEM "Open Project File"	      "" ExecARexxMacro DCC:Rexx/VMake.ttx Open
+     ITEM "Open Project File"         "" ExecARexxMacro DCC:Rexx/VMake.ttx Open
      BAR
-     ITEM "Compile Current"	      "" ExecARexxMacro DCC:Rexx/VMake.ttx Compile
-     ITEM "Build Project (F9)"	      "" ExecARexxMacro DCC:Rexx/VMake.ttx Build
-     ITEM "Build & Run"		      "" ExecARexxMacro DCC:Rexx/VMake.ttx Run
-     ITEM "Build & Debug (F7)"	      "" ExecARexxMacro DCC:Rexx/VMake.ttx Debug
-     ITEM "Project Manager"	      "" ExecARexxMacro DCC:Rexx/VMake.ttx Front
+     ITEM "Compile Current"           "" ExecARexxMacro DCC:Rexx/VMake.ttx Compile
+     ITEM "Build Project (F9)"        "" ExecARexxMacro DCC:Rexx/VMake.ttx Build
+     ITEM "Build & Run"               "" ExecARexxMacro DCC:Rexx/VMake.ttx Run
+     ITEM "Build & Debug (F7)"        "" ExecARexxMacro DCC:Rexx/VMake.ttx Debug
+     ITEM "Project Manager"           "" ExecARexxMacro DCC:Rexx/VMake.ttx Front
      BAR
      ITEM "Help Under Cursor (F6)"    "" ExecARexxMacro DCC:Rexx/DiceHelp.ttx
      ITEM "Help Box (ALT-F6)"         "" ExecARexxMacro DCC:Rexx/DiceHelp.ttx Prompt
      BAR
-     ITEM "Next Error (F8)"	      "" ExecARexxMacro DCC:Rexx/ErrorMove.ttx Next
+     ITEM "Next Error (F8)"           "" ExecARexxMacro DCC:Rexx/ErrorMove.ttx Next
      ITEM "Current Error (Shift-F8)"  "" ExecARexxMacro DCC:Rexx/ErrorMove.ttx Current
      ITEM "First Error (ALT-F8)"      "" ExecARexxMacro DCC:Rexx/ErrorMove.ttx First
      ITEM "Previous Error (Ctrl-F8)"  "" ExecARexxMacro DCC:Rexx/ErrorMove.ttx Prev

@@ -15,8 +15,8 @@ main()
     puts("hello");
 
     printf("FUBAR %d %d %d %d : %d %d %d %d %d\n",
-	a[0], a[1], a[2], a[3],
-	ptr[0], ptr[1], ptr[2], ptr[3], ptr[4]
+        a[0], a[1], a[2], a[3],
+        ptr[0], ptr[1], ptr[2], ptr[3], ptr[4]
     );
 }
 

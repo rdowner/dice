@@ -22,9 +22,9 @@ int c;
     const char *ptr = toks + strlen(toks);
 
     while (ptr > toks && *ptr != (char)c)
-	--ptr;
+        --ptr;
     if (*ptr == (char)c)
-	return(ptr);
+        return(ptr);
     return(NULL);
 }
 

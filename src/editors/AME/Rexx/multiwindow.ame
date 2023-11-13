@@ -7,7 +7,7 @@
 alias 'closeall globalrx quit'
 alias 'newwindow ame as noarg' /* dummy argument */
 
-ITEM '-1 "New Window" "ame as noarg"'	/* dummy argument */
+ITEM '-1 "New Window" "ame as noarg"'   /* dummy argument */
 ITEM '-1 "Next Window" "rx dcc:rexx/nextame"'
 
 ITEM '18 "Erase" "stringrx deleteblock; copykill" E'
@@ -18,7 +18,7 @@ ITEM '22 "Yank Vertical Block" "pastekill; vyank" >'
 
 onmenu
 
-bindkey 'rx F4 "dcc:rexx/nextame"'	/* bind next ame function */
+bindkey 'rx F4 "dcc:rexx/nextame"'      /* bind next ame function */
 
 bindkey 'stringrx ^Y "pastekill; yank"'
 bindkey 'stringrx ^K "killline; copykill"'

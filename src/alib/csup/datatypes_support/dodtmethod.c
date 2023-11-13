@@ -9,9 +9,9 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 ULONG DoDTMethod( Object *o, struct Window *win, struct Requester *req,unsigned long data, ... )
 {
-	return DoDTMethodA(o,win,req,(Msg)&data);
+        return DoDTMethodA(o,win,req,(Msg)&data);
 }

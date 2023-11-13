@@ -24,18 +24,18 @@ size_t bytes;
     int copy;
 
     if (bytes <= 0 && buf) {
-	free(buf);
-	return(NULL);
+        free(buf);
+        return(NULL);
     }
     if (buf) {
-	copy = buf[-1] - 8;
-	if (bytes <= copy)
-	    return(buf);
+        copy = buf[-1] - 8;
+        if (bytes <= copy)
+            return(buf);
     }
     ptr = malloc(bytes);
     if (ptr && buf) {
-	movmem(buf, ptr, copy);
-	free(buf);
+        movmem(buf, ptr, copy);
+        free(buf);
     }
     return(ptr);
 }

@@ -4,27 +4,27 @@
  *    DICE-LICENSE.TXT.
  */
 # 1 "fails.c" 0
-typedef void	       *APTR;
-typedef long		LONG;
-typedef unsigned long	ULONG;
-typedef unsigned long	LONGBITS;
-typedef short		WORD;
-typedef unsigned short	UWORD;
-typedef unsigned short	WORDBITS;
-typedef signed char	BYTE;
-typedef unsigned char	UBYTE;
-typedef unsigned char	BYTEBITS;
-typedef short		RPTR;
+typedef void           *APTR;
+typedef long            LONG;
+typedef unsigned long   ULONG;
+typedef unsigned long   LONGBITS;
+typedef short           WORD;
+typedef unsigned short  UWORD;
+typedef unsigned short  WORDBITS;
+typedef signed char     BYTE;
+typedef unsigned char   UBYTE;
+typedef unsigned char   BYTEBITS;
+typedef short           RPTR;
 typedef unsigned char  *STRPTR;
-typedef short		SHORT;
-typedef unsigned short	USHORT;
-typedef short		COUNT;
-typedef unsigned short	UCOUNT;
-typedef ULONG		CPTR;
-typedef float		FLOAT;
-typedef double		DOUBLE;
-typedef short		BOOL;
-typedef unsigned char	TEXT;
+typedef short           SHORT;
+typedef unsigned short  USHORT;
+typedef short           COUNT;
+typedef unsigned short  UCOUNT;
+typedef ULONG           CPTR;
+typedef float           FLOAT;
+typedef double          DOUBLE;
+typedef short           BOOL;
+typedef unsigned char   TEXT;
 struct Node {
     struct  Node *ln_Succ;
     struct  Node *ln_Pred;
@@ -99,65 +99,65 @@ struct Task {
     APTR    tc_UserData;
 };
 struct ExecBase {
-	struct Library LibNode;
-	UWORD	SoftVer;
-	WORD	LowMemChkSum;
-	ULONG	ChkBase;
-	APTR	ColdCapture;
-	APTR	CoolCapture;
-	APTR	WarmCapture;
-	APTR	SysStkUpper;
-	APTR	SysStkLower;
-	ULONG	MaxLocMem;
-	APTR	DebugEntry;
-	APTR	DebugData;
-	APTR	AlertData;
-	APTR	MaxExtMem;
-	UWORD	ChkSum;
-	struct	IntVector IntVects[16];
-	struct	Task *ThisTask;
-	ULONG	IdleCount;
-	ULONG	DispCount;
-	UWORD	Quantum;
-	UWORD	Elapsed;
-	UWORD	SysFlags;
-	BYTE	IDNestCnt;
-	BYTE	TDNestCnt;
-	UWORD	AttnFlags;
-	UWORD	AttnResched;
-	APTR	ResModules;
-	APTR	TaskTrapCode;
-	APTR	TaskExceptCode;
-	APTR	TaskExitCode;
-	ULONG	TaskSigAlloc;
-	UWORD	TaskTrapAlloc;
-	struct	List MemList;
-	struct	List ResourceList;
-	struct	List DeviceList;
-	struct	List IntrList;
-	struct	List LibList;
-	struct	List PortList;
-	struct	List TaskReady;
-	struct	List TaskWait;
-	struct	SoftIntList SoftInts[5];
-	LONG	LastAlert[4];
-	UBYTE	VBlankFrequency;
-	UBYTE	PowerSupplyFrequency;
-	struct	List SemaphoreList;
-	APTR	KickMemPtr;
-	APTR	KickTagPtr;
-	APTR	KickCheckSum;
-	UWORD	ex_Pad0;
-	ULONG	ex_Reserved0;
-	APTR	ex_RamLibPrivate;
-	ULONG	ex_EClockFrequency;
-	ULONG	ex_CacheControl;
-	ULONG	ex_TaskID;
-	ULONG	ex_PuddleSize;
-	ULONG	ex_PoolThreshold;
-	struct	MinList ex_PublicPool;
-	APTR	ex_MMULock;
-	UBYTE	ex_Reserved[12];
+        struct Library LibNode;
+        UWORD   SoftVer;
+        WORD    LowMemChkSum;
+        ULONG   ChkBase;
+        APTR    ColdCapture;
+        APTR    CoolCapture;
+        APTR    WarmCapture;
+        APTR    SysStkUpper;
+        APTR    SysStkLower;
+        ULONG   MaxLocMem;
+        APTR    DebugEntry;
+        APTR    DebugData;
+        APTR    AlertData;
+        APTR    MaxExtMem;
+        UWORD   ChkSum;
+        struct  IntVector IntVects[16];
+        struct  Task *ThisTask;
+        ULONG   IdleCount;
+        ULONG   DispCount;
+        UWORD   Quantum;
+        UWORD   Elapsed;
+        UWORD   SysFlags;
+        BYTE    IDNestCnt;
+        BYTE    TDNestCnt;
+        UWORD   AttnFlags;
+        UWORD   AttnResched;
+        APTR    ResModules;
+        APTR    TaskTrapCode;
+        APTR    TaskExceptCode;
+        APTR    TaskExitCode;
+        ULONG   TaskSigAlloc;
+        UWORD   TaskTrapAlloc;
+        struct  List MemList;
+        struct  List ResourceList;
+        struct  List DeviceList;
+        struct  List IntrList;
+        struct  List LibList;
+        struct  List PortList;
+        struct  List TaskReady;
+        struct  List TaskWait;
+        struct  SoftIntList SoftInts[5];
+        LONG    LastAlert[4];
+        UBYTE   VBlankFrequency;
+        UBYTE   PowerSupplyFrequency;
+        struct  List SemaphoreList;
+        APTR    KickMemPtr;
+        APTR    KickTagPtr;
+        APTR    KickCheckSum;
+        UWORD   ex_Pad0;
+        ULONG   ex_Reserved0;
+        APTR    ex_RamLibPrivate;
+        ULONG   ex_EClockFrequency;
+        ULONG   ex_CacheControl;
+        ULONG   ex_TaskID;
+        ULONG   ex_PuddleSize;
+        ULONG   ex_PoolThreshold;
+        struct  MinList ex_PublicPool;
+        APTR    ex_MMULock;
+        UBYTE   ex_Reserved[12];
 };
 struct MsgPort {
     struct  Node mp_Node;
@@ -171,11 +171,11 @@ struct Message {
     struct  MsgPort *mn_ReplyPort;
     UWORD   mn_Length;
 };
-struct	MemChunk {
+struct  MemChunk {
     struct  MemChunk *mc_Next;
     ULONG   mc_Bytes;
 };
-struct	MemHeader {
+struct  MemHeader {
     struct  Node mh_Node;
     UWORD   mh_Attributes;
     struct  MemChunk *mh_First;
@@ -183,22 +183,22 @@ struct	MemHeader {
     APTR    mh_Upper;
     ULONG   mh_Free;
 };
-struct	MemEntry {
+struct  MemEntry {
 union {
     ULONG   meu_Reqs;
     APTR    meu_Addr;
     } me_Un;
     ULONG   me_Length;
 };
-struct	MemList {
+struct  MemList {
     struct  Node ml_Node;
     UWORD   ml_NumEntries;
     struct  MemEntry ml_ME[1];
 };
-typedef ULONG	Tag;
-struct TagItem	{
-    Tag		ti_Tag;
-    ULONG	ti_Data;
+typedef ULONG   Tag;
+struct TagItem  {
+    Tag         ti_Tag;
+    ULONG       ti_Data;
 };
 struct Custom {
     UWORD   bltddat;
@@ -356,18 +356,18 @@ struct Semaphore {
     struct MsgPort sm_MsgPort;
     WORD   sm_Bids;
 };
-struct Hook	{
-    struct MinNode	h_MinNode;
-    ULONG		(*h_Entry)();
-    ULONG		(*h_SubEntry)();
-    void		*h_Data;
+struct Hook     {
+    struct MinNode      h_MinNode;
+    ULONG               (*h_Entry)();
+    ULONG               (*h_SubEntry)();
+    void                *h_Data;
 };
 struct Layer
 {
     struct  Layer *front,*back;
-    struct  ClipRect	*ClipRect;
-    struct  RastPort	*rp;
-    struct  Rectangle	bounds;
+    struct  ClipRect    *ClipRect;
+    struct  RastPort    *rp;
+    struct  Rectangle   bounds;
     UBYTE   reserved[4];
     UWORD   priority;
     UWORD   Flags;
@@ -378,7 +378,7 @@ struct Layer
     struct  ClipRect *cr,*cr2,*crnew;
     struct  ClipRect *SuperSaveClipRects;
     struct  ClipRect *_cliprects;
-    struct  Layer_Info	*LayerInfo;
+    struct  Layer_Info  *LayerInfo;
     struct  SignalSemaphore Lock;
     struct  Hook *BackFill;
     ULONG   reserved1;
@@ -394,7 +394,7 @@ struct ClipRect
     struct  ClipRect *prev;
     struct  Layer   *lobs;
     struct  BitMap  *BitMap;
-    struct  Rectangle	bounds;
+    struct  Rectangle   bounds;
     struct  ClipRect *_p1,*_p2;
     LONG    reserved;
 };
@@ -457,62 +457,62 @@ struct copinit
     UWORD wait_forever[2];
     UWORD   sprstop[4];
 };
-struct	ExtendedNode	{
-struct	Node	*xln_Succ;
-struct	Node	*xln_Pred;
-UBYTE	xln_Type;
-BYTE	xln_Pri;
-char	*xln_Name;
-UBYTE	xln_Subsystem;
-UBYTE	xln_Subtype;
-LONG	xln_Library;
-LONG	(*xln_Init)();
+struct  ExtendedNode    {
+struct  Node    *xln_Succ;
+struct  Node    *xln_Pred;
+UBYTE   xln_Type;
+BYTE    xln_Pri;
+char    *xln_Name;
+UBYTE   xln_Subsystem;
+UBYTE   xln_Subtype;
+LONG    xln_Library;
+LONG    (*xln_Init)();
 };
-struct	MonitorSpec
+struct  MonitorSpec
 {
-    struct	ExtendedNode	ms_Node;
-    UWORD	ms_Flags;
-    LONG	ratioh;
-    LONG	ratiov;
-    UWORD	total_rows;
-    UWORD	total_colorclocks;
-    UWORD	DeniseMaxDisplayColumn;
-    UWORD	BeamCon0;
-    UWORD	min_row;
-    struct	SpecialMonitor	*ms_Special;
-    UWORD	ms_OpenCount;
-    LONG	(*ms_transform)();
-    LONG	(*ms_translate)();
-    LONG	(*ms_scale)();
-    UWORD	ms_xoffset;
-    UWORD	ms_yoffset;
-    struct	Rectangle	ms_LegalView;
-    LONG	(*ms_maxoscan)();
-    LONG	(*ms_videoscan)();
-    UWORD	DeniseMinDisplayColumn;
-    ULONG	DisplayCompatible;
-    struct	List DisplayInfoDataBase;
-    struct	SignalSemaphore DisplayInfoDataBaseSemaphore;
-    ULONG	ms_reserved00;
-    ULONG	ms_reserved01;
+    struct      ExtendedNode    ms_Node;
+    UWORD       ms_Flags;
+    LONG        ratioh;
+    LONG        ratiov;
+    UWORD       total_rows;
+    UWORD       total_colorclocks;
+    UWORD       DeniseMaxDisplayColumn;
+    UWORD       BeamCon0;
+    UWORD       min_row;
+    struct      SpecialMonitor  *ms_Special;
+    UWORD       ms_OpenCount;
+    LONG        (*ms_transform)();
+    LONG        (*ms_translate)();
+    LONG        (*ms_scale)();
+    UWORD       ms_xoffset;
+    UWORD       ms_yoffset;
+    struct      Rectangle       ms_LegalView;
+    LONG        (*ms_maxoscan)();
+    LONG        (*ms_videoscan)();
+    UWORD       DeniseMinDisplayColumn;
+    ULONG       DisplayCompatible;
+    struct      List DisplayInfoDataBase;
+    struct      SignalSemaphore DisplayInfoDataBaseSemaphore;
+    ULONG       ms_reserved00;
+    ULONG       ms_reserved01;
 };
-struct	AnalogSignalInterval
+struct  AnalogSignalInterval
 {
-    UWORD	asi_Start;
-    UWORD	asi_Stop;
+    UWORD       asi_Start;
+    UWORD       asi_Stop;
 };
-struct	SpecialMonitor
+struct  SpecialMonitor
 {
-    struct	ExtendedNode	spm_Node;
-    UWORD	spm_Flags;
-    int	(*do_monitor)();
-    int	(*reserved1)();
-    int	(*reserved2)();
-    int	(*reserved3)();
-    struct	AnalogSignalInterval	hblank;
-    struct	AnalogSignalInterval	vblank;
-    struct	AnalogSignalInterval	hsync;
-    struct	AnalogSignalInterval	vsync;
+    struct      ExtendedNode    spm_Node;
+    UWORD       spm_Flags;
+    int (*do_monitor)();
+    int (*reserved1)();
+    int (*reserved2)();
+    int (*reserved3)();
+    struct      AnalogSignalInterval    hblank;
+    struct      AnalogSignalInterval    vblank;
+    struct      AnalogSignalInterval    hsync;
+    struct      AnalogSignalInterval    vsync;
 };
 struct ViewPort
 {
@@ -525,8 +525,8 @@ struct ViewPort
    WORD    DWidth,DHeight;
    WORD    DxOffset,DyOffset;
    UWORD    Modes;
-   UBYTE	SpritePriorities;
-   UBYTE	ExtendedModes;
+   UBYTE        SpritePriorities;
+   UBYTE        ExtendedModes;
    struct   RasInfo *RasInfo;
 };
 struct View
@@ -539,15 +539,15 @@ struct View
 };
 struct ViewExtra
 {
-	struct ExtendedNode n;
-	struct View *View;
-	struct MonitorSpec *Monitor;
+        struct ExtendedNode n;
+        struct View *View;
+        struct MonitorSpec *Monitor;
 };
 struct ViewPortExtra
 {
-	struct ExtendedNode n;
-	struct ViewPort *ViewPort;
-	struct Rectangle DisplayClip;
+        struct ExtendedNode n;
+        struct ViewPort *ViewPort;
+        struct Rectangle DisplayClip;
 };
 struct RasInfo
 {
@@ -557,20 +557,20 @@ struct RasInfo
 };
 struct ColorMap
 {
-	UBYTE	Flags;
-	UBYTE	Type;
-	UWORD	Count;
-	APTR	ColorTable;
-	struct	ViewPortExtra *cm_vpe;
-	UWORD	*TransparencyBits;
-	UBYTE	TransparencyPlane;
-	UBYTE	reserved1;
-	UWORD	reserved2;
-	struct	ViewPort *cm_vp;
-	APTR	NormalDisplayInfo;
-	APTR	CoerceDisplayInfo;
-	struct	TagItem *cm_batch_items;
-	ULONG	VPModeID;
+        UBYTE   Flags;
+        UBYTE   Type;
+        UWORD   Count;
+        APTR    ColorTable;
+        struct  ViewPortExtra *cm_vpe;
+        UWORD   *TransparencyBits;
+        UBYTE   TransparencyPlane;
+        UBYTE   reserved1;
+        UWORD   reserved2;
+        struct  ViewPort *cm_vp;
+        APTR    NormalDisplayInfo;
+        APTR    CoerceDisplayInfo;
+        struct  TagItem *cm_batch_items;
+        ULONG   VPModeID;
 };
 struct AreaInfo
 {
@@ -637,16 +637,16 @@ struct Layer_Info
     struct Layer *top_layer;
     struct Layer *check_lp;
     struct ClipRect *obs;
-	struct MinList	FreeClipRects;
-	struct SignalSemaphore Lock;
-	struct List gs_Head;
-	LONG	longreserved;
-	UWORD	Flags;
-	BYTE	fatten_count;
-	BYTE	LockLayersCount;
+        struct MinList  FreeClipRects;
+        struct SignalSemaphore Lock;
+        struct List gs_Head;
+        LONG    longreserved;
+        UWORD   Flags;
+        BYTE    fatten_count;
+        BYTE    LockLayersCount;
     UWORD  LayerInfo_extra_size;
-    WORD	*blitbuff;
-    void	*LayerInfo_extra;
+    WORD        *blitbuff;
+    void        *LayerInfo_extra;
 };
 struct TextAttr {
     STRPTR  ta_Name;
@@ -742,23 +742,23 @@ struct timerequest {
     struct IORequest tr_node;
     struct timeval tr_time;
 };
-struct IEPointerPixel	{
-    struct Screen	*iepp_Screen;
+struct IEPointerPixel   {
+    struct Screen       *iepp_Screen;
     struct {
-	WORD	X;
-	WORD	Y;
-    }			iepp_Position;
+        WORD    X;
+        WORD    Y;
+    }                   iepp_Position;
 };
-struct IEPointerTablet	{
+struct IEPointerTablet  {
     struct {
-	UWORD	X;
-	UWORD	Y;
-    }			iept_Range;
+        UWORD   X;
+        UWORD   Y;
+    }                   iept_Range;
     struct {
-	UWORD	X;
-	UWORD	Y;
-    }			iept_Value;
-    WORD		iept_Pressure;
+        UWORD   X;
+        UWORD   Y;
+    }                   iept_Value;
+    WORD                iept_Pressure;
 };
 struct InputEvent {
     struct  InputEvent *ie_NextEvent;
@@ -767,17 +767,17 @@ struct InputEvent {
     UWORD   ie_Code;
     UWORD   ie_Qualifier;
     union {
-	struct {
-	    WORD    ie_x;
-	    WORD    ie_y;
-	} ie_xy;
-	APTR	ie_addr;
-	struct {
-	    UBYTE   ie_prev1DownCode;
-	    UBYTE   ie_prev1DownQual;
-	    UBYTE   ie_prev2DownCode;
-	    UBYTE   ie_prev2DownQual;
-	} ie_dead;
+        struct {
+            WORD    ie_x;
+            WORD    ie_y;
+        } ie_xy;
+        APTR    ie_addr;
+        struct {
+            UBYTE   ie_prev1DownCode;
+            UBYTE   ie_prev1DownQual;
+            UBYTE   ie_prev2DownCode;
+            UBYTE   ie_prev2DownQual;
+        } ie_dead;
     } ie_position;
     struct timeval ie_TimeStamp;
 };
@@ -958,7 +958,7 @@ struct Window
     BYTE *UserData;
     struct Layer *WLayer;
     struct TextFont *IFont;
-    ULONG	MoreFlags;
+    ULONG       MoreFlags;
 };
 struct NewWindow
 {
@@ -991,21 +991,21 @@ struct ExtNewWindow
     WORD MinWidth, MinHeight;
     UWORD MaxWidth, MaxHeight;
     UWORD Type;
-    struct TagItem	*Extension;
+    struct TagItem      *Extension;
 };
 struct DrawInfo
 {
-    UWORD	dri_Version;
-    UWORD	dri_NumPens;
-    UWORD	*dri_Pens;
-    struct TextFont	*dri_Font;
-    UWORD	dri_Depth;
+    UWORD       dri_Version;
+    UWORD       dri_NumPens;
+    UWORD       *dri_Pens;
+    struct TextFont     *dri_Font;
+    UWORD       dri_Depth;
     struct {
-	UWORD	X;
-	UWORD	Y;
-    }		dri_Resolution;
-    ULONG	dri_Flags;
-    ULONG	dri_Reserved[7];
+        UWORD   X;
+        UWORD   Y;
+    }           dri_Resolution;
+    ULONG       dri_Flags;
+    ULONG       dri_Reserved[7];
 };
 struct Screen
 {
@@ -1052,16 +1052,16 @@ struct ExtNewScreen
     UBYTE *DefaultTitle;
     struct Gadget *Gadgets;
     struct BitMap *CustomBitMap;
-    struct TagItem	*Extension;
+    struct TagItem      *Extension;
 };
-struct PubScreenNode	{
-    struct Node		psn_Node;
-    struct Screen	*psn_Screen;
-    UWORD		psn_Flags;
-    WORD		psn_Size;
-    WORD		psn_VisitorCount;
-    struct Task		*psn_SigTask;
-    UBYTE		psn_SigBit;
+struct PubScreenNode    {
+    struct Node         psn_Node;
+    struct Screen       *psn_Screen;
+    UWORD               psn_Flags;
+    WORD                psn_Size;
+    WORD                psn_VisitorCount;
+    struct Task         *psn_SigTask;
+    UBYTE               psn_SigBit;
 };
 struct Preferences
 {
@@ -1124,17 +1124,17 @@ struct Remember
     UBYTE *Memory;
 };
 struct ColorSpec {
-    WORD	ColorIndex;
-    UWORD	Red;
-    UWORD	Green;
-    UWORD	Blue;
+    WORD        ColorIndex;
+    UWORD       Red;
+    UWORD       Green;
+    UWORD       Blue;
 };
 struct EasyStruct {
-    ULONG	es_StructSize;
-    ULONG	es_Flags;
-    UBYTE	*es_Title;
-    UBYTE	*es_TextFormat;
-    UBYTE	*es_GadgetFormat;
+    ULONG       es_StructSize;
+    ULONG       es_Flags;
+    UBYTE       *es_Title;
+    UBYTE       *es_TextFormat;
+    UBYTE       *es_GadgetFormat;
 };
 struct IntuitionBase
 {
@@ -1144,38 +1144,38 @@ struct IntuitionBase
     struct Screen *ActiveScreen;
     struct Screen *FirstScreen;
     ULONG Flags;
-    WORD	MouseY, MouseX;
+    WORD        MouseY, MouseX;
     ULONG Seconds;
     ULONG Micros;
 };
 struct gpHitTest {
-    ULONG		MethodID;
-    struct GadgetInfo	*gpht_GInfo;
+    ULONG               MethodID;
+    struct GadgetInfo   *gpht_GInfo;
     struct {
-	WORD	X;
-	WORD	Y;
-    }			gpht_Mouse;
+        WORD    X;
+        WORD    Y;
+    }                   gpht_Mouse;
 };
 struct gpRender {
-    ULONG		MethodID;
-    struct GadgetInfo	*gpr_GInfo;
-    struct RastPort	*gpr_RPort;
-    LONG		gpr_Redraw;
+    ULONG               MethodID;
+    struct GadgetInfo   *gpr_GInfo;
+    struct RastPort     *gpr_RPort;
+    LONG                gpr_Redraw;
 };
 struct gpInput {
-    ULONG		MethodID;
-    struct GadgetInfo	*gpi_GInfo;
-    struct InputEvent	*gpi_IEvent;
-    LONG		*gpi_Termination;
+    ULONG               MethodID;
+    struct GadgetInfo   *gpi_GInfo;
+    struct InputEvent   *gpi_IEvent;
+    LONG                *gpi_Termination;
     struct {
-	WORD	X;
-	WORD	Y;
-    }			gpi_Mouse;
+        WORD    X;
+        WORD    Y;
+    }                   gpi_Mouse;
 };
 struct gpGoInactive {
-    ULONG		MethodID;
-    struct GadgetInfo	*gpgi_GInfo;
-    ULONG		gpgi_Abort;
+    ULONG               MethodID;
+    struct GadgetInfo   *gpgi_GInfo;
+    ULONG               gpgi_Abort;
 };
 struct NewGadget
     {
@@ -1220,107 +1220,107 @@ struct GfxBase
     UBYTE   bytereserved;
     UWORD   Flags;
     WORD   BlitLock;
-	WORD	BlitNest;
-	struct	List	BlitWaitQ;
-	struct	Task	*BlitOwner;
-	struct	List	TOF_WaitQ;
-	UWORD	DisplayFlags;
-	struct SimpleSprite **SimpleSprites;
-	UWORD	MaxDisplayRow;
-	UWORD	MaxDisplayColumn;
-	UWORD	NormalDisplayRows;
-	UWORD	NormalDisplayColumns;
-	UWORD	NormalDPMX;
-	UWORD	NormalDPMY;
-	struct	SignalSemaphore *LastChanceMemory;
-	UWORD	*LCMptr;
-	UWORD	MicrosPerLine;
-	UWORD	MinDisplayColumn;
-	UBYTE	ChipRevBits0;
-	UBYTE	crb_reserved[5];
-	UWORD	monitor_id;
-	ULONG	hedley[8];
-	ULONG	hedley_sprites[8] ;
-	ULONG	hedley_sprites1[8] ;
-	WORD	hedley_count;
-	UWORD	hedley_flags;
-	WORD	hedley_tmp;
-	LONG	*hash_table;
-	UWORD	current_tot_rows;
-	UWORD	current_tot_cclks;
-	UBYTE	hedley_hint;
-	UBYTE	hedley_hint2;
-	ULONG	nreserved[4];
-	LONG	*a2024_sync_raster;
-	WORD   control_delta_pal;
-	WORD   control_delta_ntsc;
-	struct	MonitorSpec *current_monitor;
-	struct	List MonitorList;
-	struct	MonitorSpec *default_monitor;
-	struct	SignalSemaphore *MonitorListSemaphore;
-	void	*DisplayInfoDataBase;
-	struct	SignalSemaphore *ActiViewCprSemaphore;
-	ULONG	*UtilityBase;
-	ULONG	*ExecBase;
-	};
+        WORD    BlitNest;
+        struct  List    BlitWaitQ;
+        struct  Task    *BlitOwner;
+        struct  List    TOF_WaitQ;
+        UWORD   DisplayFlags;
+        struct SimpleSprite **SimpleSprites;
+        UWORD   MaxDisplayRow;
+        UWORD   MaxDisplayColumn;
+        UWORD   NormalDisplayRows;
+        UWORD   NormalDisplayColumns;
+        UWORD   NormalDPMX;
+        UWORD   NormalDPMY;
+        struct  SignalSemaphore *LastChanceMemory;
+        UWORD   *LCMptr;
+        UWORD   MicrosPerLine;
+        UWORD   MinDisplayColumn;
+        UBYTE   ChipRevBits0;
+        UBYTE   crb_reserved[5];
+        UWORD   monitor_id;
+        ULONG   hedley[8];
+        ULONG   hedley_sprites[8] ;
+        ULONG   hedley_sprites1[8] ;
+        WORD    hedley_count;
+        UWORD   hedley_flags;
+        WORD    hedley_tmp;
+        LONG    *hash_table;
+        UWORD   current_tot_rows;
+        UWORD   current_tot_cclks;
+        UBYTE   hedley_hint;
+        UBYTE   hedley_hint2;
+        ULONG   nreserved[4];
+        LONG    *a2024_sync_raster;
+        WORD   control_delta_pal;
+        WORD   control_delta_ntsc;
+        struct  MonitorSpec *current_monitor;
+        struct  List MonitorList;
+        struct  MonitorSpec *default_monitor;
+        struct  SignalSemaphore *MonitorListSemaphore;
+        void    *DisplayInfoDataBase;
+        struct  SignalSemaphore *ActiViewCprSemaphore;
+        ULONG   *UtilityBase;
+        ULONG   *ExecBase;
+        };
 typedef APTR DisplayInfoHandle;
 struct QueryHeader
 {
-	ULONG	StructID;
-	ULONG	DisplayID;
-	ULONG	SkipID;
-	ULONG	Length;
+        ULONG   StructID;
+        ULONG   DisplayID;
+        ULONG   SkipID;
+        ULONG   Length;
 };
 struct DisplayInfo
 {
-	struct	QueryHeader Header;
-	UWORD	NotAvailable;
-	ULONG	PropertyFlags;
-	Point	Resolution;
-	UWORD	PixelSpeed;
-	UWORD	NumStdSprites;
-	UWORD	PaletteRange;
-	Point	SpriteResolution;
-	UBYTE	pad[4];
-	ULONG	reserved[2];
+        struct  QueryHeader Header;
+        UWORD   NotAvailable;
+        ULONG   PropertyFlags;
+        Point   Resolution;
+        UWORD   PixelSpeed;
+        UWORD   NumStdSprites;
+        UWORD   PaletteRange;
+        Point   SpriteResolution;
+        UBYTE   pad[4];
+        ULONG   reserved[2];
 };
 struct DimensionInfo
 {
-	struct	QueryHeader Header;
-	UWORD	MaxDepth;
-	UWORD	MinRasterWidth;
-	UWORD	MinRasterHeight;
-	UWORD	MaxRasterWidth;
-	UWORD	MaxRasterHeight;
-	struct	Rectangle   Nominal;
-	struct	Rectangle   MaxOScan;
-	struct	Rectangle VideoOScan;
-	struct	Rectangle   TxtOScan;
-	struct	Rectangle   StdOScan;
-	UBYTE	pad[14];
-	ULONG	reserved[2];
+        struct  QueryHeader Header;
+        UWORD   MaxDepth;
+        UWORD   MinRasterWidth;
+        UWORD   MinRasterHeight;
+        UWORD   MaxRasterWidth;
+        UWORD   MaxRasterHeight;
+        struct  Rectangle   Nominal;
+        struct  Rectangle   MaxOScan;
+        struct  Rectangle VideoOScan;
+        struct  Rectangle   TxtOScan;
+        struct  Rectangle   StdOScan;
+        UBYTE   pad[14];
+        ULONG   reserved[2];
 };
 struct MonitorInfo
 {
-	struct	QueryHeader Header;
-	struct	MonitorSpec  *Mspc;
-	Point	ViewPosition;
-	Point	ViewResolution;
-	struct	Rectangle ViewPositionRange;
-	UWORD	TotalRows;
-	UWORD	TotalColorClocks;
-	UWORD	MinRow;
-	WORD	Compatibility;
-	UBYTE	pad[36];
-	ULONG	reserved[2];
+        struct  QueryHeader Header;
+        struct  MonitorSpec  *Mspc;
+        Point   ViewPosition;
+        Point   ViewResolution;
+        struct  Rectangle ViewPositionRange;
+        UWORD   TotalRows;
+        UWORD   TotalColorClocks;
+        UWORD   MinRow;
+        WORD    Compatibility;
+        UBYTE   pad[36];
+        ULONG   reserved[2];
 };
 struct NameInfo
 {
-	struct	QueryHeader Header;
-	UBYTE	Name[32];
-	ULONG	reserved[2];
+        struct  QueryHeader Header;
+        UBYTE   Name[32];
+        ULONG   reserved[2];
 };
-struct	 KeyMap {
+struct   KeyMap {
     UBYTE   *km_LoKeyMapTypes;
     ULONG   *km_LoKeyMap;
     UBYTE   *km_LoCapsable;
@@ -1330,15 +1330,15 @@ struct	 KeyMap {
     UBYTE   *km_HiCapsable;
     UBYTE   *km_HiRepeatable;
 };
-struct	KeyMapNode {
+struct  KeyMapNode {
     struct Node kn_Node;
     struct KeyMap kn_KeyMap;
 };
-struct	KeyMapResource {
+struct  KeyMapResource {
     struct Node kr_Node;
     struct List kr_List;
 };
-struct	ConUnit {
+struct  ConUnit {
     struct  MsgPort cu_MP;
     struct  Window *cu_Window;
     WORD    cu_XCP;
@@ -1376,11 +1376,11 @@ struct	ConUnit {
     UBYTE   cu_RawEvents[(0x15+8)/8];
 };
  struct  IOTArray {
-	ULONG TermArray0;
-	ULONG TermArray1;
+        ULONG TermArray0;
+        ULONG TermArray1;
 };
  struct  IOExtSer {
-	struct	 IOStdReq IOSer;
+        struct   IOStdReq IOSer;
    ULONG   io_CtlChar;
    ULONG   io_RBufLen;
    ULONG   io_ExtFlags;
@@ -1394,34 +1394,34 @@ struct	ConUnit {
    UWORD   io_Status;
 };
 struct DateStamp {
-   LONG	 ds_Days;
-   LONG	 ds_Minute;
-   LONG	 ds_Tick;
+   LONG  ds_Days;
+   LONG  ds_Minute;
+   LONG  ds_Tick;
 };
 struct FileInfoBlock {
-   LONG	  fib_DiskKey;
-   LONG	  fib_DirEntryType;
-   char	  fib_FileName[108];
-   LONG	  fib_Protection;
-   LONG	  fib_EntryType;
-   LONG	  fib_Size;
-   LONG	  fib_NumBlocks;
+   LONG   fib_DiskKey;
+   LONG   fib_DirEntryType;
+   char   fib_FileName[108];
+   LONG   fib_Protection;
+   LONG   fib_EntryType;
+   LONG   fib_Size;
+   LONG   fib_NumBlocks;
    struct DateStamp fib_Date;
-   char	  fib_Comment[80];
-   char	  fib_Reserved[36];
+   char   fib_Comment[80];
+   char   fib_Reserved[36];
 };
 typedef long  BPTR;
 typedef long  BSTR;
 struct InfoData {
-   LONG	  id_NumSoftErrors;
-   LONG	  id_UnitNumber;
-   LONG	  id_DiskState;
-   LONG	  id_NumBlocks;
-   LONG	  id_NumBlocksUsed;
-   LONG	  id_BytesPerBlock;
-   LONG	  id_DiskType;
-   BPTR	  id_VolumeNode;
-   LONG	  id_InUse;
+   LONG   id_NumSoftErrors;
+   LONG   id_UnitNumber;
+   LONG   id_DiskState;
+   LONG   id_NumBlocks;
+   LONG   id_NumBlocksUsed;
+   LONG   id_BytesPerBlock;
+   LONG   id_DiskType;
+   BPTR   id_VolumeNode;
+   LONG   id_InUse;
 };
 struct Process {
     struct  Task    pr_Task;
@@ -1483,8 +1483,8 @@ struct StandardPacket {
    struct DosPacket sp_Pkt;
 };
 struct ErrorString {
-	LONG  *estr_Nums;
-	UBYTE *estr_Strings;
+        LONG  *estr_Nums;
+        UBYTE *estr_Strings;
 };
 struct DosLibrary {
     struct Library dl_lib;
@@ -1510,9 +1510,9 @@ struct RootNode {
     LONG    rn_Flags;
 };
 struct CliProcList {
-	struct MinNode cpl_Node;
-	LONG cpl_First;
-	struct MsgPort **cpl_Array;
+        struct MinNode cpl_Node;
+        LONG cpl_First;
+        struct MsgPort **cpl_Array;
 };
 struct DosInfo {
     BPTR    di_McName;
@@ -1525,10 +1525,10 @@ struct DosInfo {
     struct  SignalSemaphore di_DeleteLock;
 };
 struct Segment {
-	BPTR seg_Next;
-	LONG seg_UC;
-	BPTR seg_Seg;
-	UBYTE seg_Name[4];
+        BPTR seg_Next;
+        LONG seg_UC;
+        BPTR seg_Seg;
+        UBYTE seg_Name[4];
 };
 struct CommandLineInterface {
     LONG   cli_Result2;
@@ -1549,17 +1549,17 @@ struct CommandLineInterface {
     BPTR   cli_Module;
 };
 struct DeviceList {
-    BPTR		dl_Next;
-    LONG		dl_Type;
-    struct MsgPort *	dl_Task;
-    BPTR		dl_Lock;
-    struct DateStamp	dl_VolumeDate;
-    BPTR		dl_LockList;
-    LONG		dl_DiskType;
-    LONG		dl_unused;
-    BSTR		dl_Name;
+    BPTR                dl_Next;
+    LONG                dl_Type;
+    struct MsgPort *    dl_Task;
+    BPTR                dl_Lock;
+    struct DateStamp    dl_VolumeDate;
+    BPTR                dl_LockList;
+    LONG                dl_DiskType;
+    LONG                dl_unused;
+    BSTR                dl_Name;
 };
-struct	      DevInfo {
+struct        DevInfo {
     BPTR  dvi_Next;
     LONG  dvi_Type;
     APTR  dvi_Task;
@@ -1573,47 +1573,47 @@ struct	      DevInfo {
     BSTR  dvi_Name;
 };
 struct DosList {
-    BPTR		dol_Next;
-    LONG		dol_Type;
+    BPTR                dol_Next;
+    LONG                dol_Type;
     struct MsgPort     *dol_Task;
-    BPTR		dol_Lock;
+    BPTR                dol_Lock;
     union {
-	struct {
-	BSTR	dol_Handler;
-	LONG	dol_StackSize;
-	LONG	dol_Priority;
-	ULONG	dol_Startup;
-	BPTR	dol_SegList;
-	BPTR	dol_GlobVec;
-	} dol_handler;
-	struct {
-	struct DateStamp	dol_VolumeDate;
-	BPTR			dol_LockList;
-	LONG			dol_DiskType;
-	} dol_volume;
-	struct {
-	UBYTE	*dol_AssignName;
-	struct AssignList *dol_List;
-	} dol_assign;
+        struct {
+        BSTR    dol_Handler;
+        LONG    dol_StackSize;
+        LONG    dol_Priority;
+        ULONG   dol_Startup;
+        BPTR    dol_SegList;
+        BPTR    dol_GlobVec;
+        } dol_handler;
+        struct {
+        struct DateStamp        dol_VolumeDate;
+        BPTR                    dol_LockList;
+        LONG                    dol_DiskType;
+        } dol_volume;
+        struct {
+        UBYTE   *dol_AssignName;
+        struct AssignList *dol_List;
+        } dol_assign;
     } dol_misc;
-    BSTR		dol_Name;
+    BSTR                dol_Name;
     };
 struct AssignList {
-	struct AssignList *al_Next;
-	BPTR		   al_Lock;
+        struct AssignList *al_Next;
+        BPTR               al_Lock;
 };
 struct DevProc {
-	struct MsgPort *dvp_Port;
-	BPTR		dvp_Lock;
-	ULONG		dvp_Flags;
-	struct DosList *dvp_DevNode;
+        struct MsgPort *dvp_Port;
+        BPTR            dvp_Lock;
+        ULONG           dvp_Flags;
+        struct DosList *dvp_DevNode;
 };
 struct FileLock {
-    BPTR		fl_Link;
-    LONG		fl_Key;
-    LONG		fl_Access;
-    struct MsgPort *	fl_Task;
-    BPTR		fl_Volume;
+    BPTR                fl_Link;
+    LONG                fl_Key;
+    LONG                fl_Access;
+    struct MsgPort *    fl_Task;
+    BPTR                fl_Volume;
 };
 struct DosEnvec {
     ULONG de_TableSize;
@@ -1638,52 +1638,52 @@ struct DosEnvec {
     ULONG de_BootBlocks;
 };
 struct FileSysStartupMsg {
-    ULONG	fssm_Unit;
-    BSTR	fssm_Device;
-    BPTR	fssm_Environ;
-    ULONG	fssm_Flags;
+    ULONG       fssm_Unit;
+    BSTR        fssm_Device;
+    BPTR        fssm_Environ;
+    ULONG       fssm_Flags;
 };
 struct DeviceNode {
-    BPTR	dn_Next;
-    ULONG	dn_Type;
+    BPTR        dn_Next;
+    ULONG       dn_Type;
     struct MsgPort *dn_Task;
-    BPTR	dn_Lock;
-    BSTR	dn_Handler;
-    ULONG	dn_StackSize;
-    LONG	dn_Priority;
-    BPTR	dn_Startup;
-    BPTR	dn_SegList;
-    BPTR	dn_GlobalVec;
-    BSTR	dn_Name;
+    BPTR        dn_Lock;
+    BSTR        dn_Handler;
+    ULONG       dn_StackSize;
+    LONG        dn_Priority;
+    BPTR        dn_Startup;
+    BPTR        dn_SegList;
+    BPTR        dn_GlobalVec;
+    BSTR        dn_Name;
 };
 struct OldDrawerData {
-    struct NewWindow	dd_NewWindow;
-    LONG		dd_CurrentX;
-    LONG		dd_CurrentY;
+    struct NewWindow    dd_NewWindow;
+    LONG                dd_CurrentX;
+    LONG                dd_CurrentY;
 };
 struct DrawerData {
-    struct NewWindow	dd_NewWindow;
-    LONG		dd_CurrentX;
-    LONG		dd_CurrentY;
-    ULONG		dd_Flags;
-    UWORD		dd_ViewModes;
+    struct NewWindow    dd_NewWindow;
+    LONG                dd_CurrentX;
+    LONG                dd_CurrentY;
+    ULONG               dd_Flags;
+    UWORD               dd_ViewModes;
 };
 struct DiskObject {
-    UWORD		do_Magic;
-    UWORD		do_Version;
-    struct Gadget	do_Gadget;
-    UBYTE		do_Type;
-    char *		do_DefaultTool;
-    char **		do_ToolTypes;
-    LONG		do_CurrentX;
-    LONG		do_CurrentY;
-    struct DrawerData *	do_DrawerData;
-    char *		do_ToolWindow;
-    LONG		do_StackSize;
+    UWORD               do_Magic;
+    UWORD               do_Version;
+    struct Gadget       do_Gadget;
+    UBYTE               do_Type;
+    char *              do_DefaultTool;
+    char **             do_ToolTypes;
+    LONG                do_CurrentX;
+    LONG                do_CurrentY;
+    struct DrawerData * do_DrawerData;
+    char *              do_ToolWindow;
+    LONG                do_StackSize;
 };
 struct FreeList {
-    WORD		fl_NumFree;
-    struct List		fl_MemList;
+    WORD                fl_NumFree;
+    struct List         fl_MemList;
 };
 struct AppMessage {
     struct Message am_Message;
@@ -1700,9 +1700,9 @@ struct AppMessage {
     ULONG am_Micros;
     ULONG am_Reserved[8];
 };
-struct	AppWindow	{ void *aw_PRIVATE;  };
-struct	AppIcon		{ void *ai_PRIVATE;  };
-struct		AppMenuItem	{ void *ami_PRIVATE; };
+struct  AppWindow       { void *aw_PRIVATE;  };
+struct  AppIcon         { void *ai_PRIVATE;  };
+struct          AppMenuItem     { void *ami_PRIVATE; };
 typedef int ptrdiff_t;
 typedef unsigned int size_t;
 typedef char wchar_t;
@@ -1754,7 +1754,7 @@ extern void sleep(int);
 extern int _SystemBoolTag;
 extern int _SystemBoolTagValue;
 typedef void *va_list;
-typedef long	fpos_t;
+typedef long    fpos_t;
 typedef struct FILE {
     struct FILE *sd_Next;
     struct FILE **sd_Prev;
@@ -1919,10 +1919,10 @@ ULONG Supervisor( unsigned long (*userFunction)() );
 void InitCode( unsigned long startClass, unsigned long version );
 void InitStruct( APTR initTable, APTR memory, unsigned long size );
 struct Library *MakeLibrary( APTR funcInit, APTR structInit,
-	unsigned long (*libInit)(), unsigned long dataSize,
-	unsigned long segList );
+        unsigned long (*libInit)(), unsigned long dataSize,
+        unsigned long segList );
 void MakeFunctions( APTR target, APTR functionArray,
-	unsigned long funcDispBase );
+        unsigned long funcDispBase );
 struct Resident *FindResident( UBYTE *name );
 void InitResident( struct Resident *resident, unsigned long segList );
 void Alert( unsigned long alertNum );
@@ -1940,7 +1940,7 @@ void RemIntServer( long intNumber, struct Interrupt *interrupt );
 void Cause( struct Interrupt *interrupt );
 APTR Allocate( struct MemHeader *freeList, unsigned long byteSize );
 void Deallocate( struct MemHeader *freeList, APTR memoryBlock,
-	unsigned long byteSize );
+        unsigned long byteSize );
 APTR AllocMem( unsigned long byteSize, unsigned long requirements );
 APTR AllocAbs( unsigned long byteSize, APTR location );
 void FreeMem( APTR memoryBlock, unsigned long byteSize );
@@ -1979,12 +1979,12 @@ void RemLibrary( struct Library *library );
 struct Library *OldOpenLibrary( UBYTE *libName );
 void CloseLibrary( struct Library *library );
 APTR SetFunction( struct Library *library, long funcOffset,
-	unsigned long (*newFunction)() );
+        unsigned long (*newFunction)() );
 void SumLibrary( struct Library *library );
 void AddDevice( struct Device *device );
 void RemDevice( struct Device *device );
 BYTE OpenDevice( UBYTE *devName, unsigned long unit,
-	struct IORequest *ioRequest, unsigned long flags );
+        struct IORequest *ioRequest, unsigned long flags );
 void CloseDevice( struct IORequest *ioRequest );
 BYTE DoIO( struct IORequest *ioRequest );
 void SendIO( struct IORequest *ioRequest );
@@ -1995,7 +1995,7 @@ void AddResource( APTR resource );
 void RemResource( APTR resource );
 APTR OpenResource( UBYTE *resName );
 void RawDoFmt( UBYTE *formatString, APTR dataStream, void (*putChProc)(),
-	APTR putChData );
+        APTR putChData );
 ULONG GetCC( void );
 ULONG TypeOfMem( APTR address );
 ULONG Procure( struct Semaphore *semaport, struct Message *bidMsg );
@@ -2012,7 +2012,7 @@ void AddSemaphore( struct SignalSemaphore *sigSem );
 void RemSemaphore( struct SignalSemaphore *sigSem );
 ULONG SumKickData( void );
 ULONG AddMemList( unsigned long size, unsigned long attributes,
-	unsigned long pri, APTR base, UBYTE *name );
+        unsigned long pri, APTR base, UBYTE *name );
 void CopyMem( APTR source, APTR dest, unsigned long size );
 void CopyMemQuick( APTR source, APTR dest, unsigned long size );
 void CacheClearU( void );
@@ -2026,7 +2026,7 @@ void ObtainSemaphoreShared( struct SignalSemaphore *sigSem );
 APTR AllocVec( unsigned long byteSize, unsigned long requirements );
 void FreeVec( APTR memoryBlock );
 APTR CreatePrivatePool( unsigned long requirements, unsigned long puddleSize,
-	unsigned long puddleThresh );
+        unsigned long puddleThresh );
 void DeletePrivatePool( APTR poolHeader );
 APTR AllocPooled( unsigned long memSize, APTR poolHeader );
 void FreePooled( APTR memory, APTR poolHeader );
@@ -2037,48 +2037,48 @@ void ChildOrphan( APTR tid );
 void ChildStatus( APTR tid );
 void ChildWait( APTR tid );
 struct RecordLock {
-	BPTR	rec_FH;
-	ULONG	rec_Offset;
-	ULONG	rec_Length;
-	ULONG	rec_Mode;
+        BPTR    rec_FH;
+        ULONG   rec_Offset;
+        ULONG   rec_Length;
+        ULONG   rec_Mode;
 };
 struct CSource {
-	UBYTE	*CS_Buffer;
-	LONG	CS_Length;
-	LONG	CS_CurChr;
+        UBYTE   *CS_Buffer;
+        LONG    CS_Length;
+        LONG    CS_CurChr;
 };
 struct RDArgs {
-	struct	CSource RDA_Source;
-	LONG	RDA_DAList;
-	UBYTE	*RDA_Buffer;
-	LONG	RDA_BufSiz;
-	UBYTE	*RDA_ExtHelp;
-	LONG	RDA_Flags;
+        struct  CSource RDA_Source;
+        LONG    RDA_DAList;
+        UBYTE   *RDA_Buffer;
+        LONG    RDA_BufSiz;
+        UBYTE   *RDA_ExtHelp;
+        LONG    RDA_Flags;
 };
 struct AnchorPath {
-	struct AChain	*ap_Base;
-	struct AChain	*ap_Last;
-	LONG	ap_BreakBits;
-	LONG	ap_FoundBreak;
-	BYTE	ap_Flags;
-	BYTE	ap_Reserved;
-	WORD	ap_Strlen;
-	struct	FileInfoBlock ap_Info;
-	UBYTE	ap_Buf[1];
+        struct AChain   *ap_Base;
+        struct AChain   *ap_Last;
+        LONG    ap_BreakBits;
+        LONG    ap_FoundBreak;
+        BYTE    ap_Flags;
+        BYTE    ap_Reserved;
+        WORD    ap_Strlen;
+        struct  FileInfoBlock ap_Info;
+        UBYTE   ap_Buf[1];
 };
 struct AChain {
-	struct AChain *an_Child;
-	struct AChain *an_Parent;
-	BPTR	an_Lock;
-	struct FileInfoBlock an_Info;
-	BYTE	an_Flags;
-	UBYTE	an_String[1];
+        struct AChain *an_Child;
+        struct AChain *an_Parent;
+        BPTR    an_Lock;
+        struct FileInfoBlock an_Info;
+        BYTE    an_Flags;
+        UBYTE   an_String[1];
 };
 struct LocalVar {
-	struct Node lv_Node;
-	UWORD	lv_Flags;
-	UBYTE	*lv_Value;
-	ULONG	lv_Len;
+        struct Node lv_Node;
+        UWORD   lv_Flags;
+        UBYTE   *lv_Value;
+        ULONG   lv_Len;
 };
 struct NotifyMessage {
     struct Message nm_ExecMessage;
@@ -2089,31 +2089,31 @@ struct NotifyMessage {
     ULONG  nm_DoNotTouch2;
 };
 struct NotifyRequest {
-	UBYTE *nr_Name;
-	UBYTE *nr_FullName;
-	ULONG nr_UserData;
-	ULONG nr_Flags;
-	union {
-	    struct {
-		struct MsgPort *nr_Port;
-	    } nr_Msg;
-	    struct {
-		struct Task *nr_Task;
-		UBYTE nr_SignalNum;
-		UBYTE nr_pad[3];
-	    } nr_Signal;
-	} nr_stuff;
-	ULONG nr_Reserved[4];
-	ULONG nr_MsgCount;
-	struct MsgPort *nr_Handler;
+        UBYTE *nr_Name;
+        UBYTE *nr_FullName;
+        ULONG nr_UserData;
+        ULONG nr_Flags;
+        union {
+            struct {
+                struct MsgPort *nr_Port;
+            } nr_Msg;
+            struct {
+                struct Task *nr_Task;
+                UBYTE nr_SignalNum;
+                UBYTE nr_pad[3];
+            } nr_Signal;
+        } nr_stuff;
+        ULONG nr_Reserved[4];
+        ULONG nr_MsgCount;
+        struct MsgPort *nr_Handler;
 };
 struct DateTime {
-	struct DateStamp dat_Stamp;
-	UBYTE	dat_Format;
-	UBYTE	dat_Flags;
-	UBYTE	*dat_StrDay;
-	UBYTE	*dat_StrDate;
-	UBYTE	*dat_StrTime;
+        struct DateStamp dat_Stamp;
+        UBYTE   dat_Format;
+        UBYTE   dat_Flags;
+        UBYTE   *dat_StrDay;
+        UBYTE   *dat_StrDate;
+        UBYTE   *dat_StrTime;
 };
 BPTR Open( UBYTE *name, long accessMode );
 LONG Close( BPTR file );
@@ -2134,7 +2134,7 @@ BPTR CreateDir( UBYTE *name );
 BPTR CurrentDir( BPTR lock );
 LONG IoErr( void );
 struct MsgPort *CreateProc( UBYTE *name, long pri, BPTR segList,
-	long stackSize );
+        long stackSize );
 void Exit( long returnCode );
 BPTR LoadSeg( UBYTE *name );
 void UnLoadSeg( BPTR seglist );
@@ -2152,21 +2152,21 @@ APTR AllocDosObjectTagList( unsigned long type, struct TagItem *tags );
 APTR AllocDosObjectTags( unsigned long type, unsigned long tag1type, ... );
 void FreeDosObject( unsigned long type, APTR ptr );
 LONG DoPkt( struct MsgPort *port, long action, long arg1, long arg2, long arg3,
-	long arg4, long arg5 );
+        long arg4, long arg5 );
 LONG DoPkt0( struct MsgPort *port, long action );
 LONG DoPkt1( struct MsgPort *port, long action, long arg1 );
 LONG DoPkt2( struct MsgPort *port, long action, long arg1, long arg2 );
 LONG DoPkt3( struct MsgPort *port, long action, long arg1, long arg2,
-	long arg3 );
+        long arg3 );
 LONG DoPkt4( struct MsgPort *port, long action, long arg1, long arg2,
-	long arg3, long arg4 );
+        long arg3, long arg4 );
 void SendPkt( struct DosPacket *dp, struct MsgPort *port,
-	struct MsgPort *replyport );
+        struct MsgPort *replyport );
 struct DosPacket *WaitPkt( void );
 void ReplyPkt( struct DosPacket *dp, long res1, long res2 );
 void AbortPkt( struct MsgPort *port, struct DosPacket *pkt );
 BOOL LockRecord( BPTR fh, unsigned long offset, unsigned long length,
-	unsigned long mode, unsigned long timeout );
+        unsigned long mode, unsigned long timeout );
 BOOL LockRecords( struct RecordLock *recArray, unsigned long timeout );
 BOOL UnLockRecord( BPTR fh, unsigned long offset, unsigned long length );
 BOOL UnLockRecords( struct RecordLock *recArray );
@@ -2176,9 +2176,9 @@ LONG FGetC( BPTR fh );
 void FPutC( BPTR fh, unsigned long ch );
 LONG UnGetC( BPTR fh, long character );
 LONG FRead( BPTR fh, APTR block, unsigned long blocklen,
-	unsigned long number );
+        unsigned long number );
 LONG FWrite( BPTR fh, APTR block, unsigned long blocklen,
-	unsigned long number );
+        unsigned long number );
 UBYTE *FGets( BPTR fh, UBYTE *buf, unsigned long buflen );
 LONG FPuts( BPTR fh, UBYTE *str );
 void VFWritef( BPTR fh, UBYTE *format, LONG *argarray );
@@ -2195,13 +2195,13 @@ LONG SetFileDate( UBYTE *name, struct DateStamp *date );
 LONG NameFromLock( BPTR lock, UBYTE *buffer, long len );
 LONG NameFromFH( BPTR fh, UBYTE *buffer, long len );
 WORD SplitName( UBYTE *name, unsigned long seperator, UBYTE *buf, long oldpos,
-	long size );
+        long size );
 LONG SameLock( BPTR lock1, BPTR lock2 );
 LONG SetMode( BPTR fh, long mode );
 LONG ExAll( BPTR lock, struct ExAllData *buffer, long size, long data,
-	struct ExAllControl *control );
+        struct ExAllControl *control );
 LONG ReadLink( struct MsgPort *port, BPTR lock, UBYTE *path, UBYTE *buffer,
-	unsigned long size );
+        unsigned long size );
 LONG MakeLink( UBYTE *name, long dest, long soft );
 LONG ChangeMode( long type, BPTR fh, long newmode );
 LONG SetFileSize( BPTR fh, long pos, long mode );
@@ -2209,7 +2209,7 @@ LONG SetIoErr( long result );
 BOOL Fault( long code, UBYTE *header, UBYTE *buffer, long len );
 BOOL PrintFault( long code, UBYTE *header );
 LONG ErrorReport( long code, long type, unsigned long arg1,
-	struct MsgPort *device );
+        struct MsgPort *device );
 struct CommandLineInterface *Cli( void );
 struct Process *CreateNewProc( struct TagItem *tags );
 struct Process *CreateNewProcTagList( struct TagItem *tags );
@@ -2247,7 +2247,7 @@ struct DosList *AttemptLockDosList( unsigned long flags );
 BOOL RemDosEntry( struct DosList *dlist );
 struct DosList *AddDosEntry( struct DosList *dlist );
 struct DosList *FindDosEntry( struct DosList *dlist, UBYTE *name,
-	unsigned long flags );
+        unsigned long flags );
 struct DosList *NextDosEntry( struct DosList *dlist, unsigned long flags );
 struct DosList *MakeDosEntry( UBYTE *name, long type );
 void FreeDosEntry( struct DosList *dlist );
@@ -2300,7 +2300,7 @@ BOOL SameDevice( BPTR lock1, BPTR lock2 );
 void OpenIntuition( void );
 void Intuition( struct InputEvent *iEvent );
 UWORD AddGadget( struct Window *window, struct Gadget *gadget,
-	unsigned long position );
+        unsigned long position );
 BOOL ClearDMRequest( struct Window *window );
 void ClearMenuStrip( struct Window *window );
 void ClearPointer( struct Window *window );
@@ -2309,40 +2309,40 @@ void CloseWindow( struct Window *window );
 LONG CloseWorkBench( void );
 void CurrentTime( ULONG *seconds, ULONG *micros );
 BOOL DisplayAlert( unsigned long alertNumber, UBYTE *string,
-	unsigned long height );
+        unsigned long height );
 void DisplayBeep( struct Screen *screen );
 BOOL DoubleClick( unsigned long sSeconds, unsigned long sMicros,
-	unsigned long cSeconds, unsigned long cMicros );
+        unsigned long cSeconds, unsigned long cMicros );
 void DrawBorder( struct RastPort *rp, struct Border *border, long leftOffset,
-	long topOffset );
+        long topOffset );
 void DrawImage( struct RastPort *rp, struct Image *image, long leftOffset,
-	long topOffset );
+        long topOffset );
 void EndRequest( struct Requester *requester, struct Window *window );
 struct Preferences *GetDefPrefs( struct Preferences *preferences, long size );
 struct Preferences *GetPrefs( struct Preferences *preferences, long size );
 void InitRequester( struct Requester *requester );
 struct MenuItem *ItemAddress( struct Menu *menuStrip,
-	unsigned long menuNumber );
+        unsigned long menuNumber );
 BOOL ModifyIDCMP( struct Window *window, unsigned long flags );
 void ModifyProp( struct Gadget *gadget, struct Window *window,
-	struct Requester *requester, unsigned long flags,
-	unsigned long horizPot, unsigned long vertPot,
-	unsigned long horizBody, unsigned long vertBody );
+        struct Requester *requester, unsigned long flags,
+        unsigned long horizPot, unsigned long vertPot,
+        unsigned long horizBody, unsigned long vertBody );
 void MoveScreen( struct Screen *screen, long dx, long dy );
 void MoveWindow( struct Window *window, long dx, long dy );
 void OffGadget( struct Gadget *gadget, struct Window *window,
-	struct Requester *requester );
+        struct Requester *requester );
 void OffMenu( struct Window *window, unsigned long menuNumber );
 void OnGadget( struct Gadget *gadget, struct Window *window,
-	struct Requester *requester );
+        struct Requester *requester );
 void OnMenu( struct Window *window, unsigned long menuNumber );
 struct Screen *OpenScreen( struct NewScreen *newScreen );
 struct Window *OpenWindow( struct NewWindow *newWindow );
 BOOL OpenWorkBench( void );
 void PrintIText( struct RastPort *rp, struct IntuiText *iText, long left,
-	long top );
+        long top );
 void RefreshGadgets( struct Gadget *gadgets, struct Window *window,
-	struct Requester *requester );
+        struct Requester *requester );
 UWORD RemoveGadget( struct Window *window, struct Gadget *gadget );
 void ReportMouse( long flag, struct Window *window );
 void ReportMouse1( struct Window *window, long flag );
@@ -2352,9 +2352,9 @@ void ScreenToFront( struct Screen *screen );
 BOOL SetDMRequest( struct Window *window, struct Requester *requester );
 BOOL SetMenuStrip( struct Window *window, struct Menu *menu );
 void SetPointer( struct Window *window, UWORD *pointer, long height,
-	long width, long xOffset, long yOffset );
+        long width, long xOffset, long yOffset );
 void SetWindowTitles( struct Window *window, UBYTE *windowTitle,
-	UBYTE *screenTitle );
+        UBYTE *screenTitle );
 void ShowTitle( struct Screen *screen, long showIt );
 void SizeWindow( struct Window *window, long dx, long dy );
 struct View *ViewAddress( void );
@@ -2362,53 +2362,53 @@ struct ViewPort *ViewPortAddress( struct Window *window );
 void WindowToBack( struct Window *window );
 void WindowToFront( struct Window *window );
 BOOL WindowLimits( struct Window *window, long widthMin, long heightMin,
-	unsigned long widthMax, unsigned long heightMax );
+        unsigned long widthMax, unsigned long heightMax );
 struct Preferences *SetPrefs( struct Preferences *preferences, long size,
-	long inform );
+        long inform );
 LONG IntuiTextLength( struct IntuiText *iText );
 BOOL WBenchToBack( void );
 BOOL WBenchToFront( void );
 BOOL AutoRequest( struct Window *window, struct IntuiText *body,
-	struct IntuiText *posText, struct IntuiText *negText,
-	unsigned long pFlag, unsigned long nFlag, unsigned long width,
-	unsigned long height );
+        struct IntuiText *posText, struct IntuiText *negText,
+        unsigned long pFlag, unsigned long nFlag, unsigned long width,
+        unsigned long height );
 void BeginRefresh( struct Window *window );
 struct Window *BuildSysRequest( struct Window *window, struct IntuiText *body,
-	struct IntuiText *posText, struct IntuiText *negText,
-	unsigned long flags, unsigned long width, unsigned long height );
+        struct IntuiText *posText, struct IntuiText *negText,
+        unsigned long flags, unsigned long width, unsigned long height );
 void EndRefresh( struct Window *window, long complete );
 void FreeSysRequest( struct Window *window );
 void MakeScreen( struct Screen *screen );
 void RemakeDisplay( void );
 void RethinkDisplay( void );
 APTR AllocRemember( struct Remember **rememberKey, unsigned long size,
-	unsigned long flags );
+        unsigned long flags );
 void AlohaWorkbench( long wbport );
 void FreeRemember( struct Remember **rememberKey, long reallyForget );
 ULONG LockIBase( unsigned long dontknow );
 void UnlockIBase( unsigned long ibLock );
 LONG GetScreenData( APTR buffer, unsigned long size, unsigned long type,
-	struct Screen *screen );
+        struct Screen *screen );
 void RefreshGList( struct Gadget *gadgets, struct Window *window,
-	struct Requester *requester, long numGad );
+        struct Requester *requester, long numGad );
 UWORD AddGList( struct Window *window, struct Gadget *gadget,
-	unsigned long position, long numGad, struct Requester *requester );
+        unsigned long position, long numGad, struct Requester *requester );
 UWORD RemoveGList( struct Window *remPtr, struct Gadget *gadget,
-	long numGad );
+        long numGad );
 LONG ActivateWindow( struct Window *window );
 void RefreshWindowFrame( struct Window *window );
 BOOL ActivateGadget( struct Gadget *gadgets, struct Window *window,
-	struct Requester *requester );
+        struct Requester *requester );
 void NewModifyProp( struct Gadget *gadget, struct Window *window,
-	struct Requester *requester, unsigned long flags,
-	unsigned long horizPot, unsigned long vertPot,
-	unsigned long horizBody, unsigned long vertBody, long numGad );
+        struct Requester *requester, unsigned long flags,
+        unsigned long horizPot, unsigned long vertPot,
+        unsigned long horizBody, unsigned long vertBody, long numGad );
 LONG QueryOverscan( unsigned long displayID, struct Rectangle *rect,
-	long oScanType );
+        long oScanType );
 void MoveWindowInFrontOf( struct Window *window,
-	struct Window *behindWindow );
+        struct Window *behindWindow );
 void ChangeWindowBox( struct Window *window, long left, long top, long width,
-	long height );
+        long height );
 struct Hook *SetEditHook( struct Hook *hook );
 LONG SetMouseQueue( struct Window *window, unsigned long queueLength );
 void ZipWindow( struct Window *window );
@@ -2423,46 +2423,46 @@ UWORD PubScreenStatus( struct Screen *screen, unsigned long statusFlags );
 struct RastPort *ObtainGIRPort( struct GadgetInfo *gInfo );
 void ReleaseGIRPort( struct RastPort *rp );
 void GadgetMouse( struct Gadget *gadget, struct GadgetInfo *gInfo,
-	WORD *mousePoint );
+        WORD *mousePoint );
 void GetDefaultPubScreen( UBYTE *nameBuffer );
 LONG EasyRequestArgs( struct Window *window, struct EasyStruct *easyStruct,
-	ULONG *idcmpPtr, APTR args );
+        ULONG *idcmpPtr, APTR args );
 LONG EasyRequest( struct Window *window, struct EasyStruct *easyStruct,
-	ULONG *idcmpPtr, APTR arg1, ... );
+        ULONG *idcmpPtr, APTR arg1, ... );
 struct Window *BuildEasyRequestArgs( struct Window *window,
-	struct EasyStruct *easyStruct, unsigned long idcmp, APTR args );
+        struct EasyStruct *easyStruct, unsigned long idcmp, APTR args );
 struct Window *BuildEasyRequest( struct Window *window,
-	struct EasyStruct *easyStruct, unsigned long idcmp, APTR arg1, ... );
+        struct EasyStruct *easyStruct, unsigned long idcmp, APTR arg1, ... );
 LONG SysReqHandler( struct Window *window, ULONG *idcmpPtr, long waitInput );
 struct Window *OpenWindowTagList( struct NewWindow *newWindow,
-	struct TagItem *tagList );
+        struct TagItem *tagList );
 struct Window *OpenWindowTags( struct NewWindow *newWindow,
-	unsigned long tag1Type, ... );
+        unsigned long tag1Type, ... );
 struct Screen *OpenScreenTagList( struct NewScreen *newScreen,
-	struct TagItem *tagList );
+        struct TagItem *tagList );
 struct Screen *OpenScreenTags( struct NewScreen *newScreen,
-	unsigned long tag1Type, ... );
+        unsigned long tag1Type, ... );
 void DrawImageState( struct RastPort *rp, struct Image *image, long leftOffset,
-	long topOffset, unsigned long state, struct DrawInfo *drawInfo );
+        long topOffset, unsigned long state, struct DrawInfo *drawInfo );
 BOOL PointInImage( unsigned long point, struct Image *image );
 void EraseImage( struct RastPort *rp, struct Image *image, long leftOffset,
-	long topOffset );
+        long topOffset );
 APTR NewObjectA( struct IClass *class, UBYTE *classID,
-	struct TagItem *tagList );
+        struct TagItem *tagList );
 APTR NewObject( struct IClass *class, UBYTE *classID, unsigned long tag1,
-	... );
+        ... );
 void DisposeObject( APTR object );
 ULONG SetAttrsA( APTR object, struct TagItem *tagList );
 ULONG SetAttrs( APTR object, unsigned long tag1, ... );
 ULONG GetAttr( unsigned long attrID, APTR object, ULONG *storagePtr );
 ULONG SetGadgetAttrsA( struct Gadget *gadget, struct Window *window,
-	struct Requester *requester, struct TagItem *tagList );
+        struct Requester *requester, struct TagItem *tagList );
 ULONG SetGadgetAttrs( struct Gadget *gadget, struct Window *window,
-	struct Requester *requester, unsigned long tag1, ... );
+        struct Requester *requester, unsigned long tag1, ... );
 APTR NextObject( APTR objectPtrPtr );
 struct IClass *MakeClass( UBYTE *classID, UBYTE *superClassID,
-	struct IClass *superClassPtr, unsigned long instanceSize,
-	unsigned long flags );
+        struct IClass *superClassPtr, unsigned long instanceSize,
+        unsigned long flags );
 void AddClass( struct IClass *class );
 struct DrawInfo *GetScreenDrawInfo( struct Screen *screen );
 void FreeScreenDrawInfo( struct Screen *screen, struct DrawInfo *drawInfo );
@@ -2510,7 +2510,7 @@ LONG AvailFonts( STRPTR buffer, long bufBytes, long flags );
 struct FontContentsHeader *NewFontContents( BPTR fontsLock, STRPTR fontName );
 void DisposeFontContents( struct FontContentsHeader *fontContentsHeader );
 struct DiskFontHeader *NewScaledDiskFont( struct TextFont *sourceFont,
-	struct TextAttr *destTextAttr );
+        struct TextAttr *destTextAttr );
 struct VSprite
 {
     struct VSprite   *NextVSprite;
@@ -2559,7 +2559,7 @@ struct AnimComp
     WORD YTrans;
     WORD XTrans;
     struct AnimOb    *HeadOb;
-    struct Bob	     *AnimBob;
+    struct Bob       *AnimBob;
 };
 struct AnimOb
 {
@@ -2611,12 +2611,12 @@ struct bltnode
     int     (*cleanup)();
 };
 LONG BltBitMap( struct BitMap *srcBitMap, long xSrc, long ySrc,
-	struct BitMap *destBitMap, long xDest, long yDest, long xSize,
-	long ySize, unsigned long minterm, unsigned long mask,
-	PLANEPTR tempA );
+        struct BitMap *destBitMap, long xDest, long yDest, long xSize,
+        long ySize, unsigned long minterm, unsigned long mask,
+        PLANEPTR tempA );
 void BltTemplate( PLANEPTR source, long xSrc, long srcMod,
-	struct RastPort *destRP, long xDest, long yDest, long xSize,
-	long ySize );
+        struct RastPort *destRP, long xDest, long yDest, long xSize,
+        long ySize );
 void ClearEOL( struct RastPort *rp );
 void ClearScreen( struct RastPort *rp );
 WORD TextLength( struct RastPort *rp, STRPTR string, unsigned long count );
@@ -2626,29 +2626,29 @@ struct TextFont *OpenFont( struct TextAttr *textAttr );
 void CloseFont( struct TextFont *textFont );
 ULONG AskSoftStyle( struct RastPort *rp );
 ULONG SetSoftStyle( struct RastPort *rp, unsigned long style,
-	unsigned long enable );
+        unsigned long enable );
 void AddBob( struct Bob *bob, struct RastPort *rp );
 void AddVSprite( struct VSprite *vSprite, struct RastPort *rp );
 void DoCollision( struct RastPort *rp );
 void DrawGList( struct RastPort *rp, struct ViewPort *vp );
 void InitGels( struct VSprite *head, struct VSprite *tail,
-	struct GelsInfo *gelsInfo );
+        struct GelsInfo *gelsInfo );
 void InitMasks( struct VSprite *vSprite );
 void RemIBob( struct Bob *bob, struct RastPort *rp, struct ViewPort *vp );
 void RemVSprite( struct VSprite *vSprite );
 void SetCollision( unsigned long num,
-	void (*routine)(struct VSprite *vSprite, APTR),
-	struct GelsInfo *gelsInfo );
+        void (*routine)(struct VSprite *vSprite, APTR),
+        struct GelsInfo *gelsInfo );
 void SortGList( struct RastPort *rp );
 void AddAnimOb( struct AnimOb *anOb, struct AnimOb **anKey,
-	struct RastPort *rp );
+        struct RastPort *rp );
 void Animate( struct AnimOb **anKey, struct RastPort *rp );
 BOOL GetGBuffers( struct AnimOb *anOb, struct RastPort *rp, long flag );
 void InitGMasks( struct AnimOb *anOb );
 void DrawEllipse( struct RastPort *rp, long xCenter, long yCenter, long a,
-	long b );
+        long b );
 LONG AreaEllipse( struct RastPort *rp, long xCenter, long yCenter, long a,
-	long b );
+        long b );
 void LoadRGB4( struct ViewPort *vp, UWORD *colors, long count );
 void InitRastPort( struct RastPort *rp );
 void InitVPort( struct ViewPort *vp );
@@ -2665,16 +2665,16 @@ LONG AreaEnd( struct RastPort *rp );
 void WaitTOF( void );
 void QBlit( struct bltnode *blit );
 void InitArea( struct AreaInfo *areaInfo, APTR vectorBuffer,
-	long maxVectors );
+        long maxVectors );
 void SetRGB4( struct ViewPort *vp, long index, unsigned long red,
-	unsigned long green, unsigned long blue );
+        unsigned long green, unsigned long blue );
 void QBSBlit( struct bltnode *blit );
 void BltClear( PLANEPTR memBlock, unsigned long byteCount,
-	unsigned long flags );
+        unsigned long flags );
 void RectFill( struct RastPort *rp, long xMin, long yMin, long xMax,
-	long yMax );
+        long yMax );
 void BltPattern( struct RastPort *rp, PLANEPTR mask, long xMin, long yMin,
-	long xMax, long yMax, unsigned long maskBPR );
+        long xMax, long yMax, unsigned long maskBPR );
 ULONG ReadPixel( struct RastPort *rp, long x, long y );
 LONG WritePixel( struct RastPort *rp, long x, long y );
 BOOL Flood( struct RastPort *rp, unsigned long mode, long x, long y );
@@ -2689,14 +2689,14 @@ void CWait( struct UCopList *copList, long v, long h );
 LONG VBeamPos( void );
 void InitBitMap( struct BitMap *bitMap, long depth, long width, long height );
 void ScrollRaster( struct RastPort *rp, long dx, long dy, long xMin, long yMin,
-	long xMax, long yMax );
+        long xMax, long yMax );
 void WaitBOVP( struct ViewPort *vp );
 WORD GetSprite( struct SimpleSprite *sprite, long num );
 void FreeSprite( long num );
 void ChangeSprite( struct ViewPort *vp, struct SimpleSprite *sprite,
-	PLANEPTR newData );
+        PLANEPTR newData );
 void MoveSprite( struct ViewPort *vp, struct SimpleSprite *sprite, long x,
-	long y );
+        long y );
 void LockLayerRom( struct Layer *layer );
 void UnlockLayerRom( struct Layer *layer );
 void SyncSBitMap( struct Layer *layer );
@@ -2704,7 +2704,7 @@ void CopySBitMap( struct Layer *layer );
 void OwnBlitter( void );
 void DisownBlitter( void );
 struct TmpRas *InitTmpRas( struct TmpRas *tmpRas, PLANEPTR buffer,
-	long size );
+        long size );
 void AskFont( struct RastPort *rp, struct TextAttr *textAttr );
 void AddFont( struct TextFont *textFont );
 void RemFont( struct TextFont *textFont );
@@ -2719,8 +2719,8 @@ void DisposeRegion( struct Region *region );
 void FreeVPortCopLists( struct ViewPort *vp );
 void FreeCopList( struct CopList *copList );
 void ClipBlit( struct RastPort *srcRP, long xSrc, long ySrc,
-	struct RastPort *destRP, long xDest, long yDest, long xSize,
-	long ySize, unsigned long minterm );
+        struct RastPort *destRP, long xDest, long yDest, long xSize,
+        long ySize, unsigned long minterm );
 BOOL XorRectRegion( struct Region *region, struct Rectangle *rectangle );
 void FreeCprList( struct cprlist *cprList );
 struct ColorMap *GetColorMap( long entries );
@@ -2730,73 +2730,73 @@ void ScrollVPort( struct ViewPort *vp );
 struct CopList *UCopperListInit( struct UCopList *uCopList, long n );
 void FreeGBuffers( struct AnimOb *anOb, struct RastPort *rp, long flag );
 void BltBitMapRastPort( struct BitMap *srcBitMap, long xSrc, long ySrc,
-	struct RastPort *destRP, long xDest, long yDest, long xSize,
-	long ySize, unsigned long minterm );
+        struct RastPort *destRP, long xDest, long yDest, long xSize,
+        long ySize, unsigned long minterm );
 BOOL OrRegionRegion( struct Region *srcRegion, struct Region *destRegion );
 BOOL XorRegionRegion( struct Region *srcRegion, struct Region *destRegion );
 BOOL AndRegionRegion( struct Region *srcRegion, struct Region *destRegion );
 void SetRGB4CM( struct ColorMap *colorMap, long index, unsigned long red,
-	unsigned long green, unsigned long blue );
+        unsigned long green, unsigned long blue );
 void BltMaskBitMapRastPort( struct BitMap *srcBitMap, long xSrc, long ySrc,
-	struct RastPort *destRP, long xDest, long yDest, long xSize,
-	long ySize, unsigned long minterm, PLANEPTR bltMask );
+        struct RastPort *destRP, long xDest, long yDest, long xSize,
+        long ySize, unsigned long minterm, PLANEPTR bltMask );
 BOOL AttemptLockLayerRom( struct Layer *layer );
 APTR GfxNew( unsigned long gfxNodeType );
 void GfxFree( APTR gfxNodePtr );
 void GfxAssociate( APTR associateNode, APTR gfxNodePtr );
 void BitMapScale( struct BitScaleArgs *bitScaleArgs );
 UWORD ScalerDiv( unsigned long factor, unsigned long numerator,
-	unsigned long denominator );
+        unsigned long denominator );
 WORD TextExtent( struct RastPort *rp, STRPTR string, long count,
-	struct TextExtent *textExtent );
+        struct TextExtent *textExtent );
 ULONG TextFit( struct RastPort *rp, STRPTR string, unsigned long strLen,
-	struct TextExtent *textExtent, struct TextExtent *constrainingExtent,
-	long strDirection, unsigned long constrainingBitWidth,
-	unsigned long constrainingBitHeight );
+        struct TextExtent *textExtent, struct TextExtent *constrainingExtent,
+        long strDirection, unsigned long constrainingBitWidth,
+        unsigned long constrainingBitHeight );
 APTR GfxLookUp( APTR associateNode );
 BOOL VideoControl( struct ColorMap *colorMap, struct TagItem *tagarray );
 struct MonitorSpec *OpenMonitor( STRPTR monitorName,
-	unsigned long displayID );
+        unsigned long displayID );
 BOOL CloseMonitor( struct MonitorSpec *monitorSpec );
 DisplayInfoHandle FindDisplayInfo( unsigned long displayID );
 ULONG NextDisplayInfo( unsigned long displayID );
 ULONG GetDisplayInfoData( DisplayInfoHandle handle, UBYTE *buf,
-	unsigned long size, unsigned long tagID, unsigned long displayID );
+        unsigned long size, unsigned long tagID, unsigned long displayID );
 void FontExtent( struct TextFont *font, struct TextExtent *fontExtent );
 LONG ReadPixelLine8( struct RastPort *rp, unsigned long xstart,
-	unsigned long ystart, unsigned long width, UBYTE *array,
-	struct RastPort *tempRP );
+        unsigned long ystart, unsigned long width, UBYTE *array,
+        struct RastPort *tempRP );
 LONG WritePixelLine8( struct RastPort *rp, unsigned long xstart,
-	unsigned long ystart, unsigned long width, UBYTE *array,
-	struct RastPort *tempRP );
+        unsigned long ystart, unsigned long width, UBYTE *array,
+        struct RastPort *tempRP );
 LONG ReadPixelArray8( struct RastPort *rp, unsigned long xstart,
-	unsigned long ystart, unsigned long xstop, unsigned long ystop,
-	UBYTE *array, struct RastPort *temprp );
+        unsigned long ystart, unsigned long xstop, unsigned long ystop,
+        UBYTE *array, struct RastPort *temprp );
 LONG WritePixelArray8( struct RastPort *rp, unsigned long xstart,
-	unsigned long ystart, unsigned long xstop, unsigned long ystop,
-	UBYTE *array, struct RastPort *temprp );
+        unsigned long ystart, unsigned long xstop, unsigned long ystop,
+        UBYTE *array, struct RastPort *temprp );
 LONG GetVPModeID( struct ViewPort *vp );
 LONG ModeNotAvailable( unsigned long modeID );
 WORD WeighTAMatch( struct TextAttr *reqTextAttr,
-	struct TextAttr *targetTextAttr, struct TagItem *targetTags );
+        struct TextAttr *targetTextAttr, struct TagItem *targetTags );
 void EraseRect( struct RastPort *rp, long xMin, long yMin, long xMax,
-	long yMax );
+        long yMax );
 ULONG ExtendFont( struct TextFont *font, struct TagItem *fontTags );
 void StripFont( struct TextFont *font );
 struct Gadget *CreateGadgetA( unsigned long kind, struct Gadget *gad,
-	struct NewGadget *ng, struct TagItem *taglist );
+        struct NewGadget *ng, struct TagItem *taglist );
 struct Gadget *CreateGadget( unsigned long kind, struct Gadget *gad,
-	struct NewGadget *ng, Tag tag1, ... );
+        struct NewGadget *ng, Tag tag1, ... );
 void FreeGadgets( struct Gadget *gad );
 void GT_SetGadgetAttrsA( struct Gadget *gad, struct Window *win,
-	struct Requester *req, struct TagItem *taglist );
+        struct Requester *req, struct TagItem *taglist );
 void GT_SetGadgetAttrs( struct Gadget *gad, struct Window *win,
-	struct Requester *req, Tag tag1, ... );
+        struct Requester *req, Tag tag1, ... );
 struct Menu *CreateMenusA( struct NewMenu *newmenu, struct TagItem *taglist );
 struct Menu *CreateMenus( struct NewMenu *newmenu, Tag tag1, ... );
 void FreeMenus( struct Menu *menu );
 BOOL LayoutMenuItemsA( struct MenuItem *firstitem, APTR vi,
-	struct TagItem *taglist );
+        struct TagItem *taglist );
 BOOL LayoutMenuItems( struct MenuItem *firstitem, APTR vi, Tag tag1, ... );
 BOOL LayoutMenusA( struct Menu *firstmenu, APTR vi, struct TagItem *taglist );
 BOOL LayoutMenus( struct Menu *firstmenu, APTR vi, Tag tag1, ... );
@@ -2809,50 +2809,50 @@ struct IntuiMessage *GT_FilterIMsg( struct IntuiMessage *imsg );
 struct IntuiMessage *GT_PostFilterIMsg( struct IntuiMessage *imsg );
 struct Gadget *CreateContext( struct Gadget **glistptr );
 void DrawBevelBoxA( struct RastPort *rport, long left, long top, long width,
-	long height, struct TagItem *taglist );
+        long height, struct TagItem *taglist );
 void DrawBevelBox( struct RastPort *rport, long left, long top, long width,
-	long height, Tag tag1, ... );
+        long height, Tag tag1, ... );
 APTR GetVisualInfoA( struct Screen *screen, struct TagItem *taglist );
 APTR GetVisualInfo( struct Screen *screen, Tag tag1, ... );
 void FreeVisualInfo( APTR vi );
 struct WBStartup {
-    struct Message	sm_Message;
-    struct MsgPort *	sm_Process;
-    BPTR		sm_Segment;
-    LONG		sm_NumArgs;
-    char *		sm_ToolWindow;
-    struct WBArg *	sm_ArgList;
+    struct Message      sm_Message;
+    struct MsgPort *    sm_Process;
+    BPTR                sm_Segment;
+    LONG                sm_NumArgs;
+    char *              sm_ToolWindow;
+    struct WBArg *      sm_ArgList;
 };
 struct WBArg {
-    BPTR		wa_Lock;
-    BYTE *		wa_Name;
+    BPTR                wa_Lock;
+    BYTE *              wa_Name;
 };
-struct FileRequester	{
-	APTR	rf_Reserved1;
-	BYTE	*rf_File;
-	BYTE	*rf_Dir;
-	CPTR	rf_Reserved2;
-	UBYTE	rf_Reserved3;
-	UBYTE	rf_Reserved4;
-	APTR	rf_Reserved5;
-	WORD	rf_LeftEdge,rf_TopEdge;
-	WORD	rf_Width,rf_Height;
-	WORD	rf_Reserved6;
-	LONG	rf_NumArgs;
-	struct WBArg *rf_ArgList;
-	APTR	rf_UserData;
-	APTR	rf_Reserved7;
-	APTR	rf_Reserved8;
-	BYTE	*rf_Pat;
-	};
-struct FontRequester	{
-	APTR	fo_Reserved1[2];
-	struct TextAttr fo_Attr;
-	UBYTE	fo_FrontPen;
-	UBYTE	fo_BackPen;
-	UBYTE	fo_DrawMode;
-	APTR	fo_UserData;
-	};
+struct FileRequester    {
+        APTR    rf_Reserved1;
+        BYTE    *rf_File;
+        BYTE    *rf_Dir;
+        CPTR    rf_Reserved2;
+        UBYTE   rf_Reserved3;
+        UBYTE   rf_Reserved4;
+        APTR    rf_Reserved5;
+        WORD    rf_LeftEdge,rf_TopEdge;
+        WORD    rf_Width,rf_Height;
+        WORD    rf_Reserved6;
+        LONG    rf_NumArgs;
+        struct WBArg *rf_ArgList;
+        APTR    rf_UserData;
+        APTR    rf_Reserved7;
+        APTR    rf_Reserved8;
+        BYTE    *rf_Pat;
+        };
+struct FontRequester    {
+        APTR    fo_Reserved1[2];
+        struct TextAttr fo_Attr;
+        UBYTE   fo_FrontPen;
+        UBYTE   fo_BackPen;
+        UBYTE   fo_DrawMode;
+        APTR    fo_UserData;
+        };
 struct FileRequester *AllocFileRequest( void );
 void FreeFileRequest( struct FileRequester *fileReq );
 BOOL RequestFile( struct FileRequester *fileReq );
@@ -2861,24 +2861,24 @@ APTR AllocAslRequestTags( unsigned long type, Tag Tag1, ... );
 void FreeAslRequest( APTR request );
 BOOL AslRequest( APTR request, struct TagItem *tagList );
 BOOL AslRequestTags( APTR request, Tag Tag1, ... );
-int	 SPFix();
-float	 SPFlt();
-int	 SPCmp();
-int	 SPTst();
-float	 SPAbs();
-float	 SPFloor();
-float	 SPCeil();
-float	 SPNeg();
-float	 SPAdd();
-float	 SPSub();
-float	 SPMul();
-float	 SPDiv();
-float	 SPAsin(),  SPAcos(),  SPAtan();
-float	 SPSin(),   SPCos(),   SPTan(),   SPSincos();
-float	 SPSinh(),  SPCosh(),  SPTanh();
-float	 SPExp(),   SPLog(),   SPLog10(), SPPow();
-float	 SPSqrt(),  SPFieee();
-float	 afp(),    dbf();
+int      SPFix();
+float    SPFlt();
+int      SPCmp();
+int      SPTst();
+float    SPAbs();
+float    SPFloor();
+float    SPCeil();
+float    SPNeg();
+float    SPAdd();
+float    SPSub();
+float    SPMul();
+float    SPDiv();
+float    SPAsin(),  SPAcos(),  SPAtan();
+float    SPSin(),   SPCos(),   SPTan(),   SPSincos();
+float    SPSinh(),  SPCosh(),  SPTanh();
+float    SPExp(),   SPLog(),   SPLog10(), SPPow();
+float    SPSqrt(),  SPFieee();
+float    afp(),    dbf();
 struct NewBroker {
    BYTE     nb_Version;
    BYTE     *nb_Name;
@@ -2908,7 +2908,7 @@ struct IORequest *CreateExtIO( struct MsgPort *msg, long size );
 struct MsgPort *CreatePort( UBYTE *name, long pri );
 struct IOStdReq *CreateStdIO( struct MsgPort *msg );
 struct Task *CreateTask( UBYTE *name, long pri, APTR initPC,
-	unsigned long stackSize );
+        unsigned long stackSize );
 void DeleteExtIO( struct IORequest *io );
 void DeletePort( struct MsgPort *io );
 void DeleteStdIO( struct IOStdReq *io );
@@ -2932,7 +2932,7 @@ UBYTE *ArgString( UBYTE **arg1, UBYTE *arg2, UBYTE *arg3 );
 CxObj *HotKey( UBYTE *arg1, struct MsgPort *arg2, long arg3 );
 struct InputEvent *InvertString( UBYTE *arg1, ULONG *arg2 );
 LONG GetIcon( UBYTE *name, struct DiskObject *icon,
-	struct FreeList *freelist );
+        struct FreeList *freelist );
 BOOL PutIcon( UBYTE *name, struct DiskObject *icon );
 void FreeFreeList( struct FreeList *freelist );
 BOOL AddFreeList( struct FreeList *freelist, APTR mem, unsigned long size );
@@ -2947,35 +2947,35 @@ BOOL PutDefDiskObject( struct DiskObject *diskObject );
 struct DiskObject *GetDiskObjectNew( UBYTE *name );
 BOOL DeleteDiskObject( UBYTE *name );
 struct AppWindow *AddAppWindowA( unsigned long id, unsigned long userdata,
-	struct Window *window, struct MsgPort *msgport,
-	struct TagItem *taglist );
+        struct Window *window, struct MsgPort *msgport,
+        struct TagItem *taglist );
 struct AppWindow *AddAppWindow( unsigned long id, unsigned long userdata,
-	struct Window *window, struct MsgPort *msgport, Tag tag1, ... );
+        struct Window *window, struct MsgPort *msgport, Tag tag1, ... );
 BOOL RemoveAppWindow( struct AppWindow *appWindow );
 struct AppIcon *AddAppIconA( unsigned long id, unsigned long userdata,
-	UBYTE *text, struct MsgPort *msgport, struct FileLock *lock,
-	struct DiskObject *diskobj, struct TagItem *taglist );
+        UBYTE *text, struct MsgPort *msgport, struct FileLock *lock,
+        struct DiskObject *diskobj, struct TagItem *taglist );
 struct AppIcon *AddAppIcon( unsigned long id, unsigned long userdata,
-	UBYTE *text, struct MsgPort *msgport, struct FileLock *lock,
-	struct DiskObject *diskobj, Tag tag1, ... );
+        UBYTE *text, struct MsgPort *msgport, struct FileLock *lock,
+        struct DiskObject *diskobj, Tag tag1, ... );
 BOOL RemoveAppIcon( struct AppIcon *appIcon );
 struct AppMenuItem *AddAppMenuItemA( unsigned long id, unsigned long userdata,
-	UBYTE *text, struct MsgPort *msgport, struct TagItem *taglist );
+        UBYTE *text, struct MsgPort *msgport, struct TagItem *taglist );
 struct AppMenuItem *AddAppMenuItem( unsigned long id, unsigned long userdata,
-	UBYTE *text, struct MsgPort *msgport, Tag tag1, ... );
+        UBYTE *text, struct MsgPort *msgport, Tag tag1, ... );
 BOOL RemoveAppMenuItem( struct AppMenuItem *appMenuItem );
 typedef struct TagItem          TAGS;
 typedef BPTR                    LOCK;
 typedef struct FileInfoBlock    FIB;
 typedef struct Process          APROCESS;
 typedef struct CommandLineInterface CLI;
-typedef struct ExecBase 	EBASE;
+typedef struct ExecBase         EBASE;
 typedef struct Node             NODE;
 typedef struct List             LIST;
 typedef struct Library          LIBRARY;
 typedef struct Message          MSG;
 typedef struct MsgPort          MPORT;
-typedef struct Task		TASK;
+typedef struct Task             TASK;
 typedef struct IntuitionBase    IBASE;
 typedef struct VisualInfo       VINFO;
 typedef struct Gadget           GADGET;
@@ -2996,489 +2996,489 @@ typedef struct TextFont         FONT;
 typedef struct IORequest        IOREQ;
 typedef struct IOStdReq         STDREQ;
 typedef struct IOExtSer         SERREQ;
-typedef struct WBStartup	WBMSG;
+typedef struct WBStartup        WBMSG;
 typedef struct FontRequester    FONTREQ;
 typedef struct FileRequester    FILEREQ;
 extern __far struct Custom      custom;
 extern GBASE                    *GfxBase;
 typedef struct DLIST {
-	NODE	node;
-	char	name[2];
+        NODE    node;
+        char    name[2];
 } DLIST;
 typedef struct SYMLIST {
-	ULONG *symbolname;
-	ULONG address;
+        ULONG *symbolname;
+        ULONG address;
 } SYMLIST;
 enum DTYPES {
-	DTYPE_DOSBASE,
-	DTYPE_PROCESS,
-	DTYPE_INFO,
-	DTYPE_EXECBASE,
-	DTYPE_RESOURCES,
-	DTYPE_INTRS,
-	DTYPE_PORTS,
-	DTYPE_TASKS,
-	DTYPE_LIBS,
-	DTYPE_DEVICES,
-	DTYPE_MEMLIST,
-	DTYPE_REXXLIST,
-	DTYPE_SYMLIST,
-	MAX_DTYPE,
+        DTYPE_DOSBASE,
+        DTYPE_PROCESS,
+        DTYPE_INFO,
+        DTYPE_EXECBASE,
+        DTYPE_RESOURCES,
+        DTYPE_INTRS,
+        DTYPE_PORTS,
+        DTYPE_TASKS,
+        DTYPE_LIBS,
+        DTYPE_DEVICES,
+        DTYPE_MEMLIST,
+        DTYPE_REXXLIST,
+        DTYPE_SYMLIST,
+        MAX_DTYPE,
 };
 typedef struct DBugDisp {
-	NODE	ds_Node;
-	WINDOW	*ds_Win;
-	STDREQ	ds_CReadReq;
-	STDREQ	ds_CWriteReq;
-	UBYTE	ds_CReadIP;
-	UBYTE	ds_CWriteIP;
-	UBYTE	ds_OpenError;
-	UBYTE	ds_CsiState;
-	UBYTE	ds_DoneFlag;
-	UBYTE	ds_DisplayOffsets;
-	UBYTE	ds_PromptLen;
-	UBYTE	ds_PromptStart;
-	ULONG	ds_Flags;
-	UBYTE	ds_CInChar;
-	UBYTE	ds_COutBuf[255];
-	WORD	ds_COutIndex;
-	UWORD	ds_DisplayMode;
-	UWORD	ds_PreferedMode;
-	UWORD	ds_ScrRows;
-	UWORD	ds_ScrCols;
-	UWORD	ds_ScrTop;
-	UWORD	ds_ScrColNo;
-	UWORD	ds_ScrRowNo;
-	UBYTE	ds_RegFlag;
-	UBYTE	ds_RegTouched;
-	UBYTE	*ds_ScrAry;
-	ULONG	ds_WindowTop;
-	ULONG	ds_WindowTopLine;
-	ULONG	ds_WindowBot;
-	ULONG	ds_WindowBotLine;
-	ULONG	ds_LastRefreshMode;
-	ULONG	ds_LastRefreshTop;
-	LIST	ds_List;
-	char	ds_windowTitle[128];
+        NODE    ds_Node;
+        WINDOW  *ds_Win;
+        STDREQ  ds_CReadReq;
+        STDREQ  ds_CWriteReq;
+        UBYTE   ds_CReadIP;
+        UBYTE   ds_CWriteIP;
+        UBYTE   ds_OpenError;
+        UBYTE   ds_CsiState;
+        UBYTE   ds_DoneFlag;
+        UBYTE   ds_DisplayOffsets;
+        UBYTE   ds_PromptLen;
+        UBYTE   ds_PromptStart;
+        ULONG   ds_Flags;
+        UBYTE   ds_CInChar;
+        UBYTE   ds_COutBuf[255];
+        WORD    ds_COutIndex;
+        UWORD   ds_DisplayMode;
+        UWORD   ds_PreferedMode;
+        UWORD   ds_ScrRows;
+        UWORD   ds_ScrCols;
+        UWORD   ds_ScrTop;
+        UWORD   ds_ScrColNo;
+        UWORD   ds_ScrRowNo;
+        UBYTE   ds_RegFlag;
+        UBYTE   ds_RegTouched;
+        UBYTE   *ds_ScrAry;
+        ULONG   ds_WindowTop;
+        ULONG   ds_WindowTopLine;
+        ULONG   ds_WindowBot;
+        ULONG   ds_WindowBotLine;
+        ULONG   ds_LastRefreshMode;
+        ULONG   ds_LastRefreshTop;
+        LIST    ds_List;
+        char    ds_windowTitle[128];
 } DBugDisp;
 typedef struct SOURCE {
-	ULONG	lineNumber;
-	ULONG	address;
+        ULONG   lineNumber;
+        ULONG   address;
 } SOURCE;
-typedef struct DEBUG	{
-	struct DEBUG	*link;
-	struct SOURCE	*table;
-	struct SOURCE	*tableEnd;
-	char		sourceName[128];
-	char		*source;
-	ULONG		addrBegin;
-	ULONG		addrEnd;
+typedef struct DEBUG    {
+        struct DEBUG    *link;
+        struct SOURCE   *table;
+        struct SOURCE   *tableEnd;
+        char            sourceName[128];
+        char            *source;
+        ULONG           addrBegin;
+        ULONG           addrEnd;
 } DEBUG;
 typedef struct HUNK {
-	ULONG	type;
-	ULONG	size;
-	ULONG	*memptr;
-	ULONG	*actual;
-	ULONG	hSize;
-	APTR	hunk;
-	APTR	reloc32;
-	APTR	symbols;
-	DEBUG	*debug;
+        ULONG   type;
+        ULONG   size;
+        ULONG   *memptr;
+        ULONG   *actual;
+        ULONG   hSize;
+        APTR    hunk;
+        APTR    reloc32;
+        APTR    symbols;
+        DEBUG   *debug;
 } HUNK;
 typedef struct BP {
-	UWORD	state;
-	UWORD	count;
-	UWORD	value;
-	UWORD	*address;
+        UWORD   state;
+        UWORD   count;
+        UWORD   value;
+        UWORD   *address;
 } BP;
 typedef struct WP {
-	ULONG		type;
-	char		expression[128];
+        ULONG           type;
+        char            expression[128];
 } WP;
-typedef struct DPREFS	{
-	UWORD	top,left,width,height;
-	UWORD DefaultMode;
-	UBYTE DefaultOffset;
-	alias[96];
+typedef struct DPREFS   {
+        UWORD   top,left,width,height;
+        UWORD DefaultMode;
+        UBYTE DefaultOffset;
+        alias[96];
 } DPREFS;
-extern IBASE			*IntuitionBase;
-extern GBASE			*GfxBase;
-extern EBASE			*SysBase;
-extern struct DosLibrary	*DOSBase;
-extern struct Library		*GadToolsBase;
+extern IBASE                    *IntuitionBase;
+extern GBASE                    *GfxBase;
+extern EBASE                    *SysBase;
+extern struct DosLibrary        *DOSBase;
+extern struct Library           *GadToolsBase;
 extern char *RexxHostName;
-extern char	*args;
-extern ULONG	argSize;
-extern TASK	*thisTask;
+extern char     *args;
+extern ULONG    argSize;
+extern TASK     *thisTask;
 extern APROCESS *thisProcess;
-extern CLI	*thisCli;
-extern char	targetName[];
-extern ULONG	*exeFile;
-extern ULONG	exeSize;
-extern ULONG	numHunks, firstHunk, lastHunk;
-extern HUNK	*hunkArray;
+extern CLI      *thisCli;
+extern char     targetName[];
+extern ULONG    *exeFile;
+extern ULONG    exeSize;
+extern ULONG    numHunks, firstHunk, lastHunk;
+extern HUNK     *hunkArray;
 extern USHORT oldrow, oldcol;
-extern UBYTE	*programStack;
-extern ULONG	programStackSize;
-extern ULONG	programState;
-extern UWORD	programSR;
-extern ULONG	programPC;
-extern ULONG	programD0;
-extern ULONG	programD1;
-extern ULONG	programD2;
-extern ULONG	programD3;
-extern ULONG	programD4;
-extern ULONG	programD5;
-extern ULONG	programD6;
-extern ULONG	programD7;
-extern ULONG	programA0;
-extern ULONG	programA1;
-extern ULONG	programA2;
-extern ULONG	programA3;
-extern ULONG	programA4;
-extern ULONG	programA5;
-extern ULONG	programA6;
-extern ULONG	programA7;
-extern ULONG	lastState;
-extern UWORD	lastSR;
-extern ULONG	lastPC;
-extern ULONG	lastD0;
-extern ULONG	lastD1;
-extern ULONG	lastD2;
-extern ULONG	lastD3;
-extern ULONG	lastD4;
-extern ULONG	lastD5;
-extern ULONG	lastD6;
-extern ULONG	lastD7;
-extern ULONG	lastA0;
-extern ULONG	lastA1;
-extern ULONG	lastA2;
-extern ULONG	lastA3;
-extern ULONG	lastA4;
-extern ULONG	lastA5;
-extern ULONG	lastA6;
-extern ULONG	lastA7;
+extern UBYTE    *programStack;
+extern ULONG    programStackSize;
+extern ULONG    programState;
+extern UWORD    programSR;
+extern ULONG    programPC;
+extern ULONG    programD0;
+extern ULONG    programD1;
+extern ULONG    programD2;
+extern ULONG    programD3;
+extern ULONG    programD4;
+extern ULONG    programD5;
+extern ULONG    programD6;
+extern ULONG    programD7;
+extern ULONG    programA0;
+extern ULONG    programA1;
+extern ULONG    programA2;
+extern ULONG    programA3;
+extern ULONG    programA4;
+extern ULONG    programA5;
+extern ULONG    programA6;
+extern ULONG    programA7;
+extern ULONG    lastState;
+extern UWORD    lastSR;
+extern ULONG    lastPC;
+extern ULONG    lastD0;
+extern ULONG    lastD1;
+extern ULONG    lastD2;
+extern ULONG    lastD3;
+extern ULONG    lastD4;
+extern ULONG    lastD5;
+extern ULONG    lastD6;
+extern ULONG    lastD7;
+extern ULONG    lastA0;
+extern ULONG    lastA1;
+extern ULONG    lastA2;
+extern ULONG    lastA3;
+extern ULONG    lastA4;
+extern ULONG    lastA5;
+extern ULONG    lastA6;
+extern ULONG    lastA7;
 enum DISPLAY_MODES {
-	DISPLAY_DISM,
-	DISPLAY_SOURCE,
-	DISPLAY_MIXED,
-	DISPLAY_BYTES,
-	DISPLAY_WORDS,
-	DISPLAY_LONGS,
-	DISPLAY_HUNKS,
-	DISPLAY_SYMBOL,
-	DISPLAY_HELP,
-	DISPLAY_BREAK,
-	DISPLAY_DOSBASE,
-	DISPLAY_PROCESS,
-	DISPLAY_INFO,
-	DISPLAY_EXECBASE,
-	DISPLAY_RESOURCES,
-	DISPLAY_INTRS,
-	DISPLAY_PORTS,
-	DISPLAY_TASKS,
-	DISPLAY_LIBS,
-	DISPLAY_DEVICES,
-	DISPLAY_MEMLIST,
-	DISPLAY_REXXLIST,
-	DISPLAY_SYMLIST,
-	MAX_MODES,
+        DISPLAY_DISM,
+        DISPLAY_SOURCE,
+        DISPLAY_MIXED,
+        DISPLAY_BYTES,
+        DISPLAY_WORDS,
+        DISPLAY_LONGS,
+        DISPLAY_HUNKS,
+        DISPLAY_SYMBOL,
+        DISPLAY_HELP,
+        DISPLAY_BREAK,
+        DISPLAY_DOSBASE,
+        DISPLAY_PROCESS,
+        DISPLAY_INFO,
+        DISPLAY_EXECBASE,
+        DISPLAY_RESOURCES,
+        DISPLAY_INTRS,
+        DISPLAY_PORTS,
+        DISPLAY_TASKS,
+        DISPLAY_LIBS,
+        DISPLAY_DEVICES,
+        DISPLAY_MEMLIST,
+        DISPLAY_REXXLIST,
+        DISPLAY_SYMLIST,
+        MAX_MODES,
 };
-extern DPREFS	dprefs;
-extern char	commandLine[];
-extern UWORD	commandCol, commandEnd;
-extern WP	wpTable[32];
-extern BP	bpTable[32];
-extern BP	bpTemp;
-extern WORD	topBP;
+extern DPREFS   dprefs;
+extern char     commandLine[];
+extern UWORD    commandCol, commandEnd;
+extern WP       wpTable[32];
+extern BP       bpTable[32];
+extern BP       bpTemp;
+extern WORD     topBP;
 extern DBugDisp *CurDisplay;
 extern unsigned long  ScrollStart, ScrollEnd;
 extern int SymbolCount;
-extern __stkargs UBYTE	*MallocPublic(ULONG size);
-extern __stkargs UBYTE	*MallocFast(ULONG size);
-extern __stkargs UBYTE	*MallocChip(ULONG size);
-extern __stkargs UBYTE	*MallocAny(ULONG size, ULONG type);
-extern __stkargs void	Free(APTR ptr);
-extern __stkargs void	CleanMem(void);
-extern __stkargs ULONG	Disassemble(ULONG src, ULONG addr, char *buf);
-extern __stkargs void	EnterProgram(void);
-extern __stkargs void	TargetExit(void);
-extern void	FreeDLIST(LIST *list);
-extern BOOL	AddListNODE(LIST *list, UBYTE type, char *data);
-extern BOOL	DownList(void);
-extern BOOL	UpList(void);
-extern BOOL	PageDownList(void);
-extern BOOL	PageUpList(void);
-extern WORD	RefreshList(WORD maxLines, BOOL fullRefresh, LONG top);
-extern BOOL	SprintfDLIST(LIST *list, UBYTE type, char *fmt, ...);
-extern void	ListDosBase(DBugDisp *dp);
-extern void	ListProcess(DBugDisp *dp);
-extern void	ListInfo(DBugDisp *dp);
-extern void	ListExecBase(DBugDisp *dp);
-extern void	BuildDLIST(LIST *dst, LIST *src, ULONG type);
-extern void	ListResources(DBugDisp *dp);
-extern void	ListIntrs(DBugDisp *dp);
-extern void	ListPorts(DBugDisp *dp);
-extern void	ListTasks(DBugDisp *dp);
-extern void	ListLibs(DBugDisp *dp);
-extern void	ListDevices(DBugDisp *dp);
-extern void	ListMemList(DBugDisp *dp);
-extern int 	SizeDLIST(LIST *list);
-extern BOOL	ListSymbols(DBugDisp *dp);
-extern void		Newline(void);
-extern void		PrintAddress(ULONG addr);
-extern void		OffsetAddressBuf(ULONG addr, char *buf);
-extern void		InitCommand(void);
-extern void		InitModes(void);
-extern void		RefreshCommand(int fullRefresh);
-extern void		RefreshPrompt(BOOL fullRefresh);
-extern void		RefreshWindow(int fullRefresh);
-extern void		RefreshAllWindows(int fullRefresh);
-extern void		SetDisplayMode(WORD, BOOL);
-extern void		ReadPrefs(void);
-extern void		WritePrefs(void);
-extern void		abort(void);
-extern BOOL		ParseArgToken(char *buf);
-extern ULONG 	OnOffToggle(char *arg, ULONG val, ULONG mask);
-extern int		main(int ac, char *av[]);
-extern LONG		CalcDisplayLines(void);
-extern void		SetModeSave(WORD mode);
-extern ULONG		ValidMemCheck(ULONG address);
+extern __stkargs UBYTE  *MallocPublic(ULONG size);
+extern __stkargs UBYTE  *MallocFast(ULONG size);
+extern __stkargs UBYTE  *MallocChip(ULONG size);
+extern __stkargs UBYTE  *MallocAny(ULONG size, ULONG type);
+extern __stkargs void   Free(APTR ptr);
+extern __stkargs void   CleanMem(void);
+extern __stkargs ULONG  Disassemble(ULONG src, ULONG addr, char *buf);
+extern __stkargs void   EnterProgram(void);
+extern __stkargs void   TargetExit(void);
+extern void     FreeDLIST(LIST *list);
+extern BOOL     AddListNODE(LIST *list, UBYTE type, char *data);
+extern BOOL     DownList(void);
+extern BOOL     UpList(void);
+extern BOOL     PageDownList(void);
+extern BOOL     PageUpList(void);
+extern WORD     RefreshList(WORD maxLines, BOOL fullRefresh, LONG top);
+extern BOOL     SprintfDLIST(LIST *list, UBYTE type, char *fmt, ...);
+extern void     ListDosBase(DBugDisp *dp);
+extern void     ListProcess(DBugDisp *dp);
+extern void     ListInfo(DBugDisp *dp);
+extern void     ListExecBase(DBugDisp *dp);
+extern void     BuildDLIST(LIST *dst, LIST *src, ULONG type);
+extern void     ListResources(DBugDisp *dp);
+extern void     ListIntrs(DBugDisp *dp);
+extern void     ListPorts(DBugDisp *dp);
+extern void     ListTasks(DBugDisp *dp);
+extern void     ListLibs(DBugDisp *dp);
+extern void     ListDevices(DBugDisp *dp);
+extern void     ListMemList(DBugDisp *dp);
+extern int      SizeDLIST(LIST *list);
+extern BOOL     ListSymbols(DBugDisp *dp);
+extern void             Newline(void);
+extern void             PrintAddress(ULONG addr);
+extern void             OffsetAddressBuf(ULONG addr, char *buf);
+extern void             InitCommand(void);
+extern void             InitModes(void);
+extern void             RefreshCommand(int fullRefresh);
+extern void             RefreshPrompt(BOOL fullRefresh);
+extern void             RefreshWindow(int fullRefresh);
+extern void             RefreshAllWindows(int fullRefresh);
+extern void             SetDisplayMode(WORD, BOOL);
+extern void             ReadPrefs(void);
+extern void             WritePrefs(void);
+extern void             abort(void);
+extern BOOL             ParseArgToken(char *buf);
+extern ULONG    OnOffToggle(char *arg, ULONG val, ULONG mask);
+extern int              main(int ac, char *av[]);
+extern LONG             CalcDisplayLines(void);
+extern void             SetModeSave(WORD mode);
+extern ULONG            ValidMemCheck(ULONG address);
 extern __stkargs void kprintf(unsigned char *arg, ...);
-extern UBYTE 	LineBuf[128];
-extern UBYTE 	DirBuf[128];
-extern WORD		ForceFullRefresh;
-extern UBYTE 	RexxReplyString[256];
-extern UBYTE 	DefaultPubName[128];
-extern char		lastCommand[128];
-extern int		RStepFlag;
-extern char		rexxhostname[16];
-extern long		ParseExp(char *, short *, long);
-extern void		PushOp(short, short, short);
-extern int		TopOfOpStack(void);
-extern int		SecondOffOpStack(void);
-extern void		PushAtom(long, short);
-extern void		RefreshFKeys(BOOL fullRefresh);
-extern BOOL		FunctionKey(UWORD num);
-extern BOOL		HelpKey(void);
-extern BOOL 		CmdFKey(char *args);
-extern BOOL		CmdRexx(char *args);
-extern BOOL		CmdSavePrefs(char *args);
-extern BOOL		CmdInfo(char *args);
-extern BOOL		CmdExecBase(char *args);
-extern BOOL		CmdResources(char *args);
-extern BOOL		CmdIntrs(char *args);
-extern BOOL		CmdPorts(char *args);
-extern BOOL		CmdSymList(char *args);
-extern BOOL		CmdTasks(char *args);
-extern BOOL		CmdLibs(char *args);
-extern BOOL		CmdDevices(char *args);
-extern BOOL		CmdMemList(char *args);
-extern BOOL		CmdDoBsBase(char *args);
-extern BOOL		CmdProcess(char *args);
-extern BOOL		CmdOffsets(char *args);
-extern BOOL		CmdDown(char *args);
-extern BOOL		CmdUp(char *args);
-extern BOOL		CmdPageDown(char *args);
-extern BOOL		CmdPageUp(char *args);
-extern BOOL		CmdSource(char *args);
-extern BOOL		CmdDism(char *args);
-extern BOOL		CmdMixed(char *args);
-extern BOOL		CmdBytes(char *args);
-extern BOOL		CmdWords(char *args);
-extern BOOL		CmdLongs(char *args);
-extern BOOL		CmdBreakpoint(char *args);
-extern BOOL		CmdBP(char *args);
-extern BOOL		CmdClear(char *args);
-extern BOOL		CmdHunks(char *args);
-extern BOOL		CmdSymbol(char *args);
-extern BOOL		CmdSet(char *args);
-extern BOOL		RStepTarget(void);
-extern BOOL		StepTarget(void);
-extern BOOL		StepTargetRange(ULONG addressLow, ULONG addressHi);
-extern BOOL		RStepTargetRange(ULONG addressLow, ULONG addressHi);
-extern BOOL		CmdStep(char *args);
-extern BOOL		CmdRStep(char *args);
-extern BOOL		OverTarget(void);
-extern BOOL		OverTargetRange(ULONG addressLow, ULONG addressHi);
-extern BOOL		CmdOver(char *args);
-extern BOOL		CmdReset(char *args);
-extern BOOL		GoTarget(void);
-extern BOOL		CmdGo(char *args);
-extern BOOL		CmdEval(char *args);
-extern BOOL		CmdOpen(char *args);
-extern BOOL		CmdClose(char *args);
-extern BOOL		CmdQuit(char *args);
-extern BOOL		CmdHelp(char *args) ;
-extern BOOL		CmdWatchBytes(char *args);
-extern BOOL		CmdWatchWords(char *args);
-extern BOOL		CmdWatchLongs(char *args);
-extern BOOL		CmdWatchClear(char *args);
-extern BOOL		CmdRefresh(char *args);
-extern BOOL		CmdDosBase(char *args);
-extern WORD		RefreshHelp(WORD maxLines, BOOL fullRefresh, LONG);
-extern BOOL		DownHelp(void);
-extern BOOL		UpHelp(void);
-extern int		HelpSize(void);
-extern char		*SkipBlanks(char *s);
-extern BOOL		DoCommand(char *command);
-extern BOOL		CmdAlias(char *args);
-extern BOOL		CmdUnAlias(char *args);
-extern BOOL		CmdRegs(char *args);
-extern BOOL		CmdJump(char *args);
-extern BOOL 		CmdBar(char *args);
-extern BOOL 		CmdEnd(char *args);
-extern BOOL 		CmdItem(char *args);
-extern BOOL 		CmdTitle(char *args);
-extern BOOL 		CmdMenus(char *args);
-extern BOOL 		CmdSubItem(char *args);
-extern BOOL 		CmdChangeWindow(char *args);
-extern BOOL 		CmdAgain(char *args);
-extern void 		init_function_keys(void);
-extern char	fkeys[10][16];
+extern UBYTE    LineBuf[128];
+extern UBYTE    DirBuf[128];
+extern WORD             ForceFullRefresh;
+extern UBYTE    RexxReplyString[256];
+extern UBYTE    DefaultPubName[128];
+extern char             lastCommand[128];
+extern int              RStepFlag;
+extern char             rexxhostname[16];
+extern long             ParseExp(char *, short *, long);
+extern void             PushOp(short, short, short);
+extern int              TopOfOpStack(void);
+extern int              SecondOffOpStack(void);
+extern void             PushAtom(long, short);
+extern void             RefreshFKeys(BOOL fullRefresh);
+extern BOOL             FunctionKey(UWORD num);
+extern BOOL             HelpKey(void);
+extern BOOL             CmdFKey(char *args);
+extern BOOL             CmdRexx(char *args);
+extern BOOL             CmdSavePrefs(char *args);
+extern BOOL             CmdInfo(char *args);
+extern BOOL             CmdExecBase(char *args);
+extern BOOL             CmdResources(char *args);
+extern BOOL             CmdIntrs(char *args);
+extern BOOL             CmdPorts(char *args);
+extern BOOL             CmdSymList(char *args);
+extern BOOL             CmdTasks(char *args);
+extern BOOL             CmdLibs(char *args);
+extern BOOL             CmdDevices(char *args);
+extern BOOL             CmdMemList(char *args);
+extern BOOL             CmdDoBsBase(char *args);
+extern BOOL             CmdProcess(char *args);
+extern BOOL             CmdOffsets(char *args);
+extern BOOL             CmdDown(char *args);
+extern BOOL             CmdUp(char *args);
+extern BOOL             CmdPageDown(char *args);
+extern BOOL             CmdPageUp(char *args);
+extern BOOL             CmdSource(char *args);
+extern BOOL             CmdDism(char *args);
+extern BOOL             CmdMixed(char *args);
+extern BOOL             CmdBytes(char *args);
+extern BOOL             CmdWords(char *args);
+extern BOOL             CmdLongs(char *args);
+extern BOOL             CmdBreakpoint(char *args);
+extern BOOL             CmdBP(char *args);
+extern BOOL             CmdClear(char *args);
+extern BOOL             CmdHunks(char *args);
+extern BOOL             CmdSymbol(char *args);
+extern BOOL             CmdSet(char *args);
+extern BOOL             RStepTarget(void);
+extern BOOL             StepTarget(void);
+extern BOOL             StepTargetRange(ULONG addressLow, ULONG addressHi);
+extern BOOL             RStepTargetRange(ULONG addressLow, ULONG addressHi);
+extern BOOL             CmdStep(char *args);
+extern BOOL             CmdRStep(char *args);
+extern BOOL             OverTarget(void);
+extern BOOL             OverTargetRange(ULONG addressLow, ULONG addressHi);
+extern BOOL             CmdOver(char *args);
+extern BOOL             CmdReset(char *args);
+extern BOOL             GoTarget(void);
+extern BOOL             CmdGo(char *args);
+extern BOOL             CmdEval(char *args);
+extern BOOL             CmdOpen(char *args);
+extern BOOL             CmdClose(char *args);
+extern BOOL             CmdQuit(char *args);
+extern BOOL             CmdHelp(char *args) ;
+extern BOOL             CmdWatchBytes(char *args);
+extern BOOL             CmdWatchWords(char *args);
+extern BOOL             CmdWatchLongs(char *args);
+extern BOOL             CmdWatchClear(char *args);
+extern BOOL             CmdRefresh(char *args);
+extern BOOL             CmdDosBase(char *args);
+extern WORD             RefreshHelp(WORD maxLines, BOOL fullRefresh, LONG);
+extern BOOL             DownHelp(void);
+extern BOOL             UpHelp(void);
+extern int              HelpSize(void);
+extern char             *SkipBlanks(char *s);
+extern BOOL             DoCommand(char *command);
+extern BOOL             CmdAlias(char *args);
+extern BOOL             CmdUnAlias(char *args);
+extern BOOL             CmdRegs(char *args);
+extern BOOL             CmdJump(char *args);
+extern BOOL             CmdBar(char *args);
+extern BOOL             CmdEnd(char *args);
+extern BOOL             CmdItem(char *args);
+extern BOOL             CmdTitle(char *args);
+extern BOOL             CmdMenus(char *args);
+extern BOOL             CmdSubItem(char *args);
+extern BOOL             CmdChangeWindow(char *args);
+extern BOOL             CmdAgain(char *args);
+extern void             init_function_keys(void);
+extern char     fkeys[10][16];
 extern void kprintline(char *string);
 extern void kprintlen(char *string, int len);
-extern WORD		RefreshHunks(WORD maxLines, BOOL fullRefresh, LONG index);
-extern WORD		RefreshSymbols(WORD maxLines, BOOL fullRefresh, LONG index);
-extern LONG		SymbolIndexOfAddr(ULONG val);
-extern BOOL		DownHunks(void);
-extern BOOL		UpHunks(void);
-extern BOOL		DownSymbol(void);
-extern BOOL		PageDownSymbol(void);
-extern BOOL		UpSymbol(void);
-extern BOOL		PageUpSymbol(void);
-extern BOOL		DBugLoadSeg(char *filename);
-extern void		AllocateStack(void);
-extern void		ResetTarget(void);
-extern DEBUG 	*FindDebug(ULONG address);
-extern DEBUG 	*FindNearestDebug(ULONG address);
-extern SOURCE	*FindSource(DEBUG *debug, ULONG address);
-extern char		*FindSourceLine(DEBUG *debug, SOURCE *source);
+extern WORD             RefreshHunks(WORD maxLines, BOOL fullRefresh, LONG index);
+extern WORD             RefreshSymbols(WORD maxLines, BOOL fullRefresh, LONG index);
+extern LONG             SymbolIndexOfAddr(ULONG val);
+extern BOOL             DownHunks(void);
+extern BOOL             UpHunks(void);
+extern BOOL             DownSymbol(void);
+extern BOOL             PageDownSymbol(void);
+extern BOOL             UpSymbol(void);
+extern BOOL             PageUpSymbol(void);
+extern BOOL             DBugLoadSeg(char *filename);
+extern void             AllocateStack(void);
+extern void             ResetTarget(void);
+extern DEBUG    *FindDebug(ULONG address);
+extern DEBUG    *FindNearestDebug(ULONG address);
+extern SOURCE   *FindSource(DEBUG *debug, ULONG address);
+extern char             *FindSourceLine(DEBUG *debug, SOURCE *source);
 extern __stkargs char *LookupValue(ULONG value);
-extern ULONG 	*NearestSymbol(ULONG value);
-extern char		*NearestValue(ULONG value);
-extern BOOL		LookupSymbol(char *symbol, ULONG *value);
-extern BOOL		LookupSymLen(char *symbol, UWORD len, ULONG *value);
-extern int		CountSymbols(void);
-extern void		CopySymbols(SYMLIST *symlist);
-extern char		*addscore(char *string);
-extern char		*addat(char *string);
-extern WORD		RefreshBreakpoints(WORD maxLines, BOOL fullRefresh);
-extern BOOL		UpBreak(void);
-extern BOOL		DownBreak(void);
-extern void		InitBreakpoints(void);
-extern void		InstallBreakpoints(void);
-extern void		CheckBreakpoints(void);
-extern BOOL		IsBreakpoint(ULONG address);
-extern BOOL		SetBreakpoint(ULONG address, UWORD count, UWORD type);
-extern BOOL		ClearBreakpoint(ULONG address);
-extern void		SetTempBreakpoint(ULONG address);
-extern void		SetAllBreakpoints(void);
+extern ULONG    *NearestSymbol(ULONG value);
+extern char             *NearestValue(ULONG value);
+extern BOOL             LookupSymbol(char *symbol, ULONG *value);
+extern BOOL             LookupSymLen(char *symbol, UWORD len, ULONG *value);
+extern int              CountSymbols(void);
+extern void             CopySymbols(SYMLIST *symlist);
+extern char             *addscore(char *string);
+extern char             *addat(char *string);
+extern WORD             RefreshBreakpoints(WORD maxLines, BOOL fullRefresh);
+extern BOOL             UpBreak(void);
+extern BOOL             DownBreak(void);
+extern void             InitBreakpoints(void);
+extern void             InstallBreakpoints(void);
+extern void             CheckBreakpoints(void);
+extern BOOL             IsBreakpoint(ULONG address);
+extern BOOL             SetBreakpoint(ULONG address, UWORD count, UWORD type);
+extern BOOL             ClearBreakpoint(ULONG address);
+extern void             SetTempBreakpoint(ULONG address);
+extern void             SetAllBreakpoints(void);
 extern WORD topBP;
-extern WORD		RefreshBytes(WORD maxLines, BOOL fullRefresh, ULONG addr);
-extern WORD		RefreshWords(WORD maxLines, BOOL fullRefresh, ULONG addr);
-extern WORD		RefreshLongs(WORD maxLines, BOOL fullRefresh, ULONG addr);
-extern BOOL		UpBytes(void);
-extern BOOL		UpWords(void);
-extern BOOL		UpLongs(void);
-extern BOOL		PageUpHex(void);
-extern BOOL		DownBytes(void);
-extern BOOL		DownWords(void);
-extern BOOL		DownLongs(void);
-extern BOOL		PageDownHex(void);
-extern BOOL		DownMixed(void);
-extern BOOL		UpMixed(void);
-extern BOOL		PageDownMixed(void);
-extern BOOL		PageUpMixed(void);
-extern BOOL		DownSource(void);
-extern BOOL		UpSource(void);
-extern BOOL		PageDownSource(void);
-extern BOOL		PageUpSource(void);
-extern WORD		RefreshMixed(WORD maxLines, BOOL fullRefresh, ULONG, ULONG, WORD);
-extern WORD		PrevMixedLine(ULONG *addr, ULONG *line, LONG *info);
-extern WORD		NextMixedLine(ULONG *addr, ULONG *line, LONG *info);
-extern WORD		CurrentMixedLine(ULONG *addr, ULONG *line, LONG *info);
-extern BOOL		DownDism(void);
-extern BOOL		UpDism(void);
-extern BOOL		PageDownDism(void);
-extern BOOL		PageUpDism(void);
-extern WORD		RefreshDism(short maxLines, BOOL fullRefresh);
-extern ULONG 	PreviousInstruction(ULONG addr);
-extern char		*StateText(ULONG staten);
-extern WORD		RefreshRegisters(WORD maxLines, BOOL fullRefresh);
-extern long		*RegisterAddress(char *name);
-extern WORD		RefreshWatchpoints(WORD maxLines, BOOL fullRefresh);
-extern void		InitWatchpoints(void);
-extern BOOL		IsWatchpoint(char *expression);
-extern BOOL		SetWatchpoint(char *expression, ULONG type);
-extern BOOL		ClearWatchpoint(char *expression);
-extern BOOL 		ShowWatchTitle(BOOL fullRefresh, WORD *count, WORD *maxLines);
-extern BOOL 	enable_menus(void);
-extern void 	init_default_menus(void);
-extern void 	free_menus(void);
-extern void 	set_menu_item(int num, int type, unsigned char *str, unsigned char *cmd, unsigned char *comkey);
-extern void 	do_scroller(void);
+extern WORD             RefreshBytes(WORD maxLines, BOOL fullRefresh, ULONG addr);
+extern WORD             RefreshWords(WORD maxLines, BOOL fullRefresh, ULONG addr);
+extern WORD             RefreshLongs(WORD maxLines, BOOL fullRefresh, ULONG addr);
+extern BOOL             UpBytes(void);
+extern BOOL             UpWords(void);
+extern BOOL             UpLongs(void);
+extern BOOL             PageUpHex(void);
+extern BOOL             DownBytes(void);
+extern BOOL             DownWords(void);
+extern BOOL             DownLongs(void);
+extern BOOL             PageDownHex(void);
+extern BOOL             DownMixed(void);
+extern BOOL             UpMixed(void);
+extern BOOL             PageDownMixed(void);
+extern BOOL             PageUpMixed(void);
+extern BOOL             DownSource(void);
+extern BOOL             UpSource(void);
+extern BOOL             PageDownSource(void);
+extern BOOL             PageUpSource(void);
+extern WORD             RefreshMixed(WORD maxLines, BOOL fullRefresh, ULONG, ULONG, WORD);
+extern WORD             PrevMixedLine(ULONG *addr, ULONG *line, LONG *info);
+extern WORD             NextMixedLine(ULONG *addr, ULONG *line, LONG *info);
+extern WORD             CurrentMixedLine(ULONG *addr, ULONG *line, LONG *info);
+extern BOOL             DownDism(void);
+extern BOOL             UpDism(void);
+extern BOOL             PageDownDism(void);
+extern BOOL             PageUpDism(void);
+extern WORD             RefreshDism(short maxLines, BOOL fullRefresh);
+extern ULONG    PreviousInstruction(ULONG addr);
+extern char             *StateText(ULONG staten);
+extern WORD             RefreshRegisters(WORD maxLines, BOOL fullRefresh);
+extern long             *RegisterAddress(char *name);
+extern WORD             RefreshWatchpoints(WORD maxLines, BOOL fullRefresh);
+extern void             InitWatchpoints(void);
+extern BOOL             IsWatchpoint(char *expression);
+extern BOOL             SetWatchpoint(char *expression, ULONG type);
+extern BOOL             ClearWatchpoint(char *expression);
+extern BOOL             ShowWatchTitle(BOOL fullRefresh, WORD *count, WORD *maxLines);
+extern BOOL     enable_menus(void);
+extern void     init_default_menus(void);
+extern void     free_menus(void);
+extern void     set_menu_item(int num, int type, unsigned char *str, unsigned char *cmd, unsigned char *comkey);
+extern void     do_scroller(void);
 extern UWORD FindScrollerTop(UWORD total, UWORD displayable, UWORD pot);
-extern int 	FindScrollerValues(UWORD total, UWORD displayable, UWORD top, WORD overlap, UWORD *body, UWORD *pot);
-extern void 	setscrollbar(int flag);
-extern void 	ActivateArrows(struct Window *win);
-extern void 	InActivateArrows(struct Window *win);
-extern BOOL 	ProcessMenuItem(char *args,int type);
-extern int	FindSlot(char *args);
+extern int      FindScrollerValues(UWORD total, UWORD displayable, UWORD top, WORD overlap, UWORD *body, UWORD *pot);
+extern void     setscrollbar(int flag);
+extern void     ActivateArrows(struct Window *win);
+extern void     InActivateArrows(struct Window *win);
+extern BOOL     ProcessMenuItem(char *args,int type);
+extern int      FindSlot(char *args);
 extern struct Menu *v_create_menus(struct NewMenu *menulist);
 extern int v_layout_menus(struct Menu *menus);
 extern void v_free_menus(struct Menu *menus);
 extern int text_width(char *str);
-extern BOOL		RXGetPC(char *args);
-extern BOOL		RXGetLine(char *args);
-extern BOOL		RXGetInfo(char *args);
-extern BOOL		RXGetDismLine(char *args);
-extern BOOL 		RXGetEval(char *args);
-extern BOOL 		RXGetBytes(char *args);
-extern BOOL		RXGetWords(char *args);
-extern BOOL		RXGetLongs(char *args);
-extern BOOL		RXGetCommand(char *args);
-extern BOOL		RXStartList(char *args);
-extern BOOL		RXEndList(char *args);
-extern BOOL		RXPutList(char *args);
-extern void		InitConsole(void);
-extern LONG		ScrMainBodyRange(void *ptop, void *pbot);
-extern LONG		ScrColumns(WORD overhead, WORD itemWidth, WORD limit);
-extern void		ScrFlush(void);
-extern void		ScrPutNewline(void);
-extern void		ScrPutChar(UBYTE c);
-extern void		ScrWrite(char *s, ULONG len);
-extern void		ScrPuts(char *s);
-extern void		ScrPutsCtl(char *s);
-extern WORD		ScrPrintf(const char *fmt, ...);
-extern void		ScrStatus(const char *fmt, ...);
-extern void		ScrHome(void);
-extern void		ScrCursoff(void);
-extern void		ScrCurson(void);
-extern void		ScrClr(void);
-extern void		ScrRowCol(UWORD row, UWORD col);
-extern void		ScrEOL(void);
-extern void		ScrHighlight(void);
-extern void		ScrDull(void);
-extern void		ScrPlain(void);
-extern void		ScrInverse(void);
-extern void		ScrItalics(void);
-extern void		ScrUnderline(void);
-extern void		ScrScrollup(void);
-extern void		ScrScrolldown(void);
-extern DBugDisp 	*ScrOpen(BOOL first, BOOL refresh, char *pubname);
-extern void		ScrScrollClr(void);
-extern void		GetWindowSize(void);
-extern void		EnterDebugger(void);
-extern void		CloseDisplay(struct DBugDisp *);
-extern void		RequestCloseDisplay(struct DBugDisp *, int );
-extern BOOL		CheckCloseDisplay(void);
-extern void		ProcessDataAtCoord(DBugDisp *disp, WORD x, WORD y);
-extern void 		SetTitle(char *title, DBugDisp *disp);
-extern void 		draw_fkey_boxes(void);
-extern void		drawdoublebox(void);
+extern BOOL             RXGetPC(char *args);
+extern BOOL             RXGetLine(char *args);
+extern BOOL             RXGetInfo(char *args);
+extern BOOL             RXGetDismLine(char *args);
+extern BOOL             RXGetEval(char *args);
+extern BOOL             RXGetBytes(char *args);
+extern BOOL             RXGetWords(char *args);
+extern BOOL             RXGetLongs(char *args);
+extern BOOL             RXGetCommand(char *args);
+extern BOOL             RXStartList(char *args);
+extern BOOL             RXEndList(char *args);
+extern BOOL             RXPutList(char *args);
+extern void             InitConsole(void);
+extern LONG             ScrMainBodyRange(void *ptop, void *pbot);
+extern LONG             ScrColumns(WORD overhead, WORD itemWidth, WORD limit);
+extern void             ScrFlush(void);
+extern void             ScrPutNewline(void);
+extern void             ScrPutChar(UBYTE c);
+extern void             ScrWrite(char *s, ULONG len);
+extern void             ScrPuts(char *s);
+extern void             ScrPutsCtl(char *s);
+extern WORD             ScrPrintf(const char *fmt, ...);
+extern void             ScrStatus(const char *fmt, ...);
+extern void             ScrHome(void);
+extern void             ScrCursoff(void);
+extern void             ScrCurson(void);
+extern void             ScrClr(void);
+extern void             ScrRowCol(UWORD row, UWORD col);
+extern void             ScrEOL(void);
+extern void             ScrHighlight(void);
+extern void             ScrDull(void);
+extern void             ScrPlain(void);
+extern void             ScrInverse(void);
+extern void             ScrItalics(void);
+extern void             ScrUnderline(void);
+extern void             ScrScrollup(void);
+extern void             ScrScrolldown(void);
+extern DBugDisp         *ScrOpen(BOOL first, BOOL refresh, char *pubname);
+extern void             ScrScrollClr(void);
+extern void             GetWindowSize(void);
+extern void             EnterDebugger(void);
+extern void             CloseDisplay(struct DBugDisp *);
+extern void             RequestCloseDisplay(struct DBugDisp *, int );
+extern BOOL             CheckCloseDisplay(void);
+extern void             ProcessDataAtCoord(DBugDisp *disp, WORD x, WORD y);
+extern void             SetTitle(char *title, DBugDisp *disp);
+extern void             draw_fkey_boxes(void);
+extern void             drawdoublebox(void);
 extern struct DBugDisp  *CurDisplay;
-extern LIST	DisplayList;
+extern LIST     DisplayList;
 extern  const unsigned char __CArya[257];
 extern  const unsigned char __CAryb[257];
 extern  const unsigned char __CUToL[257];
@@ -3496,50 +3496,50 @@ extern int isxdigit(int);
 extern int isprint(int);
 extern int tolower(int);
 extern int toupper(int);
-extern void		InitConsole(void);
-extern LONG		ScrMainBodyRange(void *ptop, void *pbot);
-extern LONG		ScrColumns(WORD overhead, WORD itemWidth, WORD limit);
-extern void		ScrFlush(void);
-extern void		ScrPutNewline(void);
-extern void		ScrPutChar(UBYTE c);
-extern void		ScrWrite(char *s, ULONG len);
-extern void		ScrPuts(char *s);
-extern void		ScrPutsCtl(char *s);
-static unsigned int	_swrite(char *buf, size_t n1, size_t n2, const char **sst);
-extern WORD		ScrPrintf(const char *fmt, ...);
-extern void		ScrStatus(const char *fmt, ...);
-static void		QueueRead(void);
-static void		HandleConsoleInput(struct DBugDisp *disp, WORD c);
-extern void		ScrHome(void);
-extern void		ScrCursoff(void);
-extern void		ScrCurson(void);
-extern void		ScrClr(void);
-extern void		ScrRowCol(UWORD row, UWORD col);
-extern void		ScrEOL(void);
-extern void		ScrHighlight(void);
-extern void		ScrDull(void);
-extern void		ScrPlain(void);
-extern void		ScrInverse(void);
-extern void		ScrItalics(void);
-extern void		ScrUnderline(void);
-extern void		ScrScrollup(void);
-extern void		ScrScrolldown(void);
-__autoexit static void	ScrClose(void);
-extern DBugDisp 	*ScrOpen(BOOL first, BOOL refresh, char *pubname);
-extern void		ScrScrollClr(void);
-extern void		GetWindowSize(void);
-extern void		EnterDebugger(void);
-extern void		CloseDisplay(struct DBugDisp *);
-extern void		RequestCloseDisplay(struct DBugDisp *, int );
-extern BOOL		CheckCloseDisplay(void);
-extern void		ProcessDataAtCoord(DBugDisp *disp, WORD x, WORD y);
-extern void 		SetTitle(char *title, DBugDisp *disp);
-extern void 		draw_fkey_boxes(void);
-extern void		drawdoublebox(void);
-static 	  void 		drawbox(int xcol,int yrow, int xlen, int ylen);
-static     void		do_putc(DBugDisp *disp, UBYTE c);
+extern void             InitConsole(void);
+extern LONG             ScrMainBodyRange(void *ptop, void *pbot);
+extern LONG             ScrColumns(WORD overhead, WORD itemWidth, WORD limit);
+extern void             ScrFlush(void);
+extern void             ScrPutNewline(void);
+extern void             ScrPutChar(UBYTE c);
+extern void             ScrWrite(char *s, ULONG len);
+extern void             ScrPuts(char *s);
+extern void             ScrPutsCtl(char *s);
+static unsigned int     _swrite(char *buf, size_t n1, size_t n2, const char **sst);
+extern WORD             ScrPrintf(const char *fmt, ...);
+extern void             ScrStatus(const char *fmt, ...);
+static void             QueueRead(void);
+static void             HandleConsoleInput(struct DBugDisp *disp, WORD c);
+extern void             ScrHome(void);
+extern void             ScrCursoff(void);
+extern void             ScrCurson(void);
+extern void             ScrClr(void);
+extern void             ScrRowCol(UWORD row, UWORD col);
+extern void             ScrEOL(void);
+extern void             ScrHighlight(void);
+extern void             ScrDull(void);
+extern void             ScrPlain(void);
+extern void             ScrInverse(void);
+extern void             ScrItalics(void);
+extern void             ScrUnderline(void);
+extern void             ScrScrollup(void);
+extern void             ScrScrolldown(void);
+__autoexit static void  ScrClose(void);
+extern DBugDisp         *ScrOpen(BOOL first, BOOL refresh, char *pubname);
+extern void             ScrScrollClr(void);
+extern void             GetWindowSize(void);
+extern void             EnterDebugger(void);
+extern void             CloseDisplay(struct DBugDisp *);
+extern void             RequestCloseDisplay(struct DBugDisp *, int );
+extern BOOL             CheckCloseDisplay(void);
+extern void             ProcessDataAtCoord(DBugDisp *disp, WORD x, WORD y);
+extern void             SetTitle(char *title, DBugDisp *disp);
+extern void             draw_fkey_boxes(void);
+extern void             drawdoublebox(void);
+static    void          drawbox(int xcol,int yrow, int xlen, int ylen);
+static     void         do_putc(DBugDisp *disp, UBYTE c);
 extern struct DBugDisp  *CurDisplay;
-extern LIST	DisplayList;
+extern LIST     DisplayList;
 extern struct Menu      *DebugMenu;
 extern struct Gadget ColorGadget;
 extern struct Gadget DownGadget;
@@ -3547,231 +3547,231 @@ extern struct Gadget UpGadget;
 extern struct Image ColorPropImage;
 extern struct PropInfo ColorPropInfo;
 DBugDisp    *CurDisplay;
-LIST	    DisplayList;
-MPORT	    DBugPort;
-WORD	    CheckClose;
-char	    ValidClipChar[256];
+LIST        DisplayList;
+MPORT       DBugPort;
+WORD        CheckClose;
+char        ValidClipChar[256];
 static int  count = 0;
 static int  PageFlag = 0;
 static int  Ticked = 0;
-USHORT	oldrow = 0xFFFF;
+USHORT  oldrow = 0xFFFF;
 USHORT  oldcol = 0xFFFF;
 static ULONG seconds=0;
 static ULONG micros=0;
-__geta4 void	EnterDebugger(void) {
-	struct	MenuItem *item;
+__geta4 void    EnterDebugger(void) {
+        struct  MenuItem *item;
     if (CurDisplay && CurDisplay->ds_DisplayMode > DISPLAY_MIXED)
-	SetDisplayMode(CurDisplay->ds_PreferedMode, 0);
+        SetDisplayMode(CurDisplay->ds_PreferedMode, 0);
     RefreshWindow(-1);
     ScrStatus("Ready");
     RefreshCommand(1);
     ScrCurson();
     SetSignal(0L,(1L<<4));
     while (DisplayList.lh_Head != (NODE *)&DisplayList.lh_Tail) {
-	ULONG	mask;
-	MSG	*msg;
-	if (CheckClose && CheckCloseDisplay()) {
-	    break;
-	}
-	mask = Wait( (1<<DBugPort.mp_SigBit) | (1<<RexxSigBit) );
-	if (mask & (1<<DBugPort.mp_SigBit)) {
- 	    while (msg = GetMsg(&DBugPort)) {
-		DBugDisp	*disp;
-		for (disp = (DBugDisp *)DisplayList.lh_Head; disp->ds_Node.ln_Succ; disp = (DBugDisp *)disp->ds_Node.ln_Succ) {
-		    if (msg == (MSG *)&disp->ds_CReadReq) {
-			disp->ds_CReadIP = 0;
-			CurDisplay = disp;
-			HandleConsoleInput(disp, disp->ds_CInChar);
-			CurDisplay = disp;
-			QueueRead();
-			msg = 0L;
-			break;
-		    }
-		}
-		if (msg == 0L)continue;
-		CurDisplay = 0L;
-		for (disp = (DBugDisp *)DisplayList.lh_Head; disp->ds_Node.ln_Succ; disp = (DBugDisp *)disp->ds_Node.ln_Succ) {
-		    if (((IMSG *)msg)->IDCMPWindow == disp->ds_Win) {
-			CurDisplay = disp;
-			break;
-		    }
-		}
-		if (CurDisplay) {
-		    switch (((IMSG*)msg)->Class) {
-			case 0x00000200:
-			RequestCloseDisplay(CurDisplay,0);
-			break;
-		        case 0x00000002:
-			    GetWindowSize();
-			    {
-			        WINDOW	*window = CurDisplay->ds_Win;
-			        dprefs.left = window->LeftEdge; dprefs.top = window->TopEdge;
-			        dprefs.width = window->Width; dprefs.height = window->Height;
-			    }
-			    ScrClr();
-			    setscrollbar(1);
-			    RefreshWindow(-1);
-			    ScrStatus("Window Resized");
-			    RefreshCommand(1);
-			    ScrFlush();
-			    break;
-			case 0x00000008:
-			    switch(((IMSG *)msg)->Code) {
-				USHORT newrow, newcol, nc, nr;
-				case (0x68 | 0x80):
-				break;
-				case (0x68):
-				    newcol = (((IMSG *)msg)->MouseX);
-				    nc = newcol >> 3;
-				    newrow = (((IMSG *)msg)->MouseY);
-				    nr = newrow >> 3;
-				    if((oldcol == nc) && (oldrow == nr)) {
-					char *string="bp\r";
-				    	while (*string) {
-				            HandleConsoleInput(disp,*string++);
-					}
-					oldcol = oldrow = 0xFFFF;
-				    }
-				    else {
-				    	oldcol = nc;
-				    	oldrow =  nr;
-				        ProcessDataAtCoord(disp, newcol, newrow);
-				    }
-				break;
-			    }
-			    break;
-			case 0x00000004:
-			    BeginRefresh(disp->ds_Win);
-			    EndRefresh(disp->ds_Win, 1);
-			    break;
-			case 0x00080000:
-			    InActivateArrows(disp->ds_Win);
-			    break;
-			case 0x00040000: {
-			    PageFlag = 0;
-			    ActivateArrows(disp->ds_Win);
-			    RefreshCommand(1);
-			    break;
-			}
-			case 0x00400000:
-			    if(PageFlag) {
-				Ticked = 1;
-				ScrCursoff();
-				if( PageFlag == 1)DoCommand("UP");
-				else DoCommand("DOWN");
-				RefreshPrompt(1);
-				RefreshCommand(1);
-				ScrCurson();
-			    }
-			    break;
-			case 0x00000040: {
-				unsigned int id;
-				APTR address = ((IMSG *)msg)->IAddress;
-				if( (id = ((struct Gadget *)address)->GadgetID) != 0) {
-				    PageFlag = 0;
-				    if(Ticked) {
-					Ticked = 0;
-					break;
-				    }
-				    ScrCursoff();
-				    if( id == 1)DoCommand("UP");
-				    else DoCommand("DOWN");
-				    RefreshPrompt(1);
-				    RefreshCommand(1);
-				    ScrCurson();
-				}
-				break;
-			}
-			case 0x00000010:
-			    if(++count&1) {
-				break;
-			    }
-			case 0x00000020: {
-			    ULONG current, last;
-				unsigned int id;
-				APTR address = ((IMSG *)msg)->IAddress;
-			    if( (id = ((struct Gadget *)address)->GadgetID) != 0) {
-				PageFlag = (id == 1) ? 1 : 2;
-				Ticked = 0;
-				break;
-			    }
-			    switch (CurDisplay->ds_DisplayMode) {
-				case DISPLAY_DISM:
-				case DISPLAY_SOURCE:
-				case DISPLAY_MIXED:
-				case DISPLAY_BYTES:
-				case DISPLAY_WORDS:
-				case DISPLAY_LONGS:
-				    last = (ScrollEnd - ScrollStart) >> 5;
-				    break;
-				case DISPLAY_HELP:
-				    last = HelpSize();
-				    break;
-				case DISPLAY_SYMBOL:
-				    last = SymbolCount;
-				    break;
-				case DISPLAY_HUNKS:
-		    		    last = numHunks;
-		    		    break;
-				case DISPLAY_BREAK:
-				    last = 32+5;
-				    break;
-				    default:
-		    		    last = SizeDLIST(&CurDisplay->ds_List);
-			    }
-			    current = FindScrollerTop(last, CurDisplay->ds_ScrRows, ColorPropInfo.VertPot);
-			    switch(CurDisplay->ds_DisplayMode) {
-				case DISPLAY_DISM:
-				case DISPLAY_SOURCE:
-				case DISPLAY_MIXED:
-				case DISPLAY_BYTES:
-				case DISPLAY_WORDS:
-				case DISPLAY_LONGS:
-				    if((ScrollStart + (current << 5)) != CurDisplay->ds_WindowTop) {
-					CurDisplay->ds_WindowTop = ScrollStart + (current << 5);
-					CurDisplay->ds_WindowTopLine = 0;
-					RefreshWindow(1);
-				    }
-				    break;
-				case DISPLAY_BREAK:
-				    if(topBP != current) {
-					topBP = current;
-					RefreshWindow(1);
-				    }
-				    break;
-				default:;
-				    if(CurDisplay->ds_WindowTop != current) {
-					CurDisplay->ds_WindowTop = current;
-					CurDisplay->ds_WindowTopLine = 0;
-					RefreshWindow(1);
-				    }
-			    }
-			    break;
-			}
-			case 0x00000100: {
-			    USHORT code = ((IMSG *)msg)->Code;
-			    char *string;
-			    if (!code || (code == 0xFFFF))break;
-				while (code && (code != 0xFFFF)) {
-				    item = ItemAddress(DebugMenu,(LONG) code);
-				    string = (* ( (APTR *)(item+1) ) );
-				    while (*string) {
-				        HandleConsoleInput(disp,*string++);
-				    }
-				    HandleConsoleInput(disp,'\r');
-				    code = item->NextSelect;
-				}
-			    break;
-			}
-			default:
-			break;
-		    }
-		}
-		if(msg)ReplyMsg(msg);
-	    }
-	}
-	if (mask & (1<<RexxSigBit)) {
-	    ProcessRexxCommands(0L);
-	}
+        ULONG   mask;
+        MSG     *msg;
+        if (CheckClose && CheckCloseDisplay()) {
+            break;
+        }
+        mask = Wait( (1<<DBugPort.mp_SigBit) | (1<<RexxSigBit) );
+        if (mask & (1<<DBugPort.mp_SigBit)) {
+            while (msg = GetMsg(&DBugPort)) {
+                DBugDisp        *disp;
+                for (disp = (DBugDisp *)DisplayList.lh_Head; disp->ds_Node.ln_Succ; disp = (DBugDisp *)disp->ds_Node.ln_Succ) {
+                    if (msg == (MSG *)&disp->ds_CReadReq) {
+                        disp->ds_CReadIP = 0;
+                        CurDisplay = disp;
+                        HandleConsoleInput(disp, disp->ds_CInChar);
+                        CurDisplay = disp;
+                        QueueRead();
+                        msg = 0L;
+                        break;
+                    }
+                }
+                if (msg == 0L)continue;
+                CurDisplay = 0L;
+                for (disp = (DBugDisp *)DisplayList.lh_Head; disp->ds_Node.ln_Succ; disp = (DBugDisp *)disp->ds_Node.ln_Succ) {
+                    if (((IMSG *)msg)->IDCMPWindow == disp->ds_Win) {
+                        CurDisplay = disp;
+                        break;
+                    }
+                }
+                if (CurDisplay) {
+                    switch (((IMSG*)msg)->Class) {
+                        case 0x00000200:
+                        RequestCloseDisplay(CurDisplay,0);
+                        break;
+                        case 0x00000002:
+                            GetWindowSize();
+                            {
+                                WINDOW  *window = CurDisplay->ds_Win;
+                                dprefs.left = window->LeftEdge; dprefs.top = window->TopEdge;
+                                dprefs.width = window->Width; dprefs.height = window->Height;
+                            }
+                            ScrClr();
+                            setscrollbar(1);
+                            RefreshWindow(-1);
+                            ScrStatus("Window Resized");
+                            RefreshCommand(1);
+                            ScrFlush();
+                            break;
+                        case 0x00000008:
+                            switch(((IMSG *)msg)->Code) {
+                                USHORT newrow, newcol, nc, nr;
+                                case (0x68 | 0x80):
+                                break;
+                                case (0x68):
+                                    newcol = (((IMSG *)msg)->MouseX);
+                                    nc = newcol >> 3;
+                                    newrow = (((IMSG *)msg)->MouseY);
+                                    nr = newrow >> 3;
+                                    if((oldcol == nc) && (oldrow == nr)) {
+                                        char *string="bp\r";
+                                        while (*string) {
+                                            HandleConsoleInput(disp,*string++);
+                                        }
+                                        oldcol = oldrow = 0xFFFF;
+                                    }
+                                    else {
+                                        oldcol = nc;
+                                        oldrow =  nr;
+                                        ProcessDataAtCoord(disp, newcol, newrow);
+                                    }
+                                break;
+                            }
+                            break;
+                        case 0x00000004:
+                            BeginRefresh(disp->ds_Win);
+                            EndRefresh(disp->ds_Win, 1);
+                            break;
+                        case 0x00080000:
+                            InActivateArrows(disp->ds_Win);
+                            break;
+                        case 0x00040000: {
+                            PageFlag = 0;
+                            ActivateArrows(disp->ds_Win);
+                            RefreshCommand(1);
+                            break;
+                        }
+                        case 0x00400000:
+                            if(PageFlag) {
+                                Ticked = 1;
+                                ScrCursoff();
+                                if( PageFlag == 1)DoCommand("UP");
+                                else DoCommand("DOWN");
+                                RefreshPrompt(1);
+                                RefreshCommand(1);
+                                ScrCurson();
+                            }
+                            break;
+                        case 0x00000040: {
+                                unsigned int id;
+                                APTR address = ((IMSG *)msg)->IAddress;
+                                if( (id = ((struct Gadget *)address)->GadgetID) != 0) {
+                                    PageFlag = 0;
+                                    if(Ticked) {
+                                        Ticked = 0;
+                                        break;
+                                    }
+                                    ScrCursoff();
+                                    if( id == 1)DoCommand("UP");
+                                    else DoCommand("DOWN");
+                                    RefreshPrompt(1);
+                                    RefreshCommand(1);
+                                    ScrCurson();
+                                }
+                                break;
+                        }
+                        case 0x00000010:
+                            if(++count&1) {
+                                break;
+                            }
+                        case 0x00000020: {
+                            ULONG current, last;
+                                unsigned int id;
+                                APTR address = ((IMSG *)msg)->IAddress;
+                            if( (id = ((struct Gadget *)address)->GadgetID) != 0) {
+                                PageFlag = (id == 1) ? 1 : 2;
+                                Ticked = 0;
+                                break;
+                            }
+                            switch (CurDisplay->ds_DisplayMode) {
+                                case DISPLAY_DISM:
+                                case DISPLAY_SOURCE:
+                                case DISPLAY_MIXED:
+                                case DISPLAY_BYTES:
+                                case DISPLAY_WORDS:
+                                case DISPLAY_LONGS:
+                                    last = (ScrollEnd - ScrollStart) >> 5;
+                                    break;
+                                case DISPLAY_HELP:
+                                    last = HelpSize();
+                                    break;
+                                case DISPLAY_SYMBOL:
+                                    last = SymbolCount;
+                                    break;
+                                case DISPLAY_HUNKS:
+                                    last = numHunks;
+                                    break;
+                                case DISPLAY_BREAK:
+                                    last = 32+5;
+                                    break;
+                                    default:
+                                    last = SizeDLIST(&CurDisplay->ds_List);
+                            }
+                            current = FindScrollerTop(last, CurDisplay->ds_ScrRows, ColorPropInfo.VertPot);
+                            switch(CurDisplay->ds_DisplayMode) {
+                                case DISPLAY_DISM:
+                                case DISPLAY_SOURCE:
+                                case DISPLAY_MIXED:
+                                case DISPLAY_BYTES:
+                                case DISPLAY_WORDS:
+                                case DISPLAY_LONGS:
+                                    if((ScrollStart + (current << 5)) != CurDisplay->ds_WindowTop) {
+                                        CurDisplay->ds_WindowTop = ScrollStart + (current << 5);
+                                        CurDisplay->ds_WindowTopLine = 0;
+                                        RefreshWindow(1);
+                                    }
+                                    break;
+                                case DISPLAY_BREAK:
+                                    if(topBP != current) {
+                                        topBP = current;
+                                        RefreshWindow(1);
+                                    }
+                                    break;
+                                default:;
+                                    if(CurDisplay->ds_WindowTop != current) {
+                                        CurDisplay->ds_WindowTop = current;
+                                        CurDisplay->ds_WindowTopLine = 0;
+                                        RefreshWindow(1);
+                                    }
+                            }
+                            break;
+                        }
+                        case 0x00000100: {
+                            USHORT code = ((IMSG *)msg)->Code;
+                            char *string;
+                            if (!code || (code == 0xFFFF))break;
+                                while (code && (code != 0xFFFF)) {
+                                    item = ItemAddress(DebugMenu,(LONG) code);
+                                    string = (* ( (APTR *)(item+1) ) );
+                                    while (*string) {
+                                        HandleConsoleInput(disp,*string++);
+                                    }
+                                    HandleConsoleInput(disp,'\r');
+                                    code = item->NextSelect;
+                                }
+                            break;
+                        }
+                        default:
+                        break;
+                    }
+                }
+                if(msg)ReplyMsg(msg);
+            }
+        }
+        if (mask & (1<<RexxSigBit)) {
+            ProcessRexxCommands(0L);
+        }
     }
 }

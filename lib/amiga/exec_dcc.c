@@ -32,7 +32,7 @@
 
 typedef struct CommandLineInterface CLI;
 
-extern struct ExecBase	*SysBase;
+extern struct ExecBase  *SysBase;
 
 exec_dcc(cmd, args)
 char *cmd;
@@ -46,66 +46,66 @@ char *args;
     CLI *cli = NULL;
 
     if ((seg = _SearchResident(cmd)) == NULL) {
-	unload = 1;
-	if ((seg = LoadSeg(cmd)) == NULL) {
-	    long lock;
-	    long oldLock;
-	    if (lock = _SearchPath(cmd)) {
-		oldLock = CurrentDir(lock);
-		seg = LoadSeg("");
-		UnLock(CurrentDir(oldLock));
-	    }
-	}
+        unload = 1;
+        if ((seg = LoadSeg(cmd)) == NULL) {
+            long lock;
+            long oldLock;
+            if (lock = _SearchPath(cmd)) {
+                oldLock = CurrentDir(lock);
+                seg = LoadSeg("");
+                UnLock(CurrentDir(oldLock));
+            }
+        }
     }
     if (seg == NULL) {
-	errno = ENOTFND;
-	return(-1);
+        errno = ENOTFND;
+        return(-1);
     }
 
     /*
-     *	allocate stack, make call, deallocate stuff.  p.s. do not need the -4.
+     *  allocate stack, make call, deallocate stuff.  p.s. do not need the -4.
      */
 
     stackSize = 4096;
     if (SysBase->ThisTask->tc_Node.ln_Type != NT_TASK) {
-	cli = BTOC(((struct Process *)SysBase->ThisTask)->pr_CLI, CLI);
+        cli = BTOC(((struct Process *)SysBase->ThisTask)->pr_CLI, CLI);
 
-	if (cli)
-	    stackSize = cli->cli_DefaultStack * 4;
+        if (cli)
+            stackSize = cli->cli_DefaultStack * 4;
     }
     if (stack = AllocMem(stackSize, MEMF_PUBLIC)) {
-	char *cmdName;
-	BPTR oldModule;
-	BPTR oldName;
+        char *cmdName;
+        BPTR oldModule;
+        BPTR oldName;
 
-	if (cli) {
+        if (cli) {
             oldModule = cli->cli_Module;
             oldName   = cli->cli_CommandName;
             cli->cli_Module = seg;
 
-	    cmdName = malloc(strlen(cmd) + 3);
+            cmdName = malloc(strlen(cmd) + 3);
 
-	    if (cmdName)
-	    {
+            if (cmdName)
+            {
                 strcpy(cmdName + 1, cmd);
                 strcat(cmdName, "\n");
                 cmdName[0] = strlen(cmd);
 
                 cli->cli_CommandName = CTOB(cmdName);
-	    }
-	}
-	r = _ExecSeg(seg, args, strlen(args), stack + stackSize - 4);
+            }
+        }
+        r = _ExecSeg(seg, args, strlen(args), stack + stackSize - 4);
 
-	FreeMem(stack, stackSize);
+        FreeMem(stack, stackSize);
 
-	if (cli) {
-	    cli->cli_Module = oldModule;
-	    cli->cli_CommandName = oldName;
-	    free(cmdName);
-	}
+        if (cli) {
+            cli->cli_Module = oldModule;
+            cli->cli_CommandName = oldName;
+            free(cmdName);
+        }
     }
     if (unload)
-	UnLoadSeg(seg);
+        UnLoadSeg(seg);
     return(r);
 }
 

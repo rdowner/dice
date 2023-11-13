@@ -1,26 +1,26 @@
 
-		;   SPA_CMP.A
-		;
-		;   D0	arg1	(4 bytes)
-		;   D1	arg2	(4 bytes)
-		;
-		;   result -> D0
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   SPA_CMP.A
+                ;
+                ;   D0  arg1    (4 bytes)
+                ;   D1  arg2    (4 bytes)
+                ;
+                ;   result -> D0
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xref	_MathIeeeSingBasBase
-		xref	_LVOIEEESPCmp
-		xdef	__spcmp_a
+                xref    _MathIeeeSingBasBase
+                xref    _LVOIEEESPCmp
+                xdef    __spcmp_a
 
-__spcmp_a	move.l	A6,-(sp)
-		move.l	_MathIeeeSingBasBase(A4),A6
-		;;exg	  D0,D1 ; NO EXCHANGE, REVERSED FROM FFP LIB
-		jsr	_LVOIEEESPCmp(A6)
-		move.l	(sp)+,A6
-		tst.l	D0
-		rts
+__spcmp_a       move.l  A6,-(sp)
+                move.l  _MathIeeeSingBasBase(A4),A6
+                ;;exg     D0,D1 ; NO EXCHANGE, REVERSED FROM FFP LIB
+                jsr     _LVOIEEESPCmp(A6)
+                move.l  (sp)+,A6
+                tst.l   D0
+                rts
 
-		END
+                END
 

@@ -8,12 +8,12 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 WORD 
 HYPER ## WeighTAMatchTags( struct TextAttr *reqTextAttr, 
-	struct TextAttr *targetTextAttr, unsigned long tag1Type, ... )
+        struct TextAttr *targetTextAttr, unsigned long tag1Type, ... )
 {
-	return WeighTAMatch(reqTextAttr,targetTextAttr, (TagItem *)&tag1Type);
+        return WeighTAMatch(reqTextAttr,targetTextAttr, (TagItem *)&tag1Type);
 }
 

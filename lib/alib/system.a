@@ -1,28 +1,28 @@
 
-		;   dummy System() call.  The system() command will use
-		;   System() under 2.0, Execute() under 1.3 ... for programs
-		;   to link a dummy System() must exist under 1.3.  Under
-		;   2.0 the amiga.lib System() will overide this one.
+                ;   dummy System() call.  The system() command will use
+                ;   System() under 2.0, Execute() under 1.3 ... for programs
+                ;   to link a dummy System() must exist under 1.3.  Under
+                ;   2.0 the amiga.lib System() will overide this one.
 
-		section text,code
+                section text,code
 
-		xdef	_System
-		xdef	@System
-		xref	_DOSBase
+                xdef    _System
+                xdef    @System
+                xref    _DOSBase
 
 @System:
-		movem.l D2/A6,-(sp)
-		move.l	A0,D1
-		move.l	A1,D2
-		bra	sxgo
+                movem.l D2/A6,-(sp)
+                move.l  A0,D1
+                move.l  A1,D2
+                bra     sxgo
 
 _System:
-		movem.l D2/A6,-(A7)
-		movem.l 12(sp),D1-D2
-sxgo		move.l	_DOSBase(A4),A6
-		jsr	-$025E(A6)
-		movem.l (sp)+,D2/A6
-		rts
+                movem.l D2/A6,-(A7)
+                movem.l 12(sp),D1-D2
+sxgo            move.l  _DOSBase(A4),A6
+                jsr     -$025E(A6)
+                movem.l (sp)+,D2/A6
+                rts
 
-		END
+                END
 

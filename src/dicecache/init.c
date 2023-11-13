@@ -14,14 +14,14 @@ Prototype void InitC(void);
 Prototype void UnInitC(void);
 
 Prototype SignalSemaphore SemLock;
-Prototype List	CacheList[HSIZE];
-Prototype List	SuffixList;
+Prototype List  CacheList[HSIZE];
+Prototype List  SuffixList;
 Prototype short DDebug;
 
 SignalSemaphore SemLock;
-List	CacheList[HSIZE];
-List	SuffixList;
-short	DDebug = 0;
+List    CacheList[HSIZE];
+List    SuffixList;
+short   DDebug = 0;
 
 void
 InitC(void)
@@ -30,15 +30,15 @@ InitC(void)
     List *list;
 
     Forbid();
-    CacheMax	 = (AvailMem(MEMF_CHIP) + AvailMem(MEMF_FAST)) / 4;
+    CacheMax     = (AvailMem(MEMF_CHIP) + AvailMem(MEMF_FAST)) / 4;
     if (CacheMax < 32768)
-	CacheMax = 32768;
+        CacheMax = 32768;
     CacheMaxFile = CacheMax >> 2;
     Permit();
 
     NewList(&SuffixList);
     for (i = 0, list = CacheList; i < HSIZE; ++i, ++list)
-	NewList(list);
+        NewList(list);
     InitSemaphore(&SemLock);
 }
 
@@ -48,20 +48,20 @@ UnInitC(void)
     short i;
 
     {
-	List *list;
-	CacheNode *cnode;
+        List *list;
+        CacheNode *cnode;
 
-	for (i = 0, list = CacheList; i < HSIZE; ++i, ++list) {
-	    while (cnode = GetHead(list))
-		DiceCacheClose(cnode);
-	}
+        for (i = 0, list = CacheList; i < HSIZE; ++i, ++list) {
+            while (cnode = GetHead(list))
+                DiceCacheClose(cnode);
+        }
     }
     {
-	Node *node;
+        Node *node;
 
-	while (node = RemHead(&SuffixList)) {
-	    FreeMem(node, sizeof(Node) + strlen(node->ln_Name) + 1);
-	}
+        while (node = RemHead(&SuffixList)) {
+            FreeMem(node, sizeof(Node) + strlen(node->ln_Name) + 1);
+        }
     }
 }
 

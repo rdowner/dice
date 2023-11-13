@@ -1,6 +1,6 @@
 
-	section	text,code
-	dc.b	$FF
-        align.w	8
-        dc.b	$FF
+        section text,code
+        dc.b    $FF
+        align.w 8
+        dc.b    $FF
         END

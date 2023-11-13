@@ -8,11 +8,11 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 struct Menu *
 HYPER ## CreateMenus( struct NewMenu *newmenu, Tag tag1, ... )
 {
-	return CreateMenusA(newmenu,(TagItem *)&tag1);
+        return CreateMenusA(newmenu,(TagItem *)&tag1);
 }
 

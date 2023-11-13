@@ -67,86 +67,86 @@ RelocToStr(RelocInfo *r, int offset, int ext, int size, int srcHunk)
     static char Buf[SMAX_BUF];
 
     if (r == NULL) {
-	Symbol *sym = NULL;
+        Symbol *sym = NULL;
 
-	if (srcHunk >= 0)
-	    sym = FindSymbolOffset(offset, srcHunk);
-	if (sym && sym->sm_Value != offset)
-	    sym = NULL;
+        if (srcHunk >= 0)
+            sym = FindSymbolOffset(offset, srcHunk);
+        if (sym && sym->sm_Value != offset)
+            sym = NULL;
 
-	if (sym) {
-	    sprintf(Buf, "%s", sym->sm_Name);
-	} else {
-	    switch(size) {
-	    case 1:
-		sprintf(Buf, "%02x", offset & 0xFF);
-		break;
-	    case 2:
-		sprintf(Buf, "%04x", offset & 0xFFFF);
-		break;
-	    case 4:
-		sprintf(Buf, "%08x", offset);
-		break;
-	    default:
-		sprintf(Buf, "%04x", offset);
-		break;
-	    }
-	}
-	return(Buf);
+        if (sym) {
+            sprintf(Buf, "%s", sym->sm_Name);
+        } else {
+            switch(size) {
+            case 1:
+                sprintf(Buf, "%02x", offset & 0xFF);
+                break;
+            case 2:
+                sprintf(Buf, "%04x", offset & 0xFFFF);
+                break;
+            case 4:
+                sprintf(Buf, "%08x", offset);
+                break;
+            default:
+                sprintf(Buf, "%04x", offset);
+                break;
+            }
+        }
+        return(Buf);
     }
 
     if ((s = r->ri_Sym) == NULL) {
-	s = FindSymbolOffset(offset, r->ri_DstHunk);
-	if (s && s->sm_Value != offset) {
-	    s = FindSymbolPrev(s);
-	    while (s && s->sm_Type > 1)
-		s = FindSymbolPrev(s);
-	}
-	if (s)
-	    offset -= s->sm_Value;
+        s = FindSymbolOffset(offset, r->ri_DstHunk);
+        if (s && s->sm_Value != offset) {
+            s = FindSymbolPrev(s);
+            while (s && s->sm_Type > 1)
+                s = FindSymbolPrev(s);
+        }
+        if (s)
+            offset -= s->sm_Value;
     }
     if (s) {
-	if (strlen(s->sm_Name) > sizeof(Buf) - 16)
-	    s->sm_Name[sizeof(Buf) - 16] = 0;
-	if (offset) {
-	    switch(size) {
-	    case 1:
-		sprintf(Buf, "%s+%02x", s->sm_Name, offset & 0xFF);
-		break;
-	    case 2:
-		sprintf(Buf, "%s+%04x", s->sm_Name, offset & 0xFFFF);
-		break;
-	    case 4:
-		sprintf(Buf, "%s+%08x", s->sm_Name, offset);
-		break;
-	    default:
-		sprintf(Buf, "%s+%04x", s->sm_Name, offset);
-		break;
-	    }
-	} else {
-	    sprintf(Buf, "%s", s->sm_Name);
-	}
+        if (strlen(s->sm_Name) > sizeof(Buf) - 16)
+            s->sm_Name[sizeof(Buf) - 16] = 0;
+        if (offset) {
+            switch(size) {
+            case 1:
+                sprintf(Buf, "%s+%02x", s->sm_Name, offset & 0xFF);
+                break;
+            case 2:
+                sprintf(Buf, "%s+%04x", s->sm_Name, offset & 0xFFFF);
+                break;
+            case 4:
+                sprintf(Buf, "%s+%08x", s->sm_Name, offset);
+                break;
+            default:
+                sprintf(Buf, "%s+%04x", s->sm_Name, offset);
+                break;
+            }
+        } else {
+            sprintf(Buf, "%s", s->sm_Name);
+        }
     } else {
-	switch(size) {
-	case 1:
-	    sprintf(Buf, "%02x.%02x", r->ri_DstHunk, offset & 0xFF);
-	    break;
-	case 2:
-	    sprintf(Buf, "%02x.%04x", r->ri_DstHunk, offset & 0xFFFF);
-	    break;
-	case 4:
-	    sprintf(Buf, "%02x.%08x", r->ri_DstHunk, offset);
-	    break;
-	default:
-	    sprintf(Buf, "%02x.%04x", r->ri_DstHunk, offset);
-	    break;
-	}
+        switch(size) {
+        case 1:
+            sprintf(Buf, "%02x.%02x", r->ri_DstHunk, offset & 0xFF);
+            break;
+        case 2:
+            sprintf(Buf, "%02x.%04x", r->ri_DstHunk, offset & 0xFFFF);
+            break;
+        case 4:
+            sprintf(Buf, "%02x.%08x", r->ri_DstHunk, offset);
+            break;
+        default:
+            sprintf(Buf, "%02x.%04x", r->ri_DstHunk, offset);
+            break;
+        }
     }
     if (ext) {
-	if (r->ri_RelocFlags & RF_PCREL)
-	    strcat(Buf, "(pc)");
-	if (r->ri_RelocFlags & RF_A4REL)
-	    strcat(Buf, "(A4)");
+        if (r->ri_RelocFlags & RF_PCREL)
+            strcat(Buf, "(pc)");
+        if (r->ri_RelocFlags & RF_A4REL)
+            strcat(Buf, "(A4)");
     }
     return(Buf);
 }
@@ -155,9 +155,9 @@ int32_t
 FixRelocOffset(RelocInfo *r, int32_t offset)
 {
     if (r == NULL)
-	return(offset);
+        return(offset);
     if (r->ri_Sym)          /*  symbol relative */
-	return(0);
+        return(0);
     return(offset);
 }
 
@@ -168,14 +168,14 @@ cerror(int code, char *ctl, ...)
 
     switch(code) {
     case EWARN:
-	printf("Warning ");
-	break;
+        printf("Warning ");
+        break;
     case EERROR:
-	printf("Error   ");
-	break;
+        printf("Error   ");
+        break;
     case EFATAL:
-	printf("Fatal   ");
-	break;
+        printf("Fatal   ");
+        break;
     }
 
     va_start(va, ctl);
@@ -184,7 +184,7 @@ cerror(int code, char *ctl, ...)
     puts("");
 
     if (code == EFATAL)
-	exit(20);
+        exit(20);
 }
 
 int 
@@ -196,17 +196,17 @@ freadl(void *buf, int elsize, int nel, FILE *fi)
     int i;
 
     if (elsize == 2) {
-	uword *bptr;
+        uword *bptr;
 
-	for (bptr = buf, i = n; i > 0; --i, ++bptr) {
-	    *bptr = ntohs(*bptr);
-	}
+        for (bptr = buf, i = n; i > 0; --i, ++bptr) {
+            *bptr = ntohs(*bptr);
+        }
     } else if (elsize == 4) {
-	uint32_t *bptr;
+        uint32_t *bptr;
 
-	for (bptr = buf, i = n; i > 0; --i, ++bptr) {
-	    *bptr = ntohl(*bptr);
-	}
+        for (bptr = buf, i = n; i > 0; --i, ++bptr) {
+            *bptr = ntohl(*bptr);
+        }
     }
 #endif
     return(n);

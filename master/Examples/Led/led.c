@@ -18,21 +18,21 @@ char *av[];
     short n = 500;
 
     /*
-     *	actual loop
+     *  actual loop
      */
 
     puts("\nWatch the Power LED and Press ^C to quit!\n");
 
     while ((task->tc_SigRecvd & SIGBREAKF_CTRL_C) == 0) {
-	short i;
-	short j;
+        short i;
+        short j;
 
-	for (i = 0; i < n; ++i) {
-	    for (j = 0; j < i; ++j)
-		*(char *)0xBFE001 |= 0x02;
-	    for (j = i; j < n; ++j)
-		*(char *)0xBFE001 &= ~0x02;
-	}
+        for (i = 0; i < n; ++i) {
+            for (j = 0; j < i; ++j)
+                *(char *)0xBFE001 |= 0x02;
+            for (j = i; j < n; ++j)
+                *(char *)0xBFE001 &= ~0x02;
+        }
     }
     return(0);
 }

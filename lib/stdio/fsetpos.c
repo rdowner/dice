@@ -15,7 +15,7 @@ FILE *fp;
 const fpos_t *pos;
 {
     if (fseek(fp, *pos, 0) < 0)
-	return(EOF);
+        return(EOF);
     return(0);
 }
 

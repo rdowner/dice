@@ -23,7 +23,7 @@ extern struct ExecBase *SysBase;
 #endif
 
 /*
- *  ExtArgsEnv()	DCCOPTS
+ *  ExtArgsEnv()        DCCOPTS
  */
 
 #ifdef AMIGA
@@ -40,20 +40,20 @@ ExtArgsEnv(short ac, char ***pav, char *envname)
 #else
     {
 #endif
-	char buf[64];
+        char buf[64];
 
-	sprintf(buf, "ENV:%s", envname);
-	return(ExtArgsFile(ac, pav, buf));
+        sprintf(buf, "ENV:%s", envname);
+        return(ExtArgsFile(ac, pav, buf));
     }
 #ifndef LATTICE
       else {
-	str = malloc(1024);
-	len = GetVar(envname, str, 1024, 0);
-	if (len > 0)
-	    str = realloc(str, len + 1);
-	else
-	    free(str);
-	return(ExtArgsBuf(ac, pav, str, len));
+        str = malloc(1024);
+        len = GetVar(envname, str, 1024, 0);
+        if (len > 0)
+            str = realloc(str, len + 1);
+        else
+            free(str);
+        return(ExtArgsBuf(ac, pav, str, len));
     }
 #endif
 }
@@ -67,9 +67,9 @@ ExtArgsEnv(short ac, char ***pav, char *envname)
     short len;
 
     if (str = getenv(envname)) {
-	len = strlen(str);
-	str = realloc(str, len + 1);
-	return(ExtArgsBuf(ac, pav, str, len));
+        len = strlen(str);
+        str = realloc(str, len + 1);
+        return(ExtArgsBuf(ac, pav, str, len));
     }
     return(ac);
 }
@@ -84,14 +84,14 @@ ExtArgsFile(short ac, char ***pav, char *file)
     char *str = NULL;
 
     if ((fd = open(file, O_RDONLY)) >= 0) {
-	if ((len = lseek(fd, 0L, 2)) > 0) {
-	    str = malloc(len + 1);
+        if ((len = lseek(fd, 0L, 2)) > 0) {
+            str = malloc(len + 1);
 
-	    lseek(fd, 0L, 0);
-	    read(fd, str, len);
-	    str[len] = 0;
-	}
-	close(fd);
+            lseek(fd, 0L, 0);
+            read(fd, str, len);
+            str[len] = 0;
+        }
+        close(fd);
     }
     return(ExtArgsBuf(ac, pav, str, len));
 }
@@ -104,29 +104,29 @@ ExtArgsBuf(short ac, char ***pav, char *str, long len)
     char **nav;
 
     if (len < 0)
-	return(ac);
+        return(ac);
 
     /*
-     *	parse
+     *  parse
      */
 
     ptr = skipspace(str);
     while (*ptr) {
-	++nac;
-	ptr = skipnspace(ptr);
-	ptr = skipspace(ptr);
+        ++nac;
+        ptr = skipnspace(ptr);
+        ptr = skipspace(ptr);
     }
     nav = malloc((ac + nac + 1) * sizeof(char *));
     movmem(*pav, nav, ac * sizeof(char *));
     nac = ac;
     ptr = skipspace(str);
     while (*ptr) {
-	nav[nac] = ptr;
-	ptr = skipnspace(ptr);
-	if (*ptr)
-	    *ptr++ = 0;
-	ptr = skipspace(ptr);
-	++nac;
+        nav[nac] = ptr;
+        ptr = skipnspace(ptr);
+        if (*ptr)
+            *ptr++ = 0;
+        ptr = skipspace(ptr);
+        ++nac;
     }
     nav[nac] = NULL;
     ac = nac;
@@ -139,7 +139,7 @@ skipspace(ptr)
 char *ptr;
 {
     while (*ptr == '\n' || *ptr == ' ' || *ptr == 9)
-	++ptr;
+        ++ptr;
     return(ptr);
 }
 
@@ -148,7 +148,7 @@ skipnspace(ptr)
 char *ptr;
 {
     while (*ptr != '\n' && *ptr != ' ' && *ptr != 9 && *ptr)
-	++ptr;
+        ++ptr;
     return(ptr);
 }
 
@@ -172,35 +172,35 @@ char *file;
     for (i = strlen(file); i >= 0 && file[i] != '/' && file[i] != ':'; --i);
 
     if (i <= 0)
-	return;
+        return;
     strncpy(tmp, file, i);
     tmp[i] = 0;
 
     /*
-     *	valid directory
+     *  valid directory
      */
 
 #ifdef AMIGA
     if (lock = Lock(tmp, SHARED_LOCK)) {
-	UnLock(lock);
-	return;
+        UnLock(lock);
+        return;
     }
 #else
     if (stat(tmp, &statBuf) == 0)
-	return;
+        return;
 #endif
 
     /*
-     *	invalid, attempt to create directory path.
+     *  invalid, attempt to create directory path.
      */
 
     for (j = 0; j <= i; ++j) {
-	if (file[j] == '/') {
-	    strncpy(tmp, file, j);
-	    tmp[j] = 0;
-	    if (mkdir(tmp/*, 0666*/) < 0 && errno != EEXIST)
-		break;
-	}
+        if (file[j] == '/') {
+            strncpy(tmp, file, j);
+            tmp[j] = 0;
+            if (mkdir(tmp/*, 0666*/) < 0 && errno != EEXIST)
+                break;
+        }
     }
 }
 

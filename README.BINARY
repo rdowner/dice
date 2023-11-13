@@ -1,5 +1,5 @@
 
-			    DICE BINARY CODE RELEASE README
+                            DICE BINARY CODE RELEASE README
 
     (c)Copyright 1992-1997 Obvious Implementations Corp.  Redistribution and
        use is allowed under the terms of the DICE-LICENSE FILE,
@@ -19,8 +19,8 @@
 
     My email address and web pages
 
-	dillon@backplane.com
-	http://www.backplane.com/
+        dillon@backplane.com
+        http://www.backplane.com/
 
     I am willing to maintain the source tree, at least for a little while.
     Bug fixes should be emailed to me.
@@ -29,57 +29,57 @@
 
     (3) AMIGA SPECIFIC AMIGAxxx.LIB EQUIVALENTS
 
-	These libraries are provided precompiled in the distribution and may
-	also be regenerated.
+        These libraries are provided precompiled in the distribution and may
+        also be regenerated.
 
-	You can create amigaxxx.lib equivalents.  The auto library is used
-	to automatically open those system libraries used by the code.
+        You can create amigaxxx.lib equivalents.  The auto library is used
+        to automatically open those system libraries used by the code.
 
-	cd lib
-	dmake -f DMakefile.unix startup
-	dmake -f DMakefile.unix amiga13
-	dmake -f DMakefile.unix amiga20
+        cd lib
+        dmake -f DMakefile.unix startup
+        dmake -f DMakefile.unix amiga13
+        dmake -f DMakefile.unix amiga20
 
     (4) ROM LIBRARY
 
-	You can create a machine-independant ROM library
+        You can create a machine-independant ROM library
 
-	cd lib
-	dmake -f DMakefile.unix startup
-	dmake -f DMakefile.unix rom
+        cd lib
+        dmake -f DMakefile.unix startup
+        dmake -f DMakefile.unix rom
 
     (5) AMIGA SUPPORT LIBRARIES
 
-	These libraries are provided precompiled in the distribution and may
-	also be regenerated.
+        These libraries are provided precompiled in the distribution and may
+        also be regenerated.
 
-	DICE includes stdio, string, and other Amiga-specific support 
-	libraries.   If you have the amiga includes installed, you can compile
-	these libraries simply with:
+        DICE includes stdio, string, and other Amiga-specific support 
+        libraries.   If you have the amiga includes installed, you can compile
+        these libraries simply with:
 
-	cd lib
-	dmake -f DMakefile.unix all
+        cd lib
+        dmake -f DMakefile.unix all
 
 (IV) DIRECTORIES
 
-    ubin	unix binaries
-    ulib	unix support libraries
+    ubin        unix binaries
+    ulib        unix support libraries
 
-    lib		amiga/68000 support library source
+    lib         amiga/68000 support library source
 
 
-    suplib	unix support library source
+    suplib      unix support library source
 
-    include	header files for amiga/68000 libraries, including
-		selected portions of the 1.3, 2.0, and 3.0 includes
-		(the clib and fd directories only), and the DICE
-		ANSI library.
+    include     header files for amiga/68000 libraries, including
+                selected portions of the 1.3, 2.0, and 3.0 includes
+                (the clib and fd directories only), and the DICE
+                ANSI library.
 
-    config	Various amiga-related DMakefile's for compiling
-		DICE (included as-is).  Includes lookup table
-		for error messages.
+    config      Various amiga-related DMakefile's for compiling
+                DICE (included as-is).  Includes lookup table
+                for error messages.
 
-    doc		Library and compiler documentation
-		(included as-is)
+    doc         Library and compiler documentation
+                (included as-is)
 
 

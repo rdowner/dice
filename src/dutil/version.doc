@@ -3,27 +3,27 @@ LBMAKE
     .02     Checks for a non-zero return code from sub commands and aborts
 
 LIBMAKE
-    28-APR-91	added -D option to pass defines to the compiler
-		added -mC and -mD
+    28-APR-91   added -D option to pass defines to the compiler
+                added -mC and -mD
 
 
 DPROF
-    2.06.01	initial release
+    2.06.01     initial release
 
 FDTOLIB
     .03
-	    added -auto and -AUTO options
+            added -auto and -AUTO options
     .02
-	    overhauled operation, added -prof
+            overhauled operation, added -prof
     .01
-	    Initial Release
+            Initial Release
 
 DSEARCH
     .02
-	    checks for 'Q'search, quieter
+            checks for 'Q'search, quieter
     .01
-	    Initial Release
+            Initial Release
 
 DU
     .02
-	    fixed bugs in ^C
+            fixed bugs in ^C

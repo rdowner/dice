@@ -6,22 +6,22 @@
 DLIB= dlib:
 
 start:
-	type lib.help
+        type lib.help
 
-all:	startup autos.lib c uc m rom
+all:    startup autos.lib c uc m rom
 
-c:	    cs.lib cl.lib csp.lib csr.lib cpl.lib crl.lib csrp.lib crpl.lib
+c:          cs.lib cl.lib csp.lib csr.lib cpl.lib crl.lib csrp.lib crpl.lib
 
-uc:	    ucs.lib ucsr.lib
+uc:         ucs.lib ucsr.lib
 
-m:	    ms.lib ml.lib msp.lib msr.lib mpl.lib mrl.lib msrp.lib mrpl.lib
+m:          ms.lib ml.lib msp.lib msr.lib mpl.lib mrl.lib msrp.lib mrpl.lib
 
-rom:	    roms.lib romsr.lib roml.lib romrl.lib
+rom:        roms.lib romsr.lib roml.lib romrl.lib
 
 amiga13:    amiga13l.lib amiga13s.lib amiga13sp.lib amiga13pl.lib
 
 amiga20:    amiga20l.lib amiga20s.lib amiga20sp.lib amiga20sr.lib amiga20pl.lib \
-	    amiga20rl.lib amiga20srp.lib amiga20rpl.lib
+            amiga20rl.lib amiga20srp.lib amiga20rpl.lib
 
 startup:
     lbmake startup
@@ -57,7 +57,7 @@ crpl.lib:
     lbmake clib r p l
 
 #   UNIX compatible C library (automatically converts UNIX style paths to
-#	 amiga style)
+#        amiga style)
 
 ucs.lib:
     lbmake uclib s
@@ -111,12 +111,12 @@ romrl.lib:
 
 #   AMIGA13[model].lib:
 
-amiga13l.lib:	$(DLIB)amiga13l.lib
+amiga13l.lib:   $(DLIB)amiga13l.lib
 
 $(DLIB)amiga13l.lib : $(DLIB)/dlib.orig/amiga13l.lib
     copy %(right) %(left)
 
-amiga13s.lib:	$(DLIB)amiga13s.lib
+amiga13s.lib:   $(DLIB)amiga13s.lib
 
 $(DLIB)amiga13s.lib : $(DLIB)amiga13l.lib
     libtos $(DLIB)amiga13l.lib $(DLIB)amiga13s.lib
@@ -132,15 +132,15 @@ amiga13pl.lib:
 #
 #   The amiga20l.lib from commodore has some incorrect tags, this stuff
 #   here fixes that.  dlib.orig/amiga20l.lib contains the actual, original
-#   Commodore library.	The amiga20l.lib provided with DICE is exactly
+#   Commodore library.  The amiga20l.lib provided with DICE is exactly
 #   that plus bug fixes to the Commodore library.
 
-amiga20l.lib:	$(DLIB)amiga20l.lib
+amiga20l.lib:   $(DLIB)amiga20l.lib
 
 $(DLIB)amiga20l.lib : $(DLIB)/dlib.orig/amiga20l.lib amiga20_func_l.lib
     join $(DLIB)amiga20_func_l.lib $(DLIB)/dlib.orig/amiga20l.lib AS %(left)
 
-amiga20s.lib:	$(DLIB)amiga20s.lib
+amiga20s.lib:   $(DLIB)amiga20s.lib
 
 $(DLIB)amiga20s.lib : $(DLIB)amiga20l.lib
     libtos $(DLIB)amiga20l.lib $(DLIB)amiga20s.lib
@@ -167,19 +167,19 @@ amiga20_func_l.lib:
     lbmake a20func l
 
 FD20FILES= asl battclock battmem cia commodities console diskfont \
-	 dos exec expansion gadtools graphics icon iffparse \
-	input misc intuition keymap layers mathffp mathieeedoubbas \
-	mathieeedoubtrans mathieeesingbas mathieeesingtrans mathtrans \
-	potgo ramdrive timer translator utility wb disk rexxsyslib
+         dos exec expansion gadtools graphics icon iffparse \
+        input misc intuition keymap layers mathffp mathieeedoubbas \
+        mathieeedoubtrans mathieeesingbas mathieeesingtrans mathtrans \
+        potgo ramdrive timer translator utility wb disk rexxsyslib
 
 FD30FILES= asl battclock battmem cia commodities console diskfont \
-	 dos exec expansion gadtools graphics icon iffparse \
-	input misc intuition keymap layers mathffp mathieeedoubbas \
-	mathieeedoubtrans mathieeesingbas mathieeesingtrans mathtrans \
-	potgo ramdrive timer utility wb disk rexxsyslib
+         dos exec expansion gadtools graphics icon iffparse \
+        input misc intuition keymap layers mathffp mathieeedoubbas \
+        mathieeedoubtrans mathieeesingbas mathieeesingtrans mathtrans \
+        potgo ramdrive timer utility wb disk rexxsyslib
 
-INLINE20FD=	$(FD20FILES:"*":"dinclude:amiga20/fd/*_lib.fd")
-INLINE30FD=	$(FD30FILES:"*":"dinclude:amiga30/fd/*_lib.fd")
+INLINE20FD=     $(FD20FILES:"*":"dinclude:amiga20/fd/*_lib.fd")
+INLINE30FD=     $(FD30FILES:"*":"dinclude:amiga30/fd/*_lib.fd")
 INLINE20PROTOS= $(FD20FILES:"*":"dinclude:xclib/*_protos.h")
 INLINE30PRAGMAS= $(FD30FILES:"*":"dinclude:pragmas/*_pragmas.h")
 

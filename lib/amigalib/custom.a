@@ -1,9 +1,9 @@
 
-			section text,abs
+                        section text,abs
 
-			xdef	_custom
+                        xdef    _custom
 
-_custom 		equ	$DFF000
+_custom                 equ     $DFF000
 
-			end
+                        end
 

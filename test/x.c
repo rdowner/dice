@@ -6,7 +6,7 @@ char *av[];
 {
     short i;
     for (i = 1; i < 1000; ++i)
-	puts("hello world");
+        puts("hello world");
     return(0);
 }
 

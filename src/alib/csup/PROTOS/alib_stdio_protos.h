@@ -2,12 +2,12 @@
 #define  CLIB_ALIB_STDIO_PROTOS_H
 
 /*
-**	$Id: alib_stdio_protos.h,v 30.0 1994/06/10 18:10:34 dice Exp $
+**      $Id: alib_stdio_protos.h,v 30.0 1994/06/10 18:10:34 dice Exp $
 **
-**	C prototypes. For use with 32 bit integers only.
+**      C prototypes. For use with 32 bit integers only.
 **
-**	(C) Copyright 1990 Commodore-Amiga, Inc.
-**	    All Rights Reserved
+**      (C) Copyright 1990 Commodore-Amiga, Inc.
+**          All Rights Reserved
 */
 
 #ifndef  EXEC_TYPES_H

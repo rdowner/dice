@@ -164,7 +164,7 @@ char    c;
     const char *b = s;
 
     while (*s != c)
-	++s;
+        ++s;
 
     return(s - b);
 }

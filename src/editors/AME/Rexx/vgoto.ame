@@ -73,7 +73,7 @@ do forever
       cmd = getarg(p)
       if cmd = 2 then findstring = getarg(p,1)
       t = reply(p, 0)
-	
+        
       if cmd = "CLOSEWINDOW" then do
          call CloseWindow(AMESEARCH)
          quitflag = 1
@@ -81,7 +81,7 @@ do forever
       else if cmd = "2" then do
          call CloseWindow(AMESEARCH)
          quitflag = 1
-	'gotoline' findstring
+        'gotoline' findstring
       end
    end
 end

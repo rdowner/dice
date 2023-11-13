@@ -1,5 +1,5 @@
-(delopts "force")		;Unprotect destination files automatically
-(user 2)			;Ask them all the questions.  Sorry.
+(delopts "force")               ;Unprotect destination files automatically
+(user 2)                        ;Ask them all the questions.  Sorry.
 
 ; Set up a error cleanup routine
 ;
@@ -71,18 +71,18 @@
 (set @default-dest dice_dest)
     (
         (makedir dice_dest (infos))
-	(makedir (tackon dice_dest "Bin"     ) (infos))
-	(makedir (tackon dice_dest "Tools"   ) (infos))
-	(makedir (tackon dice_dest "Config"  ) (infos))
-	(makedir (tackon dice_dest "User"    ) (infos))
-	(makedir (tackon dice_dest "Examples") (infos))
-	(makedir (tackon dice_dest "dtmp"))
-	(makedir (tackon dice_dest "lib"))
-	(makedir (tackon dice_dest "doc"))
-	(makedir (tackon dice_dest "s"))
-	(makedir (tackon dice_dest "Rexx"))
-	(makedir (tackon dice_dest "Include"))
-	(makedir (tackon dice_dest "Dlib"))
+        (makedir (tackon dice_dest "Bin"     ) (infos))
+        (makedir (tackon dice_dest "Tools"   ) (infos))
+        (makedir (tackon dice_dest "Config"  ) (infos))
+        (makedir (tackon dice_dest "User"    ) (infos))
+        (makedir (tackon dice_dest "Examples") (infos))
+        (makedir (tackon dice_dest "dtmp"))
+        (makedir (tackon dice_dest "lib"))
+        (makedir (tackon dice_dest "doc"))
+        (makedir (tackon dice_dest "s"))
+        (makedir (tackon dice_dest "Rexx"))
+        (makedir (tackon dice_dest "Include"))
+        (makedir (tackon dice_dest "Dlib"))
     )
 
 

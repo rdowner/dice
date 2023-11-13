@@ -21,7 +21,7 @@ const char *toks;
     const char *ptr;
 
     if (ptr = strpbrk(str, toks))
-	return(ptr - str);
+        return(ptr - str);
     return(strlen(str));
 }
 

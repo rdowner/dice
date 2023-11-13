@@ -477,12 +477,12 @@ Configuration Options:
    Edit Command
 
 #
-#	Quick-Fix Error Handling.  Pops up your editor pointing to any
-#	warnings or errors.  Enable with the -R option to DCC.
+#       Quick-Fix Error Handling.  Pops up your editor pointing to any
+#       warnings or errors.  Enable with the -R option to DCC.
 #
-#		port=  never_happen	;Run REXX script
-#		port=  REXX		;Talk directly to REXX
-#		port=  your application ;Talk directly to "your application"
+#               port=  never_happen     ;Run REXX script
+#               port=  REXX             ;Talk directly to REXX
+#               port=  your application ;Talk directly to "your application"
 
 
 cmd=
@@ -494,14 +494,14 @@ linkrexxcmd=
 
 #
 #
-#		%e  	Error temporary file name
-#		%f  	Fully qualified source file name
-#		%d  	Directory containing the source
-#		%n  	Filepart of source
-#		%c	Current Directory (where DCC was run from)
-#		%0-%9	argument from -R0/-R9 DCC option (e.g. -R0 fubar)
+#               %e      Error temporary file name
+#               %f      Fully qualified source file name
+#               %d      Directory containing the source
+#               %n      Filepart of source
+#               %c      Current Directory (where DCC was run from)
+#               %0-%9   argument from -R0/-R9 DCC option (e.g. -R0 fubar)
 #
-#	Note: A space is not allowed between the keyword and the =!
+#       Note: A space is not allowed between the keyword and the =!
 #
 #cmd=   TTX %e MACRO "DCC:Rexx/ParseError.ttx %f %c %0"
 port= DICE_ERROR_PARSER

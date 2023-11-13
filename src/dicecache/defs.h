@@ -12,20 +12,20 @@
 #include <exec/semaphores.h>
 #include <exec/libraries.h>
 #include <exec/memory.h>
-#include <dos/dos.h>		/*  BPTR	*/
+#include <dos/dos.h>            /*  BPTR        */
 #include <clib/exec_protos.h>
 #include <clib/alib_protos.h>
 #include <clib/dos_protos.h>
 #include <string.h>
-#include <stdio.h>		/*  fhprintf	*/
+#include <stdio.h>              /*  fhprintf    */
 #include <stdarg.h>
 #include <stdlib.h>
 #include <lists.h>
 #define _DICECACHE_INTERNAL_SKIP
 #include <dicecache_protos.h>
 
-#define HSIZE	32
-#define HMASK	(HSIZE-1)
+#define HSIZE   32
+#define HMASK   (HSIZE-1)
 #define Prototype   extern
 #define BTOC(val)   ((void *)((long)(val) << 2))
 
@@ -37,27 +37,27 @@
 
 #define LibCall __geta4 __regargs
 
-typedef struct Message	Message;
-typedef struct Library	Library;
+typedef struct Message  Message;
+typedef struct Library  Library;
 typedef struct SignalSemaphore SignalSemaphore;
 typedef struct FileInfoBlock   FileInfoBlock;
 typedef struct FileLock FileLock;
-typedef struct List	List;
-typedef struct Node	Node;
+typedef struct List     List;
+typedef struct Node     Node;
 
 
 typedef struct CacheNode {
-    Node    cn_Node;	    /*	w/name of file	*/
-    short   cn_Flags;	    /*	longword align	*/
-    BPTR    cn_Lock;	    /*	currentdir lock */
-    char    *cn_Data;	    /*	file data	*/
-    long    cn_Bytes;	    /*	file bytes	*/
+    Node    cn_Node;        /*  w/name of file  */
+    short   cn_Flags;       /*  longword align  */
+    BPTR    cn_Lock;        /*  currentdir lock */
+    char    *cn_Data;       /*  file data       */
+    long    cn_Bytes;       /*  file bytes      */
     long    cn_Refs;
     __aligned FileInfoBlock cn_Fib;
 } CacheNode;
 
-#define CNF_VALID   0x0001  /*	open successfull    */
-#define CNF_UNFIND  0x0002  /*	referenced and out of date, skip in search */
+#define CNF_VALID   0x0001  /*  open successfull    */
+#define CNF_UNFIND  0x0002  /*  referenced and out of date, skip in search */
 
 #include <dicecache-protos.h>
 

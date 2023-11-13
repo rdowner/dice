@@ -98,14 +98,14 @@ unregex = 'unsetprefs'
  */
 
 if compare(caseflag,"CASE") = 0 then do
-	res = SetGadget(AMEREPLACE, 0, "ON")
-	uncase = 'setprefs'
-	end
+        res = SetGadget(AMEREPLACE, 0, "ON")
+        uncase = 'setprefs'
+        end
 
 if compare(regexflag,"REGEX") = 0 then do
-	res = SetGadget(AMEREPLACE, 1, "ON")
-	unregex = 'setprefs'
-	end
+        res = SetGadget(AMEREPLACE, 1, "ON")
+        unregex = 'setprefs'
+        end
 
 /*
  *   Main event loop
@@ -118,50 +118,50 @@ do forever
     t = waitpkt(REPLACEPORT)
     do forever
         p = getpkt(REPLACEPORT)
-      	if c2d(p) = 0 then leave
-      	cmd = getarg(p)
-      	if cmd = "2" then findstring = getarg(p,1)
-      	if cmd = "5" then replacestring = getarg(p,1)
-      	t = reply(p, 0)
+        if c2d(p) = 0 then leave
+        cmd = getarg(p)
+        if cmd = "2" then findstring = getarg(p,1)
+        if cmd = "5" then replacestring = getarg(p,1)
+        t = reply(p, 0)
 
-      	/* process the command */
+        /* process the command */
 
-      	if cmd = "CANCEL" then do
+        if cmd = "CANCEL" then do
             call CloseWindow(AMEREPLACE)
-	    uncase "CASE"
-	    unregex "REGEX"
+            uncase "CASE"
+            unregex "REGEX"
             quitflag = 1
             end
-      	else if cmd = "USE" | cmd = "CLOSEWINDOW" then do
+        else if cmd = "USE" | cmd = "CLOSEWINDOW" then do
             call CloseWindow(AMEREPLACE)
             quitflag = 1
             end
-      	else if cmd = "5" | cmd = "4" then do
-	    'findchange' '-f' 1 '-n' 1 findstring || '*N' || replacestring || '*N'
+        else if cmd = "5" | cmd = "4" then do
+            'findchange' '-f' 1 '-n' 1 findstring || '*N' || replacestring || '*N'
             end
         else if cmd = "0" then do
-	    if compare(caseflag,"CASE") = 0 then do
-	    	call SetGadget(AMEREPLACE, cmd, "OFF")
-	    	'unsetprefs' "CASE"
-	    	end
-	    else do
-	    	call SetGadget(AMEREPLACE, cmd, "ON")
-	    	'setprefs' "CASE"
-	    	end
-	    'getprefs' "CASE"
-	    caseflag = result
+            if compare(caseflag,"CASE") = 0 then do
+                call SetGadget(AMEREPLACE, cmd, "OFF")
+                'unsetprefs' "CASE"
+                end
+            else do
+                call SetGadget(AMEREPLACE, cmd, "ON")
+                'setprefs' "CASE"
+                end
+            'getprefs' "CASE"
+            caseflag = result
             end
-      	else if cmd = "1" then do
-	    if compare(regexflag,"REGEX") = 0 then do
-	    	call SetGadget(AMEREPLACE, cmd, "OFF")
-	    	'unsetprefs' "REGEX"
-	    	end
-	    else do
-	    	call SetGadget(AMEREPLACE, cmd, "ON")
-	    	'setprefs' "REGEX"
-	    	end
-	    'getprefs' "REGEX"
-	    regexflag = result
+        else if cmd = "1" then do
+            if compare(regexflag,"REGEX") = 0 then do
+                call SetGadget(AMEREPLACE, cmd, "OFF")
+                'unsetprefs' "REGEX"
+                end
+            else do
+                call SetGadget(AMEREPLACE, cmd, "ON")
+                'setprefs' "REGEX"
+                end
+            'getprefs' "REGEX"
+            regexflag = result
             end
         end
    end

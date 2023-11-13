@@ -11,7 +11,7 @@
 
 #include "defs.h"
 
-List	SymList;
+List    SymList;
 Symbol *SymOffCache;
 
 Prototype void sym_init(void);
@@ -34,10 +34,10 @@ ResetSymbol(void)
     Symbol *s;
 
     if (SymList.lh_Head == NULL)
-	cerror(EFATAL, "Software Error, ResetSymbolHash");
+        cerror(EFATAL, "Software Error, ResetSymbolHash");
 
     while ((s = RemHead(&SymList)) != NULL)
-	free(s);
+        free(s);
     SymOffCache = NULL;
 }
 
@@ -47,25 +47,25 @@ AddSymbol(Symbol *sym)
     Symbol *s;
 
     if (DDebug)
-	printf("AddSymbol type=%d value=%d %s\n", sym->sm_Type, sym->sm_Value, sym->sm_Name);
+        printf("AddSymbol type=%d value=%d %s\n", sym->sm_Type, sym->sm_Value, sym->sm_Name);
     if ((s = FindSymbolName(sym->sm_Name)) != NULL) {
-	if (s->sm_Type == 1 || s->sm_Type == 2) {
-	    if (sym->sm_Type == 1 || sym->sm_Type == 2)
-		cerror(EWARN, "Duplicate symbol def: %s, hunks %d and %d", s->sm_Name, s->sm_DefHunk, sym->sm_DefHunk);
-	    free(sym);
-	    return(s);
-	} else {
-	    Remove((Node *)&s->sm_Node);
-	    *s = *sym;
-	}
-	free(sym);
-	sym = s;
+        if (s->sm_Type == 1 || s->sm_Type == 2) {
+            if (sym->sm_Type == 1 || sym->sm_Type == 2)
+                cerror(EWARN, "Duplicate symbol def: %s, hunks %d and %d", s->sm_Name, s->sm_DefHunk, sym->sm_DefHunk);
+            free(sym);
+            return(s);
+        } else {
+            Remove((Node *)&s->sm_Node);
+            *s = *sym;
+        }
+        free(sym);
+        sym = s;
     }
     if (sym->sm_Type > 2)
-	sym->sm_DefHunk = -1;
+        sym->sm_DefHunk = -1;
     for (s = GetTail(&SymList); s; s = GetPred((Node *)&s->sm_Node)) {
-	if (s->sm_Value < sym->sm_Value)
-	    break;
+        if (s->sm_Value < sym->sm_Value)
+            break;
     }
     Insert(&SymList, (Node *)&sym->sm_Node, (Node *)&s->sm_Node);
     return(sym);
@@ -77,8 +77,8 @@ FindSymbolName(char *name)
     Symbol *s;
 
     for (s = GetHead(&SymList); s; s = GetSucc((Node *)&s->sm_Node)) {
-	if (strcmp(s->sm_Name, name) == 0)
-	    return(s);
+        if (strcmp(s->sm_Name, name) == 0)
+            return(s);
     }
     return(NULL);
 }
@@ -93,22 +93,22 @@ FindSymbolOffset(int32_t offset, short hunkNo)
     Symbol *s = SymOffCache;
 
     if (s == NULL)
-	s = GetHead(&SymList);
+        s = GetHead(&SymList);
 
     while (s && s->sm_Value >= offset)
-	s = GetPred((Node *)&s->sm_Node);
+        s = GetPred((Node *)&s->sm_Node);
 
     if (s == NULL)
-	s = GetHead(&SymList);
+        s = GetHead(&SymList);
 
     while (s && s->sm_Value < offset)
-	s = GetSucc((Node *)&s->sm_Node);
+        s = GetSucc((Node *)&s->sm_Node);
 
     while (s && s->sm_DefHunk != hunkNo)
-	s = GetSucc((Node *)&s->sm_Node);
+        s = GetSucc((Node *)&s->sm_Node);
 
     if (s)
-	SymOffCache = s;
+        SymOffCache = s;
 
     return(s);
 }

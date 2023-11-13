@@ -2,12 +2,12 @@
 #define  CLIB_ALIB_PROTOS_H
 
 /*
-**	$Id: alib_protos.h,v 30.0 1994/06/10 18:10:34 dice Exp $
+**      $Id: alib_protos.h,v 30.0 1994/06/10 18:10:34 dice Exp $
 **
-**	C prototypes. For use with 32 bit integers only.
+**      C prototypes. For use with 32 bit integers only.
 **
-**	(C) Copyright 1990 Commodore-Amiga, Inc.
-**	    All Rights Reserved
+**      (C) Copyright 1990 Commodore-Amiga, Inc.
+**          All Rights Reserved
 */
 
 #ifndef  EXEC_TYPES_H
@@ -42,7 +42,7 @@ struct IORequest *CreateExtIO( struct MsgPort *port, long ioSize );
 struct MsgPort *CreatePort( STRPTR name, long pri );
 struct IOStdReq *CreateStdIO( struct MsgPort *port );
 struct Task *CreateTask( STRPTR name, long pri, APTR initPC,
-	unsigned long stackSize );
+        unsigned long stackSize );
 void DeleteExtIO( struct IORequest *ioReq );
 void DeletePort( struct MsgPort *ioReq );
 void DeleteStdIO( struct IOStdReq *ioReq );
@@ -50,7 +50,7 @@ void DeleteTask( struct Task *task );
 void NewList( struct List *list );
 APTR LibAllocPooled( APTR poolHeader, unsigned long memSize );
 APTR LibCreatePool( unsigned long memFlags, unsigned long puddleSize,
-	unsigned long threshSize );
+        unsigned long threshSize );
 void LibDeletePool( APTR poolHeader );
 void LibFreePooled( APTR poolHeader, APTR memory, unsigned long memSize );
 
@@ -102,7 +102,7 @@ void FreeIEvents( struct InputEvent *events );
 BOOL CheckRexxMsg( struct Message *rexxmsg );
 LONG GetRexxVar( struct Message *rexxmsg, UBYTE *name, UBYTE **result );
 LONG SetRexxVar( struct Message *rexxmsg, UBYTE *name, UBYTE *value,
-	long length );
+        long length );
 
 /*  Intuition hook and boopsi support functions in amiga.lib. */
 /*  These functions do not require any particular ROM revision */
@@ -116,12 +116,12 @@ ULONG DoMethodA( Object *obj, Msg message );
 ULONG DoMethod( Object *obj, unsigned long MethodID, ... );
 ULONG DoSuperMethodA( struct IClass *cl, Object *obj, Msg message );
 ULONG DoSuperMethod( struct IClass *cl, Object *obj, unsigned long MethodID,
-	... );
+        ... );
 ULONG CoerceMethodA( struct IClass *cl, Object *obj, Msg message );
 ULONG CoerceMethod( struct IClass *cl, Object *obj, unsigned long MethodID,
-	... );
+        ... );
 ULONG SetSuperAttrs( struct IClass *cl, Object *obj, unsigned long Tag1,
-	... );
+        ... );
 
 /*  Network-support functions in amiga.lib. */
 /*  ACrypt() first appeared in later V39 versions of amiga.lib, but */

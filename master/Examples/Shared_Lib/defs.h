@@ -13,11 +13,11 @@
 #include <clib/alib_protos.h>
 #include <string.h>
 
-#define HSIZE	128
-#define HMASK	(HSIZE-1)
+#define HSIZE   128
+#define HMASK   (HSIZE-1)
 
-#define CSIZE	64	/*  memory cache list size */
-#define CMAXMEM 32	/*  max cached blocks per array index */
+#define CSIZE   64      /*  memory cache list size */
+#define CMAXMEM 32      /*  max cached blocks per array index */
 
 #define LibCall __geta4 __regargs
 #define Prototype extern

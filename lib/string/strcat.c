@@ -21,7 +21,7 @@ const char *s;
     char *base= d;
 
     while (*d)
-	++d;
+        ++d;
     while (*d++ = *s++);
     return(base);
 }

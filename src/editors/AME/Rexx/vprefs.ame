@@ -174,11 +174,11 @@ call AddGadget(AMEPREFS,500, 180, "CLOSE", " Cancel ", "CANCEL")
 
 do i = 1 to 11
     if(left(p.i,1,1)= 'N') then do
-	res = SetGadget(AMEPREFS, i, "OFF")
-	end
+        res = SetGadget(AMEPREFS, i, "OFF")
+        end
     else do
-	res = SetGadget(AMEPREFS, i, "ON")
-    	end
+        res = SetGadget(AMEPREFS, i, "ON")
+        end
     end
 
 /*
@@ -203,30 +203,30 @@ do forever
          end
       else if cmd = "USE" | cmd = "CLOSEWINDOW" then do
          call CloseWindow(AMEPREFS)
-	 do i = 1 to 11
-	     if left(p.i,1,1) = 'N' then 'unsetprefs' v.i
-	     else 'setprefs' v.i
-	     end
-	 temp = ""
-	 do i = 12 to 24
-	     temp = temp || v.i '"' || p.i || '"'
-	     end
-	 'setprefs' temp
+         do i = 1 to 11
+             if left(p.i,1,1) = 'N' then 'unsetprefs' v.i
+             else 'setprefs' v.i
+             end
+         temp = ""
+         do i = 12 to 24
+             temp = temp || v.i '"' || p.i || '"'
+             end
+         'setprefs' temp
          quitflag = 1
          end
       else if datatype(cmd, 'W') = 1 then do
-	  if cmd < 12 then do
-	     if left(p.cmd,1,1) = 'N' then do
-		call SetGadget(AMEPREFS, cmd, "ON")
-		p.cmd = 'O'
-		end
-	     else do
-		call SetGadget(AMEPREFS, cmd, "OFF")
-		p.cmd = 'N'
-	  	end
+          if cmd < 12 then do
+             if left(p.cmd,1,1) = 'N' then do
+                call SetGadget(AMEPREFS, cmd, "ON")
+                p.cmd = 'O'
+                end
+             else do
+                call SetGadget(AMEPREFS, cmd, "OFF")
+                p.cmd = 'N'
+                end
              end
-	  else p.cmd = stringarg
-	  end
+          else p.cmd = stringarg
+          end
       end
     end
 exit

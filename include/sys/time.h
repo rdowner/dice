@@ -14,11 +14,11 @@ struct timeval {
     unsigned long   tv_usec;
 };
 
-#define timerisset(tvp) 	((tvp)->tv_sec || (tvp)->tv_usec)
+#define timerisset(tvp)         ((tvp)->tv_sec || (tvp)->tv_usec)
 #define timercmp(tvp, uvp, cmp) \
-	((tvp)->tv_sec cmp (uvp)->tv_sec || \
-	 (tvp)->tv_sec == (uvp)->tv_sec && (tvp)->tv_usec cmp (uvp)->tv_usec)
-#define timerclear(tvp) 	(tvp)->tv_sec = (tvp)->tv_usec = 0
+        ((tvp)->tv_sec cmp (uvp)->tv_sec || \
+         (tvp)->tv_sec == (uvp)->tv_sec && (tvp)->tv_usec cmp (uvp)->tv_usec)
+#define timerclear(tvp)         (tvp)->tv_sec = (tvp)->tv_usec = 0
 
 #endif
 

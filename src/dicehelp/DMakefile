@@ -1,7 +1,7 @@
 #
-#	$Id: DMakefile,v 30.0 1994/06/10 18:05:49 dice Exp $
+#       $Id: DMakefile,v 30.0 1994/06/10 18:05:49 dice Exp $
 #
-#	DICEHelp system makefile.
+#       DICEHelp system makefile.
 #
 
 OD= t:
@@ -27,27 +27,27 @@ SRCS_HX  = $(SRCHELP:*.asm) $(SRCINDEX:*.asm) $(SRCSTRIP:*.asm)
 OBJS_HX  = $(SRCS_HX:"*.*":"$(OD)*.o")
 
 
-all	     : $(EXEHELP) $(EXEINDEX) $(EXESTRIP)
+all          : $(EXEHELP) $(EXEINDEX) $(EXESTRIP)
 
-rev	     :
-	UpRev DICEHelp
-	UpRev MakeIndex
-	UpRev StripADOc
+rev          :
+        UpRev DICEHelp
+        UpRev MakeIndex
+        UpRev StripADOc
 
 $(EXEHELP)   : $(OBJHELP)
-	dcc $(CFLAGS) %(right) -o %(left)
+        dcc $(CFLAGS) %(right) -o %(left)
 
 $(EXEINDEX)  : $(OBJINDEX)
-	dcc $(CFLAGS) %(right) -o %(left)
+        dcc $(CFLAGS) %(right) -o %(left)
 
 $(EXESTRIP)  : $(OBJSTRIP)
-	dcc $(CFLAGS) %(right) -o %(left)
+        dcc $(CFLAGS) %(right) -o %(left)
 
 $(OBJS_DICE) : $(SRCS_DICE)
-	dcc $(CFLAGS) %(right) -o %(left) -c
+        dcc $(CFLAGS) %(right) -o %(left) -c
 
 $(OBJS_HX) : $(SRCS_HX)
-	asm -o%(left) %(right)
+        asm -o%(left) %(right)
 
 clean:
-	-delete $(OBJS_HX) $(OBJS_DICE)
+        -delete $(OBJS_HX) $(OBJS_DICE)

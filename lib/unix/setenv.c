@@ -33,21 +33,21 @@ const char *varStr;
 {
 #if INCLUDE_VERSION >= 36
     if (SysBase->lib_Version >= 37) {
-	SetVar(varName, varStr, -1, GVF_GLOBAL_ONLY);
+        SetVar(varName, varStr, -1, GVF_GLOBAL_ONLY);
     } else
 #endif
     {
-	long fh;
-	BPTR lock;
+        long fh;
+        BPTR lock;
 
-	if (lock = Lock("ENV:", SHARED_LOCK)) {
-	    lock = CurrentDir(lock);
-	    if (fh = Open(varName, 1006)) {
-		Write(fh, varStr, strlen(varStr));
-		Close(fh);
-	    }
-	    UnLock(CurrentDir(lock));
-	}
+        if (lock = Lock("ENV:", SHARED_LOCK)) {
+            lock = CurrentDir(lock);
+            if (fh = Open(varName, 1006)) {
+                Write(fh, varStr, strlen(varStr));
+                Close(fh);
+            }
+            UnLock(CurrentDir(lock));
+        }
     }
     return(0);
 }

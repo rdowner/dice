@@ -3,9 +3,9 @@
  *  TRANSFER.C
  *
  *  David Berezowski - March/88.
- *  Modified for DICE - May/91	Matthew Dillon
+ *  Modified for DICE - May/91  Matthew Dillon
  *
- *  Copyright (c) 1988	Commodore-Amiga, Inc.
+ *  Copyright (c) 1988  Commodore-Amiga, Inc.
  *  (c)Copyright 1991 Matthew Dillon
  */
 
@@ -16,9 +16,9 @@ Prototype void Transfer(PrtInfo *, UWORD, UBYTE *, UWORD *);
 void
 Transfer(PInfo, y, ptr, colors)
 PrtInfo *PInfo;
-UWORD y;	    /* row # */
-UBYTE *ptr;	    /* ptr to buffer */
-UWORD *colors;	    /* indexes to color buffers */
+UWORD y;            /* row # */
+UBYTE *ptr;         /* ptr to buffer */
+UWORD *colors;      /* indexes to color buffers */
 {
     static UWORD bit_table[8] = {128, 64, 32, 16, 8, 4, 2, 1};
     union colorEntry *ColorInt;
@@ -50,81 +50,81 @@ UWORD *colors;	    /* indexes to color buffers */
     /* pre-compute threshold; are we thresholding? */
 
     if (threshold = PInfo->pi_threshold) { /* thresholding */
-	dvalue = threshold ^ 15;
-	bptr += x3;
+        dvalue = threshold ^ 15;
+        bptr += x3;
 
-	/* for all source pixels */
+        /* for all source pixels */
 
-	do {
-	    /* pre-compute intensity values for each component */
-	    Black = ColorInt->colorByte[PCMBLACK];
-	    ColorInt++;
+        do {
+            /* pre-compute intensity values for each component */
+            Black = ColorInt->colorByte[PCMBLACK];
+            ColorInt++;
 
-	    sx = *sxptr++;
+            sx = *sxptr++;
 
-	    /* use this pixel 'sx' times */
-	    do {
-		if (Black > dvalue)
-		    *bptr |= bit;
-		bptr += 3;
-	    } while (--sx);
-	} while (--width);
+            /* use this pixel 'sx' times */
+            do {
+                if (Black > dvalue)
+                    *bptr |= bit;
+                bptr += 3;
+            } while (--sx);
+        } while (--width);
     } else {
-	/* not thresholding, pre-compute ptr to dither matrix */
+        /* not thresholding, pre-compute ptr to dither matrix */
 
-	dmatrix = PInfo->pi_dmatrix + ((y & 3) << 2);
-	if (PD->pd_Preferences.PrintShade == SHADE_GREYSCALE) {
-	    bptr += x3;
+        dmatrix = PInfo->pi_dmatrix + ((y & 3) << 2);
+        if (PD->pd_Preferences.PrintShade == SHADE_GREYSCALE) {
+            bptr += x3;
 
-	    /* for all source pixels */
-	    do {
-		/* compute intensity val for each component */
-		Black = ColorInt->colorByte[PCMBLACK];
-		ColorInt++;
+            /* for all source pixels */
+            do {
+                /* compute intensity val for each component */
+                Black = ColorInt->colorByte[PCMBLACK];
+                ColorInt++;
 
-		sx = *sxptr++;
+                sx = *sxptr++;
 
-		/* use this pixel 'sx' times */
-		do {
-		    if (Black > dmatrix[x & 3])
-			*bptr |= bit;
-		    x++; /* done 1 more printer pixel */
-		    bptr += 3;
-		} while (--sx);
-	    } while (--width);
-	} else {			    /* color */
-	    /* for all source pixels */
-	    do {
-		/* compute intensity val for each component */
-		Black = ColorInt->colorByte[PCMBLACK];
-		Yellow = ColorInt->colorByte[PCMYELLOW];
-		Magenta = ColorInt->colorByte[PCMMAGENTA];
-		Cyan = ColorInt->colorByte[PCMCYAN];
-		ColorInt++;
+                /* use this pixel 'sx' times */
+                do {
+                    if (Black > dmatrix[x & 3])
+                        *bptr |= bit;
+                    x++; /* done 1 more printer pixel */
+                    bptr += 3;
+                } while (--sx);
+            } while (--width);
+        } else {                            /* color */
+            /* for all source pixels */
+            do {
+                /* compute intensity val for each component */
+                Black = ColorInt->colorByte[PCMBLACK];
+                Yellow = ColorInt->colorByte[PCMYELLOW];
+                Magenta = ColorInt->colorByte[PCMMAGENTA];
+                Cyan = ColorInt->colorByte[PCMCYAN];
+                ColorInt++;
 
-		sx = *sxptr++;
+                sx = *sxptr++;
 
-		/* use this pixel 'sx' times */
-		do {
-		    dvalue = dmatrix[x & 3];
-		    if (Black > dvalue) {
-			*(bptr + x3) |= bit;
-		    } else  {			/* black not rendered */
-			if (Yellow > dvalue) {
-			    *(yptr + x3) |= bit;
-			}
-			if (Magenta > dvalue) {
-			    *(mptr + x3) |= bit;
-			}
-			if (Cyan > dvalue) {
-			    *(cptr + x3) |= bit;
-			}
-		    }
-		    ++x;	/* done 1 more printer pixel */
-		    x3 += 3;
-		} while (--sx);
-	    } while (--width);
-	}
+                /* use this pixel 'sx' times */
+                do {
+                    dvalue = dmatrix[x & 3];
+                    if (Black > dvalue) {
+                        *(bptr + x3) |= bit;
+                    } else  {                   /* black not rendered */
+                        if (Yellow > dvalue) {
+                            *(yptr + x3) |= bit;
+                        }
+                        if (Magenta > dvalue) {
+                            *(mptr + x3) |= bit;
+                        }
+                        if (Cyan > dvalue) {
+                            *(cptr + x3) |= bit;
+                        }
+                    }
+                    ++x;        /* done 1 more printer pixel */
+                    x3 += 3;
+                } while (--sx);
+            } while (--width);
+        }
     }
 }
 

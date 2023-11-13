@@ -7,9 +7,9 @@
 /*
  *  DAS     Minimal assembler and peephole optimizer for DCC
  *
- *	    -doesn't understand include or IF constructions
- *	    -only understands decimal and $ hex
- *	    -only understands +, -, and negate
+ *          -doesn't understand include or IF constructions
+ *          -only understands decimal and $ hex
+ *          -only understands +, -, and negate
  *
  *  DAS infile [-o outfile] -O[optlevel]
  */
@@ -67,17 +67,17 @@ Prototype short   Optimize;
 Prototype short   NoUnitName;
 Prototype short   Verbose;
 Prototype short   ErrorOpt;
-Prototype FILE	  *ErrorFi;
-Prototype FILE	  *Fo;
-Prototype char	  *FoName;
-Prototype int32_t	  ExitCode;
-Prototype char	  *SrcFileName;
-Prototype char	  *AsmFileName;
+Prototype FILE    *ErrorFi;
+Prototype FILE    *Fo;
+Prototype char    *FoName;
+Prototype int32_t         ExitCode;
+Prototype char    *SrcFileName;
+Prototype char    *AsmFileName;
 
-Prototype int	main(int, char **);
-Prototype void	DebugPass(char);
-Prototype void	*zalloc(int32_t);
-Prototype void	help(void);
+Prototype int   main(int, char **);
+Prototype void  DebugPass(char);
+Prototype void  *zalloc(int32_t);
+Prototype void  help(void);
 Prototype short CToSize(char);
 
 #ifndef DEBUG
@@ -86,17 +86,17 @@ Prototype short CToSize(char);
 
 FileNode *CurFile;
 short   AddSym;
-short	DDebug;
-short	NoUnitName;
-short	Optimize;
-short	Verbose;
-short	ErrorOpt;
-FILE	*ErrorFi;
-FILE	*Fo;	    /*	used on error exit to close file  */
-char	*FoName;    /*	used on error exit to delete file */
-char	*AsmFileName;
-char	*SrcFileName;
-int32_t	ExitCode;
+short   DDebug;
+short   NoUnitName;
+short   Optimize;
+short   Verbose;
+short   ErrorOpt;
+FILE    *ErrorFi;
+FILE    *Fo;        /*  used on error exit to close file  */
+char    *FoName;    /*  used on error exit to delete file */
+char    *AsmFileName;
+char    *SrcFileName;
+int32_t ExitCode;
 
 int
 main(int ac, char **av)
@@ -106,78 +106,78 @@ main(int ac, char **av)
     short i;
 
     if (ac == 1)
-	help();
+        help();
 
     for (i = 1; i < ac; ++i) {
-	char *ptr = av[i];
-	if (*ptr != '-') {
-	    inFile = ptr;
-	    AsmFileName = ptr;
-	    if (SrcFileName == NULL)
-		SrcFileName = ptr;
-	    continue;
-	}
-	ptr += 2;
-	switch(ptr[-1]) {
-	case 'n':
-	    switch(*ptr) {
-	    case 'u':
-		NoUnitName = 1;
-		break;
-	    }
-	    break;
-	case 'v':
-	    Verbose = 1;
-	    break;
-	case 'd':
-	    DDebug = 1;
-	    break;
-	case 's':
-	    AddSym = 1;
-	    break;
-	case 'I':
-	    if (*ptr == 0)
-		ptr = av[++i];
-	    AddInclude(ptr);
-	    break;
-	case 'O':
-	    Optimize = atoi((*ptr) ? ptr : av[++i]);
-	    break;
-	case 'F':
-	    ErrorOpt = 1;
-	    if (*ptr == 'F')
-		ErrorOpt = 2;
-	    else if ((*ptr >= '0') && (*ptr <= '9'))
- 		ErrorOpt = *ptr - '0';
+        char *ptr = av[i];
+        if (*ptr != '-') {
+            inFile = ptr;
+            AsmFileName = ptr;
+            if (SrcFileName == NULL)
+                SrcFileName = ptr;
+            continue;
+        }
+        ptr += 2;
+        switch(ptr[-1]) {
+        case 'n':
+            switch(*ptr) {
+            case 'u':
+                NoUnitName = 1;
+                break;
+            }
+            break;
+        case 'v':
+            Verbose = 1;
+            break;
+        case 'd':
+            DDebug = 1;
+            break;
+        case 's':
+            AddSym = 1;
+            break;
+        case 'I':
+            if (*ptr == 0)
+                ptr = av[++i];
+            AddInclude(ptr);
+            break;
+        case 'O':
+            Optimize = atoi((*ptr) ? ptr : av[++i]);
+            break;
+        case 'F':
+            ErrorOpt = 1;
+            if (*ptr == 'F')
+                ErrorOpt = 2;
+            else if ((*ptr >= '0') && (*ptr <= '9'))
+                ErrorOpt = *ptr - '0';
 
-	    ptr = av[++i];
-	    ErrorFi = fopen(ptr, "a");
-	    break;
-	case 'N':
-	    if (*ptr == 0)
-		ptr = av[++i];
-	    SrcFileName = ptr;
-	    break;
-	case 'o':
-	    outFile = (*ptr) ? ptr : av[++i];
-	    break;
-	default:
-	    help();
-	}
+            ptr = av[++i];
+            ErrorFi = fopen(ptr, "a");
+            break;
+        case 'N':
+            if (*ptr == 0)
+                ptr = av[++i];
+            SrcFileName = ptr;
+            break;
+        case 'o':
+            outFile = (*ptr) ? ptr : av[++i];
+            break;
+        default:
+            help();
+        }
     }
     if (inFile == NULL) {
-	cerror(EERROR_NO_INPUT_FILE);
-	help();
+        cerror(EERROR_NO_INPUT_FILE);
+        help();
     }
     if (outFile == NULL) {
-	i = strlen(inFile);
-	outFile = malloc(i + 5);
-	strcpy(outFile, inFile);
-	for (--i; i >= 0 && outFile[i] != '.'; --i);
-	if (outFile[i] == '.')
-	    strcpy(outFile + i + 1, "o");
-	else
-	    strcat(outFile, ".o");
+        i = strlen(inFile);
+        outFile = malloc(i + 5);
+        strcpy(outFile, inFile);
+        for (--i; i >= 0 && outFile[i] != '.'; --i);
+        if (outFile[i] == '.')
+            strcpy(outFile + i + 1, "o");
+        else
+            strcat(outFile, ".o");
     }
 
     PushFileNode(OpenFile(inFile));
@@ -187,29 +187,29 @@ main(int ac, char **av)
     InitSect();
 
     DebugPass('a');
-    PassA();	    	/*	Loads MachCtx & resolves directives	*/
+    PassA();            /*      Loads MachCtx & resolves directives     */
     DebugPass('b');
-    (void)PassB(0);	    /*	resolves addressing modes (expressions) */
+    (void)PassB(0);         /*  resolves addressing modes (expressions) */
     DebugPass('x');
     ResetSectAddrs();
     DebugPass('c');
-    (void)PassC(0);	    /*	optimize!   */
+    (void)PassC(0);         /*  optimize!   */
     ResetSectAddrs();
     DebugPass('g');
-    (void)PassG(0);	   /*  generate code		       */
+    (void)PassG(0);        /*  generate code                   */
     DebugPass('s');
     {
-	FILE *fo = fopen(outFile, "w");
-	if (fo == NULL)
-	    cerror(EFATAL_CANT_CREATE_FILE, outFile);
-	Fo = fo;
-	FoName = outFile;
-	SectCreateObject(fo, inFile);
-	fclose(fo);
-	Fo = NULL;
+        FILE *fo = fopen(outFile, "w");
+        if (fo == NULL)
+            cerror(EFATAL_CANT_CREATE_FILE, outFile);
+        Fo = fo;
+        FoName = outFile;
+        SectCreateObject(fo, inFile);
+        fclose(fo);
+        Fo = NULL;
     }
     if (ExitCode > 5 && FoName)
-	remove(FoName);
+        remove(FoName);
     return(ExitCode);
 }
 
@@ -232,22 +232,22 @@ int32_t bytes;
     static int32_t Bytes;
 
     if (bytes <= Bytes) {
-	void *ptr;
+        void *ptr;
 
-	ptr = (void *)Buf;
-	Buf += bytes;
-	Bytes -= bytes;
-	return(ptr);
+        ptr = (void *)Buf;
+        Buf += bytes;
+        Bytes -= bytes;
+        return(ptr);
     }
     if (bytes > 128) {
-	void *ptr;
+        void *ptr;
 
-	ptr = malloc(bytes);
-	if (ptr == NULL) {
-	    NoMemory();
-	}
-	setmem(ptr, bytes, 0);
-	return(ptr);
+        ptr = malloc(bytes);
+        if (ptr == NULL) {
+            NoMemory();
+        }
+        setmem(ptr, bytes, 0);
+        return(ptr);
     }
     Buf = malloc(ZALLOCSIZ);
     if (Buf == NULL) {
@@ -277,11 +277,11 @@ CToSize(char c)
     switch(c|0x20) {
     case 'b':
     case 's':
-	return(1);
+        return(1);
     case 'w':
-	return(2);
+        return(2);
     case 'l':
-	return(4);
+        return(4);
     }
     cerror(EERROR_ILLEGAL_SIZE, c);
     return(0);

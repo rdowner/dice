@@ -1,6 +1,6 @@
 
 /*
- *	FILE.C	- push/pop files, include directive support.
+ *      FILE.C  - push/pop files, include directive support.
  *
  *      $Filename: main.c $
  *      $Author: dillon $
@@ -79,7 +79,7 @@ void
 PopFileNode(void)
 {
     if (CurFile == NULL) {
-	cerror(EFATAL_INTERNAL_ERROR, "");
+        cerror(EFATAL_INTERNAL_ERROR, "");
     }
     CurFile = CurFile->fn_Parent;
 }
@@ -90,21 +90,21 @@ Filter(FileNode *fn)
     char *ptr = fn->fn_AsBuf;
 
     while (*ptr) {
-	if (*ptr == '\"') {
-	    for (++ptr; *ptr != '\n' && *ptr != '\"'; ++ptr)
-		;   
-	    ++ptr;
-	} else if (*ptr == '\'') {
-	    for (++ptr; *ptr != '\n' && *ptr != '\''; ++ptr)
-		;
-	    ++ptr;
-	} else if (*ptr == ';') {
-	    while (*ptr != '\n')
-		*ptr++ = ' ';
-	    ++ptr;
-	} else {
-	    ++ptr;
-	}
+        if (*ptr == '\"') {
+            for (++ptr; *ptr != '\n' && *ptr != '\"'; ++ptr)
+                ;   
+            ++ptr;
+        } else if (*ptr == '\'') {
+            for (++ptr; *ptr != '\n' && *ptr != '\''; ++ptr)
+                ;
+            ++ptr;
+        } else if (*ptr == ';') {
+            while (*ptr != '\n')
+                *ptr++ = ' ';
+            ++ptr;
+        } else {
+            ++ptr;
+        }
     }   
 }
 
@@ -115,23 +115,23 @@ ParseFileName(const char *str)
     char *r = NULL;
 
     for (s = 0; str[s]; ++s) {
-	if (str[s] == '\"') {
-	    ++s;
-	    break;
-	}
+        if (str[s] == '\"') {
+            ++s;
+            break;
+        }
     }
     if (str[s]) {
-	int e;
-	for (e = s; str[e] != '\"'; ++e)
-	    ;
-	if (str[e] == '\"') {
-	    r = malloc(e - s + 1);
-	    memcpy(r, str + s, e - s);
-	    r[e - s] = 0;
-	}
+        int e;
+        for (e = s; str[e] != '\"'; ++e)
+            ;
+        if (str[e] == '\"') {
+            r = malloc(e - s + 1);
+            memcpy(r, str + s, e - s);
+            r[e - s] = 0;
+        }
     }
     if (r == NULL)
-	cerror(EFATAL_SYNTAX, str);
+        cerror(EFATAL_SYNTAX, str);
     return(r);
 }
 
@@ -160,24 +160,24 @@ FOpenInclude(const char *fileName, const char *modes)
      */
 
     if (CurFile) {
-	char *ptr;
+        char *ptr;
 
-	strcpy(path, CurFile->fn_FileName);
-	if ((ptr = strrchr(path, '/')) != NULL) {
-	    strcpy(ptr + 1, fileName);
-	    fi = fopen(path, modes);
-	}
+        strcpy(path, CurFile->fn_FileName);
+        if ((ptr = strrchr(path, '/')) != NULL) {
+            strcpy(ptr + 1, fileName);
+            fi = fopen(path, modes);
+        }
     }
 
     /*
      * Try include file straight
      */
     if (fi == NULL)
-	fi = fopen(fileName, modes);
+        fi = fopen(fileName, modes);
 
     for (in = InBase; in && fi == NULL; in = in->in_Next) {
-	sprintf(path, "%s/%s", in->in_Path, fileName);
-	fi = fopen(path, modes);
+        sprintf(path, "%s/%s", in->in_Path, fileName);
+        fi = fopen(path, modes);
     }
     return(fi);
 }

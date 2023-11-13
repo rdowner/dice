@@ -1,119 +1,119 @@
 
-compiler/utilities					    compiler/utilities
-compiler/UTILITIES					    compiler/UTILITIES
+compiler/utilities                                          compiler/utilities
+compiler/UTILITIES                                          compiler/UTILITIES
 
-			     DICE SYSTEM UTILITIES
-			      REGISTERED VERSION
+                             DICE SYSTEM UTILITIES
+                              REGISTERED VERSION
 
-	This is an overview of DICE utilities, please refer to individual
-	manual pages for more information
+        This is an overview of DICE utilities, please refer to individual
+        manual pages for more information
 
-	<wildcard> support exists for many commands.  This is an unanchored
-	search and things like:     fubar/#?/#?  WILL WORK.
+        <wildcard> support exists for many commands.  This is an unanchored
+        search and things like:     fubar/#?/#?  WILL WORK.
 
 
     dobj objfile_or_library [-o outfile]
 
-	DOBJ disassembles object files and libraries.  There are no limitations
-	to object or library file size.
+        DOBJ disassembles object files and libraries.  There are no limitations
+        to object or library file size.
 
     cat <wildcard>
 
-	CAT types out one or more files as specified by the wildcard.  Startup
-	is a bit slower than TYPE due to the directory scan.
+        CAT types out one or more files as specified by the wildcard.  Startup
+        is a bit slower than TYPE due to the directory scan.
 
     expand <wildcard>
     expand <fmt> <wildcard> ...
 
-	EXPAND generates a list of files, one per line, using the specified
-	<fmt> string (default "%s").  This allows you to generate repetetive
-	command sequences on a large number of files efficiently.
+        EXPAND generates a list of files, one per line, using the specified
+        <fmt> string (default "%s").  This allows you to generate repetetive
+        command sequences on a large number of files efficiently.
 
-	1> expand #?
-	1> expand "fubar %s" #?
+        1> expand #?
+        1> expand "fubar %s" #?
 
-	If you wish to specify more than one wildcard you MUST supply a
-	format.  For example:
+        If you wish to specify more than one wildcard you MUST supply a
+        format.  For example:
 
-	1> expand %s #?.c ram:#?
+        1> expand %s #?.c ram:#?
 
     libtos amiga.lib amigas.lib
 
-	LIBTOS converts a large-data-model AMIGA.LIB into a small-data-model
-	AMIGAS.LIB ... source is included in the LIB directory allowing
-	modification to convert other libraries.
+        LIBTOS converts a large-data-model AMIGA.LIB into a small-data-model
+        AMIGAS.LIB ... source is included in the LIB directory allowing
+        modification to convert other libraries.
 
-	A small-data model AMIGAS.LIB allows DICE to generate residentable
-	code.
+        A small-data model AMIGAS.LIB allows DICE to generate residentable
+        code.
 
     makeproto -o outfile file1 file2 ... fileN
 
-	MAKEPROTO is a cute utility to create a prototype file given a set
-	of source files in a clean fashion, without relying on crazy compiler
-	options.
+        MAKEPROTO is a cute utility to create a prototype file given a set
+        of source files in a clean fashion, without relying on crazy compiler
+        options.
 
-	The idea is to create a DEFS.H file that all your source files include
-	with all the stuff you normally stick in such a file plus the following
-	defines:
+        The idea is to create a DEFS.H file that all your source files include
+        with all the stuff you normally stick in such a file plus the following
+        defines:
 
-	#define Prototype   extern
-	#define Local	    static  /*	or as nothing at all */
+        #define Prototype   extern
+        #define Local       static  /*  or as nothing at all */
 
-	Each file prototypes functions declared in that file, for example:
+        Each file prototypes functions declared in that file, for example:
 
-	Prototype int x;
-	Prototype void FuBar(int);
+        Prototype int x;
+        Prototype void FuBar(int);
 
-	int x;
-	/* etc...   */
+        int x;
+        /* etc...   */
 
 
-	You then create a PROTOS.H file by running MAKEPROTO on all source
-	files.	This file should be #include'd by DEFS.H .  MAKEPROTO simply
-	extracts all lines beginning with 'Prototype' into the specified
-	output file.
+        You then create a PROTOS.H file by running MAKEPROTO on all source
+        files.  This file should be #include'd by DEFS.H .  MAKEPROTO simply
+        extracts all lines beginning with 'Prototype' into the specified
+        output file.
 
     dsearch "string" <wildcard>
 
-	Searches for the specified string in the specified files.  Quite fast.
-	Search is case insensitive.
+        Searches for the specified string in the specified files.  Quite fast.
+        Search is case insensitive.
 
     head <wildcard>
 
-	Prints the first 10 lines of each specified file.
+        Prints the first 10 lines of each specified file.
 
     wc <wildcard>
 
-	counts characters, words, and lines in each specified file and
-	prints a total at the very end.
+        counts characters, words, and lines in each specified file and
+        prints a total at the very end.
 
     dupdate <files and options>
 
-	used to create distributions, in general copies some source tree
-	to some destination tree, but only necessary files to bring the
-	destination up to par.	Has other features.
+        used to create distributions, in general copies some source tree
+        to some destination tree, but only necessary files to bring the
+        destination up to par.  Has other features.
 
     autorefs outfile <wildcard>
 
-	Used to generate DME.REFS files from .H files, AUTODOC files, and
-	other manual pages.
+        Used to generate DME.REFS files from .H files, AUTODOC files, and
+        other manual pages.
 
-	'outfile' is always appended to so if you are re-generating a
-	refs file you should first delete it.  files in <wildcard> are
-	scanned, with .H recognized as header files and others as
-	document files.
+        'outfile' is always appended to so if you are re-generating a
+        refs file you should first delete it.  files in <wildcard> are
+        scanned, with .H recognized as header files and others as
+        document files.
 
     du path
 
-	DU stands for DISK-USAGE, and reports the aproximate number of
-	blocks in a directory tree.  It tries to figure out the number
-	of blocks files actually take up by adding a fudge factor for
-	side sectors, and it's pretty close, but not perfect.
+        DU stands for DISK-USAGE, and reports the aproximate number of
+        blocks in a directory tree.  It tries to figure out the number
+        of blocks files actually take up by adding a fudge factor for
+        side sectors, and it's pretty close, but not perfect.
 
     dprof proffile
 
-	DPROF is a program profiler.  When you compile a program with the
-	-prof option it will generate a binary data file on exit. The DPROF
-	program interprets this .dprof file and displays the profile in
-	formatted text.
+        DPROF is a program profiler.  When you compile a program with the
+        -prof option it will generate a binary data file on exit. The DPROF
+        program interprets this .dprof file and displays the profile in
+        formatted text.
 

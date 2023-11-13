@@ -1,32 +1,32 @@
 
-		;
-		;   _ExecSeg(seg, arg, arglen, stack)
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;
+                ;   _ExecSeg(seg, arg, arglen, stack)
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xdef	__ExecSeg
+                xdef    __ExecSeg
 
-__ExecSeg	move.l	4(sp),D1            ; segment
-		move.l	8(sp),A0            ; arg
-		move.l	12(sp),D0           ; arglen
-		move.l	16(sp),A1           ; stack ptr
+__ExecSeg       move.l  4(sp),D1            ; segment
+                move.l  8(sp),A0            ; arg
+                move.l  12(sp),D0           ; arglen
+                move.l  16(sp),A1           ; stack ptr
 
-		movem.l D2-D7/A2-A6,-(sp)   ; save regs
-		move.l	A7,A2		    ; old stack ptr
-		move.l	A1,A7		    ; new stack ptr
-		move.l	A2,-(sp)            ; save old stack ptr
+                movem.l D2-D7/A2-A6,-(sp)   ; save regs
+                move.l  A7,A2               ; old stack ptr
+                move.l  A1,A7               ; new stack ptr
+                move.l  A2,-(sp)            ; save old stack ptr
 
-		asl.l	#2,D1		    ; bptr to aptr
-		addq.l	#4,D1		    ; skip segment hdr
-		move.l	D1,A2
-		jsr	(A2)                ; call program
+                asl.l   #2,D1               ; bptr to aptr
+                addq.l  #4,D1               ; skip segment hdr
+                move.l  D1,A2
+                jsr     (A2)                ; call program
 
-					    ; return value in D0
-		move.l	(sp)+,A7            ; old stack
-		movem.l (sp)+,D2-D7/A2-A6   ; restore registers
-		rts			    ; return
+                                            ; return value in D0
+                move.l  (sp)+,A7            ; old stack
+                movem.l (sp)+,D2-D7/A2-A6   ; restore registers
+                rts                         ; return
 
-		END
+                END
 

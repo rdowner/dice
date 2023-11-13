@@ -1,22 +1,22 @@
 
-		;   FFPA_FLT.A
-		;
-		;   D0	integer arg
-		;   result float in D0
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   FFPA_FLT.A
+                ;
+                ;   D0  integer arg
+                ;   result float in D0
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xref	_MathBase
-		xref	_LVOSPFlt
-		xdef	__ffpflt_a
+                xref    _MathBase
+                xref    _LVOSPFlt
+                xdef    __ffpflt_a
 
-__ffpflt_a	move.l	A6,-(sp)
-		move.l	_MathBase(A4),A6
-		jsr	_LVOSPFlt(A6)
-		move.l	(sp)+,A6
-		rts
+__ffpflt_a      move.l  A6,-(sp)
+                move.l  _MathBase(A4),A6
+                jsr     _LVOSPFlt(A6)
+                move.l  (sp)+,A6
+                rts
 
-		END
+                END
 

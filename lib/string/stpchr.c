@@ -22,12 +22,12 @@ char c;
     char cc;
 
     while (cc = *str) {
-	if (cc == c)
-	    return(str);
-	++str;
+        if (cc == c)
+            return(str);
+        ++str;
     }
     if (cc == c)
-	return(str);
+        return(str);
     return(NULL);
 }
 

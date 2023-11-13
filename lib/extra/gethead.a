@@ -1,24 +1,24 @@
 
-		;   GETHEAD.A
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
-		;
+                ;   GETHEAD.A
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;
 
-		section text,CODE
+                section text,CODE
 
-		xdef	_GetHead    ; GetHead(list:4(sp))
-		xdef	_GetSucc    ; GetSucc(node:4(sp))
-		xdef	@GetHead
-		xdef	@GetSucc
+                xdef    _GetHead    ; GetHead(list:4(sp))
+                xdef    _GetSucc    ; GetSucc(node:4(sp))
+                xdef    @GetHead
+                xdef    @GetSucc
 _GetSucc:
-_GetHead:	move.l	4(sp),A0
+_GetHead:       move.l  4(sp),A0
 @GetHead:
 @GetSucc:
-		move.l	(A0),A0
-		move.l	(A0),D0
-		beq	gh0
-		move.l	A0,D0
-gh0		rts
+                move.l  (A0),A0
+                move.l  (A0),D0
+                beq     gh0
+                move.l  A0,D0
+gh0             rts
 
-		END
+                END
 

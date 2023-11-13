@@ -30,25 +30,25 @@ char *av[];
 
     switch(ac) {
     case 1:
-	puts("Expand \"fmtstring\" wildcards...");
-	puts("Expand %s #?");
-	exit(1);
+        puts("Expand \"fmtstring\" wildcards...");
+        puts("Expand %s #?");
+        exit(1);
     case 2:
-	tpl = "%s";
-	break;
+        tpl = "%s";
+        break;
     default:
-	tpl = av[1];
-	++av;
-	--ac;
+        tpl = av[1];
+        ++av;
+        --ac;
     }
 #ifndef unix
     expand_args(ac, av, &ac, &av);
 #endif
 
     for (i = 1; i < ac; ++i) {
-	char *p = av[i];
-	printf(tpl, p, p, p, p, p, p, p, p, p, p);
-	puts("");
+        char *p = av[i];
+        printf(tpl, p, p, p, p, p, p, p, p, p, p);
+        puts("");
     }
     return(0);
 }

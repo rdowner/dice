@@ -22,16 +22,16 @@ HYPER(strnicmp)(const char *s, const char *d, int n)
     ubyte c;
 
     if (n == 0)
-	return(0);
+        return(0);
 
     while (tolower(c = *s) == tolower(*(ubyte *)d)) {
-	if (c == 0 || --n == 0)
-	    return(0);
-	++s;
-	++d;
+        if (c == 0 || --n == 0)
+            return(0);
+        ++s;
+        ++d;
     }
     if (tolower(c) < tolower(*(ubyte *)d))
-	return(-1);
+        return(-1);
     return(1);
 }
 

@@ -18,7 +18,7 @@ Quit
 
 #define CATCOMP_NUMBERS
 #define CATCOMP_BLOCK
-#define CATCOMP_STRINGS 	// for demonstrating the reverse index functions
+#define CATCOMP_STRINGS         // for demonstrating the reverse index functions
 #include "helloworld_strings.h"
 
 
@@ -57,14 +57,14 @@ STRPTR GetString(LONG stringNum)
 {
 LONG   *l;
 UWORD  *w;
-STRPTR	builtIn;
+STRPTR  builtIn;
 
     l = (LONG *)CatCompBlock;
 
     while (*l != stringNum)
     {
-	w = (UWORD *)((ULONG)l + 4);
-	l = (LONG *)((ULONG)l + (ULONG)*w + 6);
+        w = (UWORD *)((ULONG)l + 4);
+        l = (LONG *)((ULONG)l + (ULONG)*w + 6);
     }
     builtIn = (STRPTR)((ULONG)l + 6);
 
@@ -76,7 +76,7 @@ STRPTR	builtIn;
     printf("GetString: %d %08lx\n", 2, GetCatalogStr(Catalog, 2, NULL));
 
     if (LocaleBase)
-	return(GetCatalogStr(Catalog,stringNum,builtIn));
+        return(GetCatalogStr(Catalog,stringNum,builtIn));
 
     return(builtIn);
 }
@@ -91,15 +91,15 @@ LONG GetIndex(STRPTR string)
 {
 LONG   *l;
 UWORD  *w;
-STRPTR	builtIn;
+STRPTR  builtIn;
 
     l = (LONG *)CatCompBlock;
     builtIn = (STRPTR)((ULONG)l + 6);
 
     while (Stricmp(builtIn,string)) {
-	w = (UWORD *)((ULONG)l + 4);
-	l = (LONG *)((ULONG)l + (ULONG)*w + 6);
-	builtIn = (STRPTR)((ULONG)l + 6);
+        w = (UWORD *)((ULONG)l + 4);
+        l = (LONG *)((ULONG)l + (ULONG)*w + 6);
+        builtIn = (STRPTR)((ULONG)l + 6);
     }
 
     return *l;

@@ -14,7 +14,7 @@
 #include <unistd.h>
 #endif
 #ifdef _DCC
-#include <exec/tasks.h>     /*	for SetRequester() */
+#include <exec/tasks.h>     /*  for SetRequester() */
 #include <dos/dos.h>
 #include <dos/dosextens.h>
 #include <clib/exec_protos.h>
@@ -34,12 +34,12 @@ Prototype void ExitError(short);
 void *SetRequester(void *new);
 
 #ifdef AMIGA
-char	*ErrorFileName1 = DCC_CONFIG "dice.errors";
-char	*ErrorFileName2 = DCC "config/dice.errors";
+char    *ErrorFileName1 = DCC_CONFIG "dice.errors";
+char    *ErrorFileName2 = DCC "config/dice.errors";
 #endif
-char	*ErrorAry;
-short	ErrorArySize;
-char	ErrBuf[128];
+char    *ErrorAry;
+short   ErrorArySize;
+char    ErrBuf[128];
 
 void
 zerror(short errorId, ...)
@@ -87,7 +87,7 @@ vcerror(int32_t lexIdx, short etype, const char *buf, va_list va, short eno)
 {
     static const char *TNames[] = { "?","Warning","Error", "Fatal", "SoftError"
 #ifndef REGISTERED
-	, "Unimplemented"
+        , "Unimplemented"
 #endif
     };
     int32_t lexIdxBeg;
@@ -119,65 +119,65 @@ vcerror(int32_t lexIdx, short etype, const char *buf, va_list va, short eno)
     ebuf[0] = 0;
     if (lexLine && ErrorInFileValid) {
 
-	short c;
-	int32_t i = lexIdxBeg;
-	short pos = 0;
+        short c;
+        int32_t i = lexIdxBeg;
+        short pos = 0;
 
-	while ((c = FindLexCharAt(i)) != EOF && c != '\n')
-	{
-	    if (c == '\t')
-	    {
-		short tab;
-		tab = ((pos + ebufoff + 8) & ~7) - ebufoff;
-		while (pos < tab)
-		    ebuf[pos++] = ' ';
-	    }
-	    else
-		ebuf[pos++] = c;
+        while ((c = FindLexCharAt(i)) != EOF && c != '\n')
+        {
+            if (c == '\t')
+            {
+                short tab;
+                tab = ((pos + ebufoff + 8) & ~7) - ebufoff;
+                while (pos < tab)
+                    ebuf[pos++] = ' ';
+            }
+            else
+                ebuf[pos++] = c;
 
-	    if (i == lexIdx)
-		errcol = pos + ebufoff;
+            if (i == lexIdx)
+                errcol = pos + ebufoff;
 
-	    if (pos > 80)
-	    {
-	       if ((errcol - (pos + ebufoff)) > 10) break;
-	       bcopy(ebuf+10, ebuf, pos-10);
-	       pos -= 10;
-	       ebufoff += 10;
-	    }
-	    ++i;
-	}
-	ebuf[pos] = 0;
+            if (pos > 80)
+            {
+               if ((errcol - (pos + ebufoff)) > 10) break;
+               bcopy(ebuf+10, ebuf, pos-10);
+               pos -= 10;
+               ebufoff += 10;
+            }
+            ++i;
+        }
+        ebuf[pos] = 0;
     }
 
     eprintf(1, "DC1: \"%.*s\" L:%d ", lexFileNameLen, lexFile, lexLine);
 
     if (ErrorOpt & 1)
-	eprintf(1, "C:%d %c:%d ", errcol + 1, TNames[etype][0], eno);
+        eprintf(1, "C:%d %c:%d ", errcol + 1, TNames[etype][0], eno);
     else
-	eprintf(1, "%s:%d ", TNames[etype], eno);
+        eprintf(1, "%s:%d ", TNames[etype], eno);
 
     veprintf(1, buf, va);
     eprintf(1, "\n");
 
     if (lexLine && ErrorInFileValid && (ErrorOpt & 2))
     {
-	short pos = errcol - ebufoff;
+        short pos = errcol - ebufoff;
 
-	/* We Need to account for the fact that the ^ will take up one space */
-	if (pos)
-	   pos = pos - 1;
+        /* We Need to account for the fact that the ^ will take up one space */
+        if (pos)
+           pos = pos - 1;
 
-	eprintf(0, "%s\n%*.*s^\n", ebuf, pos, pos, "");
+        eprintf(0, "%s\n%*.*s^\n", ebuf, pos, pos, "");
     }
 
     if (etype == ESOFT || etype == EFATAL) {
-	ExitError(20);
+        ExitError(20);
     }
     if (etype == EWARN && ExitCode < 5)
-	ExitCode = 5;
+        ExitCode = 5;
     if (etype != EWARN && ExitCode < 20)
-	ExitCode = 20;
+        ExitCode = 20;
 }
 
 void
@@ -185,11 +185,11 @@ ExitError(short code)
 {
     DumpStats();
     if (OutFileName) {
-	fclose(stdout);
-	remove(OutFileName);
+        fclose(stdout);
+        remove(OutFileName);
     }
     if (ExitCode < code)
-	ExitCode = code;
+        ExitCode = code;
     exit(ExitCode);
 }
 
@@ -200,49 +200,49 @@ ObtainErrorString(short errNum)
     static char *UseFileName;
 
     if (ErrorAry == NULL) {
-	int fd;
-	short siz;
-	void *save;
+        int fd;
+        short siz;
+        void *save;
 
-	save = SetRequester((void *)-1);
+        save = SetRequester((void *)-1);
 #ifdef AMIGA
-	UseFileName = ErrorFileName1;
-	fd = open(ErrorFileName1, O_RDONLY|O_BINARY);
+        UseFileName = ErrorFileName1;
+        fd = open(ErrorFileName1, O_RDONLY|O_BINARY);
 #endif
-	SetRequester(save);
+        SetRequester(save);
 #ifdef AMIGA
-	if (fd < 0) {
-	    if ((fd = open(ErrorFileName2, O_RDONLY|O_BINARY)) < 0) {
-		sprintf(ErrBuf, "(can't open %s!)", ErrorFileName2);
-		return(ErrBuf);
-	    }
-	    UseFileName = ErrorFileName2;
-	}
+        if (fd < 0) {
+            if ((fd = open(ErrorFileName2, O_RDONLY|O_BINARY)) < 0) {
+                sprintf(ErrBuf, "(can't open %s!)", ErrorFileName2);
+                return(ErrBuf);
+            }
+            UseFileName = ErrorFileName2;
+        }
 #else
-	UseFileName = LocatePath("DERRORS", "dice.errors");
-	fd = open(UseFileName, O_RDONLY|O_BINARY);
-	if (fd < 0) {
-	    sprintf(ErrBuf, "(can't open %s!)", UseFileName);
-	    return(ErrBuf);
-	}
+        UseFileName = LocatePath("DERRORS", "dice.errors");
+        fd = open(UseFileName, O_RDONLY|O_BINARY);
+        if (fd < 0) {
+            sprintf(ErrBuf, "(can't open %s!)", UseFileName);
+            return(ErrBuf);
+        }
 #endif
-	siz = lseek(fd, 0L, 2);
-	lseek(fd, 0L, 0);
-	ErrorAry = malloc(siz + 1);
-	read(fd, ErrorAry, siz);
-	close(fd);
-	{
-	    char *ptr;
-	    for (ptr = strchr(ErrorAry, '\n'); ptr; ptr = strchr(ptr + 1, '\n'))
-		*ptr = 0;
-	}
-	ErrorAry[siz] = 0;
-	ErrorArySize = siz;
+        siz = lseek(fd, 0L, 2);
+        lseek(fd, 0L, 0);
+        ErrorAry = malloc(siz + 1);
+        read(fd, ErrorAry, siz);
+        close(fd);
+        {
+            char *ptr;
+            for (ptr = strchr(ErrorAry, '\n'); ptr; ptr = strchr(ptr + 1, '\n'))
+                *ptr = 0;
+        }
+        ErrorAry[siz] = 0;
+        ErrorArySize = siz;
     }
     for (i = 0; i < ErrorArySize; i += strlen(ErrorAry + i) + 1) {
-	char *ptr;
-	if (ErrorAry[i] == 'C' && ErrorAry[i+1] == '1' && strtol(ErrorAry + i + 3, &ptr, 10) == errNum)
-	    return(ptr + 1);
+        char *ptr;
+        if (ErrorAry[i] == 'C' && ErrorAry[i+1] == '1' && strtol(ErrorAry + i + 3, &ptr, 10) == errNum)
+            return(ptr + 1);
     }
     sprintf(ErrBuf, "(no entry in %s for error)", (UseFileName) ? UseFileName : "??");
     return(ErrBuf);

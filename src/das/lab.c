@@ -13,11 +13,11 @@
 
 Prototype   Label   *LabHash[LSIZE];
 
-Prototype int	labhash(char *);
+Prototype int   labhash(char *);
 Prototype Label *GetLabelByName(char *);
 Prototype Label *FindLabel(char *);
 
-Label	*LabHash[LSIZE];
+Label   *LabHash[LSIZE];
 
 int
 labhash(str)
@@ -26,8 +26,8 @@ char *str;
     register int32_t hv = 0x1B465D8;
 
     while (*str) {
-	hv = (hv >> 23) ^ (hv << 5) ^ (ubyte)*str;
-	++str;
+        hv = (hv >> 23) ^ (hv << 5) ^ (ubyte)*str;
+        ++str;
     }
     return(hv & LMASK);
 }
@@ -41,8 +41,8 @@ char *name;
     Label *lab;
 
     for (plab = LabHash + i; (lab = *plab) != NULL; plab = &lab->HNext) {
-	if (strcmp(lab->Name, name) == 0)
-	    return(lab);
+        if (strcmp(lab->Name, name) == 0)
+            return(lab);
     }
     lab = AllocStructure(Label);
     lab->HNext = *plab;
@@ -60,8 +60,8 @@ char *name;
     Label *lab;
 
     for (lab = LabHash[i]; lab; lab = lab->HNext) {
-	if (strcmp(lab->Name, name) == 0)
-	    return(lab);
+        if (strcmp(lab->Name, name) == 0)
+            return(lab);
     }
     return(lab);
 }

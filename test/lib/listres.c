@@ -18,13 +18,13 @@
 
 typedef struct DosLibrary   DosLibrary;
 typedef struct RootNode     RootNode;
-typedef struct DosInfo	    DosInfo;
+typedef struct DosInfo      DosInfo;
 typedef struct CommandLineInterface CLI;
 
-typedef struct MsgPort	    MsgPort;
-typedef struct Message	    Message;
-typedef struct Task	    Task;
-typedef struct Process	    Process;
+typedef struct MsgPort      MsgPort;
+typedef struct Message      Message;
+typedef struct Task         Task;
+typedef struct Process      Process;
 
 typedef struct SegNode {
     BPTR    NextEntry;
@@ -61,17 +61,17 @@ char *av[];
     printf("di %08lx di->di_NetHand %08lx\n", di, di->di_NetHand);
 
     for (sn = BTOC(di->di_NetHand, SegNode); sn; sn = BTOC(sn->NextEntry, SegNode)) {
-	int namlen = *(unsigned char *)&sn->SegName;
-	printf("sn %08lx name %-15.*s seg %08lx ref %ld\n",
-	    sn,
-	    namlen,
-	    (char *)&sn->SegName + 1,
-	    sn->SegPtr,
-	    sn->UseCount
-	);
-	if (ac == 3 && namlen == strlen(av[1]) && strncmp(av[1], (char *)&sn->SegName + 1, namlen) == 0) {
-	    sn->UseCount = atoi(av[2]);
-	}
+        int namlen = *(unsigned char *)&sn->SegName;
+        printf("sn %08lx name %-15.*s seg %08lx ref %ld\n",
+            sn,
+            namlen,
+            (char *)&sn->SegName + 1,
+            sn->SegPtr,
+            sn->UseCount
+        );
+        if (ac == 3 && namlen == strlen(av[1]) && strncmp(av[1], (char *)&sn->SegName + 1, namlen) == 0) {
+            sn->UseCount = atoi(av[2]);
+        }
     }
 }
 

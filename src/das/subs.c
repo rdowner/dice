@@ -17,16 +17,16 @@
 #define O_BINARY    0
 #endif
 
-Prototype char	*EAToString(EffAddr *);
-Prototype void	syntax(int32_t);
-Prototype void	RegMaskToStr(char *, int32_t);
-Prototype void	cvtstrtolower(char *);
-Prototype int	OnlyOneRegister(int32_t);
-Prototype void	cerror(short, ...);
-Prototype int32_t	Align(int32_t, int32_t);
-Prototype int32_t	AlignDelta(int32_t, int32_t);
-Prototype char	*MakeTmpLabelName(void);
-Prototype char	ExtWordToReg(uword);
+Prototype char  *EAToString(EffAddr *);
+Prototype void  syntax(int32_t);
+Prototype void  RegMaskToStr(char *, int32_t);
+Prototype void  cvtstrtolower(char *);
+Prototype int   OnlyOneRegister(int32_t);
+Prototype void  cerror(short, ...);
+Prototype int32_t       Align(int32_t, int32_t);
+Prototype int32_t       AlignDelta(int32_t, int32_t);
+Prototype char  *MakeTmpLabelName(void);
+Prototype char  ExtWordToReg(uword);
 Prototype char *ObtainErrorString(short);
 Prototype void NoMemory(void);
 Prototype void ExitError(short);
@@ -37,10 +37,10 @@ Prototype void eputc(char c);
 
 Local char  *DumpRegs(char *, short, char, char);
 
-char	*ErrorFileName = DCC "config/dice.errors";
-char	*ErrorAry;
-int32_t	ErrorArySize;
-char	ErrBuf[128];
+char    *ErrorFileName = DCC "config/dice.errors";
+char    *ErrorAry;
+int32_t ErrorArySize;
+char    ErrBuf[128];
 
 char *
 EAToString(ea)
@@ -55,31 +55,31 @@ EffAddr *ea;
     ptr = Buf[Bi];
 
     if (ea->Mode1 == 0)
-	return("-");
+        return("-");
     switch(ea->Mode1) {
     case AB_DN:
     case AB_AN:
-	*ptr++ = rc;
-	*ptr++ = (ea->Reg1 & 7) + '0';
-	*ptr = 0;
-	break;
+        *ptr++ = rc;
+        *ptr++ = (ea->Reg1 & 7) + '0';
+        *ptr = 0;
+        break;
     case AB_MMIND:
-	*ptr++ = '-';
+        *ptr++ = '-';
     case AB_INDAN:
     case AB_INDPP:
-	*ptr++ = '(';
-	*ptr++ = rc;
-	*ptr++ = (ea->Reg1 & 7) + '0';
-	*ptr++ = ')';
-	*ptr = 0;
-	if (ea->Mode1 != AB_INDPP)
-	    break;
-	*ptr++ = '+';
-	*ptr = 0;
-	break;
+        *ptr++ = '(';
+        *ptr++ = rc;
+        *ptr++ = (ea->Reg1 & 7) + '0';
+        *ptr++ = ')';
+        *ptr = 0;
+        if (ea->Mode1 != AB_INDPP)
+            break;
+        *ptr++ = '+';
+        *ptr = 0;
+        break;
     case AB_IMM:
-	*ptr++ = '#';
-	*ptr = 0;
+        *ptr++ = '#';
+        *ptr = 0;
     case AB_ABSW:
     case AB_ABSL:
     case AB_OFFAN:
@@ -88,58 +88,58 @@ EffAddr *ea;
     case AB_OFFIDXPC:
     case AB_BBRANCH:
     case AB_WBRANCH:
-	if (ea->Label1) {
-	    strcpy(ptr, ea->Label1->Name);
-	    ptr += strlen(ptr);
-	    if (ea->Offset1)
-		strcpy(ptr, "+");
-	}
-	if (ea->Offset1) {
-	    sprintf(ptr, "%d", (int)ea->Offset1);
-	    ptr += strlen(ptr);
-	}
-	switch(ea->Mode1) {
-	case AB_OFFAN:
-	    sprintf(ptr, "(A%d)", ea->Reg1 - RB_AREG);
-	    break;
-	case AB_OFFIDX:
-	    {
-		short reg2 = ExtWordToReg(ea->ExtWord);
-		char x2 = (reg2 >= RB_AREG) ? 'A' : 'D';
-		char s2 = (ea->ExtWord & EXTF_LWORD) ? 'L' : 'W';
+        if (ea->Label1) {
+            strcpy(ptr, ea->Label1->Name);
+            ptr += strlen(ptr);
+            if (ea->Offset1)
+                strcpy(ptr, "+");
+        }
+        if (ea->Offset1) {
+            sprintf(ptr, "%d", (int)ea->Offset1);
+            ptr += strlen(ptr);
+        }
+        switch(ea->Mode1) {
+        case AB_OFFAN:
+            sprintf(ptr, "(A%d)", ea->Reg1 - RB_AREG);
+            break;
+        case AB_OFFIDX:
+            {
+                short reg2 = ExtWordToReg(ea->ExtWord);
+                char x2 = (reg2 >= RB_AREG) ? 'A' : 'D';
+                char s2 = (ea->ExtWord & EXTF_LWORD) ? 'L' : 'W';
 
-		sprintf(ptr, "(A%d,%c%d.%c)", ea->Reg1 - RB_AREG, x2, reg2 & 7, s2);
-	    }
-	    break;
-	case AB_OFFPC:
-	    strcpy(ptr, "(PC)");
-	    break;
-	case AB_OFFIDXPC:
-	    {
-		short reg2 = ExtWordToReg(ea->ExtWord);
-		char x2 = (reg2 >= RB_AREG) ? 'A' : 'D';
-		char s2 = (ea->ExtWord & EXTF_LWORD) ? 'L' : 'W';
+                sprintf(ptr, "(A%d,%c%d.%c)", ea->Reg1 - RB_AREG, x2, reg2 & 7, s2);
+            }
+            break;
+        case AB_OFFPC:
+            strcpy(ptr, "(PC)");
+            break;
+        case AB_OFFIDXPC:
+            {
+                short reg2 = ExtWordToReg(ea->ExtWord);
+                char x2 = (reg2 >= RB_AREG) ? 'A' : 'D';
+                char s2 = (ea->ExtWord & EXTF_LWORD) ? 'L' : 'W';
 
-		sprintf(ptr, "(PC,%c%d.%c)", x2, reg2 & 7, s2);
-	    }
-	    break;
-	}
-	break;
+                sprintf(ptr, "(PC,%c%d.%c)", x2, reg2 & 7, s2);
+            }
+            break;
+        }
+        break;
     case AB_REGS:
-	RegMaskToStr(ptr, ea->ExtWord);
-	break;
+        RegMaskToStr(ptr, ea->ExtWord);
+        break;
     case AB_CCR:
-	strcpy(ptr, "CCR");
-	break;
+        strcpy(ptr, "CCR");
+        break;
     case AB_SR:
-	strcpy(ptr, "SR");
-	break;
+        strcpy(ptr, "SR");
+        break;
     case AB_USP:
-	strcpy(ptr, "USP");
-	break;
+        strcpy(ptr, "USP");
+        break;
     default:
-	sprintf(ptr, "?%d", ea->Mode1);
-	break;
+        sprintf(ptr, "?%d", ea->Mode1);
+        break;
     }
     return(Buf[Bi]);
 }
@@ -156,13 +156,13 @@ DumpRegs(char *ptr, short rbefore, char rs, char re)
     char ac = (rs >= RB_AREG) ? 'A' : 'D';
 
     if (rbefore)
-	*ptr++ = '/';
+        *ptr++ = '/';
     if (rs < 0)
-	return(ptr);
+        return(ptr);
     if (rs == re) {
-	*ptr++ = ac;
-	*ptr++ = '0' + (rs & 7);
-	return(ptr);
+        *ptr++ = ac;
+        *ptr++ = '0' + (rs & 7);
+        return(ptr);
     }
     *ptr++ = ac;
     *ptr++ = '0' + (rs & 7);
@@ -184,23 +184,23 @@ int32_t mask;
 
     printf("mask %04x\n", mask);
     for (i = 0; i < 16; ++i) {
-	if (i == 8) {
-	    ptr = DumpRegs(ptr, ptr != base, regno, lastreg);
-	    regno = lastreg = -1;
-	}
+        if (i == 8) {
+            ptr = DumpRegs(ptr, ptr != base, regno, lastreg);
+            regno = lastreg = -1;
+        }
 
-	if (mask & (1 << i)) {
-	    if (regno < 0) {
-		regno = lastreg = i;
-	    } else {
-		if (lastreg == i - 1) {
-		    lastreg = i;
-		} else {
-		    ptr = DumpRegs(ptr, ptr != base, regno, lastreg);
-		    regno = lastreg = i;
-		}
-	    }
-	}
+        if (mask & (1 << i)) {
+            if (regno < 0) {
+                regno = lastreg = i;
+            } else {
+                if (lastreg == i - 1) {
+                    lastreg = i;
+                } else {
+                    ptr = DumpRegs(ptr, ptr != base, regno, lastreg);
+                    regno = lastreg = i;
+                }
+            }
+        }
     }
     ptr = DumpRegs(ptr, ptr != base, regno, lastreg);
     *ptr = 0;
@@ -211,9 +211,9 @@ cvtstrtolower(str)
 char *str;
 {
     while (*str) {
-	if (*str >= 'A' && *str <= 'Z')
-	    *str |= 0x20;
-	++str;
+        if (*str >= 'A' && *str <= 'Z')
+            *str |= 0x20;
+        ++str;
     }
 }
 
@@ -229,12 +229,12 @@ OnlyOneRegister(int32_t mask)
     short i;
 
     for (i = 0; i < 16; ++i) {
-	if (mask & (1 << i)) {
-	    mask &= ~(1 << i);
-	    if (mask == 0)
-		return((int)i);
-	    break;
-	}
+        if (mask & (1 << i)) {
+            mask &= ~(1 << i);
+            if (mask == 0)
+                return((int)i);
+            break;
+        }
     }
     return(-1);
 }
@@ -243,28 +243,28 @@ void
 cerror(short errorId, ...)
 {
     static const char *MsgBase[] = {
-	"Error", "SoftError", "Warning", "Note", "Fatal", "FatalSoftError"
+        "Error", "SoftError", "Warning", "Note", "Fatal", "FatalSoftError"
     };
     va_list va;
 
     if ((errorId & EF_MASK) != EF_VERBOSE) {
-    	char *nm;
-    	int32_t line;
+        char *nm;
+        int32_t line;
 
-    	nm = AsmFileName;
-    	line = CurFile->fn_LineNo;
+        nm = AsmFileName;
+        line = CurFile->fn_LineNo;
 
-    	if (DebugLineNo && (SrcFileName != NULL))
-    	{
-    	   nm = SrcFileName;
-    	   line = DebugLineNo;
-    	}
-	eprintf("DAS: \"%s\" L:%d %.*s%.*s:%d ", nm, line,
+        if (DebugLineNo && (SrcFileName != NULL))
+        {
+           nm = SrcFileName;
+           line = DebugLineNo;
+        }
+        eprintf("DAS: \"%s\" L:%d %.*s%.*s:%d ", nm, line,
             ((ErrorOpt == 2) ? 4 : 0), "C:0 ",
-	    ((ErrorOpt == 2) ? 1 : (int)strlen(MsgBase[errorId >> 12])),
-	    MsgBase[errorId >> 12],
-	    errorId & 0x0FFF
-	);
+            ((ErrorOpt == 2) ? 1 : (int)strlen(MsgBase[errorId >> 12])),
+            MsgBase[errorId >> 12],
+            errorId & 0x0FFF
+        );
     }
 
     va_start(va, errorId);
@@ -273,18 +273,18 @@ cerror(short errorId, ...)
     eputc('\n');
 
     if ((errorId >> 12) >= __FATALPT__) {
-	ExitError(20);
+        ExitError(20);
     }
     switch(errorId & EF_MASK) {
     case EF_WARN:
     case EF_SOFTWARN:
-	if (ExitCode < 5)
-	    ExitCode = 5;
-	break;
+        if (ExitCode < 5)
+            ExitCode = 5;
+        break;
     case EF_ERROR:
-	if (ExitCode < 20)
-	    ExitCode = 20;
-	break;
+        if (ExitCode < 20)
+            ExitCode = 20;
+        break;
     }
 }
 
@@ -292,11 +292,11 @@ void
 ExitError(short code)
 {
     if (Fo)
-	fclose(Fo);
+        fclose(Fo);
     if (FoName)
-	remove(FoName);
+        remove(FoName);
     if (ExitCode < code)
-	ExitCode = code;
+        ExitCode = code;
     exit(ExitCode);
 }
 
@@ -309,7 +309,7 @@ int32_t align;
 
     n = offset & (align - 1);
     if (n)
-	n = align - n;
+        n = align - n;
     return(offset + n);
 }
 
@@ -320,7 +320,7 @@ int32_t align;
 {
     int32_t n = offset & (align - 1);
     if (n)
-	n = align - n;
+        n = align - n;
     return(n);
 }
 
@@ -331,7 +331,7 @@ MakeTmpLabelName()
     char *buf = malloc(16);
 
     if (buf == NULL)
-	NoMemory();
+        NoMemory();
     sprintf(buf, "&$%d", id++);
     return(buf);
 }
@@ -361,8 +361,8 @@ veprintf(const char *ctl, va_list va)
     va_copy(tmp_va, va);
     vfprintf(stderr, ctl, tmp_va);
     if (ErrorFi) {
-	va_copy(tmp_va, va);
-	vfprintf(ErrorFi, ctl, tmp_va);
+        va_copy(tmp_va, va);
+        vfprintf(ErrorFi, ctl, tmp_va);
     }
 }
 
@@ -371,14 +371,14 @@ eputc(char c)
 {
     fputc(c, stderr);
     if (ErrorFi)
-	fputc(c, ErrorFi);
+        fputc(c, ErrorFi);
 }
 
 char
 ExtWordToReg(uword extword)
 {
     if (extword & EXTF_AREG)
-	return(((extword >> 12) & 7) + RB_AREG);
+        return(((extword >> 12) & 7) + RB_AREG);
     return((extword >> 12) & 7);
 }
 
@@ -388,30 +388,30 @@ ObtainErrorString(short errNum)
     short i;
 
     if (ErrorAry == NULL) {
-	int fd;
-	short siz;
+        int fd;
+        short siz;
 
-	if ((fd = open(ErrorFileName, O_RDONLY|O_BINARY)) < 0) {
-	    sprintf(ErrBuf, "(can't open %s!)", ErrorFileName);
-	    return(ErrBuf);
-	}
-	siz = lseek(fd, 0L, 2);
-	lseek(fd, 0L, 0);
-	ErrorAry = malloc(siz + 1);
-	read(fd, ErrorAry, siz);
-	close(fd);
-	{
-	    char *ptr;
-	    for (ptr = strchr(ErrorAry, '\n'); ptr; ptr = strchr(ptr + 1, '\n'))
-		*ptr = 0;
-	}
-	ErrorAry[siz] = 0;
-	ErrorArySize = siz;
+        if ((fd = open(ErrorFileName, O_RDONLY|O_BINARY)) < 0) {
+            sprintf(ErrBuf, "(can't open %s!)", ErrorFileName);
+            return(ErrBuf);
+        }
+        siz = lseek(fd, 0L, 2);
+        lseek(fd, 0L, 0);
+        ErrorAry = malloc(siz + 1);
+        read(fd, ErrorAry, siz);
+        close(fd);
+        {
+            char *ptr;
+            for (ptr = strchr(ErrorAry, '\n'); ptr; ptr = strchr(ptr + 1, '\n'))
+                *ptr = 0;
+        }
+        ErrorAry[siz] = 0;
+        ErrorArySize = siz;
     }
     for (i = 0; i < ErrorArySize; i += strlen(ErrorAry + i) + 1) {
-	char *ptr;
-	if (ErrorAry[i] == 'A' && ErrorAry[i+1] == 'S' && strtol(ErrorAry + i + 3, &ptr, 10) == errNum)
-	    return(ptr + 1);
+        char *ptr;
+        if (ErrorAry[i] == 'A' && ErrorAry[i+1] == 'S' && strtol(ErrorAry + i + 3, &ptr, 10) == errNum)
+            return(ptr + 1);
     }
     sprintf(ErrBuf, "(no entry in %s for error)", ErrorFileName);
     return(ErrBuf);

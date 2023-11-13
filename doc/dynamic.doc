@@ -7,7 +7,7 @@ dynamic.library/__dynamic
 dynamic.library/
 
 
-dynamic.library/__dynamic			dynamic.library/__dynamic
+dynamic.library/__dynamic                       dynamic.library/__dynamic
 
     DICE has compile-time support for dynamic.library through the use of
     the __dynamic storage qualifier.  dynamic.library is a library that
@@ -17,8 +17,8 @@ dynamic.library/__dynamic			dynamic.library/__dynamic
 
     The dynamic.library calls that DICE uses are:
 
-	symPtr = GetHyperSymbol(const char *symbolName, tags...)
-	(void)   RelsHyperSymbol(void *symPtr, tags...)
+        symPtr = GetHyperSymbol(const char *symbolName, tags...)
+        (void)   RelsHyperSymbol(void *symPtr, tags...)
 
     The __dynamic storage qualifier is used as follows:
 
@@ -31,21 +31,21 @@ dynamic.library/__dynamic			dynamic.library/__dynamic
     aggregate initialization of variables using the address of a dynamic
     variable is allowed.  In otherwords:
 
-    int *y = &x;	/*  ILLEGAL */
+    int *y = &x;        /*  ILLEGAL */
 
     test()
     {
-	y = &x; 	/*  LEGAL   */
+        y = &x;         /*  LEGAL   */
     }
 
     The compiler will generate autoinit and autoexit code to regargs
     functions in C.LIB which in turn will call the appropriate
-    dynamic.library functions.	The regargs functions in C.LIB are:
+    dynamic.library functions.  The regargs functions in C.LIB are:
 
-	ptr = _GetHyperFunc(func_name, func_type)
-	ptr = _GetHyperVar(var_name)
-	(void)_RelsHyperFunc(ptr)
-	(void)_RelsHyperVar(ptr)
+        ptr = _GetHyperFunc(func_name, func_type)
+        ptr = _GetHyperVar(var_name)
+        (void)_RelsHyperFunc(ptr)
+        (void)_RelsHyperVar(ptr)
 
     If you wish, you can provide your own regargs functions to overide the
     c.lib ones to provide your own dynamic procedure/variable capability.
@@ -54,7 +54,7 @@ dynamic.library/__dynamic			dynamic.library/__dynamic
     item to be freed after all references go away (multiple tasks might
     share a given data item or procedure)
 
-			       OVERVIEW OF CAPABILITIES
+                               OVERVIEW OF CAPABILITIES
 
     run-time loading of object modules as performed by dynamic.library is
     an incredibly powerful tool.  A third party might define a module

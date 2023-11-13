@@ -8,11 +8,11 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 struct AppWindow *
 HYPER ## AddAppWindow( unsigned long id, unsigned long userdata,
-	struct Window *window, struct MsgPort *msgport, Tag tag1, ... )
+        struct Window *window, struct MsgPort *msgport, Tag tag1, ... )
 {
-	return AddAppWindowA( id, userdata, window, msgport, (TagItem *)&tag1);
+        return AddAppWindowA( id, userdata, window, msgport, (TagItem *)&tag1);
 }

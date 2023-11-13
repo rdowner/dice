@@ -22,18 +22,18 @@ typedef struct ldiv_t {
     long    rem;
 } ldiv_t;
 
-#define EXIT_FAILURE	20
-#define EXIT_SUCCESS	0
-#define MB_CUR_MAX	1
+#define EXIT_FAILURE    20
+#define EXIT_SUCCESS    0
+#define MB_CUR_MAX      1
 #ifndef MB_LEN_MAX
-#define MB_LEN_MAX	2	/*  also set in limits.h    */
+#define MB_LEN_MAX      2       /*  also set in limits.h    */
 #endif
 
 /*
  *  note: RAND_MAX assumed to be 2^N-1, a suitable bitwise mask
  */
 
-#define RAND_MAX	((1 << (8*4-1)) - 1)
+#define RAND_MAX        ((1 << (8*4-1)) - 1)
 
 extern void abort(void);
 
@@ -68,7 +68,7 @@ extern void *realloc(void *, size_t);
 extern long strtol(const char *,char **, int);
 extern unsigned long strtoul(const char *, char **, int);
 extern int system(const char *);
-extern int system13(const char *);  /*	1.3 compatible w/ exit code & wb support */
+extern int system13(const char *);  /*  1.3 compatible w/ exit code & wb support */
 extern size_t wcstombs(wchar_t *, const char *, size_t);
 extern int wctomb(char *, wchar_t);
 

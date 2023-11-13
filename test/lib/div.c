@@ -23,7 +23,7 @@ char *av[];
 
     time(&t1);
     for (n = 0; n < 100000; ++n)
-	k = i / j;
+        k = i / j;
     time(&t2);
     printf("time for 100000 divisions %d\n", t2 - t1);
     */

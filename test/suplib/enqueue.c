@@ -8,8 +8,8 @@ Enqueue(struct List *list, struct Node *node)
     struct Node *scan;
 
     for (scan = list->lh_Head; scan->ln_Succ; scan = scan->ln_Succ) {
-	if (node->ln_Pri > scan->ln_Pri)
-	    break;
+        if (node->ln_Pri > scan->ln_Pri)
+            break;
     }
     /*
      *  Insert before scan.  scan might point to &lh_Tail

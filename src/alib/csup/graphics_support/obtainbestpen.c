@@ -8,11 +8,11 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 LONG 
 HYPER ## ObtainBestPen( struct ColorMap *cm, unsigned long r, unsigned long g,
-	unsigned long b, unsigned long tag1Type , ... )
+        unsigned long b, unsigned long tag1Type , ... )
 {
-	return ObtainBestPenA(cm, r, g, b, (TagItem *)&tag1Type);
+        return ObtainBestPenA(cm, r, g, b, (TagItem *)&tag1Type);
 }

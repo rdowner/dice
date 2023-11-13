@@ -46,7 +46,7 @@ struct timeval *times;
     v[2] = ((unsigned long)t % 60) * 50;
 
     if (SetFileDate(UnixToAmigaPath(path), (struct DateStamp *)v))
-	return(0);
+        return(0);
     return(-1);
 }
 

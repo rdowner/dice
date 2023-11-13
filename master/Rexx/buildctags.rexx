@@ -20,13 +20,13 @@ do until eof('infile')
     instring = readln('infile')
     if (compare(instring,'Prototype') > 9) then iterate
     if (datatype(Left(instring,1),'m') = 1) then do;
-	j = pos( '(', instring);
-	if j ~= 0 then do;
-	    i = lastpos(' ',instring,j)
-	    search = '/^' || instring || '^/'
-	    name = substr(instring,i+1,j-i-1)
-	    say name direct||file search
-	    end;
-	end;
+        j = pos( '(', instring);
+        if j ~= 0 then do;
+            i = lastpos(' ',instring,j)
+            search = '/^' || instring || '^/'
+            name = substr(instring,i+1,j-i-1)
+            say name direct||file search
+            end;
+        end;
 end;
 close('infile')

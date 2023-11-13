@@ -1,12 +1,12 @@
 ######################################################################
-MAKEMETA=	../../../tools/makemeta
+MAKEMETA=       ../../../tools/makemeta
 
-SUBSYSNAME=	rexx_support
+SUBSYSNAME=     rexx_support
 
-AFILES=		autodoc.asm
+AFILES=         autodoc.asm
 
-OFILES= 	rexxvars.o
+OFILES=         rexxvars.o
 
-all quick:	${SUBSYSNAME}_lib.lib
+all quick:      ${SUBSYSNAME}_lib.lib
 
 .INCLUDE=${MAKEMETA}

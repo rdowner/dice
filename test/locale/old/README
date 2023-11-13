@@ -9,7 +9,7 @@ its 'make .cd file pass'.  You're going to have to have such a pass, to
 give the user a chance to remove strings that should not be localized.
 
 Then, something is going to have to take that .cd file, and order the
-strings according to the MSG_ defines.	I'm using catcomp to do this.
+strings according to the MSG_ defines.  I'm using catcomp to do this.
 
 We need to have those defines at some point;  those defines are the
 relationship between the strings built into the program and the strings
@@ -27,5 +27,5 @@ for DICE to build its table.  (this is shown in hello.c).  But I don't
 think the limitation is acceptable.
 
 
-			andy
+                        andy
 

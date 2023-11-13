@@ -42,10 +42,10 @@ cstack_init()
     void dummy;
 
     if (&dummy < (void *)task->tc_SPLower || &dummy > (void *)task->tc_SPUpper) {
-	struct CommandLineInterface *cli = (void *)BADDR(((struct Process *)task)->pr_CLI);
-	_stk_base = (char *)(_ExitSP - (long)cli->cli_DefaultStack * 4 + fudge + 128);
+        struct CommandLineInterface *cli = (void *)BADDR(((struct Process *)task)->pr_CLI);
+        _stk_base = (char *)(_ExitSP - (long)cli->cli_DefaultStack * 4 + fudge + 128);
     } else {
-	_stk_base = (char *)task->tc_SPLower + fudge;
+        _stk_base = (char *)task->tc_SPLower + fudge;
     }
     _cur_chunk = 0;
     _cur_fudge = fudge;
@@ -57,9 +57,9 @@ const char *str;
 {
     long fh;
     if (fh = Output()) {
-	Write(fh, "stack_panic: ", 13);
-	Write(fh, str, strlen(str));
-	Write(fh, "\n", 1);
+        Write(fh, "stack_panic: ", 13);
+        Write(fh, str, strlen(str));
+        Write(fh, "\n", 1);
     }
     abort();
 }

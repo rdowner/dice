@@ -10,7 +10,7 @@
 #ifndef STDARG_H
 #include <stdarg.h>
 #define va_dcl long va_alist;
-#define va_start(pvar)	(pvar = (void *)(&va_alist))
+#define va_start(pvar)  (pvar = (void *)(&va_alist))
 #endif
 #endif
 

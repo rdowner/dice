@@ -10,8 +10,8 @@
 
 char *UnixToAmigaPath(char *);
 char *AmigaToUnixPath(char *);
-int sigcheckchld(void); 	    /*	private */
-void amiga_vfork_sigall(long);	    /*	private */
+int sigcheckchld(void);             /*  private */
+void amiga_vfork_sigall(long);      /*  private */
 
 int kill(int, int);
 int wait3(union wait *, int, struct rusage *);

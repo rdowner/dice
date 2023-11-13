@@ -1,5 +1,5 @@
 *
 * Assorted functions in amiga.lib
 *
-ULONG FastRand(ULONG seed)			(D0)
-UWORD RangeRand(ULONG maxValue)			(D0)
+ULONG FastRand(ULONG seed)                      (D0)
+UWORD RangeRand(ULONG maxValue)                 (D0)

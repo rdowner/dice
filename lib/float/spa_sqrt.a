@@ -1,23 +1,23 @@
 
-		;   SPA_SQRT.A
-		;
-		;   D0 = fsqrt(D0)
-		;	      4(sp)
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   SPA_SQRT.A
+                ;
+                ;   D0 = fsqrt(D0)
+                ;             4(sp)
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xref	_MathIeeeSingTransBase
-		xref	_LVOIEEESPSqrt
-		xdef	__spsqrt
+                xref    _MathIeeeSingTransBase
+                xref    _LVOIEEESPSqrt
+                xdef    __spsqrt
 
-__spsqrt	move.l	4(sp),D0
-		move.l	A6,-(sp)
-		move.l	_MathIeeeSingTransBase(A4),A6
-		jsr	_LVOIEEESPSqrt(A6)
-		move.l	(sp)+,A6
-		rts
+__spsqrt        move.l  4(sp),D0
+                move.l  A6,-(sp)
+                move.l  _MathIeeeSingTransBase(A4),A6
+                jsr     _LVOIEEESPSqrt(A6)
+                move.l  (sp)+,A6
+                rts
 
-		END
+                END
 

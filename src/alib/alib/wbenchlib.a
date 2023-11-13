@@ -1,40 +1,40 @@
 
-			;   autoinit if you ever reference WORKBENCH.LIBRARY
-			;
-			;   (c)Copyright 1990-92, Matthew Dillon, 
-			;                      All Rights Reserved
-			;
+                        ;   autoinit if you ever reference WORKBENCH.LIBRARY
+                        ;
+                        ;   (c)Copyright 1990-92, Matthew Dillon, 
+                        ;                      All Rights Reserved
+                        ;
 
-			xdef	_WorkbenchBase
-			xref	__AutoFail0
+                        xdef    _WorkbenchBase
+                        xref    __AutoFail0
 
-_LVOOpenLibrary 	equ	-552
-_LVOCloseLibrary	equ	-414
+_LVOOpenLibrary         equ     -552
+_LVOCloseLibrary        equ     -414
 
-			section autoinit0,code
+                        section autoinit0,code
 
-			moveq.l #0,D0
-			lea	wbenchname(pc),A1
-			jsr	_LVOOpenLibrary(A6)
-			move.l	D0,_WorkbenchBase(A4)
-			beq	__AutoFail0
-			bra	i10
-wbenchname 		dc.b	'workbench.library',0
-			ds.w	0
+                        moveq.l #0,D0
+                        lea     wbenchname(pc),A1
+                        jsr     _LVOOpenLibrary(A6)
+                        move.l  D0,_WorkbenchBase(A4)
+                        beq     __AutoFail0
+                        bra     i10
+wbenchname              dc.b    'workbench.library',0
+                        ds.w    0
 i10
 
-			section autoexit0,code
+                        section autoexit0,code
 
-			move.l	_WorkbenchBase(A4),D0
-			beq	l10
-			move.l	D0,A1
-			jsr	_LVOCloseLibrary(A6)
+                        move.l  _WorkbenchBase(A4),D0
+                        beq     l10
+                        move.l  D0,A1
+                        jsr     _LVOCloseLibrary(A6)
 l10
 
 
-			section libbss,bss
+                        section libbss,bss
 
-_WorkbenchBase		ds.l	1
+_WorkbenchBase          ds.l    1
 
-			END
+                        END
 

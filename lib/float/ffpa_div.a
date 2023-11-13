@@ -1,24 +1,24 @@
 
-		;   FFPA_DIV.A
-		;
-		;   D0	arg1	(4 bytes)
-		;   D1	arg2	(4 bytes)
-		;
-		;   result -> D0
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   FFPA_DIV.A
+                ;
+                ;   D0  arg1    (4 bytes)
+                ;   D1  arg2    (4 bytes)
+                ;
+                ;   result -> D0
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xref	_MathBase
-		xref	_LVOSPDiv
-		xdef	__ffpdiv_a
+                xref    _MathBase
+                xref    _LVOSPDiv
+                xdef    __ffpdiv_a
 
-__ffpdiv_a	move.l	A6,-(sp)
-		move.l	_MathBase(A4),A6
-		jsr	_LVOSPDiv(A6)
-		move.l	(sp)+,A6
-		rts
+__ffpdiv_a      move.l  A6,-(sp)
+                move.l  _MathBase(A4),A6
+                jsr     _LVOSPDiv(A6)
+                move.l  (sp)+,A6
+                rts
 
-		END
+                END
 

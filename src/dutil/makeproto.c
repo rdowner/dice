@@ -41,11 +41,11 @@ DCOPYRIGHT;
 #endif
 #endif
 
-char	*Field = "Prototype";
-char	*OutFile;
-int	FieldLen = 9;
-int	_DiceCacheEnable = 1;
-List	OutList;
+char    *Field = "Prototype";
+char    *OutFile;
+int     FieldLen = 9;
+int     _DiceCacheEnable = 1;
+List    OutList;
 
 int
 main(int ac, char **av)
@@ -55,34 +55,34 @@ main(int ac, char **av)
     NewList(&OutList);
 
     for (i = 1; i < ac; ++i) {
-	char *ptr = av[i];
-	if (*ptr != '-') {
-	    ScanFile(ptr);
-	    continue;
-	}
-	ptr += 2;
-	switch(ptr[-1]) {
-	case 'f':
-	    if (*ptr == 0)
-		ptr = av[++i];
-	    Field = ptr;
-	    FieldLen = strlen(ptr);
-	    break;
-	case 'o':
-	    if (*ptr == 0)
-		ptr = av[++i];
-	    OutFile = ptr;
-	    xprintf("\n/* MACHINE GENERATED */\n\n");
-	    break;
-	default:
-	    printf("illegal option: -%c\n", ptr[-1]);
-	    help(1);
-	}
+        char *ptr = av[i];
+        if (*ptr != '-') {
+            ScanFile(ptr);
+            continue;
+        }
+        ptr += 2;
+        switch(ptr[-1]) {
+        case 'f':
+            if (*ptr == 0)
+                ptr = av[++i];
+            Field = ptr;
+            FieldLen = strlen(ptr);
+            break;
+        case 'o':
+            if (*ptr == 0)
+                ptr = av[++i];
+            OutFile = ptr;
+            xprintf("\n/* MACHINE GENERATED */\n\n");
+            break;
+        default:
+            printf("illegal option: -%c\n", ptr[-1]);
+            help(1);
+        }
     }
     if (ac == 1)
-	help(0);
+        help(0);
     else
-	DumpNodeList();
+        DumpNodeList();
     return(0);
 }
 
@@ -102,25 +102,25 @@ char *file;
     char buf[512];
 
     if (fi == NULL) {
-	fprintf(stderr, "makeproto: couldn't open %s\n", file);
-	return;
+        fprintf(stderr, "makeproto: couldn't open %s\n", file);
+        return;
     }
     xprintf("\n/* %-20s */\n\n", file);
     while (fgets(buf, sizeof(buf), fi)) {
-	char *ptr = buf;
+        char *ptr = buf;
 
-	if (*ptr == ';')
-	    ++ptr;
-	if (strncmp(ptr, Field, FieldLen) == 0) {
-	    xprintf("%s", ptr);
-	    while (EndsWithSlash(ptr)) {
-		if (fgets(buf, sizeof(buf), fi) == NULL)
-		    break;
-		if (*ptr == ';')
-		    ++ptr;
-		xprintf("%s", ptr);
-	    }
-	}
+        if (*ptr == ';')
+            ++ptr;
+        if (strncmp(ptr, Field, FieldLen) == 0) {
+            xprintf("%s", ptr);
+            while (EndsWithSlash(ptr)) {
+                if (fgets(buf, sizeof(buf), fi) == NULL)
+                    break;
+                if (*ptr == ';')
+                    ++ptr;
+                xprintf("%s", ptr);
+            }
+        }
     }
     fclose(fi);
 }
@@ -155,50 +155,50 @@ DumpNodeList(void)
     short i;
 
     if (OutFile && (fo = fopen(OutFile, "r"))) {
-	for (node = OutList.lh_Head; node->ln_Succ; node = node->ln_Succ) {
-	    for (i = 0; node->ln_Name[i] && (unsigned char)node->ln_Name[i] == getc(fo); ++i)
-		;
-	    if (node->ln_Name[i])
-		break;
-	}
+        for (node = OutList.lh_Head; node->ln_Succ; node = node->ln_Succ) {
+            for (i = 0; node->ln_Name[i] && (unsigned char)node->ln_Name[i] == getc(fo); ++i)
+                ;
+            if (node->ln_Name[i])
+                break;
+        }
 
-	/*
-	 *  no change to file, do not update (this allows us to have a
-	 *  DMakefile dependancy on the prototype file to force, for
-	 *  example, precompiled defs to be recreated)
-	 */
+        /*
+         *  no change to file, do not update (this allows us to have a
+         *  DMakefile dependancy on the prototype file to force, for
+         *  example, precompiled defs to be recreated)
+         */
 
-	if (node->ln_Succ == NULL && getc(fo) == EOF) {
-	    fclose(fo);
-	    return;
-	}
-	fclose(fo);
+        if (node->ln_Succ == NULL && getc(fo) == EOF) {
+            fclose(fo);
+            return;
+        }
+        fclose(fo);
     }
     if (OutFile)
-	fo = fopen(OutFile, "w");
+        fo = fopen(OutFile, "w");
     else
-	fo = stdout;
+        fo = stdout;
 
     if (fo) {
-	while ((node = RemHead(&OutList)) != NULL)
-	    fwrite(node->ln_Name, 1, strlen(node->ln_Name), fo);
+        while ((node = RemHead(&OutList)) != NULL)
+            fwrite(node->ln_Name, 1, strlen(node->ln_Name), fo);
     } else {
-	fprintf(stderr, "Unable to create %s\n", OutFile);
-	exit(20);
+        fprintf(stderr, "Unable to create %s\n", OutFile);
+        exit(20);
     }
 
     if (fo && OutFile)
-	fclose(fo);
+        fclose(fo);
 }
 
 int
 EndsWithSlash(const char *ptr)
 {
     if ((ptr = strrchr(ptr, '\\')) != NULL) {
-	for (++ptr; *ptr == ' ' || *ptr == '\t'; ++ptr)
-	    ;
-	if (*ptr == 0 || *ptr == '\n')
-	    return(1);
+        for (++ptr; *ptr == ' ' || *ptr == '\t'; ++ptr)
+            ;
+        if (*ptr == 0 || *ptr == '\n')
+            return(1);
     }
     return(0);
 }

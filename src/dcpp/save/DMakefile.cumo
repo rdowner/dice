@@ -2,7 +2,7 @@
 #   Compile the preprocessor
 #
 
-all:	dice
+all:    dice
 
 lattice:
     dmake -f dmakefile.lc

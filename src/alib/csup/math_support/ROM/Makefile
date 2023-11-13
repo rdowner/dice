@@ -1,10 +1,10 @@
 ##########################################################################
-MAKEMETA=	../../../../tools/makemeta
+MAKEMETA=       ../../../../tools/makemeta
 
-MAKEFILE=	Makefile
+MAKEFILE=       Makefile
 
-OFILES= 	bcint.obj
+OFILES=         bcint.obj
 
-all quick:	${OFILES}
+all quick:      ${OFILES}
 
 .INCLUDE=${MAKEMETA}

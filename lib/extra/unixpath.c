@@ -26,40 +26,40 @@ char *name;
     i = 0;
 
     if (name[0] == '/') {
-	short j;
-	for (j = 1; name[j] && name[j] != '/'; ++j)
-	    buf[i++] = name[j];
-	buf[i++] = ':';
-	name += j;
-	if (*name == '/')
-	    ++name;
+        short j;
+        for (j = 1; name[j] && name[j] != '/'; ++j)
+            buf[i++] = name[j];
+        buf[i++] = ':';
+        name += j;
+        if (*name == '/')
+            ++name;
     }
 
     while (*name && i < sizeof(Buf[0]) - 4) {
-	if (name[0] == '.') {
-	    if (name[1] == '/') {
-		name += 2;
-		continue;
-	    }
-	    if (name[1] == '\0') {
-		name += 1;
-		continue;
-	    }
-	    if (name[1] == '.') {
-		if (name[2] == '/') {
-		    name += 3;
-		    buf[i++] = '/';
-		    continue;
-		}
-		if (name[2] == '\0') {
-		    name += 2;
-		    buf[i++] = '/';
-		    continue;
-		}
-	    }
-	}
-	buf[i++] = *name;
-	++name;
+        if (name[0] == '.') {
+            if (name[1] == '/') {
+                name += 2;
+                continue;
+            }
+            if (name[1] == '\0') {
+                name += 1;
+                continue;
+            }
+            if (name[1] == '.') {
+                if (name[2] == '/') {
+                    name += 3;
+                    buf[i++] = '/';
+                    continue;
+                }
+                if (name[2] == '\0') {
+                    name += 2;
+                    buf[i++] = '/';
+                    continue;
+                }
+            }
+        }
+        buf[i++] = *name;
+        ++name;
     }
     buf[i] = 0;
     return(buf);
@@ -75,12 +75,12 @@ char *name;
     Cnt = (Cnt + 1) & 3;
 
     while (*name == '/') {
-	i += sprintf(buf + i, "../");
-	++name;
+        i += sprintf(buf + i, "../");
+        ++name;
     }
     while (*name && i < sizeof(Buf[0]) - 4) {
-	buf[i++] = *name;
-	++name;
+        buf[i++] = *name;
+        ++name;
     }
     buf[i] = 0;
     return(buf);

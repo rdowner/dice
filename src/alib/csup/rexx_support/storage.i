@@ -1,12 +1,12 @@
          IFND REXX_STORAGE_I
 REXX_STORAGE_I SET    1
 **
-**	$Id: storage.i,v 30.0 1994/06/10 18:10:50 dice Exp $
+**      $Id: storage.i,v 30.0 1994/06/10 18:10:50 dice Exp $
 **
-**	Include file for REXX data structures and memory/storage management.
+**      Include file for REXX data structures and memory/storage management.
 **
-**	(C) Copyright 1986,1987,1988,1989,1990 William S. Hawes.
-**		All Rights Reserved
+**      (C) Copyright 1986,1987,1988,1989,1990 William S. Hawes.
+**              All Rights Reserved
 **
 
          IFND EXEC_TYPES_I

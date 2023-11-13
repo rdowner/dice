@@ -20,7 +20,7 @@
 #include <libraries/dosextens.h>
 #include <string.h>
 #include <clib/exec_protos.h>
-#undef __DICE_INLINE	/*  problem w/ inline SetFileDate() */
+#undef __DICE_INLINE    /*  problem w/ inline SetFileDate() */
 #include <clib/dos_protos.h>
 
 #define BTOC(bptr)  ((void *)((long)bptr << 2))
@@ -33,10 +33,10 @@ typedef void *Pointer;
 #endif
 
 typedef struct StandardPacket STDPKT;
-typedef struct Process	      PROC;
+typedef struct Process        PROC;
 typedef struct DateStamp      DATESTAMP;
 typedef struct FileLock       LOCK;
-typedef struct Message	      MSG;
+typedef struct Message        MSG;
 
 int
 SetFileDate(file, date)
@@ -53,17 +53,17 @@ DATESTAMP *date;
     char *ptr = file;
 
     {
-	if (flock == NULL)
-	    return(NULL);
-	lock = ParentDir(flock);
-	UnLock(flock);
-	if (!lock)
-	    return(NULL);
-	for (i = strlen(ptr) - 1; i >= 0; --i) {
-	    if (ptr[i] == '/' || ptr[i] == ':')
-		break;
-	}
-	file += i + 1;
+        if (flock == NULL)
+            return(NULL);
+        lock = ParentDir(flock);
+        UnLock(flock);
+        if (!lock)
+            return(NULL);
+        for (i = strlen(ptr) - 1; i >= 0; --i) {
+            if (ptr[i] == '/' || ptr[i] == ':')
+                break;
+        }
+        file += i + 1;
     }
     proc   = (PROC *)FindTask(NULL);
     packet = (STDPKT   *)AllocMem(sizeof(STDPKT), MEMF_CLEAR|MEMF_PUBLIC);

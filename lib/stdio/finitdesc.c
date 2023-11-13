@@ -19,7 +19,7 @@ int fd;
 short flags;
 {
     if (fi == stdin || fi == stdout || fi == stderr)
-	flags |= __SIF_NOFREE;
+        flags |= __SIF_NOFREE;
 
     fi->sd_UC = -1;
     fi->sd_Fd = fd;
@@ -29,8 +29,8 @@ short flags;
     fi->sd_RLeft = -1;
 
     if (isatty(fi->sd_Fd) > 0)
-	fi->sd_Flags |= __SIF_IOLBF;
+        fi->sd_Flags |= __SIF_IOLBF;
     else
-	fi->sd_Flags |= __SIF_FILE;
+        fi->sd_Flags |= __SIF_FILE;
 }
 

@@ -1,7 +1,7 @@
 #   DMakefile
 
-OD	    = ram:
-SRCS	    = test anothertest
+OD          = ram:
+SRCS        = test anothertest
 IBOX_SRCS   = expandibox.a setibox.a sectibox.a
 IBOX_OBJS   = $(IBOX_SRCS:"*.a":"$(OD)*.o")
 IBOX_LIB    = ibox.lib
@@ -27,6 +27,6 @@ all: $(IBOX_LIB)
 #    dcc $(CFLAGS) -o %(left) %(right) -c -r
 
 $(IBOX_LIB) : $(IBOX_OBJS) dmake.test
-	echo "asrcs is $(ASRCS)"
-	echo "AOBJS is $(AOBJS)"
+        echo "asrcs is $(ASRCS)"
+        echo "AOBJS is $(AOBJS)"
     join $(IBOX_OBJS) as $(IBOX_LIB)

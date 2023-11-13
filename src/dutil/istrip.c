@@ -33,10 +33,10 @@ main(int ac, char **av)
     int   i;
 
     if (ac == 1) {
-	puts(Ident);
-	puts(DCopyright);
-	puts("istrip destprefix wildcards");
-	exit(1);
+        puts(Ident);
+        puts(DCopyright);
+        puts("istrip destprefix wildcards");
+        exit(1);
     }
 
 #ifdef AMIGA
@@ -44,10 +44,10 @@ main(int ac, char **av)
 #endif
 
     for (i = 2; i < ac; ++i) {
-	char buf[256];
-	sprintf(buf, "%s%s", av[1], av[i]);
-	StripFile(av[i], buf);
-	puts("");
+        char buf[256];
+        sprintf(buf, "%s%s", av[1], av[i]);
+        StripFile(av[i], buf);
+        puts("");
     }
     return(0);
 }
@@ -66,55 +66,55 @@ char *dname;
     fflush(stdout);
     fi = fopen(sname, "r");
     if (fi == NULL) {
-	puts("unable to open source");
-	return;
+        puts("unable to open source");
+        return;
     }
     fo = fopen(dname, "w");
     if (fo == NULL) {
-	puts("unable to open dest");
-	fclose(fi);
-	return;
+        puts("unable to open dest");
+        fclose(fi);
+        return;
     }
     while ((c = getc(fi)) != EOF) {
-	switch(c) {
-	case '/':       /*  look for comment    */
-	    c = getc(fi);
-	    if (c != '*') {
-		fputc('/', fo);
-		fputc(c, fo);
-		continue;
-	    }
-	    if (c == '*' && firstComment == 1) {
-		firstComment = 0;
-		fputc('/', fo);
-		fputc(c, fo);
-		continue;
-	    }
-	    for (;;) {
-		if (c == EOF)
-		    break;
-		if (c == '*') {
-		    c = getc(fi);
-		    if (c != '/')
-			continue;
-		    break;
-		} else {
-		    c = getc(fi);
-		}
-	    }
-	    break;
-	case ' ':
-	case 9:
-	    while (c == 9 || c == ' ')
-		c = getc(fi);
-	    if (c != EOF)
-		ungetc(c, fi);
-	    putc(' ', fo);
-	    break;
-	default:
-	    putc(c, fo);
-	    break;
-	}
+        switch(c) {
+        case '/':       /*  look for comment    */
+            c = getc(fi);
+            if (c != '*') {
+                fputc('/', fo);
+                fputc(c, fo);
+                continue;
+            }
+            if (c == '*' && firstComment == 1) {
+                firstComment = 0;
+                fputc('/', fo);
+                fputc(c, fo);
+                continue;
+            }
+            for (;;) {
+                if (c == EOF)
+                    break;
+                if (c == '*') {
+                    c = getc(fi);
+                    if (c != '/')
+                        continue;
+                    break;
+                } else {
+                    c = getc(fi);
+                }
+            }
+            break;
+        case ' ':
+        case 9:
+            while (c == 9 || c == ' ')
+                c = getc(fi);
+            if (c != EOF)
+                ungetc(c, fi);
+            putc(' ', fo);
+            break;
+        default:
+            putc(c, fo);
+            break;
+        }
     }
     fclose(fi);
     fclose(fo);

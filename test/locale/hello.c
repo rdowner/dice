@@ -11,9 +11,9 @@ char *av[];
     int r = SetCatalog(av[1], "hello.catalog");
 
     if (r < 0)
-	puts("couldn't open locale");
+        puts("couldn't open locale");
     else if (r > 0)
-	puts("couldn't open catalog in locale");
+        puts("couldn't open catalog in locale");
 
     puts("Hello world");
     puts("This is a test");

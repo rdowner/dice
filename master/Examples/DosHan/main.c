@@ -31,11 +31,11 @@
 typedef struct DosPacket    DosPacket;
 typedef struct FileHandle   FileHandle;
 typedef struct DeviceNode   DeviceNode;
-typedef struct Process	    Process;
-typedef struct Node	    Node;
-typedef struct List	    List;
-typedef struct MsgPort	    MsgPort;
-typedef struct Message	    Message;
+typedef struct Process      Process;
+typedef struct Node         Node;
+typedef struct List         List;
+typedef struct MsgPort      MsgPort;
+typedef struct Message      Message;
 
 typedef struct XHandle {
     Node    xh_Node;
@@ -59,7 +59,7 @@ void Initialize(void);
 void UnInitialize(void);
 
 
-List	HanList;
+List    HanList;
 DeviceNode *DevNode;
 MsgPort    *PktPort;
 
@@ -75,158 +75,158 @@ _main()
     DosPacket  *packet;
 
     {
-	Process *proc = (struct Process *)FindTask(NULL);
-	PktPort = &proc->pr_MsgPort;
+        Process *proc = (struct Process *)FindTask(NULL);
+        PktPort = &proc->pr_MsgPort;
     }
     NewList(&HanList);
     Initialize();
 
     /*
-     *	Main Loop
+     *  Main Loop
      */
 
     for (;;) {
-	{
-	    Message *msg;
+        {
+            Message *msg;
 
-	    while ((msg = GetMsg(PktPort)) == NULL)
-		Wait(1 << PktPort->mp_SigBit);
-	    packet = (DosPacket *)msg->mn_Node.ln_Name;
-	}
+            while ((msg = GetMsg(PktPort)) == NULL)
+                Wait(1 << PktPort->mp_SigBit);
+            packet = (DosPacket *)msg->mn_Node.ln_Name;
+        }
 
-	/*
-	 *  default return value
-	 */
+        /*
+         *  default return value
+         */
 
-	packet->dp_Res1 = DOS_TRUE;
-	packet->dp_Res2 = 0;
+        packet->dp_Res1 = DOS_TRUE;
+        packet->dp_Res2 = 0;
 
-	/*
-	 *  switch on packet
-	 */
+        /*
+         *  switch on packet
+         */
 
-	switch(packet->dp_Type) {
-	case ACTION_DIE:	    /*	??? */
-	    break;
-	case ACTION_FINDUPDATE:     /*	FileHandle,Lock,Name	    Bool	*/
-	case ACTION_FINDINPUT:	    /*	FileHandle,Lock,Name	    Bool	*/
-	case ACTION_FINDOUTPUT:     /*	FileHandle,Lock,Name	    Bool	*/
-	    {
-		FileHandle *fh = BTOC(packet->dp_Arg1);
-		XHandle *xh;
+        switch(packet->dp_Type) {
+        case ACTION_DIE:            /*  ??? */
+            break;
+        case ACTION_FINDUPDATE:     /*  FileHandle,Lock,Name        Bool        */
+        case ACTION_FINDINPUT:      /*  FileHandle,Lock,Name        Bool        */
+        case ACTION_FINDOUTPUT:     /*  FileHandle,Lock,Name        Bool        */
+            {
+                FileHandle *fh = BTOC(packet->dp_Arg1);
+                XHandle *xh;
 
-		{
-		    unsigned char *base = BTOC(packet->dp_Arg3);
-		    int len = *base;
-		    char buf[128];
+                {
+                    unsigned char *base = BTOC(packet->dp_Arg3);
+                    int len = *base;
+                    char buf[128];
 
-		    if (len >= sizeof(buf))
-			len = sizeof(buf) - 1;
+                    if (len >= sizeof(buf))
+                        len = sizeof(buf) - 1;
 
-		    strncpy(buf, base + 1, len);
-		    buf[len] = 0;
+                    strncpy(buf, base + 1, len);
+                    buf[len] = 0;
 
-		    if ((xh = (XHandle *)FindName(&HanList, buf)) == NULL) {
-			xh = AllocMem(sizeof(XHandle) + len + 1, MEMF_PUBLIC | MEMF_CLEAR);
-			xh->xh_XHLen = sizeof(XHandle) + len + 1;
-			xh->xh_Node.ln_Name = (char *)(xh + 1);
-			movmem(buf, xh->xh_Node.ln_Name, len + 1);
-			NewList(&xh->xh_List);
-			AddTail(&HanList, &xh->xh_Node);
-		    }
-		    ++xh->xh_Refs;
-		}
-		fh->fh_Arg1 = (ULONG)xh;
-		fh->fh_Port = (MsgPort *)DOS_TRUE;
-	    }
-	    break;
-	case ACTION_READ:	    /*	FHArg1,CPTRBuffer,Length    ActLength	*/
-	    /*
-	     *	reading is straightforward except for handling EOF ... we
-	     *	must guarentee a return value of 0 (no bytes left) before
-	     *	beginning to return EOFs (-1's).  If we return a negative
-	     *	number right off programs like COPY will assume a failure
-	     *	(if TEST: is the source) and delete the destination file
-	     */
+                    if ((xh = (XHandle *)FindName(&HanList, buf)) == NULL) {
+                        xh = AllocMem(sizeof(XHandle) + len + 1, MEMF_PUBLIC | MEMF_CLEAR);
+                        xh->xh_XHLen = sizeof(XHandle) + len + 1;
+                        xh->xh_Node.ln_Name = (char *)(xh + 1);
+                        movmem(buf, xh->xh_Node.ln_Name, len + 1);
+                        NewList(&xh->xh_List);
+                        AddTail(&HanList, &xh->xh_Node);
+                    }
+                    ++xh->xh_Refs;
+                }
+                fh->fh_Arg1 = (ULONG)xh;
+                fh->fh_Port = (MsgPort *)DOS_TRUE;
+            }
+            break;
+        case ACTION_READ:           /*  FHArg1,CPTRBuffer,Length    ActLength   */
+            /*
+             *  reading is straightforward except for handling EOF ... we
+             *  must guarentee a return value of 0 (no bytes left) before
+             *  beginning to return EOFs (-1's).  If we return a negative
+             *  number right off programs like COPY will assume a failure
+             *  (if TEST: is the source) and delete the destination file
+             */
 
-	    {
-		XHandle *xh = (XHandle *)packet->dp_Arg1;
-		long bytes;
+            {
+                XHandle *xh = (XHandle *)packet->dp_Arg1;
+                long bytes;
 
-		packet->dp_Res1 = 0;
-		while ((bytes = packet->dp_Arg3 - packet->dp_Res1) > 0) {
-		    XNode *xn = (XNode *)RemHead(&xh->xh_List);
+                packet->dp_Res1 = 0;
+                while ((bytes = packet->dp_Arg3 - packet->dp_Res1) > 0) {
+                    XNode *xn = (XNode *)RemHead(&xh->xh_List);
 
-		    if (xn == NULL)
-			break;
+                    if (xn == NULL)
+                        break;
 
-		    if (bytes > xn->xn_Length - xn->xn_Offset)
-			bytes = xn->xn_Length - xn->xn_Offset;
-		    movmem(xn->xn_Buf + xn->xn_Offset, (char *)packet->dp_Arg2 + packet->dp_Res1, bytes);
+                    if (bytes > xn->xn_Length - xn->xn_Offset)
+                        bytes = xn->xn_Length - xn->xn_Offset;
+                    movmem(xn->xn_Buf + xn->xn_Offset, (char *)packet->dp_Arg2 + packet->dp_Res1, bytes);
 
-		    xn->xn_Offset += bytes;
-		    packet->dp_Res1 += bytes;
-		    if (xn->xn_Offset == xn->xn_Length) {
-			FreeMem(xn->xn_Buf, xn->xn_Length);
-			FreeMem(xn, sizeof(XNode));
-		    } else {
-			AddHead(&xh->xh_List, &xn->xn_Node);
-		    }
-		}
-		if (packet->dp_Res1 == 0 && GetHead(&xh->xh_List) == NULL) {
-		    if (xh->xh_Flags & XHF_EOF)
-			packet->dp_Res1 = -1;	/*  EOF */
-		    xh->xh_Flags |= XHF_EOF;
-		}
-	    }
-	    break;
-	case ACTION_WRITE:	    /*	FHArg1,CPTRBuffer,Length    ActLength	*/
-	    {
-		XHandle *xh = (XHandle *)packet->dp_Arg1;
-		XNode *xn;
-		long bytes = packet->dp_Arg3;
+                    xn->xn_Offset += bytes;
+                    packet->dp_Res1 += bytes;
+                    if (xn->xn_Offset == xn->xn_Length) {
+                        FreeMem(xn->xn_Buf, xn->xn_Length);
+                        FreeMem(xn, sizeof(XNode));
+                    } else {
+                        AddHead(&xh->xh_List, &xn->xn_Node);
+                    }
+                }
+                if (packet->dp_Res1 == 0 && GetHead(&xh->xh_List) == NULL) {
+                    if (xh->xh_Flags & XHF_EOF)
+                        packet->dp_Res1 = -1;   /*  EOF */
+                    xh->xh_Flags |= XHF_EOF;
+                }
+            }
+            break;
+        case ACTION_WRITE:          /*  FHArg1,CPTRBuffer,Length    ActLength   */
+            {
+                XHandle *xh = (XHandle *)packet->dp_Arg1;
+                XNode *xn;
+                long bytes = packet->dp_Arg3;
 
-		packet->dp_Res1 = -1;
-		if (xn = AllocMem(sizeof(XNode), MEMF_PUBLIC|MEMF_CLEAR)) {
-		    if (xn->xn_Buf = AllocMem(bytes, MEMF_PUBLIC)) {
-			movmem((char *)packet->dp_Arg2, xn->xn_Buf, bytes);
-			xn->xn_Length = bytes;
-			packet->dp_Res1 = bytes;
-			AddTail(&xh->xh_List, &xn->xn_Node);
-			xh->xh_Flags &= ~XHF_EOF;
-		    } else {
-			FreeMem(xn, sizeof(XNode));
-			packet->dp_Res2 = ERROR_NO_FREE_STORE;
-		    }
-		} else {
-		    packet->dp_Res2 = ERROR_NO_FREE_STORE;
-		}
-	    }
-	    break;
-	case ACTION_END:	    /*	FHArg1			    Bool:TRUE	*/
-	    {
-		XHandle *xh = (XHandle *)packet->dp_Arg1;
+                packet->dp_Res1 = -1;
+                if (xn = AllocMem(sizeof(XNode), MEMF_PUBLIC|MEMF_CLEAR)) {
+                    if (xn->xn_Buf = AllocMem(bytes, MEMF_PUBLIC)) {
+                        movmem((char *)packet->dp_Arg2, xn->xn_Buf, bytes);
+                        xn->xn_Length = bytes;
+                        packet->dp_Res1 = bytes;
+                        AddTail(&xh->xh_List, &xn->xn_Node);
+                        xh->xh_Flags &= ~XHF_EOF;
+                    } else {
+                        FreeMem(xn, sizeof(XNode));
+                        packet->dp_Res2 = ERROR_NO_FREE_STORE;
+                    }
+                } else {
+                    packet->dp_Res2 = ERROR_NO_FREE_STORE;
+                }
+            }
+            break;
+        case ACTION_END:            /*  FHArg1                      Bool:TRUE   */
+            {
+                XHandle *xh = (XHandle *)packet->dp_Arg1;
 
-		if (--xh->xh_Refs == 0 && GetHead(&xh->xh_List) == NULL) {
-		    Remove(&xh->xh_Node);
-		    FreeMem(xh, xh->xh_XHLen);
-		}
-		break;
-	    }
-	    break;
-	default:
-	    packet->dp_Res2 = ERROR_ACTION_NOT_KNOWN;
-	    break;
-	}
-	if (packet) {
-	    if (packet->dp_Res2)
-		packet->dp_Res1 = DOS_FALSE;
-	    returnpacket(packet);
-	}
+                if (--xh->xh_Refs == 0 && GetHead(&xh->xh_List) == NULL) {
+                    Remove(&xh->xh_Node);
+                    FreeMem(xh, xh->xh_XHLen);
+                }
+                break;
+            }
+            break;
+        default:
+            packet->dp_Res2 = ERROR_ACTION_NOT_KNOWN;
+            break;
+        }
+        if (packet) {
+            if (packet->dp_Res2)
+                packet->dp_Res1 = DOS_FALSE;
+            returnpacket(packet);
+        }
     }
 
     /*
-     *	no reached
+     *  no reached
      */
 
     UnInitialize();
@@ -235,7 +235,7 @@ _main()
 
 
 /*
- *  PACKET ROUTINES.	Dos Packets are in a rather strange format as you
+ *  PACKET ROUTINES.    Dos Packets are in a rather strange format as you
  *  can see by this and how the PACKET structure is extracted in the
  *  GetMsg() of the main routine.
  */
@@ -247,9 +247,9 @@ DosPacket *packet;
     Message *mess;
     MsgPort *replyPort;
 
-    replyPort		     = packet->dp_Port;
-    mess		     = packet->dp_Link;
-    packet->dp_Port	     = PktPort;
+    replyPort                = packet->dp_Port;
+    mess                     = packet->dp_Link;
+    packet->dp_Port          = PktPort;
     mess->mn_Node.ln_Name    = (char *)packet;
     PutMsg(replyPort, mess);
 }
@@ -278,21 +278,21 @@ Initialize()
     DosPacket *packet;
 
     /*
-     *	Handle initial message.
+     *  Handle initial message.
      */
 
     {
-	Message *msg;
+        Message *msg;
 
-	WaitPort(PktPort);
-	msg = GetMsg(PktPort);
-	packet = (DosPacket *)msg->mn_Node.ln_Name;
+        WaitPort(PktPort);
+        msg = GetMsg(PktPort);
+        packet = (DosPacket *)msg->mn_Node.ln_Name;
     }
 
     {
-	DevNode = dn = BTOC(packet->dp_Arg3);
+        DevNode = dn = BTOC(packet->dp_Arg3);
 
-	dn->dn_Task = PktPort;
+        dn->dn_Task = PktPort;
     }
     packet->dp_Res1 = DOS_TRUE;
     packet->dp_Res2 = 0;
@@ -303,10 +303,10 @@ void
 UnInitialize(void)
 {
     {
-	DeviceNode *dn = DevNode;
+        DeviceNode *dn = DevNode;
 
-	dn->dn_Task = NULL;
-	/* dn->dn_SegList = NULL; */
+        dn->dn_Task = NULL;
+        /* dn->dn_SegList = NULL; */
     }
 }
 

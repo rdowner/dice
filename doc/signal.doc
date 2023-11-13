@@ -7,142 +7,142 @@ c.lib/signal/signal
 c.lib/signal/raise
 
 
-signal/signal						signal/signal
+signal/signal                                           signal/signal
 
    NAME
-	signal	- set a signal vector for a signal
+        signal  - set a signal vector for a signal
 
    SYNOPSIS
-	typedef void (*__sigfunc)(int);
+        typedef void (*__sigfunc)(int);
 
-	__sigfunc oldfunc = signal(signo, newfunc)
-	int signo;
-	__sigfunc newfunc;
+        __sigfunc oldfunc = signal(signo, newfunc)
+        int signo;
+        __sigfunc newfunc;
 
    FUNCTION
-	signal() sets a signal vector function for a given signal number as
-	defined in <signal.h> and returns the previously set function.
+        signal() sets a signal vector function for a given signal number as
+        defined in <signal.h> and returns the previously set function.
 
-	currently only SIGINT causes any semi-asynchronous action to occur.
-	You may pass newfunc as your own signal function or one of:
+        currently only SIGINT causes any semi-asynchronous action to occur.
+        You may pass newfunc as your own signal function or one of:
 
-	SIG_ERR     error (exit program)
-	SIG_DFL     default (for break, normal operation)
-	SIG_IGN     ignore signal (for break, ^C is now ignored)
+        SIG_ERR     error (exit program)
+        SIG_DFL     default (for break, normal operation)
+        SIG_IGN     ignore signal (for break, ^C is now ignored)
 
-	when a signal occurs, the signal is set back to its default
-	condition before the handler is called.  Thus, if you are allowing
-	multiple signals to occur you MUST restore the signal vector
-	with signal() from your signal handler before it returns.
+        when a signal occurs, the signal is set back to its default
+        condition before the handler is called.  Thus, if you are allowing
+        multiple signals to occur you MUST restore the signal vector
+        with signal() from your signal handler before it returns.
 
    NOTE
-	signal()s on the Amiga are not truely asynchronous.  Currently
-	^C is detected during stdio calls only.  No other signal is
-	implemented though you *can* modify any signal vector 0 to 31
-	and raise it with the raise() call.
+        signal()s on the Amiga are not truely asynchronous.  Currently
+        ^C is detected during stdio calls only.  No other signal is
+        implemented though you *can* modify any signal vector 0 to 31
+        and raise it with the raise() call.
 
-	Early versions of DICE, including quite possibly this version,
-	do not understand complex type declarations containing
-	procedural types.  Thus, you may have to get around the problem
-	by building up a complex procedural type with typedefs.
+        Early versions of DICE, including quite possibly this version,
+        do not understand complex type declarations containing
+        procedural types.  Thus, you may have to get around the problem
+        by building up a complex procedural type with typedefs.
 
-	Unlike onbreak(), a signal function returns no value.
+        Unlike onbreak(), a signal function returns no value.
 
    EXAMPLE
-	#include <signal.h>
+        #include <signal.h>
 
-	void brkfunc(int);
+        void brkfunc(int);
 
-	main()
-	{
-	    short i;
+        main()
+        {
+            short i;
 
-	    puts("The following is unbreakable");
-	    sleep(1);
-	    signal(SIGINT, SIG_IGN);
-	    for (i = 0; i < 100; ++i)
-		printf("1 %d\n", i);
+            puts("The following is unbreakable");
+            sleep(1);
+            signal(SIGINT, SIG_IGN);
+            for (i = 0; i < 100; ++i)
+                printf("1 %d\n", i);
 
-	    puts("The following may be broken out of");
-	    puts("with a cute message");
-	    sleep(1);
-	    signal(SIGINT, brkfunc);
-	    for (i = 0; i < 100; ++i)
-		printf("2 %d\n", i);
+            puts("The following may be broken out of");
+            puts("with a cute message");
+            sleep(1);
+            signal(SIGINT, brkfunc);
+            for (i = 0; i < 100; ++i)
+                printf("2 %d\n", i);
 
-	    puts("The following may be broken out of");
-	    sleep(1);
-	    signal(SIGINT, SIG_DFL);
-	    for (i = 0; i < 100; ++i)
-		printf("3 %d\n", i);
-	    puts("Hey! You never hit ^C!  What kind of test is this!");
-	    return(0);
-	}
+            puts("The following may be broken out of");
+            sleep(1);
+            signal(SIGINT, SIG_DFL);
+            for (i = 0; i < 100; ++i)
+                printf("3 %d\n", i);
+            puts("Hey! You never hit ^C!  What kind of test is this!");
+            return(0);
+        }
 
-	void
-	brkfunc(int signo)
-	{
-	    printf("signo %d occured, exiting\n", signo);
-	    exit(1);
-	}
+        void
+        brkfunc(int signo)
+        {
+            printf("signo %d occured, exiting\n", signo);
+            exit(1);
+        }
 
    INPUTS
-	int	  signo;	signal to modify, usually SIGINT
-	__sigfunc newfunc;	signal function or SIG_ERR, SIG_DFL, SIG_IGN
+        int       signo;        signal to modify, usually SIGINT
+        __sigfunc newfunc;      signal function or SIG_ERR, SIG_DFL, SIG_IGN
 
    RESULTS
-	__sigfunc oldfunc;	previous signal function
+        __sigfunc oldfunc;      previous signal function
 
    SEE ALSO
-	raise
+        raise
 
 
-signal/raise						signal/raise
+signal/raise                                            signal/raise
 
    NAME
-	raise  - raise a signal (cause an 'interrupt' synchronously)
+        raise  - raise a signal (cause an 'interrupt' synchronously)
 
    SYNOPSIS
-	int r = raise(signo);
-	int signo;
+        int r = raise(signo);
+        int signo;
 
    FUNCTION
-	raise() causes a signal to occur and the appropriate action to be
-	taken.	raise() returns 0 on success, -1 if the signo is invalid
-	(outside the range of allowed signals).
+        raise() causes a signal to occur and the appropriate action to be
+        taken.  raise() returns 0 on success, -1 if the signo is invalid
+        (outside the range of allowed signals).
 
-	when you raise a signal, the signal is set back to its default
-	vector before the handler is called.  Thus, if you are allowing
-	multiple signals to occur you MUST restore the signal vector with
-	signal() from your signal handler before it returns.
+        when you raise a signal, the signal is set back to its default
+        vector before the handler is called.  Thus, if you are allowing
+        multiple signals to occur you MUST restore the signal vector with
+        signal() from your signal handler before it returns.
 
    EXAMPLE
-	/*
-	 *  prints the numbers 0 to 99, except only gets to 50 because
-	 *  we 'cause' a ^C.
-	 */
+        /*
+         *  prints the numbers 0 to 99, except only gets to 50 because
+         *  we 'cause' a ^C.
+         */
 
-	#include <signal.h>
+        #include <signal.h>
 
-	main()
-	{
-	    short i;
+        main()
+        {
+            short i;
 
-	    for (i = 0; i < 100; ++i) {
-		printf("i = %d\n", i);
-		if (i == 50)
-		    raise(SIGINT);
-	    }
-	    return(0);
-	}
+            for (i = 0; i < 100; ++i) {
+                printf("i = %d\n", i);
+                if (i == 50)
+                    raise(SIGINT);
+            }
+            return(0);
+        }
 
    INPUTS
-	int	  signo;	signal to cause
+        int       signo;        signal to cause
 
    RESULTS
-	int	  r;		0 on success, -1 if signo is out of range.
+        int       r;            0 on success, -1 if signo is out of range.
 
    SEE ALSO
-	signal
+        signal
 
 

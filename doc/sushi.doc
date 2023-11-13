@@ -91,55 +91,55 @@ runtime: [OFF] [SAVE] [SAVEAS filename] [EMPTY]
 
 Startup Options
 ===============
-ON		Default (not required)
+ON              Default (not required)
 
-BUFK=n		Changes circular buffer size from default 32K to specified
-		power-of-2 K from 4K to 2028K.  Sushi will always round
-		the specified size down to a power of two K (32K, 64K, etc).
+BUFK=n          Changes circular buffer size from default 32K to specified
+                power-of-2 K from 4K to 2028K.  Sushi will always round
+                the specified size down to a power of two K (32K, 64K, etc).
 
-NOPROMPT	Turns off the "sushi installed" and "enforcer not found"
-		prompts.  Useful if redirecting sushi to an AUTO CON
-		window in your user-startup.
+NOPROMPT        Turns off the "sushi installed" and "enforcer not found"
+                prompts.  Useful if redirecting sushi to an AUTO CON
+                window in your user-startup.
 
-QUIET		Causes Sushi to just buffer all debugging output.
-		Effectively silences serial debugging output.
-		Useful in conjunction with an external sushi watcher
-		or displayer (see later explanation).
+QUIET           Causes Sushi to just buffer all debugging output.
+                Effectively silences serial debugging output.
+                Useful in conjunction with an external sushi watcher
+                or displayer (see later explanation).
 
-ASKSAVE		Cause Sushi to ask you if you want to save the buffer
-		when you exit Sushi.  If there's nothing in the buffer,
-		it won't ask.  Make SURE sushi has a stdin if you
-		use this option.  If sushi thinks it has no stdin,
-		it will save to t:sushi.out.  This option should only
-		be used if Sushi has an input stream - i.e. if Sushi
-		is not RUN/redirected, or if Sushi has in/out redirection
-		in a CON: window.
+ASKSAVE         Cause Sushi to ask you if you want to save the buffer
+                when you exit Sushi.  If there's nothing in the buffer,
+                it won't ask.  Make SURE sushi has a stdin if you
+                use this option.  If sushi thinks it has no stdin,
+                it will save to t:sushi.out.  This option should only
+                be used if Sushi has an input stream - i.e. if Sushi
+                is not RUN/redirected, or if Sushi has in/out redirection
+                in a CON: window.
 
-ASKEXIT		Cause Sushi to ask you if you REALLY want to exit if
-		a CTRL-C is received.  This is good for people like
-		me who might accidentally CTRL-C in a Sushi window when
-		they meant to do it somewhere else.   This option should
-		only be used if Sushi has an input stream - i.e. if Sushi
-		is not RUN/redirected, or if Sushi has in/out redirection
-		in a CON: window.
+ASKEXIT         Cause Sushi to ask you if you REALLY want to exit if
+                a CTRL-C is received.  This is good for people like
+                me who might accidentally CTRL-C in a Sushi window when
+                they meant to do it somewhere else.   This option should
+                only be used if Sushi has an input stream - i.e. if Sushi
+                is not RUN/redirected, or if Sushi has in/out redirection
+                in a CON: window.
 
-TIMERON		Cause Sushi to wake up every 1/10 second to check for
-		output even if Enforcer 2.8b or 2.6f have not been patched.
-		Without this option, Sushi will just wake up every time a
-		carriage return or linefeed is output.
+TIMERON         Cause Sushi to wake up every 1/10 second to check for
+                output even if Enforcer 2.8b or 2.6f have not been patched.
+                Without this option, Sushi will just wake up every time a
+                carriage return or linefeed is output.
 
 
 Runtime Options
 ===============
-OFF		Signals active running copy of Sushi to exit (CTRL_C)
+OFF             Signals active running copy of Sushi to exit (CTRL_C)
 
-EMPTY		Signals active running copy of Sushi to empty its buffer.
+EMPTY           Signals active running copy of Sushi to empty its buffer.
 
-SAVE		Finds active running copy of Sushi and saves its buffer
-		as t:sushi.out
+SAVE            Finds active running copy of Sushi and saves its buffer
+                as t:sushi.out
 
-SAVEAS name	Finds active running copy of Sushi and saves its buffer
-		as specified filename
+SAVEAS name     Finds active running copy of Sushi and saves its buffer
+                as specified filename
 
 
 
@@ -147,7 +147,7 @@ SAVEAS name	Finds active running copy of Sushi and saves its buffer
 Example Startup Usage
 =====================
 
-sushi ASKSAVE	(in its own shell window)
+sushi ASKSAVE   (in its own shell window)
 
 run >NIL: sushi  >"CON:0/20/640/120/Sushi/AUTO/CLOSE/WAIT/INACTIVE" ON NOPROMPT
 
@@ -159,17 +159,17 @@ run >NIL: sushi <>"CON:0/20/640/120/Sushi/AUTO/CLOSE/WAIT/INACTIVE" ON NOPROMPT
 
 run sushi >ram:hits (all output redirected to a file)
 
-run sushi NOPROMPT QUIET	(for use with external displayer)
+run sushi NOPROMPT QUIET        (for use with external displayer)
 
 NOTE: You may want use the following title for a sushi AUTO CON window:
-	/Sushi   CTRL-E:Empty   CTRL-F:File/
+        /Sushi   CTRL-E:Empty   CTRL-F:File/
 
 
 Keyboard and BREAK signals
 ==========================
 CTRL-C: To quit Sushi, CTRL-C it (if it has its own window), send it
-	a CTRL-C with the c:BREAK command, or run sushi a second time
-	with the OFF keyword.
+        a CTRL-C with the c:BREAK command, or run sushi a second time
+        with the OFF keyword.
 
 CTRL-E: Tells Sushi to empty (clear) its buffer.
 
@@ -178,8 +178,8 @@ CTRL-F: Tells Sushi to save its own buffer to file t:sushi.out
 
 Other Runtime Usage
 ===================
-sushi OFF			; tell active running Sushi to try to exit
-sushi SAVE			; save buffer of active Sushi
+sushi OFF                       ; tell active running Sushi to try to exit
+sushi SAVE                      ; save buffer of active Sushi
 sushi SAVEAS ram:myhits EMPTY   ; save buffer as ram:myhits and clear buffer
 
 Usually, I just CTRL-F in the Sushi window, and it saves its buffer as
@@ -210,7 +210,7 @@ Blink FROM LIB:c.o,ext_sushi.o TO ext_sushi LIBRARY LIB:LC.lib,LIB:Amiga.lib
 quit
 
 ext_sushi.c - An example of an external display or watcher program
-		which is signalled by sushi.
+                which is signalled by sushi.
 */
 
 #include <exec/types.h>
@@ -252,17 +252,17 @@ UBYTE sushiname[] = "sushi_CAS_port";
 
 struct AppStruct {
    /* These are for READ-ONLY use by external application */
-   UBYTE	*subuf;		/* Sushi's circular output buffer */
-   ULONG	subufsize;	/* Size of buffer in bytes (a power of 2K) */
-   ULONG	subufi;		/* Where Sushi will place next char received */
-   ULONG	subufli;	/* Sushi's local index of what it has processed */
-   ULONG	wrapcnt;	/* How may times circular buffer has wrapped */ 
-   ULONG	wrapmask;	/* Hex mask Sushi uses when wrapping subufi */
+   UBYTE        *subuf;         /* Sushi's circular output buffer */
+   ULONG        subufsize;      /* Size of buffer in bytes (a power of 2K) */
+   ULONG        subufi;         /* Where Sushi will place next char received */
+   ULONG        subufli;        /* Sushi's local index of what it has processed */
+   ULONG        wrapcnt;        /* How may times circular buffer has wrapped */ 
+   ULONG        wrapmask;       /* Hex mask Sushi uses when wrapping subufi */
 
    /* External app writes to these if not in use; must clear them before exiting */
-   struct Task	*extsigtask;
-   LONG		extsignum;
-   ULONG	extsignal;
+   struct Task  *extsigtask;
+   LONG         extsignum;
+   ULONG        extsignal;
 
    /* Microseconds that Sushi waits between checking for Enforcer hits.
     * Default is 100000 (1/10 sec).  If you find it necessary to touch this,
@@ -271,7 +271,7 @@ struct AppStruct {
     * any time a CR or LF is placed in buffer.  Sushi will only signal
     * the external task if there is actually something in the buffer.
     */
-   ULONG	sumicros;
+   ULONG        sumicros;
 
    /* private stuff here - subject to moving since any additional
     * public things will be added right here.
@@ -288,112 +288,112 @@ struct WTP {
     */
    };
 
-struct  WTP	  *wtp = NULL;
+struct  WTP       *wtp = NULL;
 struct  AppStruct *aps = NULL;
-LONG	sushisignum  = -1;
-BOOL	GotSushi     = FALSE;
+LONG    sushisignum  = -1;
+BOOL    GotSushi     = FALSE;
 
 
 void main(int argc, char **argv)
     {
-    struct  Task 	*mytask;
-    UBYTE   		*buf;	
+    struct  Task        *mytask;
+    UBYTE               *buf;   
     ULONG   sushisignal, signals, bufi, bufli; 
     BOOL    Done;
 
     if(((argc)&&(argc<MINARGS))||(argv[argc-1][0]=='?'))
-	{
-	printf("%s\n%s\n",Copyright,usage);
-	bye("",RETURN_OK);
-	}
+        {
+        printf("%s\n%s\n",Copyright,usage);
+        bye("",RETURN_OK);
+        }
 
-    bufli = 0;		/* this application's last index into sushi buffer */
+    bufli = 0;          /* this application's last index into sushi buffer */
     mytask = FindTask(NULL);
     GotSushi = FALSE;
 
     Forbid();
     if (wtp = FindPort(sushiname))
-    	{
-	aps = wtp->appstruct;
-    	if(! aps->extsigtask)	/* You MUST not install if someone else has */
-	    {
-    	    if((sushisignum = AllocSignal(-1)) != -1)
-	    	{
-	    	sushisignal 	= 1L << sushisignum;
+        {
+        aps = wtp->appstruct;
+        if(! aps->extsigtask)   /* You MUST not install if someone else has */
+            {
+            if((sushisignum = AllocSignal(-1)) != -1)
+                {
+                sushisignal     = 1L << sushisignum;
 
-	    	aps->extsigtask	= mytask;
-	    	aps->extsignum 	= sushisignum;
-	    	aps->extsignal	= sushisignal;
-		buf 		= aps->subuf;
-	    	GotSushi 	= TRUE;
-	    	}
-	    }
-    	}
+                aps->extsigtask = mytask;
+                aps->extsignum  = sushisignum;
+                aps->extsignal  = sushisignal;
+                buf             = aps->subuf;
+                GotSushi        = TRUE;
+                }
+            }
+        }
     Permit();
 
     if(!GotSushi)
-	bye("Can't allocate sushi - not found or in use\n", RETURN_FAIL);
+        bye("Can't allocate sushi - not found or in use\n", RETURN_FAIL);
 
     Done = FALSE;
 
     while(!Done)
-    	{
-    	signals = Wait( SIGBREAKF_CTRL_C | sushisignal );
+        {
+        signals = Wait( SIGBREAKF_CTRL_C | sushisignal );
 
-    	/* Make sure you turn off your compiler's CTRL-C handling
-     	 * if you use CTRL-C as your exit signal.
-     	 */
-    	if( signals & SIGBREAKF_CTRL_C)
-	    {
-	    Done = TRUE;
-	    }
+        /* Make sure you turn off your compiler's CTRL-C handling
+         * if you use CTRL-C as your exit signal.
+         */
+        if( signals & SIGBREAKF_CTRL_C)
+            {
+            Done = TRUE;
+            }
 
-    	if(signals & sushisignal)
-	    {
-	    /* There's some new info in the sushi buffer.
-	     * Here we will just print it out.
-	     * You could instead copy it elsewhere for fancy display, etc.
-	     */
-	    bufi = aps->subufi;	/* grab where sushi has filled to */
-	    
-	    if(bufi > bufli)		/* buffer has not wrapped since last */
-		{
-		Write(Output(),&buf[bufli],bufi - bufli);
-		}
-	    else if(bufli > bufi)	/* buffer has wrapped since last */		
-		{
-		/* Write end of buffer info, then new info at start of buffer */
-		Write(Output(),&buf[bufli],aps->subufsize - bufli);
-		Write(Output(),buf,bufi);
-		}
-	    /* Update variable that saves where YOU are up to */
-	    bufli = bufi;
-	    }
+        if(signals & sushisignal)
+            {
+            /* There's some new info in the sushi buffer.
+             * Here we will just print it out.
+             * You could instead copy it elsewhere for fancy display, etc.
+             */
+            bufi = aps->subufi; /* grab where sushi has filled to */
+            
+            if(bufi > bufli)            /* buffer has not wrapped since last */
+                {
+                Write(Output(),&buf[bufli],bufi - bufli);
+                }
+            else if(bufli > bufi)       /* buffer has wrapped since last */             
+                {
+                /* Write end of buffer info, then new info at start of buffer */
+                Write(Output(),&buf[bufli],aps->subufsize - bufli);
+                Write(Output(),buf,bufi);
+                }
+            /* Update variable that saves where YOU are up to */
+            bufli = bufi;
+            }
 
 #if 0
-	/* FYI - Other things you can tell Sushi to do */
+        /* FYI - Other things you can tell Sushi to do */
 
-	/* Tell Sushi to write its buffer as file t:sushi.out.
-	 * Sushi writes its buffer in chronological order -
-	 * i.e., if the buffer has wrapped, it writes older end of buffer,
-	 * then writes data from start of buffer to current position.
-	 */
-	Signal(aps->sutask, SIGBREAKF_CTRL_F);
+        /* Tell Sushi to write its buffer as file t:sushi.out.
+         * Sushi writes its buffer in chronological order -
+         * i.e., if the buffer has wrapped, it writes older end of buffer,
+         * then writes data from start of buffer to current position.
+         */
+        Signal(aps->sutask, SIGBREAKF_CTRL_F);
 
-	/* Tell Sushi to empty (clear) its buffer (i.e. reset its indexes).
-	 * If you do this, you should probably reset your bufli to 0.
-	 */
-	Signal(aps->sutask, SIGBREAKF_CTRL_E);
+        /* Tell Sushi to empty (clear) its buffer (i.e. reset its indexes).
+         * If you do this, you should probably reset your bufli to 0.
+         */
+        Signal(aps->sutask, SIGBREAKF_CTRL_E);
 
-	/* Tell Sushi to exit if it can.
-	 * It can not exit if there is an aps->extsigtask.
-	 */
-	Signal(aps->sutask, SIGBREAKF_CTRL_C);
+        /* Tell Sushi to exit if it can.
+         * It can not exit if there is an aps->extsigtask.
+         */
+        Signal(aps->sutask, SIGBREAKF_CTRL_C);
 
 #endif
 
-    	}
-    bye("",RETURN_OK);	/* Will do Sushi and other cleanup */
+        }
+    bye("",RETURN_OK);  /* Will do Sushi and other cleanup */
     }
 
 
@@ -408,15 +408,15 @@ void cleanup()
     {
     /* Required cleanup for external sushi program before exiting ! */
     if(GotSushi && (aps != NULL))
-	{
-	/* Required Sushi cleanup before you exit !!!! */
-	Forbid();
-	aps->extsignum  = 0L;
-	aps->extsignal  = 0L;
-	aps->extsigtask = NULL;
-	Permit();
-	}
-    if(sushisignum != -1)	FreeSignal(sushisignum);
+        {
+        /* Required Sushi cleanup before you exit !!!! */
+        Forbid();
+        aps->extsignum  = 0L;
+        aps->extsignal  = 0L;
+        aps->extsigtask = NULL;
+        Permit();
+        }
+    if(sushisignum != -1)       FreeSignal(sushisignum);
     }
 
 

@@ -1,8 +1,8 @@
 From tlm@newton.physics.purdue.edu  Thu Dec  8 09:53:55 1988
 Received: by postgres.Berkeley.EDU (5.57/1.26)
-	id AA15642; Thu, 8 Dec 88 09:53:55 PST
+        id AA15642; Thu, 8 Dec 88 09:53:55 PST
 Received: by newton.physics.purdue.edu (5.54/2.2)
-	id AA19181; Thu, 8 Dec 88 12:52:30 EST
+        id AA19181; Thu, 8 Dec 88 12:52:30 EST
 From: tlm@newton.physics.purdue.edu (Timothy Lee Meisenheimer)
 Message-Id: <8812081752.AA19181@newton.physics.purdue.edu>
 To: dillon@postgres.Berkeley.EDU (Matt Dillon)
@@ -23,69 +23,69 @@ a comparison from old to new code:
 (this is from main.c)
 ************** old code *************
     if (mac == 0) {             /*  WORKBENCH STARTUP           */
-	long oldlock;
+        long oldlock;
 
-	Wdisable = 0;		/*  allow icon save		*/
-	Wbs = (WBS *)mav;
-	if (!openlibs(ICON_LIB))
-	    exiterr("unable to open icon library");
-	oldlock = CurrentDir(Wbs->sm_ArgList[0].wa_Lock);   /* Tool */
-	Do = GetDiskObject(Wbs->sm_ArgList[0].wa_Name);
-	CurrentDir(oldlock);
-	if (Do == NULL)
-	    exiterr("unable to get disk object");
-	mac = 99;
+        Wdisable = 0;           /*  allow icon save             */
+        Wbs = (WBS *)mav;
+        if (!openlibs(ICON_LIB))
+            exiterr("unable to open icon library");
+        oldlock = CurrentDir(Wbs->sm_ArgList[0].wa_Lock);   /* Tool */
+        Do = GetDiskObject(Wbs->sm_ArgList[0].wa_Name);
+        CurrentDir(oldlock);
+        if (Do == NULL)
+            exiterr("unable to get disk object");
+        mac = 99;
     }
 
     resethash();
 
     if (Do) {
-	ops(Do->do_ToolTypes, 1);
-	nf = Wbs->sm_NumArgs - 1;
-	Dirlock = Wbs->sm_ArgList[0].wa_Lock;
+        ops(Do->do_ToolTypes, 1);
+        nf = Wbs->sm_NumArgs - 1;
+        Dirlock = Wbs->sm_ArgList[0].wa_Lock;
     } else {
-	nf = ops(mav+1, 0);
+        nf = ops(mav+1, 0);
     }
 
     for (ni = 0, i = 1; i < mac; ++i) {
 ************** old code *************
 ************** new code *************
     if (mac == 0) {             /*  WORKBENCH STARTUP           */
-	long oldlock;
+        long oldlock;
 
-	Wdisable = 0;		/*  allow icon save		*/
-	Wbs = (WBS *)mav;
-	if (!openlibs(ICON_LIB))
-	    exiterr("unable to open icon library");
-	Do = GetDiskObject(Wbs->sm_ArgList[0].wa_Name);
-	if(Do != NULL){
-	    oldlock = CurrentDir(Wbs->sm_ArgList[0].wa_Lock);   /* Tool */
-	    CurrentDir(oldlock);
-	}
+        Wdisable = 0;           /*  allow icon save             */
+        Wbs = (WBS *)mav;
+        if (!openlibs(ICON_LIB))
+            exiterr("unable to open icon library");
+        Do = GetDiskObject(Wbs->sm_ArgList[0].wa_Name);
+        if(Do != NULL){
+            oldlock = CurrentDir(Wbs->sm_ArgList[0].wa_Lock);   /* Tool */
+            CurrentDir(oldlock);
+        }
 
 /* let it be ok not to find dnet.info !!! */
-/*	  if (Do == NULL)
-	    exiterr("unable to get disk object"); */
+/*        if (Do == NULL)
+            exiterr("unable to get disk object"); */
 
-	mac = 99;
+        mac = 99;
     }
 
     resethash();
 
     if (Do != NULL) {
-	ops(Do->do_ToolTypes, 1);
-	nf = Wbs->sm_NumArgs - 1;
-	Dirlock = Wbs->sm_ArgList[0].wa_Lock;
+        ops(Do->do_ToolTypes, 1);
+        nf = Wbs->sm_NumArgs - 1;
+        Dirlock = Wbs->sm_ArgList[0].wa_Lock;
 
     /* check that it might still be a workbench startup */
 
     } else if(Wdisable == 0){
-	nf = Wbs->sm_NumArgs - 1;
+        nf = Wbs->sm_NumArgs - 1;
 
     /* this is for CLI startup */
 
     } else {
-	nf = ops(mav+1, 0);
+        nf = ops(mav+1, 0);
     }
 
     for (ni = 0, i = 1; i < mac; ++i) {

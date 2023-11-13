@@ -1,23 +1,23 @@
 
-		;   dummy ReadEClock() call.  The profiling subsystem
-		;   references this symbol though it only actually calls it
-		;   under 2.0.	Under 1.3, however, it must still exist
-		;   for the link to suceed.
+                ;   dummy ReadEClock() call.  The profiling subsystem
+                ;   references this symbol though it only actually calls it
+                ;   under 2.0.  Under 1.3, however, it must still exist
+                ;   for the link to suceed.
 
-		section text,code
+                section text,code
 
-		xdef	_ReadEClock
-		xdef	@ReadEClock
-		xref	_DOSBase
+                xdef    _ReadEClock
+                xdef    @ReadEClock
+                xref    _DOSBase
 
 _ReadEClock:
-		move.l	8(sp),A0
+                move.l  8(sp),A0
 @ReadEClock:
-		move.l	A6,-(sp)
-		move.l	_DOSBase(A4),A6
-		jsr	$FFFFFFC4(A6)
-		move.l	(sp)+,A6
-		rts
+                move.l  A6,-(sp)
+                move.l  _DOSBase(A4),A6
+                jsr     $FFFFFFC4(A6)
+                move.l  (sp)+,A6
+                rts
 
-		END
+                END
 

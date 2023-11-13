@@ -1,7 +1,7 @@
 Every Emacs and Emacs varient I've ever used has had some variation
 of this file.  AME is no different.  For its TUTORIAL, I've found the
 GNU tutorial and modified it to match AME and the Amiga.  After all, 
-Emacs just isn't Emacs without a tutorial.	- andy finkel
+Emacs just isn't Emacs without a tutorial.      - andy finkel
 ---------------
 Copyright (c) 1985 Free Software Foundation, Inc;  See end for conditions.
 
@@ -14,10 +14,10 @@ write out META or CONTROL each time we want you to prefix a character,
 we'll use the following abbreviations:
 
  C-<chr>  means hold the CONTROL key while typing the character <chr>
-	  Thus, C-f would be: hold the CONTROL key and type f.
+          Thus, C-f would be: hold the CONTROL key and type f.
  M-<chr>  means type <ESC>, release it, then type the character <chr>.  
-	  "<ESC>" stands for the key labelled "ESC".  The M stands
-	  for Meta.
+          "<ESC>" stands for the key labelled "ESC".  The M stands
+          for Meta.
 
 Important note: to end the AME session, type C-c.  (One character.)
 
@@ -28,9 +28,9 @@ The characters ">>" at the left margin indicate directions for you to
 try using a command.  For instance:
 <<Blank lines inserted here by startup of help-with-tutorial>>
 >>  Now type C-v (View next screen) to move to the next screen.
-	(go ahead, do it by depressing the control key and v together).
-	From now on, you'll be expected to do this whenever you finish
-	reading the screen.
+        (go ahead, do it by depressing the control key and v together).
+        From now on, you'll be expected to do this whenever you finish
+        reading the screen.
 
 Note that there is an overlap when going from screen to screen; this
 provides some continuity when moving through the file.
@@ -47,12 +47,12 @@ SUMMARY
 
 The following commands are useful for viewing screenfuls:
 
-	C-v	Move forward one screenful
-	M-v	Move backward one screenful
-	C-l	Clear screen and redisplay everything
-		 putting the text near the cursor at the center.
-		 (That's control-L, not control-1.
-		  There is no such character as control-1.)
+        C-v     Move forward one screenful
+        M-v     Move backward one screenful
+        C-l     Clear screen and redisplay everything
+                 putting the text near the cursor at the center.
+                 (That's control-L, not control-1.
+                  There is no such character as control-1.)
 
 >> Find the cursor and remember what text is near it.
    Then type a C-l.
@@ -71,13 +71,13 @@ AME as C-p, C-b, C-f, and C-n  respectively) move the cursor from
 where it currently is to a new place in the given direction.  Here,
 in a more graphical form are the commands:
  
-			  Previous line, C-p
-				  :
-				  :
+                          Previous line, C-p
+                                  :
+                                  :
    Backward, C-b .... Current cursor position .... Forward, C-f
-				  :
-				  :
-			  Next line, C-n
+                                  :
+                                  :
+                          Next line, C-n
 
 >> Move the cursor to the line in the middle of that diagram
    and type C-l to see the whole diagram centered in the screen.
@@ -145,20 +145,20 @@ the text.
 Here is a summary of simple moving operations including the word and
 sentence moving commands:
 
-	C-f	(Cursor Right)	Move forward a character
-	C-b	(Cursor Left)	Move backward a character
+        C-f     (Cursor Right)  Move forward a character
+        C-b     (Cursor Left)   Move backward a character
 
-	M-f	Move forward a word
-	M-b	Move backward a word
+        M-f     Move forward a word
+        M-b     Move backward a word
 
-	C-n	(Cursor Down)	Move to next line
-	C-p	(Cursor Up)	Move to previous line
+        C-n     (Cursor Down)   Move to next line
+        C-p     (Cursor Up)     Move to previous line
 
-	C-a	(Shift Left)	Move to beginning of line
-	C-e	(Shift Right)	Move to end of line
+        C-a     (Shift Left)    Move to beginning of line
+        C-e     (Shift Right)   Move to end of line
 
-	M-<	Go to beginning of file
-	M->	Go to end of file
+        M-<     Go to beginning of file
+        M->     Go to end of file
 
 >> Try all of these commands now a few times for practice.
    Since the last two will take you away from this screen,
@@ -171,7 +171,7 @@ give a command a repeat count is by typing C-u and then the digits
 before you type the command.  
 
 For instance, C-u 8 C-f moves forward eight characters.
-	
+        
 >> Try giving a suitable argument to C-n or C-p to come as close
    as you can to this line in one jump.
 
@@ -199,7 +199,7 @@ using multiple windows.  But you do need to know how to get
 rid of extra windows that may appear to display help or
 output from certain commands.  It is simple:
 
-	C-x 1	One window (i.e., kill all other windows).
+        C-x 1   One window (i.e., kill all other windows).
 
 That is Control-x followed by the digit 1.
 C-x 1 makes the window which the cursor is in become
@@ -254,14 +254,14 @@ You've now learned the most basic way of typing something in
 AME and correcting errors.  You can delete by words or lines
 as well.  Here is a summary of the delete operations:
 
-	<Backspace>     delete the character just before the cursor
-	C-d (or the Delete key)  delete the next character after the cursor
+        <Backspace>     delete the character just before the cursor
+        C-d (or the Delete key)  delete the next character after the cursor
 
-	M-<Backspace>   kill the word immediately before the cursor
-	M-d	     kill the next word after the cursor
+        M-<Backspace>   kill the word immediately before the cursor
+        M-d          kill the next word after the cursor
 
-	C-k	     kill from the cursor position to end of line
-	M-k	     kill to the end of the current paragraph
+        C-k          kill from the cursor position to end of line
+        M-k          kill to the end of the current paragraph
 
 Notice that <Backspace> and C-d vs M-<Backspace> and M-d extend the parallel
 started by C-f and M-f (well, <Backspace> isn't really a control
@@ -360,7 +360,7 @@ to say what file name you want.  We say the command "reads an argument
 from the terminal" (in this case, the argument is the name of the
 file).  After you type the command
 
-	C-x C-v   Visit a file
+        C-x C-v   Visit a file
 
 AME brings up a file requester and asks you to type the file name.
 When you type <Return> to end the file name, the file requester is 
@@ -374,7 +374,7 @@ In a little while the file contents appear on the screen.  You can
 edit the contents.  When you wish to make the changes permanent,
 issue the command
 
-	C-x C-s   Save the file
+        C-x C-s   Save the file
 
 The contents of AME are written into the file.  If backups are on, the first 
 time you do this, the original file is renamed to a new name so that it
@@ -406,7 +406,7 @@ The object inside AME which holds the text read from one file
 is called a "buffer."  Finding a file makes a new buffer inside AME.
 To see a list of the buffers that exist in AME, type
 
-	C-x C-b   List buffers
+        C-x C-b   List buffers
 
 >> Try C-x C-b now.
 
@@ -424,7 +424,7 @@ but it also means that you need a convenient way to save the first
 file's buffer.  It would be a nuisance to have to switch back to
 it with C-x C-v in order to save it with C-x C-s.  So we have
 
-	C-x C-m     Save modified buffers
+        C-x C-m     Save modified buffers
 
 C-x C-m goes through the list of all the buffers you have
 and finds the ones that contain files you have changed, and
@@ -438,8 +438,8 @@ There are many, many more AME commands than could possibly be put
 on all the control and meta characters.  AME gets around this with
 the eXtended command.  This comes in two flavors:
 
-	C-x	Character eXtend.  Followed by one character.
-	M-x (or (ESC-ESC) Named command extend.  Followed by a long name.
+        C-x     Character eXtend.  Followed by one character.
+        M-x (or (ESC-ESC) Named command extend.  Followed by a long name.
 
 These are commands that are generally useful but used less than the
 commands you have already learned about.  You have already seen two
@@ -452,11 +452,11 @@ AME.)
 
 There are many C-x commands.  The ones you know are:
 
-	C-x C-v		Visit file.
-	C-x C-s		Save file.
-	C-x C-b		List buffers.
-	C-x C-c		Quit AME.
-	C-x C-u		Undo.
+        C-x C-v         Visit file.
+        C-x C-s         Save file.
+        C-x C-b         List buffers.
+        C-x C-c         Quit AME.
+        C-x C-u         Undo.
 
 Named eXtended commands are commands which are used even less
 frequently, or commands which are used only in certain modes.  These
@@ -621,7 +621,7 @@ the command.
 >> Type F1 C-p.
   The message should be something like
 
-	^P is bound to moveup
+        ^P is bound to moveup
 
 This tells you the "name of the function".  That is important in
 writing Arexx code to extend AME; it also is enough to remind
@@ -631,11 +631,11 @@ not remember.
 Multi-character commands such as C-x C-s and <ESC>v are also allowed after
 describekey.
 
-   HELP		Command Apropos.  Type in a keyword and AME will list
-		all the commands whose names contain that keyword.
-		These commands can all be invoked with Meta-x.
-		For some commands, Command Apropos will also list a one
-		or two character sequence which has the same effect.
+   HELP         Command Apropos.  Type in a keyword and AME will list
+                all the commands whose names contain that keyword.
+                These commands can all be invoked with Meta-x.
+                For some commands, Command Apropos will also list a one
+                or two character sequence which has the same effect.
 
 >> Type HELP file<Return>.  You will see a list of all M-x commands
 with "file" in their names.  You will also see commands

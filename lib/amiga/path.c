@@ -36,24 +36,24 @@ char *cmd;
     LockList *ll;
 
     if (SysBase->ThisTask->tc_Node.ln_Type != NT_PROCESS)
-	return(0);
+        return(0);
     if ((cli = BTOC(((Process *)SysBase->ThisTask)->pr_CLI, CLI)) == NULL)
-	return(0);
+        return(0);
 
     ll = BTOC(cli->cli_CommandDir, LockList);
 
     while (ll) {
-	if (ll->PathLock) {
-	    long oldLock = CurrentDir(ll->PathLock);
-	    long lock;
+        if (ll->PathLock) {
+            long oldLock = CurrentDir(ll->PathLock);
+            long lock;
 
-	    if (lock = Lock(cmd, SHARED_LOCK)) {
-		CurrentDir(oldLock);
-		return(lock);
-	    }
-	    CurrentDir(oldLock);
-	}
-	ll = BTOC(ll->NextPath, LockList);
+            if (lock = Lock(cmd, SHARED_LOCK)) {
+                CurrentDir(oldLock);
+                return(lock);
+            }
+            CurrentDir(oldLock);
+        }
+        ll = BTOC(ll->NextPath, LockList);
     }
     return(0);
 }

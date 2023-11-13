@@ -8,15 +8,15 @@
  *
  */
 
-typedef unsigned char	ubyte;
-typedef unsigned short	uword;
+typedef unsigned char   ubyte;
+typedef unsigned short  uword;
 
-#include <stdarg.h>			/* standard includes 	*/
+#include <stdarg.h>                     /* standard includes    */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <include/lib/version.h>
-#include "sym.h"			/* local includes	*/
+#include "sym.h"                        /* local includes       */
 #include "tokens.h"
 #include "machine.h"
 #include "stmt.h"
@@ -32,31 +32,31 @@ typedef unsigned short	uword;
 #if !defined(REGISTERED) && !defined(COMMERCIAL)
 #undef putc
 #define putc(c,fi) (((fi)->sd_WLeft <= 0) ? fputc((c),(fi)) : \
-	 (((--(fi)->sd_WLeft, ((*(fi)->sd_WPtr++ = (c))) == '\n')) ? (fflush(fi), '\n') : ((fi)->sd_WPtr)[-1]))
+         (((--(fi)->sd_WLeft, ((*(fi)->sd_WPtr++ = (c))) == '\n')) ? (fflush(fi), '\n') : ((fi)->sd_WPtr)[-1]))
 #endif
 #endif
 
 typedef struct LexFileNode {
     struct LexFileNode *lf_Next;
-    FILE    *lf_Fi;	    /*	file handle, keeps cache valid		      */
-    char    *lf_Buf;	    /*	buffer, offset negative!! invalid < BaseIndex */
+    FILE    *lf_Fi;         /*  file handle, keeps cache valid                */
+    char    *lf_Buf;        /*  buffer, offset negative!! invalid < BaseIndex */
     char    *lf_FileName;
 #ifdef MINIDICE2
     uword   lf_BaseIndex;
-    uword   lf_Index;	    /*	current index	*/
-    uword   lf_Size;	    /*	size of file	*/
+    uword   lf_Index;       /*  current index   */
+    uword   lf_Size;        /*  size of file    */
 #else
     int32_t    lf_BaseIndex;
-    int32_t    lf_Index;	    /*	current index	*/
-    int32_t    lf_Size;	    /*	size of file	*/
+    int32_t    lf_Index;            /*  current index   */
+    int32_t    lf_Size;     /*  size of file    */
 #endif
 } LexFileNode;
 
-#define MINIMAXPROCS	5
+#define MINIMAXPROCS    5
 
 
 #define Prototype   extern
-#define Local	    static
+#define Local       static
 
 #ifndef AMIGA
 
@@ -78,7 +78,7 @@ typedef struct LexFileNode {
 
 #define AllocStructure(type)  ((type *)zalloc(sizeof(type)))
 #define AllocTmpStructure(type)  ((type *)talloc(sizeof(type)))
-#define arysize(ary)	(sizeof(ary)/sizeof((ary)[0]))
+#define arysize(ary)    (sizeof(ary)/sizeof((ary)[0]))
 
 /*
  *  Call for gen*.c
@@ -90,19 +90,19 @@ typedef struct LexFileNode {
 #define EnsureReturnStorageLeft()   { if ((exp->ex_ExpR->ex_Flags & EF_CALL) || ((exp->ex_Flags & EF_ASSEQ) && (exp->ex_Flags & EF_CALL))) UnscratchStorage(exp->ex_ExpL); }
 #define EnsureReturnStorageRight()  { if (exp->ex_ExpL->ex_Flags & EF_CALL) UnscratchStorage(exp->ex_ExpR); }
 
-#define SOUTSIDE    1	/*  outside procedures		    */
-#define SARG	    2	/*  declaring procedural arguments  */
-#define SINSIDE     3	/*  inside procedure		    */
+#define SOUTSIDE    1   /*  outside procedures              */
+#define SARG        2   /*  declaring procedural arguments  */
+#define SINSIDE     3   /*  inside procedure                */
 
 #ifdef __BASE_FILE__
 #ifdef AMIGA
-#define Assert(cond)	if (!(cond)) _Assert(_SrcFile, __LINE__)
+#define Assert(cond)    if (!(cond)) _Assert(_SrcFile, __LINE__)
 static const char *_SrcFile = __BASE_FILE__;
 #else
-#define Assert(cond)	if (!(cond)) _Assert(__BASE_FILE__, __LINE__)
+#define Assert(cond)    if (!(cond)) _Assert(__BASE_FILE__, __LINE__)
 #endif
 #else
-#define Assert(cond)	if (!(cond)) _Assert("uknown.c", __LINE__)
+#define Assert(cond)    if (!(cond)) _Assert("uknown.c", __LINE__)
 #endif
 
 #define GetToken()  ((LexDispatch[(ubyte)LFBase->lf_Buf[LFBase->lf_Index]])())

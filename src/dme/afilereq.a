@@ -1,53 +1,53 @@
 
-		;   arpreq(hail,file,dir,window)
+                ;   arpreq(hail,file,dir,window)
 
 
-		section text,code
+                section text,code
 
-		xdef	_arpreq
-		xref	_LVOOldOpenLibrary
-		xref	_LVOCloseLibrary
+                xdef    _arpreq
+                xref    _LVOOldOpenLibrary
+                xref    _LVOCloseLibrary
 
-_LVOFileRequest equ	-294
+_LVOFileRequest equ     -294
 
-arp_name_text	dc.b	$61,$72,$70,$2E,$6C,$69,$62,$72,$61,$72,$79,0
+arp_name_text   dc.b    $61,$72,$70,$2E,$6C,$69,$62,$72,$61,$72,$79,0
 
 _arpreq:
-		movem.l D2/D3/A6,-(sp)
-		lea.l	fs(A4),A0
-		movem.l 4+12(sp),D0-D3           ;setup fields
-		movem.l D0-D3,(A0)
-		clr.w	fs+16(A4)
-		move.l	4,A6
+                movem.l D2/D3/A6,-(sp)
+                lea.l   fs(A4),A0
+                movem.l 4+12(sp),D0-D3           ;setup fields
+                movem.l D0-D3,(A0)
+                clr.w   fs+16(A4)
+                move.l  4,A6
 
-		lea.l	arp_name_text(pc),a1    ;open library
-		jsr	_LVOOldOpenLibrary(a6)
-		tst.l	d0
-		beq	xdone
-		move.l	d0,a6
-		lea.l	fs(a4),a0
-		jsr	_LVOFileRequest(A6)     ;call requestor
-		move.l	D0,-(sp)                ;return value
-		move.l	A6,A1			;CloseLibrary(arpbase)
-		move.l	4,A6
-		jsr	_LVOCloseLibrary(A6)
-		move.l	(sp)+,D0                ;return value
-xdone		movem.l (sp)+,D2/D3/A6
-		rts
+                lea.l   arp_name_text(pc),a1    ;open library
+                jsr     _LVOOldOpenLibrary(a6)
+                tst.l   d0
+                beq     xdone
+                move.l  d0,a6
+                lea.l   fs(a4),a0
+                jsr     _LVOFileRequest(A6)     ;call requestor
+                move.l  D0,-(sp)                ;return value
+                move.l  A6,A1                   ;CloseLibrary(arpbase)
+                move.l  4,A6
+                jsr     _LVOCloseLibrary(A6)
+                move.l  (sp)+,D0                ;return value
+xdone           movem.l (sp)+,D2/D3/A6
+                rts
 
 
-		;   BUG BUG BUG BUG.  If this section put first BSS shows
-		;   no space
+                ;   BUG BUG BUG BUG.  If this section put first BSS shows
+                ;   no space
 
-		section bss,BSS
+                section bss,BSS
 
-fs		ds.l	1   ;hailing text
-		ds.l	1   ;file name
-		ds.l	1   ;directory
-		ds.l	1   ;window requesting
-		ds.w	1   ;LONG Align, idiots!  set to 0
-		ds.l	1   ;func for wildcards
-		ds.l	1   ;func to call w/intuimessages
+fs              ds.l    1   ;hailing text
+                ds.l    1   ;file name
+                ds.l    1   ;directory
+                ds.l    1   ;window requesting
+                ds.w    1   ;LONG Align, idiots!  set to 0
+                ds.l    1   ;func for wildcards
+                ds.l    1   ;func to call w/intuimessages
 
-		END
+                END
 

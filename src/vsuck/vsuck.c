@@ -6,21 +6,21 @@
 /*
 **      $Id: vsuck.c,v 30.0 1994/06/10 18:09:35 dice Exp $
 **
-**		See what can be done with WIDEEXAMPLE
+**              See what can be done with WIDEEXAMPLE
 **
-**		Start processing [$Marker] references
+**              Start processing [$Marker] references
 **
 **      BUGS:
 **              Huge AslBase... line blows MAJOR_HEADING
 **
 **              strftime man page
-**		Notice <R> in tables
+**              Notice <R> in tables
 **              Notice <197> 
 **              
 **
-**		!!!!!!!!!!!!!!!!!!!!!!!!!End-of-line blanks
+**              !!!!!!!!!!!!!!!!!!!!!!!!!End-of-line blanks
 **
-**		Table mismatch in chap01.txt
+**              Table mismatch in chap01.txt
 **
 **
 **              Flubs on:
@@ -43,8 +43,8 @@
 **              leading spaces stripped:
 **                              #include <<stdio.h>><R>
 **                              #include <<cats.h>>
-**		This will not be fixed; VReturn puts a final <R> on the
-**		last line.
+**              This will not be fixed; VReturn puts a final <R> on the
+**              last line.
 **
 **      TODO:
 **              Tab optimize
@@ -52,7 +52,7 @@
 **
 */
 #define D(x)    
-#define D0(x)	
+#define D0(x)   
 #define D1(x)
 #define D2(x)   
 #define D3(x)   x;      // Warnings
@@ -229,7 +229,7 @@ char    c;
     const char *b = s;
 
     while (*s != c)
-	++s;
+        ++s;
 
     return(s - b);
 }
@@ -353,17 +353,17 @@ int     len=0;
 char *MAJOR_HEADING()
 {
 int     len;
-char	*description=0;	// Second part of new style MAJOR_HEADING lines
-			// @MAJOR_HEADING = wc - Count words in file
+char    *description=0; // Second part of new style MAJOR_HEADING lines
+                        // @MAJOR_HEADING = wc - Count words in file
 
         CollectParagraph();
 
-	if ( description = strchr(formatbuf,'-') ) {
-	    if ( (description[-1] != ' ') || (description[1] != ' ') )
+        if ( description = strchr(formatbuf,'-') ) {
+            if ( (description[-1] != ' ') || (description[1] != ' ') )
                 printf("Warning: Non-standard dashed MAJOR_HEADING (%d)\n",ErrorLine(startinp,inp));
-	    description[-1] = 0;
-	    description += 2;
-	    }
+            description[-1] = 0;
+            description += 2;
+            }
 
         FilterSpaces(formatbuf);
         len=strlen(formatbuf);
@@ -382,13 +382,13 @@ char	*description=0;	// Second part of new style MAJOR_HEADING lines
                 fprintf(outfile,"%s\n\n",outbuf);
                 }
 
-	if ( description ) {
-		fprintf(outfile,"",outfile);
-		fwrite(allspaces,MIN_INDENT,1,outfile);
-        	fprintf(outfile,"FUNCTION\n");
-		fwrite(allspaces,BODY_INDENT,1,outfile);
-		fprintf(outfile,"%s\n\n",description);
-	}
+        if ( description ) {
+                fprintf(outfile,"",outfile);
+                fwrite(allspaces,MIN_INDENT,1,outfile);
+                fprintf(outfile,"FUNCTION\n");
+                fwrite(allspaces,BODY_INDENT,1,outfile);
+                fprintf(outfile,"%s\n\n",description);
+        }
 }
 
 char *BEGINNER()
@@ -929,22 +929,22 @@ while( *inp )
             else if ( inp[0] == LF )
                 formatbuf[i++]= ' ';
             else if ( inp[0] == '<' )
-		{
- 		short nest=1;
-       	        while( *inp++ && nest )
-		    {
-		    switch( *inp )
-			{
-			case '>':
-			    nest--;
-			    break;
-			case '<':
-			    nest++;
-			default:
-			}
-		    }
-		    inp--;
-            	}
+                {
+                short nest=1;
+                while( *inp++ && nest )
+                    {
+                    switch( *inp )
+                        {
+                        case '>':
+                            nest--;
+                            break;
+                        case '<':
+                            nest++;
+                        default:
+                        }
+                    }
+                    inp--;
+                }
             else
                 formatbuf[i++]=*inp;
             inp++;
@@ -1000,45 +1000,45 @@ int     i=0;
                         }
                 else if ( inp[1]=='$' && inp[2]=='R' )
                         {
-        	        while( *inp && *inp++ != ']' )
-				;
-			if( *inp == '>')
-		            printf("Warning: No chapter number in Cross-Ref (%d)\n",ErrorLine(startinp,inp));
-			while( *inp && (*inp != '>') ) {
-				formatbuf[i++] = *inp;
-				inp++;
-				}
-			inp++;
-			}
+                        while( *inp && *inp++ != ']' )
+                                ;
+                        if( *inp == '>')
+                            printf("Warning: No chapter number in Cross-Ref (%d)\n",ErrorLine(startinp,inp));
+                        while( *inp && (*inp != '>') ) {
+                                formatbuf[i++] = *inp;
+                                inp++;
+                                }
+                        inp++;
+                        }
                 else    {
-	 		short nest=1;
-			inp++;
-        	        while( *inp && nest )
-			    {
-			    switch( *inp )
-				{
-				case '>':
-				    nest--;
-				    break;
-				case '<':
-				    nest++;
-				default:
-				}
-	                    inp++;
-			    }
-			}
+                        short nest=1;
+                        inp++;
+                        while( *inp && nest )
+                            {
+                            switch( *inp )
+                                {
+                                case '>':
+                                    nest--;
+                                    break;
+                                case '<':
+                                    nest++;
+                                default:
+                                }
+                            inp++;
+                            }
+                        }
                 }
-	/*
-	**	Ventura seems to put a space at the end of lines, but also
-	**	accept files without the space.  As a guess, I force a single
-	**	space to the end of the line if none, else accept any number
-	**	of spaces found there.
-	*/
+        /*
+        **      Ventura seems to put a space at the end of lines, but also
+        **      accept files without the space.  As a guess, I force a single
+        **      space to the end of the line if none, else accept any number
+        **      of spaces found there.
+        */
         else if ( *inp == LF ) {
-		if(!( formatbuf[i-1]==' ' ))
-                	formatbuf[i++]=' ';
-	    inp++;
-	    }
+                if(!( formatbuf[i-1]==' ' ))
+                        formatbuf[i++]=' ';
+            inp++;
+            }
         else
                 formatbuf[i++]=*inp,inp++;
         }

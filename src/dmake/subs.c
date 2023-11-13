@@ -20,7 +20,7 @@ extern struct Library *SysBase;
 Running2_04()
 {
     if (SysBase->lib_Version >= 37)
-	return(1);
+        return(1);
     return(0);
 }
 
@@ -31,7 +31,7 @@ align(n)
 int n;
 {
     if (n & 3)
-	return(4 - (n & 3));
+        return(4 - (n & 3));
     return(0);
 }
 

@@ -209,12 +209,12 @@ POSTSIZE    - Size of wall after memory allocation in bytes. Minimum 4,
 
 FILLCHAR n  - Character to build the memory wall with. Can be indicated
               both hexadecimal and decimal. Default is a rolling fillchar
-	      which uses a new odd number between $81 and $FF for each
-	      new allocation.  This makes it possible for Mungwall to
-	      usually catch errors where too much memory is copied
-	      from one allocation to another.  Specifying a FILLCHAR
-	      disables the default rolling fillchar feature.
-	      
+              which uses a new odd number between $81 and $FF for each
+              new allocation.  This makes it possible for Mungwall to
+              usually catch errors where too much memory is copied
+              from one allocation to another.  Specifying a FILLCHAR
+              disables the default rolling fillchar feature.
+              
 SNOOP       - Produce snoop compatible output. No snoop output is given
               for illegal FreeMem's. Default OFF. Layers AllocMem's and
               FreeMem's are never snooped. SNOOP is particulary useful
@@ -233,23 +233,23 @@ NAMETAG     - Tag each allocation with allocating task or command's name
 
 SHOWFAIL    - Tells mungwall to report all memory allocation failures
 
-SHOWPC	    - Show a dump of memory at the A: and C: possible PC
-	      (program counter) addresses (one should be correct)
+SHOWPC      - Show a dump of memory at the A: and C: possible PC
+              (program counter) addresses (one should be correct)
               Does not show a supposed PC address if it is not RAM
               according to TypeOfMem().  This is to help prevent enforcer
               hits or worse, possible reads (or read-triggered writes)
               to hardware registers.
 
 SHOWHUNK    - On a hit or snoop, if the probable PC address of a reported
-	      call to AllocMem or FreeMem is within the calling process's
-	      seglist, attempt to show hunk and offset information.
+              call to AllocMem or FreeMem is within the calling process's
+              seglist, attempt to show hunk and offset information.
 
 TIMESTAMP   - Timestamp each allocation with system time
 
 UPDATE      - Indicates an already running mungwall task should be up-
               dated with new parameters. Presize, postsize and fillchar
               can never be updated.  NOTE - when doing an UPDATE, the
-	      UPDATE option must be the first command line arg
+              UPDATE option must be the first command line arg
 
 The following are extra updating parameters.
 

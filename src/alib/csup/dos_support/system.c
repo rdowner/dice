@@ -12,7 +12,7 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 LONG
 HYPER ## System(cmd, tags)

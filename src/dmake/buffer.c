@@ -22,7 +22,7 @@ AllocPathBuffer()
     Node *node;
 
     if ((node = RemHead(&PathBufList)) == NULL)
-	node = malloc(PBUFSIZE);
+        node = malloc(PBUFSIZE);
     return((char *)node);
 }
 

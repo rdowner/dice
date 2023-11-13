@@ -18,7 +18,7 @@ Prototype RelocInfo *FindRelocOffset(int32_t offset, short hunkNo);
 Prototype RelocInfo *FindRelocNext(RelocInfo *rel);
 Prototype int LoadRelocData(FILE *fi, RelocInfo *r);
 
-List	RelList;
+List    RelList;
 RelocInfo   *RelOffCache;
 
 void
@@ -33,10 +33,10 @@ ResetReloc(void)
     RelocInfo *r;
 
     if (RelList.lh_Head == NULL)
-	cerror(EFATAL, "Software Error, ResetReloc");
+        cerror(EFATAL, "Software Error, ResetReloc");
 
     while ((r = RemHead(&RelList)) != NULL)
-	free(r);
+        free(r);
     RelOffCache = NULL;
 }
 
@@ -47,7 +47,7 @@ AddRelocInfo(short srcHunk, short dstHunk, int32_t size, short flags, int32_t of
     RelocInfo *r;
 
     if (ri == NULL)
-	cerror(EFATAL, "malloc Failed");
+        cerror(EFATAL, "malloc Failed");
 
     clrmem(ri, sizeof(RelocInfo));
     ri->ri_Sym = sym;
@@ -58,8 +58,8 @@ AddRelocInfo(short srcHunk, short dstHunk, int32_t size, short flags, int32_t of
     ri->ri_SrcOffset = offset;
 
     for (r = GetTail(&RelList); r; r = GetPred((Node *)&r->ri_Node)) {
-	if (r->ri_SrcOffset < ri->ri_SrcOffset)
-	    break;
+        if (r->ri_SrcOffset < ri->ri_SrcOffset)
+            break;
     }
     Insert(&RelList, (Node *)&ri->ri_Node, (Node *)&r->ri_Node);
 }
@@ -70,22 +70,22 @@ FindRelocOffset(int32_t offset, short hunkNo)
     RelocInfo *r = RelOffCache;
 
     if (r == NULL)
-	r = GetHead(&RelList);
+        r = GetHead(&RelList);
 
     while (r && r->ri_SrcOffset >= offset)
-	r = GetPred((Node *)&r->ri_Node);
+        r = GetPred((Node *)&r->ri_Node);
 
     if (r == NULL)
-	r = GetHead(&RelList);
+        r = GetHead(&RelList);
 
     while (r && r->ri_SrcOffset < offset)
-	r = GetSucc((Node *)&r->ri_Node);
+        r = GetSucc((Node *)&r->ri_Node);
 
     while (r && r->ri_SrcHunk != hunkNo)
-	r = GetSucc((Node *)&r->ri_Node);
+        r = GetSucc((Node *)&r->ri_Node);
 
     if (r)
-	RelOffCache = r;
+        RelOffCache = r;
 
     return(r);
 }
@@ -104,28 +104,28 @@ LoadRelocData(FILE *fi, RelocInfo *r)
 {
     switch(r->ri_RelocSize) {
     case 0:
-	return(0);
+        return(0);
     case 1:
-	{
-	    ubyte c;
-	    fread(&c, 1, 1, fi);
-	    return(c);
-	}
+        {
+            ubyte c;
+            fread(&c, 1, 1, fi);
+            return(c);
+        }
     case 2:
-	{
-	    uword c;
-	    freadl(&c, 2, 1, fi);
-	    return(c);
-	}
+        {
+            uword c;
+            freadl(&c, 2, 1, fi);
+            return(c);
+        }
     case 4:
-	{
-	    uint32_t c;
-	    freadl(&c, 4, 1, fi);
-	    return(c);
-	}
+        {
+            uint32_t c;
+            freadl(&c, 4, 1, fi);
+            return(c);
+        }
     default:
-	fseek(fi, r->ri_RelocSize, 1);
-	return(0);
+        fseek(fi, r->ri_RelocSize, 1);
+        return(0);
     }
 }
 

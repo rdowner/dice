@@ -1,22 +1,22 @@
 
-		;   FFPA_NEG.A
-		;
-		;   D0	integer arg
-		;   result float in D0
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   FFPA_NEG.A
+                ;
+                ;   D0  integer arg
+                ;   result float in D0
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xref	_MathBase
-		xref	_LVOSPNeg
-		xdef	__ffpneg_a
+                xref    _MathBase
+                xref    _LVOSPNeg
+                xdef    __ffpneg_a
 
-__ffpneg_a	move.l	A6,-(sp)
-		move.l	_MathBase(A4),A6
-		jsr	_LVOSPNeg(A6)
-		move.l	(sp)+,A6
-		rts
+__ffpneg_a      move.l  A6,-(sp)
+                move.l  _MathBase(A4),A6
+                jsr     _LVOSPNeg(A6)
+                move.l  (sp)+,A6
+                rts
 
-		END
+                END
 

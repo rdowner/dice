@@ -25,10 +25,10 @@ short CreateDiceRexxPort(struct MsgPort *, char *);
 void DeleteDiceRexxPort(struct MsgPort *);
 int GetDiceRexxPortSlot(struct MsgPort *, char **);
 
-extern struct Library *RexxSysBase; /*	NULL if DICE was unable to open lib*/
+extern struct Library *RexxSysBase; /*  NULL if DICE was unable to open lib*/
 
 /*
- *  Supplied by you, the user.	You must supply a DoRexxCommand() function.
+ *  Supplied by you, the user.  You must supply a DoRexxCommand() function.
  *  Note that DICE will reply the rexxmsg for you, you need only process
  *  it.
  *

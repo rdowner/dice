@@ -1,125 +1,125 @@
 
-	    ;	MULDIV.A
-	    ;
-	    ;	(c)Copyright 1990, Matthew Dillon, All Rights Reserved
-	    ;
-	    ;	r = MulDiv(a,b,c)   long a,b,c;
-	    ;	r = MulDivU(a,b,c)  unsigned long a,b,c;
-	    ;
-	    ;	result.32 = a.32 * b.32 / c.32
-	    ;
-	    ;	32x32->64 64/32->32 multiply-divide combination
+            ;   MULDIV.A
+            ;
+            ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+            ;
+            ;   r = MulDiv(a,b,c)   long a,b,c;
+            ;   r = MulDivU(a,b,c)  unsigned long a,b,c;
+            ;
+            ;   result.32 = a.32 * b.32 / c.32
+            ;
+            ;   32x32->64 64/32->32 multiply-divide combination
 
-	    section text,CODE
+            section text,CODE
 
-	    xdef    _MulDiv
-	    xdef    _MulDivU
-	    xdef    _hyper_MulDiv
-	    xdef    _hyper_MulDivU
+            xdef    _MulDiv
+            xdef    _MulDivU
+            xdef    _hyper_MulDiv
+            xdef    _hyper_MulDivU
 
 _hyper_MulDiv:
 _MulDiv:
-	    movem.l D2-D4,-(sp) ; save D2/D3 (generic compiler compatibility)
-	    moveq.l #0,D4	; clear negate flag
-	    lea     16(sp),A0   ; address of 'a'
-	    move.l  A0,A1	; save A1 for muldivu call
-	    tst.l   (A0)        ; test a
-	    bpl     mp
-	    neg.l   (A0)+       ; n--
-	    tst.l   (A0)        ; test b
-	    bpl     mnp
-	    neg.l   (A0)+       ; nn-
-	    tst.l   (A0)        ; test c
-	    bpl     muldivu	; nnp CALL, RESULT POSITIVE
-mppn	    neg.l   (A0)        ; nnn
+            movem.l D2-D4,-(sp) ; save D2/D3 (generic compiler compatibility)
+            moveq.l #0,D4       ; clear negate flag
+            lea     16(sp),A0   ; address of 'a'
+            move.l  A0,A1       ; save A1 for muldivu call
+            tst.l   (A0)        ; test a
+            bpl     mp
+            neg.l   (A0)+       ; n--
+            tst.l   (A0)        ; test b
+            bpl     mnp
+            neg.l   (A0)+       ; nn-
+            tst.l   (A0)        ; test c
+            bpl     muldivu     ; nnp CALL, RESULT POSITIVE
+mppn        neg.l   (A0)        ; nnn
 mpnp
-mnpp	    moveq.l #1,D4	; set negate flag
-	    bra     muldivu
+mnpp        moveq.l #1,D4       ; set negate flag
+            bra     muldivu
 
-mp	    addq.l  #4,A0	; p--
-	    tst.l   (A0)        ; test b
-	    bpl     mpp
-	    neg.l   (A0)+       ; pn-
-	    tst.l   (A0)        ; test c
-	    bpl     mpnp
-	    neg.l   (A0)        ; pnn
-	    bra     muldivu	; jmp to routine
+mp          addq.l  #4,A0       ; p--
+            tst.l   (A0)        ; test b
+            bpl     mpp
+            neg.l   (A0)+       ; pn-
+            tst.l   (A0)        ; test c
+            bpl     mpnp
+            neg.l   (A0)        ; pnn
+            bra     muldivu     ; jmp to routine
 
-mpp	    addq.l  #4,A0	; pp-
-	    tst.l   (A0)
-	    bpl     muldivu	; ppp RESULT POSITIVE
-	    bra     mppn       ; RESULT NEGATIVE (negate (A0) befor call)
+mpp         addq.l  #4,A0       ; pp-
+            tst.l   (A0)
+            bpl     muldivu     ; ppp RESULT POSITIVE
+            bra     mppn       ; RESULT NEGATIVE (negate (A0) befor call)
 
-mnp	    addq.l  #4,A0	; np-
-	    tst.l   (A0)        ; test c
-	    bpl     mnpp       ; RESULT NEGATIVE
-	    neg.l   (A0)        ; npn
-	    bra     muldivu	; RESULT POSITIVE
+mnp         addq.l  #4,A0       ; np-
+            tst.l   (A0)        ; test c
+            bpl     mnpp       ; RESULT NEGATIVE
+            neg.l   (A0)        ; npn
+            bra     muldivu     ; RESULT POSITIVE
 
-	    ;	MulDivU(a,b,c)          AH 4(sp) AL 6(sp) BH 8(sp) BL 10(sp)
-	    ;	unsigned long a   @4(sp)
-	    ;	unsigned long b   @8(sp)
-	    ;	unsigned long c   @12(sp)
+            ;   MulDivU(a,b,c)          AH 4(sp) AL 6(sp) BH 8(sp) BL 10(sp)
+            ;   unsigned long a   @4(sp)
+            ;   unsigned long b   @8(sp)
+            ;   unsigned long c   @12(sp)
 
 _hyper_MulDivU:
 _MulDivU:
-	    movem.l D2-D4,-(sp) ; save D2-D4
-	    moveq.l #0,D4	; clear negate flag
-	    lea     16(sp),A1   ; address of 'a'
+            movem.l D2-D4,-(sp) ; save D2-D4
+            moveq.l #0,D4       ; clear negate flag
+            lea     16(sp),A1   ; address of 'a'
 muldivu
-	    lea     4(A1),A0
+            lea     4(A1),A0
 
-	    move.w  (A0)+,D3    ; bh ah     8(sp)  A0 8->10
-	    mulu.w  (A1)+,D3    ;           4(sp)  A1 4->6
-	    move.w  (A0),D0     ; bl al    10(sp)  A0 10
-	    mulu    (A1),D0     ;           6(sp)  A1 6
-	    move.w  (A0),D1     ; bl ah    10(sp)  A0 10
-	    mulu.w  -(A1),D1    ;           4(sp)  A1 now 4
-	    move.w  -(A0),D2    ; bh al     8(sp)  A0 now 8
-	    mulu.w  -(A0),D2    ;           6(sp)  A0 now 6
-	    add.l   D1,D2	; combine blah and bhal
-	    bcc     mud1
-	    add.l   #$10000,D3
-mud1	    swap    D0		; LSB MSB
-	    add.w   D2,D0
-	    swap    D0
-	    swap    D2
-	    and.l   #$FFFF,D2
-	    addx.l  D2,D3	;64 bit mul result: D3|D0
+            move.w  (A0)+,D3    ; bh ah     8(sp)  A0 8->10
+            mulu.w  (A1)+,D3    ;           4(sp)  A1 4->6
+            move.w  (A0),D0     ; bl al    10(sp)  A0 10
+            mulu    (A1),D0     ;           6(sp)  A1 6
+            move.w  (A0),D1     ; bl ah    10(sp)  A0 10
+            mulu.w  -(A1),D1    ;           4(sp)  A1 now 4
+            move.w  -(A0),D2    ; bh al     8(sp)  A0 now 8
+            mulu.w  -(A0),D2    ;           6(sp)  A0 now 6
+            add.l   D1,D2       ; combine blah and bhal
+            bcc     mud1
+            add.l   #$10000,D3
+mud1        swap    D0          ; LSB MSB
+            add.w   D2,D0
+            swap    D0
+            swap    D2
+            and.l   #$FFFF,D2
+            addx.l  D2,D3       ;64 bit mul result: D3|D0
 
-				;64 bit by 32 bit division.  32 bit result.
+                                ;64 bit by 32 bit division.  32 bit result.
 
-	    move.l  6(A0),D1    ;D1 = c           A0 WAS 6
-	    beq     mdfail
+            move.l  6(A0),D1    ;D1 = c           A0 WAS 6
+            beq     mdfail
 
-	    sub.l   A0,A0	;Divide!    D1 into D3|D0, D2 = cntr, A0 = rslt
-	    move.w  #31,D2	;(no initial compare).  31 + 1 iterations
-mud10	    adda.l  A0,A0	;shift result left
-	    asl.l   #1,D0	;Shift left
-	    roxl.l  #1,D3
-	    cmp.l   D1,D3
-	    bcs     mud11      ;if D3  < D1, skip  (blo)
-	    sub.l   D1,D3	;   D3 >= D1
-	    addq.l  #1,A0	;result = result | 1
-mud11	    dbf     D2,mud10
+            sub.l   A0,A0       ;Divide!    D1 into D3|D0, D2 = cntr, A0 = rslt
+            move.w  #31,D2      ;(no initial compare).  31 + 1 iterations
+mud10       adda.l  A0,A0       ;shift result left
+            asl.l   #1,D0       ;Shift left
+            roxl.l  #1,D3
+            cmp.l   D1,D3
+            bcs     mud11      ;if D3  < D1, skip  (blo)
+            sub.l   D1,D3       ;   D3 >= D1
+            addq.l  #1,A0       ;result = result | 1
+mud11       dbf     D2,mud10
 
-	    ;;	 If remainder (D3) larger than 1/2 C (D1 >> 1), then
-	    ;;	 round up result.	REMOVED
-	    ;
-	    ;lsr.l   #1,D1
-	    ;cmp.l   D1,D3
-	    ;blo     mud12	; skip if remainder < 1/2C
-	    ;addq.l  #1,A0
+            ;;   If remainder (D3) larger than 1/2 C (D1 >> 1), then
+            ;;   round up result.       REMOVED
+            ;
+            ;lsr.l   #1,D1
+            ;cmp.l   D1,D3
+            ;blo     mud12      ; skip if remainder < 1/2C
+            ;addq.l  #1,A0
 mud12
-	    move.l  A0,D0	;return result
-	    tst.l   D4		;D4 non-zero means negate result
-	    beq     mud13
-	    neg.l   D0
-mud13	    movem.l (sp)+,D2-D4 ;restore D2-D4
-	    rts
+            move.l  A0,D0       ;return result
+            tst.l   D4          ;D4 non-zero means negate result
+            beq     mud13
+            neg.l   D0
+mud13       movem.l (sp)+,D2-D4 ;restore D2-D4
+            rts
 
-mdfail	    moveq.l #-1,D0
-	    bra     mud13
+mdfail      moveq.l #-1,D0
+            bra     mud13
 
-	    END
+            END
 

@@ -7,84 +7,84 @@ c.lib/assert/abort
 c.lib/assert/assert
 
 
-assert/abort						assert/abort
+assert/abort                                            assert/abort
 
    NAME
-	abort	- abort a program (exit with an error)
+        abort   - abort a program (exit with an error)
 
    SYNOPSIS
-	void abort(void);
+        void abort(void);
 
    FUNCTION
-	aborts a program with a non-zero exit code.  The default abort
-	routine in c.lib does the equivalent of an 'exit(20);'.
+        aborts a program with a non-zero exit code.  The default abort
+        routine in c.lib does the equivalent of an 'exit(20);'.
 
-	The programmer may overide the default abort routine with his
-	own.
+        The programmer may overide the default abort routine with his
+        own.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <stdlib.h>
+        #include <stdio.h>
+        #include <stdlib.h>
 
-	main(ac, av)
-	int ac;
-	char **av;
-	{
-	    if (ac == 1) {
-		puts("Expected an argument!");
-		abort();
-	    }
-	    puts("Thanks!");
-	    return(0);
-	}
+        main(ac, av)
+        int ac;
+        char **av;
+        {
+            if (ac == 1) {
+                puts("Expected an argument!");
+                abort();
+            }
+            puts("Thanks!");
+            return(0);
+        }
 
    INPUTS
-	none
+        none
 
    RESULTS
-	abort() never returns
+        abort() never returns
 
    SEE ALSO
-	assert
+        assert
 
 
-assert/assert						assert/assert
+assert/assert                                           assert/assert
 
    NAME
-	assert	- assert that an expression is true, else abort
+        assert  - assert that an expression is true, else abort
 
    SYNOPSIS
-	#include <assert.h>
-	assert(condition);                  /* MACRO */
+        #include <assert.h>
+        assert(condition);                  /* MACRO */
 
    FUNCTION
-	assert checks the condition and if NOT true prints an error
-	message indicating the source filename and line number that the
-	assert failed at, and then abort()s.
+        assert checks the condition and if NOT true prints an error
+        message indicating the source filename and line number that the
+        assert failed at, and then abort()s.
 
-	The DICE version of assert generates a single static string in
-	assert.h for each module containing the file name.  Multiple usages
-	of assert() refer to the same physical filename string.
+        The DICE version of assert generates a single static string in
+        assert.h for each module containing the file name.  Multiple usages
+        of assert() refer to the same physical filename string.
 
    EXAMPLE
-	#include <assert.h>
+        #include <assert.h>
 
-	main(ac, av)
-	int ac;
-	char **av;
-	{
-	    assert(ac > 1);         /*  expect at least one argument!   */
-	    return(0);
-	}
+        main(ac, av)
+        int ac;
+        char **av;
+        {
+            assert(ac > 1);         /*  expect at least one argument!   */
+            return(0);
+        }
 
    INPUTS
-	expression	    - an expression which the macro converts into
-			      an if(!(expression)).
+        expression          - an expression which the macro converts into
+                              an if(!(expression)).
 
    RESULTS
-	none
+        none
 
    SEE ALSO
-	abort
+        abort
 
 

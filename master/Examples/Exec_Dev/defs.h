@@ -29,28 +29,28 @@ extern struct DosLibrary *DosBase;
 #define Prototype extern
 #define DevCall __geta4 __regargs
 
-#define CMD_OPENUNIT	(0x7FF0 & ~TDF_EXTCOM)
-#define CMD_CLOSEUNIT	(0x7FF1 & ~TDF_EXTCOM)
-#define CMD_KILLPROC	(0x7FF2 & ~TDF_EXTCOM)
+#define CMD_OPENUNIT    (0x7FF0 & ~TDF_EXTCOM)
+#define CMD_CLOSEUNIT   (0x7FF1 & ~TDF_EXTCOM)
+#define CMD_KILLPROC    (0x7FF2 & ~TDF_EXTCOM)
 
 #define EXT_CHUNK   4096
 
-typedef struct Library	LIB;
-typedef struct Device	DEV;
-typedef struct Process	PROC;
-typedef struct MsgPort	PORT;
-typedef struct Message	MSG;
-typedef struct List	LIST;
-typedef struct Node	NODE;
+typedef struct Library  LIB;
+typedef struct Device   DEV;
+typedef struct Process  PROC;
+typedef struct MsgPort  PORT;
+typedef struct Message  MSG;
+typedef struct List     LIST;
+typedef struct Node     NODE;
 typedef long (*func_ptr)();
 
 typedef struct {
     struct  Unit    U;
     UWORD   OpenCnt;
-    long    Fh; 	/*  file handle 	    */
-    long    Size;	/*  current size	    */
-    long    Pos;	/*  current position	    */
-    char    Extended;	/*  file has been extended  */
+    long    Fh;         /*  file handle             */
+    long    Size;       /*  current size            */
+    long    Pos;        /*  current position        */
+    char    Extended;   /*  file has been extended  */
     char    Reserved;
 } NDUnit;
 
@@ -62,17 +62,17 @@ typedef struct {
 typedef struct {
     struct  Message io_Message;
     struct  Device  *io_Device;     /* device node pointer  */
-    struct  Unit    *io_Unit;	    /* unit (driver private)*/
-    UWORD   io_Command; 	    /* device command */
+    struct  Unit    *io_Unit;       /* unit (driver private)*/
+    UWORD   io_Command;             /* device command */
     UBYTE   io_Flags;
-    BYTE    io_Error;		    /* error or warning num */
-    ULONG   io_Actual;		    /* actual number of bytes transferred */
-    ULONG   io_Length;		    /* requested number bytes transferred*/
-    APTR    io_Data;		    /* points to data area */
-    ULONG   io_Offset;		    /* offset for block structured devices */
+    BYTE    io_Error;               /* error or warning num */
+    ULONG   io_Actual;              /* actual number of bytes transferred */
+    ULONG   io_Length;              /* requested number bytes transferred*/
+    APTR    io_Data;                /* points to data area */
+    ULONG   io_Offset;              /* offset for block structured devices */
 
-    long    iotd_Count; 	    /*	(extension)     */
-    long    iotd_SecLabel;	    /*	(extension)     */
+    long    iotd_Count;             /*  (extension)     */
+    long    iotd_SecLabel;          /*  (extension)     */
 } IOB;
 
 extern char DeviceName[];

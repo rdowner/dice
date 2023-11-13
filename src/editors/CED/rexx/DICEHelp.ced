@@ -3,12 +3,12 @@
  *                CygnusEd Professional Release 2
  * 
  * Written for DICE by Peter Cherna.  (c) Copyright 1992, Peter Cherna
- * 	Used with permission.
+ *      Used with permission.
  *
  * Usage:
- *	DICEHelp.ced    - Get help on the word under the cursor
- *	DICEHelp.ced ?   - Request string to get help on
- *	DICEHelp.ced arg - Get help on the word "arg"
+ *      DICEHelp.ced    - Get help on the word under the cursor
+ *      DICEHelp.ced ?   - Request string to get help on
+ *      DICEHelp.ced arg - Get help on the word "arg"
  *
  * You will probably want to bind "DICEHelp.ced" and "DICEHelp.ced ?"
  * to function keys.  Use the menu "Special" then "DOS/AREXX Interface".
@@ -19,86 +19,86 @@ options results
 /* If the argument is a question mark, request a string from the user */
 if arg(1) = "?" then
 do
-	/* CED doesn't let us provide a NULL string for
-	 * the default contents of the string requester,
-	 * so we provide a space and worry about it later
-	 */
-	"getstring ' ' 'DICEHelp: Enter search string'"
-	target = result
-	/* Remove a trailing space, if any */
-	if ((target ~= "") & (right(target,1) = " ")) then
-		target = left(target, length(target)-1)
+        /* CED doesn't let us provide a NULL string for
+         * the default contents of the string requester,
+         * so we provide a space and worry about it later
+         */
+        "getstring ' ' 'DICEHelp: Enter search string'"
+        target = result
+        /* Remove a trailing space, if any */
+        if ((target ~= "") & (right(target,1) = " ")) then
+                target = left(target, length(target)-1)
 end
 /* If there is any other argument, use that */
 else if (arg() > 0) then
 do
-	target = arg(1)
+        target = arg(1)
 end
 else /* Get the word under the cursor */
 do
-	/* Get contents of current line: */
-	"status 55"	/* linebuffer */
-	line = result
+        /* Get contents of current line: */
+        "status 55"     /* linebuffer */
+        line = result
 
-	/* Get cursor position. */
-	status 87 /* cursormemoryx */
-	cur = result + 1
+        /* Get cursor position. */
+        status 87 /* cursormemoryx */
+        cur = result + 1
 
-	/* If the current character is non-alphabetic, then start one
-	 * character over to the left.  This allows the cursor to be
-	 * immediately after the key word (say on a space or bracket).
-	 */
-	char = substr(line,cur,1)
-	if (~(datatype(char,"A") | char = "_") & cur > 1) then
-		cur = cur - 1
+        /* If the current character is non-alphabetic, then start one
+         * character over to the left.  This allows the cursor to be
+         * immediately after the key word (say on a space or bracket).
+         */
+        char = substr(line,cur,1)
+        if (~(datatype(char,"A") | char = "_") & cur > 1) then
+                cur = cur - 1
 
-	/* Find leftmost and rightmost alphabetic character
-	 * adjacent to current:
-	 */
-	right = cur - 1
-	left = cur + 1
-	char = "A"
-	do while (datatype(char,"A") | char = "_") & (left > 0)
-	 	left = left - 1
-		if left > 0 then
-			char = substr(line,left,1)
-	end
-	char = "A"
-	do while (datatype(char,"A") | (char = "_"))
-		right = right + 1
-		char = substr(line,right,1)
-	end
+        /* Find leftmost and rightmost alphabetic character
+         * adjacent to current:
+         */
+        right = cur - 1
+        left = cur + 1
+        char = "A"
+        do while (datatype(char,"A") | char = "_") & (left > 0)
+                left = left - 1
+                if left > 0 then
+                        char = substr(line,left,1)
+        end
+        char = "A"
+        do while (datatype(char,"A") | (char = "_"))
+                right = right + 1
+                char = substr(line,right,1)
+        end
 
-	if (right-left <= 1) then
-	do
-		"okay1 DICEHelp: Cursor must be on a word."
-		exit
-	end
-	else
-	do
-		target = substr(line,left+1,right-left-1)
-	end
+        if (right-left <= 1) then
+        do
+                "okay1 DICEHelp: Cursor must be on a word."
+                exit
+        end
+        else
+        do
+                target = substr(line,left+1,right-left-1)
+        end
 end
 
 if (target = "RESULT" | target = "") then
-	exit
+        exit
 
 if ~show("p","DICEHELP") then
 do
-	address command "run >NIL: <NIL: DICEHelp REXXSTARTUP"
+        address command "run >NIL: <NIL: DICEHelp REXXSTARTUP"
 
-	do i = 1 to 6
-		if ~show("p","DICEHELP") then
-		do
-			address COMMAND "wait 1"
-		end
-	end
+        do i = 1 to 6
+                if ~show("p","DICEHELP") then
+                do
+                        address COMMAND "wait 1"
+                end
+        end
 
-	if ~show("p","DICEHELP") then
-	do
-	    "okay1 DICEHelp: Program not found!"
+        if ~show("p","DICEHELP") then
+        do
+            "okay1 DICEHelp: Program not found!"
             exit
-	end
+        end
 end
 
 /* Search for string, return <T>empfile */
@@ -106,74 +106,74 @@ address "DICEHELP" "T" target
 filename = result
 if RC=0 then
 do
-	/* Temporarily turn off "auto-expand views" if on */
-	"status 72"
-	aev = result
-	if (aev = 1) then
-		"auto-expand views"
+        /* Temporarily turn off "auto-expand views" if on */
+        "status 72"
+        aev = result
+        if (aev = 1) then
+                "auto-expand views"
 
-	/* If we have a help file displayed, use its window,
-	 * else open a new one:
-	 */
-	helpfile = getclip("HelpView")
-	/* Get name of current file */
-	"status 19"
-	if helpfile ~= result then
-	do
-		/* Find out how many views are displayed */
-		"status 66"
+        /* If we have a help file displayed, use its window,
+         * else open a new one:
+         */
+        helpfile = getclip("HelpView")
+        /* Get name of current file */
+        "status 19"
+        if helpfile ~= result then
+        do
+                /* Find out how many views are displayed */
+                "status 66"
 
-		/* Try to find the view containing the help file */
-		do numwins=result-1 to 1 by -1 until result = helpfile
-			"next view"
-			/* Get name of current file */
-			"status 19"
-		end
-	end
+                /* Try to find the view containing the help file */
+                do numwins=result-1 to 1 by -1 until result = helpfile
+                        "next view"
+                        /* Get name of current file */
+                        "status 19"
+                end
+        end
 
-	if result ~= helpfile then
-	do
-	/* We can't find the HelpView, so make a new view: */
-		"next view"		/* bring back to original view */
-		"open new"
-	end
-	else
-	do
-		/* Number of changes in HelpView: */
-		"status 18"
-		if result ~= 0 then
-		do
-			/* HelpView has changes, so make a new view */
-			"next view"
-			"open new"
-		end
-	end
+        if result ~= helpfile then
+        do
+        /* We can't find the HelpView, so make a new view: */
+                "next view"             /* bring back to original view */
+                "open new"
+        end
+        else
+        do
+                /* Number of changes in HelpView: */
+                "status 18"
+                if result ~= 0 then
+                do
+                        /* HelpView has changes, so make a new view */
+                        "next view"
+                        "open new"
+                end
+        end
 
-	/* Restore "auto-expand views" */
-	if (aev = 1) then
-		"auto-expand views"
+        /* Restore "auto-expand views" */
+        if (aev = 1) then
+                "auto-expand views"
 
-	/* Load the file, and make it non-editable */
-	"open" filename 1
-	"status 82"
-	canedit = result
+        /* Load the file, and make it non-editable */
+        "open" filename 1
+        "status 82"
+        canedit = result
 
-	if (canedit ~= 0) then
-		"editable file"
+        if (canedit ~= 0) then
+                "editable file"
 
-	/* Save file name of the Help View */
-	"status 19"
-	call setclip "HelpView",result
+        /* Save file name of the Help View */
+        "status 19"
+        call setclip "HelpView",result
 
 end
 else 
 if RC=1 then
 do
-	"okay1 DICEHelp: Couldn't find" '"'target'"'
+        "okay1 DICEHelp: Couldn't find" '"'target'"'
 end
 else
 do
-	"okay1 DICEHelp: Failed, error code" RC
+        "okay1 DICEHelp: Failed, error code" RC
 end
 
 exit

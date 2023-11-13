@@ -46,48 +46,48 @@ __sigfunc func;
     __sigfunc old;
 
     if (signo < 0 || signo > 31 || func == SIG_ERR) {
-	errno = EINVAL;
-	return(SIG_ERR);
+        errno = EINVAL;
+        return(SIG_ERR);
     }
     switch(SigType[signo]) {
     case SIG_DFL:
-	old = SIG_DFL;
-	break;
+        old = SIG_DFL;
+        break;
     case SIG_IGN:
-	old = SIG_IGN;
-	break;
+        old = SIG_IGN;
+        break;
     default:
-	old = (__sigfunc)Sigs[signo];
-	break;
+        old = (__sigfunc)Sigs[signo];
+        break;
     }
 
     switch(func) {
     case SIG_DFL:
-	SigType[signo] = (char)SIG_DFL;
-	if (signo == SIGINT) {
-	    _SigIntFunc = NULL;
-	    Sigs[signo] = SigBye;
-	} else {
-	    Sigs[signo] = SigIgn;
-	}
-	if (_SigRdy & (1 << signo))
-	    raise(signo);
-	break;
+        SigType[signo] = (char)SIG_DFL;
+        if (signo == SIGINT) {
+            _SigIntFunc = NULL;
+            Sigs[signo] = SigBye;
+        } else {
+            Sigs[signo] = SigIgn;
+        }
+        if (_SigRdy & (1 << signo))
+            raise(signo);
+        break;
     case SIG_IGN:
-	SigType[signo] = (char)SIG_IGN;
-	if (signo == SIGINT)
-	    _SigIntFunc = SigIgn;
-	Sigs[signo] = SigIgn;
-	_SigRdy &= ~(1 << signo);
-	break;
+        SigType[signo] = (char)SIG_IGN;
+        if (signo == SIGINT)
+            _SigIntFunc = SigIgn;
+        Sigs[signo] = SigIgn;
+        _SigRdy &= ~(1 << signo);
+        break;
     default:
-	SigType[signo] = 99;
-	if (signo == SIGINT)
-	    _SigIntFunc = func;
-	Sigs[signo] = func;
-	if (_SigRdy & (1 << signo))
-	    raise(signo);
-	break;
+        SigType[signo] = 99;
+        if (signo == SIGINT)
+            _SigIntFunc = func;
+        Sigs[signo] = func;
+        if (_SigRdy & (1 << signo))
+            raise(signo);
+        break;
     }
     return(old);
 }
@@ -99,20 +99,20 @@ int signo;
     __sigfunc func;
 
     if (_SigMask & (1 << signo)) {
-	_SigRdy |= 1 << signo;
-	return(0);
+        _SigRdy |= 1 << signo;
+        return(0);
     }
     _SigRdy &= ~(1 << signo);
 
     if (signo == SIGINT) {
-	SetSignal(SIGBREAKF_CTRL_C, SIGBREAKF_CTRL_C);  /*  cause break signal */
-	chkabort();
-	return(0);
+        SetSignal(SIGBREAKF_CTRL_C, SIGBREAKF_CTRL_C);  /*  cause break signal */
+        chkabort();
+        return(0);
     }
 
     if (signo < 0 || signo > 31) {
-	errno = EINVAL;
-	return(-1);
+        errno = EINVAL;
+        return(-1);
     }
     func = Sigs[signo];
     signal(signo, SIG_DFL);

@@ -1,38 +1,38 @@
 
-		;   DIVS.A
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
-		;
-		;   D0/D1 -> D0 signed divide
-		;   32/32 -> 32 signed divide
-		;
-		;   HYPER module, cannot use pc-rel
+                ;   DIVS.A
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;
+                ;   D0/D1 -> D0 signed divide
+                ;   32/32 -> 32 signed divide
+                ;
+                ;   HYPER module, cannot use pc-rel
 
-		section text,code
+                section text,code
 
-		xdef	__divs
-		xdef	_hyper__divs
-		xref	__divu
+                xdef    __divs
+                xdef    _hyper__divs
+                xref    __divu
 
 _hyper__divs:
 __divs:
-		tst.l	D1
-		bmi	ds10
-		tst.l	D0	     ; numerator
-		bmi	ds20
-		jsr	__divu
-ds10		neg.l	D1
-		tst.l	D0
-		bmi	ds30
-ds10n		jsr	__divu
-		neg.l	D0
-		rts
-ds20		neg.l	D0
-		jsr	__divu
-		neg.l	D0
-		rts
-ds30		neg.l	D0
-		jsr	__divu
+                tst.l   D1
+                bmi     ds10
+                tst.l   D0           ; numerator
+                bmi     ds20
+                jsr     __divu
+ds10            neg.l   D1
+                tst.l   D0
+                bmi     ds30
+ds10n           jsr     __divu
+                neg.l   D0
+                rts
+ds20            neg.l   D0
+                jsr     __divu
+                neg.l   D0
+                rts
+ds30            neg.l   D0
+                jsr     __divu
 
-		END
+                END
 

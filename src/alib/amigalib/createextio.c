@@ -7,7 +7,7 @@
 #include <exec/ports.h>
 #include <exec/memory.h>
 #include <exec/io.h>
-#ifdef INCLUDE_VERSION	    /*	2.0 */
+#ifdef INCLUDE_VERSION      /*  2.0 */
 #include <clib/exec_protos.h>
 #include <clib/alib_protos.h>
 #else
@@ -19,7 +19,7 @@ extern void FreeMem(void *, long);
 #define HYPER
 #endif
 
-typedef struct MsgPort	MsgPort;
+typedef struct MsgPort  MsgPort;
 typedef struct IORequest IORequest;
 typedef struct IOStdReq  IOStdReq;
 
@@ -31,11 +31,11 @@ long size;
     IORequest *io = NULL;
 
     if (replyPort) {
-	if (io = AllocMem(size, MEMF_PUBLIC | MEMF_CLEAR)) {
-	    io->io_Message.mn_ReplyPort = replyPort;
-	    io->io_Message.mn_Length = size;
-	    io->io_Message.mn_Node.ln_Type = NT_REPLYMSG;
-	}
+        if (io = AllocMem(size, MEMF_PUBLIC | MEMF_CLEAR)) {
+            io->io_Message.mn_ReplyPort = replyPort;
+            io->io_Message.mn_Length = size;
+            io->io_Message.mn_Node.ln_Type = NT_REPLYMSG;
+        }
     }
     return(io);
 }
@@ -45,10 +45,10 @@ DeleteExtIO(io)
 IORequest *io;
 {
     if (io) {
-	long bad = -1;
-	io->io_Message.mn_Node.ln_Succ = (void *)bad;
-	io->io_Device = (void *)bad;
-	FreeMem(io, io->io_Message.mn_Length);
+        long bad = -1;
+        io->io_Message.mn_Node.ln_Succ = (void *)bad;
+        io->io_Device = (void *)bad;
+        FreeMem(io, io->io_Message.mn_Length);
     }
 }
 

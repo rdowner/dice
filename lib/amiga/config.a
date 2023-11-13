@@ -1,155 +1,155 @@
 
-		;   CONFIG.A
-		;
-		;   DiceConfig
-		;
-		;   When the __config keyword is used calls to DiceConfig
-		;   are generated via autoinit code (specifically, the
-		;   autoconfig section).  The sequence is as follows:
-		;
-		;   CALL autoinit0
-		;   CALL autoconfig (calls DiceConfig routine many times)
-		;		    args:  len,ptr,rpc,rpc,mode=1
-		;		    -opens config file
-		;   CALL autoinit1  (close open config file)
-		;   __main
-		;	<program runs>
-		;   __exit
-		;
-		;   CALL autoconfig (calls DiceConfig routine many times)
-		;		    args:  len,ptr,rpc,prc,mode=-1
-		;   CALL autoexit1  (close open config file)
-		;   CALL autoexit0
+                ;   CONFIG.A
+                ;
+                ;   DiceConfig
+                ;
+                ;   When the __config keyword is used calls to DiceConfig
+                ;   are generated via autoinit code (specifically, the
+                ;   autoconfig section).  The sequence is as follows:
+                ;
+                ;   CALL autoinit0
+                ;   CALL autoconfig (calls DiceConfig routine many times)
+                ;                   args:  len,ptr,rpc,rpc,mode=1
+                ;                   -opens config file
+                ;   CALL autoinit1  (close open config file)
+                ;   __main
+                ;       <program runs>
+                ;   __exit
+                ;
+                ;   CALL autoconfig (calls DiceConfig routine many times)
+                ;                   args:  len,ptr,rpc,prc,mode=-1
+                ;   CALL autoexit1  (close open config file)
+                ;   CALL autoexit0
 
 
-		xdef	__DiceConfig
-		xdef	__DiceCfgFH
+                xdef    __DiceConfig
+                xdef    __DiceCfgFH
 
-		xref	_ConfigFile
-		xref	_ConfigVersion
+                xref    _ConfigFile
+                xref    _ConfigVersion
 
-		xref	_Open
-		xref	_Read
-		xref	_Write
-		xref	_Close
+                xref    _Open
+                xref    _Read
+                xref    _Write
+                xref    _Close
 
-		section libdata,data
+                section libdata,data
 
-__DiceCfgFH	ds.l	1
-Version 	ds.l	1
+__DiceCfgFH     ds.l    1
+Version         ds.l    1
 
-		section autoconfig,code
+                section autoconfig,code
 
-		rts
-__DiceConfig	jmp	LongDiceConfig
+                rts
+__DiceConfig    jmp     LongDiceConfig
 
-		section autoinit1,code
+                section autoinit1,code
 
-		move.l	__DiceCfgFH(A4),-(sp)
-		beq	aiskip
-		jsr	_Close
-		clr.l	__DiceCfgFH(A4)
-aiskip		addq.l	#4,sp
+                move.l  __DiceCfgFH(A4),-(sp)
+                beq     aiskip
+                jsr     _Close
+                clr.l   __DiceCfgFH(A4)
+aiskip          addq.l  #4,sp
 
-		section autoexit1,code
+                section autoexit1,code
 
-		move.l	__DiceCfgFH(A4),-(sp)
-		beq	aeskip
-		jsr	_Close
-		clr.l	__DiceCfgFH(A4)
-aeskip		addq.l	#4,sp
+                move.l  __DiceCfgFH(A4),-(sp)
+                beq     aeskip
+                jsr     _Close
+                clr.l   __DiceCfgFH(A4)
+aeskip          addq.l  #4,sp
 
-		;   rpc,len,ptr,rpc,mode
-		;	 4   8	12  16
-		;
-		;   ConfigFile ConfigVersion
+                ;   rpc,len,ptr,rpc,mode
+                ;        4   8  12  16
+                ;
+                ;   ConfigFile ConfigVersion
 
-		section text,code
+                section text,code
 
 LongDiceConfig
-		move.l	16(sp),D0           ; < 0 == SAVE, > 0 == LOAD
-		bmi	savecfg
+                move.l  16(sp),D0           ; < 0 == SAVE, > 0 == LOAD
+                bmi     savecfg
 
-		; -------------- LOAD CONFIG --------------
+                ; -------------- LOAD CONFIG --------------
 
-		subq.l	#1,D0		    ; 1 = initial open
-		bne	lc10		    ; wasn't 1
-		addq.l	#1,16(sp)           ; 1 -> 2
-		tst.l	__DiceCfgFH(A4)     ; file already open?
-		bne	lc10
-		move.l	_ConfigFile(A4),D0  ; no, file name exists?
-		beq	lcret
+                subq.l  #1,D0               ; 1 = initial open
+                bne     lc10                ; wasn't 1
+                addq.l  #1,16(sp)           ; 1 -> 2
+                tst.l   __DiceCfgFH(A4)     ; file already open?
+                bne     lc10
+                move.l  _ConfigFile(A4),D0  ; no, file name exists?
+                beq     lcret
 
-		pea	1005.W		    ; open file
-		move.l	D0,-(sp)
-		jsr	_Open(pc)
-		addq.l	#8,sp
-		move.l	D0,__DiceCfgFH(A4)  ; open worked?
-		beq	lc10
-					    ; retrieve version
-		pea	4.W
-		pea	Version(A4)
-		move.l	D0,-(sp)
-		jsr	_Read(pc)
-		lea	12(sp),sp
-		move.l	Version(A4),D0
-		cmp.l	_ConfigVersion(A4),D0
-		beq	lc10
+                pea     1005.W              ; open file
+                move.l  D0,-(sp)
+                jsr     _Open(pc)
+                addq.l  #8,sp
+                move.l  D0,__DiceCfgFH(A4)  ; open worked?
+                beq     lc10
+                                            ; retrieve version
+                pea     4.W
+                pea     Version(A4)
+                move.l  D0,-(sp)
+                jsr     _Read(pc)
+                lea     12(sp),sp
+                move.l  Version(A4),D0
+                cmp.l   _ConfigVersion(A4),D0
+                beq     lc10
 
-		move.l	__DiceCfgFH(A4),-(sp)   ; error, close file
-		jsr	_Close(pc)
-		addq.l	#4,sp
-		clr.l	__DiceCfgFH(A4)
+                move.l  __DiceCfgFH(A4),-(sp)   ; error, close file
+                jsr     _Close(pc)
+                addq.l  #4,sp
+                clr.l   __DiceCfgFH(A4)
 
 
-lc10		move.l	4(sp),-(sp)
-		move.l	8+4(sp),-(sp)
-		move.l	__DiceCfgFH(A4),-(sp)
-		beq	lc20
-		jsr	_Read(pc)
+lc10            move.l  4(sp),-(sp)
+                move.l  8+4(sp),-(sp)
+                move.l  __DiceCfgFH(A4),-(sp)
+                beq     lc20
+                jsr     _Read(pc)
 lc20
-		lea	12(sp),sp
-		bra	lcret
+                lea     12(sp),sp
+                bra     lcret
 
 
-		; ----------- SAVE CONFIG
+                ; ----------- SAVE CONFIG
 savecfg
-		addq.l	#1,D0		    ; 1 = initial open
-		bne	sc10		    ; wasn't 1
-		subq.l	#1,16(sp)           ; -1 -> -2
-		tst.l	__DiceCfgFH(A4)     ; file already open?
-		bne	sc10
-		move.l	_ConfigFile(A4),D0  ; no, file name exists?
-		beq	lcret
+                addq.l  #1,D0               ; 1 = initial open
+                bne     sc10                ; wasn't 1
+                subq.l  #1,16(sp)           ; -1 -> -2
+                tst.l   __DiceCfgFH(A4)     ; file already open?
+                bne     sc10
+                move.l  _ConfigFile(A4),D0  ; no, file name exists?
+                beq     lcret
 
-		pea	1006.W		    ; open file
-		move.l	D0,-(sp)
-		jsr	_Open(pc)
-		addq.l	#8,sp
-		move.l	D0,__DiceCfgFH(A4)  ; open worked?
-		beq	sc10
+                pea     1006.W              ; open file
+                move.l  D0,-(sp)
+                jsr     _Open(pc)
+                addq.l  #8,sp
+                move.l  D0,__DiceCfgFH(A4)  ; open worked?
+                beq     sc10
 
-		; save version number
+                ; save version number
 
-		pea	4.W
-		pea	_ConfigVersion(A4)
-		move.l	D0,-(sp)
-		jsr	_Write(pc)
-		lea	12(sp),sp
+                pea     4.W
+                pea     _ConfigVersion(A4)
+                move.l  D0,-(sp)
+                jsr     _Write(pc)
+                lea     12(sp),sp
 
-		; write config
+                ; write config
 
-sc10		move.l	4(sp),-(sp)
-		move.l	8+4(sp),-(sp)
-		move.l	__DiceCfgFH(A4),-(sp)
-		beq	sc20
-		jsr	_Write(pc)
+sc10            move.l  4(sp),-(sp)
+                move.l  8+4(sp),-(sp)
+                move.l  __DiceCfgFH(A4),-(sp)
+                beq     sc20
+                jsr     _Write(pc)
 sc20
-		lea	12(sp),sp
+                lea     12(sp),sp
 
-lcret		move.l	(sp)+,A0
-		addq.l	#8,sp
-		jmp	(A0)
+lcret           move.l  (sp)+,A0
+                addq.l  #8,sp
+                jmp     (A0)
 
-		END
+                END
 

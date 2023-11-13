@@ -3,25 +3,25 @@
  *    use is allowed under the terms of the DICE-LICENSE FILE,
  *    DICE-LICENSE.TXT.
  */
-#include 	"defs.h"
-#include	"dbug_protos.h"
+#include        "defs.h"
+#include        "dbug_protos.h"
 
 
-Prototype BOOL 	enable_menus(void);
-Prototype void 	init_default_menus(void);
-Prototype void 	free_menus(void);
-Prototype void 	set_menu_item(int num, int type, unsigned char *str, unsigned char *cmd, unsigned char *comkey);
-Prototype void 	do_scroller(void);
+Prototype BOOL  enable_menus(void);
+Prototype void  init_default_menus(void);
+Prototype void  free_menus(void);
+Prototype void  set_menu_item(int num, int type, unsigned char *str, unsigned char *cmd, unsigned char *comkey);
+Prototype void  do_scroller(void);
 Prototype UWORD FindScrollerTop(UWORD total, UWORD displayable, UWORD pot);
-Prototype int 	FindScrollerValues(UWORD total, UWORD displayable, UWORD top, WORD overlap, UWORD *body, UWORD *pot);
-Prototype void 	setscrollbar(int flag);
-Prototype void 	ActivateArrows(struct Window *win);
-Prototype void 	InActivateArrows(struct Window *win);
-Prototype BOOL 	ProcessMenuItem(char *args,int type);
-Prototype int	FindSlot(char *args);
+Prototype int   FindScrollerValues(UWORD total, UWORD displayable, UWORD top, WORD overlap, UWORD *body, UWORD *pot);
+Prototype void  setscrollbar(int flag);
+Prototype void  ActivateArrows(struct Window *win);
+Prototype void  InActivateArrows(struct Window *win);
+Prototype BOOL  ProcessMenuItem(char *args,int type);
+Prototype int   FindSlot(char *args);
 
 #define MAXMENU         128     /* Maxumum number of user menus         */
-#define GADTOOLSBASE	GadToolsBase
+#define GADTOOLSBASE    GadToolsBase
 
 struct Menu      *DebugMenu = NULL;
 struct NewMenu newmenu[MAXMENU];
@@ -38,74 +38,74 @@ struct InitMenu {
     unsigned char *comkey;
 };
 
-#define NM_BAR	4
+#define NM_BAR  4
 
 struct InitMenu IMenu[] = {
- NM_TITLE, 	1, "Project", 		"",NULL,
- NM_ITEM, 	1, "New", 		"reset",NULL,
- NM_BAR,	1, "",			"",NULL,
- NM_ITEM, 	1, "Open", 		"open",NULL,
- NM_SUB, 	1, "Source", 		"open source",NULL,
- NM_SUB, 	1, "Mixed", 		"open mixed",NULL,
- NM_SUB, 	1, "Dism", 		"open dism",NULL,
- NM_SUB, 	1, "Bytes", 		"open bytes",NULL,
- NM_SUB, 	1, "Symbols", 		"open symbols",NULL,
- NM_SUB, 	1, "Sorted symbols", 	"open symlist",NULL,
- NM_SUB, 	1, "Breakpoints",	"open breakpoints",NULL,
- NM_ITEM, 	1, "Close", 		"close","C",
- NM_BAR,	1, "",			"",NULL,
- NM_ITEM, 	1, "Save Prefs", 	"saveprefs",NULL,
- NM_BAR,	1, "",			"",NULL,
+ NM_TITLE,      1, "Project",           "",NULL,
+ NM_ITEM,       1, "New",               "reset",NULL,
+ NM_BAR,        1, "",                  "",NULL,
+ NM_ITEM,       1, "Open",              "open",NULL,
+ NM_SUB,        1, "Source",            "open source",NULL,
+ NM_SUB,        1, "Mixed",             "open mixed",NULL,
+ NM_SUB,        1, "Dism",              "open dism",NULL,
+ NM_SUB,        1, "Bytes",             "open bytes",NULL,
+ NM_SUB,        1, "Symbols",           "open symbols",NULL,
+ NM_SUB,        1, "Sorted symbols",    "open symlist",NULL,
+ NM_SUB,        1, "Breakpoints",       "open breakpoints",NULL,
+ NM_ITEM,       1, "Close",             "close","C",
+ NM_BAR,        1, "",                  "",NULL,
+ NM_ITEM,       1, "Save Prefs",        "saveprefs",NULL,
+ NM_BAR,        1, "",                  "",NULL,
 
- NM_ITEM, 	1, "Quit", 		"quit","Q",
+ NM_ITEM,       1, "Quit",              "quit","Q",
 
- NM_TITLE,	2, "Display",		"",NULL,
- NM_ITEM,	2, "Source",	 	"source","S",
- NM_ITEM,	2, "Mixed", 		"mixed","M",
- NM_ITEM,	2, "Dism",	 	"dism","D",
- NM_ITEM,	2, "Bytes",	 	"bytes","B",
- NM_ITEM,	2, "Words", 		"words","W",
- NM_ITEM,	2, "Longs", 		"longs","L",
- NM_ITEM,	2, "Registers", 	"registers","R",
- NM_ITEM,	2, "Offsets", 		"offsets",NULL,
+ NM_TITLE,      2, "Display",           "",NULL,
+ NM_ITEM,       2, "Source",            "source","S",
+ NM_ITEM,       2, "Mixed",             "mixed","M",
+ NM_ITEM,       2, "Dism",              "dism","D",
+ NM_ITEM,       2, "Bytes",             "bytes","B",
+ NM_ITEM,       2, "Words",             "words","W",
+ NM_ITEM,       2, "Longs",             "longs","L",
+ NM_ITEM,       2, "Registers",         "registers","R",
+ NM_ITEM,       2, "Offsets",           "offsets",NULL,
 
- NM_TITLE,	3, "Program Info",	"",NULL,
- NM_ITEM,	3, "Info on task", 	"info",NULL,
- NM_ITEM,	3, "Hunks", 		"hunks",NULL,
- NM_ITEM,	3, "Symbols", 		"symbols",NULL,
- NM_ITEM,	3, "Sorted symbols", 	"symlist",NULL,
+ NM_TITLE,      3, "Program Info",      "",NULL,
+ NM_ITEM,       3, "Info on task",      "info",NULL,
+ NM_ITEM,       3, "Hunks",             "hunks",NULL,
+ NM_ITEM,       3, "Symbols",           "symbols",NULL,
+ NM_ITEM,       3, "Sorted symbols",    "symlist",NULL,
 
- NM_TITLE,	4, "System Info",	"",NULL,
- NM_ITEM,	14, "Tasks",	 	"tasks","",
- NM_ITEM,	15, "Libraries", 	"libs","",
- NM_ITEM,	15, "Devices",	 	"devices","",
- NM_ITEM,	16, "ExecBase",	 	"execbase","",
- NM_ITEM,	18, "DosBase",	 	"dosbase",NULL,
- NM_ITEM,	19, "Memory",		"memlist",NULL,
- NM_ITEM,	19, "Interrupts",	"intrs",NULL,
- NM_ITEM,	19, "Ports",		"ports",NULL,
- NM_ITEM,	19, "Resource",		"resources",NULL,
- NM_ITEM,	11, "Process", 		"process",NULL,
+ NM_TITLE,      4, "System Info",       "",NULL,
+ NM_ITEM,       14, "Tasks",            "tasks","",
+ NM_ITEM,       15, "Libraries",        "libs","",
+ NM_ITEM,       15, "Devices",          "devices","",
+ NM_ITEM,       16, "ExecBase",         "execbase","",
+ NM_ITEM,       18, "DosBase",          "dosbase",NULL,
+ NM_ITEM,       19, "Memory",           "memlist",NULL,
+ NM_ITEM,       19, "Interrupts",       "intrs",NULL,
+ NM_ITEM,       19, "Ports",            "ports",NULL,
+ NM_ITEM,       19, "Resource",         "resources",NULL,
+ NM_ITEM,       11, "Process",          "process",NULL,
 
- NM_TITLE,	13, "Breakpoints",	"",NULL,
- NM_ITEM,	19, "Breakpoints",	"breakpoints",NULL,
- NM_ITEM,	19, "Clear Breakpoint",	"clear",NULL,
- NM_ITEM,	19, "Clear All",	"clear all",NULL,
- NM_ITEM,	19, "Set Breakpoint",	"bp",NULL,
+ NM_TITLE,      13, "Breakpoints",      "",NULL,
+ NM_ITEM,       19, "Breakpoints",      "breakpoints",NULL,
+ NM_ITEM,       19, "Clear Breakpoint", "clear",NULL,
+ NM_ITEM,       19, "Clear All",        "clear all",NULL,
+ NM_ITEM,       19, "Set Breakpoint",   "bp",NULL,
 
- NM_TITLE,	13, "Watchpoints",	"",NULL,
- NM_ITEM,	22, "Watch Byte", 	"watchbyte",NULL,
- NM_ITEM,	22, "Watch Word", 	"watchword",NULL,
- NM_ITEM,	22, "Watch Long", 	"watchlong",NULL,
+ NM_TITLE,      13, "Watchpoints",      "",NULL,
+ NM_ITEM,       22, "Watch Byte",       "watchbyte",NULL,
+ NM_ITEM,       22, "Watch Word",       "watchword",NULL,
+ NM_ITEM,       22, "Watch Long",       "watchlong",NULL,
 
- NM_TITLE,	21, "Misc",		"",NULL,
- NM_ITEM,	22, "Help", 		"help",NULL,
- NM_ITEM,	22, "REXX Command", 	"rexx",NULL,
- NM_ITEM,	22, "Alias", 		"alias",NULL,
- NM_ITEM,	22, "Unalias", 		"unalias",NULL,
- NM_ITEM,	22, "Fkey", 		"fkey",NULL,
- NM_ITEM,	22, "Set", 		"set",NULL,
- NM_END,	23, ""  , "", NULL
+ NM_TITLE,      21, "Misc",             "",NULL,
+ NM_ITEM,       22, "Help",             "help",NULL,
+ NM_ITEM,       22, "REXX Command",     "rexx",NULL,
+ NM_ITEM,       22, "Alias",            "alias",NULL,
+ NM_ITEM,       22, "Unalias",          "unalias",NULL,
+ NM_ITEM,       22, "Fkey",             "fkey",NULL,
+ NM_ITEM,       22, "Set",              "set",NULL,
+ NM_END,        23, ""  , "", NULL
 };
 
 
@@ -121,7 +121,7 @@ int i;
         for(i=0; i< MAXMENU; i++) {
             set_menu_item(i,IMenu[i].type,IMenu[i].str,IMenu[i].cmd,IMenu[i].comkey);
             if(IMenu[i].type == NM_END)return;
-	}
+        }
     }
 }
 
@@ -133,42 +133,42 @@ char *ptr, *string, *dp;
 char xname[3][80];
 int n, i = 0, quote = 1, flag = TRUE, iflag;
 
-    memset(xname[1],0,80);	/* zero the optionals */
+    memset(xname[1],0,80);      /* zero the optionals */
     memset(xname[2],0,80);
 
 
-    if(string = strchr(args,' ')) {	// slot first, no sense in continuing without that
-    	*string++ = NULL;
-    	if((n = FindSlot(args)) < 0)return FALSE;	// no slot available
-    	string = SkipBlanks(string);
-    	ptr = string;
-    	while (flag && (i < 3)) {
-	    iflag = 1;
-	    dp = xname[i++];
-	    while(*ptr && iflag) {
-	    	switch((int) *ptr) {
-	    	    case '\"':
-		    	quote *= -1;
-		    	break;
-	    	    case '\t':
-	    	    case ' ':
-		    	if(quote > 0) {
-			    iflag = 0;  // not in quotes
-			    break;
-			}
-		        // fall through
-	            default:
-		    	*dp++ = *ptr; //++;
-		}
-	        ptr++;
-	    }
-	    *dp = NULL;		// terminate the string
-            if(! *ptr)flag = FALSE;	// done with args
-	}
+    if(string = strchr(args,' ')) {     // slot first, no sense in continuing without that
+        *string++ = NULL;
+        if((n = FindSlot(args)) < 0)return FALSE;       // no slot available
+        string = SkipBlanks(string);
+        ptr = string;
+        while (flag && (i < 3)) {
+            iflag = 1;
+            dp = xname[i++];
+            while(*ptr && iflag) {
+                switch((int) *ptr) {
+                    case '\"':
+                        quote *= -1;
+                        break;
+                    case '\t':
+                    case ' ':
+                        if(quote > 0) {
+                            iflag = 0;  // not in quotes
+                            break;
+                        }
+                        // fall through
+                    default:
+                        *dp++ = *ptr; //++;
+                }
+                ptr++;
+            }
+            *dp = NULL;         // terminate the string
+            if(! *ptr)flag = FALSE;     // done with args
+        }
         if(i) {
-	    set_menu_item(n, type, xname[0], xname[1], xname[2]);
+            set_menu_item(n, type, xname[0], xname[1], xname[2]);
             return(TRUE);
-	}
+        }
     }
 return FALSE;
 }
@@ -179,12 +179,12 @@ int FindSlot(char *args)
 {
 int n;
 
-    if((n = strtol(args,NULL,10)) >= 0 && (n < MAXMENU))return n;	// normal slot specified
+    if((n = strtol(args,NULL,10)) >= 0 && (n < MAXMENU))return n;       // normal slot specified
     if(n == -1) { // its an append operation
         for(n=0; n < (MAXMENU-1); n++)if(newmenu[n].nm_Type == NM_END) {
-	    set_menu_item(n+1,NM_END,"","","");  // add the new end marker
-	    return n;
-	}
+            set_menu_item(n+1,NM_END,"","","");  // add the new end marker
+            return n;
+        }
     }
     ScrStatus("*** Error: can't find position");
     return -1;
@@ -197,49 +197,49 @@ BOOL enable_menus(void)
     BOOL flag = FALSE;
     struct VisualInfo *vi;   
     struct TagItem taglist[3] = {
-	{GTMN_FrontPen, NULL},
-	{GTMN_FullMenu, TRUE},
-	{TAG_DONE, NULL}
+        {GTMN_FrontPen, NULL},
+        {GTMN_FullMenu, TRUE},
+        {TAG_DONE, NULL}
     };
 
    // clear all menus from active windows on display list
    for (disp = (DBugDisp *)DisplayList.lh_Head; disp->ds_Node.ln_Succ; disp = (DBugDisp *)disp->ds_Node.ln_Succ) {
-	if(disp->ds_Win)ClearMenuStrip(disp->ds_Win);
+        if(disp->ds_Win)ClearMenuStrip(disp->ds_Win);
    }
 
 
    if(GADTOOLSBASE) {
        if (DebugMenu != NULL) {
-	    FreeMenus(DebugMenu);
-       	    DebugMenu = NULL;
+            FreeMenus(DebugMenu);
+            DebugMenu = NULL;
        }
 
        if (!(DebugMenu = CreateMenusA(newmenu, taglist)))return 0;
 
        if ((vi = GetVisualInfoA((CurDisplay->ds_Win)->WScreen, taglist+1))) {
             if (!LayoutMenusA(DebugMenu, vi, taglist+1)) {
-            	FreeVisualInfo(vi);
-	    	return 0;
-	    }
+                FreeVisualInfo(vi);
+                return 0;
+            }
        }
        FreeVisualInfo(vi);
    }
-   else {	// gadtools unavailable, so lets do it ourself
+   else {       // gadtools unavailable, so lets do it ourself
         if (DebugMenu != NULL) {
-	    v_free_menus(DebugMenu);
-       	    DebugMenu = NULL;
+            v_free_menus(DebugMenu);
+            DebugMenu = NULL;
         }
         if(!(DebugMenu = v_create_menus(newmenu)))return 0;
-	if(!v_layout_menus(DebugMenu))return 0;
+        if(!v_layout_menus(DebugMenu))return 0;
    }
 
    // Set the menu strips for active windows
    for (disp = (DBugDisp *)DisplayList.lh_Head; disp->ds_Node.ln_Succ; disp = (DBugDisp *)disp->ds_Node.ln_Succ) {
-	if(disp->ds_Win)SetMenuStrip(disp->ds_Win, DebugMenu);
+        if(disp->ds_Win)SetMenuStrip(disp->ds_Win, DebugMenu);
    }
    // and for current window (possibly not on display list yet)
    if(CurDisplay && CurDisplay->ds_Win)
-   	flag = (BOOL)SetMenuStrip(CurDisplay->ds_Win, DebugMenu); 
+        flag = (BOOL)SetMenuStrip(CurDisplay->ds_Win, DebugMenu); 
    return flag;
 }
 
@@ -251,22 +251,22 @@ BOOL enable_menus(void)
 *
 ***/
 void set_menu_item(int num, int type, unsigned char *str, unsigned char *cmd,
-	unsigned char *comkey)
+        unsigned char *comkey)
 {
    DBugDisp *disp;
 
    if (num < 0 || num >= MAXMENU) {
-	return;
+        return;
    }
    // shutdown all menu items from active windows until they next do an enable
    for (disp = (DBugDisp *)DisplayList.lh_Head; disp->ds_Node.ln_Succ; disp = (DBugDisp *)disp->ds_Node.ln_Succ) {
-	if(disp->ds_Win)ClearMenuStrip(disp->ds_Win);
+        if(disp->ds_Win)ClearMenuStrip(disp->ds_Win);
    }
 
    /* First we free up any menu item that might be there */
    if (newmenu[num].nm_UserData != NULL) {
-	free(newmenu[num].nm_UserData);
-	newmenu[num].nm_UserData = NULL;
+        free(newmenu[num].nm_UserData);
+        newmenu[num].nm_UserData = NULL;
    }
    if ((newmenu[num].nm_Label != NULL) && (newmenu[num].nm_Label != NM_BARLABEL)) {
       free(newmenu[num].nm_Label);
@@ -287,7 +287,7 @@ void set_menu_item(int num, int type, unsigned char *str, unsigned char *cmd,
    if((newmenu[num].nm_UserData == NULL)|| (newmenu[num].nm_Label==NULL) ||
    ((comkey && *comkey) && (newmenu[num].nm_CommKey == NULL))) {
       newmenu[num].nm_Type = 0;
-      return;	/* out of memory */
+      return;   /* out of memory */
    }
 
    strcpy(((char *)newmenu[num].nm_UserData), cmd);
@@ -339,13 +339,13 @@ void setscrollbar(int flag)
     WINDOW *win;
 
     if(CurDisplay) {
-	if((win = CurDisplay->ds_Win)) {
-    	    if(flag)RemoveGadget(win,&ColorGadget);
-    	    else {	/* first time through */
-		AddGadget(win,&UpGadget,(UWORD)~0);
-    		AddGadget(win,&DownGadget,(UWORD)~0);
-	    }
-	}
+        if((win = CurDisplay->ds_Win)) {
+            if(flag)RemoveGadget(win,&ColorGadget);
+            else {      /* first time through */
+                AddGadget(win,&UpGadget,(UWORD)~0);
+                AddGadget(win,&DownGadget,(UWORD)~0);
+            }
+        }
     }
 
     /* Set up the scroll bar */
@@ -353,14 +353,14 @@ void setscrollbar(int flag)
     ColorGadget.TopEdge = win->BorderTop;
     ColorGadget.Height=win->Height - win->BorderBottom - win->BorderTop-8 - 22;
     ColorGadget.Width= 14; /* win->BorderRight-3; */
-    ColorPropInfo.VertBody = 0xFFFF;	/* starts with nothing */
+    ColorPropInfo.VertBody = 0xFFFF;    /* starts with nothing */
 
     AddGadget(win,&ColorGadget,(UWORD)~0);
-    RefreshGadgets(&UpGadget,win,NULL);	/* refresh just the scroll bar */
+    RefreshGadgets(&UpGadget,win,NULL); /* refresh just the scroll bar */
 }
 
 int FindScrollerValues(UWORD total, UWORD displayable, UWORD top,
-		   WORD overlap, UWORD *body, UWORD *pot)
+                   WORD overlap, UWORD *body, UWORD *pot)
 {
 // UWORD hidden;
 int hidden;
@@ -373,7 +373,7 @@ hidden = MAX(temp1-temp2, 0);
 if(top > hidden)top = hidden;
 
 (*body) = (hidden > 0) ? (UWORD)(((ULONG)(displayable - overlap)*MAXBODY)
-		/ (total - overlap)) : MAXBODY;
+                / (total - overlap)) : MAXBODY;
 
 (*pot) = (hidden > 0) ? (UWORD) (((ULONG)top * MAXPOT)/hidden) : 0;
 
@@ -402,53 +402,53 @@ ULONG total, top;
 int rows;
 
     if(CurDisplay) {
-	if((win = CurDisplay->ds_Win)) {
-	rows = CurDisplay->ds_ScrRows;
-    	    // calc new values
+        if((win = CurDisplay->ds_Win)) {
+        rows = CurDisplay->ds_ScrRows;
+            // calc new values
 
-	    top = CurDisplay->ds_WindowTop;  // current top for almost all display modes
+            top = CurDisplay->ds_WindowTop;  // current top for almost all display modes
 
-	    switch(CurDisplay->ds_DisplayMode) {
-		case DISPLAY_DISM:
-		case DISPLAY_SOURCE:
-		case DISPLAY_MIXED:
-		case DISPLAY_BYTES:
-		case DISPLAY_WORDS:
-		case DISPLAY_LONGS:
+            switch(CurDisplay->ds_DisplayMode) {
+                case DISPLAY_DISM:
+                case DISPLAY_SOURCE:
+                case DISPLAY_MIXED:
+                case DISPLAY_BYTES:
+                case DISPLAY_WORDS:
+                case DISPLAY_LONGS:
 
-		    total = (ScrollEnd - ScrollStart) >> 5;
-		    top = ((int)CurDisplay->ds_WindowTop - (int)ScrollStart) >> 5;
+                    total = (ScrollEnd - ScrollStart) >> 5;
+                    top = ((int)CurDisplay->ds_WindowTop - (int)ScrollStart) >> 5;
 
-		    if((int)top < 0 ) top = 0;
-		    break;
+                    if((int)top < 0 ) top = 0;
+                    break;
 
-		case DISPLAY_SYMBOL:
-		    total = SymbolCount;
-		    break;
+                case DISPLAY_SYMBOL:
+                    total = SymbolCount;
+                    break;
 
-		case DISPLAY_HUNKS:
-		    total = numHunks;
-		    break;
+                case DISPLAY_HUNKS:
+                    total = numHunks;
+                    break;
 
-		case DISPLAY_HELP:
-		    total = HelpSize();
-		    break;
+                case DISPLAY_HELP:
+                    total = HelpSize();
+                    break;
 
-		case DISPLAY_BREAK:
-		    total = MAXBP+5;
-		    top = topBP;
-		    break;
+                case DISPLAY_BREAK:
+                    total = MAXBP+5;
+                    top = topBP;
+                    break;
 
-		default:
-		    total = SizeDLIST(&CurDisplay->ds_List);
-	    }
-    	    if(FindScrollerValues(total, CurDisplay->ds_ScrRows, top, 2, 
-    	    &ColorPropInfo.VertBody,&ColorPropInfo.VertPot)) {
-		/* values changed, update */
-        	NewModifyProp(&ColorGadget,win,NULL,PROPNEWLOOK | AUTOKNOB | FREEVERT,0, 
-        	ColorPropInfo.VertPot,  0, ColorPropInfo.VertBody, -1 );
-	    }
-	}
+                default:
+                    total = SizeDLIST(&CurDisplay->ds_List);
+            }
+            if(FindScrollerValues(total, CurDisplay->ds_ScrRows, top, 2, 
+            &ColorPropInfo.VertBody,&ColorPropInfo.VertPot)) {
+                /* values changed, update */
+                NewModifyProp(&ColorGadget,win,NULL,PROPNEWLOOK | AUTOKNOB | FREEVERT,0, 
+                ColorPropInfo.VertPot,  0, ColorPropInfo.VertBody, -1 );
+            }
+        }
     }
 }
 
@@ -495,7 +495,7 @@ __chip const UWORD downPictureSelect[] =
 
 struct Image UpImage =  {
     -1, 0,              /* Left, Top */
-    16, 11, 2,		/* width, depth, height */
+    16, 11, 2,          /* width, depth, height */
     upPicture,
     3, 0,                /* PlanePick, PlaneOnOff */
     NULL
@@ -503,7 +503,7 @@ struct Image UpImage =  {
 
 struct Image DownImage = {
     -1, 0,              /* Left, Top */
-    16, 11, 2,		/* width, height, depth */
+    16, 11, 2,          /* width, height, depth */
     downPicture,
     3, 0,                /* PlanePick, PlaneOnOff */
     NULL
@@ -511,7 +511,7 @@ struct Image DownImage = {
 
 struct Image UpImageSelect =  {
     -1, 0,              /* Left, Top */
-    16, 11, 2,		/* width, depth, height */
+    16, 11, 2,          /* width, depth, height */
     upPictureSelect,
     3, 0,                /* PlanePick, PlaneOnOff */
     NULL
@@ -519,20 +519,20 @@ struct Image UpImageSelect =  {
 
 struct Image DownImageSelect = {
     -1, 0,              /* Left, Top */
-    16, 11, 2,		/* width, height, depth */
+    16, 11, 2,          /* width, height, depth */
     downPictureSelect,
     3, 0,                /* PlanePick, PlaneOnOff */
     NULL
 };
 
 struct Gadget UpGadget = {
-        NULL,		/* NextGadget */
+        NULL,           /* NextGadget */
         -15, -31,          /* gadget hit box LeftEdge, TopEdge */
         16, 11,          /* gadget hit box Width, Height */
         GADGHCOMP|GADGIMAGE|GRELRIGHT|GRELBOTTOM|RIGHTBORDER, /* Flags */
         RELVERIFY|GACT_IMMEDIATE,      /* Activation */
         BOOLGADGET,     /* GadgetType */
-        &UpImageSelect,	/* GadgetRender */
+        &UpImageSelect, /* GadgetRender */
         NULL,           /* no SelectRender */
         NULL,           /* no text for this gadget */
         NULL,           /* no MutualExclude */
@@ -542,7 +542,7 @@ struct Gadget UpGadget = {
 };
 
 struct Gadget DownGadget = {
-	NULL,		/* NextGadget */
+        NULL,           /* NextGadget */
         -15, -20,       /* gadget hit box LeftEdge, TopEdge */
         16, 11,          /* gadget hit box Width, Height */
         GADGHCOMP|GADGIMAGE|GRELRIGHT|GRELBOTTOM|RIGHTBORDER, /* Flags */
@@ -553,44 +553,44 @@ struct Gadget DownGadget = {
         NULL,           /* no text for this gadget */
         NULL,           /* no MutualExclude */
         NULL,           /* no SpecialInfo */
-        ID_DOWN,	/* gadget ID */
+        ID_DOWN,        /* gadget ID */
         NULL           /* no general purpose data */
 }; 
 
 
 /* scroller gadgets */
 
-#define COLOR_KNOB_BODY		0x1111
+#define COLOR_KNOB_BODY         0x1111
 
 struct Image ColorPropImage;
 
 struct PropInfo ColorPropInfo = {
-	PROPNEWLOOK | AUTOKNOB | FREEVERT,		/* flags */
-	0,				/* horiz pot */
-	0xFFFF,				/* vert pot */
-	0,				/* horiz body */
-	0,				/* vert body */
-	0, 0,				/* cwidth, cheight */
-	0, 0, 				/* HpotRes, VPotRes */
-	0, 0				/* Left border, Top border */
+        PROPNEWLOOK | AUTOKNOB | FREEVERT,              /* flags */
+        0,                              /* horiz pot */
+        0xFFFF,                         /* vert pot */
+        0,                              /* horiz body */
+        0,                              /* vert body */
+        0, 0,                           /* cwidth, cheight */
+        0, 0,                           /* HpotRes, VPotRes */
+        0, 0                            /* Left border, Top border */
 };
 
 struct Gadget ColorGadget = {
-	NULL,			/* Next gadget */
-	-10,			/* leftedge */
-	4,		 	/* top edge */
-	10,			/* width */
-	80,			/* height */
-	GADGHCOMP|GADGIMAGE|GRELRIGHT|RIGHTBORDER,	/* flags */
-	FOLLOWMOUSE|GACT_IMMEDIATE,	/* activation */
-	PROPGADGET,		/* gadget type */
-	&ColorPropImage,	/* gadget render */
-	NULL,			/* select render */
-	NULL,			/* gadget text */
-	NULL,			/* custom gadget hook */
-	&ColorPropInfo,		/* special info */
-	ID_SCROLL,		/* gadget ID */
-	NULL			/* user data */
+        NULL,                   /* Next gadget */
+        -10,                    /* leftedge */
+        4,                      /* top edge */
+        10,                     /* width */
+        80,                     /* height */
+        GADGHCOMP|GADGIMAGE|GRELRIGHT|RIGHTBORDER,      /* flags */
+        FOLLOWMOUSE|GACT_IMMEDIATE,     /* activation */
+        PROPGADGET,             /* gadget type */
+        &ColorPropImage,        /* gadget render */
+        NULL,                   /* select render */
+        NULL,                   /* gadget text */
+        NULL,                   /* custom gadget hook */
+        &ColorPropInfo,         /* special info */
+        ID_SCROLL,              /* gadget ID */
+        NULL                    /* user data */
 };
 
 void ActivateArrows(struct Window *win)
@@ -623,7 +623,7 @@ int pos;
     DownGadget.GadgetRender = &DownImage;
     AddGadget(win,&DownGadget,pos);
 
-    RefreshGadgets(&UpGadget,win,NULL);	/* refresh just the scroll bar */
+    RefreshGadgets(&UpGadget,win,NULL); /* refresh just the scroll bar */
 }
 
 Prototype struct Menu *v_create_menus(struct NewMenu *menulist);
@@ -715,14 +715,14 @@ struct Menu *v_create_menus(struct NewMenu *menulist)
                   return(NULL);
                }
                if (thismenu->menu.FirstItem == NULL)
-		    thismenu->menu.FirstItem = &newitem->item;
+                    thismenu->menu.FirstItem = &newitem->item;
                else {
-		    for(thisitem = (struct XItem *)thismenu->menu.FirstItem; thisitem->item.NextItem; thisitem = (struct XItem *)thisitem->item.NextItem)
-			;
+                    for(thisitem = (struct XItem *)thismenu->menu.FirstItem; thisitem->item.NextItem; thisitem = (struct XItem *)thisitem->item.NextItem)
+                        ;
                     thisitem->item.NextItem  = &newitem->item;
-	       }
-	       thisitem = newitem;
-	    }
+               }
+               thisitem = newitem;
+            }
 
             if (menulist[i].nm_Label == NM_BARLABEL) {
                thisitem->item.Flags        = 0;
@@ -745,7 +745,7 @@ struct Menu *v_create_menus(struct NewMenu *menulist)
                   thisitem->item.Command   = *menulist[i].nm_CommKey;
                   thisitem->item.Flags    |= COMMSEQ;
                }
-	    }
+            }
             thisitem->userdata = menulist[i].nm_UserData;
             break;
 
@@ -773,14 +773,14 @@ int v_layout_menus(struct Menu *menus)
    // get screen width and height for later
 
    if(CurDisplay && CurDisplay->ds_Win) {
-	swidth = CurDisplay->ds_Win->WScreen->Width;
-	sheight = CurDisplay->ds_Win->WScreen->Height;
-	stxheight = CurDisplay->ds_Win->RPort->TxHeight;
+        swidth = CurDisplay->ds_Win->WScreen->Width;
+        sheight = CurDisplay->ds_Win->WScreen->Height;
+        stxheight = CurDisplay->ds_Win->RPort->TxHeight;
    }
    else {
-	swidth = 640;
-	sheight = 200;
-	stxheight = 8;
+        swidth = 640;
+        sheight = 200;
+        stxheight = 8;
    }
    for (menu = (struct XMenu *)menus; menu; menu = (struct XMenu *)menu->menu.NextMenu) {
       int width, ypos;
@@ -838,7 +838,7 @@ int v_layout_menus(struct Menu *menus)
                buf[1] = 0;
                iwidth += text_width(buf) + COMMWIDTH + 8;
             }
-	 }
+         }
          else {
             /* separator bars are always the same height */
             item->item.Height = 4;
@@ -849,7 +849,7 @@ int v_layout_menus(struct Menu *menus)
           */
 
          ypos  += item->item.Height;
-	 if (ypos >= (sheight - DHBAR))return 0;
+         if (ypos >= (sheight - DHBAR))return 0;
 
           /* now see if this item is the largest one. */
           if (iwidth > width) width = iwidth;
@@ -914,7 +914,7 @@ int text_width(char *str)
    itext.DrawMode  = JAM1;
    itext.LeftEdge  = 0;
    itext.TopEdge   = 1;
-   itext.ITextFont = &TOPAZ80;	// replace with actual font
+   itext.ITextFont = &TOPAZ80;  // replace with actual font
    itext.NextText  = NULL;
    itext.IText     = str;
 

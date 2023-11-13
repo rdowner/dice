@@ -20,7 +20,7 @@ remove(name)
 const char *name;
 {
     if (DeleteFile(UnixToAmigaPath(name)))
-	return(0);
+        return(0);
     errno = ENOFILE;
     return(-1);
 }

@@ -7,7 +7,7 @@
 #include <exec/ports.h>
 #include <exec/memory.h>
 #include <exec/io.h>
-#ifdef INCLUDE_VERSION	    /*	2.0 */
+#ifdef INCLUDE_VERSION      /*  2.0 */
 #include <clib/exec_protos.h>
 #include <clib/alib_protos.h>
 #else
@@ -15,7 +15,7 @@ extern void *CreateExtIO(void *, long);
 extern void DeleteExtIO(void *);
 #endif
 
-typedef struct MsgPort	MsgPort;
+typedef struct MsgPort  MsgPort;
 typedef struct IORequest IORequest;
 typedef struct IOStdReq  IOStdReq;
 

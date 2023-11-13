@@ -63,17 +63,17 @@ do_setfont()
     FONT *font = (FONT *)GetFont(av[1], (short)atoi(av[2]));
     ED *ep = Ep;
     if (font) {
-	text_sync();
-	if (ep->Font)
-	    CloseFont(ep->Font);
-	ep->Font = font;
-	SetFont(ep->Win->RPort, font);
-	SetRast(ep->Win->RPort, 0);
-	RefreshWindowFrame(ep->Win);
-	set_window_params();
-	text_redisplay();
+        text_sync();
+        if (ep->Font)
+            CloseFont(ep->Font);
+        ep->Font = font;
+        SetFont(ep->Win->RPort, font);
+        SetRast(ep->Win->RPort, 0);
+        RefreshWindowFrame(ep->Win);
+        set_window_params();
+        text_redisplay();
     } else {
-	title("Unable to find font");
+        title("Unable to find font");
     }
 }
 
@@ -83,21 +83,21 @@ do_ignorecase()
     ED *ep = Ep;
 
     if (av[1][0]) {
-	switch(av[1][1] & 0x1F) {
-	case 'n'&0x1F:
-	    ep->IgnoreCase = 1;
-	    break;
-	case 'f'&0x1F:
-	    ep->IgnoreCase = 0;
-	    break;
-	case 'o'&0x1F:
-	    ep->IgnoreCase = 1 - ep->IgnoreCase;
-	    break;
-	}
-	if (ep->IgnoreCase)
-	    title("Case InSensitive");
-	else
-	    title("Case Sensitive");
+        switch(av[1][1] & 0x1F) {
+        case 'n'&0x1F:
+            ep->IgnoreCase = 1;
+            break;
+        case 'f'&0x1F:
+            ep->IgnoreCase = 0;
+            break;
+        case 'o'&0x1F:
+            ep->IgnoreCase = 1 - ep->IgnoreCase;
+            break;
+        }
+        if (ep->IgnoreCase)
+            title("Case InSensitive");
+        else
+            title("Case Sensitive");
     }
 }
 
@@ -113,12 +113,12 @@ do_cd()
 
     oldlock = CurrentDir((BPTR)Ep->dirlock);
     if (lock = Lock(av[1], SHARED_LOCK)) {
-	UnLock(CurrentDir(oldlock));
-	Ep->dirlock = (long)lock;
+        UnLock(CurrentDir(oldlock));
+        Ep->dirlock = (long)lock;
     } else {
-	CurrentDir(oldlock);
-	Abortcommand = 1;
-	title("Unable to CD");
+        CurrentDir(oldlock);
+        Abortcommand = 1;
+        title("Unable to CD");
     }
 }
 
@@ -126,7 +126,7 @@ do_cd()
  *  VARIABLE SUPPORT!
  */
 
-#define VARS	struct _VARS
+#define VARS    struct _VARS
 VARS {
     MNODE   Node;
     char    *Name;
@@ -143,16 +143,16 @@ do_set()
 
     do_unset();
     if (v = malloc(sizeof(VARS))) {
-	if (v->Name = malloc(strlen(av[1])+1)) {
-	    if (v->Str = malloc(strlen(av[2])+1)) {
-		AddHead((LIST *)&SList, (NODE *)v);
-		strcpy(v->Name, av[1]);
-		strcpy(v->Str , av[2]);
-		return;
-	    }
-	    free(v->Name);
-	}
-	free(v);
+        if (v->Name = malloc(strlen(av[1])+1)) {
+            if (v->Str = malloc(strlen(av[2])+1)) {
+                AddHead((LIST *)&SList, (NODE *)v);
+                strcpy(v->Name, av[1]);
+                strcpy(v->Str , av[2]);
+                return;
+            }
+            free(v->Name);
+        }
+        free(v);
     }
     nomemory();
 }
@@ -169,13 +169,13 @@ do_unset()
     VARS *v;
 
     for (v = (VARS *)SList.mlh_Head; v->Node.mln_Succ; v = (VARS *)v->Node.mln_Succ) {
-	if (strcmp(v->Name, av[1]) == 0) {
-	    Remove((NODE *)v);
-	    free(v->Name);
-	    free(v->Str);
-	    free(v);
-	    break;
-	}
+        if (strcmp(v->Name, av[1]) == 0) {
+            Remove((NODE *)v);
+            free(v->Name);
+            free(v->Str);
+            free(v);
+            break;
+        }
     }
 }
 
@@ -186,12 +186,12 @@ do_unsetenv()
     char *tmp = malloc(4+strlen(ptr)+1);
 
     if (tmp) {
-	strcpy(tmp, "ENV:");
-	strcat(tmp, ptr);
-	mountrequest(0);
-	DeleteFile(tmp);
-	mountrequest(1);
-	free(tmp);
+        strcpy(tmp, "ENV:");
+        strcat(tmp, ptr);
+        mountrequest(0);
+        DeleteFile(tmp);
+        mountrequest(1);
+        free(tmp);
     }
 }
 
@@ -206,30 +206,30 @@ char *find;
 {
     char *str = NULL;
     {
-	VARS *v;
+        VARS *v;
 
-	for (v = (VARS *)SList.mlh_Head; v->Node.mln_Succ; v = (VARS *)v->Node.mln_Succ) {
-	    if (strcmp(v->Name, find) == 0) {
-		if (str = malloc(strlen(v->Str)+1)) {
-		    strcpy(str, v->Str);
-		    return(str);
-		}
-	    }
-	}
+        for (v = (VARS *)SList.mlh_Head; v->Node.mln_Succ; v = (VARS *)v->Node.mln_Succ) {
+            if (strcmp(v->Name, find) == 0) {
+                if (str = malloc(strlen(v->Str)+1)) {
+                    strcpy(str, v->Str);
+                    return(str);
+                }
+            }
+        }
     }
 
     mountrequest(0);
     str = (char *)GetDEnv(find);
     mountrequest(1);
     if (str)
-	return(str);
+        return(str);
 
     if ((str = keyspectomacro(find)) || (str = menutomacro(find))) {
-	char *ptr = malloc(strlen(str)+1);
-	if (ptr) {
-	    strcpy(ptr, str);
-	    return(ptr);
-	}
+        char *ptr = malloc(strlen(str)+1);
+        if (ptr) {
+            strcpy(ptr, str);
+            return(ptr);
+        }
     }
     return(NULL);
 }
@@ -240,34 +240,34 @@ do_col()
     int col;
 
     {
-	char *ptr = av[1];
+        char *ptr = av[1];
 
-	switch(*ptr) {
-	case '+':
-	    col = text_colno() + atoi(ptr + 1);
-	    if (col > 254)
-		col = 254;
-	    break;
-	case '-':
-	    col = text_colno() + atoi(ptr);
-	    if (col < 0)
-		col = 0;
-	    break;
-	default:
-	    col = atoi(ptr) - 1;
-	    break;
-	}
+        switch(*ptr) {
+        case '+':
+            col = text_colno() + atoi(ptr + 1);
+            if (col > 254)
+                col = 254;
+            break;
+        case '-':
+            col = text_colno() + atoi(ptr);
+            if (col < 0)
+                col = 0;
+            break;
+        default:
+            col = atoi(ptr) - 1;
+            break;
+        }
     }
     if (col > 254 || col < 0) {
-	Abortcommand = 1;
-	return;
+        Abortcommand = 1;
+        return;
     }
     while (Clen < col)
-	Current[Clen++] = ' ';
+        Current[Clen++] = ' ';
     Current[Clen] = 0;
     Ep->Column = col;
     if (Ep->Column - Ep->Topcolumn >= Columns || Ep->Column < Ep->Topcolumn)
-	text_sync();
+        text_sync();
 }
 
 void
@@ -277,16 +277,16 @@ do_saveconfig()
     FILE *fi;
 
     if (ep->iconmode == 0) {
-	WIN *win = ep->Win;
-	ep->Winx      = win->LeftEdge;
-	ep->Winy      = win->TopEdge;
-	ep->Winwidth  = win->Width;
-	ep->Winheight = win->Height;
+        WIN *win = ep->Win;
+        ep->Winx      = win->LeftEdge;
+        ep->Winy      = win->TopEdge;
+        ep->Winwidth  = win->Width;
+        ep->Winheight = win->Height;
     }
 
     if (fi = fopen("s:dme.config", "w")) {
-	fwrite(&ep->BeginConfig, (char *)&ep->EndConfig - (char *)&ep->BeginConfig, 1, fi);
-	fclose(fi);
+        fwrite(&ep->BeginConfig, (char *)&ep->EndConfig - (char *)&ep->BeginConfig, 1, fi);
+        fclose(fi);
     }
 }
 
@@ -297,8 +297,8 @@ ED *ep;
     FILE *fi;
 
     if (fi = fopen("s:dme.config", "r")) {
-	fread(&ep->BeginConfig, (char *)&ep->EndConfig - (char *)&ep->BeginConfig, 1, fi);
-	fclose(fi);
+        fread(&ep->BeginConfig, (char *)&ep->EndConfig - (char *)&ep->BeginConfig, 1, fi);
+        fclose(fi);
     }
 }
 
@@ -355,17 +355,17 @@ do_modified()
     register ED *ep = Ep;
 
     if (av[1][0]) {
-	switch(av[1][1] & 0x1F) {
-	case 'n' & 0x1F:
-	    ep->Modified = 1;
-	    break;
-	case 'f' & 0x1F:
-	    ep->Modified = 0;
-	    break;
-	case 'o' & 0x1F:
-	    ep->Modified = ep->Modified ? 0 : 1;
-	    break;
-	}
+        switch(av[1][1] & 0x1F) {
+        case 'n' & 0x1F:
+            ep->Modified = 1;
+            break;
+        case 'f' & 0x1F:
+            ep->Modified = 0;
+            break;
+        case 'o' & 0x1F:
+            ep->Modified = ep->Modified ? 0 : 1;
+            break;
+        }
     }
 }
 
@@ -379,17 +379,17 @@ do_unjustify()
 
     for (i = 0; Current[i] == ' '; i++);
     for (j = i; Current[i]; i++) {
-	c = Current[j] = Current[i];
-	if (c != ' ' || !waswhite)
-	    j++;
-	waswhite = (c == ' ');
+        c = Current[j] = Current[i];
+        if (c != ' ' || !waswhite)
+            j++;
+        waswhite = (c == ' ');
 
     }
     Current[j] = 0;
 
     if (i != j) {
-	text_sync();
-	text_redisplaycurrline();
+        text_sync();
+        text_redisplaycurrline();
     }
 }
 
@@ -404,47 +404,47 @@ do_justify()
 
     switch(av[1][0]) {
     case 'c':
-	break;
+        break;
     case 'f':
-	firstnb = firstns(Current);
-	lastnb = lastns(Current);
-	if (firstnb < lastnb && ep->Margin < 255) {
-	    n = 0;
-	    i = firstnb;
-	    while (i <= lastnb) {
-		while ((c = Current[i]) && c != ' ')
-		    i++;
-		if (i <= lastnb) {
-		    n++;
-		    while (Current[i] == ' ')
-			i++;
-		}
-	    }
-	    fill = ep->Margin - lastnb - 1;
-	    i = firstnb;
-	    Current[lastnb + 1] = 0;
-	    if (n > 0 && fill > 0)
-		changed = TRUE;
-	    while (n > 0 && fill > 0 && Current[i]) {
-		while ((c = Current[i]) && c != ' ')
-		    i++;
-		sp = fill / n;
-		movmem(&Current[i], &Current[i + sp], strlen(&Current[i]) + 1);
-		memset(&Current[i], ' ', sp);
-		while (Current[i] == ' ')
-		    i++;
-		fill -= sp;
-		n--;
-	    }
-	}
-	break;
+        firstnb = firstns(Current);
+        lastnb = lastns(Current);
+        if (firstnb < lastnb && ep->Margin < 255) {
+            n = 0;
+            i = firstnb;
+            while (i <= lastnb) {
+                while ((c = Current[i]) && c != ' ')
+                    i++;
+                if (i <= lastnb) {
+                    n++;
+                    while (Current[i] == ' ')
+                        i++;
+                }
+            }
+            fill = ep->Margin - lastnb - 1;
+            i = firstnb;
+            Current[lastnb + 1] = 0;
+            if (n > 0 && fill > 0)
+                changed = TRUE;
+            while (n > 0 && fill > 0 && Current[i]) {
+                while ((c = Current[i]) && c != ' ')
+                    i++;
+                sp = fill / n;
+                movmem(&Current[i], &Current[i + sp], strlen(&Current[i]) + 1);
+                memset(&Current[i], ' ', sp);
+                while (Current[i] == ' ')
+                    i++;
+                fill -= sp;
+                n--;
+            }
+        }
+        break;
     default:
-	break;
+        break;
     }
 
     if (changed) {
-	text_sync();
-	text_redisplaycurrline();
+        text_sync();
+        text_redisplaycurrline();
     }
 }
 
@@ -470,7 +470,7 @@ do_space()
     ep->Insertmode = insmode;
 }
 
-void						/* MMW 1.42 */
+void                                            /* MMW 1.42 */
 do_sizewindow()
 {
     volatile WIN *win = Ep->Win;
@@ -480,20 +480,20 @@ do_sizewindow()
     GeometryToNW(av[1], &nw);
 
     if (nw.LeftEdge + nw.Width <= win->WScreen->Width &&
-	nw.TopEdge + nw.Height <= win->WScreen->Height &&
-	nw.Width >= win->MinWidth &&
-	nw.Height >= win->MinHeight) {
+        nw.TopEdge + nw.Height <= win->WScreen->Height &&
+        nw.Width >= win->MinWidth &&
+        nw.Height >= win->MinHeight) {
 
-	mdx = nw.LeftEdge - win->LeftEdge;
-	mdy = nw.TopEdge - win->TopEdge;
-	if (mdx > 0)
-	    mdx = 0;
-	if (mdy > 0)
-	    mdy = 0;
+        mdx = nw.LeftEdge - win->LeftEdge;
+        mdy = nw.TopEdge - win->TopEdge;
+        if (mdx > 0)
+            mdx = 0;
+        if (mdy > 0)
+            mdy = 0;
 
-	MoveWindow(win, mdx, mdy);
-	SizeWindow(win, nw.Width - win->Width, nw.Height - win->Height);
-	MoveWindow(win, nw.LeftEdge - win->LeftEdge, nw.TopEdge - win->TopEdge);
+        MoveWindow(win, mdx, mdy);
+        SizeWindow(win, nw.Width - win->Width, nw.Height - win->Height);
+        MoveWindow(win, nw.LeftEdge - win->LeftEdge, nw.TopEdge - win->TopEdge);
     }
 }
 

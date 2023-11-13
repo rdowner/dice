@@ -1,10 +1,10 @@
 
-			    README.DEVELOPERS
+                            README.DEVELOPERS
 
     DICE was originally written for the Amiga by Matthew Dillon and later
     ported to UNIX as a 68000 cross compiler, also by same.  It is not under
     active development beyond making it compile reasonably well under BSD or
     linux.
 
-    Matthew Dillon		dillon@backplane.com
+    Matthew Dillon              dillon@backplane.com
 

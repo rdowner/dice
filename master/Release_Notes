@@ -2,8 +2,8 @@ $VER: Release_Notes 3.01 (17.4.94)
 
 This is the Commercial version of DICE.
 
-		Online Help/Error Tracking/Editor Integration
-		---------------------------------------------
+                Online Help/Error Tracking/Editor Integration
+                ---------------------------------------------
 
 Dice provides very addictive features that integrate with your favorite text
 editor.  One use of online help and you'll be hooked.  To get hooked, all you
@@ -11,7 +11,7 @@ need to do is hook these features into your editor.
 
 Most full featured Amiga editors are highly configurable.  Scripts are provided
 for many popular editors.  If your editor is not listed, don't panic!  You may
-be able to modify one of the suppiled scripts.	Other users of the same editor
+be able to modify one of the suppiled scripts.  Other users of the same editor
 may already have written a compatible script.  Obvious Implementations will
 collect the best scripts, and include them in the next release of Dice.
 
@@ -32,19 +32,19 @@ commands under the "special" menu, select "DOS/AREXX Interface" then
 You can also bind individual keys by hand with the "Install DOS/AREXX Command...".
 Select function keys for the following commands:
 
-	DCC:Rexx/DICEHelp.ced ?		Bring up dicehelp with a requester
-	DCC:Rexx/DICEHelp.ced		Bring up dicehelp on the current word
-	DCC:Rexx/ErrorMove.ced First	Move to the First error message
-	DCC:Rexx/ErrorMove.ced Next	Move to the Next error message
-	DCC:Rexx/ErrorMove.ced Current	Move to the Current error message
-	DCC:Rexx/ErrorMove.ced Prev	Move to the Previous error message
-	DCC:Rexx/ErrorClear.ced		Clear out any error messages
-	DCC:Rexx/Vmake.ced Build	Build the current VMake project
-	DCC:Rexx/Vmake.ced Run		Build and run the current project
-	DCC:Rexx/Vmake.ced Debug	Build the project and run under the debugger
-	DCC:Rexx/Vmake.ced Front	Bring VMake to the front
-	DCC:Rexx/Vmake.ced Open		Bring VMake to the front
-	DCC:Rexx/Vmake.ced Compile	Compile the current file in the current project
+        DCC:Rexx/DICEHelp.ced ?         Bring up dicehelp with a requester
+        DCC:Rexx/DICEHelp.ced           Bring up dicehelp on the current word
+        DCC:Rexx/ErrorMove.ced First    Move to the First error message
+        DCC:Rexx/ErrorMove.ced Next     Move to the Next error message
+        DCC:Rexx/ErrorMove.ced Current  Move to the Current error message
+        DCC:Rexx/ErrorMove.ced Prev     Move to the Previous error message
+        DCC:Rexx/ErrorClear.ced         Clear out any error messages
+        DCC:Rexx/Vmake.ced Build        Build the current VMake project
+        DCC:Rexx/Vmake.ced Run          Build and run the current project
+        DCC:Rexx/Vmake.ced Debug        Build the project and run under the debugger
+        DCC:Rexx/Vmake.ced Front        Bring VMake to the front
+        DCC:Rexx/Vmake.ced Open         Bring VMake to the front
+        DCC:Rexx/Vmake.ced Compile      Compile the current file in the current project
 
 When you are happy with the installation, select "Save DOS/AREXX Commands...".
 
@@ -57,8 +57,8 @@ AME (Andy Finkel)
 =================
 Dice comes pre-configured for use with AME with lots of examples.
 
-			Speedy Compiles / Resident
-			--------------------------
+                        Speedy Compiles / Resident
+                        --------------------------
 
 If you have a lot of memory, you can speed compiles by making all the core
 DICE executables (dcc, dc1, dcpp, das and dlink) resident.  All DICE
@@ -83,9 +83,9 @@ Note: dicecache will not release memory if the system runs low!  This
 program is meant to be used on systems with a *lot* of memory!
 
 
-			      system13() call
-			     OpenConsole() call
-			--------------------------
+                              system13() call
+                             OpenConsole() call
+                        --------------------------
 
 Through much magic and hair pulling we have managed to implement a
 system()-like call which works under 1.3 AND 2.0 AND passes ^C AND works
@@ -118,284 +118,284 @@ version of DICE, here is a list of all the bugs that have been addressed:
 Bugs that have been fixed with this release:
 --------------------------------------------
 
-00060 bintohex	  Add symbols to hex file output
-01095 CI	  RCS leaves hanging AmigaDOS locks
-01038 CLIB	  A small addition for fcntl.h:
-00141 CLIB	  Add V39 VarArgs function list
-01139 CLIB	  All library code calls should check the return from
+00060 bintohex    Add symbols to hex file output
+01095 CI          RCS leaves hanging AmigaDOS locks
+01038 CLIB        A small addition for fcntl.h:
+00141 CLIB        Add V39 VarArgs function list
+01139 CLIB        All library code calls should check the return from
 ..... ........... malloc
-06010 CLIB	  Code for ungetc()-problem.
-06012 CLIB	  CreateTask() in DICE 3.0
-00101 CLIB	  Dice rexx library support
-00152 CLIB	  DICE string/strerror.c replacement
-06051 CLIB	  DoMethod() and hookPkt() missing
-00057 CLIB	  errno not set to EDOM for sqrt( -1.0 )
-06031 CLIB	  Feof() does not return eof correctly
-00050 CLIB	  fstat(0,1,2,..) problem
-06057 CLIB	  Functions missing
-00140 CLIB	  Geta4() Missing library function
-00100 CLIB	  Handle European character set
-01089 CLIB	  isxxxx macros a bit scrambled, I think.
-65008 CLIB	  List of all VarArgs functions...
-00149 CLIB	  List of Missing VarArgs functions
-06029 CLIB	  localtime doesn't work with small "time" values
-06046 CLIB	  Memory leak with WBMAIN
-10003 CLIB	  missing example in fread.c
-65000 CLIB	  Missing functions in amiga*r.lib
-01080 CLIB	  mungwall hit in new Arexx code
-65006 CLIB	  Mungwall hit on exit of a task created by CreateTask()
-06002 CLIB	  Possible bug with ungetc
-06022 CLIB	  Problems with 1.3 vs 2.0 libraries
-06021 CLIB	  RKM examples under DICE
-00053 clib	  scanf does not support floats
-01092 CLIB	  scanf format problem in DICE
-00150 CLIB	  scanf("%[abcd]", ...) ignores whitespace
-00058 CLIB	  sinh cosh tanh atan2 fmod frexp ldexp Math functions
+06010 CLIB        Code for ungetc()-problem.
+06012 CLIB        CreateTask() in DICE 3.0
+00101 CLIB        Dice rexx library support
+00152 CLIB        DICE string/strerror.c replacement
+06051 CLIB        DoMethod() and hookPkt() missing
+00057 CLIB        errno not set to EDOM for sqrt( -1.0 )
+06031 CLIB        Feof() does not return eof correctly
+00050 CLIB        fstat(0,1,2,..) problem
+06057 CLIB        Functions missing
+00140 CLIB        Geta4() Missing library function
+00100 CLIB        Handle European character set
+01089 CLIB        isxxxx macros a bit scrambled, I think.
+65008 CLIB        List of all VarArgs functions...
+00149 CLIB        List of Missing VarArgs functions
+06029 CLIB        localtime doesn't work with small "time" values
+06046 CLIB        Memory leak with WBMAIN
+10003 CLIB        missing example in fread.c
+65000 CLIB        Missing functions in amiga*r.lib
+01080 CLIB        mungwall hit in new Arexx code
+65006 CLIB        Mungwall hit on exit of a task created by CreateTask()
+06002 CLIB        Possible bug with ungetc
+06022 CLIB        Problems with 1.3 vs 2.0 libraries
+06021 CLIB        RKM examples under DICE
+00053 clib        scanf does not support floats
+01092 CLIB        scanf format problem in DICE
+00150 CLIB        scanf("%[abcd]", ...) ignores whitespace
+00058 CLIB        sinh cosh tanh atan2 fmod frexp ldexp Math functions
 ..... ........... missing
-06013 CLIB	  Strncat has a problem with null terminated strings
-01018 CLIB	  Suggestion for new version of mktemp
-00002 CLIB	  Support routines for using Hooks in resident programs
-01131 CLIB	  The patched version of amiga.lib causes some problems
-01130 CLIB	  There's an unnecessary fopen() call in stdio/fopen.c,
+06013 CLIB        Strncat has a problem with null terminated strings
+01018 CLIB        Suggestion for new version of mktemp
+00002 CLIB        Support routines for using Hooks in resident programs
+01131 CLIB        The patched version of amiga.lib causes some problems
+01130 CLIB        There's an unnecessary fopen() call in stdio/fopen.c,
 ..... ........... function fdopen():
-01088 CLIB	  Various Problems with library routines
-06030 CLIB	  wbmain appears to lose 144 bytes each time it is run
-01048 CLIB	  WorkbenchBase needs to be AutoOpen
-01152 DAS	  Bug report - DAS writes to low memory
-01124 DAS	  DAS 2.07.10R (1993/01/19) Enforcer-hit bug-report
-01117 DAS	  DAS ENFORCER HITS WITH DICE B4 AND DICE 2.07.54 ON
+01088 CLIB        Various Problems with library routines
+06030 CLIB        wbmain appears to lose 144 bytes each time it is run
+01048 CLIB        WorkbenchBase needs to be AutoOpen
+01152 DAS         Bug report - DAS writes to low memory
+01124 DAS         DAS 2.07.10R (1993/01/19) Enforcer-hit bug-report
+01117 DAS         DAS ENFORCER HITS WITH DICE B4 AND DICE 2.07.54 ON
 ..... ........... INSTRUCTION "MOVE.B 112(A3),A2"
-06042 DAS	  DAS Generates and enforcer hit
-06033 DAS	  DC1 should include #line statements in .asm code
-00126 DBUG	  DBug 'over' enhancement
-00129 DBUG	  DBUG doc incomplete
-00125 DBUG	  DBug enhancement
-00124 DBUG	  dbug/dd still guruing on 68000 machines
-01003 DBUG	  Suggestions for DBUG, crash
-01090 DC1	  -R option of DCC is totally broken
-06063 DC1	  An unknown DICE COMPILER BUG ! ! !
-06036 DC1	  Another enforcer hit
-06055 DC1	  Arithmetic on function pointers
-01133 DC1	  Bad error about retirn mismatch on __autoinit
+06042 DAS         DAS Generates and enforcer hit
+06033 DAS         DC1 should include #line statements in .asm code
+00126 DBUG        DBug 'over' enhancement
+00129 DBUG        DBUG doc incomplete
+00125 DBUG        DBug enhancement
+00124 DBUG        dbug/dd still guruing on 68000 machines
+01003 DBUG        Suggestions for DBUG, crash
+01090 DC1         -R option of DCC is totally broken
+06063 DC1         An unknown DICE COMPILER BUG ! ! !
+06036 DC1         Another enforcer hit
+06055 DC1         Arithmetic on function pointers
+01133 DC1         Bad error about retirn mismatch on __autoinit
 ..... ........... procedure
-00106 DC1	  Bitfield assertion problem
-01091 DC1	  Bug Report: Bad code gives DC1 error 0 -- not in
+00106 DC1         Bitfield assertion problem
+01091 DC1         Bug Report: Bad code gives DC1 error 0 -- not in
 ..... ........... dice.errors list!
-01010 DC1	  Code before default clause not allowed in a switch
+01010 DC1         Code before default clause not allowed in a switch
 ..... ........... statement
-00111 DC1	  D2 register destroyed on function call
-00115 DC1	  DAS Error 16 generated (extension of .0 is illegal).
-06065 DC1	  DC! does not complain about unknown structures
-65007 DC1	  DC1 barfs on bitfields
-06040 DC1	  dc1 crash located
-01113 DC1	  DC1 crashes system
-65023 DC1	  DC1 creates illegal addressing modes on entry into a
+00111 DC1         D2 register destroyed on function call
+00115 DC1         DAS Error 16 generated (extension of .0 is illegal).
+06065 DC1         DC! does not complain about unknown structures
+65007 DC1         DC1 barfs on bitfields
+06040 DC1         dc1 crash located
+01113 DC1         DC1 crashes system
+65023 DC1         DC1 creates illegal addressing modes on entry into a
 ..... ........... __regargs function
-01115 DC1	  DC1 doesn't accept bitfields in conditions
-00004 DC1	  DC1 doesn't generate a warning message on int-ptr
+01115 DC1         DC1 doesn't accept bitfields in conditions
+00004 DC1         DC1 doesn't generate a warning message on int-ptr
 ..... ........... conversion
-10002 DC1	  DC1 enforcer hits
-06045 DC1	  DC1 enforcer hits
-00104 DC1	  DC1 Error generating assembly for DAS
-06004 DC1	  DC1 fails to detect reuse of register in a prototype
-01137 DC1	  DC1 fails to warn about mismatch function pointer
+10002 DC1         DC1 enforcer hits
+06045 DC1         DC1 enforcer hits
+00104 DC1         DC1 Error generating assembly for DAS
+06004 DC1         DC1 fails to detect reuse of register in a prototype
+01137 DC1         DC1 fails to warn about mismatch function pointer
 ..... ........... assignment
-06027 DC1	  DC1 fails to warn about type mismatch on functions
-01023 DC1	  DC1 generates enforcer hits and crashes the machine
+06027 DC1         DC1 fails to warn about type mismatch on functions
+01023 DC1         DC1 generates enforcer hits and crashes the machine
 ..... ........... with 3.0 includes
-01140 DC1	  DC1 is misaligning structure sizes
-06053 DC1	  DC1 outof memory for undefined structure tag
-01098 DC1	  DC1 problem with stack overflow
-65003 DC1	  DC1 produces incorrect code instead of issuing an
+01140 DC1         DC1 is misaligning structure sizes
+06053 DC1         DC1 outof memory for undefined structure tag
+01098 DC1         DC1 problem with stack overflow
+65003 DC1         DC1 produces incorrect code instead of issuing an
 ..... ........... error message
-01046 DC1	  DC1 Should look for DCC_CONFIG:dcc.errors if it
+01046 DC1         DC1 Should look for DCC_CONFIG:dcc.errors if it
 ..... ........... exists.
-65001 DC1	  DC1 softerror in  ( ? : ) expression
-01045 DC1	  DCC Does not allow full SAS Style #Pragmas
-06003 DC1	  DCPP not expanding types properly/DC1 not checking
+65001 DC1         DC1 softerror in  ( ? : ) expression
+01045 DC1         DCC Does not allow full SAS Style #Pragmas
+06003 DC1         DCPP not expanding types properly/DC1 not checking
 ..... ........... types properly
-06018 DC1	  DICE 2.06.40 pessimizes constant pointer arithmetic
-06062 DC1	  DICE 3.0 MISSING AN ERROR IN MY CODE ?
-00110 DC1	  DICE bitfield bug
-01085 DC1	  Dice generates incorrect code when constant strings
+06018 DC1         DICE 2.06.40 pessimizes constant pointer arithmetic
+06062 DC1         DICE 3.0 MISSING AN ERROR IN MY CODE ?
+00110 DC1         DICE bitfield bug
+01085 DC1         Dice generates incorrect code when constant strings
 ..... ........... are put into the code segment
-06026 DC1	  Dice loses track of return in registerized parameters
-00114 DC1	  DICE v2.06.40 structure return bug
-01132 DC1	  Dynamic stacks (options -gs) works fine, except for
+06026 DC1         Dice loses track of return in registerized parameters
+00114 DC1         DICE v2.06.40 structure return bug
+01132 DC1         Dynamic stacks (options -gs) works fine, except for
 ..... ........... main():
-06017 DC1	  Fails to detect mismatch of types
-06000 DC1	  Failure to detect type mismatch usage
-00038 dc1	  Fatal error from DC1
-00000 DC1	  Fatal error on __regargs function with more than 4
+06017 DC1         Fails to detect mismatch of types
+06000 DC1         Failure to detect type mismatch usage
+00038 dc1         Fatal error from DC1
+00000 DC1         Fatal error on __regargs function with more than 4
 ..... ........... arguments
-06041 DC1	  Formatting improvement for error messages
-01006 DC1	  Generation of .0 extension on instructions
-00108 DC1	  if (a, 0) is not allowed
-06050 DC1	  Illegal size from DC1
-06037 DC1	  Incorrect extension tst.?
-06019 DC1	  Logical Or with constants generates a software-error
-00059 DC1	  Long Double float constants not implemented
-00047 DC1	  Missing error messages
-00145 DC1	  Nesting too many includes crashes the machine
-00102 DC1	  Parsing of constant expressions for Bitfields
-00113 DC1	  Parsing of the const keyword
-00116 DC1	  Parsing of the volatile keyword
-00105 DC1	  Passing structures on the stack size 17/18+n*4
-65021 DC1	  Possible #pragma libcall incompatibility with SAS C
-06020 DC1	  Possible DICE bugs
-06058 DC1	  Precedence order problems
-06044 DC1	  Problem in generated code (Crashes at runtime)
-06009 DC1	  Problem wih abs and unsigned values
-01143 DC1	  Problem with ?: generating a void error
-06068 DC1	  Problem with registerized call
-01005 DC1	  Problems Forward typedefining volatile structures
-00117 DC1	  Problems typedef'd functions
-01138 DC1	  Problems with incorrect ptr-to-ptr mismatch messages
-06028 DC1	  Problems with misalligned subroutines - Error in
+06041 DC1         Formatting improvement for error messages
+01006 DC1         Generation of .0 extension on instructions
+00108 DC1         if (a, 0) is not allowed
+06050 DC1         Illegal size from DC1
+06037 DC1         Incorrect extension tst.?
+06019 DC1         Logical Or with constants generates a software-error
+00059 DC1         Long Double float constants not implemented
+00047 DC1         Missing error messages
+00145 DC1         Nesting too many includes crashes the machine
+00102 DC1         Parsing of constant expressions for Bitfields
+00113 DC1         Parsing of the const keyword
+00116 DC1         Parsing of the volatile keyword
+00105 DC1         Passing structures on the stack size 17/18+n*4
+65021 DC1         Possible #pragma libcall incompatibility with SAS C
+06020 DC1         Possible DICE bugs
+06058 DC1         Precedence order problems
+06044 DC1         Problem in generated code (Crashes at runtime)
+06009 DC1         Problem wih abs and unsigned values
+01143 DC1         Problem with ?: generating a void error
+06068 DC1         Problem with registerized call
+01005 DC1         Problems Forward typedefining volatile structures
+00117 DC1         Problems typedef'd functions
+01138 DC1         Problems with incorrect ptr-to-ptr mismatch messages
+06028 DC1         Problems with misalligned subroutines - Error in
 ..... ........... DICE 2.07R
-06001 DC1	  Re: #pragma problems
-06005 DC1	  Re: DC1 cuts off first character of error messages:
-06066 DC1	  Re: Enforcer Hits on dc1
-01040 DC1	  Size mismatch errors
-00118 DC1	  Soft-Error "too many redos"
-01008 DC1	  Software failure with strange include file
-01004 DC1	  Software-Error for de-referencing structure returns
+06001 DC1         Re: #pragma problems
+06005 DC1         Re: DC1 cuts off first character of error messages:
+06066 DC1         Re: Enforcer Hits on dc1
+01040 DC1         Size mismatch errors
+00118 DC1         Soft-Error "too many redos"
+01008 DC1         Software failure with strange include file
+01004 DC1         Software-Error for de-referencing structure returns
 ..... ........... field directly
-00109 DC1	  Statements allowed before a case in a switch
+00109 DC1         Statements allowed before a case in a switch
 ..... ........... statement
-00107 DC1	  Structure definition bugs
-00148 DC1	  The compiler does not catch goto's to non-existant
+00107 DC1         Structure definition bugs
+00148 DC1         The compiler does not catch goto's to non-existant
 ..... ........... labels
-01154 DC1	  Types.c needs to issue ERROR 63 properly
-01007 DC1	  Wrong file reported for errors with -H option
-00120 DC1	  \x does not allow a single hex character
-01014 DCC	  automatic library use does not allow for debug.lib
-01151 DCC	  Bug report - DCC Enforcer hit
-06006 DCC	  DCC config bug
-01079 DCC	  dice bugs/problems
-01017 DCC	  Errors and warnings are hard to read
-00103 DCC	  possible dice bug with strings
-01100 DCC	  Problems with error file parsing
-01002 DCC	  Return code behavior
-00146 DCC	  The first column of error messages is being eaten
-01035 DCC	  There is no way to get source lines along with error
+01154 DC1         Types.c needs to issue ERROR 63 properly
+01007 DC1         Wrong file reported for errors with -H option
+00120 DC1         \x does not allow a single hex character
+01014 DCC         automatic library use does not allow for debug.lib
+01151 DCC         Bug report - DCC Enforcer hit
+06006 DCC         DCC config bug
+01079 DCC         dice bugs/problems
+01017 DCC         Errors and warnings are hard to read
+00103 DCC         possible dice bug with strings
+01100 DCC         Problems with error file parsing
+01002 DCC         Return code behavior
+00146 DCC         The first column of error messages is being eaten
+01035 DCC         There is no way to get source lines along with error
 ..... ........... message
-00121 DCPP	  date format suggestion
-00001 DCPP	  DCCP chokes on "#include TOKEN"
-06008 DCPP	  DCPP Does not evaluate macro arguments in IF
+00121 DCPP        date format suggestion
+00001 DCPP        DCCP chokes on "#include TOKEN"
+06008 DCPP        DCPP Does not evaluate macro arguments in IF
 ..... ........... statements
-01022 DCPP	  DCPP Generates enforcer hits with -H file missing
-01105 DCPP	  DCPP writes location 0 for syntax errors
-01078 DCPP	  DCPP: Warning 31 on recursive macro definition
-01077 DCPP	  DCPP: Warning 31 on recursive macro definition
-65015 DCPP	  Pragmas have changed in Beta 4. WHY?
-06049 DCPP	  Problems with macro expansions not having parenthesis
-01099 DCPP	  still wrong line numbers in error dc1 reports
-01084 DD	  Can't set a breakpoing in the breakpoint window
-06011 DD	  dd 1.10 'set breakpoint' menu does not work
-01083 DD	  DD Generates an Enforcer hit when opening a window
+01022 DCPP        DCPP Generates enforcer hits with -H file missing
+01105 DCPP        DCPP writes location 0 for syntax errors
+01078 DCPP        DCPP: Warning 31 on recursive macro definition
+01077 DCPP        DCPP: Warning 31 on recursive macro definition
+65015 DCPP        Pragmas have changed in Beta 4. WHY?
+06049 DCPP        Problems with macro expansions not having parenthesis
+01099 DCPP        still wrong line numbers in error dc1 reports
+01084 DD          Can't set a breakpoing in the breakpoint window
+06011 DD          dd 1.10 'set breakpoint' menu does not work
+01083 DD          DD Generates an Enforcer hit when opening a window
 00127 DiceCache   Provide more information on dicecache
-01050 DiceHelp	  DiceHelp needs to support Multiple selections on the
+01050 DiceHelp    DiceHelp needs to support Multiple selections on the
 ..... ........... same name
-65018 DiceHelp	  DiceHelp still doesn't react on the ARexx command "Q"
-00128 DiceHelp	  DiceHelp truncates
-01108 DiceHelp	  Enforcer hit with HelpBox from TTX
-01021 DIFF	  Diff should have a noisy option
-01037 DIFF	  New DIFF for BugBatch crashes
-06025 DLINK	  DLINK Claims CreateTask is multiply Defined
-01125 DLINK	  Enforcer hits with DLINK
-01056 DMake	  DMake copyright/version strings are non-standard
-00135 DMake	  Dmake does not support aliases or implicit
+65018 DiceHelp    DiceHelp still doesn't react on the ARexx command "Q"
+00128 DiceHelp    DiceHelp truncates
+01108 DiceHelp    Enforcer hit with HelpBox from TTX
+01021 DIFF        Diff should have a noisy option
+01037 DIFF        New DIFF for BugBatch crashes
+06025 DLINK       DLINK Claims CreateTask is multiply Defined
+01125 DLINK       Enforcer hits with DLINK
+01056 DMake       DMake copyright/version strings are non-standard
+00135 DMake       Dmake does not support aliases or implicit
 ..... ........... dependencies
-00045 DMAKE	  Dmake Lockup
-00132 DMake	  DMake not friendly
-01057 DMake	  Suppress output from Dmake for No-Work situation
-06067 Docs	  -l0 still includes DLIB:X.0
-01015 Docs	  Arexx functions need to be documented in the library
-00041 Docs	  DICE 1st impressions...
-01058 Docs	  DME Chapter needs to be updated
-01153 Docs	  DU documentation change
-01101 Docs	  Insufficent descriptions for error messages
-01060 Docs	  Need documentation for VMake
-01052 Docs	  Need to write Documentation for DD
-01019 Docs	  Regargs question
-00153 Docs	  Restrictive Docs in string.doc
-01114 Docs	  stpchr not documented
-01053 Docs	  We need an Amiga Programming Chapter
-01093 Docs	  Porting problems
-01011 Docs	  Problems with word-wrapping of listings in the manual
-01147 DSearch	  dsearch says nothing if file not found
-06015 DU	  du BETA-3.00.02  (27.7.92)
-01096 DU	  du gives wildly different answers on RAM:, Hard Disk
+00045 DMAKE       Dmake Lockup
+00132 DMake       DMake not friendly
+01057 DMake       Suppress output from Dmake for No-Work situation
+06067 Docs        -l0 still includes DLIB:X.0
+01015 Docs        Arexx functions need to be documented in the library
+00041 Docs        DICE 1st impressions...
+01058 Docs        DME Chapter needs to be updated
+01153 Docs        DU documentation change
+01101 Docs        Insufficent descriptions for error messages
+01060 Docs        Need documentation for VMake
+01052 Docs        Need to write Documentation for DD
+01019 Docs        Regargs question
+00153 Docs        Restrictive Docs in string.doc
+01114 Docs        stpchr not documented
+01053 Docs        We need an Amiga Programming Chapter
+01093 Docs        Porting problems
+01011 Docs        Problems with word-wrapping of listings in the manual
+01147 DSearch     dsearch says nothing if file not found
+06015 DU          du BETA-3.00.02  (27.7.92)
+01096 DU          du gives wildly different answers on RAM:, Hard Disk
 00043 Environment DiceHelp/Integrated/libmake/profiler comments
-06052 EXAMPLE	  FMSDISK has a bad declaration of a function pointer
-01126 EXAMPLE	  SharedLib example loses memory when the library is
+06052 EXAMPLE     FMSDISK has a bad declaration of a function pointer
+01126 EXAMPLE     SharedLib example loses memory when the library is
 ..... ........... expunged
 01150 FDTOPRAGMA  Bug in fdtopragma - always gets enforcer hits
-01016 Hunks	  Hunks program generates enforcer hit
-01148 Hunks	  Hunks program gets enforce hits
-00046 Includes	  Missing clib/alib_protos.h
-01001 INSTALL	  -f flag should not be set when installing under 2.0
-65011 INSTALL	  3.0 Includes are missing
-01136 INSTALL	  CED Integration information
-01103 INSTALL	  DICE beta4 installation bugs
-00143 INSTALL	  Does not have the latest includes
-00147 INSTALL	  Installation Report/Bugs
-01134 INSTALL	  Installer ICON
-00044 INSTALL	  Installer should generate log file by default
-01145 INSTALL	  installer text bug
-65017 INSTALL	  Missing include file directory pattern in Makeindex
+01016 Hunks       Hunks program generates enforcer hit
+01148 Hunks       Hunks program gets enforce hits
+00046 Includes    Missing clib/alib_protos.h
+01001 INSTALL     -f flag should not be set when installing under 2.0
+65011 INSTALL     3.0 Includes are missing
+01136 INSTALL     CED Integration information
+01103 INSTALL     DICE beta4 installation bugs
+00143 INSTALL     Does not have the latest includes
+00147 INSTALL     Installation Report/Bugs
+01134 INSTALL     Installer ICON
+00044 INSTALL     Installer should generate log file by default
+01145 INSTALL     installer text bug
+65017 INSTALL     Missing include file directory pattern in Makeindex
 ..... ........... call
-65019 INSTALL	  MMU Tools in DICE 3.0 Beta 4
-00138 INSTALL	  Re: Installation Report/Bugs
-02000 INSTALL	  Use archiving file handler for floppy installed
+65019 INSTALL     MMU Tools in DICE 3.0 Beta 4
+00138 INSTALL     Re: Installation Report/Bugs
+02000 INSTALL     Use archiving file handler for floppy installed
 ..... ........... product
-00049 INSTALL	  Use more instead of DICE as text reader
-01000 INSTALL	  We need to have the latest 2.0 includes
-01044 INSTALL	  Work to be done on the Installer
-01094 INSTALL	  Problems with volumes with spaces in the name
-01075 Library	  DICE strncat function differs signifcantly from ANSI
+00049 INSTALL     Use more instead of DICE as text reader
+01000 INSTALL     We need to have the latest 2.0 includes
+01044 INSTALL     Work to be done on the Installer
+01094 INSTALL     Problems with volumes with spaces in the name
+01075 Library     DICE strncat function differs signifcantly from ANSI
 ..... ........... spec.
 00139 Makeindex   Makeindex does not include the last entry of a .doc
 ..... ........... file in the index
-03001 RCS	  RCS should work under AmigaDos 1.3
-01086 TOOLS	  Debugging tools for Commercial DICE?
-65020 TOOLS	  Enforcer hit in fdtopragma
-00037 TTX	  Assorted integrated error problems
-01149 TTX	  Typing "ttxsame" with no arguments hangs CLI
-01047 TTX	  VMake Integration with TurboText
-01030 VMake	  .info files should not appear in the requester
-01029 VMake	  Add ability to update a VMakefile
-01032 VMake	  DEL button for VMake requester does not work well
-01041 VMake	  dmake clean is a bit overenthusiastic
-03004 VMake	  Don't allow non projects
-01043 VMake	  Enhancement: Console window should follow VMAKE
+03001 RCS         RCS should work under AmigaDos 1.3
+01086 TOOLS       Debugging tools for Commercial DICE?
+65020 TOOLS       Enforcer hit in fdtopragma
+00037 TTX         Assorted integrated error problems
+01149 TTX         Typing "ttxsame" with no arguments hangs CLI
+01047 TTX         VMake Integration with TurboText
+01030 VMake       .info files should not appear in the requester
+01029 VMake       Add ability to update a VMakefile
+01032 VMake       DEL button for VMake requester does not work well
+01041 VMake       dmake clean is a bit overenthusiastic
+03004 VMake       Don't allow non projects
+01043 VMake       Enhancement: Console window should follow VMAKE
 ..... ........... jumping
-01062 VMake	  Handle initial command Line arguments in VMake
-03003 VMake	  NEW does not put new project in alternate path
-01066 VMake	  Resizing in VMake has some problems
-01028 VMake	  SCAN Command needs to be smarter
-01034 VMake	  Selecting SAVE for a brand new project gives
+01062 VMake       Handle initial command Line arguments in VMake
+03003 VMake       NEW does not put new project in alternate path
+01066 VMake       Resizing in VMake has some problems
+01028 VMake       SCAN Command needs to be smarter
+01034 VMake       Selecting SAVE for a brand new project gives
 ..... ........... unhelpful message
-01073 VMake	  VMake configurations scripts are missing
-01033 VMake	  VMake does not restrict the characters that can be
+01073 VMake       VMake configurations scripts are missing
+01033 VMake       VMake does not restrict the characters that can be
 ..... ........... in a project name
-01070 VMake	  VMake does not support options results
-65014 VMake	  VMake doesn't ghost gadgets and menus
-01027 VMake	  VMake failed for devices with spaces in the name
-01104 VMake	  VMake GUI problems
-01071 VMake	  VMake List gadget flickers a lot
-01069 VMake	  VMake needs external parameter passing for REXX
+01070 VMake       VMake does not support options results
+65014 VMake       VMake doesn't ghost gadgets and menus
+01027 VMake       VMake failed for devices with spaces in the name
+01104 VMake       VMake GUI problems
+01071 VMake       VMake List gadget flickers a lot
+01069 VMake       VMake needs external parameter passing for REXX
 ..... ........... commands
-01054 VMake	  VMake needs to check for an empty Project
-01061 VMake	  VMake needs to handle dropins better
-01068 VMake	  VMake Should look for DCC_CONFIG:VMake.config if it
+01054 VMake       VMake needs to check for an empty Project
+01061 VMake       VMake needs to handle dropins better
+01068 VMake       VMake Should look for DCC_CONFIG:VMake.config if it
 ..... ........... exists.
-01074 VMake	  VMake should support Project based configurations
-65012 VOpts	  Empty gadgets in VOpts requester
-65013 VOpts	  Errors in DCC:Config/VOpts.config
-01063 VOpts	  VMake/VOpts interaction needs to be tuned
-01067 VOpts	  VOpts Should look for DCC_CONFIG:VOpts.config if it
+01074 VMake       VMake should support Project based configurations
+65012 VOpts       Empty gadgets in VOpts requester
+65013 VOpts       Errors in DCC:Config/VOpts.config
+01063 VOpts       VMake/VOpts interaction needs to be tuned
+01067 VOpts       VOpts Should look for DCC_CONFIG:VOpts.config if it
 ..... ........... exists.
-01039 VOpts	  VOpts should notify user before modifying soruce
-01049 WBRun	  WBRun crashes under 2.0
+01039 VOpts       VOpts should notify user before modifying soruce
+01049 WBRun       WBRun crashes under 2.0

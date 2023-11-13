@@ -54,8 +54,8 @@
 #define TRUE (1)
 #define FALSE (0)
 
-#define MAXHUNKSIZE 100000		/* is this enough lines? */
-#define INITHUNKMAX 125 		/* initial dynamic allocation size */
+#define MAXHUNKSIZE 100000              /* is this enough lines? */
+#define INITHUNKMAX 125                 /* initial dynamic allocation size */
 #define MAXLINELEN 1024
 #define BUFFERSIZE 1024
 #define SCCSPREFIX "s."
@@ -93,20 +93,20 @@
 /* typedefs */
 
 typedef char bool;
-typedef long LINENUM;			/* must be signed */
-typedef unsigned MEM;			/* what to feed malloc */
+typedef long LINENUM;                   /* must be signed */
+typedef unsigned MEM;                   /* what to feed malloc */
 
 /* globals */
 
-EXT int Argc;				/* guess */
+EXT int Argc;                           /* guess */
 EXT char **Argv;
-EXT int Argc_last;			/* for restarting plan_b */
+EXT int Argc_last;                      /* for restarting plan_b */
 EXT char **Argv_last;
 
-EXT struct stat filestat;		/* file statistics area */
+EXT struct stat filestat;               /* file statistics area */
 EXT int filemode INIT(0644);
 
-EXT char buf[MAXLINELEN];		/* general purpose buffer */
+EXT char buf[MAXLINELEN];               /* general purpose buffer */
 EXT FILE *ofp INIT(Nullfp);             /* output file pointer */
 EXT FILE *rejfp INIT(Nullfp);           /* reject file pointer */
 
@@ -153,10 +153,10 @@ EXT bool canonicalize INIT(FALSE);
 EXT int diff_type INIT(0);
 
 EXT bool do_defines INIT(FALSE);        /* patch using ifdef, ifndef, etc. */
-EXT char if_defined[128];		/* #ifdef xyzzy */
-EXT char not_defined[128];		/* #ifndef xyzzy */
+EXT char if_defined[128];               /* #ifdef xyzzy */
+EXT char not_defined[128];              /* #ifndef xyzzy */
 EXT char else_defined[] INIT("#else\n");/* #else */
-EXT char end_defined[128];		/* #endif xyzzy */
+EXT char end_defined[128];              /* #endif xyzzy */
 
 EXT char *revision INIT(Nullch);        /* prerequisite revision, if any */
 

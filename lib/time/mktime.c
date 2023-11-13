@@ -21,48 +21,48 @@ struct tm *tm;
     short i;
 
     /*
-     *	1976 was a leap year, take quad years from 1976, each
-     *	366+365+365+365 days each.  Then adjust for the year
+     *  1976 was a leap year, take quad years from 1976, each
+     *  366+365+365+365 days each.  Then adjust for the year
      */
 
     t = ((tm->tm_year - 76) / 4) * ((366 + 365 * 3) * 86400);
 
     /*
-     *	compensate to make it work the same as unix time (unix time
-     *	started 8 years earlier)
+     *  compensate to make it work the same as unix time (unix time
+     *  started 8 years earlier)
      */
 
     t += _TimeCompensation;
 
     /*
-     *	take care of the year within a four year set, add a day for
-     *	the leap year if we are based at a year beyond it.
+     *  take care of the year within a four year set, add a day for
+     *  the leap year if we are based at a year beyond it.
      */
 
     t += ((notLeap = (tm->tm_year - 76) % 4)) * (365 * 86400);
 
     if (notLeap)
-	t += 86400;
+        t += 86400;
 
     /*
-     *	calculate days over months then days offset in the month
+     *  calculate days over months then days offset in the month
      */
 
     for (i = 0; i < tm->tm_mon; ++i) {
-	t += mon[i] * 86400;
-	if (i == 1 && notLeap == 0)
-	    t += 86400;
+        t += mon[i] * 86400;
+        if (i == 1 && notLeap == 0)
+            t += 86400;
     }
     t += (tm->tm_mday - 1) * 86400;
 
     /*
-     *	our time is from 1978, not 1976
+     *  our time is from 1978, not 1976
      */
 
     t -= (365 + 366) * 86400;
 
     /*
-     *	calculate hours, minutes, seconds
+     *  calculate hours, minutes, seconds
      */
 
     t += tm->tm_hour * 3600 + tm->tm_min * 60 + tm->tm_sec;
@@ -85,8 +85,8 @@ char *av[];
     time_t t;
 
     if (ac < 4) {
-	puts("test day mo yr");
-	exit(0);
+        puts("test day mo yr");
+        exit(0);
     }
     clrmem(&tm, sizeof(tm));
     tm.tm_mday = atoi(av[1]);

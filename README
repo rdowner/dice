@@ -1,6 +1,6 @@
 
-			    DICE SOURCE CODE RELEASE README
-			       ADDENDUM, 17 October 2023
+                            DICE SOURCE CODE RELEASE README
+                               ADDENDUM, 17 October 2023
 
     So here it is, BSD licensed.  The DICE compiler from my Amiga days.
     I have sinced made it compile under bsd/linux on hopefully 32 or 64
@@ -48,10 +48,10 @@
     I do not know if it will self-compile on 68K, that is a code path I haven't
     been able to test when I ported it over to UNIX.
 
-			    DICE SOURCE CODE RELEASE README
+                            DICE SOURCE CODE RELEASE README
 
-		(NOTE, some of these instructions may be obsolete or
-		 inapplicable now)
+                (NOTE, some of these instructions may be obsolete or
+                 inapplicable now)
 
 
     (c)Copyright 1992-1997 Obvious Implementations Corp.  Redistribution and
@@ -79,8 +79,8 @@
 
     My email address and web pages
 
-	dillon@backplane.com
-	http://www.backplane.com/
+        dillon@backplane.com
+        http://www.backplane.com/
 
     I am willing to maintain the source tree, at least for a little while.
     Bug fixes should be emailed to me.
@@ -111,49 +111,49 @@
     except those routines which employe FP constants from your sources.
 
     (1) install dmake.  Unfortunately many years after dmake someone wrote
-	a dmake so to avoid confusion, my dmake was renamed to dxmake.
+        a dmake so to avoid confusion, my dmake was renamed to dxmake.
 
-	I'm sure someone will be able to clean up the topology and generate
-	Makefile's for BSD make or gmake, but I haven't done that so...
+        I'm sure someone will be able to clean up the topology and generate
+        Makefile's for BSD make or gmake, but I haven't done that so...
 
     (2) setup target directories via the top-level DMakefile and DMakefile.inc.
-	Get the byte order -D option correct.  It defaults to -DINTELBYTEORDER
-	(little endian I think).
+        Get the byte order -D option correct.  It defaults to -DINTELBYTEORDER
+        (little endian I think).
 
     (3) dxmake inside the project directory.
 
-	dxmake obj
-	dxmake
-	dxmake install
+        dxmake obj
+        dxmake
+        dxmake install
 
     (4) AMIGA SPECIFIC AMIGAxxx.LIB EQUIVALENTS
 
-	These libraries are provided precompiled in the distribution and may
-	also be regenerated.
+        These libraries are provided precompiled in the distribution and may
+        also be regenerated.
 
-	You can create amigaxxx.lib equivalents.  The auto library is used
-	to automatically open those system libraries used by the code.
+        You can create amigaxxx.lib equivalents.  The auto library is used
+        to automatically open those system libraries used by the code.
 
-	cd lib
-	dxmake -f DMakefile.unix amiga13
-	dxmake -f DMakefile.unix amiga20
-	dxmake -f DMakefile.unix auto
+        cd lib
+        dxmake -f DMakefile.unix amiga13
+        dxmake -f DMakefile.unix amiga20
+        dxmake -f DMakefile.unix auto
 
     (4) ROM LIBRARY, AMIGA LIBRARIES, AMIGA SUPPORT LIBRARIES
 
-	These are in the lib/ subdirectory, read the DMakefile's available.
-	dxmake -f DMakefile.unix rom
+        These are in the lib/ subdirectory, read the DMakefile's available.
+        dxmake -f DMakefile.unix rom
 
-	DICE includes stdio, string, and other Amiga-specific support 
-	libraries.   If you have the amiga includes installed, you can compile
-	these libraries simply with:
+        DICE includes stdio, string, and other Amiga-specific support 
+        libraries.   If you have the amiga includes installed, you can compile
+        these libraries simply with:
 
-	cd lib
-	dxmake -f DMakefile.unix all
+        cd lib
+        dxmake -f DMakefile.unix all
 
-	Most DICE use cases these days do not use the original Amiga OS and
-	you are kinda on your own in terms of putting together stdio-like
-	support libraries.
+        Most DICE use cases these days do not use the original Amiga OS and
+        you are kinda on your own in terms of putting together stdio-like
+        support libraries.
 
 (III) COMPILING DICE UNDER THE AMIGA
 
@@ -172,33 +172,33 @@
 
 (IV) DIRECTORIES
 
-    abin	amiga binaries
-    dlib	amiga/68000 support libraries
+    abin        amiga binaries
+    dlib        amiga/68000 support libraries
 
-    ubin	unix binaries
-    ulib	unix support libraries
+    ubin        unix binaries
+    ulib        unix support libraries
 
-    src		primary utility and compiler source
-    lib		amiga/68000 support library source
-    suplib	unix support library source
+    src         primary utility and compiler source
+    lib         amiga/68000 support library source
+    suplib      unix support library source
 
-    include	header files for amiga/68000 libraries, including
-		selected portions of the 1.3, 2.0, and 3.0 includes
-		(the clib and fd directories only), and the DICE
-		ANSI library.
+    include     header files for amiga/68000 libraries, including
+                selected portions of the 1.3, 2.0, and 3.0 includes
+                (the clib and fd directories only), and the DICE
+                ANSI library.
 
-    config	Various amiga-related DMakefile's for compiling
-		DICE (included as-is)
+    config      Various amiga-related DMakefile's for compiling
+                DICE (included as-is)
 
-    doc		Library and compiler documentation
-		(included as-is)
+    doc         Library and compiler documentation
+                (included as-is)
 
 
-    installer	Bunches of installation scripts.  Included AS-IS.
+    installer   Bunches of installation scripts.  Included AS-IS.
 
-    master	Random junk (used to be the disk template that I used
-		to make floppies).  Removed duplicate information that
-		already exists in other directories.
+    master      Random junk (used to be the disk template that I used
+                to make floppies).  Removed duplicate information that
+                already exists in other directories.
 
 (IV) LATE UPDATE NOTES
 
@@ -210,5 +210,5 @@
     one assembly bug (that might never have gotten hit in the original
     codebase anyway).  DCC rev bumped to 1.15.
 
-						-Matt
+                                                -Matt
 

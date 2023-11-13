@@ -1,56 +1,56 @@
-	section text,code
-	xdef	_buf
-	section __MERGED,bss
-	ds.w	0
-_buf	ds.b	256
-	section text,code
-	ds.l 0
-	xdef	_main
-	procstart
+        section text,code
+        xdef    _buf
+        section __MERGED,bss
+        ds.w    0
+_buf    ds.b    256
+        section text,code
+        ds.l 0
+        xdef    _main
+        procstart
 _main:
-	movem.l	l7,-(sp)
-	link	A5,#-l4
-	moveq.l	#$01,D2
-	bra	l9
+        movem.l l7,-(sp)
+        link    A5,#-l4
+        moveq.l #$01,D2
+        bra     l9
 l1
-	move.w	D2,D0
-	ext.l	D0
-	asl.l	#$02,D0
-	move.l	l6+4(A5),A0
-	add.l	D0,A0
-	move.l	(A0),-(sp)
-	jsr	_puts
-	addq.l	#4,sp
+        move.w  D2,D0
+        ext.l   D0
+        asl.l   #$02,D0
+        move.l  l6+4(A5),A0
+        add.l   D0,A0
+        move.l  (A0),-(sp)
+        jsr     _puts
+        addq.l  #4,sp
 l2
-	addq.w	#$01,D2
+        addq.w  #$01,D2
 l9
-	move.w	D2,D0
-	ext.l	D0
-	cmp.l	l6+0(A5),D0
-	blt	l1
+        move.w  D2,D0
+        ext.l   D0
+        cmp.l   l6+0(A5),D0
+        blt     l1
 l10
 l3
-	pea.l	l8
-	jsr	_puts
-	addq.l	#4,sp
-	pea.l	_buf
-	jsr	_gets
-	addq.l	#4,sp
-	pea.l	_buf
-	jsr	_puts
-	addq.l	#4,sp
+        pea.l   l8
+        jsr     _puts
+        addq.l  #4,sp
+        pea.l   _buf
+        jsr     _gets
+        addq.l  #4,sp
+        pea.l   _buf
+        jsr     _puts
+        addq.l  #4,sp
 l5
-	unlk	A5
-	move.l	(sp)+,D2
-	rts
-l7	reg	D2
-l4	equ	0
-l6	equ	12
-	procend
-	xref	_gets
-	xref	_puts
-	section data,data
+        unlk    A5
+        move.l  (sp)+,D2
+        rts
+l7      reg     D2
+l4      equ     0
+l6      equ     12
+        procend
+        xref    _gets
+        xref    _puts
+        section data,data
 l8
 
-	dc.b	$69,$6E,$70,$75,$74,$3A,$00
-	END
+        dc.b    $69,$6E,$70,$75,$74,$3A,$00
+        END

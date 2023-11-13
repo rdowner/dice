@@ -205,7 +205,7 @@ will ask for confirmation before proceeding.
 The upshot of all this is that you should be able to say, while in a news
 interface, the following:
 .Sp
-	| patch -d /usr/src/local/blurfl
+        | patch -d /usr/src/local/blurfl
 .Sp
 and patch a file in the blurfl directory directly from the article containing
 the patch.
@@ -314,7 +314,7 @@ the front of the pathname.
 (Any intervening directory names also go away.)
 For example, supposing the filename in the patch file was
 .sp
-	/u/howard/src/blurfl/blurfl.c
+        /u/howard/src/blurfl/blurfl.c
 .sp
 setting
 .B \-p
@@ -324,13 +324,13 @@ gives the entire pathname unmodified,
 .B \-p1
 gives
 .sp
-	u/howard/src/blurfl/blurfl.c
+        u/howard/src/blurfl/blurfl.c
 .sp
 without the leading slash,
 .B \-p4
 gives
 .sp
-	blurfl/blurfl.c
+        blurfl/blurfl.c
 .sp
 and not specifying
 .B \-p
@@ -384,7 +384,7 @@ to ignore this patch from the patch file, but continue on looking
 for the next patch in the file.
 Thus
 .sp
-	patch -S + -S + <patchfile
+        patch -S + -S + <patchfile
 .sp
 will ignore the first and second of three patches.
 .TP 5

@@ -1,39 +1,39 @@
 
-		    ;	(c)Copyright 1990, Matthew Dillon, All Rights Reserved
-		    ;
-		    ;	There are two levels of init.	Level 0 is standalone
-		    ;	init that requires NO external references and is used
-		    ;	to open libraries and such.
-		    ;
-		    ;	Level 1 contains init routines that require libraries
-		    ;	to already be open.
+                    ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                    ;
+                    ;   There are two levels of init.   Level 0 is standalone
+                    ;   init that requires NO external references and is used
+                    ;   to open libraries and such.
+                    ;
+                    ;   Level 1 contains init routines that require libraries
+                    ;   to already be open.
 
-		    section autoinit0,code
+                    section autoinit0,code
 
-		    xdef    __AutoFail0
-		    moveq.l #0,D0
-		    rts
+                    xdef    __AutoFail0
+                    moveq.l #0,D0
+                    rts
 __AutoFail0
-		    moveq.l #1,D0
-		    rts
+                    moveq.l #1,D0
+                    rts
 
-		    section autoinit1,code
+                    section autoinit1,code
 
-		    xdef    __AutoFail1
-		    moveq.l #0,D0
-		    rts
+                    xdef    __AutoFail1
+                    moveq.l #0,D0
+                    rts
 __AutoFail1
-		    moveq.l #1,D0
-		    rts
+                    moveq.l #1,D0
+                    rts
 
-		    section autoexit0,code
-		    rts
+                    section autoexit0,code
+                    rts
 
-		    section autoexit1,code
-		    rts
+                    section autoexit1,code
+                    rts
 
-		    section autoconfig,code
-		    rts
+                    section autoconfig,code
+                    rts
 
-		    END
+                    END
 

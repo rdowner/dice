@@ -21,13 +21,13 @@ const char *toks;
     char c;
 
     while (c = *str) {
-	const char *p = toks;
-	while (*p) {
-	    if (*p == c)
-		return(str);
-	    ++p;
-	}
-	++str;
+        const char *p = toks;
+        while (*p) {
+            if (*p == c)
+                return(str);
+            ++p;
+        }
+        ++str;
     }
     return(NULL);
 }

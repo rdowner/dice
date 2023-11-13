@@ -17,8 +17,8 @@ unsigned char **sst;
 {
     unsigned char *ptr = *sst;
     if (*ptr) {
-	*sst = ptr + 1;
-	return(*ptr);
+        *sst = ptr + 1;
+        return(*ptr);
     }
     return(EOF);
 }
@@ -45,7 +45,7 @@ const char *ctl;
     error = _sfmt(ctl, va, _sgetc, _sungetc, &ptr, &cnt);
     va_end(va);
     if (error)
-	return(error);
+        return(error);
     return(cnt);
 }
 

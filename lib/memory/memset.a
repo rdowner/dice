@@ -1,29 +1,29 @@
 
-		    ;	MEMSET.A
-		    ;
-		    ;	memset(d, v, bytes) -> setmem(d, bytes, v)
-		    ;	       A0  D0  D1	      A0  D1   D0
-		    ;
-		    ;	(c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                    ;   MEMSET.A
+                    ;
+                    ;   memset(d, v, bytes) -> setmem(d, bytes, v)
+                    ;          A0  D0  D1             A0  D1   D0
+                    ;
+                    ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		    xdef    _hyper_memset
-		    xdef    _memset
-		    xdef    @memset
-		    xref    _setmem
-		    xref    @setmem
+                    xdef    _hyper_memset
+                    xdef    _memset
+                    xdef    @memset
+                    xref    _setmem
+                    xref    @setmem
 
-		    section text,code
+                    section text,code
 
-@memset:	    exg     D0,D1
-		    jmp     @setmem(pc)
+@memset:            exg     D0,D1
+                    jmp     @setmem(pc)
 
 _hyper_memset:
 _memset:
-		    lea     8(sp),A0
-		    movem.l (A0),D0/D1
-		    exg     D0,D1
-		    movem.l D0/D1,(A0)
-		    jmp     _setmem(pc)
+                    lea     8(sp),A0
+                    movem.l (A0),D0/D1
+                    exg     D0,D1
+                    movem.l D0/D1,(A0)
+                    jmp     _setmem(pc)
 
-		    END
+                    END
 

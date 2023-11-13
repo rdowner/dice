@@ -49,74 +49,74 @@ char *arg;
     Process *proc = (Process *)FindTask(NULL);
 
     if (proc->pr_Task.tc_Node.ln_Type == NT_PROCESS) {
-	/*DOSBase = OpenLibrary("dos.library", 0);*/
+        /*DOSBase = OpenLibrary("dos.library", 0);*/
 
-	if (proc->pr_CIS) {
-	    _IoStaticFD[0].fd_Fh    =	proc->pr_CIS;
-	    _IoStaticFD[0].fd_Flags =	O_RDWR | O_NOCLOSE | O_ISOPEN;
-	}
+        if (proc->pr_CIS) {
+            _IoStaticFD[0].fd_Fh    =   proc->pr_CIS;
+            _IoStaticFD[0].fd_Flags =   O_RDWR | O_NOCLOSE | O_ISOPEN;
+        }
 
-	if (proc->pr_COS) {
-	    _IoStaticFD[1].fd_Fh    =	proc->pr_COS;
-	    _IoStaticFD[1].fd_Flags =	O_RDWR | O_NOCLOSE | O_ISOPEN;
-	}
+        if (proc->pr_COS) {
+            _IoStaticFD[1].fd_Fh    =   proc->pr_COS;
+            _IoStaticFD[1].fd_Flags =   O_RDWR | O_NOCLOSE | O_ISOPEN;
+        }
 
-	if (proc->pr_ConsoleTask && proc->pr_CLI) {
-	    CLI *cli = BTOC(proc->pr_CLI, CLI);
+        if (proc->pr_ConsoleTask && proc->pr_CLI) {
+            CLI *cli = BTOC(proc->pr_CLI, CLI);
 
-	    if (cli->cli_Background == 0) {
-		if (_IoStaticFD[2].fd_Fh = Open("*", 1005))
-		    _IoStaticFD[2].fd_Flags = O_RDWR | O_ISOPEN;
-	    }
-	    if (_IoStaticFD[2].fd_Fh == NULL && _IoStaticFD[1].fd_Fh) {
-		_IoStaticFD[2].fd_Fh = _IoStaticFD[1].fd_Fh;
-		_IoStaticFD[2].fd_Flags = O_RDWR | O_NOCLOSE | O_ISOPEN;
-	    }
-	}
+            if (cli->cli_Background == 0) {
+                if (_IoStaticFD[2].fd_Fh = Open("*", 1005))
+                    _IoStaticFD[2].fd_Flags = O_RDWR | O_ISOPEN;
+            }
+            if (_IoStaticFD[2].fd_Fh == NULL && _IoStaticFD[1].fd_Fh) {
+                _IoStaticFD[2].fd_Fh = _IoStaticFD[1].fd_Fh;
+                _IoStaticFD[2].fd_Flags = O_RDWR | O_NOCLOSE | O_ISOPEN;
+            }
+        }
     }
 
     if (_IoStaticFD[0].fd_Flags & O_ISOPEN)
-	_finitdesc(stdin,  0, __SIF_READ);
+        _finitdesc(stdin,  0, __SIF_READ);
     if (_IoStaticFD[1].fd_Flags & O_ISOPEN)
-	_finitdesc(stdout, 1, __SIF_WRITE);
+        _finitdesc(stdout, 1, __SIF_WRITE);
     if (_IoStaticFD[2].fd_Flags & O_ISOPEN)
-	_finitdesc(stderr, 2, __SIF_WRITE);
+        _finitdesc(stderr, 2, __SIF_WRITE);
 
     if (proc->pr_Task.tc_Node.ln_Type == NT_PROCESS) {
-	CLI *cli;
+        CLI *cli;
 
-	if (cli = BTOC(proc->pr_CLI, CLI)) {
-	    char **av;
-	    int ac;
-	    unsigned char *copy = malloc(len+1);
-	    unsigned char *cname = (unsigned char *)((long)cli->cli_CommandName << 2);
+        if (cli = BTOC(proc->pr_CLI, CLI)) {
+            char **av;
+            int ac;
+            unsigned char *copy = malloc(len+1);
+            unsigned char *cname = (unsigned char *)((long)cli->cli_CommandName << 2);
 
             if (copy == NULL || cname == NULL) exit(-1);  /* Make sure we have the memory */
-	    _slow_bcopy(arg, copy, len);
-	    copy[len] = 0;
-	    ac = _parseargs1(copy, len);
-	    av = malloc((ac + 2) << 2);
-	    if (av == NULL) exit(-1);  /* Make sure we have the memory */
-	    _parseargs2(copy, av+1, ac);
+            _slow_bcopy(arg, copy, len);
+            copy[len] = 0;
+            ac = _parseargs1(copy, len);
+            av = malloc((ac + 2) << 2);
+            if (av == NULL) exit(-1);  /* Make sure we have the memory */
+            _parseargs2(copy, av+1, ac);
 
-	    ++ac;   /*	include arg0	*/
+            ++ac;   /*  include arg0    */
 
-	    if (cname) {
-		len = *cname;
+            if (cname) {
+                len = *cname;
 
-		arg = malloc(len+1);
-		_slow_bcopy(cname + 1, arg, len);
-		arg[len] = 0;
-	    }
-	    av[0] = arg;
-	    av[ac] = 0;
-	    exit(main(ac, av));
-	} else {
-	    CurrentDir(((struct WBStartup *)_WBMsg)->sm_ArgList->wa_Lock);
-	    exit(wbmain(_WBMsg));
-	}
+                arg = malloc(len+1);
+                _slow_bcopy(cname + 1, arg, len);
+                arg[len] = 0;
+            }
+            av[0] = arg;
+            av[ac] = 0;
+            exit(main(ac, av));
+        } else {
+            CurrentDir(((struct WBStartup *)_WBMsg)->sm_ArgList->wa_Lock);
+            exit(wbmain(_WBMsg));
+        }
     }
     exit(-1);
-    _waitwbmsg();   /*	dummy, brings in alib/wbmain.a	    */
+    _waitwbmsg();   /*  dummy, brings in alib/wbmain.a      */
 }
 

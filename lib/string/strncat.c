@@ -28,14 +28,14 @@ size_t n;
     n;
 
     if (n) {
-	d += strlen(d);
-	while (c = *s) {
-	    *d = c;
-	    ++s;
-	    ++d;
-	    if (--n == 0)
-		break;
-	}
+        d += strlen(d);
+        while (c = *s) {
+            *d = c;
+            ++s;
+            ++d;
+            if (--n == 0)
+                break;
+        }
     }
     *d = 0;
     return(base);

@@ -1,102 +1,102 @@
 
     DCPP
-	2.06.27
-	    Now warns when nested comments found
+        2.06.27
+            Now warns when nested comments found
 
-	2.06.26
-	    Fixed line number synchronization bug related to initial
-	    creation of precompiled include file.
+        2.06.26
+            Fixed line number synchronization bug related to initial
+            creation of precompiled include file.
 
-	2.06.24
-	    Consolodated Error line output and debugging
-	    Ident changed to commodore style
+        2.06.24
+            Consolodated Error line output and debugging
+            Ident changed to commodore style
 
-	2.06.23
-	    Fixed bug with spaces/tabs after directive (before comment),
-	    related to string replace that would include said info *in*
-	    the string when it shouldn't
+        2.06.23
+            Fixed bug with spaces/tabs after directive (before comment),
+            related to string replace that would include said info *in*
+            the string when it shouldn't
 
-	2.06.22
-	    Fixed bug in line number tracking relating to concatenated
-	    lines
+        2.06.22
+            Fixed bug in line number tracking relating to concatenated
+            lines
 
-	    Fixed bug relating to spaces in macro arguments
+            Fixed bug relating to spaces in macro arguments
 
-	2.06.21
-	    Fixed bug with precompiled includes where error messages would
-	    always be relative to the first .c file that generated the
-	    precompiled include.
+        2.06.21
+            Fixed bug with precompiled includes where error messages would
+            always be relative to the first .c file that generated the
+            precompiled include.
 
-	2.06.20
-	    Fixed bug in calculation of hex constants
+        2.06.20
+            Fixed bug in calculation of hex constants
 
-	    Fixed bug in >> operator
+            Fixed bug in >> operator
 
-	    Fixed bug in precompiled includes, parts of constants (such as
-	    0x23) were being symbolized.  Also fixed bug relating to
-	    parts of constants being misinterpreted as symbols.
+            Fixed bug in precompiled includes, parts of constants (such as
+            0x23) were being symbolized.  Also fixed bug relating to
+            parts of constants being misinterpreted as symbols.
 
-	2.06.19 :
-	    Fixed bug in parsing of octal constants '\xxx'
+        2.06.19 :
+            Fixed bug in parsing of octal constants '\xxx'
 
-	2.06.18 :
-	    Fixed #define fubar(a,b) then using fubar alone (i.e. like
-	    a variable)
+        2.06.18 :
+            Fixed #define fubar(a,b) then using fubar alone (i.e. like
+            a variable)
 
-	2.06.17 :
-	    Stringize direction, embedded \n, as in quoteme(fubar\n) was
-	    improperly stringtized... it now shows up as "fubar\n" which
-	    is, I believe, what it should be.
+        2.06.17 :
+            Stringize direction, embedded \n, as in quoteme(fubar\n) was
+            improperly stringtized... it now shows up as "fubar\n" which
+            is, I believe, what it should be.
 
-	    comments in macro args as in MACRO(foo /* , */, bar) would
-	    cause errors if embedded special chars exist.
+            comments in macro args as in MACRO(foo /* , */, bar) would
+            cause errors if embedded special chars exist.
 
-	2.06.16 :
-	    Handles # directive (null directive)
+        2.06.16 :
+            Handles # directive (null directive)
 
-	2.06.15 :
-	    fixed symbol-replacement problems for symbols that are
-	    in character strings, i.e. #define fubar(x) "x x x" would
-	    replace the x's in the string, which is wrong.
+        2.06.15 :
+            fixed symbol-replacement problems for symbols that are
+            in character strings, i.e. #define fubar(x) "x x x" would
+            replace the x's in the string, which is wrong.
 
-	2.06.14 :
-	    fixed stringtize operator '#define fubar(x) #x'
+        2.06.14 :
+            fixed stringtize operator '#define fubar(x) #x'
 
-	    unterminated string errors no longer repeat the error
-	    message a thousand times.
+            unterminated string errors no longer repeat the error
+            message a thousand times.
 
-	    Added C++'s // comments to preprocessor.
+            Added C++'s // comments to preprocessor.
 
-	2.05.13 :
-	    allows -DMACRO(x)=DEF style command line defines, before
-	    it would only allow simple defines.
+        2.05.13 :
+            allows -DMACRO(x)=DEF style command line defines, before
+            it would only allow simple defines.
 
-	2.05.12 :
-	    fixed /*/, was thought to be the entire comment when
-	    actually it is equivalent to only /* ... /**/ is the
-	    minimum comment.
+        2.05.12 :
+            fixed /*/, was thought to be the entire comment when
+            actually it is equivalent to only /* ... /**/ is the
+            minimum comment.
 
-	2.05.10 :
-	    fixed multiple ## ops, i.e. a ## b ## c
+        2.05.10 :
+            fixed multiple ## ops, i.e. a ## b ## c
 
-	2.05.09 :
-	    fixed error message when initial file not found
+        2.05.09 :
+            fixed error message when initial file not found
 
-	2.05.08 :
-	    cpp has always appended # <line> commands to inform main compiler
-	    of appropriate place in source.  This screws up when an #include
-	    file is included without a final 'newline' at the end!
+        2.05.08 :
+            cpp has always appended # <line> commands to inform main compiler
+            of appropriate place in source.  This screws up when an #include
+            file is included without a final 'newline' at the end!
 
-	2.05.07 :
-	    fixed dumb bug.. macro expansion failed if open paren on next line
-	    from macro symbol (for macro that takes args)
+        2.05.07 :
+            fixed dumb bug.. macro expansion failed if open paren on next line
+            from macro symbol (for macro that takes args)
 
-	    #undef sym /* this comment screws up the undef */  fixed...
+            #undef sym /* this comment screws up the undef */  fixed...
 
-	2.05.06 :
-	    -U	added (undef default defs)
+        2.05.06 :
+            -U  added (undef default defs)
 
-	    fixed file-not-found error message
+            fixed file-not-found error message
 
-	    #line <lineno> "filename"   directive added
+            #line <lineno> "filename"   directive added
 

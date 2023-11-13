@@ -1,124 +1,124 @@
 
 /* Mountlist entry for 4 FFx devices, all using the old file system */
 
-FF0:	Device = devs:fmsdisk.device
-	Unit   = 0
-	Flags  = 1
-	Surfaces  = 2
-	BlocksPerTrack = 11
-	Reserved = 2
-	Interleave = 0
-	LowCyl = 0
-	HighCyl = 79
-	Buffers = 10
-	BufMemType = 0
+FF0:    Device = devs:fmsdisk.device
+        Unit   = 0
+        Flags  = 1
+        Surfaces  = 2
+        BlocksPerTrack = 11
+        Reserved = 2
+        Interleave = 0
+        LowCyl = 0
+        HighCyl = 79
+        Buffers = 10
+        BufMemType = 0
 #
 
-FF1:	Device = devs:fmsdisk.device
-	Unit   = 1
-	Flags  = 1
-	Surfaces  = 2
-	BlocksPerTrack = 11
-	Reserved = 2
-	Interleave = 0
-	LowCyl = 0
-	HighCyl = 79
-	Buffers = 10
-	BufMemType = 0
+FF1:    Device = devs:fmsdisk.device
+        Unit   = 1
+        Flags  = 1
+        Surfaces  = 2
+        BlocksPerTrack = 11
+        Reserved = 2
+        Interleave = 0
+        LowCyl = 0
+        HighCyl = 79
+        Buffers = 10
+        BufMemType = 0
 #
 
-FF2:	Device = devs:fmsdisk.device
-	Unit   = 2
-	Flags  = 1
-	Surfaces  = 2
-	BlocksPerTrack = 11
-	Reserved = 2
-	Interleave = 0
-	LowCyl = 0
-	HighCyl = 79
-	Buffers = 10
-	BufMemType = 0
+FF2:    Device = devs:fmsdisk.device
+        Unit   = 2
+        Flags  = 1
+        Surfaces  = 2
+        BlocksPerTrack = 11
+        Reserved = 2
+        Interleave = 0
+        LowCyl = 0
+        HighCyl = 79
+        Buffers = 10
+        BufMemType = 0
 #
 
-FF3:	Device = devs:fmsdisk.device
-	Unit   = 3
-	Flags  = 1
-	Surfaces  = 2
-	BlocksPerTrack = 11
-	Reserved = 2
-	Interleave = 0
-	LowCyl = 0
-	HighCyl = 79
-	Buffers = 10
-	BufMemType = 0
+FF3:    Device = devs:fmsdisk.device
+        Unit   = 3
+        Flags  = 1
+        Surfaces  = 2
+        BlocksPerTrack = 11
+        Reserved = 2
+        Interleave = 0
+        LowCyl = 0
+        HighCyl = 79
+        Buffers = 10
+        BufMemType = 0
 #
 
 /* Mountlist entry for 4 FFx devices, all using the fast file system */
 
-FF4:	Device = devs:fmsdisk.device
-	FileSystem = l:FastFileSystem
-	Unit   = 4
-	Flags  = 1
-	Surfaces  = 2
-	BlocksPerTrack = 11
-	Reserved = 2
-	Interleave = 0
-	LowCyl = 0
-	HighCyl = 79
-	Buffers = 10
-	BufMemType = 0
-	GlobVec = -1
-	DosType = 0x444F5301
+FF4:    Device = devs:fmsdisk.device
+        FileSystem = l:FastFileSystem
+        Unit   = 4
+        Flags  = 1
+        Surfaces  = 2
+        BlocksPerTrack = 11
+        Reserved = 2
+        Interleave = 0
+        LowCyl = 0
+        HighCyl = 79
+        Buffers = 10
+        BufMemType = 0
+        GlobVec = -1
+        DosType = 0x444F5301
 #
 
 
-FF5:	Device = devs:fmsdisk.device
-	FileSystem = l:FastFileSystem
-	Unit   = 5
-	Flags  = 1
-	Surfaces  = 2
-	BlocksPerTrack = 11
-	Reserved = 2
-	Interleave = 0
-	LowCyl = 0
-	HighCyl = 79
-	Buffers = 10
-	BufMemType = 0
-	GlobVec = -1
-	DosType = 0x444F5301
+FF5:    Device = devs:fmsdisk.device
+        FileSystem = l:FastFileSystem
+        Unit   = 5
+        Flags  = 1
+        Surfaces  = 2
+        BlocksPerTrack = 11
+        Reserved = 2
+        Interleave = 0
+        LowCyl = 0
+        HighCyl = 79
+        Buffers = 10
+        BufMemType = 0
+        GlobVec = -1
+        DosType = 0x444F5301
 #
 
 
-FF6:	Device = devs:fmsdisk.device
-	FileSystem = l:FastFileSystem
-	Unit   = 6
-	Flags  = 1
-	Surfaces  = 2
-	BlocksPerTrack = 11
-	Reserved = 2
-	Interleave = 0
-	LowCyl = 0
-	HighCyl = 79
-	Buffers = 10
-	BufMemType = 0
-	GlobVec = -1
-	DosType = 0x444F5301
+FF6:    Device = devs:fmsdisk.device
+        FileSystem = l:FastFileSystem
+        Unit   = 6
+        Flags  = 1
+        Surfaces  = 2
+        BlocksPerTrack = 11
+        Reserved = 2
+        Interleave = 0
+        LowCyl = 0
+        HighCyl = 79
+        Buffers = 10
+        BufMemType = 0
+        GlobVec = -1
+        DosType = 0x444F5301
 #
 
 
-FF7:	Device = devs:fmsdisk.device
-	FileSystem = l:FastFileSystem
-	Unit   = 7
-	Flags  = 1
-	Surfaces  = 2
-	BlocksPerTrack = 11
-	Reserved = 2
-	Interleave = 0
-	LowCyl = 0
-	HighCyl = 79
-	Buffers = 10
-	BufMemType = 0
-	GlobVec = -1
-	DosType = 0x444F5301
+FF7:    Device = devs:fmsdisk.device
+        FileSystem = l:FastFileSystem
+        Unit   = 7
+        Flags  = 1
+        Surfaces  = 2
+        BlocksPerTrack = 11
+        Reserved = 2
+        Interleave = 0
+        LowCyl = 0
+        HighCyl = 79
+        Buffers = 10
+        BufMemType = 0
+        GlobVec = -1
+        DosType = 0x444F5301
 #
 

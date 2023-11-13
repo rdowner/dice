@@ -43,22 +43,22 @@
 #include "defs.h"
 #include <fcntl.h>
 
-Prototype int32_t	  MemMalloced;
-Prototype int32_t	  MemAllocated;
-Prototype int32_t	  MemRequested;
-Prototype int32_t	  MemReclaimed;
-Prototype int32_t	  MemNumSyms;
-Prototype int32_t	  MemNumHunks;
-Prototype int32_t	  MemNumModules;
-Prototype int32_t	  MemNumHunksMalReclaim;
-Prototype int32_t	  MemNumSymsMalReclaim;
+Prototype int32_t         MemMalloced;
+Prototype int32_t         MemAllocated;
+Prototype int32_t         MemRequested;
+Prototype int32_t         MemReclaimed;
+Prototype int32_t         MemNumSyms;
+Prototype int32_t         MemNumHunks;
+Prototype int32_t         MemNumModules;
+Prototype int32_t         MemNumHunksMalReclaim;
+Prototype int32_t         MemNumSymsMalReclaim;
 
-Prototype void	cerror(short, ...);
-Prototype void	_Assert(char *, int);
-Prototype void	*zalloc(int32_t);
-Prototype void	zfree(void *, int32_t);
-Prototype void	putl(FILE *, int32_t);
-Prototype char	*HunkToStr(Hunk *);
+Prototype void  cerror(short, ...);
+Prototype void  _Assert(char *, int);
+Prototype void  *zalloc(int32_t);
+Prototype void  zfree(void *, int32_t);
+Prototype void  putl(FILE *, int32_t);
+Prototype char  *HunkToStr(Hunk *);
 Prototype void _SanityCheck(int);
 Prototype int  open_lpath(char *, int32_t);
 Prototype Node *MakeNode(char *);
@@ -73,23 +73,23 @@ Prototype void eputc(char c);
 void *SetRequester(void *);
 
 #ifdef AMIGA
-char	*ErrorFileName1 = DCC_CONFIG "dice.errors";
-char	*ErrorFileName2 = DCC "config/dice.errors";
+char    *ErrorFileName1 = DCC_CONFIG "dice.errors";
+char    *ErrorFileName2 = DCC "config/dice.errors";
 #endif
-char	*ErrorAry;
-int32_t	ErrorArySize;
-char	ErrBuf[128];
+char    *ErrorAry;
+int32_t ErrorArySize;
+char    ErrBuf[128];
 
 
-int32_t	MemMalloced;
-int32_t	MemAllocated;
-int32_t	MemRequested;
-int32_t	MemReclaimed;
-int32_t	MemNumSyms;
-int32_t	MemNumHunks;
-int32_t	MemNumModules;
-int32_t	MemNumHunksMalReclaim;
-int32_t	MemNumSymsMalReclaim;
+int32_t MemMalloced;
+int32_t MemAllocated;
+int32_t MemRequested;
+int32_t MemReclaimed;
+int32_t MemNumSyms;
+int32_t MemNumHunks;
+int32_t MemNumModules;
+int32_t MemNumHunksMalReclaim;
+int32_t MemNumSymsMalReclaim;
 
 #define BLOCK_SIZE  4096
 #define MAX_FREE    256
@@ -100,17 +100,17 @@ void
 cerror(short errorId, ...)
 {
     static const char *Ary[] = {
-	"?Bad", NULL, "Warning", "Error", "SoftError", "Fatal"
+        "?Bad", NULL, "Warning", "Error", "SoftError", "Fatal"
     };
     va_list va;
 
     if (Ary[errorId >> 12]) {
-	eprintf("DLINK: \"%s\" L:0 C:0 %.*s:%d ",
-	    "",
-	    ((ErrorOpt == 2) ? 1 : (int)strlen(Ary[errorId >> 12])),
-	    Ary[errorId >> 12],
-	    errorId & 0x0FFF
-	);
+        eprintf("DLINK: \"%s\" L:0 C:0 %.*s:%d ",
+            "",
+            ((ErrorOpt == 2) ? 1 : (int)strlen(Ary[errorId >> 12])),
+            Ary[errorId >> 12],
+            errorId & 0x0FFF
+        );
     }
 
     va_start(va, errorId);
@@ -120,17 +120,17 @@ cerror(short errorId, ...)
 
     switch(errorId & EF_MASK) {
     case EF_WARN:
-	if (ExitCode < 5)
-	    ExitCode = 5;
-	break;
+        if (ExitCode < 5)
+            ExitCode = 5;
+        break;
     case EF_FATAL:
     case EF_SOFT:
-	xexit(20);
-	break;
+        xexit(20);
+        break;
     case EF_ERROR:
-	if (ExitCode < 20)
-	    ExitCode = 20;
-	break;
+        if (ExitCode < 20)
+            ExitCode = 20;
+        break;
     }
 }
 
@@ -159,7 +159,7 @@ veprintf(const char *ctl, va_list va)
     va_copy(tmp_va, va);
     vfprintf(stderr, ctl, tmp_va);
     if (ErrorFi) {
-	va_copy(tmp_va, va);
+        va_copy(tmp_va, va);
         vfprintf(ErrorFi, ctl, tmp_va);
     }
 }           
@@ -192,50 +192,50 @@ int32_t bytes;
     static int32_t BufLen2;
 
     if (bytes == 0)
-	return((void *)"");
+        return((void *)"");
 
     bytes = (bytes + 7) & ~3;
     MemRequested += bytes;
     if (bytes < MAX_FREE) {
-	int32_t index = bytes >> 2;
+        int32_t index = bytes >> 2;
 
-	if ((ptr = FreeList[index]) != NULL) {
-	    FreeList[index] = *(int32_t **)ptr;
-	    setmem(ptr, bytes, 0);
-	    return(ptr);
-	}
+        if ((ptr = FreeList[index]) != NULL) {
+            FreeList[index] = *(int32_t **)ptr;
+            setmem(ptr, bytes, 0);
+            return(ptr);
+        }
     }
     MemAllocated += bytes;
 
     if (bytes <= BufLen1) {
-	ptr = BufPtr1;
-	BufPtr1 += bytes;
-	BufLen1 -= bytes;
-	if (BufLen1 == 0) {
-	    BufLen1 = BufLen2;
-	    BufPtr1 = BufPtr2;
-	    BufLen2 = 0;
-	}
-	return(ptr);
+        ptr = BufPtr1;
+        BufPtr1 += bytes;
+        BufLen1 -= bytes;
+        if (BufLen1 == 0) {
+            BufLen1 = BufLen2;
+            BufPtr1 = BufPtr2;
+            BufLen2 = 0;
+        }
+        return(ptr);
     }
     if (bytes <= BufLen2) {
-	ptr = BufPtr2;
-	BufPtr2 += bytes;
-	BufLen2 -= bytes;
-	return(ptr);
+        ptr = BufPtr2;
+        BufPtr2 += bytes;
+        BufLen2 -= bytes;
+        return(ptr);
     }
     if (bytes > BLOCK_SIZE/4) {
-	ptr = malloc(bytes);
-	setmem(ptr, bytes, 0);
-	return(ptr);
+        ptr = malloc(bytes);
+        setmem(ptr, bytes, 0);
+        return(ptr);
     }
     if (BufLen2) {
-	BufLen1 = BufLen2;
-	BufPtr1 = BufPtr2;
+        BufLen1 = BufLen2;
+        BufPtr1 = BufPtr2;
     }
     ptr = malloc(BLOCK_SIZE);
     if (ptr == NULL)
-	NoMemory();
+        NoMemory();
     setmem(ptr, BLOCK_SIZE, 0);
 
     BufPtr2 = (char *)ptr + bytes;
@@ -252,12 +252,12 @@ int32_t bytes;
     int32_t index = (bytes + 7) >> 2;
 
     if (bytes == 0) {
-	cerror(EFATAL_MEMORY_FREE_ERROR);
+        cerror(EFATAL_MEMORY_FREE_ERROR);
     }
     if (index < MAX_FREE/4) {
-	*(int32_t **)ptr = FreeList[index];
-	FreeList[index] = (int32_t *)ptr;
-	MemReclaimed += index << 2;
+        *(int32_t **)ptr = FreeList[index];
+        FreeList[index] = (int32_t *)ptr;
+        MemReclaimed += index << 2;
     }
 }
 
@@ -280,8 +280,8 @@ Hunk *hunk;
 
     Which = 1 - Which;
     if (hunk == NULL) {
-	sprintf(ptr, "[NULL]");
-	return(ptr);
+        sprintf(ptr, "[NULL]");
+        return(ptr);
     }
     sprintf(ptr, "[%s:%s hn#%d.%d off %d siz %d]", hunk->Module->FNode->Node.ln_Name, hunk->Module->Node.ln_Name, hunk->HunkNo, hunk->HX->FinalHunkNo, hunk->Offset, hunk->Bytes);
     return(ptr);
@@ -299,9 +299,9 @@ _SanityCheck(n)
     AvailMem(MEMF_LARGEST);
     Permit();
     if (y)
-	--y;
+        --y;
     else
-	Delay(50);
+        Delay(50);
     printf("%d %d\n", x++, n);
 }
 
@@ -322,28 +322,28 @@ int32_t modes;
 
     Tmp[0] = 0;
     for (node = GetHead(&LibDirList); node; node = GetSucc(node)) {
-	sprintf(Tmp, "%s%s", node->ln_Name, name);
-	fd = open(Tmp, modes);
-	if (fd >= 0 || fullPath)
-	    break;
+        sprintf(Tmp, "%s%s", node->ln_Name, name);
+        fd = open(Tmp, modes);
+        if (fd >= 0 || fullPath)
+            break;
     }
     if (fd < 0 && PostFix[0]) {
-	for (node = GetHead(&LibDirList); node; node = GetSucc(node)) {
-	    char *ptr;
+        for (node = GetHead(&LibDirList); node; node = GetSucc(node)) {
+            char *ptr;
 
-	    sprintf(Tmp, "%s%s", node->ln_Name, name);
-	    if ((ptr = strstr(Tmp, ".lib")) != NULL)
-		strins(ptr, PostFix);
-	    else
-		strcat(Tmp, PostFix);
+            sprintf(Tmp, "%s%s", node->ln_Name, name);
+            if ((ptr = strstr(Tmp, ".lib")) != NULL)
+                strins(ptr, PostFix);
+            else
+                strcat(Tmp, PostFix);
 
-	    fd = open(Tmp, modes);
-	    if (fd >= 0 || fullPath)
-		break;
-	}
+            fd = open(Tmp, modes);
+            if (fd >= 0 || fullPath)
+                break;
+        }
     }
     if (fd < 0)
-	cerror(EERROR_CANT_FIND_LIB, name, PostFix);
+        cerror(EERROR_CANT_FIND_LIB, name, PostFix);
     return(fd);
 }
 
@@ -375,50 +375,50 @@ ObtainErrorString(short errNum)
     static char *UseFileName;
 
     if (ErrorAry == NULL) {
-	int fd;
-	short siz;
-	void *save;
+        int fd;
+        short siz;
+        void *save;
 
-	save = SetRequester((void *)-1);
+        save = SetRequester((void *)-1);
 #ifdef AMIGA
-	UseFileName = ErrorFileName1;
-	fd = open(ErrorFileName1, O_RDONLY|O_BINARY);
+        UseFileName = ErrorFileName1;
+        fd = open(ErrorFileName1, O_RDONLY|O_BINARY);
 #endif
-	SetRequester(save);
+        SetRequester(save);
 
 #ifdef AMIGA
-	if (fd < 0) {
-	    if ((fd = open(ErrorFileName2, O_RDONLY|O_BINARY)) < 0) {
-		sprintf(ErrBuf, "(can't open %s!)", ErrorFileName2);
-		return(ErrBuf);
-	    }
-	    UseFileName = ErrorFileName2;
-	}
+        if (fd < 0) {
+            if ((fd = open(ErrorFileName2, O_RDONLY|O_BINARY)) < 0) {
+                sprintf(ErrBuf, "(can't open %s!)", ErrorFileName2);
+                return(ErrBuf);
+            }
+            UseFileName = ErrorFileName2;
+        }
 #else
-	UseFileName = LocatePath("DERRORS", "dice.errors");
-	fd = open(UseFileName, O_RDONLY|O_BINARY);
-	if (fd < 0) {
-	    sprintf(ErrBuf, "(can't open %s!)", UseFileName);
-	    return(ErrBuf);
-	}
+        UseFileName = LocatePath("DERRORS", "dice.errors");
+        fd = open(UseFileName, O_RDONLY|O_BINARY);
+        if (fd < 0) {
+            sprintf(ErrBuf, "(can't open %s!)", UseFileName);
+            return(ErrBuf);
+        }
 #endif
-	siz = lseek(fd, 0L, 2);
-	lseek(fd, 0L, 0);
-	ErrorAry = malloc(siz + 1);
-	read(fd, ErrorAry, siz);
-	close(fd);
-	{
-	    char *ptr;
-	    for (ptr = strchr(ErrorAry, '\n'); ptr; ptr = strchr(ptr + 1, '\n'))
-		*ptr = 0;
-	}
-	ErrorAry[siz] = 0;
-	ErrorArySize = siz;
+        siz = lseek(fd, 0L, 2);
+        lseek(fd, 0L, 0);
+        ErrorAry = malloc(siz + 1);
+        read(fd, ErrorAry, siz);
+        close(fd);
+        {
+            char *ptr;
+            for (ptr = strchr(ErrorAry, '\n'); ptr; ptr = strchr(ptr + 1, '\n'))
+                *ptr = 0;
+        }
+        ErrorAry[siz] = 0;
+        ErrorArySize = siz;
     }
     for (i = 0; i < ErrorArySize; i += strlen(ErrorAry + i) + 1) {
-	char *ptr;
-	if (ErrorAry[i] == 'L' && ErrorAry[i+1] == 'K' && strtol(ErrorAry + i + 3, &ptr, 10) == errNum)
-	    return(ptr + 1);
+        char *ptr;
+        if (ErrorAry[i] == 'L' && ErrorAry[i+1] == 'K' && strtol(ErrorAry + i + 3, &ptr, 10) == errNum)
+            return(ptr + 1);
     }
     sprintf(ErrBuf, "(no entry in %s for error)", UseFileName ? UseFileName : "?");
     return(ErrBuf);
@@ -436,7 +436,7 @@ GetSucc(struct Node *node)
     struct Node *next = node->ln_Succ;
 
     if (next->ln_Succ == NULL)
-	next = NULL;
+        next = NULL;
     return((void *)next);
 }
 
@@ -446,7 +446,7 @@ GetTail(struct List *list)
     struct Node *node = list->lh_TailPred;
 
     if (node->ln_Pred == NULL)
-	node = NULL;
+        node = NULL;
     return((void *)node);
 }
 
@@ -456,7 +456,7 @@ GetHead(struct List *list)
     struct Node *node = list->lh_Head;
 
     if (node->ln_Succ == NULL)
-	node = NULL;
+        node = NULL;
     return((void *)node);
 }
 
@@ -467,7 +467,7 @@ GetPred(struct Node *node)
     struct Node *pred = node->ln_Pred;
 
     if (pred->ln_Pred == NULL)
-	pred = NULL;
+        pred = NULL;
     return((void *)pred);
 }
 

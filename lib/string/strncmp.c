@@ -23,22 +23,22 @@ size_t n;
 {
     char c;
 
-    n;	/*  gets n into a register */
+    n;  /*  gets n into a register */
     n;
     d;
     d;
 
     if (n == 0)
-	return(0);
+        return(0);
 
     while ((c = *s) == *d) {
-	if (c == 0 || --n == 0)
-	    return(0);
-	++s;
-	++d;
+        if (c == 0 || --n == 0)
+            return(0);
+        ++s;
+        ++d;
     }
     if ((ubyte)c < (ubyte)*d)
-	return(-1);
+        return(-1);
     return(1);
 }
 

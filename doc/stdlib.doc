@@ -15,456 +15,456 @@ c.lib/stdlib/qsort
 c.lib/stdlib/rand
 
 
-stdlib/abs						stdlib/abs
-stdlib/labs						stdlib/labs
+stdlib/abs                                              stdlib/abs
+stdlib/labs                                             stdlib/labs
 
    NAME
-	abs - take absolute value of int
-	labs- take absolute value of long
+        abs - take absolute value of int
+        labs- take absolute value of long
 
    SYNOPSIS
-	#include <stdio.h>
-	#include <stdlib.h>
+        #include <stdio.h>
+        #include <stdlib.h>
 
-	int r = [l]abs(n);
-	int n;
+        int r = [l]abs(n);
+        int n;
 
-	UNDER DICE, sizeof(int) == sizeof(long) and these two functions are
-	thus identical.
+        UNDER DICE, sizeof(int) == sizeof(long) and these two functions are
+        thus identical.
 
    FUNCTION
-	Returns the absolute value of the specified integer.  I.E. r == n
-	if n >= 0, r = -n (positive) if n < 0.  Note that normally one would
-	not use this call due to overhead, but it exists for compatibility.
+        Returns the absolute value of the specified integer.  I.E. r == n
+        if n >= 0, r = -n (positive) if n < 0.  Note that normally one would
+        not use this call due to overhead, but it exists for compatibility.
 
-	Warning:    the absolute value of 0x80000000 cannot be taken.
-		    0x80000000 will be returned.
+        Warning:    the absolute value of 0x80000000 cannot be taken.
+                    0x80000000 will be returned.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <stdlib.h>
+        #include <stdio.h>
+        #include <stdlib.h>
 
-	main()
-	{
-	    int n = -53;
+        main()
+        {
+            int n = -53;
 
-	    printf("The absolute value of %d is %d\n", n, abs(n));
-	    sleep(1);
-	    printf("But its faster if you write a macro:\n");
+            printf("The absolute value of %d is %d\n", n, abs(n));
+            sleep(1);
+            printf("But its faster if you write a macro:\n");
 
     #define abs(x)  (((x) < 0) ? -(x) : (x))
 
-	    sleep(1);
-	    printf("The absolute value of %d is %d\n", n, abs(n));
-	    return(0);
-	}
+            sleep(1);
+            printf("The absolute value of %d is %d\n", n, abs(n));
+            return(0);
+        }
 
 
    INPUTS
-	int n;		integer
+        int n;          integer
 
    RESULTS
-	int r;		absolute value of integer
+        int r;          absolute value of integer
 
    SEE ALSO
 
 
 
-stdlib/atexit						stdlib/atexit
+stdlib/atexit                                           stdlib/atexit
 
    NAME
-	atexit	- specify routine that is automatically called on exit.
+        atexit  - specify routine that is automatically called on exit.
 
    SYNOPSIS
-	#include <stdio.h>
-	#include <stdlib.h>
+        #include <stdio.h>
+        #include <stdlib.h>
 
-	int error = atexit(funcptr);
+        int error = atexit(funcptr);
 
-	void (*funcptr)(void);
+        void (*funcptr)(void);
 
    FUNCTION
-	The atexit() routine adds a function to the list of functions called
-	when the program exits.  The atexit() routine is called before
-	stdio and fd's are closed down.  This exit function is called whenever
-	the program exits, even if main() just returns an exit code.
+        The atexit() routine adds a function to the list of functions called
+        when the program exits.  The atexit() routine is called before
+        stdio and fd's are closed down.  This exit function is called whenever
+        the program exits, even if main() just returns an exit code.
 
-	atexit() will return 0 on success, -1 on failure.  Some systems limit
-	the number of atexit() functions one can add (DICE does not) so if
-	you add more than one you should check the return value.
+        atexit() will return 0 on success, -1 on failure.  Some systems limit
+        the number of atexit() functions one can add (DICE does not) so if
+        you add more than one you should check the return value.
 
    EXAMPLE
-	/*
-	 *  atexit() is useful to free up resources that would otherwise not
-	 *  be freed up by DICE.  For example, anything AllocMem()d.  The
-	 *  atexit() function is called on any exit ... return from main,
-	 *  call to exit, or ^C.
-	 *
-	 *  normally your atexit routine cannot make assumptions as to what
-	 *  has been allocated and what has not since exit() can be called
-	 *  from anywhere in the program.. things might not have been allocated
-	 *  yet, for example.
-	 */
+        /*
+         *  atexit() is useful to free up resources that would otherwise not
+         *  be freed up by DICE.  For example, anything AllocMem()d.  The
+         *  atexit() function is called on any exit ... return from main,
+         *  call to exit, or ^C.
+         *
+         *  normally your atexit routine cannot make assumptions as to what
+         *  has been allocated and what has not since exit() can be called
+         *  from anywhere in the program.. things might not have been allocated
+         *  yet, for example.
+         */
 
-	#include <stdio.h>
-	#include <stdlib.h>
+        #include <stdio.h>
+        #include <stdlib.h>
 
-	extern void *AllocMem();
+        extern void *AllocMem();
 
-	void *MemPtr;
-	long MemLen;
+        void *MemPtr;
+        long MemLen;
 
-	void
-	myexit(void)
-	{
-	    if (MemPtr)                 /*  only if it is allocated */
-		FreeMem(MemPtr, MemLen);
-	    MemPtr = NULL;
-	}
+        void
+        myexit(void)
+        {
+            if (MemPtr)                 /*  only if it is allocated */
+                FreeMem(MemPtr, MemLen);
+            MemPtr = NULL;
+        }
 
-	/*
-	 *  here we can take a ^C anywhere... before we allocate, after, or
-	 *  even after we free (note I am careful to set MemPtr back to NULL!
-	 */
+        /*
+         *  here we can take a ^C anywhere... before we allocate, after, or
+         *  even after we free (note I am careful to set MemPtr back to NULL!
+         */
 
-	main()
-	{
-	    short i;
+        main()
+        {
+            short i;
 
-	    atexit(myexit);
-	    for (i = 0; i < 100; ++i)
-		printf("Before Alloc %d\n", i);
+            atexit(myexit);
+            for (i = 0; i < 100; ++i)
+                printf("Before Alloc %d\n", i);
 
-	    MemLen = 32;
-	    MemPtr = AllocMem(MemLen, 0);
-	    if (MemPtr == NULL) {
-		puts("uh oh, AllocMem failed!");
-		exit(1);
-	    }
+            MemLen = 32;
+            MemPtr = AllocMem(MemLen, 0);
+            if (MemPtr == NULL) {
+                puts("uh oh, AllocMem failed!");
+                exit(1);
+            }
 
-	    for (i = 0; i < 100; ++i)
-		printf("After Alloc %d\n", i);
-	    FreeMem(MemPtr, MemLen);
-	    MemPtr = NULL;	/*  must do this or atexit routine thinks */
-				/*  memory is still allocated!		  */
+            for (i = 0; i < 100; ++i)
+                printf("After Alloc %d\n", i);
+            FreeMem(MemPtr, MemLen);
+            MemPtr = NULL;      /*  must do this or atexit routine thinks */
+                                /*  memory is still allocated!            */
 
-	    for (i = 0; i < 100; ++i)
-		printf("After Free %d\n", i);
+            for (i = 0; i < 100; ++i)
+                printf("After Free %d\n", i);
 
-	    return(0);
-	}
+            return(0);
+        }
 
-	1> avail
-	1> testprg
-	  ...	    (you can ^C the testprg at any point)
-	1> avail    (no memory loss should be seen)
+        1> avail
+        1> testprg
+          ...       (you can ^C the testprg at any point)
+        1> avail    (no memory loss should be seen)
 
-
-   INPUTS
-	void (*funcptr)(void);      routine to add to exit call list, takes
-				    no arguments and returns nothing.
-
-   RESULTS
-	int error;		    0 on success, -1 on failure.
-
-   SEE ALSO
-	onbreak
-
-
-stdlib/atof						stdlib/atof
-
-   NAME
-	atof - convert string into double floating point value
-
-   SYNOPSIS
-	#include <stdio.h>
-	#include <stdlib.h>
-
-	double d = atof(str);
-	const char *str;
-
-   FUNCTION
-	atof converts a string into a double floating point value, it is
-	equivalent to calling strtod(str, NULL).   Please refer to strtod()
-	for more information.
 
    INPUTS
-	char *str;	string, like "1.234E-4";
+        void (*funcptr)(void);      routine to add to exit call list, takes
+                                    no arguments and returns nothing.
 
    RESULTS
-	double d;	double fp representation of string
+        int error;                  0 on success, -1 on failure.
 
    SEE ALSO
-	strtod
+        onbreak
 
 
-stdlib/atoi						stdlib/atoi
-stdlib/atol						stdlib/atol
+stdlib/atof                                             stdlib/atof
 
    NAME
-	atoi - convert string into integer
-	atol - convert string into long integer
+        atof - convert string into double floating point value
 
    SYNOPSIS
-	#include <stdio.h>
-	#include <stdlib.h>
+        #include <stdio.h>
+        #include <stdlib.h>
 
-	int x = atoi(str);
-	long y = atol(str);
-	const char *str;
-
-	Under DICE, sizeof(int) == sizeof(long), and thus these two routines
-	are exactly the same.
+        double d = atof(str);
+        const char *str;
 
    FUNCTION
-	atoi() and atol() convert a string of a base 10 integer number into
-	an integer.  It skips initial white space, processes an optional
-	negative sign ('-'), then processes digits '0' - '9', return the
-	integer.
+        atof converts a string into a double floating point value, it is
+        equivalent to calling strtod(str, NULL).   Please refer to strtod()
+        for more information.
 
-	Both atoi() and atol() are superceeded by the strtol() function which
-	can handle numbers of any base.  Please refer to the strtol()
-	manual page.
+   INPUTS
+        char *str;      string, like "1.234E-4";
+
+   RESULTS
+        double d;       double fp representation of string
+
+   SEE ALSO
+        strtod
+
+
+stdlib/atoi                                             stdlib/atoi
+stdlib/atol                                             stdlib/atol
+
+   NAME
+        atoi - convert string into integer
+        atol - convert string into long integer
+
+   SYNOPSIS
+        #include <stdio.h>
+        #include <stdlib.h>
+
+        int x = atoi(str);
+        long y = atol(str);
+        const char *str;
+
+        Under DICE, sizeof(int) == sizeof(long), and thus these two routines
+        are exactly the same.
+
+   FUNCTION
+        atoi() and atol() convert a string of a base 10 integer number into
+        an integer.  It skips initial white space, processes an optional
+        negative sign ('-'), then processes digits '0' - '9', return the
+        integer.
+
+        Both atoi() and atol() are superceeded by the strtol() function which
+        can handle numbers of any base.  Please refer to the strtol()
+        manual page.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <stdlib.h>
+        #include <stdio.h>
+        #include <stdlib.h>
 
-	main()
-	{
-	    int i = atoi("  \t\t -123");
-	    printf("i = %d (-123?)\n", i);
-	    return(0);
-	}
+        main()
+        {
+            int i = atoi("  \t\t -123");
+            printf("i = %d (-123?)\n", i);
+            return(0);
+        }
 
    INPUTS
-	char *str;	string to convert to int
+        char *str;      string to convert to int
 
    RESULTS
-	int x;		integer result
-	long y; 	integer result
+        int x;          integer result
+        long y;         integer result
 
    SEE ALSO
-	strtol
+        strtol
 
-stdlib/system						stdlib/system
+stdlib/system                                           stdlib/system
 
    NAME
-	system - call system shell with command line
+        system - call system shell with command line
 
    SYNOPSIS
-	#include <stdio.h>
-	#include <stdlib.h>
+        #include <stdio.h>
+        #include <stdlib.h>
 
-	int r = system(buf);
-	const char *buf;
+        int r = system(buf);
+        const char *buf;
 
    FUNCTION
-	system() calls the system shell with the specified command line,
-	returning the exit code of the command or -1 if it was unable to
-	run the command.
+        system() calls the system shell with the specified command line,
+        returning the exit code of the command or -1 if it was unable to
+        run the command.
 
-	FOR PROGRAMS COMPILED UNDER 1.3, even if run in 1.4 enviroment, the
-	system call will not return the exit code from the command, but
-	return -1 if could not be run, 0 if it could.
+        FOR PROGRAMS COMPILED UNDER 1.3, even if run in 1.4 enviroment, the
+        system call will not return the exit code from the command, but
+        return -1 if could not be run, 0 if it could.
 
-	FOR PROGRAMS COMPILED UNDER 2.0, system() will use the 2.0 calls
-	and return a proper exit code when running under 2.0, and will use
-	Execute() if running under 1.3
+        FOR PROGRAMS COMPILED UNDER 2.0, system() will use the 2.0 calls
+        and return a proper exit code when running under 2.0, and will use
+        Execute() if running under 1.3
 
    GETTING SYSTEM TO USE THE USER SHELL UNDER 2.0 (ADVANCED USERS ONLY)
 
-	Under 2.0 system() defaults to using the boot shell (i.e. commodore
-	shell).  In order to have system() use the Sys_UserShell (for
-	example, to use WShell if you have WShell installed) you need to do
-	the following (usually in your main source module):
+        Under 2.0 system() defaults to using the boot shell (i.e. commodore
+        shell).  In order to have system() use the Sys_UserShell (for
+        example, to use WShell if you have WShell installed) you need to do
+        the following (usually in your main source module):
 
-	#include <dos/dostags.h>
+        #include <dos/dostags.h>
 
-	int _SystemBoolTag = SYS_UserShell;
+        int _SystemBoolTag = SYS_UserShell;
 
-	You could also set this global to SYS_CustomShell if you like. The
-	default value is TAG_IGNORE from <utility/tagitem.h>.  To get even
-	more fancy you can also declare int _SystemBoolTagValue to modify
-	the data portion of the tag (default is 1).
+        You could also set this global to SYS_CustomShell if you like. The
+        default value is TAG_IGNORE from <utility/tagitem.h>.  To get even
+        more fancy you can also declare int _SystemBoolTagValue to modify
+        the data portion of the tag (default is 1).
 
-	Alternately you can simply #include <stdlib.h>, not declare either
-	variable explicitly (they are extern'd in <stdlib.h>), and modify
-	them run-time from main().  The compiler will thus give an error if
-	you make a mistake in the variable names.
+        Alternately you can simply #include <stdlib.h>, not declare either
+        variable explicitly (they are extern'd in <stdlib.h>), and modify
+        them run-time from main().  The compiler will thus give an error if
+        you make a mistake in the variable names.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <stdlib.h>
+        #include <stdio.h>
+        #include <stdlib.h>
 
-	main()
-	{
-	    char buf[256];
-	    FILE *fi;
+        main()
+        {
+            char buf[256];
+            FILE *fi;
 
-	    system("DIR >t:xx");
-	    if (fi = fopen("t:xx", "r")) {
-		puts("Directory is:");
-		while (fgets(buf, sizeof(buf), fi))
-		    printf("FuBarBletchPreamble: %s", buf);
-		fclose(fi);
-		remove("t:xx");
-	    } else {
-		puts("Couldn't get directory!");
-	    }
-	    return(0);
-	}
+            system("DIR >t:xx");
+            if (fi = fopen("t:xx", "r")) {
+                puts("Directory is:");
+                while (fgets(buf, sizeof(buf), fi))
+                    printf("FuBarBletchPreamble: %s", buf);
+                fclose(fi);
+                remove("t:xx");
+            } else {
+                puts("Couldn't get directory!");
+            }
+            return(0);
+        }
 
    INPUTS
-	char *buf;	command line to run, like a normal AmigaDOS CLI
-			command line.
+        char *buf;      command line to run, like a normal AmigaDOS CLI
+                        command line.
 
    RESULTS
-	int r;		return code
+        int r;          return code
 
    SEE ALSO
 
 
-stdlib/qsort						stdlib/qsort
+stdlib/qsort                                            stdlib/qsort
 
    NAME
-	qsort  - sort an array of objects
+        qsort  - sort an array of objects
 
    SYNOPSIS
-	#include <stdio.h>
-	#include <stdlib.h>
+        #include <stdio.h>
+        #include <stdlib.h>
 
-	(void) qsort(array, numElem, elemSize, compare_func)
-	void *array;
-	size_t numElem;
-	size_t elemSize;
-	int (*compare_func)(const void *arg1, const void *arg2);
+        (void) qsort(array, numElem, elemSize, compare_func)
+        void *array;
+        size_t numElem;
+        size_t elemSize;
+        int (*compare_func)(const void *arg1, const void *arg2);
 
    FUNCTION
-	qsort sorts numElem elements in an array based at 'array'.  Each
-	element is elemSize bytes long.  When a comparison is required,
-	qsort calls the passed compare_func function pointer with a
-	pointer to the two elements being sorted.
+        qsort sorts numElem elements in an array based at 'array'.  Each
+        element is elemSize bytes long.  When a comparison is required,
+        qsort calls the passed compare_func function pointer with a
+        pointer to the two elements being sorted.
 
-	DICE currently implements qsort with a simple merge sort algorithm,
-	using relatively slow movmem()s to avoid having to allocate much
-	additional storage.  Very little stack is used.  Traditional
-	qsort uses a stack based quick-sort algorithm that might use a
-	massive amount of stack.
+        DICE currently implements qsort with a simple merge sort algorithm,
+        using relatively slow movmem()s to avoid having to allocate much
+        additional storage.  Very little stack is used.  Traditional
+        qsort uses a stack based quick-sort algorithm that might use a
+        massive amount of stack.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <stdlib.h>
+        #include <stdio.h>
+        #include <stdlib.h>
 
-	char *StrList[6] = {
-	    "fubar",
-	    "able",
-	    "yum",
-	    "quack",
-	    "rigger",
-	    "battle"
-	};
+        char *StrList[6] = {
+            "fubar",
+            "able",
+            "yum",
+            "quack",
+            "rigger",
+            "battle"
+        };
 
-	my_comp(s1, s2)
-	char **s1;
-	char **s2;
-	{
-	    return(strcmp(*s1, *s2));
-	}
+        my_comp(s1, s2)
+        char **s1;
+        char **s2;
+        {
+            return(strcmp(*s1, *s2));
+        }
 
-	main()
-	{
-	    short i;
+        main()
+        {
+            short i;
 
-	    qsort(StrList, 6, sizeof(char *), my_comp);
-	    for (i = 0; i < 6; ++i)
-		printf("%d %s\n", i, StrList[i]);
-	    return(0);
-	}
+            qsort(StrList, 6, sizeof(char *), my_comp);
+            for (i = 0; i < 6; ++i)
+                printf("%d %s\n", i, StrList[i]);
+            return(0);
+        }
 
    INPUTS
-	void *array;		pointer to base of array of objects
+        void *array;            pointer to base of array of objects
 
-	size_t numElem; 	number of elements in the array
+        size_t numElem;         number of elements in the array
 
-	size_t elemSize;	Size, in bytes, of each element
+        size_t elemSize;        Size, in bytes, of each element
 
-	int (*compare_func)()   function pointer to compare function given
-				pointers to two of the elements
+        int (*compare_func)()   function pointer to compare function given
+                                pointers to two of the elements
 
    RESULTS
-	None
+        None
 
    SEE ALSO
 
 
-stdlib/rand						stdlib/rand
-stdlib/srand						stdlib/srand
+stdlib/rand                                             stdlib/rand
+stdlib/srand                                            stdlib/srand
 
    NAME
-	rand	- return pseudo random number
-	srand	- set seed for pseudo random number
+        rand    - return pseudo random number
+        srand   - set seed for pseudo random number
 
    SYNOPSIS
-	#include <stdio.h>
-	#include <stdlib.h>
+        #include <stdio.h>
+        #include <stdlib.h>
 
-	int n = rand(void);
-	(void) srand(seed)
+        int n = rand(void);
+        (void) srand(seed)
 
-	unsigned int seed;
+        unsigned int seed;
 
    FUNCTION
-	rand() returns a random number as a positive integer ranging from
-	0 to RAND_MAX.	RAND_MAX is defined in stdlib.h and is at least
-	32767.	DICE implements it as 2147483647 == 0x7FFFFFFF
+        rand() returns a random number as a positive integer ranging from
+        0 to RAND_MAX.  RAND_MAX is defined in stdlib.h and is at least
+        32767.  DICE implements it as 2147483647 == 0x7FFFFFFF
 
-	The initial seed used to generate the pseudo random sequence is 1,
-	but may be reinitialized to any number you desire using srand().
-	rand() is guarenteed to return the same sequence for the same
-	seed.
+        The initial seed used to generate the pseudo random sequence is 1,
+        but may be reinitialized to any number you desire using srand().
+        rand() is guarenteed to return the same sequence for the same
+        seed.
 
    EXAMPLE
-	#include <stdio.h>
-	#include <stdlib.h>
+        #include <stdio.h>
+        #include <stdlib.h>
 
-	main(ac, av)
-	char *av[];
-	{
-	    short i;
-	    short j;
+        main(ac, av)
+        char *av[];
+        {
+            short i;
+            short j;
 
-	    if (ac == 2) {
-		int seed = strtol(av[1], NULL, 0);
-		srand(seed);
-		printf("using seed = %d\n", seed);
-	    } else {
-		puts("using seed = 1");
-	    }
-	    for (i = 0; i < 10; ++i) {
-		int n = rand();
-		printf("Random number: %08lx (%d)\n", n, n);
-	    }
-	    for (i = 0; i < 31; ++i) {
-		int isone = 0;
-		long mask = 1 << i;
-		for (j = 0; j < 32767; ++j) {
-		    if (rand() & mask)
-			++isone;
-		}
-		printf("bit %d %5d:%-5d (dev %d)\n", i, 32767 - isone, isone, 16384 - isone);
-	    }
-	    return(0);
-	}
+            if (ac == 2) {
+                int seed = strtol(av[1], NULL, 0);
+                srand(seed);
+                printf("using seed = %d\n", seed);
+            } else {
+                puts("using seed = 1");
+            }
+            for (i = 0; i < 10; ++i) {
+                int n = rand();
+                printf("Random number: %08lx (%d)\n", n, n);
+            }
+            for (i = 0; i < 31; ++i) {
+                int isone = 0;
+                long mask = 1 << i;
+                for (j = 0; j < 32767; ++j) {
+                    if (rand() & mask)
+                        ++isone;
+                }
+                printf("bit %d %5d:%-5d (dev %d)\n", i, 32767 - isone, isone, 16384 - isone);
+            }
+            return(0);
+        }
 
    INPUTS
-	unsigned int seed;	An unsigned integer used to seed the
-				pseudo random number generator via
-				srand()
+        unsigned int seed;      An unsigned integer used to seed the
+                                pseudo random number generator via
+                                srand()
 
    RESULTS
-	int n;			returned by rand(), this number will be
-				a positive integer.
+        int n;                  returned by rand(), this number will be
+                                a positive integer.
 
    SEE ALSO
 

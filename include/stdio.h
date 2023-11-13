@@ -16,7 +16,7 @@
 typedef void *va_list;
 #endif
 
-typedef long	fpos_t;
+typedef long    fpos_t;
 
 typedef struct FILE {
     struct FILE *sd_Next;
@@ -29,63 +29,63 @@ typedef struct FILE {
     int     sd_RLeft;
     int     sd_WLeft;
     int     sd_Flags;
-    int     sd_Error;	    /*	error: 0 / non-0    */
-    fpos_t  sd_Offset;	    /*	level 1 current off */
+    int     sd_Error;       /*  error: 0 / non-0    */
+    fpos_t  sd_Offset;      /*  level 1 current off */
     int     sd_Fd;
-    short   sd_UC;	    /*	ungotten character or -1    */
-    char    *sd_Name;	    /*	use for tmpfile()   */
+    short   sd_UC;          /*  ungotten character or -1    */
+    char    *sd_Name;       /*  use for tmpfile()   */
 } FILE;
 
 typedef struct _IOFDS {
     long    fd_Fh;
     long    fd_Flags;
-    long    (*fd_Exec)(long, int, void *, void *);   /*  exec function	     */
-    char    *fd_FileName;   /*	file name for fstat() under 1.3 */
+    long    (*fd_Exec)(long, int, void *, void *);   /*  exec function       */
+    char    *fd_FileName;   /*  file name for fstat() under 1.3 */
 } _IOFDS;
 
-extern FILE _Iob[3];		    /*	fixed fps	    */
-extern FILE *_Iod;		    /*	dynamic fps	    */
+extern FILE _Iob[3];                /*  fixed fps           */
+extern FILE *_Iod;                  /*  dynamic fps         */
 
-extern _IOFDS _IoStaticFD[3];	    /*	0,1,2		    */
-extern _IOFDS *_IoFD;		    /*	descriptors	    */
+extern _IOFDS _IoStaticFD[3];       /*  0,1,2               */
+extern _IOFDS *_IoFD;               /*  descriptors         */
 extern short _IoFDLimit;
-extern int _bufsiz;		    /*	default BUFSIZ	    */
+extern int _bufsiz;                 /*  default BUFSIZ      */
 
-#define __SIF_ERROR	0x0001	/*  XXX */
-#define __SIF_EOF	0x0002
-#define __SIF_READ	0x0004
-#define __SIF_WRITE	0x0008
-#define __SIF_IOLBF	0x0010
-#define __SIF_REMOVE	0x0020	/*  unlink file after closing	*/
-#define __SIF_APPEND	0x0040
-#define __SIF_NOFREE	0x0080	/*  not a freeable descriptor	*/
-#define __SIF_OPEN	0x0100	/*  file is open		*/
-#define __SIF_MYBUF	0x0200	/*  I allocated the buffer(s)	*/
-#define __SIF_BINARY	0x0400
-#define __SIF_RAW	0x0800	/*  RAW terminal , see setvbuf	*/
-#define __SIF_FILE	0x1000	/*  a seekable file		*/
+#define __SIF_ERROR     0x0001  /*  XXX */
+#define __SIF_EOF       0x0002
+#define __SIF_READ      0x0004
+#define __SIF_WRITE     0x0008
+#define __SIF_IOLBF     0x0010
+#define __SIF_REMOVE    0x0020  /*  unlink file after closing   */
+#define __SIF_APPEND    0x0040
+#define __SIF_NOFREE    0x0080  /*  not a freeable descriptor   */
+#define __SIF_OPEN      0x0100  /*  file is open                */
+#define __SIF_MYBUF     0x0200  /*  I allocated the buffer(s)   */
+#define __SIF_BINARY    0x0400
+#define __SIF_RAW       0x0800  /*  RAW terminal , see setvbuf  */
+#define __SIF_FILE      0x1000  /*  a seekable file             */
 
-#define _IOFBF	-1
-#define _IOLBF	__SIF_IOLBF
-#define _IONBF	0
+#define _IOFBF  -1
+#define _IOLBF  __SIF_IOLBF
+#define _IONBF  0
 
-#define BUFSIZ	1024
-#define EOF	-1
-#define FILENAME_MAX	1024
-#define FOPEN_MAX	20	/*  lets be reasonable		*/
-#define L_tmpnam	32
-#define SEEK_SET	0
-#define SEEK_CUR	1
-#define SEEK_END	2
-#define TMP_MAX 	4096
-#define stdin	(&_Iob[0])
-#define stdout	(&_Iob[1])
-#define stderr	(&_Iob[2])
+#define BUFSIZ  1024
+#define EOF     -1
+#define FILENAME_MAX    1024
+#define FOPEN_MAX       20      /*  lets be reasonable          */
+#define L_tmpnam        32
+#define SEEK_SET        0
+#define SEEK_CUR        1
+#define SEEK_END        2
+#define TMP_MAX         4096
+#define stdin   (&_Iob[0])
+#define stdout  (&_Iob[1])
+#define stderr  (&_Iob[2])
 
-#define clearerr(fi)	(((fi)->sd_Flags &= ~__SIF_EOF), ((fi)->sd_Error = 0))
-#define feof(fi)	((fi)->sd_Flags & __SIF_EOF)
-#define ferror(fi)	((fi)->sd_Error)
-#define fileno(fi)	((fi)->sd_Fd)
+#define clearerr(fi)    (((fi)->sd_Flags &= ~__SIF_EOF), ((fi)->sd_Error = 0))
+#define feof(fi)        ((fi)->sd_Flags & __SIF_EOF)
+#define ferror(fi)      ((fi)->sd_Error)
+#define fileno(fi)      ((fi)->sd_Fd)
 
 extern void perror(const char *);
 
@@ -114,7 +114,7 @@ extern int    fputs(const char *, FILE *);
 
 #define getc(fi)   ( ((fi)->sd_UC >= 0) ? fgetc(fi) : ((fi)->sd_RLeft <= 0) ? fgetc(fi) : (--(fi)->sd_RLeft, (int)*(fi)->sd_RPtr++))
 
-#ifdef NOTDEF	/* old putc() would reference 'c' twice */
+#ifdef NOTDEF   /* old putc() would reference 'c' twice */
 #define putc(c,fi) (((c) == '\n' || (fi)->sd_WLeft <= 0) ? fputc((c),(fi)) : (*(fi)->sd_WPtr++ = (c), --(fi)->sd_WLeft, (c)))
 #endif
 
@@ -125,7 +125,7 @@ extern int    fputs(const char *, FILE *);
  */
 
 #define putc(c,fi) (((fi)->sd_WLeft <= 0) ? fputc((c),(fi)) : \
-	 (((--(fi)->sd_WLeft, ((*(fi)->sd_WPtr++ = (c))) == '\n') && ((fi)->sd_Flags & _IOLBF)) ? (fflush(fi), '\n') : ((fi)->sd_WPtr)[-1]))
+         (((--(fi)->sd_WLeft, ((*(fi)->sd_WPtr++ = (c))) == '\n') && ((fi)->sd_Flags & _IOLBF)) ? (fflush(fi), '\n') : ((fi)->sd_WPtr)[-1]))
 
 
 #define getchar()  fgetc(stdin)

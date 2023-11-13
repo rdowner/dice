@@ -6,7 +6,7 @@
 /*
  *  GENASS.C
  *
- *	Assignment operators
+ *      Assignment operators
  */
 
 /*
@@ -69,82 +69,82 @@ Exp **pexp;
     Exp *e2;
 
     if (GenPass == 0) {
-#ifdef NOTDEF	/* future opt */
-	e1 = exp->ex_ExpL;
-	if (e1->ex_Token == TokPreDec)
-	    exp->ex_Flags |= EF_ASSPREDEC;
-	if (e1->ex_Token == TokPosInc)
-	    exp->ex_Flags |= EF_ASSPOSINC;
+#ifdef NOTDEF   /* future opt */
+        e1 = exp->ex_ExpL;
+        if (e1->ex_Token == TokPreDec)
+            exp->ex_Flags |= EF_ASSPREDEC;
+        if (e1->ex_Token == TokPosInc)
+            exp->ex_Flags |= EF_ASSPOSINC;
 #endif
-	exp->ex_ExpL->ex_Flags |= EF_LHSASSIGN;
+        exp->ex_ExpL->ex_Flags |= EF_LHSASSIGN;
 
-	CallLeft();
+        CallLeft();
 
-	if (exp->ex_ExpL->ex_Token == TokVarRef)
-	    exp->ex_ExpL->ex_Var->RegFlags |= RF_MODIFIED;
+        if (exp->ex_ExpL->ex_Token == TokVarRef)
+            exp->ex_ExpL->ex_Var->RegFlags |= RF_MODIFIED;
 
-	/*
-	 *  Presetting the type is an optimization that is not required.
-	 *  example:	char a, b; a = ~b; so ~b is done w/ chars.
-	 */
+        /*
+         *  Presetting the type is an optimization that is not required.
+         *  example:    char a, b; a = ~b; so ~b is done w/ chars.
+         */
 
-	if (exp->ex_ExpR->ex_Type == NULL)
-	    exp->ex_ExpR->ex_Type = exp->ex_ExpL->ex_Type;
+        if (exp->ex_ExpR->ex_Type == NULL)
+            exp->ex_ExpR->ex_Type = exp->ex_ExpL->ex_Type;
 
-	CallRight();
-	AssignRules(exp);
-	exp->ex_Flags |= EF_CRES;
-	exp->ex_Flags |= (exp->ex_ExpL->ex_Flags | exp->ex_ExpR->ex_Flags) & EF_CALL;
+        CallRight();
+        AssignRules(exp);
+        exp->ex_Flags |= EF_CRES;
+        exp->ex_Flags |= (exp->ex_ExpL->ex_Flags | exp->ex_ExpR->ex_Flags) & EF_CALL;
     } else {
-	e2 = exp->ex_ExpR;
+        e2 = exp->ex_ExpR;
 
-	/*
-	 * a[i] = a[j] = a[k] = ... x;	must to rhs first or would build
-	 * up scratch regs
-	 */
+        /*
+         * a[i] = a[j] = a[k] = ... x;  must to rhs first or would build
+         * up scratch regs
+         */
 
-	exp->ex_ExpL->ex_Flags |= EF_LHSASSIGN;
+        exp->ex_ExpL->ex_Flags |= EF_LHSASSIGN;
 
-	if (e2->ex_Flags & (EF_ASSEQ|EF_CRES)) {
-	    CallRight();
-	    EnsureReturnStorageRight();
-	    CallLeft();
-	    e1 = exp->ex_ExpL;
-	    e2 = exp->ex_ExpR;
-	} else {
-	    CallLeft();
-	    EnsureReturnStorageLeft();
-	    e1 = exp->ex_ExpL;
-	    e2 = exp->ex_ExpR;
-	    if (e1->ex_Type->Id != TID_BITFIELD && (e2->ex_Flags & EF_CRES) == 0) {
-		e2->ex_Stor = e1->ex_Stor;
-		e2->ex_Flags |= EF_PRES;
-	    }
-	    CallRight();
-	}
+        if (e2->ex_Flags & (EF_ASSEQ|EF_CRES)) {
+            CallRight();
+            EnsureReturnStorageRight();
+            CallLeft();
+            e1 = exp->ex_ExpL;
+            e2 = exp->ex_ExpR;
+        } else {
+            CallLeft();
+            EnsureReturnStorageLeft();
+            e1 = exp->ex_ExpL;
+            e2 = exp->ex_ExpR;
+            if (e1->ex_Type->Id != TID_BITFIELD && (e2->ex_Flags & EF_CRES) == 0) {
+                e2->ex_Stor = e1->ex_Stor;
+                e2->ex_Flags |= EF_PRES;
+            }
+            CallRight();
+        }
 
-	e1 = exp->ex_ExpL;
-	e2 = exp->ex_ExpR;
+        e1 = exp->ex_ExpL;
+        e2 = exp->ex_ExpR;
 
-	if (e1->ex_Type->Id == TID_BITFIELD) {
-	    e2 = exp->ex_ExpR;
-	    asm_bfsto(exp, &e2->ex_Stor, &e1->ex_Stor);
-	    FreeStorage(&e2->ex_Stor);
-	} else if (e2->ex_Flags & (EF_CRES|EF_ASSEQ)) {
-	    e2 = exp->ex_ExpR;
-	    asm_move(exp, &e2->ex_Stor, &e1->ex_Stor);
-	    if (e1->ex_Stor.st_Type < ST_Reg && e1->ex_Stor.st_Type != ST_PtrConst)
-		yerror(exp->ex_LexIdx, EERROR_ILLEGAL_ASSIGNMENT);
-	    FreeStorage(&e2->ex_Stor);
-	}
-	FreeStorage(&e1->ex_Stor);
-	if ((exp->ex_Flags & EF_RNU) == 0)
-	    ReuseStorage(&e1->ex_Stor, &exp->ex_Stor);
+        if (e1->ex_Type->Id == TID_BITFIELD) {
+            e2 = exp->ex_ExpR;
+            asm_bfsto(exp, &e2->ex_Stor, &e1->ex_Stor);
+            FreeStorage(&e2->ex_Stor);
+        } else if (e2->ex_Flags & (EF_CRES|EF_ASSEQ)) {
+            e2 = exp->ex_ExpR;
+            asm_move(exp, &e2->ex_Stor, &e1->ex_Stor);
+            if (e1->ex_Stor.st_Type < ST_Reg && e1->ex_Stor.st_Type != ST_PtrConst)
+                yerror(exp->ex_LexIdx, EERROR_ILLEGAL_ASSIGNMENT);
+            FreeStorage(&e2->ex_Stor);
+        }
+        FreeStorage(&e1->ex_Stor);
+        if ((exp->ex_Flags & EF_RNU) == 0)
+            ReuseStorage(&e1->ex_Stor, &exp->ex_Stor);
     }
 }
 
 /*
- *  Generate a braced assignment.  This is a two step process.	Step 1
+ *  Generate a braced assignment.  This is a two step process.  Step 1
  *  copies static data to the local variable, Step 2 generates additonal
  *  code to handle variable expressions.
  */
@@ -156,27 +156,27 @@ Exp **pexp;
     Exp *exp = *pexp;
 
     if (GenPass == 0) {
-	exp->ex_ExpL->ex_Flags |= EF_LHSASSIGN;
-	CallLeft();
-	CallRight();
+        exp->ex_ExpL->ex_Flags |= EF_LHSASSIGN;
+        CallLeft();
+        CallRight();
     } else {
-	Stor t;
-	Stor ss;
+        Stor t;
+        Stor ss;
 
-	/*
-	 *  process lhs, obtain effective address, then sequence
-	 *  the storage structure according to the type
-	 */
+        /*
+         *  process lhs, obtain effective address, then sequence
+         *  the storage structure according to the type
+         */
 
-	CallLeft();
-	asm_getlea(exp, &exp->ex_ExpL->ex_Stor, &t);
-	exp->ex_ExpR->ex_Stor = t;
-	AutoAggregateBeg(&ss, exp->ex_ExpL->ex_Type);
-	t.st_Flags &= ~SF_LEA;	/*  XXX hack	*/
-	t.st_Size = *exp->ex_ExpL->ex_Type->Size;
-	asm_move(exp, &ss, &t);
-	CallRight();
-	AutoAggregateEnd();
+        CallLeft();
+        asm_getlea(exp, &exp->ex_ExpL->ex_Stor, &t);
+        exp->ex_ExpR->ex_Stor = t;
+        AutoAggregateBeg(&ss, exp->ex_ExpL->ex_Type);
+        t.st_Flags &= ~SF_LEA;  /*  XXX hack    */
+        t.st_Size = *exp->ex_ExpL->ex_Type->Size;
+        asm_move(exp, &ss, &t);
+        CallRight();
+        AutoAggregateEnd();
     }
 }
 
@@ -186,12 +186,12 @@ int32_t *bfhold;
 {
    if (size > 4)
    {
-	AutoAggregate(bfhold, 4);
-	AutoAggregate(NULL, size-4);
+        AutoAggregate(bfhold, 4);
+        AutoAggregate(NULL, size-4);
    }
    else
    {
-	AutoAggregate(bfhold, size);
+        AutoAggregate(bfhold, size);
    }
    *bfhold = 0;
 }
@@ -218,253 +218,253 @@ Exp **pexp;
 
     if (GenPass == 0)
     {
-	Type *type = exp->ex_Type;
-	int32_t index = 0;
+        Type *type = exp->ex_Type;
+        int32_t index = 0;
 
-	Assert(type);
+        Assert(type);
 
-	if (exp->ex_ConstAry) {
-	    int32_t *captr;
+        if (exp->ex_ConstAry) {
+            int32_t *captr;
 
-	    for (captr = exp->ex_ConstAry; captr; captr = *(int32_t **)captr, ++index) {
-		;
-	    }
-	}
-	if (exp->ex_ExpL) {
-	    Exp **pnext;
+            for (captr = exp->ex_ConstAry; captr; captr = *(int32_t **)captr, ++index) {
+                ;
+            }
+        }
+        if (exp->ex_ExpL) {
+            Exp **pnext;
 
-	    for (pnext = &exp->ex_ExpL; (exp = *pnext) != NULL; pnext = &exp->ex_Next, ++index) {
-		Type *actType;
-		Exp *nextExp = exp->ex_Next;
+            for (pnext = &exp->ex_ExpL; (exp = *pnext) != NULL; pnext = &exp->ex_Next, ++index) {
+                Type *actType;
+                Exp *nextExp = exp->ex_Next;
 
-		if (exp->ex_Token == TokExpAssBlock) {
-		    CallCenter();
-		} else {
-		    if (type->Id == TID_ARY)
-			actType = type->SubType;
-		    else if (type->Id == TID_STRUCT)
-			actType = type->Vars[index]->Type;
-		    else if (type->Id == TID_UNION)
-			actType = type->Vars[0]->Type;
-		    else
-			actType = type;
+                if (exp->ex_Token == TokExpAssBlock) {
+                    CallCenter();
+                } else {
+                    if (type->Id == TID_ARY)
+                        actType = type->SubType;
+                    else if (type->Id == TID_STRUCT)
+                        actType = type->Vars[index]->Type;
+                    else if (type->Id == TID_UNION)
+                        actType = type->Vars[0]->Type;
+                    else
+                        actType = type;
 
-		   /*
-		    *  type usually refers to the parent type, e.g. ary
-		    *  actType refers to the data type, e.g. int
-		    */
+                   /*
+                    *  type usually refers to the parent type, e.g. ary
+                    *  actType refers to the data type, e.g. int
+                    */
 
 
-		    if (exp->ex_Type == NULL)
-			exp->ex_Type = actType;
+                    if (exp->ex_Type == NULL)
+                        exp->ex_Type = actType;
 
                     /* Check the type to ensure that it is compatible with what */
                     /* they are asking for.  The only exception is when we are  */
                     /* assigning a strings constant to an array of bytes.  This */
                     /* is just one of those funny cases that C allows through   */
-		    if (exp->ex_Token != TokStrConst ||
-		        type->Id != TID_ARY ||
-		        *actType->Size != 1)
-		    {
-			CallCenter();
+                    if (exp->ex_Token != TokStrConst ||
+                        type->Id != TID_ARY ||
+                        *actType->Size != 1)
+                    {
+                        CallCenter();
                         InitRules(&exp, actType);
-		    }
-		    exp->ex_Next = nextExp;
-		    *pnext = exp;
-		}
-	    }
-	}
+                    }
+                    exp->ex_Next = nextExp;
+                    *pnext = exp;
+                }
+            }
+        }
     } else {
 
-	Type *type = exp->ex_Type;
-	Type *actType;
-	Exp *nextExp;
-	Stor t;
-	Stor c;
-	int32_t index = 0;     /*	index, per char for string, else struct/union */
-	int32_t baseOffset;    /*	bytes accumulated as we go	*/
-	int32_t bfhold = 0;    /*  Used to accumulate bitfield initializations   */
-	Exp **next;
+        Type *type = exp->ex_Type;
+        Type *actType;
+        Exp *nextExp;
+        Stor t;
+        Stor c;
+        int32_t index = 0;     /*       index, per char for string, else struct/union */
+        int32_t baseOffset;    /*       bytes accumulated as we go      */
+        int32_t bfhold = 0;    /*  Used to accumulate bitfield initializations   */
+        Exp **next;
 
-	/*
-	 *  When generating global data we track just the laid-down bytes.
-	 *  When generating local auto-aggregate data we track both the
-	 *  laid-down constants (bytes)
-	 */
+        /*
+         *  When generating global data we track just the laid-down bytes.
+         *  When generating local auto-aggregate data we track both the
+         *  laid-down constants (bytes)
+         */
 
-	Assert(type);
+        Assert(type);
 
-	if (GenGlobal == 0)
-	    t = exp->ex_Stor;		/*  base base offset (real offset)  */
+        if (GenGlobal == 0)
+            t = exp->ex_Stor;           /*  base base offset (real offset)  */
 
-	baseOffset = 0; 		/*  relative offset		    */
+        baseOffset = 0;                 /*  relative offset                 */
 
-	if (exp->ex_ConstAry) {
-	    int32_t *captr;
+        if (exp->ex_ConstAry) {
+            int32_t *captr;
 
-	    for (captr = exp->ex_ConstAry; captr; captr = *(int32_t **)captr, ++index) {
-		int caval = *(int32_t *)((char *)captr + sizeof(void *));
+            for (captr = exp->ex_ConstAry; captr; captr = *(int32_t **)captr, ++index) {
+                int caval = *(int32_t *)((char *)captr + sizeof(void *));
 
-		if (type->Id == TID_ARY)
-		    actType = type->SubType;
-		else if (type->Id == TID_STRUCT)
-		    actType = type->Vars[index]->Type;
-		else if (type->Id == TID_UNION)
-		    actType = type->Vars[0]->Type;
-		else
-		    actType = type;
-		Assert(actType);
+                if (type->Id == TID_ARY)
+                    actType = type->SubType;
+                else if (type->Id == TID_STRUCT)
+                    actType = type->Vars[index]->Type;
+                else if (type->Id == TID_UNION)
+                    actType = type->Vars[0]->Type;
+                else
+                    actType = type;
+                Assert(actType);
 
-		if (type->Id == TID_STRUCT) {
-		    int32_t offset = type->Vars[index]->var_Stor.st_Offset;
-		    if (offset > baseOffset) {
-			PadStructure(offset - baseOffset, &bfhold);
-			baseOffset = offset;
-		    }
-		}
+                if (type->Id == TID_STRUCT) {
+                    int32_t offset = type->Vars[index]->var_Stor.st_Offset;
+                    if (offset > baseOffset) {
+                        PadStructure(offset - baseOffset, &bfhold);
+                        baseOffset = offset;
+                    }
+                }
 
-		if (actType->Id == TID_BITFIELD)
-		{
-		    int32_t offset = INT_SIZE * 8;
-		    if (type->Id == TID_STRUCT)
-		        offset = type->Vars[index]->u.BOffset;
-		    else if (type->Id != TID_INT)
-			yerror(exp->ex_LexIdx, EERROR_ILLEGAL_ASSIGNMENT);
+                if (actType->Id == TID_BITFIELD)
+                {
+                    int32_t offset = INT_SIZE * 8;
+                    if (type->Id == TID_STRUCT)
+                        offset = type->Vars[index]->u.BOffset;
+                    else if (type->Id != TID_INT)
+                        yerror(exp->ex_LexIdx, EERROR_ILLEGAL_ASSIGNMENT);
 
                     bfhold |= (caval & ((1 << *actType->Size) - 1)) << offset;
-		    /* We don't have the fix baseOffset because we are just */
-		    /* a bitfield and may be putting more into the bitfield */
-		    /* We instead rely upon the structure alignment code to */
-		    /* Adjust the offset and flush out the bitfield that we */
-		    /* have gathered.                                       */
-		}
-		else
-		{
-		    /* If we have any bitfield residuals, we need to get it */
-		    /* to be popped out.                                    */
-		    switch(*actType->Size)
-		    {
-		    case 0:
-			break;
-		    case 1:
-			{
-			    char c = caval;
-			    AutoAggregate(&c, 1);
-			}
-			break;
-		    case 2:
-			{
-			    short c = ToMsbOrderShort(caval);
-			    AutoAggregate(&c, 2);
-			}
-			break;
-		    case 4:
-			{
-			    int32_t c = ToMsbOrder(caval);
-			    AutoAggregate(&c, 4);
-			}
-			break;
-		    default:
-			Assert(0);
-			break;
-		    }
+                    /* We don't have the fix baseOffset because we are just */
+                    /* a bitfield and may be putting more into the bitfield */
+                    /* We instead rely upon the structure alignment code to */
+                    /* Adjust the offset and flush out the bitfield that we */
+                    /* have gathered.                                       */
+                }
+                else
+                {
+                    /* If we have any bitfield residuals, we need to get it */
+                    /* to be popped out.                                    */
+                    switch(*actType->Size)
+                    {
+                    case 0:
+                        break;
+                    case 1:
+                        {
+                            char c = caval;
+                            AutoAggregate(&c, 1);
+                        }
+                        break;
+                    case 2:
+                        {
+                            short c = ToMsbOrderShort(caval);
+                            AutoAggregate(&c, 2);
+                        }
+                        break;
+                    case 4:
+                        {
+                            int32_t c = ToMsbOrder(caval);
+                            AutoAggregate(&c, 4);
+                        }
+                        break;
+                    default:
+                        Assert(0);
+                        break;
+                    }
 
-		    baseOffset += *actType->Size;
-		}
-	    }
-	}
-	for (next = &exp->ex_ExpL; (exp = *next) != NULL; next = &exp->ex_Next, ++index) {
-	    nextExp = exp->ex_Next;
-	    if (type->Id == TID_ARY)
-		actType = type->SubType;
-	    else if (type->Id == TID_STRUCT)
-		actType = type->Vars[index]->Type;
-	    else if (type->Id == TID_UNION)
-	        actType = type->Vars[0]->Type;
-	    else
-		actType = type;
-	    Assert(actType);
+                    baseOffset += *actType->Size;
+                }
+            }
+        }
+        for (next = &exp->ex_ExpL; (exp = *next) != NULL; next = &exp->ex_Next, ++index) {
+            nextExp = exp->ex_Next;
+            if (type->Id == TID_ARY)
+                actType = type->SubType;
+            else if (type->Id == TID_STRUCT)
+                actType = type->Vars[index]->Type;
+            else if (type->Id == TID_UNION)
+                actType = type->Vars[0]->Type;
+            else
+                actType = type;
+            Assert(actType);
 
-	    /*
-	     *	Determine starting alignment -- applies to structures
-	     */
+            /*
+             *  Determine starting alignment -- applies to structures
+             */
 
-	    if (type->Id == TID_STRUCT) {
-		int32_t offset = type->Vars[index]->var_Stor.st_Offset;
-		if (offset > baseOffset) {
-		    PadStructure(offset - baseOffset, &bfhold);
-		    baseOffset = offset;
-		}
-	    }
+            if (type->Id == TID_STRUCT) {
+                int32_t offset = type->Vars[index]->var_Stor.st_Offset;
+                if (offset > baseOffset) {
+                    PadStructure(offset - baseOffset, &bfhold);
+                    baseOffset = offset;
+                }
+            }
 
-	    if (exp->ex_Token == TokExpAssBlock) {
-		/*
-		 *  Propogate real offset down
-		 */
+            if (exp->ex_Token == TokExpAssBlock) {
+                /*
+                 *  Propogate real offset down
+                 */
 
-		if (GenGlobal == 0) {
-		    exp->ex_Stor = t;
-		    exp->ex_Stor.st_Offset += baseOffset;
-		}
+                if (GenGlobal == 0) {
+                    exp->ex_Stor = t;
+                    exp->ex_Stor.st_Offset += baseOffset;
+                }
 
-		CallCenter();
+                CallCenter();
 
-		baseOffset += *actType->Size;
-	    } else {
+                baseOffset += *actType->Size;
+            } else {
 
-		/*
-		 *  string constants are a special case.  They are forced
-		 *  into their own subblock since the index represents
-		 *  the byte index rather then a structure field index
-		 */
+                /*
+                 *  string constants are a special case.  They are forced
+                 *  into their own subblock since the index represents
+                 *  the byte index rather then a structure field index
+                 */
 
-		if (exp->ex_Token == TokStrConst && type->Id == TID_ARY && *actType->Size == 1) {
-		    int32_t offset = exp->ex_StrLen;
-		    AutoAggregate(exp->ex_StrConst, offset);
+                if (exp->ex_Token == TokStrConst && type->Id == TID_ARY && *actType->Size == 1) {
+                    int32_t offset = exp->ex_StrLen;
+                    AutoAggregate(exp->ex_StrConst, offset);
 
-		    baseOffset += offset;
-		    index += offset - 1;
-		} else {
-		    CallCenter();
-		    *next = exp;
-		    exp->ex_Next = nextExp;
+                    baseOffset += offset;
+                    index += offset - 1;
+                } else {
+                    CallCenter();
+                    *next = exp;
+                    exp->ex_Next = nextExp;
 
-		    /*
-		     *	If constant then lay it out in the static portion of
-		     *	the initialization routine, else lay out 0 in the
-		     *	static portion and generate code.
-		     */
+                    /*
+                     *  If constant then lay it out in the static portion of
+                     *  the initialization routine, else lay out 0 in the
+                     *  static portion and generate code.
+                     */
 
-		    if (actType->Id == TID_BITFIELD)
-		    {
-			int32_t offset = INT_SIZE * 8;
-			int32_t val    = 0;
+                    if (actType->Id == TID_BITFIELD)
+                    {
+                        int32_t offset = INT_SIZE * 8;
+                        int32_t val    = 0;
 
-			if (exp->ex_Stor.st_Type == ST_IntConst)
-			    val = exp->ex_Stor.st_IntConst;
-			else
-			    yerror(exp->ex_LexIdx, EERROR_ILLEGAL_ASSIGNMENT);
+                        if (exp->ex_Stor.st_Type == ST_IntConst)
+                            val = exp->ex_Stor.st_IntConst;
+                        else
+                            yerror(exp->ex_LexIdx, EERROR_ILLEGAL_ASSIGNMENT);
 
-			if (type->Id == TID_STRUCT)
-			    offset = type->Vars[index]->u.BOffset;
-			else if (type->Id != TID_INT)
-			    yerror(exp->ex_LexIdx, EERROR_ILLEGAL_ASSIGNMENT);
+                        if (type->Id == TID_STRUCT)
+                            offset = type->Vars[index]->u.BOffset;
+                        else if (type->Id != TID_INT)
+                            yerror(exp->ex_LexIdx, EERROR_ILLEGAL_ASSIGNMENT);
 
-			bfhold |= (val & ((1 << *actType->Size) - 1)) << offset;
+                        bfhold |= (val & ((1 << *actType->Size) - 1)) << offset;
 
-		        /* We don't have the fix baseOffset because we are just */
-		        /* a bitfield and may be putting more into the bitfield */
-		        /* We instead rely upon the structure alignment code to */
-		        /* Adjust the offset and flush out the bitfield that we */
-		        /* have gathered.                                       */
-		    }
-		    else
-		    {
+                        /* We don't have the fix baseOffset because we are just */
+                        /* a bitfield and may be putting more into the bitfield */
+                        /* We instead rely upon the structure alignment code to */
+                        /* Adjust the offset and flush out the bitfield that we */
+                        /* have gathered.                                       */
+                    }
+                    else
+                    {
 
                         switch(exp->ex_Stor.st_Type) {
                         case ST_IntConst:
                             switch(*actType->Size) {
-			    case 0:
+                            case 0:
                                 break;
                             case 1:
                                 {
@@ -586,27 +586,27 @@ skip:
                                 yerror(exp->ex_LexIdx, EERROR_NOT_LVALUE);
                             }
                             break;
-			}
+                        }
 
-			baseOffset += *actType->Size;
-		    }
-		    FreeStorage(&exp->ex_Stor);
-		}
-	    }
-	}
+                        baseOffset += *actType->Size;
+                    }
+                    FreeStorage(&exp->ex_Stor);
+                }
+            }
+        }
 
-	/*
-	 *  calculate bytes remaining then zero fill them (use baseOffset
-	 *  as temporary)
-	 */
+        /*
+         *  calculate bytes remaining then zero fill them (use baseOffset
+         *  as temporary)
+         */
 
-	baseOffset = *type->Size - baseOffset;
+        baseOffset = *type->Size - baseOffset;
 
-	if (baseOffset > 0) {
-	    PadStructure(baseOffset, &bfhold);
-	} else if (baseOffset < 0) {
-	    yerror((*pexp)->ex_LexIdx, EERROR_TOO_MANY_INITIALIZERS);
-	}
+        if (baseOffset > 0) {
+            PadStructure(baseOffset, &bfhold);
+        } else if (baseOffset < 0) {
+            yerror((*pexp)->ex_LexIdx, EERROR_TOO_MANY_INITIALIZERS);
+        }
     }
 }
 
@@ -704,7 +704,7 @@ void (*genFunc)(Exp **);
     exp->ex_Func= GenAssEq;
     exp->ex_Type = exp->ex_ExpL->ex_Type;
     if (flags & EF_RNU)
-	exp->ex_Flags |= EF_RNU;
+        exp->ex_Flags |= EF_RNU;
     exp->ex_Flags |= EF_CRES;
 }
 
@@ -719,14 +719,14 @@ Exp **pexp;
     e1 = exp->ex_ExpL;
 
     if (GenPass) {
-	if (e1->ex_ExpL->ex_Token == TokBFExt) {
-	    FreeStorage(&e1->ex_ExpL->ex_ExpL->ex_Stor);
-	    asm_bfsto(exp, &e1->ex_Stor, &e1->ex_ExpL->ex_ExpL->ex_Stor);
-	}
-	if (exp->ex_Flags & EF_RNU)
-	    FreeStorage(&e1->ex_Stor);
-	else
-	    exp->ex_Stor = e1->ex_Stor;
+        if (e1->ex_ExpL->ex_Token == TokBFExt) {
+            FreeStorage(&e1->ex_ExpL->ex_ExpL->ex_Stor);
+            asm_bfsto(exp, &e1->ex_Stor, &e1->ex_ExpL->ex_ExpL->ex_Stor);
+        }
+        if (exp->ex_Flags & EF_RNU)
+            FreeStorage(&e1->ex_Stor);
+        else
+            exp->ex_Stor = e1->ex_Stor;
     }
 }
 

@@ -36,10 +36,10 @@ typedef struct timerequest Iot;
 ProfSym *_ProfCache = 0;
 ProfSym *_ProfList = 0;
 ProfSym *_ProfParent = NULL;
-Iot	_ProfIot;
-long	_ProfTimeStamp;
-short	_ProfId = 1;	    /*	id 0 reserved for root	*/
-short	_Prof2_0;	    /*	running under 2.0	*/
+Iot     _ProfIot;
+long    _ProfTimeStamp;
+short   _ProfId = 1;        /*  id 0 reserved for root  */
+short   _Prof2_0;           /*  running under 2.0       */
 
 __regargs __noprof void ReadClock13(struct EClockVal *);
 
@@ -53,7 +53,7 @@ struct ExecBase *sysbase;
     _ProfList = ps;
 
     if (sysbase->LibNode.lib_Version >= 36)
-	_Prof2_0 = 1;
+        _Prof2_0 = 1;
 }
 
 /*
@@ -84,108 +84,108 @@ void *id;
     struct EClockVal ev1;
 
     if (InProf)
-	return;
+        return;
     ++InProf;
 
     GetEClock(&ev1);
 
     /*
-     *	find program symbol by Id
+     *  find program symbol by Id
      */
 
     begMode = 0;
     {
-	ProfSym **pps = &_ProfList;
-	short cnt = 0;
+        ProfSym **pps = &_ProfList;
+        short cnt = 0;
 
-	for (ps = *pps; ps; ps = *pps) {
-	    if (id == ps->ps_BegId) {
-		begMode = 1;
-		break;
-	    }
-	    if (id == ps->ps_EndId)
-		break;
-	    pps = &ps->ps_Link;
-	    ++cnt;
-	}
-	if (ps && cnt > 8) {	    /*	cache	*/
-	    *pps = ps->ps_Link;
-	    ps->ps_Link = _ProfList;
-	    _ProfList = ps;
-	}
+        for (ps = *pps; ps; ps = *pps) {
+            if (id == ps->ps_BegId) {
+                begMode = 1;
+                break;
+            }
+            if (id == ps->ps_EndId)
+                break;
+            pps = &ps->ps_Link;
+            ++cnt;
+        }
+        if (ps && cnt > 8) {        /*  cache   */
+            *pps = ps->ps_Link;
+            ps->ps_Link = _ProfList;
+            _ProfList = ps;
+        }
     }
 
     if (begMode) {
-	ProfSym *ps2;
+        ProfSym *ps2;
 
-	/*
-	 *  begin new entry, close out parent entry then find new entry
-	 *  point
-	 */
+        /*
+         *  begin new entry, close out parent entry then find new entry
+         *  point
+         */
 
-	if (ps2 = _ProfParent)
-	    ps2->ps_AccumTime += ev1.ev_lo - ps2->ps_TimeStamp;
+        if (ps2 = _ProfParent)
+            ps2->ps_AccumTime += ev1.ev_lo - ps2->ps_TimeStamp;
 
-	if (ps->ps_NumCalls == 0) {
-	    ps->ps_Parent = ps2;
-	} else if (ps2 = ps) {
-	    while (ps->ps_Parent != _ProfParent) {
-		if (ps->ps_SibLink) {
-		    ps = ps->ps_SibLink;
-		    continue;
-		}
-		if (ps->ps_SibLink = AllocMem(sizeof(ProfSym), MEMF_PUBLIC|MEMF_CLEAR)) {
-		    ps = ps->ps_SibLink;
-		    ps->ps_Size = sizeof(ProfSym);
-		    ps->ps_Id = _ProfId++;
-		    ps->ps_Parent = _ProfParent;
-		    ps->ps_BegId  = ps2->ps_BegId;
-		    ps->ps_EndId  = ps2->ps_EndId;
-		    break;
-		}
-	    }
-	}
+        if (ps->ps_NumCalls == 0) {
+            ps->ps_Parent = ps2;
+        } else if (ps2 = ps) {
+            while (ps->ps_Parent != _ProfParent) {
+                if (ps->ps_SibLink) {
+                    ps = ps->ps_SibLink;
+                    continue;
+                }
+                if (ps->ps_SibLink = AllocMem(sizeof(ProfSym), MEMF_PUBLIC|MEMF_CLEAR)) {
+                    ps = ps->ps_SibLink;
+                    ps->ps_Size = sizeof(ProfSym);
+                    ps->ps_Id = _ProfId++;
+                    ps->ps_Parent = _ProfParent;
+                    ps->ps_BegId  = ps2->ps_BegId;
+                    ps->ps_EndId  = ps2->ps_EndId;
+                    break;
+                }
+            }
+        }
 
-	/*
-	 *  if new entry point found (it had better be!) then set start
-	 *  point for entry point.
-	 */
+        /*
+         *  if new entry point found (it had better be!) then set start
+         *  point for entry point.
+         */
 
-	if (ps) {
-	    ++ps->ps_NumCalls;
-	    _ProfParent = ps;
-	    ps->ps_AccumTime = 0;
-	    GetEClock(&ev1);
-	    ps->ps_TimeStamp = ev1.ev_lo;
-	}
+        if (ps) {
+            ++ps->ps_NumCalls;
+            _ProfParent = ps;
+            ps->ps_AccumTime = 0;
+            GetEClock(&ev1);
+            ps->ps_TimeStamp = ev1.ev_lo;
+        }
     } else if (ps = _ProfParent) {
-	ProfSym *ps2;
+        ProfSym *ps2;
 
-	/*
-	 *  close out current entry and restart parent entry
-	 */
+        /*
+         *  close out current entry and restart parent entry
+         */
 
-	while (ps && ps->ps_EndId != id) {
-	    ps->ps_AccumTime += ev1.ev_lo - ps->ps_TimeStamp;
-	    ps->ps_TotalTime += ps->ps_AccumTime;
-	    if (ps->ps_Parent)
-		ps->ps_Parent->ps_AccumTime += ps->ps_AccumTime;
-	    ps->ps_AccumTime = 0;
-	    ps = ps->ps_Parent;
-	}
-	if (ps) {
-	    ps->ps_AccumTime += ev1.ev_lo - ps->ps_TimeStamp;
-	    ps->ps_TotalTime += ps->ps_AccumTime;
+        while (ps && ps->ps_EndId != id) {
+            ps->ps_AccumTime += ev1.ev_lo - ps->ps_TimeStamp;
+            ps->ps_TotalTime += ps->ps_AccumTime;
+            if (ps->ps_Parent)
+                ps->ps_Parent->ps_AccumTime += ps->ps_AccumTime;
+            ps->ps_AccumTime = 0;
+            ps = ps->ps_Parent;
+        }
+        if (ps) {
+            ps->ps_AccumTime += ev1.ev_lo - ps->ps_TimeStamp;
+            ps->ps_TotalTime += ps->ps_AccumTime;
 
-	    if (_ProfParent = ps2 = ps->ps_Parent) {
-		ps2->ps_AccumTime += ps->ps_AccumTime;
-		GetEClock(&ev1);
-		ps2->ps_TimeStamp = ev1.ev_lo;
-	    }
-	    ps->ps_AccumTime = 0;
-	} else {
-	    _ProfParent = ps;
-	}
+            if (_ProfParent = ps2 = ps->ps_Parent) {
+                ps2->ps_AccumTime += ps->ps_AccumTime;
+                GetEClock(&ev1);
+                ps2->ps_TimeStamp = ev1.ev_lo;
+            }
+            ps->ps_AccumTime = 0;
+        } else {
+            _ProfParent = ps;
+        }
     }
     --InProf;
 }
@@ -207,26 +207,26 @@ _CProfExit()
     GetEClock(&ev1);
 
     for (ps = _ProfParent; ps; ps = ps->ps_Parent) {
-	ps->ps_AccumTime += ev1.ev_lo - ps->ps_TimeStamp;
-	ps->ps_TotalTime += ps->ps_AccumTime;
-	if (ps->ps_Parent)
-	    ps->ps_Parent->ps_AccumTime += ps->ps_AccumTime;
-	ps->ps_AccumTime = 0;
+        ps->ps_AccumTime += ev1.ev_lo - ps->ps_TimeStamp;
+        ps->ps_TotalTime += ps->ps_AccumTime;
+        if (ps->ps_Parent)
+            ps->ps_Parent->ps_AccumTime += ps->ps_AccumTime;
+        ps->ps_AccumTime = 0;
     }
 
     {
-	CLI *cli = (CLI *)BADDR(((struct Process *)FindTask(NULL))->pr_CLI);
-	if (cli) {
-	    unsigned char *ptr = (char *)BADDR(cli->cli_CommandName);
-	    short i, j;
-	    for (i = *ptr; i > 0; --i) {
-		if (ptr[i] == ':' || ptr[i] == '/')
-		    break;
-	    }
-	    for (++i, j = 0; i <= *ptr && j < sizeof(profBuf) - 8; ++i, ++j)
-		profBuf[j] = ptr[i];
-	    profBuf[j] = 0;
-	}
+        CLI *cli = (CLI *)BADDR(((struct Process *)FindTask(NULL))->pr_CLI);
+        if (cli) {
+            unsigned char *ptr = (char *)BADDR(cli->cli_CommandName);
+            short i, j;
+            for (i = *ptr; i > 0; --i) {
+                if (ptr[i] == ':' || ptr[i] == '/')
+                    break;
+            }
+            for (++i, j = 0; i <= *ptr && j < sizeof(profBuf) - 8; ++i, ++j)
+                profBuf[j] = ptr[i];
+            profBuf[j] = 0;
+        }
     }
     strcat(profBuf, ".dprof");
 
@@ -241,32 +241,32 @@ _CProfExit()
     Write(fh, &ph, sizeof(ph));
 
     for (; ps; ps = ps->ps_Link) {
-	ProfSym *psx;
+        ProfSym *psx;
 
-	for (ps2 = ps; ps2; ps2 = psx) {
-	    psx = ps2->ps_SibLink;
+        for (ps2 = ps; ps2; ps2 = psx) {
+            psx = ps2->ps_SibLink;
 
-	    ps2->ps_SibLink = NULL;
-	    if (ps2->ps_Parent)
-		ps2->ps_Parent = (void *)ps2->ps_Parent->ps_Id;
-	    if (fh) {
-		if (Write(fh, ps2, ps2->ps_Size) != ps2->ps_Size) {
-		    Close(fh);
-		    fh = 0;
-		}
-	    }
-	    ps2->ps_Parent = NULL;
+            ps2->ps_SibLink = NULL;
+            if (ps2->ps_Parent)
+                ps2->ps_Parent = (void *)ps2->ps_Parent->ps_Id;
+            if (fh) {
+                if (Write(fh, ps2, ps2->ps_Size) != ps2->ps_Size) {
+                    Close(fh);
+                    fh = 0;
+                }
+            }
+            ps2->ps_Parent = NULL;
 
-	    if (ps2 != ps)
-		FreeMem(ps2, ps2->ps_Size);
-	}
+            if (ps2 != ps)
+                FreeMem(ps2, ps2->ps_Size);
+        }
     }
     if (_ProfIot.tr_node.io_Device) {
-	CloseDevice(&_ProfIot.tr_node);
-	_ProfIot.tr_node.io_Device = NULL;
+        CloseDevice(&_ProfIot.tr_node);
+        _ProfIot.tr_node.io_Device = NULL;
     }
     if (fh)
-	Close(fh);
+        Close(fh);
 }
 
 /*
@@ -282,8 +282,8 @@ ReadClock13(ev)
 struct EClockVal *ev;
 {
     if (_ProfIot.tr_node.io_Device == NULL) {
-	OpenDevice("timer.device", UNIT_MICROHZ, &_ProfIot.tr_node, 0);
-	_ProfIot.tr_node.io_Command = TR_GETSYSTIME;
+        OpenDevice("timer.device", UNIT_MICROHZ, &_ProfIot.tr_node, 0);
+        _ProfIot.tr_node.io_Command = TR_GETSYSTIME;
     }
     DoIO(&_ProfIot.tr_node);
     ev->ev_lo = (unsigned short)_ProfIot.tr_time.tv_secs * (unsigned short)62500 + (_ProfIot.tr_time.tv_micro >> 4);

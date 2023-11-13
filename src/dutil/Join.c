@@ -31,42 +31,42 @@ main(int ac, char **av)
     char *ptr;
 
     for (i = 1; i < ac; ++i) {
-	ptr = av[i];
+        ptr = av[i];
 
-	if (strcmp(ptr, "AS") == 0 || strcmp(ptr, "as") == 0) {
-	    outFile = av[i + 1];
-	    av[i] = NULL;
-	    break;
-	}
+        if (strcmp(ptr, "AS") == 0 || strcmp(ptr, "as") == 0) {
+            outFile = av[i + 1];
+            av[i] = NULL;
+            break;
+        }
     }
     if (outFile == NULL) {
-	fprintf(stderr, "No AS option specified\n");
-	exit(20);
+        fprintf(stderr, "No AS option specified\n");
+        exit(20);
     }
     if ((fdo = open(outFile, O_WRONLY|O_CREAT|O_TRUNC, 0666)) < 0) {
-	fprintf(stderr, "couldn't create %s\n", outFile);
-	exit(20);
+        fprintf(stderr, "couldn't create %s\n", outFile);
+        exit(20);
     }
     for (i = 1; error == 0 && (ptr = av[i]); ++i) {
-	int fd;
-	int32_t n;
+        int fd;
+        int32_t n;
 
-	if ((fd = open(ptr, O_RDONLY)) < 0) {
-	    fprintf(stderr, "couldn't open %s\n", ptr);
-	    error = 20;
-	} else {
-	    while ((n = read(fd, Buf, sizeof(Buf))) > 0) {
-		if (write(fdo, Buf, n) != n) {
-		    fprintf(stderr, "write error\n");
-		    error = 20;
-		    break;
-		}
-	    }
-	}
+        if ((fd = open(ptr, O_RDONLY)) < 0) {
+            fprintf(stderr, "couldn't open %s\n", ptr);
+            error = 20;
+        } else {
+            while ((n = read(fd, Buf, sizeof(Buf))) > 0) {
+                if (write(fdo, Buf, n) != n) {
+                    fprintf(stderr, "write error\n");
+                    error = 20;
+                    break;
+                }
+            }
+        }
     }
     close(fdo);
     if (error)
-	unlink(outFile);
+        unlink(outFile);
     exit(error);
 }
 

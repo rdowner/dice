@@ -1,7 +1,7 @@
-	include	'pools_rev.i'
+        include 'pools_rev.i'
 
-	section	Pools_Version
+        section Pools_Version
 
-	VERSTAG
+        VERSTAG
 
-	END
+        END

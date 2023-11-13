@@ -1,26 +1,26 @@
 
-		;   DPA_ADD.A
-		;
-		;   A0	arg1	(8 bytes)
-		;   A1	arg2	(8 bytes)
-		;
-		;   result -> D0/D1
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   DPA_ADD.A
+                ;
+                ;   A0  arg1    (8 bytes)
+                ;   A1  arg2    (8 bytes)
+                ;
+                ;   result -> D0/D1
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,code
+                section text,code
 
-		xref	_MathIeeeDoubBasBase
-		xref	_LVOIEEEDPAdd
-		xdef	__dpadd_a
+                xref    _MathIeeeDoubBasBase
+                xref    _LVOIEEEDPAdd
+                xdef    __dpadd_a
 
-__dpadd_a	movem.l D2/D3/A6,-(sp)
-		move.l	_MathIeeeDoubBasBase(A4),A6
-		movem.l (A0),D0/D1
-		movem.l (A1),D2/D3
-		jsr	_LVOIEEEDPAdd(A6)
-		movem.l (sp)+,D2/D3/A6
-		rts
+__dpadd_a       movem.l D2/D3/A6,-(sp)
+                move.l  _MathIeeeDoubBasBase(A4),A6
+                movem.l (A0),D0/D1
+                movem.l (A1),D2/D3
+                jsr     _LVOIEEEDPAdd(A6)
+                movem.l (sp)+,D2/D3/A6
+                rts
 
-		END
+                END
 

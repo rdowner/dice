@@ -10,7 +10,7 @@
 
 extern __regargs void *_dice_alloca(long);
 
-#define alloca		_dice_alloca
+#define alloca          _dice_alloca
 
 #endif
 

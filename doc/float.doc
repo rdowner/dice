@@ -29,645 +29,645 @@ c.lib/float/fsqrt
 c.lib/float/ftan
 
 
-float/acos						float/acos
-float/facos						float/facos
+float/acos                                              float/acos
+float/facos                                             float/facos
 
    NAME
-	acos	- return arc cosine of a double quantity
-	facos	- return arc cosine of a float quantity
+        acos    - return arc cosine of a double quantity
+        facos   - return arc cosine of a float quantity
 
    SYNOPSIS
-	#include <math.h>
+        #include <math.h>
 
-	double a = acos(b);
-	double b;
+        double a = acos(b);
+        double b;
 
-	float  c = facos(d);
-	float  d;
+        float  c = facos(d);
+        float  d;
 
    FUNCTION
-	Returns the arc cosine of a floating point quantity
+        Returns the arc cosine of a floating point quantity
 
    EXAMPLE
-	/*
-	 *  compile with the math library -lm
-	 */
+        /*
+         *  compile with the math library -lm
+         */
 
-	#include <math.h>
-	#include <stdio.h>
+        #include <math.h>
+        #include <stdio.h>
 
-	main()
-	{
-	    {
-		double a = acos(0.25);
-		printf("acos 0.25 = %lf\n", a);     /*  1.318   */
-	    }
-	    {					    /*	less accuracy	*/
-		float a = facos(0.25);
-		printf("acos 0.25 = %lf\n", (double)a);
-	    }
-	    return(0);
-	}
+        main()
+        {
+            {
+                double a = acos(0.25);
+                printf("acos 0.25 = %lf\n", a);     /*  1.318   */
+            }
+            {                                       /*  less accuracy   */
+                float a = facos(0.25);
+                printf("acos 0.25 = %lf\n", (double)a);
+            }
+            return(0);
+        }
 
    INPUTS
-	double b;	double floating point value
-	float  d;	float  floating point value
+        double b;       double floating point value
+        float  d;       float  floating point value
 
    RESULTS
-	double a;	result double floating point value
-	float  c;	result float  floating point value
+        double a;       result double floating point value
+        float  c;       result float  floating point value
 
    SEE ALSO
-	acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
-	facos, fasin, ...
+        acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
+        facos, fasin, ...
 
 
-float/asin						float/asin
-float/fasin						float/fasin
+float/asin                                              float/asin
+float/fasin                                             float/fasin
 
    NAME
-	asin	- return arc sine of a double quantity
-	fasin	- return arc sine of a float quantity
+        asin    - return arc sine of a double quantity
+        fasin   - return arc sine of a float quantity
 
    SYNOPSIS
-	#include <math.h>
+        #include <math.h>
 
-	double a = asin(b);
-	double b;
+        double a = asin(b);
+        double b;
 
-	float  c = fasin(d);
-	float  d;
+        float  c = fasin(d);
+        float  d;
 
    FUNCTION
-	Returns the arc sine of a floating point quantity
+        Returns the arc sine of a floating point quantity
 
    EXAMPLE
-	/*
-	 *  compile with the math library -lm
-	 */
+        /*
+         *  compile with the math library -lm
+         */
 
-	#include <math.h>
-	#include <stdio.h>
+        #include <math.h>
+        #include <stdio.h>
 
-	main()
-	{
-	    {
-		double a = asin(0.25);
-		printf("asin 0.25 = %lf\n", a);     /*  0.2527  */
-	    }
-	    {					    /*	less accuracy	*/
-		float a = fasin(0.25);
-		printf("asin 0.25 = %lf\n", (double)a);
-	    }
-	    return(0);
-	}
+        main()
+        {
+            {
+                double a = asin(0.25);
+                printf("asin 0.25 = %lf\n", a);     /*  0.2527  */
+            }
+            {                                       /*  less accuracy   */
+                float a = fasin(0.25);
+                printf("asin 0.25 = %lf\n", (double)a);
+            }
+            return(0);
+        }
 
 
    INPUTS
-	double b;	double floating point value
-	float  d;	float  floating point value
+        double b;       double floating point value
+        float  d;       float  floating point value
 
    RESULTS
-	double a;	result double floating point value
-	float  c;	result float  floating point value
+        double a;       result double floating point value
+        float  c;       result float  floating point value
 
    SEE ALSO
-	acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
-	facos, fasin, ...
+        acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
+        facos, fasin, ...
 
 
-float/atan						float/atan
-float/fatan						float/fatan
+float/atan                                              float/atan
+float/fatan                                             float/fatan
 
    NAME
-	atan	- return arc tan of a double quantity
-	fatan	- return arc tan of a float quantity
+        atan    - return arc tan of a double quantity
+        fatan   - return arc tan of a float quantity
 
    SYNOPSIS
-	#include <math.h>
+        #include <math.h>
 
-	double a = atan(b);
-	double b;
+        double a = atan(b);
+        double b;
 
-	float  c = fatan(d);
-	float  d;
+        float  c = fatan(d);
+        float  d;
 
    FUNCTION
-	Returns the arc tan of a floating point quantity
+        Returns the arc tan of a floating point quantity
 
    EXAMPLE
-	/*
-	 *  compile with the math library -lm
-	 */
+        /*
+         *  compile with the math library -lm
+         */
 
-	#include <math.h>
-	#include <stdio.h>
+        #include <math.h>
+        #include <stdio.h>
 
-	main()
-	{
-	    {
-		double a = atan(0.25);
-		printf("atan 0.25 = %lf\n", a);     /*  0.245   */
-	    }
-	    {					    /*	less accuracy	*/
-		float a = fatan(0.25);
-		printf("atan 0.25 = %lf\n", (double)a);
-	    }
-	    return(0);
-	}
+        main()
+        {
+            {
+                double a = atan(0.25);
+                printf("atan 0.25 = %lf\n", a);     /*  0.245   */
+            }
+            {                                       /*  less accuracy   */
+                float a = fatan(0.25);
+                printf("atan 0.25 = %lf\n", (double)a);
+            }
+            return(0);
+        }
 
 
    INPUTS
-	double b;	double floating point value
-	float  d;	float  floating point value
+        double b;       double floating point value
+        float  d;       float  floating point value
 
    RESULTS
-	double a;	result double floating point value
-	float  c;	result float  floating point value
+        double a;       result double floating point value
+        float  c;       result float  floating point value
 
    SEE ALSO
-	acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
-	facos, fasin, ...
+        acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
+        facos, fasin, ...
 
 
-float/cos						float/cos
-float/fcos						float/fcos
+float/cos                                               float/cos
+float/fcos                                              float/fcos
 
    NAME
-	cos    - return cosine of a double quantity
-	fcos   - return cosine of a float quantity
+        cos    - return cosine of a double quantity
+        fcos   - return cosine of a float quantity
 
    SYNOPSIS
-	#include <math.h>
+        #include <math.h>
 
-	double a = cos(b);
-	double b;
+        double a = cos(b);
+        double b;
 
-	float  c = fcos(d);
-	float  d;
+        float  c = fcos(d);
+        float  d;
 
    FUNCTION
-	Returns the cosine of a floating point quantity
+        Returns the cosine of a floating point quantity
 
    EXAMPLE
-	/*
-	 *  compile with the math library -lm
-	 */
+        /*
+         *  compile with the math library -lm
+         */
 
-	#include <math.h>
-	#include <stdio.h>
+        #include <math.h>
+        #include <stdio.h>
 
-	main()
-	{
-	    {
-		double a = cos(0.25);
-		printf("cos 0.25 = %lf\n", a);     /*  0.9689  */
-	    }
-	    {					    /*	less accuracy	*/
-		float a = fcos(0.25);
-		printf("cos 0.25 = %lf\n", (double)a);
-	    }
-	    return(0);
-	}
+        main()
+        {
+            {
+                double a = cos(0.25);
+                printf("cos 0.25 = %lf\n", a);     /*  0.9689  */
+            }
+            {                                       /*  less accuracy   */
+                float a = fcos(0.25);
+                printf("cos 0.25 = %lf\n", (double)a);
+            }
+            return(0);
+        }
 
    INPUTS
-	double b;	double floating point value
-	float  d;	float  floating point value
+        double b;       double floating point value
+        float  d;       float  floating point value
 
    RESULTS
-	double a;	result double floating point value
-	float  c;	result float  floating point value
+        double a;       result double floating point value
+        float  c;       result float  floating point value
 
    SEE ALSO
-	acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
-	facos, fasin, ...
+        acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
+        facos, fasin, ...
 
 
-float/exp						float/exp
-float/fexp						float/fexp
+float/exp                                               float/exp
+float/fexp                                              float/fexp
 
    NAME
-	exp    - return e to the power of the double quantity
-	fexp   - return e to the power of the float quantity
+        exp    - return e to the power of the double quantity
+        fexp   - return e to the power of the float quantity
 
    SYNOPSIS
-	#include <math.h>
+        #include <math.h>
 
-	double a = exp(b);
-	double b;
+        double a = exp(b);
+        double b;
 
-	float  c = fexp(d);
-	float  d;
+        float  c = fexp(d);
+        float  d;
 
    FUNCTION
-	Returns e to the power of the floating point quantity
+        Returns e to the power of the floating point quantity
 
    EXAMPLE
-	/*
-	 *  compile with the math library -lm
-	 */
+        /*
+         *  compile with the math library -lm
+         */
 
-	#include <math.h>
-	#include <stdio.h>
+        #include <math.h>
+        #include <stdio.h>
 
-	main()
-	{
-	    {
-		double a = exp(0.25);
-		printf("exp 0.25 = %lf\n", a);     /*  1.284   */
-	    }
-	    {					    /*	less accuracy	*/
-		float a = fexp(0.25);
-		printf("exp 0.25 = %lf\n", (double)a);
-	    }
-	    return(0);
-	}
+        main()
+        {
+            {
+                double a = exp(0.25);
+                printf("exp 0.25 = %lf\n", a);     /*  1.284   */
+            }
+            {                                       /*  less accuracy   */
+                float a = fexp(0.25);
+                printf("exp 0.25 = %lf\n", (double)a);
+            }
+            return(0);
+        }
 
    INPUTS
-	double b;	double floating point value
-	float  d;	float  floating point value
+        double b;       double floating point value
+        float  d;       float  floating point value
 
    RESULTS
-	double a;	result double floating point value
-	float  c;	result float  floating point value
+        double a;       result double floating point value
+        float  c;       result float  floating point value
 
    SEE ALSO
-	acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
-	facos, fasin, ...
+        acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
+        facos, fasin, ...
 
 
-float/fabs						float/fabs
-float/ffabs						float/ffabs
+float/fabs                                              float/fabs
+float/ffabs                                             float/ffabs
 
    NAME
-	fabs   - return the absolute value of a double quantity
-	ffabs  - return the absolute value of a float quantity
+        fabs   - return the absolute value of a double quantity
+        ffabs  - return the absolute value of a float quantity
 
    SYNOPSIS
-	#include <math.h>
+        #include <math.h>
 
-	double a = fabs(b);
-	double b;
+        double a = fabs(b);
+        double b;
 
-	float  c = ffabs(d);
-	float  d;
+        float  c = ffabs(d);
+        float  d;
 
    FUNCTION
-	Returns the absolute value of a floating point quantity
+        Returns the absolute value of a floating point quantity
 
    EXAMPLE
-	/*
-	 *  compile with the math library -lm
-	 */
+        /*
+         *  compile with the math library -lm
+         */
 
-	#include <math.h>
-	#include <stdio.h>
+        #include <math.h>
+        #include <stdio.h>
 
-	main()
-	{
-	    {
-		double a = fabs(-0.25);
-		printf("fabs -0.25 = %lf\n", a);     /*  0.25    */
-	    }
-	    {					    /*	less accuracy	*/
-		float a = ffabs(-0.25);
-		printf("fabs -0.25 = %lf\n", (double)a);
-	    }
-	    return(0);
-	}
+        main()
+        {
+            {
+                double a = fabs(-0.25);
+                printf("fabs -0.25 = %lf\n", a);     /*  0.25    */
+            }
+            {                                       /*  less accuracy   */
+                float a = ffabs(-0.25);
+                printf("fabs -0.25 = %lf\n", (double)a);
+            }
+            return(0);
+        }
 
    INPUTS
-	double b;	double floating point value
-	float  d;	float  floating point value
+        double b;       double floating point value
+        float  d;       float  floating point value
 
    RESULTS
-	double a;	result double floating point value
-	float  c;	result float  floating point value
+        double a;       result double floating point value
+        float  c;       result float  floating point value
 
    SEE ALSO
-	acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
-	facos, fasin, ...
+        acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
+        facos, fasin, ...
 
 
-float/log						float/log
-float/flog						float/flog
+float/log                                               float/log
+float/flog                                              float/flog
 
    NAME
-	log    - return the log of the double quantity, base e
-	flog   - return the log of the float quantity, base e
+        log    - return the log of the double quantity, base e
+        flog   - return the log of the float quantity, base e
 
    SYNOPSIS
-	#include <math.h>
+        #include <math.h>
 
-	double a = log(b);
-	double b;
+        double a = log(b);
+        double b;
 
-	float  c = flog(d);
-	float  d;
+        float  c = flog(d);
+        float  d;
 
    FUNCTION
-	Returns the log of the floating point quantity, base e.
+        Returns the log of the floating point quantity, base e.
 
    EXAMPLE
-	/*
-	 *  compile with the math library -lm
-	 */
+        /*
+         *  compile with the math library -lm
+         */
 
-	#include <math.h>
-	#include <stdio.h>
+        #include <math.h>
+        #include <stdio.h>
 
-	main()
-	{
-	    {
-		double a = log(0.25);
-		printf("log 0.25 = %lf\n", a);     /*  -1.3863 */
-	    }
-	    {					    /*	less accuracy	*/
-		float a = flog(0.25);
-		printf("log 0.25 = %lf\n", (double)a);
-	    }
-	    return(0);
-	}
+        main()
+        {
+            {
+                double a = log(0.25);
+                printf("log 0.25 = %lf\n", a);     /*  -1.3863 */
+            }
+            {                                       /*  less accuracy   */
+                float a = flog(0.25);
+                printf("log 0.25 = %lf\n", (double)a);
+            }
+            return(0);
+        }
 
    INPUTS
-	double b;	double floating point value
-	float  d;	float  floating point value
+        double b;       double floating point value
+        float  d;       float  floating point value
 
    RESULTS
-	double a;	result double floating point value
-	float  c;	result float  floating point value
+        double a;       result double floating point value
+        float  c;       result float  floating point value
 
    SEE ALSO
-	acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
-	facos, fasin, ...
+        acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
+        facos, fasin, ...
 
 
-float/log10						float/log10
-float/flog10						float/flog10
+float/log10                                             float/log10
+float/flog10                                            float/flog10
 
    NAME
-	log    - return the log of the double quantity, base 10
-	flog   - return the log of the float quantity, base 10
+        log    - return the log of the double quantity, base 10
+        flog   - return the log of the float quantity, base 10
 
    SYNOPSIS
-	#include <math.h>
+        #include <math.h>
 
-	double a = log10(b);
-	double b;
+        double a = log10(b);
+        double b;
 
-	float  c = flog10(d);
-	float  d;
+        float  c = flog10(d);
+        float  d;
 
    FUNCTION
-	Returns the log of the floating point quantity, base 10.
+        Returns the log of the floating point quantity, base 10.
 
    EXAMPLE
-	/*
-	 *  compile with the math library -lm
-	 */
+        /*
+         *  compile with the math library -lm
+         */
 
-	#include <math.h>
-	#include <stdio.h>
+        #include <math.h>
+        #include <stdio.h>
 
-	main()
-	{
-	    {
-		double a = log10(0.25);
-		printf("log10 0.25 = %lf\n", a);     /*  -0.6021 */
-	    }
-	    {					    /*	less accuracy	*/
-		float a = flog10(0.25);
-		printf("log10 0.25 = %lf\n", (double)a);
-	    }
-	    return(0);
-	}
+        main()
+        {
+            {
+                double a = log10(0.25);
+                printf("log10 0.25 = %lf\n", a);     /*  -0.6021 */
+            }
+            {                                       /*  less accuracy   */
+                float a = flog10(0.25);
+                printf("log10 0.25 = %lf\n", (double)a);
+            }
+            return(0);
+        }
 
    INPUTS
-	double b;	double floating point value
-	float  d;	float  floating point value
+        double b;       double floating point value
+        float  d;       float  floating point value
 
    RESULTS
-	double a;	result double floating point value
-	float  c;	result float  floating point value
+        double a;       result double floating point value
+        float  c;       result float  floating point value
 
    SEE ALSO
-	acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
-	facos, fasin, ...
+        acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
+        facos, fasin, ...
 
 
-float/pow						float/pow
-float/fpow						float/fpow
+float/pow                                               float/pow
+float/fpow                                              float/fpow
 
    NAME
-	pow    - return one double to the power of another
-	fpow   - return one float to the power of another
+        pow    - return one double to the power of another
+        fpow   - return one float to the power of another
 
    SYNOPSIS
-	#include <math.h>
+        #include <math.h>
 
-	double a = pow(b, bp);
-	double bp;
-	double b;
+        double a = pow(b, bp);
+        double bp;
+        double b;
 
-	float  c = flog(d, dp);
-	float  dp;
-	float  d;
+        float  c = flog(d, dp);
+        float  dp;
+        float  d;
 
    FUNCTION
-	Returns the power of one fp quantity to another.
+        Returns the power of one fp quantity to another.
 
    EXAMPLE
-	/*
-	 *  compile with the math library -lm
-	 */
+        /*
+         *  compile with the math library -lm
+         */
 
-	#include <math.h>
-	#include <stdio.h>
+        #include <math.h>
+        #include <stdio.h>
 
-	main()
-	{
-	    {
-		double a = pow(0.25, 4.0);
-		printf("pow 0.25 ^^ 4.0 = %lf\n", a);     /*  0.0039 */
-	    }
-	    {					    /*	less accuracy	*/
-		float a = fpow(0.25, 4.0);
-		printf("pow 0.25 ^^ 4.0 = %lf\n", (double)a);
-	    }
-	    return(0);
-	}
+        main()
+        {
+            {
+                double a = pow(0.25, 4.0);
+                printf("pow 0.25 ^^ 4.0 = %lf\n", a);     /*  0.0039 */
+            }
+            {                                       /*  less accuracy   */
+                float a = fpow(0.25, 4.0);
+                printf("pow 0.25 ^^ 4.0 = %lf\n", (double)a);
+            }
+            return(0);
+        }
 
    INPUTS
-	double b;	double floating point value (base)
-	double bp;	double floating point value (exponent)
-	float  d;	float  floating point value (base)
-	float  dp;	float  floating point value (exponent)
+        double b;       double floating point value (base)
+        double bp;      double floating point value (exponent)
+        float  d;       float  floating point value (base)
+        float  dp;      float  floating point value (exponent)
 
    RESULTS
-	double a;	result double floating point value
-	float  c;	result float  floating point value
+        double a;       result double floating point value
+        float  c;       result float  floating point value
 
    SEE ALSO
-	acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
-	facos, fasin, ...
+        acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
+        facos, fasin, ...
 
 
-float/sin						float/sin
-float/fsin						float/fsin
+float/sin                                               float/sin
+float/fsin                                              float/fsin
 
    NAME
-	sin    - return sine of a double quantity
-	fsin   - return sine of a float quantity
+        sin    - return sine of a double quantity
+        fsin   - return sine of a float quantity
 
    SYNOPSIS
-	#include <math.h>
+        #include <math.h>
 
-	double a = sin(b);
-	double b;
+        double a = sin(b);
+        double b;
 
-	float  c = fsin(d);
-	float  d;
+        float  c = fsin(d);
+        float  d;
 
    FUNCTION
-	Returns the sine of a floating point quantity
+        Returns the sine of a floating point quantity
 
    EXAMPLE
-	/*
-	 *  compile with the math library -lm
-	 */
+        /*
+         *  compile with the math library -lm
+         */
 
-	#include <math.h>
-	#include <stdio.h>
+        #include <math.h>
+        #include <stdio.h>
 
-	main()
-	{
-	    {
-		double a = sin(0.25);
-		printf("sin 0.25 = %lf\n", a);     /*  0.2474  */
-	    }
-	    {					    /*	less accuracy	*/
-		float a = fsin(0.25);
-		printf("sin 0.25 = %lf\n", (double)a);
-	    }
-	    return(0);
-	}
+        main()
+        {
+            {
+                double a = sin(0.25);
+                printf("sin 0.25 = %lf\n", a);     /*  0.2474  */
+            }
+            {                                       /*  less accuracy   */
+                float a = fsin(0.25);
+                printf("sin 0.25 = %lf\n", (double)a);
+            }
+            return(0);
+        }
 
    INPUTS
-	double b;	double floating point value
-	float  d;	float  floating point value
+        double b;       double floating point value
+        float  d;       float  floating point value
 
    RESULTS
-	double a;	result double floating point value
-	float  c;	result float  floating point value
+        double a;       result double floating point value
+        float  c;       result float  floating point value
 
    SEE ALSO
-	acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
-	facos, fasin, ...
+        acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
+        facos, fasin, ...
 
 
-float/sqrt						float/sqrt
-float/fsqrt						float/fsqrt
+float/sqrt                                              float/sqrt
+float/fsqrt                                             float/fsqrt
 
    NAME
-	sqrt   - return the square root of a double quantity
-	fsqrt  - return the square root of a float quantity
+        sqrt   - return the square root of a double quantity
+        fsqrt  - return the square root of a float quantity
 
    SYNOPSIS
-	#include <math.h>
+        #include <math.h>
 
-	double a = sqrt(b);
-	double b;
+        double a = sqrt(b);
+        double b;
 
-	float  c = fsqrt(d);
-	float  d;
+        float  c = fsqrt(d);
+        float  d;
 
    FUNCTION
-	Returns the square root of a floating point quantity
+        Returns the square root of a floating point quantity
 
    EXAMPLE
-	/*
-	 *  compile with the math library -lm
-	 */
+        /*
+         *  compile with the math library -lm
+         */
 
-	#include <math.h>
-	#include <stdio.h>
+        #include <math.h>
+        #include <stdio.h>
 
-	main()
-	{
-	    {
-		double a = sqrt(0.25);
-		printf("sqrt 0.25 = %lf\n", a);     /*  0.5000  */
-	    }
-	    {					    /*	less accuracy	*/
-		float a = fsqrt(0.25);
-		printf("sqrt 0.25 = %lf\n", (double)a);
-	    }
-	    return(0);
-	}
+        main()
+        {
+            {
+                double a = sqrt(0.25);
+                printf("sqrt 0.25 = %lf\n", a);     /*  0.5000  */
+            }
+            {                                       /*  less accuracy   */
+                float a = fsqrt(0.25);
+                printf("sqrt 0.25 = %lf\n", (double)a);
+            }
+            return(0);
+        }
 
    INPUTS
-	double b;	double floating point value
-	float  d;	float  floating point value
+        double b;       double floating point value
+        float  d;       float  floating point value
 
    RESULTS
-	double a;	result double floating point value
-	float  c;	result float  floating point value
+        double a;       result double floating point value
+        float  c;       result float  floating point value
 
    SEE ALSO
-	acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
-	facos, fasin, ...
+        acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
+        facos, fasin, ...
 
 
-float/tan						float/tan
-float/ftan						float/ftan
+float/tan                                               float/tan
+float/ftan                                              float/ftan
 
    NAME
-	tan    - return tan of a double quantity
-	ftan   - return tan of a float quantity
+        tan    - return tan of a double quantity
+        ftan   - return tan of a float quantity
 
    SYNOPSIS
-	#include <math.h>
+        #include <math.h>
 
-	double a = tan(b);
-	double b;
+        double a = tan(b);
+        double b;
 
-	float  c = ftan(d);
-	float  d;
+        float  c = ftan(d);
+        float  d;
 
    FUNCTION
-	Returns the tan of a floating point quantity
+        Returns the tan of a floating point quantity
 
    EXAMPLE
-	/*
-	 *  compile with the math library -lm
-	 */
+        /*
+         *  compile with the math library -lm
+         */
 
-	#include <math.h>
-	#include <stdio.h>
+        #include <math.h>
+        #include <stdio.h>
 
-	main()
-	{
-	    {
-		double a = tan(0.25);
-		printf("tan 0.25 = %lf\n", a);     /*  0.2553  */
-	    }
-	    {					    /*	less accuracy	*/
-		float a = ftan(0.25);
-		printf("tan 0.25 = %lf\n", (double)a);
-	    }
-	    return(0);
-	}
+        main()
+        {
+            {
+                double a = tan(0.25);
+                printf("tan 0.25 = %lf\n", a);     /*  0.2553  */
+            }
+            {                                       /*  less accuracy   */
+                float a = ftan(0.25);
+                printf("tan 0.25 = %lf\n", (double)a);
+            }
+            return(0);
+        }
 
    INPUTS
-	double b;	double floating point value
-	float  d;	float  floating point value
+        double b;       double floating point value
+        float  d;       float  floating point value
 
    RESULTS
-	double a;	result double floating point value
-	float  c;	result float  floating point value
+        double a;       result double floating point value
+        float  c;       result float  floating point value
 
    SEE ALSO
-	acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
-	facos, fasin, ...
+        acos, asin, atan, cos, exp, fabs, log, log10, pow, sin, sqrt, tan
+        facos, fasin, ...
 
 

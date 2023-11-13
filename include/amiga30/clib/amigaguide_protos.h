@@ -1,13 +1,13 @@
 #ifndef  CLIB_AMIGAGUIDE_PROTOS_H
 #define  CLIB_AMIGAGUIDE_PROTOS_H
 /*
-**	$VER: amigaguide_protos.h 39.2 (23.07.92)
-**	Includes Release 39.108
+**      $VER: amigaguide_protos.h 39.2 (23.07.92)
+**      Includes Release 39.108
 **
-**	C prototypes. For use with 32 bit integers only.
+**      C prototypes. For use with 32 bit integers only.
 **
-**	(C) Copyright 1990-1992 Commodore-Amiga, Inc.
-**	    All Rights Reserved
+**      (C) Copyright 1990-1992 Commodore-Amiga, Inc.
+**          All Rights Reserved
 */
 #ifndef  EXEC_TYPES_H
 #include <exec/types.h>
@@ -44,7 +44,7 @@ ULONG AmigaGuideSignal( APTR cl );
 struct AmigaGuideMsg *GetAmigaGuideMsg( APTR cl );
 void ReplyAmigaGuideMsg( struct AmigaGuideMsg *amsg );
 LONG SetAmigaGuideContextA( APTR cl, unsigned long id,
-	struct TagItem *attrs );
+        struct TagItem *attrs );
 LONG SetAmigaGuideContext( APTR cl, unsigned long id, Tag tag1, ... );
 LONG SendAmigaGuideContextA( APTR cl, struct TagItem *attrs );
 LONG SendAmigaGuideContext( APTR cl, Tag tag1, ... );
@@ -58,4 +58,4 @@ APTR AddAmigaGuideHost( struct Hook *h, STRPTR name, Tag tag1, ... );
 LONG RemoveAmigaGuideHostA( APTR hh, struct TagItem *attrs );
 LONG RemoveAmigaGuideHost( APTR hh, Tag tag1, ... );
 STRPTR GetAmigaGuideString( long id );
-#endif	 /* CLIB_AMIGAGUIDE_PROTOS_H */
+#endif   /* CLIB_AMIGAGUIDE_PROTOS_H */

@@ -19,17 +19,17 @@ main()
     if (z >  0) puts("z>0");
 
     if (x)
-	puts("x!=0");
+        puts("x!=0");
     if (!x)
-	puts("x!=0");
+        puts("x!=0");
     if (y)
-	puts("y!=0");
+        puts("y!=0");
     if (!y)
-	puts("y!=0");
+        puts("y!=0");
     if (z)
-	puts("z!=0");
+        puts("z!=0");
     if (!z)
-	puts("z!=0");
+        puts("z!=0");
 
     if (a == 0) puts("a=0");
     if (a <  0) puts("a<0");
@@ -42,17 +42,17 @@ main()
     if (c >  0) puts("c>0");
 
     if (a)
-	puts("a!=0");
+        puts("a!=0");
     if (!a)
-	puts("a!=0");
+        puts("a!=0");
     if (b)
-	puts("b!=0");
+        puts("b!=0");
     if (!b)
-	puts("b!=0");
+        puts("b!=0");
     if (c)
-	puts("c!=0");
+        puts("c!=0");
     if (!c)
-	puts("c!=0");
+        puts("c!=0");
     return(0);
 }
 

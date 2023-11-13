@@ -44,34 +44,34 @@
 (set drive "!#@")
 (until (getassign drive "d")
     (SET drive
-	(cat "DF"
-	    (askchoice
-		(prompt "Which floppy should I install to?")
-		(help   "DICE Needs to format a floppy to hold the freeware"
-			"version.  You will be prompted to insert a floppy in"
-			"this drive as a part of the installation process"
-		)
-		(choices (df0) (df1) (df2) (df3))
-		(default 0)
-	    )
-	)
+        (cat "DF"
+            (askchoice
+                (prompt "Which floppy should I install to?")
+                (help   "DICE Needs to format a floppy to hold the freeware"
+                        "version.  You will be prompted to insert a floppy in"
+                        "this drive as a part of the installation process"
+                )
+                (choices (df0) (df1) (df2) (df3))
+                (default 0)
+            )
+        )
     )
 )
 
 (set drivename (cat drive ":"))
 (if (not
-	(askbool
-	    (prompt "Please insert a floppy into " drivename
-		    " for formatting to receive the Freeware DICE version\n"
-		    "Note: All information on this diskette will be lost"
-		    "Select Proceed to continue, Cancel to abort"
-	    )
-	    (help   "You need to put a disk into drive " drivename
-		    " in order for DICE to be able to format it and then"
-		    "put the DICE programs on it"
-	    )
-	    (choices "Proceed" "Cancel")
-	)
+        (askbool
+            (prompt "Please insert a floppy into " drivename
+                    " for formatting to receive the Freeware DICE version\n"
+                    "Note: All information on this diskette will be lost"
+                    "Select Proceed to continue, Cancel to abort"
+            )
+            (help   "You need to put a disk into drive " drivename
+                    " in order for DICE to be able to format it and then"
+                    "put the DICE programs on it"
+            )
+            (choices "Proceed" "Cancel")
+        )
     )
     (abort)
 )
@@ -94,16 +94,16 @@
 (delete "ram:nl_file" (safe))
 
 ;***********************************************************************
-;			       Install Disk 1
+;                              Install Disk 1
 ;***********************************************************************
 (debug "Install Disk1:")
 (complete 5)
 
 (askdisk
    (prompt "Please insert the disk labeled " Disk1 ".\n"
-	   "(disk insertion is automatically detected)" )
+           "(disk insertion is automatically detected)" )
    (help   "The DICE program and other tools will be copied "
-	   "from the Disk " Disk1 " into your system.")
+           "from the Disk " Disk1 " into your system.")
    (dest Disk1)
 )
 
@@ -113,10 +113,10 @@
 (run "delete ram:lhex force" (safe))
 
     (copyfiles
-	(source (cat Disk1: "bin/"))
-	(dest "ram:")
-	(choices  "lhex")
-	(safe)
+        (source (cat Disk1: "bin/"))
+        (dest "ram:")
+        (choices  "lhex")
+        (safe)
     )
 
 (set lhopt "ram:lhex >CON:0/0/640/40/Unpacker/INACTIVE -fw=%s xv %s")
@@ -134,23 +134,23 @@
 ;***********************************************************************
 (set @default-dest dice_dest)
 
-	(working "Installing extended tools")
-	(textfile
-	    (dest "ram:lhex.list")
-	    (append "dobj\ndsearch\ndu\nfdtolib\nflush\nlibtos\ntouch\n")
-	    (safe)
-	)
-	(run
-	    (lhext (tackon dice_dest "Bin/") (cat Disk1: "extended_tools.lha"))
-	)
-	(delete "ram:lhex.list" (safe))
+        (working "Installing extended tools")
+        (textfile
+            (dest "ram:lhex.list")
+            (append "dobj\ndsearch\ndu\nfdtolib\nflush\nlibtos\ntouch\n")
+            (safe)
+        )
+        (run
+            (lhext (tackon dice_dest "Bin/") (cat Disk1: "extended_tools.lha"))
+        )
+        (delete "ram:lhex.list" (safe))
 
-	(complete 23)
+        (complete 23)
 
 
 
 ;***********************************************************************
-;			       Install Disk 5
+;                              Install Disk 5
 ;***********************************************************************
 (debug "Install Disk5:")
 (complete 25)
@@ -158,33 +158,33 @@
 
 (askdisk
    (prompt "Please insert the disk labeled " Disk5 ".\n"
-	   "(disk insertion is automatically detected)" )
+           "(disk insertion is automatically detected)" )
    (help   "The remaining Includes and Binaries will be copied "
-	 "from the Disk "  Disk5 " into your system.")
+         "from the Disk "  Disk5 " into your system.")
    (dest Disk5)
 )
 
-	(working "Installing basic tools")
-	(run (lhopt (dice_dest) (cat Disk5: "Freeware.lha")))
-	(complete 85)
+        (working "Installing basic tools")
+        (run (lhopt (dice_dest) (cat Disk5: "Freeware.lha")))
+        (complete 85)
 
-	(working "Installing DME")
-	(textfile
-	    (dest "ram:lhex.list")
-	    (append "bin/dme\n")
-	    (safe)
-	)
-	(run
-	    (lhext (dice_dest) (cat Disk5: "dme_config.lha"))
-	)
-	(delete "ram:lhex.list" (safe))
+        (working "Installing DME")
+        (textfile
+            (dest "ram:lhex.list")
+            (append "bin/dme\n")
+            (safe)
+        )
+        (run
+            (lhext (dice_dest) (cat Disk5: "dme_config.lha"))
+        )
+        (delete "ram:lhex.list" (safe))
 
 (debug "End game")
 (complete 100)
 (askbool
    (prompt "The disk in drive " drivename " contains the freeware version "
-	   "of DICE.  Feel free to pass that disk along to your friends so "
-	   "that they can enjoy it."
+           "of DICE.  Feel free to pass that disk along to your friends so "
+           "that they can enjoy it."
    )
    (help   "Everything is done, just click Thank You")
    (choices "Thank You" "")

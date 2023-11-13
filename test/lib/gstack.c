@@ -19,7 +19,7 @@ long n;
 
     printf("P %08lx %d\n", _stack_base, &x - _stack_base);
     if (n)
-	deep(n-1);
+        deep(n-1);
     printf("F %08lx %d\n", _stack_base, &x - _stack_base);
 }
 

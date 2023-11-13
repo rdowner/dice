@@ -424,7 +424,7 @@ ZipCompress()
     lm_init(level, &flg);
     s = deflate();
     if (m == DEFLATE)
-	return(1);
+        return(1);
     return(0);
 }
 

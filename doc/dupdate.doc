@@ -1,10 +1,10 @@
 
-util/dupdate							util/dupdate
+util/dupdate                                                    util/dupdate
 
-			       DUPDATE.DOC
+                               DUPDATE.DOC
 
-    DUPDATE dist-dir dest-dir	[FORCE][QUIET][NODEL] [DISTFILE distfilename]
-    DUPDATE dist-file dest-dir	[FORCE][QUIET][NODEL] [DISTFILE distfilename]
+    DUPDATE dist-dir dest-dir   [FORCE][QUIET][NODEL] [DISTFILE distfilename]
+    DUPDATE dist-file dest-dir  [FORCE][QUIET][NODEL] [DISTFILE distfilename]
 
     DUPDATE is a program that creates distributions.  It creates an exact
     duplicate of the source directory tree in the destination with
@@ -13,16 +13,16 @@ util/dupdate							util/dupdate
     files from the source into the destination tree that have been modified
     since the last dupdate (or copies them fresh if they do not exist).
 
-    FORCE	- DUPDATE will not ask permission to copy a fresh file
+    FORCE       - DUPDATE will not ask permission to copy a fresh file
 
-    QUIET	- DUPDATE will not display verbose output
+    QUIET       - DUPDATE will not display verbose output
 
-    NODEL	- DUPDATE will not delete files in the destination that do
-		  not exist in the source.
+    NODEL       - DUPDATE will not delete files in the destination that do
+                  not exist in the source.
 
     DISTFILE file
-		- specify alternate control file that 'modifies' the
-		  dist update, default is .DistFiles
+                - specify alternate control file that 'modifies' the
+                  dist update, default is .DistFiles
 
     If a file ".DistFiles" exists in any directory of the source tree,
     updating of the destination is modified according to the file.  This
@@ -40,10 +40,10 @@ util/dupdate							util/dupdate
 
     In the first format, if the ONLY keyword is specified after the first
     file name only these files / sub-directories will be included from this
-    directory.	No other files will be copied
+    directory.  No other files will be copied
 
     --- DISTFILE FORMAT #1 (this line not included) ---
-    file_or_dir_name	ONLY
+    file_or_dir_name    ONLY
     file_or_dir_name
     file_or_dir_name
     file_or_dir_name
@@ -54,14 +54,14 @@ util/dupdate							util/dupdate
     The second format allows files/directories to be made part of the
     destination tree that do not necessarily exist in the current directory.
     Additionally, specific files/directories that do exist in the current
-    directory can be excluded.	Any file/dir not explicitly unincluded using
+    directory can be excluded.  Any file/dir not explicitly unincluded using
     the 'no' keyword will be copied.
 
     --- DISTFILE FORMAT #2 (this line not included) ---
     file_or_dir_path
     file_or_dir_path
-    file_or_dir_path	no
-    file_or_dir_path	no
+    file_or_dir_path    no
+    file_or_dir_path    no
     file_or_dir_path
     file_or_dir_path
     --- END DISTFILE FORMAT #2 (this line not included) ---

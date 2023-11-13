@@ -10,7 +10,7 @@
  *  Basic Library Resource Handling
  *
  *  NOTE: all data declarations should be initialized since we skip
- *	  normal C startup code (unless initial value is don't care)
+ *        normal C startup code (unless initial value is don't care)
  */
 
 #include "defs.h"
@@ -27,10 +27,10 @@ Prototype char *CallTaskName(void);
 Prototype Library *LibBase;
 
 
-Library *LibBase = NULL;	/*  Library Base pointer    */
-long	SegList  = 0;
-long	SysBase  = NULL;
-struct DosLibrary	*DOSBase  = NULL;
+Library *LibBase = NULL;        /*  Library Base pointer    */
+long    SegList  = 0;
+long    SysBase  = NULL;
+struct DosLibrary       *DOSBase  = NULL;
 
 
 /*
@@ -49,24 +49,24 @@ long segment;
 {
     Library *lib;
     static const long Vectors[] = {
-	(long)ALibOpen,
-	(long)ALibClose,
-	(long)ALibExpunge,
-	(long)NULL,
+        (long)ALibOpen,
+        (long)ALibClose,
+        (long)ALibExpunge,
+        (long)NULL,
 
-	(long)DiceCacheOpen,
-	(long)DiceCacheClose,
-	(long)DiceCacheSeek,
-	(long)DiceCacheGetSuffixes,
-	(long)DiceCacheAddSuffix,
-	(long)DiceCacheRemSuffix,
-	(long)DiceCacheFlush,
-	(long)DiceCacheSet,
-	(long)DiceCacheGet,
-	(long)DiceCacheEnable,
-	(long)DiceCacheDisable,
+        (long)DiceCacheOpen,
+        (long)DiceCacheClose,
+        (long)DiceCacheSeek,
+        (long)DiceCacheGetSuffixes,
+        (long)DiceCacheAddSuffix,
+        (long)DiceCacheRemSuffix,
+        (long)DiceCacheFlush,
+        (long)DiceCacheSet,
+        (long)DiceCacheGet,
+        (long)DiceCacheEnable,
+        (long)DiceCacheDisable,
 
-	-1
+        -1
     };
     SysBase = *(long *)4;
     DOSBase = (struct DosLibrary *)OpenLibrary("dos.library", 0);
@@ -104,7 +104,7 @@ long version;
 
 /*
  *    Close is given the library pointer and the version request.  Be sure
- *    not to decrement the open count if already zero.	If the open count
+ *    not to decrement the open count if already zero.  If the open count
  *    is or becomes zero AND there is a LIBF_DELEXP, we expunge the library
  *    and return the seglist.  Otherwise we return NULL.
  *
@@ -119,15 +119,15 @@ long dummy;
 Library *lib;
 {
     if (lib->lib_OpenCnt && --lib->lib_OpenCnt)
-	return(NULL);
+        return(NULL);
     if (lib->lib_Flags & LIBF_DELEXP)
-	return(LibExpunge(0, lib));
+        return(LibExpunge(0, lib));
     return(NULL);
 }
 
 /*
  *    We expunge the library and return the Seglist ONLY if the open count
- *    is zero.	If the open count is not zero we set the DELAYED-EXPUNGE
+ *    is zero.  If the open count is not zero we set the DELAYED-EXPUNGE
  *    flag and return NULL.
  *
  *    Exec has Forbid() for us during the call.  NOTE ALSO that Expunge
@@ -147,15 +147,15 @@ Library *lib;
 {
     ObtainSemaphore(&SemLock);
     if (lib->lib_OpenCnt) {
-	lib->lib_Flags |= LIBF_DELEXP;
-	return(NULL);
+        lib->lib_Flags |= LIBF_DELEXP;
+        return(NULL);
     }
     Remove(&lib->lib_Node);
     UnInitC();
     FreeMem((char *)lib-lib->lib_NegSize, lib->lib_NegSize+lib->lib_PosSize);
     if (DOSBase) {
-	CloseLibrary((Library *)DOSBase);
-	DOSBase = NULL;
+        CloseLibrary((Library *)DOSBase);
+        DOSBase = NULL;
     }
     ReleaseSemaphore(&SemLock);
     return((long)SegList);
@@ -167,8 +167,8 @@ CallTaskName()
     struct Process *proc = (struct Process *)FindTask(NULL);
 
     if (proc->pr_CLI) {
-	char *ptr = (char *)(((CLI *)(proc->pr_CLI << 2))->cli_CommandName << 2);
-	return(ptr + 1);
+        char *ptr = (char *)(((CLI *)(proc->pr_CLI << 2))->cli_CommandName << 2);
+        return(ptr + 1);
     }
     return(proc->pr_Task.tc_Node.ln_Name);
 }

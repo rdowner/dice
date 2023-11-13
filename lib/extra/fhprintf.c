@@ -31,13 +31,13 @@ void *fh;
 {
     int r = Write((BPTR)fh, buf, elmsize * elms);
     if (r >= 0)
-	r = r / elmsize;
+        r = r / elmsize;
     return(r);
 }
 
 int
 HYPER(fhprintf)(fh, ctl, ...)
-long fh;	    /*	equiv to BPTR	*/
+long fh;            /*  equiv to BPTR   */
 const char *ctl;
 {
     int error;

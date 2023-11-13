@@ -24,7 +24,7 @@
 #include <clib/exec_protos.h>
 #include <clib/dos_protos.h>
 
-#define ACTION_REQUEST	5000
+#define ACTION_REQUEST  5000
 
 #define BTOC(bptr)  ((void *)((long)bptr << 2))
 #define CTOB(cptr)  ((BPTR)((long)cptr >> 2))
@@ -32,8 +32,8 @@
 typedef void *Pointer;
 
 typedef struct StandardPacket StdPacket;
-typedef struct Process	      Process;
-typedef struct Message	      Message;
+typedef struct Process        Process;
+typedef struct Message        Message;
 typedef struct FileHandle     FileHandle;
 
 extern struct ExecBase *SysBase;
@@ -54,7 +54,7 @@ long req;
     sp.sp_Pkt.dp_Arg1 = fh->fh_Arg1;
     sp.sp_Pkt.dp_Arg2 = (long)msg;
     sp.sp_Pkt.dp_Arg3 = req;
-    sp.sp_Pkt.dp_Arg4 = 0;	/*  reserved for future use */
+    sp.sp_Pkt.dp_Arg4 = 0;      /*  reserved for future use */
     PutMsg(fh->fh_Type, &sp.sp_Msg);
     WaitPort(&((Process *)SysBase->ThisTask)->pr_MsgPort);
     GetMsg(&((Process *)SysBase->ThisTask)->pr_MsgPort);

@@ -19,9 +19,9 @@ int fd;
     _IOFDS *d;
 
     if (d = __getfh(fd)) {
-	if (d->fd_Exec)
-	    return(NULL);
-	return((void *)d->fd_Fh);
+        if (d->fd_Exec)
+            return(NULL);
+        return((void *)d->fd_Fh);
     }
     return(NULL);
 }

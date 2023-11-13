@@ -24,14 +24,14 @@ const char *fileName;
     int error;
 
     if (lock = CreateDir(UnixToAmigaPath(fileName))) {
-	UnLock(lock);
-	return(0);
+        UnLock(lock);
+        return(0);
     }
     error = IoErr();
     if (error == ERROR_OBJECT_EXISTS || error == ERROR_DIRECTORY_NOT_EMPTY)
-	errno = EEXIST;
+        errno = EEXIST;
     else
-	errno = ENOFILE;
+        errno = ENOFILE;
     return(-1);
 }
 

@@ -25,16 +25,16 @@ unsigned int bytes;
 
     chkabort();
     if (d = __getfh(fd)) {
-	if (d->fd_Flags & (O_WRONLY|O_RDWR|O_APPEND)) {
-	    if (d->fd_Exec)
-		return((*d->fd_Exec)(d->fd_Fh, IOC_WRITE, buf, (void *)bytes));
+        if (d->fd_Flags & (O_WRONLY|O_RDWR|O_APPEND)) {
+            if (d->fd_Exec)
+                return((*d->fd_Exec)(d->fd_Fh, IOC_WRITE, buf, (void *)bytes));
 
-	    if (d->fd_Flags & O_APPEND)
-		Seek(d->fd_Fh, 0L, 1);
-	    n = Write(d->fd_Fh, buf, bytes);
-	} else {
-	    errno = ENOPERM;
-	}
+            if (d->fd_Flags & O_APPEND)
+                Seek(d->fd_Fh, 0L, 1);
+            n = Write(d->fd_Fh, buf, bytes);
+        } else {
+            errno = ENOPERM;
+        }
     }
     return(n);
 }

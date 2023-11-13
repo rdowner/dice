@@ -1,19 +1,19 @@
 
-dcpp/dcpp							    dcpp/dcpp
+dcpp/dcpp                                                           dcpp/dcpp
 
-				 DCPP.DOC
+                                 DCPP.DOC
 
-			      C PREPROCESSOR
+                              C PREPROCESSOR
 
 
-			      Matthew Dillon
-			      891 Regal Rd.
-			      Berkeley, Ca. 94708
-			      USA
+                              Matthew Dillon
+                              891 Regal Rd.
+                              Berkeley, Ca. 94708
+                              USA
 
-			      email: uunet.uu.net!overload!dillon
-			      email: dillon@overload.Berkeley.CA.US
-			      bix: mdillon
+                              email: uunet.uu.net!overload!dillon
+                              email: dillon@overload.Berkeley.CA.US
+                              bix: mdillon
 
 
 
@@ -36,87 +36,87 @@ dcpp/dcpp							    dcpp/dcpp
 
     DCC normally runs DCPP before DC1
 
-				CPP.DOC
+                                CPP.DOC
 
     The following symbols are defined by default
 
-	mc68000 	    -running on a 68000
+        mc68000             -running on a 68000
 
-	_DCC		    -'DCC' compiler
+        _DCC                -'DCC' compiler
 
-	__STDC__	    -ANSI __STDC__
+        __STDC__            -ANSI __STDC__
 
-	AMIGA		    -AMIGA computer
+        AMIGA               -AMIGA computer
 
 
-			   Options to CPP
+                           Options to CPP
 
     -1.N
     -2.N
-	    This option selects the OS.  If not specified, DCPP searches
-	    dinclude:amiga for amiga includes.	If specified, DCPP searches
-	    dinclude:amiga1N or dinclude:amiga2N for amiga includes
-	    instead.
+            This option selects the OS.  If not specified, DCPP searches
+            dinclude:amiga for amiga includes.  If specified, DCPP searches
+            dinclude:amiga1N or dinclude:amiga2N for amiga includes
+            instead.
 
-	    DCC supports this option and passes it along to dcpp.  This
-	    allows developers to compile under either 1.3 or 2.0 (or
-	    whatever) with the flick of an option.  DCC also uses a
-	    different amiga.lib (see DCC docs).
+            DCC supports this option and passes it along to dcpp.  This
+            allows developers to compile under either 1.3 or 2.0 (or
+            whatever) with the flick of an option.  DCC also uses a
+            different amiga.lib (see DCC docs).
 
     -d[#]
-	    This option turns on DCPP debugging
+            This option turns on DCPP debugging
 
     -o[ ]file
-	    This option sets the output file, otherwise stdout is used.
-	    the space is optional
+            This option sets the output file, otherwise stdout is used.
+            the space is optional
 
     -ffp
-	    Passed from DCC, tells preprocessor to define _FFP_FLOAT.
-	    If not specified, preprocessor defines _SP_FLOAT.  This
-	    exists to better support alternate floating point models
-	    in header files.
+            Passed from DCC, tells preprocessor to define _FFP_FLOAT.
+            If not specified, preprocessor defines _SP_FLOAT.  This
+            exists to better support alternate floating point models
+            in header files.
 
     -D[ ]define[=stuff]
-	    This option predefines a symbol or macro.
+            This option predefines a symbol or macro.
 
     -F file
-	    specify stderr file, any errors are appended to the file
-	    instead of to stdout.  Useful for batch compiles
+            specify stderr file, any errors are appended to the file
+            instead of to stdout.  Useful for batch compiles
 
     -U
-	    This option undefines the following symbols:
+            This option undefines the following symbols:
 
-		__STDC__
-		mc68000
-		_DCC
-		AMIGA
+                __STDC__
+                mc68000
+                _DCC
+                AMIGA
 
     -H<precompoutfile>=<headerfile>
 
-	Enable use/creation of precompiled header files.  Example:
+        Enable use/creation of precompiled header files.  Example:
 
-	-Ht:defs.m=defs.h
+        -Ht:defs.m=defs.h
 
-	see DCC.DOC for more information.
+        see DCC.DOC for more information.
 
     -I0
-	    This option causes DCPP to *NOT* include any default
-	    directories in the include search list.
+            This option causes DCPP to *NOT* include any default
+            directories in the include search list.
 
     -I[ ]dir
-	    This option adds the specified directory to the include search
-	    list.  A hanging slash on the end of the path is not required.
-	    The space is optional.
+            This option adds the specified directory to the include search
+            list.  A hanging slash on the end of the path is not required.
+            The space is optional.
 
     -//
-	    Enable C++ style // comments.  The remainder of the line after
-	    // is encountered is interpreted as a comment.  This differs
-	    from /* style commenting in that no explicit comment-terminator
-	    is required.
+            Enable C++ style // comments.  The remainder of the line after
+            // is encountered is interpreted as a comment.  This differs
+            from /* style commenting in that no explicit comment-terminator
+            is required.
 
     -notri
-	    Disable tri-graph scan pass.  Note that the tri-graph pass is
-	    implemented in assembly and does not slow down preprocessing in
-	    any noticable fashion, you should not disable tri-graphs unless
-	    you need to.
+            Disable tri-graph scan pass.  Note that the tri-graph pass is
+            implemented in assembly and does not slow down preprocessing in
+            any noticable fashion, you should not disable tri-graphs unless
+            you need to.
 

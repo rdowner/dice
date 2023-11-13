@@ -65,15 +65,15 @@ __D0 long max;
 
     ObtainSemaphore(&SemLock);
     if (node = RemHead(&StrList)) {
-	len = strlen(node->ln_Name);
-	strncpy(buf, node->ln_Name, max);
-	if (len >= max)
-	    buf[max-1] = 0;
-	FreeMem(node, sizeof(Node) + len + 1);
+        len = strlen(node->ln_Name);
+        strncpy(buf, node->ln_Name, max);
+        if (len >= max)
+            buf[max-1] = 0;
+        FreeMem(node, sizeof(Node) + len + 1);
     } else {
-	len = -1;
-	if (max > 0)
-	    buf[0] = 0;
+        len = -1;
+        if (max > 0)
+            buf[0] = 0;
     }
     ReleaseSemaphore(&SemLock);
     return (len);

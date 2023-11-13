@@ -1,9 +1,9 @@
 
-dc1/dc1 							    dc1/dc1
+dc1/dc1                                                             dc1/dc1
 
-				DC1.DOC
+                                DC1.DOC
 
-			    MAIN COMPILER PASS
+                            MAIN COMPILER PASS
 
     DC1 cppd_src_file [-o outfile] <options>
 
@@ -30,7 +30,7 @@ dc1/dc1 							    dc1/dc1
 
     The output of the compiler generates code of the same order as Aztec or
     Lattice C and, in many cases, makes better choices for register
-    variables.	DCC makes much better use of address registers than either
+    variables.  DCC makes much better use of address registers than either
     Aztec or Lattice.  However, it does not do any major contents tracking
     and redundant instructions will be generated.  DAS will handle properly
     optimizing branches and DAS will eventually have a peephole optimizer
@@ -40,7 +40,7 @@ dc1/dc1 							    dc1/dc1
     instructions to handle special cases of &, |, and ^, include using
     BTST.
 
-			   IMPLEMENTATION NOTES
+                           IMPLEMENTATION NOTES
 
     'volatile' forces a data item NOT to be placed in a register.
     'register' is currently ignored.  'const' is ignored by default
@@ -48,125 +48,125 @@ dc1/dc1 							    dc1/dc1
     options (see below).  Other type and storage qualifiers are described
     in EXTENSIONS.DOC
 
-				OPTIONS
+                                OPTIONS
 
-	-S or -S0   set alternate section names 'libdata' and 'libbss'
-	-Sd <name>  set section name for data sections
-	-Sb <name>  set section name for bss sections
-	-Sc <name>  set section name for code sections
+        -S or -S0   set alternate section names 'libdata' and 'libbss'
+        -Sd <name>  set section name for data sections
+        -Sb <name>  set section name for bss sections
+        -Sc <name>  set section name for code sections
 
-	-SD <name>  set section name for __far data sections
-	-SB <name>  set section name for __far bss sections
+        -SD <name>  set section name for __far data sections
+        -SB <name>  set section name for __far bss sections
 
-	    The -S option allows you to modify the default section naming
-	    conventions.  DICE uses 'data', 'text', and 'bss' as defaults
-	    for the data, code, and bss sections.
+            The -S option allows you to modify the default section naming
+            conventions.  DICE uses 'data', 'text', and 'bss' as defaults
+            for the data, code, and bss sections.
 
-	    The DICE c.lib is compiled with -S and the startup code (c.o)
-	    references these first to force c.lib's data to come before
-	    program data.  The data ordering is then as follows:
+            The DICE c.lib is compiled with -S and the startup code (c.o)
+            references these first to force c.lib's data to come before
+            program data.  The data ordering is then as follows:
 
-		Library Initialized Data
-		Program Initialized Data
-		Library BSS Space
-		Program BSS Space
+                Library Initialized Data
+                Program Initialized Data
+                Library BSS Space
+                Program BSS Space
 
-	    As long as the program does not declare more than 64KBytes of
-	    *INITIALIZED* data it can be linked with the small-data model
-	    c.lib ..  Thus, large-data-model programs that declare more
-	    than 64KBytes of BSS space will still link with the
-	    small-data-model c.lib
+            As long as the program does not declare more than 64KBytes of
+            *INITIALIZED* data it can be linked with the small-data model
+            c.lib ..  Thus, large-data-model programs that declare more
+            than 64KBytes of BSS space will still link with the
+            small-data-model c.lib
 
-	    This may be of no consequence because any __far declared data
-	    will be placed in a different data segment entirely... simply
-	    declare your large arrays as __far and the rest may remain
-	    small-data
+            This may be of no consequence because any __far declared data
+            will be placed in a different data segment entirely... simply
+            declare your large arrays as __far and the rest may remain
+            small-data
 
-	-d[#]
+        -d[#]
 
-	    Set debug mode.  This isn't pretty
+            Set debug mode.  This isn't pretty
 
-	-F file
-	    specify stderr file, any errors are appended to the file
-	    instead of to stdout.  Useful for batch compiles
+        -F file
+            specify stderr file, any errors are appended to the file
+            instead of to stdout.  Useful for batch compiles
 
 
-	-R
+        -R
 
-	    Tells the compile to remove (delete) its input file
-	    specification when it no longer needs it.  The input file
-	    is usually a temporary preprocessor file and DCC will use
-	    this option to get DC1 to delete it as soon as possible.
+            Tells the compile to remove (delete) its input file
+            specification when it no longer needs it.  The input file
+            is usually a temporary preprocessor file and DCC will use
+            this option to get DC1 to delete it as soon as possible.
 
-	-proto
+        -proto
 
-	    The main compiler will generate errors for any unprototyped
-	    function call.
+            The main compiler will generate errors for any unprototyped
+            function call.
 
-	-r
-	    Resident option.  The main compiler will generate special
-	    autoinit code to initialize data-data relocations.	This
-	    simplifies the work DLink and the startup module must do to
-	    support residentable programs.
+        -r
+            Resident option.  The main compiler will generate special
+            autoinit code to initialize data-data relocations.  This
+            simplifies the work DLink and the startup module must do to
+            support residentable programs.
 
-	-v
+        -v
 
-	    Verbose
+            Verbose
 
-	-o outfile
+        -o outfile
 
-	    Specify assembly output file name
+            Specify assembly output file name
 
-	-mc	    small-code model (DCC default)
-	-mC	    large-code model (DC1 default)
-	-md	    small-data model (DCC default)
-	-mD	    large-data model (DC1 default)
-	-mw	    absolute-word addressing (overides -md/-mD)
-	-ma	    absolute addressing (no effect on DC1 operation)
+        -mc         small-code model (DCC default)
+        -mC         large-code model (DC1 default)
+        -md         small-data model (DCC default)
+        -mD         large-data model (DC1 default)
+        -mw         absolute-word addressing (overides -md/-mD)
+        -ma         absolute addressing (no effect on DC1 operation)
 
-	    These options specify the memory model.  The small-code model
-	    uses PC-relative addressing and the small-data model uses
-	    A4-relative addressing
+            These options specify the memory model.  The small-code model
+            uses PC-relative addressing and the small-data model uses
+            A4-relative addressing
 
-	    -mw is used when making ROMable code and specifies that the
-	    ABSOLUTE WORD addressing mode be used instead of either
-	    absolute long or A4-relative.   Absolute word addresses are
-	    resolved at link time.  THIS OPTION SHOULD NOT BE USED WHEN
-	    GENERATING EXECUTABLES MEANT TO RUN ON THE AMIGA.
+            -mw is used when making ROMable code and specifies that the
+            ABSOLUTE WORD addressing mode be used instead of either
+            absolute long or A4-relative.   Absolute word addresses are
+            resolved at link time.  THIS OPTION SHOULD NOT BE USED WHEN
+            GENERATING EXECUTABLES MEANT TO RUN ON THE AMIGA.
 
-	-ms0	    (default) 'const' is ignored
-	-ms	    string constants and 'const' objs placed in code section
-	-mS	    string constants and 'const' objs placed in code section
+        -ms0        (default) 'const' is ignored
+        -ms         string constants and 'const' objs placed in code section
+        -mS         string constants and 'const' objs placed in code section
 
-	    These options control how CONST data items are handled, including
-	    string constants such as char *ptr = "abcd";  The default is to
-	    ignore the const type qualifier.
+            These options control how CONST data items are handled, including
+            string constants such as char *ptr = "abcd";  The default is to
+            ignore the const type qualifier.
 
-	    If -ms is specified string constants and CONST data items are
-	    placed in the code section.  Local references to CONST data
-	    items use PC-RELATIVE addressing.  Remote references (from other
-	    modules) to CONST data items use ABSOLUTE LONG addressing.
+            If -ms is specified string constants and CONST data items are
+            placed in the code section.  Local references to CONST data
+            items use PC-RELATIVE addressing.  Remote references (from other
+            modules) to CONST data items use ABSOLUTE LONG addressing.
 
-	    -mS works the same as -ms but remote references are forced to
-	    use PC-RELATIVE addressing.  This can be dangerous and the
-	    final CODE size MUST BE LESS THAN 32KBYTES!!!!
+            -mS works the same as -ms but remote references are forced to
+            use PC-RELATIVE addressing.  This can be dangerous and the
+            final CODE size MUST BE LESS THAN 32KBYTES!!!!
 
-	    Usually it is safe to use -ms and, in fact, can save a lot of
-	    memory when combined with -r residentable programs because the
-	    string constants will not be duplicated for each running
-	    instance of the program.
+            Usually it is safe to use -ms and, in fact, can save a lot of
+            memory when combined with -r residentable programs because the
+            string constants will not be duplicated for each running
+            instance of the program.
 
        -CTOD dll_loadable_lib
 
-	   Causes DICE to generate a class (.d) file for the D language
-	   with API interfacing declarations for procedures, globals, and
-	   structures.  You must specify the DLL loadable object that
-	   DICE will then create an import for within its generated .d file.
-	   You generally also need to supply a -I option to direct DICE
-	   to the C includes, e.g. -I /usr/include, and a C source file
-	   that #include's the headers you wish to generate prototypes for.
+           Causes DICE to generate a class (.d) file for the D language
+           with API interfacing declarations for procedures, globals, and
+           structures.  You must specify the DLL loadable object that
+           DICE will then create an import for within its generated .d file.
+           You generally also need to supply a -I option to direct DICE
+           to the C includes, e.g. -I /usr/include, and a C source file
+           that #include's the headers you wish to generate prototypes for.
 
-	   Note that D includes /usr/lib, /usr/local/lib, and /usr/X11R6/lib
-	   in its default search path, so it is usually sufficient to simply
-	   specify the blah.so file, or blah.r file.
+           Note that D includes /usr/lib, /usr/local/lib, and /usr/X11R6/lib
+           in its default search path, so it is usually sufficient to simply
+           specify the blah.so file, or blah.r file.
 

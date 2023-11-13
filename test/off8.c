@@ -10,6 +10,6 @@ fubar()
     struct Foo *b = 0;
 
     if (a[i] == b[i])
-	a = 1;
+        a = 1;
 }
 

@@ -14,5 +14,5 @@ typedef struct TagItem TagItem;
 APTR 
 HYPER ## OpenAmigaGuide( struct NewAmigaGuide *nag, Tag tag1, ... )
 {
-	return OpenAmigaGuideA(nag,(TagItem *)&tag1);
+        return OpenAmigaGuideA(nag,(TagItem *)&tag1);
 }

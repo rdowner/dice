@@ -37,10 +37,10 @@
  * global recognition...
  */
 
-#include	<exec/types.h>
-#include	<graphics/text.h>
+#include        <exec/types.h>
+#include        <graphics/text.h>
 
-#include	"DefaultFonts.h"
+#include        "DefaultFonts.h"
 
 static char fontnam[11]="topaz.font";
 

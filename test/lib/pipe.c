@@ -19,21 +19,21 @@ char *av[];
     short j;
 
     for (j = 1; j < ac; ++j) {
-	if (av[j][0] == '|') {
-	    av[j] = NULL;
-	    break;
-	}
+        if (av[j][0] == '|') {
+            av[j] = NULL;
+            break;
+        }
     }
 
     if (j == ac) {
-	startproc(av + 1, -1, -1);
+        startproc(av + 1, -1, -1);
     } else {
-	pipe(fds);
-	startproc(av + 1, -1, fds[1]);
-	startproc(av + j + 1, fds[0], -1);
+        pipe(fds);
+        startproc(av + 1, -1, fds[1]);
+        startproc(av + j + 1, fds[0], -1);
     }
     while ((pid = wait(&istat)) != -1)
-	printf("PID %d code %d\n", pid, istat.w_retcode);
+        printf("PID %d code %d\n", pid, istat.w_retcode);
     return(0);
 }
 
@@ -46,14 +46,14 @@ int outfd;
     int pid;
 
     if ((pid = amiga_vfork()) == 0) {
-	printf("child\n");
-	if (infd >= 0)
-	    amiga_dup2(infd, 0);
-	if (outfd >= 0)
-	    amiga_dup2(outfd, 1);
-	amiga_execvp(av[0], av);
+        printf("child\n");
+        if (infd >= 0)
+            amiga_dup2(infd, 0);
+        if (outfd >= 0)
+            amiga_dup2(outfd, 1);
+        amiga_execvp(av[0], av);
     } else if (pid < 0) {
-	puts("vfork failed");
+        puts("vfork failed");
     }
     return(0);
 }

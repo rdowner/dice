@@ -16,11 +16,11 @@ LocatePath(const char *envvar, const char *fname)
     char *ptr;
 
     if ((ptr = getenv(envvar)) != NULL)
-	return(ptr);
+        return(ptr);
     if ((ptr = getenv("DCC")) != NULL) {
-	snprintf(path, sizeof(path), "%s/config/%s", ptr, fname);
+        snprintf(path, sizeof(path), "%s/config/%s", ptr, fname);
     } else {
-	snprintf(path, sizeof(path), INSTDIR "config/%s", fname);
+        snprintf(path, sizeof(path), INSTDIR "config/%s", fname);
     }
     return(strdup(path));
 }

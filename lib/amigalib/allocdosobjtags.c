@@ -16,7 +16,7 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 APTR
 HYPER ## AllocDosObjectTags(type, tag1, ...)

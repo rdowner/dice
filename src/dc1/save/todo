@@ -12,25 +12,25 @@
 
 
     fuu[i] /= 3;    fuu char ary - failsq
-    char /= x;	fails...
+    char /= x;  fails...
 
     double d1,d2 d1 % d2 -- better error message (blockopt struct?)
 
-    bitfields:	a += b; where a is a bit field.
-    bitfields:	error msg on &bitfield
+    bitfields:  a += b; where a is a bit field.
+    bitfields:  error msg on &bitfield
 
     optimize if (const-exp), while (0), for (; 0;) ... watch out for
     goto labels inside though.
 
-    STRUCTURAL RETURNS	:   Use slightly different naming convension for
-			    subroutines that return structures so no mistake
-			    is made.  For such subroutines a pointer to
-			    the destination must be supplied.
+    STRUCTURAL RETURNS  :   Use slightly different naming convension for
+                            subroutines that return structures so no mistake
+                            is made.  For such subroutines a pointer to
+                            the destination must be supplied.
 
-	s_<label>	    routine returning a structure
+        s_<label>           routine returning a structure
 
-	p_<label>	    prototyped routine when treated differently from
-			    normal routine
+        p_<label>           prototyped routine when treated differently from
+                            normal routine
 
 
     goto labels -> must put in different domain than variables

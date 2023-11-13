@@ -1,6 +1,6 @@
 
 #   DMakefile for FSOVL, a handler that overlays a directory or directory
-#   tree and provides additional capabilities.	Our handler provides
+#   tree and provides additional capabilities.  Our handler provides
 #   automatic compression and decompression.
 
 OD= dtmp:fsovl/
@@ -14,9 +14,9 @@ CFLAGS= -ms -mi -I$(OD) -DFSDEBUG
 ZIPCFLAGS= $(CFLAGS) -DSMALL_MEM -DWSIZE=8192
 
 ZIPSRCS= zip/globals.c \
-	 zip/zip/bits.c zip/zip/trees.c zip/zip/deflate.c \
-	 zip/zip/util.c zip/zip/x.c \
-	 zip/unzip/inflate.c zip/unzip/x.c zip/unzip/y.c
+         zip/zip/bits.c zip/zip/trees.c zip/zip/deflate.c \
+         zip/zip/util.c zip/zip/x.c \
+         zip/unzip/inflate.c zip/unzip/x.c zip/unzip/y.c
 ZIPOBJS= $(ZIPSRCS:"*.c":"$(OD)*.o")
 
 all: $(OD) $(PROTOS) $(EXE)

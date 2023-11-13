@@ -8,7 +8,7 @@
 #include <utility/tagitem.h>
 #include <clib/dos_protos.h>
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 #ifndef HYPER
 #define HYPER

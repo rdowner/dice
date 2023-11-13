@@ -26,7 +26,7 @@ void DelDevice(void);
 DosList *Dl;
 MsgPort *PktPort;
 MsgPort *AuxPort;
-long	PktPortMask;
+long    PktPortMask;
 
 void
 Initialize(char *name)
@@ -34,7 +34,7 @@ Initialize(char *name)
     Process *proc = FindTask(NULL);
 
     /*
-     *	Initialize port
+     *  Initialize port
      */
 
     PktPort = CreatePort(NULL, 0);
@@ -42,7 +42,7 @@ Initialize(char *name)
     PktPortMask = 1 << PktPort->mp_SigBit;
 
     /*
-     *	create DOS node
+     *  create DOS node
      */
 
     MkDevice(name);
@@ -53,12 +53,12 @@ UnInitialize()
 {
     DelDevice();
     if (PktPort) {
-	DeletePort(PktPort);
-	PktPort = NULL;
+        DeletePort(PktPort);
+        PktPort = NULL;
     }
     if (AuxPort) {
-	DeletePort(AuxPort);
-	AuxPort = NULL;
+        DeletePort(AuxPort);
+        AuxPort = NULL;
     }
 }
 
@@ -97,22 +97,22 @@ DelDevice()
     BPTR    *bpp;
 
     if (dl = Dl) {
-	Forbid();
-	root  = (struct RootNode *)DOSBase->dl_Root;
-	info  = (struct DosInfo  *)BTOC(root->rn_Info);
+        Forbid();
+        root  = (struct RootNode *)DOSBase->dl_Root;
+        info  = (struct DosInfo  *)BTOC(root->rn_Info);
 
-	for (bpp = &info->di_DevInfo; dls = BTOC(*bpp); bpp = &dls->dol_Next) {
-	    if (dls == dl)
-		break;
-	}
-	if (dls == dl) {
-	    *bpp = dls->dol_Next;
-	} else {
-	    ;
-	}
-	Permit();
-	DosFree(dl);
-	Dl = NULL;
+        for (bpp = &info->di_DevInfo; dls = BTOC(*bpp); bpp = &dls->dol_Next) {
+            if (dls == dl)
+                break;
+        }
+        if (dls == dl) {
+            *bpp = dls->dol_Next;
+        } else {
+            ;
+        }
+        Permit();
+        DosFree(dl);
+        Dl = NULL;
     }
 }
 
@@ -131,21 +131,21 @@ FindDosDevice(char *name, short len, BPTR *plock)
     info  = (struct DosInfo  *)BTOC(root->rn_Info);
 
     for (bpp = &info->di_DevInfo; dls = BTOC(*bpp); bpp = &dls->dol_Next) {
-	ubyte *ptr = BTOC(dls->dol_Name);
-	if (len == *ptr && strnicmp(name, ptr + 1, len) == 0) {
-	    if (dls->dol_Type == DLT_DEVICE) {
-	        break;
-	    } else if (dls->dol_Type == DLT_VOLUME) {
-		break;
-	    } else if (dls->dol_Type == DLT_DIRECTORY) {
-		*plock = DupLockPacket(dls->dol_Lock);
-		break;
-	    }
-	}
+        ubyte *ptr = BTOC(dls->dol_Name);
+        if (len == *ptr && strnicmp(name, ptr + 1, len) == 0) {
+            if (dls->dol_Type == DLT_DEVICE) {
+                break;
+            } else if (dls->dol_Type == DLT_VOLUME) {
+                break;
+            } else if (dls->dol_Type == DLT_DIRECTORY) {
+                *plock = DupLockPacket(dls->dol_Lock);
+                break;
+            }
+        }
     }
     Permit();
     if (dls)
-	return(dls->dol_Task);
+        return(dls->dol_Task);
     return(NULL);
 }
 

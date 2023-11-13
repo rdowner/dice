@@ -1,40 +1,40 @@
 
-knownbugs/knownbugs					    knownbugs/knownbugs
-knownbugs/KnownBugs					    knownbugs/KnownBugs
+knownbugs/knownbugs                                         knownbugs/knownbugs
+knownbugs/KnownBugs                                         knownbugs/KnownBugs
 
 
     NOT IMPLEMENTED IN UNREGISTERED RELEASE BUT IMPLEMENTED IN REGISTERED
     RELEASE:
 
-	* bit fields
-	* floating point
-	* manual pages for DICE libraries
-	* keywords:	__chip, __far, __near
-	* misc library routines
+        * bit fields
+        * floating point
+        * manual pages for DICE libraries
+        * keywords:     __chip, __far, __near
+        * misc library routines
 
     PREPROCESSOR:
 
-	token-pasting operator (##) resolves the paste last instead of
-	first.	Thus, the pasted operator may not currently be used to
-	represent other macros.
+        token-pasting operator (##) resolves the paste last instead of
+        first.  Thus, the pasted operator may not currently be used to
+        represent other macros.
 
     MAIN COMPILER:
 
-	Certain ANSIsms are not yet followed.  Specifically, arithmatic
-	type promotion still follows the 'if any type is unsigned then cast
-	both to unsigned'.  Under ANSI, if a larger signed type and smaller
-	unsigned type is given, the unsigned type is cast to the larger
-	signed type instead of both to unsigned.
+        Certain ANSIsms are not yet followed.  Specifically, arithmatic
+        type promotion still follows the 'if any type is unsigned then cast
+        both to unsigned'.  Under ANSI, if a larger signed type and smaller
+        unsigned type is given, the unsigned type is cast to the larger
+        signed type instead of both to unsigned.
 
-	structural returns and auto-aggregate initialization are now in,
-	hopefully bug free but if you find yourself having problems check
-	these first.
+        structural returns and auto-aggregate initialization are now in,
+        hopefully bug free but if you find yourself having problems check
+        these first.
 
-	When a non-aligned structure is passed to a procedure, the
-	__aligned storage qualifier will not work properly for that
-	procedure or any procedure called from that procedure (on down...)
+        When a non-aligned structure is passed to a procedure, the
+        __aligned storage qualifier will not work properly for that
+        procedure or any procedure called from that procedure (on down...)
 
     LIBRARY ROUTINES
 
-	time routines ignore daylight savings time.
+        time routines ignore daylight savings time.
 

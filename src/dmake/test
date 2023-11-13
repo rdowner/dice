@@ -1,5 +1,5 @@
 
-COM=	hi #there
+COM=    hi #there
 
 all:
     xecho "hi there $(test), $(COM)"

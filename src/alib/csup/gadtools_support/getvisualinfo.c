@@ -8,10 +8,10 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 APTR 
 HYPER ## GetVisualInfo( struct Screen *screen, Tag tag1, ... )
 {
-	return GetVisualInfoA(screen,(TagItem *)&tag1);
+        return GetVisualInfoA(screen,(TagItem *)&tag1);
 }

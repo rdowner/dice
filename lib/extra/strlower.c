@@ -19,9 +19,9 @@ char *str;
     char *base = str;
 
     while (c = *str) {
-	if (c >= 'A' && c <= 'Z')
-	    *str = c + ('a' - 'A');
-	++str;
+        if (c >= 'A' && c <= 'Z')
+            *str = c + ('a' - 'A');
+        ++str;
     }
     return(base);
 }

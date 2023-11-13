@@ -21,7 +21,7 @@ size_t elms;
     long bytes = elmSize * elms;
 
     if (ptr = malloc(bytes))
-	clrmem(ptr, bytes);
+        clrmem(ptr, bytes);
     return(ptr);
 }
 

@@ -28,27 +28,27 @@ const char *SkipAss(const char *);
 struct IntuiText *ITextOf(char *);
 #endif
 
-Prototype List	DoList;
+Prototype List  DoList;
 Prototype short DDebug;
 Prototype short NoRunOpt;
 Prototype short ExitCode;
-Prototype short	DoAll;
+Prototype short DoAll;
 Prototype short SomeWork;
 
-List	DoList;
-short	DDebug;
-short	NoRunOpt;
-short	QuietOpt;
-short	DoAll;
+List    DoList;
+short   DDebug;
+short   NoRunOpt;
+short   QuietOpt;
+short   DoAll;
 short   SomeWork;
 #ifdef AMIGA
-short	XSaveLockValid;
-BPTR	XSaveLock;
+short   XSaveLockValid;
+BPTR    XSaveLock;
 char     version[] = VERSTAG "\0 Copyright 1994, O.I.C.\n";
 #endif
-char	*XFileName = "DMakefile";
-short	FileSpecified = 0;
-short	ExitCode;
+char    *XFileName = "DMakefile";
+short   FileSpecified = 0;
+short   ExitCode;
 
 void
 myexit(void)
@@ -60,8 +60,8 @@ else {
 }
 #ifdef AMIGA
     if (XSaveLockValid) {
-	CurrentDir(XSaveLock);
-	XSaveLockValid = 0;
+        CurrentDir(XSaveLock);
+        XSaveLockValid = 0;
     }
 #endif
 }
@@ -77,55 +77,55 @@ struct WBStartup *wbs;
     short abortIt = 0;
 
     /*
-     *	Search for options, set current directory to last valid
-     *	disk object
+     *  Search for options, set current directory to last valid
+     *  disk object
      */
 
     InitStuff();
 
     for (i = 0; i < wbs->sm_NumArgs; ++i) {
-	BPTR saveLock = CurrentDir((BPTR)wbs->sm_ArgList[i].wa_Lock);
+        BPTR saveLock = CurrentDir((BPTR)wbs->sm_ArgList[i].wa_Lock);
 
-	if (i == wbs->sm_NumArgs - 1 && FileSpecified == 0)
-	    XFileName = strdup(wbs->sm_ArgList[i].wa_Name);
+        if (i == wbs->sm_NumArgs - 1 && FileSpecified == 0)
+            XFileName = strdup(wbs->sm_ArgList[i].wa_Name);
 
-	if (dob = GetDiskObject(wbs->sm_ArgList[i].wa_Name)) {
-	    for (j = 0; dob->do_ToolTypes[j]; ++j) {
-		char *ptr = dob->do_ToolTypes[j];
+        if (dob = GetDiskObject(wbs->sm_ArgList[i].wa_Name)) {
+            for (j = 0; dob->do_ToolTypes[j]; ++j) {
+                char *ptr = dob->do_ToolTypes[j];
 
-		if (strnicmp(ptr, "FILE=", 5) == 0) {
-		    XFileName = strdup(SkipAss(ptr));
-		    FileSpecified = 1;
-		} else if (strnicmp(ptr, "DRYRUN=", 7) == 0) {
-		    NoRunOpt = strtol(SkipAss(ptr), NULL, 0);
-		} else if (strnicmp(ptr, "TARGET=", 7) == 0) {
-		    CreateDepRef(&DoList, SkipAss(ptr));
-		} else if (strnicmp(ptr, "QUIET=", 6) == 0) {
-		    QuietOpt = strtol(SkipAss(ptr), NULL, 0);
-		} else if (strnicmp(ptr, "DEBUG=", 6) == 0) {
-		    DDebug = strtol(SkipAss(ptr), NULL, 0);
-		} else if (strnicmp(ptr, "CONSOLE=", 8) == 0) {
-		    OpenConsole(SkipAss(ptr)); /*  lib/misc.h  */
-		} else {
-		    char buf[64];
+                if (strnicmp(ptr, "FILE=", 5) == 0) {
+                    XFileName = strdup(SkipAss(ptr));
+                    FileSpecified = 1;
+                } else if (strnicmp(ptr, "DRYRUN=", 7) == 0) {
+                    NoRunOpt = strtol(SkipAss(ptr), NULL, 0);
+                } else if (strnicmp(ptr, "TARGET=", 7) == 0) {
+                    CreateDepRef(&DoList, SkipAss(ptr));
+                } else if (strnicmp(ptr, "QUIET=", 6) == 0) {
+                    QuietOpt = strtol(SkipAss(ptr), NULL, 0);
+                } else if (strnicmp(ptr, "DEBUG=", 6) == 0) {
+                    DDebug = strtol(SkipAss(ptr), NULL, 0);
+                } else if (strnicmp(ptr, "CONSOLE=", 8) == 0) {
+                    OpenConsole(SkipAss(ptr)); /*  lib/misc.h  */
+                } else {
+                    char buf[64];
 
-		    sprintf(buf, "Bad ToolType: %s", ptr);
-		    switch(AutoRequest(NULL, ITextOf(ptr), ITextOf("Ignore"), ITextOf("Abort"), 0, 0, 300, 40)) {
-		    case 1:
-			break;
-		    case 0:
-			abortIt = 1;
-			break;
-		    }
-		}
-		if (abortIt)
-		    break;
-	    }
-	    FreeDiskObject(dob);
-	}
-	CurrentDir(saveLock);
-	if (abortIt)
-	    break;
+                    sprintf(buf, "Bad ToolType: %s", ptr);
+                    switch(AutoRequest(NULL, ITextOf(ptr), ITextOf("Ignore"), ITextOf("Abort"), 0, 0, 300, 40)) {
+                    case 1:
+                        break;
+                    case 0:
+                        abortIt = 1;
+                        break;
+                    }
+                }
+                if (abortIt)
+                    break;
+            }
+            FreeDiskObject(dob);
+        }
+        CurrentDir(saveLock);
+        if (abortIt)
+            break;
     }
 #ifdef AMIGA
     XSaveLock = CurrentDir((BPTR)wbs->sm_ArgList[wbs->sm_NumArgs-1].wa_Lock);
@@ -133,7 +133,7 @@ struct WBStartup *wbs;
 #endif
 
     if (abortIt == 0)
-	main(1, NULL);
+        main(1, NULL);
 }
 
 #endif
@@ -151,70 +151,70 @@ main(int ac, char **av)
 
     /*printf("ARGS= %d\n", ac);*/
     for (i = 1; i < ac; ++i) {
-	char *ptr = av[i];
+        char *ptr = av[i];
 
-	/*printf("ARG[%d]= %d:%s\n", i, strlen(av[i]), av[i]);*/
+        /*printf("ARG[%d]= %d:%s\n", i, strlen(av[i]), av[i]);*/
 
-	if (*ptr != '-') {
-	    CreateDepRef(&DoList, ptr);
-	    continue;
-	}
-	ptr += 2;
-	switch(ptr[-1]) {
-	case 'F':   /*  fast opt    */
-	    break;
-	case 'f':
-	    XFileName = (*ptr) ? ptr : av[++i];
-	    break;
-	case 'n':
-	    NoRunOpt = 1;
-	    break;
+        if (*ptr != '-') {
+            CreateDepRef(&DoList, ptr);
+            continue;
+        }
+        ptr += 2;
+        switch(ptr[-1]) {
+        case 'F':   /*  fast opt    */
+            break;
+        case 'f':
+            XFileName = (*ptr) ? ptr : av[++i];
+            break;
+        case 'n':
+            NoRunOpt = 1;
+            break;
 
-	case 'D':
-	    (*ptr) ? ptr : av[++i];
-	    var = MakeVar(ptr, '$');
-	    ptr = av[++i];
-	    (*ptr) ? ptr : av[++i];
-	    ExpandVariable(ptr,&tmpList);
-	    AppendCmdList(&tmpList, &var->var_CmdList);
-	    break;
+        case 'D':
+            (*ptr) ? ptr : av[++i];
+            var = MakeVar(ptr, '$');
+            ptr = av[++i];
+            (*ptr) ? ptr : av[++i];
+            ExpandVariable(ptr,&tmpList);
+            AppendCmdList(&tmpList, &var->var_CmdList);
+            break;
 
-	case 'd':
-	    DDebug = (*ptr) ? atoi(ptr) : 1;
-	    break;
-	case 'a':
-	    DoAll = 1;
-	case 'q':
-	    QuietOpt = 1;
-	    break;
-	case 'h':
-	default:
-	    help(1);
-	}
+        case 'd':
+            DDebug = (*ptr) ? atoi(ptr) : 1;
+            break;
+        case 'a':
+            DoAll = 1;
+        case 'q':
+            QuietOpt = 1;
+            break;
+        case 'h':
+        default:
+            help(1);
+        }
     }
     if (QuietOpt == 0)
-	puts(VERS " (" DATE ")");
+        puts(VERS " (" DATE ")");
 
     if (i > ac)
-	error(FATAL, "Expected argument to command line option");
+        error(FATAL, "Expected argument to command line option");
 
     /*
-     *	resolve dependancies requested by the user.  If none requested
-     *	the resolve the first one
+     *  resolve dependancies requested by the user.  If none requested
+     *  the resolve the first one
      */
 
     {
-	DepRef *node;
+        DepRef *node;
 
-	ParseFile(XFileName);
+        ParseFile(XFileName);
 
-	if (GetHead(&DoList) == NULL) {
-	    if ((node = GetHead(&DepList)) != NULL)
-		CreateDepRef(&DoList, ((DepNode *)node)->dn_Node.ln_Name);
-	}
+        if (GetHead(&DoList) == NULL) {
+            if ((node = GetHead(&DepList)) != NULL)
+                CreateDepRef(&DoList, ((DepNode *)node)->dn_Node.ln_Name);
+        }
 
-	while ((node = RemHead(&DoList)) != NULL) {
-	    time_t t;
+        while ((node = RemHead(&DoList)) != NULL) {
+            time_t t;
             if ((node->rn_Dep->dn_Node.ln_Type != NT_RESOLVED) &&
                (GetHead(&node->rn_Dep->dn_DepCmdList) == NULL))
             {
@@ -222,14 +222,14 @@ main(int ac, char **av)
                 break;
             }
 
-	    if ((r = ExecuteDependency(node, &t)) < 0)
-	    {
-		break;
+            if ((r = ExecuteDependency(node, &t)) < 0)
+            {
+                break;
             }
-	}
+        }
     }
     if (r < 0 && ExitCode < 20)
-	ExitCode = 20;
+        ExitCode = 20;
     return(ExitCode);
 }
 
@@ -240,13 +240,13 @@ InitStuff()
 
     atexit(myexit);
     if (Initialized == 0) {
-	Initialized = 1;
-	NewList(&DoList);
-	InitCommand();
-	InitCmdList();
-	InitVar();
-	InitDep();
-	InitParser();
+        Initialized = 1;
+        NewList(&DoList);
+        InitCommand();
+        InitCmdList();
+        InitVar();
+        InitDep();
+        InitParser();
     }
 }
 
@@ -264,10 +264,10 @@ SkipAss(ptr)
 const char *ptr;
 {
     while (*ptr && *ptr != '=')
-	++ptr;
+        ++ptr;
     if (*ptr == '=') {
-	for (++ptr; *ptr == ' ' || *ptr == '\t'; ++ptr)
-	    ;
+        for (++ptr; *ptr == ' ' || *ptr == '\t'; ++ptr)
+            ;
     }
     return(ptr);
 }

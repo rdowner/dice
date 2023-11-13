@@ -27,15 +27,15 @@ PROTOS3= $(OD3)protos.h
 PROTOSP= $(ODP)protos.h
 
 SRCS= main.c sym.c include.c direct.c define.c cpp.c cexp.c subs.c precomp.c \
-	asubs.a
+        asubs.a
 
-COBJS1=	$(SRCS:"*.c":"$(OD1)*.o")
-AOBJS1=	$(SRCS:"*.a":"$(OD1)*.o")
-OBJS1=	$(SRCS:"*.?":"$(OD1)*.o")
-OBJS2=	$(SRCS:"*.?":"$(OD2)*.o")
-OBJS3=	$(SRCS:"*.?":"$(OD3)*.o")
-OBJSR=	$(SRCS:"*.?":"$(ODP)*.o")
-OBJSP=	$(SRCS:"*.?":"$(ODP)*.o")
+COBJS1= $(SRCS:"*.c":"$(OD1)*.o")
+AOBJS1= $(SRCS:"*.a":"$(OD1)*.o")
+OBJS1=  $(SRCS:"*.?":"$(OD1)*.o")
+OBJS2=  $(SRCS:"*.?":"$(OD2)*.o")
+OBJS3=  $(SRCS:"*.?":"$(OD3)*.o")
+OBJSR=  $(SRCS:"*.?":"$(ODP)*.o")
+OBJSP=  $(SRCS:"*.?":"$(ODP)*.o")
 
 default:
 

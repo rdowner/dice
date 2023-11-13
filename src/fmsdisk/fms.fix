@@ -15,20 +15,20 @@ void ExtendSize(NDUnit *unit, long offset);
 void GetUnitName(int unitnum, char *buf);
 
 
-typedef NDev	*NDevP;
-typedef IOB	*IOBP;
+typedef NDev    *NDevP;
+typedef IOB     *IOBP;
 
-struct Library *SysBase	= NULL;
-struct DosLibrary *DOSBase	= NULL;
+struct Library *SysBase = NULL;
+struct DosLibrary *DOSBase      = NULL;
 
-NDev *DevBase	= NULL;
+NDev *DevBase   = NULL;
 APTR DevSegment = NULL;
-PORT *FProc	= NULL;
+PORT *FProc     = NULL;
 PORT FPort;
 
 extern func_ptr DevVectors[];
 
-__saveds NDevP	__asm
+__saveds NDevP  __asm
 Init(register __a0 APTR seg)
 {
     NDev *db;
@@ -50,8 +50,8 @@ Init(register __a0 APTR seg)
 
 __saveds NDevP __asm
 DevOpen(register __d0 long unitnum,
-	register __a1 IOBP iob,
-	register __d1 long flags
+        register __a1 IOBP iob,
+        register __d1 long flags
        )
 
 {
@@ -59,15 +59,15 @@ DevOpen(register __d0 long unitnum,
     NDUnit *unit = &nd->Unit[unitnum];
 
     if (++nd->Lib.lib_OpenCnt == 1) {
-	FProc = CreateProc("FMS-Dummy", 0, (long)DUMmySeg >> 2, 4096);
-	FPort.mp_SigBit = SIGBREAKB_CTRL_D;	/*  port init */
-	FPort.mp_SigTask= FProc->mp_SigTask;
-	FPort.mp_Flags = PA_SIGNAL;
-	NewList(&FPort.mp_MsgList);
+        FProc = CreateProc("FMS-Dummy", 0, (long)DUMmySeg >> 2, 4096);
+        FPort.mp_SigBit = SIGBREAKB_CTRL_D;     /*  port init */
+        FPort.mp_SigTask= FProc->mp_SigTask;
+        FPort.mp_Flags = PA_SIGNAL;
+        NewList(&FPort.mp_MsgList);
     }
 
     if (++unit->OpenCnt == 1)
-	SynchroMsg(CMD_OPENUNIT, unit);
+        SynchroMsg(CMD_OPENUNIT, unit);
 
     nd->Lib.lib_Flags &= ~LIBF_DELEXP;
     iob->io_Unit = (struct Unit *)unit;
@@ -86,10 +86,10 @@ DevExpunge(void)
     APTR dseg = DevSegment;
 
     if (dseg == NULL)
-	Alert(24);
+        Alert(24);
     if (nd->Lib.lib_OpenCnt) {
-	nd->Lib.lib_Flags |= LIBF_DELEXP;
-	return(NULL);
+        nd->Lib.lib_Flags |= LIBF_DELEXP;
+        return(NULL);
     }
     Remove((NODE *)nd);
     FreeMem((char *)nd - nd->Lib.lib_NegSize, nd->Lib.lib_NegSize + nd->Lib.lib_PosSize);
@@ -100,7 +100,7 @@ DevExpunge(void)
 /*
  *  device close.  Dummy pointer before iob so iob gets assigned A1
  *
- *	iob:	A1
+ *      iob:    A1
  */
 
 __saveds APTR __asm
@@ -111,21 +111,21 @@ DevClose(register __a1 IOBP iob)
     NDev *nd = DevBase;
 
     {
-	NDUnit *unit = (NDUnit *)iob->io_Unit;
-	if (unit->OpenCnt && --unit->OpenCnt == 0)
-	    SynchroMsg(CMD_CLOSEUNIT, unit);
+        NDUnit *unit = (NDUnit *)iob->io_Unit;
+        if (unit->OpenCnt && --unit->OpenCnt == 0)
+            SynchroMsg(CMD_CLOSEUNIT, unit);
     }
 
     if (nd->Lib.lib_OpenCnt && --nd->Lib.lib_OpenCnt)
-	return(NULL);
+        return(NULL);
     if (FProc) {
-	SynchroMsg(CMD_KILLPROC, NULL);
-	FProc = NULL;
+        SynchroMsg(CMD_KILLPROC, NULL);
+        FProc = NULL;
     }
     if (nd->Lib.lib_Flags & LIBF_DELEXP)
-	return(DevExpunge());
+        return(DevExpunge());
     /*
-     *	close down resources
+     *  close down resources
      */
     return(NULL);
 }
@@ -151,73 +151,73 @@ DevBeginIO(register __a1 IOBP iob)
 
     switch(iob->io_Command & ~TDF_EXTCOM) {
     case CMD_INVALID:
-	iob->io_Error = IOERR_NOCMD;
-	break;
+        iob->io_Error = IOERR_NOCMD;
+        break;
     case CMD_RESET:
-	break;
+        break;
     case CMD_READ:
-	PutMsg(&FPort, &iob->io_Message);
-	iob->io_Flags &= ~IOF_QUICK;	/*  not quick */
-	iob = NULL;
-	break;
+        PutMsg(&FPort, &iob->io_Message);
+        iob->io_Flags &= ~IOF_QUICK;    /*  not quick */
+        iob = NULL;
+        break;
     case CMD_WRITE:
-	PutMsg(&FPort, &iob->io_Message);
-	iob->io_Flags &= ~IOF_QUICK;	/*  not quick */
-	iob = NULL;
-	break;
+        PutMsg(&FPort, &iob->io_Message);
+        iob->io_Flags &= ~IOF_QUICK;    /*  not quick */
+        iob = NULL;
+        break;
     case CMD_UPDATE:
-	PutMsg(&FPort, &iob->io_Message);
-	iob->io_Flags &= ~IOF_QUICK;	/*  not quick */
-	iob = NULL;
-	break;
+        PutMsg(&FPort, &iob->io_Message);
+        iob->io_Flags &= ~IOF_QUICK;    /*  not quick */
+        iob = NULL;
+        break;
     case CMD_CLEAR:
-	break;
+        break;
     case CMD_STOP:
-	break;
+        break;
     case CMD_START:
-	break;
+        break;
     case CMD_FLUSH:
-	break;
-    case TD_MOTOR:	    /*	motor,	no action   */
-    case TD_SEEK:	    /*	seek,	no action   */
-	break;
-    case TD_FORMAT:	    /*	format		    */
-	PutMsg(&FPort, &iob->io_Message);
-	iob->io_Flags &= ~IOF_QUICK;	/*  not quick */
-	iob = NULL;
-	break;
-    case TD_REMOVE:	    /*	not supported	    */
-	iob->io_Error = IOERR_NOCMD;
-	break;
-    case TD_CHANGENUM:	    /*	change count never changes  */
-	iob->io_Actual = 1;
-	break;
-    case TD_CHANGESTATE:    /*	0=disk in drive     */
-	iob->io_Actual = 0;
-	break;
-    case TD_PROTSTATUS:     /*	io_Actual -> 0 (rw) */
-	iob->io_Actual = 0;
-	break;
-    case TD_RAWREAD:	    /*	not supported	    */
+        break;
+    case TD_MOTOR:          /*  motor,  no action   */
+    case TD_SEEK:           /*  seek,   no action   */
+        break;
+    case TD_FORMAT:         /*  format              */
+        PutMsg(&FPort, &iob->io_Message);
+        iob->io_Flags &= ~IOF_QUICK;    /*  not quick */
+        iob = NULL;
+        break;
+    case TD_REMOVE:         /*  not supported       */
+        iob->io_Error = IOERR_NOCMD;
+        break;
+    case TD_CHANGENUM:      /*  change count never changes  */
+        iob->io_Actual = 1;
+        break;
+    case TD_CHANGESTATE:    /*  0=disk in drive     */
+        iob->io_Actual = 0;
+        break;
+    case TD_PROTSTATUS:     /*  io_Actual -> 0 (rw) */
+        iob->io_Actual = 0;
+        break;
+    case TD_RAWREAD:        /*  not supported       */
     case TD_RAWWRITE:
-	iob->io_Error = IOERR_NOCMD;
-	break;
-    case TD_GETDRIVETYPE:   /*	drive type?	    */
-	iob->io_Actual = 0;
-	break;
+        iob->io_Error = IOERR_NOCMD;
+        break;
+    case TD_GETDRIVETYPE:   /*  drive type?         */
+        iob->io_Actual = 0;
+        break;
     case TD_GETNUMTRACKS:
-	iob->io_Actual = 0; /*	# of tracks?	    */
-	break;
-    case TD_ADDCHANGEINT:   /*	action never taken  */
+        iob->io_Actual = 0; /*  # of tracks?        */
+        break;
+    case TD_ADDCHANGEINT:   /*  action never taken  */
     case TD_REMCHANGEINT:
-	break;
+        break;
     default:
-	iob->io_Error = IOERR_NOCMD;
-	break;
+        iob->io_Error = IOERR_NOCMD;
+        break;
     }
     if (iob) {
-	if ((iob->io_Flags & IOF_QUICK) == 0)
-	    ReplyMsg((MSG *)iob);
+        if ((iob->io_Flags & IOF_QUICK) == 0)
+            ReplyMsg((MSG *)iob);
     }
 }
 
@@ -247,9 +247,9 @@ SynchroMsg(UWORD cmd, struct Unit *unit)
     IOB Iob;
 
     do {
-	Iob.io_Message.mn_ReplyPort = CreatePort(NULL, 0);
-	Iob.io_Command = cmd;
-	Iob.io_Unit = unit;
+        Iob.io_Message.mn_ReplyPort = CreatePort(NULL, 0);
+        Iob.io_Command = cmd;
+        Iob.io_Unit = unit;
     } while (Iob.io_Message.mn_ReplyPort == NULL);
 
     PutMsg(&FPort, &Iob.io_Message);
@@ -258,9 +258,9 @@ SynchroMsg(UWORD cmd, struct Unit *unit)
 }
 
 /*
- *	SERVER SIDE (IS A PROCESS)
+ *      SERVER SIDE (IS A PROCESS)
  *
- *	File name is:
+ *      File name is:
  */
 
 __saveds void
@@ -277,149 +277,149 @@ CoProc(void)
     Wait(SIGBREAKF_CTRL_D);     /*  wait for port init  */
 
     while (notdone) {
-	WaitPort(&FPort);
-	while (iob = (IOB *)GetMsg(&FPort)) {
-	    unit = (NDUnit *)iob->io_Unit;
+        WaitPort(&FPort);
+        while (iob = (IOB *)GetMsg(&FPort)) {
+            unit = (NDUnit *)iob->io_Unit;
 
 #ifdef DEBUG
-	    if (DbFH) {
-	        sprintf(buf, "Cmd %08lx/%04x @ %08lx Buf %08lx %04x\n",
-		    unit, iob->io_Command, iob->io_Offset, iob->io_Data, iob->io_Length
-	    	);
-	    	Write(DbFH, buf, strlen(buf));
-	    }
+            if (DbFH) {
+                sprintf(buf, "Cmd %08lx/%04x @ %08lx Buf %08lx %04x\n",
+                    unit, iob->io_Command, iob->io_Offset, iob->io_Data, iob->io_Length
+                );
+                Write(DbFH, buf, strlen(buf));
+            }
 #endif
-	    /*
-	     *	cache (increase OFS throughput)
-	     */
+            /*
+             *  cache (increase OFS throughput)
+             */
 
-	    if (CacheLen && (iob->io_Command & ~TDF_EXTCOM) != CMD_WRITE)
-		FlushCache();
+            if (CacheLen && (iob->io_Command & ~TDF_EXTCOM) != CMD_WRITE)
+                FlushCache();
 
-	    switch(iob->io_Command & ~TDF_EXTCOM) {
-	    case CMD_OPENUNIT:
-		GetUnitName(unit - &DevBase->Unit[0], buf);
-		unit->Fh = Open(buf, 1005);
-		if (unit->Fh == NULL) {
-		    unit->Fh = Open(buf, 1006);
-		    unit->Extended = 1;
-		}
+            switch(iob->io_Command & ~TDF_EXTCOM) {
+            case CMD_OPENUNIT:
+                GetUnitName(unit - &DevBase->Unit[0], buf);
+                unit->Fh = Open(buf, 1005);
+                if (unit->Fh == NULL) {
+                    unit->Fh = Open(buf, 1006);
+                    unit->Extended = 1;
+                }
 #ifdef DEBUG
-		if (DbFH) {
-		    Write(DbFH, "OPEN ", 5);
-		    Write(DbFH, buf, strlen(buf));
-		    Write(DbFH, "\n", 1);
-		}
+                if (DbFH) {
+                    Write(DbFH, "OPEN ", 5);
+                    Write(DbFH, buf, strlen(buf));
+                    Write(DbFH, "\n", 1);
+                }
 #endif
-		if (unit->Fh) {
-		    Seek(unit->Fh, 0L, 1);
-		    unit->Size = Seek(unit->Fh, 0L, -1);
-		}
-		unit->Pos = -1;
-		break;
-	    case CMD_CLOSEUNIT:
-		if (unit->Fh) {
-		    Close(unit->Fh);
-		    unit->Fh = NULL;
-		}
-		break;
-	    case CMD_KILLPROC:
-		notdone = 0;
-		break;
-	    case CMD_READ:
-		if (unit->Fh == NULL)
-		    break;
-		if (iob->io_Offset + iob->io_Length > unit->Size)
-		    ExtendSize(unit, iob->io_Offset + iob->io_Length);
-		if (unit->Pos != iob->io_Offset)
-		    Seek(unit->Fh, iob->io_Offset, -1);
-		iob->io_Actual = Read(unit->Fh, (char *)iob->io_Data, iob->io_Length);
-		if (iob->io_Actual == iob->io_Length)
-		    unit->Pos = iob->io_Offset + iob->io_Actual;
-		else
-		    unit->Pos = -1;
-		break;
-	    case CMD_WRITE:
-		/*
-		 *  This causes file to be closed/reopened after
-		 *  formatting.
-		 */
-		if (unit->Extended && unit->Fh) {
-		    FlushCache();
-		    Close(unit->Fh);
-		    GetUnitName(unit - &DevBase->Unit[0], buf);
-		    unit->Fh = Open(buf, 1005);
-		    unit->Extended = 0;
-		}
-		/* fall through */
-	    case TD_FORMAT:
-		if (unit->Fh == NULL)
-		    break;
+                if (unit->Fh) {
+                    Seek(unit->Fh, 0L, 1);
+                    unit->Size = Seek(unit->Fh, 0L, -1);
+                }
+                unit->Pos = -1;
+                break;
+            case CMD_CLOSEUNIT:
+                if (unit->Fh) {
+                    Close(unit->Fh);
+                    unit->Fh = NULL;
+                }
+                break;
+            case CMD_KILLPROC:
+                notdone = 0;
+                break;
+            case CMD_READ:
+                if (unit->Fh == NULL)
+                    break;
+                if (iob->io_Offset + iob->io_Length > unit->Size)
+                    ExtendSize(unit, iob->io_Offset + iob->io_Length);
+                if (unit->Pos != iob->io_Offset)
+                    Seek(unit->Fh, iob->io_Offset, -1);
+                iob->io_Actual = Read(unit->Fh, (char *)iob->io_Data, iob->io_Length);
+                if (iob->io_Actual == iob->io_Length)
+                    unit->Pos = iob->io_Offset + iob->io_Actual;
+                else
+                    unit->Pos = -1;
+                break;
+            case CMD_WRITE:
+                /*
+                 *  This causes file to be closed/reopened after
+                 *  formatting.
+                 */
+                if (unit->Extended && unit->Fh) {
+                    FlushCache();
+                    Close(unit->Fh);
+                    GetUnitName(unit - &DevBase->Unit[0], buf);
+                    unit->Fh = Open(buf, 1005);
+                    unit->Extended = 0;
+                }
+                /* fall through */
+            case TD_FORMAT:
+                if (unit->Fh == NULL)
+                    break;
 
-		if (iob->io_Offset > unit->Size) {
-		    FlushCache();
-		    ExtendSize(unit, iob->io_Offset);
-		}
-		if (CacheUnit != unit) {
-		    FlushCache();
-		    CacheUnit = unit;
-		}
-		if (unit->Pos != iob->io_Offset) {
+                if (iob->io_Offset > unit->Size) {
+                    FlushCache();
+                    ExtendSize(unit, iob->io_Offset);
+                }
+                if (CacheUnit != unit) {
+                    FlushCache();
+                    CacheUnit = unit;
+                }
+                if (unit->Pos != iob->io_Offset) {
 
-		    /*
-		     *	Handle case where a CMD_WRITE modifies a previously
-		     *	cached write (occurs with OFS *a lot*)
-		     */
+                    /*
+                     *  Handle case where a CMD_WRITE modifies a previously
+                     *  cached write (occurs with OFS *a lot*)
+                     */
 
-		    if (CacheLen) {
-			long ci = CacheLen - (unit->Pos - iob->io_Offset);
-			if (ci >= 0 && ci + iob->io_Length <= CacheLen) {
+                    if (CacheLen) {
+                        long ci = CacheLen - (unit->Pos - iob->io_Offset);
+                        if (ci >= 0 && ci + iob->io_Length <= CacheLen) {
 #ifdef DEBUG
-			    if (DbFH)
-				Write(DbFH, "XBACK\n", 5);
+                            if (DbFH)
+                                Write(DbFH, "XBACK\n", 5);
 #endif
-			    iob->io_Actual = iob->io_Length;
-			    movmem(iob->io_Data, CacheBuf + ci, iob->io_Length);
-			    break;
-			}
-		    }
-		    FlushCache();
-		    Seek(unit->Fh, iob->io_Offset, -1);
-		}
+                            iob->io_Actual = iob->io_Length;
+                            movmem(iob->io_Data, CacheBuf + ci, iob->io_Length);
+                            break;
+                        }
+                    }
+                    FlushCache();
+                    Seek(unit->Fh, iob->io_Offset, -1);
+                }
 
-		if (CacheLen + iob->io_Length > sizeof(CacheBuf))
-		    FlushCache();
-		if (CacheLen + iob->io_Length <= sizeof(CacheBuf)) {
-		    iob->io_Actual = iob->io_Length;
-		    unit->Pos = iob->io_Offset + iob->io_Actual;
-		    movmem(iob->io_Data, CacheBuf + CacheLen, iob->io_Actual);
-		    CacheLen += iob->io_Actual;
-		} else {
-		    if (CacheLen)
-			FlushCache();
-		    iob->io_Actual = Write(unit->Fh, (char *)iob->io_Data, iob->io_Length);
-		    if (iob->io_Actual == iob->io_Length)
-			unit->Pos = iob->io_Offset + iob->io_Actual;
-		    else
-			unit->Pos = -1;
-		}
-		break;
-	    default:
-		break;
-	    }
+                if (CacheLen + iob->io_Length > sizeof(CacheBuf))
+                    FlushCache();
+                if (CacheLen + iob->io_Length <= sizeof(CacheBuf)) {
+                    iob->io_Actual = iob->io_Length;
+                    unit->Pos = iob->io_Offset + iob->io_Actual;
+                    movmem(iob->io_Data, CacheBuf + CacheLen, iob->io_Actual);
+                    CacheLen += iob->io_Actual;
+                } else {
+                    if (CacheLen)
+                        FlushCache();
+                    iob->io_Actual = Write(unit->Fh, (char *)iob->io_Data, iob->io_Length);
+                    if (iob->io_Actual == iob->io_Length)
+                        unit->Pos = iob->io_Offset + iob->io_Actual;
+                    else
+                        unit->Pos = -1;
+                }
+                break;
+            default:
+                break;
+            }
 
-	    if (notdone == 0)       /*  forbid before falling through */
-		Forbid();           /*  and esp before replying       */
-	    ReplyMsg(&iob->io_Message);
-	}
+            if (notdone == 0)       /*  forbid before falling through */
+                Forbid();           /*  and esp before replying       */
+            ReplyMsg(&iob->io_Message);
+        }
 #ifdef DEBUG
-	if (DbFH == NULL)
-	    DbFH = Open("con:0/0/320/100/Debug", 1006);
+        if (DbFH == NULL)
+            DbFH = Open("con:0/0/320/100/Debug", 1006);
 #endif
     }
 #ifdef DEBUG
     if (DbFH)
-	Close(DbFH);
+        Close(DbFH);
 #endif
     /* fall through to exit */
 }
@@ -439,11 +439,11 @@ if(envfile = Open(buf,MODE_OLDFILE))
     {
     envlen = Read(envfile,buf,128-2);
     if(envlen >= 0)
-	{
-	gotit = TRUE;
-	buf[envlen] = '\0';
-    	if(buf[envlen-1]=='\n') buf[envlen-1] = '\n';
-	}
+        {
+        gotit = TRUE;
+        buf[envlen] = '\0';
+        if(buf[envlen-1]=='\n') buf[envlen-1] = '\n';
+        }
     Close(envfile);
     }
 /* Fallback to old FMS:Unit<n> name */
@@ -466,17 +466,17 @@ ExtendSize(NDUnit *unit, long offset)
     char *buf = AllocMem(EXT_CHUNK, MEMF_CLEAR|MEMF_PUBLIC);
 
     if (buf) {
-	if (unit->Extended == 0)
-	    unit->Extended = 1;
-	Seek(unit->Fh, 0L, 1);
-	pos = Seek(unit->Fh, 0L, 0);
-	while (pos < offset) {
-	    if (Write(unit->Fh, buf, EXT_CHUNK) != EXT_CHUNK)
-		break;
-	    pos += EXT_CHUNK;
-	}
-	FreeMem(buf, EXT_CHUNK);
-	unit->Pos = -1;     /*	unknown */
+        if (unit->Extended == 0)
+            unit->Extended = 1;
+        Seek(unit->Fh, 0L, 1);
+        pos = Seek(unit->Fh, 0L, 0);
+        while (pos < offset) {
+            if (Write(unit->Fh, buf, EXT_CHUNK) != EXT_CHUNK)
+                break;
+            pos += EXT_CHUNK;
+        }
+        FreeMem(buf, EXT_CHUNK);
+        unit->Pos = -1;     /*  unknown */
     }
 }
 
@@ -491,11 +491,11 @@ FlushCache()
 
 #ifdef DEBUG
     if (DbFH)
-	Write(DbFH, "FLUSH\n", 6);
+        Write(DbFH, "FLUSH\n", 6);
 #endif
 
     if (CacheLen) {
-	Write(unit->Fh, CacheBuf, CacheLen);
-	CacheLen = 0;
+        Write(unit->Fh, CacheBuf, CacheLen);
+        CacheLen = 0;
     }
 }

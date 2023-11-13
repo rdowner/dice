@@ -29,12 +29,12 @@ helloworld_strings.o : helloworld.cd
 CatComp helloworld.cd cfile helloworld_strings.h objfile helloworld_strings.o
 
 # this is the deutsch helloworld catalog
-d_helloworld.catalog:	helloworld_d.ct helloworld.cd
+d_helloworld.catalog:   helloworld_d.ct helloworld.cd
 CatComp helloworld.cd helloworld_d.ct catalog d_helloworld.catalog
 copy d_helloworld.catalog catalogs/deutsch/helloworld.catalog
 
 # this is the english helloworld catalog
-e_helloworld.catalog:	helloworld_e.ct helloworld.cd
+e_helloworld.catalog:   helloworld_e.ct helloworld.cd
 CatComp helloworld.cd helloworld_e.ct catalog e_helloworld.catalog NOOPTIM
 copy e_helloworld.catalog catalogs/english/helloworld.catalog
 
@@ -42,10 +42,10 @@ $(EXE): helloworld_strings.o $(OBJS)
     fwrite $(OD)$(PROJECT).lnktmp $(OBJS)
     dcc $(COMPFLAGS) @$(OD)$(PROJECT).lnktmp -o %(left)
 
-hello:	hello.o
+hello:  hello.o
     dcc $(COMPFLAGS) hello.o -o hello
 
-hello.o:	hello.c
+hello.o:        hello.c
     dcc $(COMPFLAGS) hello.c -o hello.o -c $(COMPFLAGS)
 
 $(OBJS) : $(SRCS)

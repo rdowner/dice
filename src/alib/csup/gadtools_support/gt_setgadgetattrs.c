@@ -8,12 +8,12 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 void 
 HYPER ## GT_SetGadgetAttrs( struct Gadget *gad, struct Window *win,
-	struct Requester *req, Tag tag1, ... )
+        struct Requester *req, Tag tag1, ... )
 {
-	GT_SetGadgetAttrsA(gad,win,req,(TagItem *)&tag1);
+        GT_SetGadgetAttrsA(gad,win,req,(TagItem *)&tag1);
 }
 

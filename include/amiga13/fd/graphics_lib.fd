@@ -13,7 +13,7 @@ OpenFont(textAttr)(A0)
 CloseFont(textFont)(A1)
 AskSoftStyle(rastPort)(A1)
 SetSoftStyle(rastPort,style,enable)(A1,D0/D1)
-*------	Gels routines ------
+*------ Gels routines ------
 ##public
 AddBob(bob,rastPort)(A0,A1)
 AddVSprite(vSprite,rastPort)(A0/A1)
@@ -31,7 +31,7 @@ GetGBuffers(animationObj,rastPort,doubleBuffer)(A0/A1,D0)
 InitGMasks(animationObj)(A0)
 DrawEllipse(rastPort,cx,cy,a,b)(A1,D0/D1/D2/D3)
 AreaEllipse(rastPort,cx,cy,a,b)(A1,D0/D1/D2/D3)
-*------	Remaining graphics routines ------
+*------ Remaining graphics routines ------
 ##public
 LoadRGB4(viewPort,colors,count)(A0/A1,D0)
 InitRastPort(rastPort)(A1)

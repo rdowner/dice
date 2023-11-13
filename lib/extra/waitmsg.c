@@ -27,7 +27,7 @@ WaitMsg(msg)
 Message *msg;
 {
     while (msg->mn_Node.ln_Type != NT_REPLYMSG)
-	Wait(1 << msg->mn_ReplyPort->mp_SigBit);
+        Wait(1 << msg->mn_ReplyPort->mp_SigBit);
     Forbid();
     Remove(&msg->mn_Node);
     Permit();

@@ -19,8 +19,8 @@ main(int ac, char **av)
 }
 
 struct fubar {
-	int a;
-	int b;
+        int a;
+        int b;
 };
 
 void charlie(struct fubar *f1, const struct fubar *f2);

@@ -25,9 +25,9 @@
 :  not displayed in the DIR gadget when the requestor is opened, and couldn't
 :  you put the volume names alongside the device names in the VOLUMES listing?
 :  (like: DF0:Workbench1.3
-:	  DF1:TextFiles
-:	  RAM:scratch
-:	  etc..)
+:         DF1:TextFiles
+:         RAM:scratch
+:         etc..)
 :
 :- And (finally, but my biggest gripe!) is the block mark facility. I like being
 :  able to mark a whole line with two keypresses, BUT couldn't you include a
@@ -49,7 +49,7 @@
 :
 :(WILLETTSAC@UK.AC.ASTON.KIRK or
 : "          "  "  "    .SPOCK
-:			      on JANET)
+:                             on JANET)
 :
 
 

@@ -3,10 +3,10 @@
  *    use is allowed under the terms of the DICE-LICENSE FILE,
  *    DICE-LICENSE.TXT.
  */
-#include	<stddef.h>
-#include	<stdlib.h>
-#include	<stdio.h>
-#include	<fcntl.h>
+#include        <stddef.h>
+#include        <stdlib.h>
+#include        <stdio.h>
+#include        <fcntl.h>
 
 void    testfunc() {
         printf("testfunc()\n");

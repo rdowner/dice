@@ -1,105 +1,105 @@
 
-		;   SETMEM.A
-		;
-		;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
+                ;   SETMEM.A
+                ;
+                ;   (c)Copyright 1990, Matthew Dillon, All Rights Reserved
 
-		section text,CODE
+                section text,CODE
 
-		;   setmem(buffer, len, byte)
-		;	 4(sp)   ...
-		;	   A0	   D0	 D1    (DICE-REG)
-		;	   A0	   D0	 D1    (internal)
-		;   clrmem(buffer, len)
-		;   bzero(buffer, len)
-		;	  4(sp) ...
-		;	    A0	  D0	       (DICE-REG)
-		;	    A0	  D0	       (internal)
+                ;   setmem(buffer, len, byte)
+                ;        4(sp)   ...
+                ;          A0      D0    D1    (DICE-REG)
+                ;          A0      D0    D1    (internal)
+                ;   clrmem(buffer, len)
+                ;   bzero(buffer, len)
+                ;         4(sp) ...
+                ;           A0    D0           (DICE-REG)
+                ;           A0    D0           (internal)
 
 
-		xdef	_setmem
-		xdef	_clrmem
-		xdef	_bzero
-		xdef	@setmem
-		xdef	@clrmem
-		xdef	@bzero
-		xdef	_hyper_setmem
-		xdef	_hyper_clrmem
-		xdef	_hyper_bzero
+                xdef    _setmem
+                xdef    _clrmem
+                xdef    _bzero
+                xdef    @setmem
+                xdef    @clrmem
+                xdef    @bzero
+                xdef    _hyper_setmem
+                xdef    _hyper_clrmem
+                xdef    _hyper_bzero
 
 @bzero:
 @clrmem
-		clr.l	D1	    ; value
-		bra	@setmem
+                clr.l   D1          ; value
+                bra     @setmem
 
 _hyper_bzero:
 _hyper_clrmem:
 _bzero:
-_clrmem:	moveq.l #0,D1
-		bra	xbz0
+_clrmem:        moveq.l #0,D1
+                bra     xbz0
 _hyper_setmem
-_setmem:	move.b	12+3(sp),D1
-xbz0		move.l	4(sp),A0
-		move.l	8(sp),D0
+_setmem:        move.b  12+3(sp),D1
+xbz0            move.l  4(sp),A0
+                move.l  8(sp),D0
 
 @setmem
-		add.l	D0,A0	    ; start at end of address
-		cmp.l	#40,D0	    ; unscientifically chosen
-		bls	xbs2
-		bra	xbs10
-xbs1		move.b	D1,-(A0)    ; any count < 65536
-xbs2		dbf	D0,xbs1
-		move.l	4(sp),D0
-		rts
+                add.l   D0,A0       ; start at end of address
+                cmp.l   #40,D0      ; unscientifically chosen
+                bls     xbs2
+                bra     xbs10
+xbs1            move.b  D1,-(A0)    ; any count < 65536
+xbs2            dbf     D0,xbs1
+                move.l  4(sp),D0
+                rts
 
-				    ; at least 4 bytes in count (D0)
-xbs10		movem.l D2-D7/A2-A6,-(sp)   ;any count > 4
-		move.w	A0,D2
-		lsr.l	#1,D2	    ; is it aligned?
-		bcc	xbs22
-		move.b	D1,-(A0)    ; no, copy one byte
-		subq.l	#1,D0
+                                    ; at least 4 bytes in count (D0)
+xbs10           movem.l D2-D7/A2-A6,-(sp)   ;any count > 4
+                move.w  A0,D2
+                lsr.l   #1,D2       ; is it aligned?
+                bcc     xbs22
+                move.b  D1,-(A0)    ; no, copy one byte
+                subq.l  #1,D0
 
-xbs22		andi.l	#$FF,D1     ; expand data D1.B -> D2-D7/A1-A6
-		move.l	D1,D2	    ; D1 000000xx   D2 000000xx
-		asl.w	#8,D2	    ;		       0000xx00
-		or.w	D2,D1	    ;	 0000xxxx
-		move.w	D1,D2	    ;	 0000xxxx      0000xxxx
-		swap	D2	    ;	 0000xxxx      xxxx0000
-		or.l	D1,D2	    ; D2.L
-		move.l	D2,D3
-		move.l	D2,D4
-		move.l	D2,D5
-		move.l	D2,D6
-		move.l	D2,D7
-		move.l	D2,A1
-		move.l	D2,A2
-		move.l	D2,A3
-		move.l	D2,A4
-		move.l	D2,A5
-		move.l	D2,A6	    ; D2-D7/A1-A6   (12 registers)
-		move.l	#48,D1	    ; bytes per transfer (48)
-xbs30		sub.l	D1,D0	    ; pre subtract
-		bmi	xbs40
-xbs31		movem.l D2-D7/A1-A6,-(A0)
-		sub.l	D1,D0
-		bpl	xbs31
-xbs40		add.w	D1,D0	    ; less than 48 bytes remaining
+xbs22           andi.l  #$FF,D1     ; expand data D1.B -> D2-D7/A1-A6
+                move.l  D1,D2       ; D1 000000xx   D2 000000xx
+                asl.w   #8,D2       ;                  0000xx00
+                or.w    D2,D1       ;    0000xxxx
+                move.w  D1,D2       ;    0000xxxx      0000xxxx
+                swap    D2          ;    0000xxxx      xxxx0000
+                or.l    D1,D2       ; D2.L
+                move.l  D2,D3
+                move.l  D2,D4
+                move.l  D2,D5
+                move.l  D2,D6
+                move.l  D2,D7
+                move.l  D2,A1
+                move.l  D2,A2
+                move.l  D2,A3
+                move.l  D2,A4
+                move.l  D2,A5
+                move.l  D2,A6       ; D2-D7/A1-A6   (12 registers)
+                move.l  #48,D1      ; bytes per transfer (48)
+xbs30           sub.l   D1,D0       ; pre subtract
+                bmi     xbs40
+xbs31           movem.l D2-D7/A1-A6,-(A0)
+                sub.l   D1,D0
+                bpl     xbs31
+xbs40           add.w   D1,D0       ; less than 48 bytes remaining
 
-		move.w	#4,D1	    ; by 4's
-		sub.w	D1,D0
-		bmi	xbs50
-xbs41		move.l	D2,-(A0)
-		sub.w	D1,D0
-		bpl	xbs41
-xbs50		add.w	D1,D0
-		bra	xbs52
-xbs51		move.b	D2,-(A0)    ; by 1's
-xbs52		dbf	D0,xbs51
-		movem.l (sp)+,D2-D7/A2-A6
-		move.l	4(sp),D0
-		rts
+                move.w  #4,D1       ; by 4's
+                sub.w   D1,D0
+                bmi     xbs50
+xbs41           move.l  D2,-(A0)
+                sub.w   D1,D0
+                bpl     xbs41
+xbs50           add.w   D1,D0
+                bra     xbs52
+xbs51           move.b  D2,-(A0)    ; by 1's
+xbs52           dbf     D0,xbs51
+                movem.l (sp)+,D2-D7/A2-A6
+                move.l  4(sp),D0
+                rts
 
-		END
+                END
 
 
 

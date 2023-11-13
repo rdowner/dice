@@ -1,42 +1,42 @@
 
-all:	DCC DCPP DC1 DAS DLINK DOBJ DUTIL
+all:    DCC DCPP DC1 DAS DLINK DOBJ DUTIL
 
 DCC:
-	(cd dcc; dxmake)
+        (cd dcc; dxmake)
 
 DCPP:
-	(cd dcpp; dxmake)
+        (cd dcpp; dxmake)
 
 DC1:
-	(cd dc1; dxmake)
+        (cd dc1; dxmake)
 
 DAS:
-	(cd das; dxmake)
+        (cd das; dxmake)
 
 DLINK:
-	(cd dlink; dxmake)
+        (cd dlink; dxmake)
 
 DOBJ:
-	(cd dobj; dxmake)
+        (cd dobj; dxmake)
 
 DUTIL:
-	(cd dutil; dxmake)
+        (cd dutil; dxmake)
 
 install:
-	(cd dcc; dxmake install)
-	(cd dcpp; dxmake install)
-	(cd dc1; dxmake install)
-	(cd das; dxmake install)
-	(cd dlink; dxmake install)
-	(cd dobj; dxmake install)
-	(cd dutil; dxmake install)
+        (cd dcc; dxmake install)
+        (cd dcpp; dxmake install)
+        (cd dc1; dxmake install)
+        (cd das; dxmake install)
+        (cd dlink; dxmake install)
+        (cd dobj; dxmake install)
+        (cd dutil; dxmake install)
 
 clean:
-	(cd dcc; dxmake clean)
-	(cd dcpp; dxmake clean)
-	(cd dc1; dxmake clean)
-	(cd das; dxmake clean)
-	(cd dlink; dxmake clean)
-	(cd dobj; dxmake clean)
-	(cd dutil; dxmake clean)
+        (cd dcc; dxmake clean)
+        (cd dcpp; dxmake clean)
+        (cd dc1; dxmake clean)
+        (cd das; dxmake clean)
+        (cd dlink; dxmake clean)
+        (cd dobj; dxmake clean)
+        (cd dutil; dxmake clean)
 

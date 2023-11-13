@@ -9,9 +9,9 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 ULONG ObtainInfo( struct GlyphEngine *glyphEngine, Tag tag1, ... )
-{	
-	return ObtainInfoA(glyphEngine, (TagItem *)&tag1);
+{       
+        return ObtainInfoA(glyphEngine, (TagItem *)&tag1);
 }

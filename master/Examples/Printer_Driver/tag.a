@@ -1,145 +1,145 @@
 
-		    ;	TAG.A
-		    ;
-		    ;	printer tag info and custom startup code for
-		    ;	DICE.
+                    ;   TAG.A
+                    ;
+                    ;   printer tag info and custom startup code for
+                    ;   DICE.
 
-		    section text,code
+                    section text,code
 
-		    xref    _DevInit
-		    xref    _DevExpunge
-		    xref    _DevOpen
-		    xref    _DevClose
+                    xref    _DevInit
+                    xref    _DevExpunge
+                    xref    _DevOpen
+                    xref    _DevClose
 
-		    xref    _CommandTable
-		    xref    _DoSpecial
-		    xref    _Render
-		    xref    _ExtendedCharTable
+                    xref    _CommandTable
+                    xref    _DoSpecial
+                    xref    _Render
+                    xref    _ExtendedCharTable
 
-		    xdef    _PEDData
-		    xdef    _SysBase
+                    xdef    _PEDData
+                    xdef    _SysBase
 
-		    moveq.l #0,D0
-		    rts
-		    dc.w    37	; version
-		    dc.w    0	; revision
+                    moveq.l #0,D0
+                    rts
+                    dc.w    37  ; version
+                    dc.w    0   ; revision
 
 _PEDData:
-		    dc.l    printerName
-		    dc.l    _ADevInit
-		    dc.l    _ADevExpunge
-		    dc.l    _DevOpen
-		    dc.l    _DevClose
+                    dc.l    printerName
+                    dc.l    _ADevInit
+                    dc.l    _ADevExpunge
+                    dc.l    _DevOpen
+                    dc.l    _DevClose
 
-		    dc.b    $01 	; printer class (devices/prtbase.h)
-		    dc.b    $01 	; color class	(devices/prtbase.h)
-		    dc.b    136 	; maximum number of columns
-		    dc.b    10		; number of character sets
+                    dc.b    $01         ; printer class (devices/prtbase.h)
+                    dc.b    $01         ; color class   (devices/prtbase.h)
+                    dc.b    136         ; maximum number of columns
+                    dc.b    10          ; number of character sets
 
-		    dc.w    24		; number of pixel rows per line dump
-		    dc.l    1088	; max X dots in 360dpi mode
-		    dc.l    0		; max Y dots -- none, continuous
-		    dc.w    80		; density, dpi horizontal
-		    dc.w    180 	; density, dpi vertical
+                    dc.w    24          ; number of pixel rows per line dump
+                    dc.l    1088        ; max X dots in 360dpi mode
+                    dc.l    0           ; max Y dots -- none, continuous
+                    dc.w    80          ; density, dpi horizontal
+                    dc.w    180         ; density, dpi vertical
 
-		    ;	command table & special functions
+                    ;   command table & special functions
 
-		    dc.l    _CommandTable
-		    dc.l    _DoSpecial
-		    dc.l    _Render
-		    dc.l    30			; timeout
-		    dc.l    _ExtendedCharTable	; 8BitChars
-		    ds.l    1			; printer mode (reserve space)
-		    dc.l    0			; character conversion
+                    dc.l    _CommandTable
+                    dc.l    _DoSpecial
+                    dc.l    _Render
+                    dc.l    30                  ; timeout
+                    dc.l    _ExtendedCharTable  ; 8BitChars
+                    ds.l    1                   ; printer mode (reserve space)
+                    dc.l    0                   ; character conversion
 
-printerName:	    dc.b    'EpsonQTest',0
+printerName:        dc.b    'EpsonQTest',0
 
-		    ds.l    0
+                    ds.l    0
 
 
-		    ;	-------------------------------------------------
-		    ;	custom DICE startup code, same as for shared
-		    ;	library example except args passed on stack, not
-		    ;	in registers.
+                    ;   -------------------------------------------------
+                    ;   custom DICE startup code, same as for shared
+                    ;   library example except args passed on stack, not
+                    ;   in registers.
 
-		    xref    __BSS_LEN	    ; (dlink), length of BSS
-		    xref    __DATA_BAS	    ; (dlink), base of initialized data
-		    xref    __DATA_LEN	    ; (dlink), length of data
+                    xref    __BSS_LEN       ; (dlink), length of BSS
+                    xref    __DATA_BAS      ; (dlink), base of initialized data
+                    xref    __DATA_LEN      ; (dlink), length of data
 
 _ADevInit:
 
-		    movem.l D2-D7/A2-A6,-(sp)   ; blanket save
-		    move.l  4,A6		; EXEC base
+                    movem.l D2-D7/A2-A6,-(sp)   ; blanket save
+                    move.l  4,A6                ; EXEC base
 
-		    ;	Not resident, BSS space has been allocated for us
-		    ;	beyond the specified data, just load the base ptr
+                    ;   Not resident, BSS space has been allocated for us
+                    ;   beyond the specified data, just load the base ptr
 
-snotres 	    lea     __DATA_BAS+32766,A4
-		    sub.l   A3,A3
+snotres             lea     __DATA_BAS+32766,A4
+                    sub.l   A3,A3
 
 clrbss
-		    ;	CLEAR BSS   &-32766(A4) + __DATA_LEN*4
+                    ;   CLEAR BSS   &-32766(A4) + __DATA_LEN*4
 
-		    lea     -32766(A4),A0
-		    move.l  #__DATA_LEN,D0
-		    asl.l   #2,D0
-		    add.l   D0,A0
+                    lea     -32766(A4),A0
+                    move.l  #__DATA_LEN,D0
+                    asl.l   #2,D0
+                    add.l   D0,A0
 
-		    move.l  #__BSS_LEN,D0	; longwords of bss
-		    moveq.l #0,D1
-		    bra     clrent
-clrlop		    move.l  D1,(A0)+
-clrent		    dbf     D0,clrlop
-		    sub.l   #$10000,D0
-		    bcc     clrlop
+                    move.l  #__BSS_LEN,D0       ; longwords of bss
+                    moveq.l #0,D1
+                    bra     clrent
+clrlop              move.l  D1,(A0)+
+clrent              dbf     D0,clrlop
+                    sub.l   #$10000,D0
+                    bcc     clrlop
 
-		    move.l  A6,_SysBase
+                    move.l  A6,_SysBase
 
-		    jsr     __AutoInit0 	; A6 has SYSBase
-		    bne     xfail
-		    jsr     __AutoInit1 	; A6 has SYSBase
-		    bne     xfail
+                    jsr     __AutoInit0         ; A6 has SYSBase
+                    bne     xfail
+                    jsr     __AutoInit1         ; A6 has SYSBase
+                    bne     xfail
 
-		    movem.l (sp)+,D2-D7/A2-A6   ; blanket restore
-		    jmp     _DevInit(pc)        ; argument 4(sp) (on stack)
+                    movem.l (sp)+,D2-D7/A2-A6   ; blanket restore
+                    jmp     _DevInit(pc)        ; argument 4(sp) (on stack)
 
-		    ;	if failure occurs (auto library open failed), return
-		    ;	-1
+                    ;   if failure occurs (auto library open failed), return
+                    ;   -1
 
-xfail		    movem.l (sp)+,D2-D7/A2-A6
-		    moveq.l #-1,D0
-		    rts
+xfail               movem.l (sp)+,D2-D7/A2-A6
+                    moveq.l #-1,D0
+                    rts
 
-		    ;	expunge the device
+                    ;   expunge the device
 
 _ADevExpunge:
-		    jsr     _DevExpunge(pc)
-		    movem.l A4/A6,-(sp)
-		    move.l  4.W,A6
-		    lea     __DATA_BAS+32766,A4
-		    jsr     __AutoExit1
-		    jsr     __AutoExit0
-		    movem.l (sp)+,A4/A6
-		    moveq.l #0,D0
-		    rts
+                    jsr     _DevExpunge(pc)
+                    movem.l A4/A6,-(sp)
+                    move.l  4.W,A6
+                    lea     __DATA_BAS+32766,A4
+                    jsr     __AutoExit1
+                    jsr     __AutoExit0
+                    movem.l (sp)+,A4/A6
+                    moveq.l #0,D0
+                    rts
 
-		    ;	These are special DICE sections that merge together special
-		    ;	code from other object modules and link libraries, the base
-		    ;	of which is defined here.
+                    ;   These are special DICE sections that merge together special
+                    ;   code from other object modules and link libraries, the base
+                    ;   of which is defined here.
 
-		    section autoinit0,code
+                    section autoinit0,code
 __AutoInit0:
-		    section autoinit1,code
+                    section autoinit1,code
 __AutoInit1:
-		    section autoexit0,code
+                    section autoexit0,code
 __AutoExit0:
-		    section autoexit1,code
+                    section autoexit1,code
 __AutoExit1:
 
-		    section bss,bss
+                    section bss,bss
 
-_SysBase	    ds.l    1
+_SysBase            ds.l    1
 
-		    END
+                    END
 
 

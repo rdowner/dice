@@ -26,60 +26,60 @@ int max;
 {
     BPTR lock;
     FIB *fib;
-    int len = 0;    /*	path length	*/
-    int elen;	    /*	element length	*/
+    int len = 0;    /*  path length     */
+    int elen;       /*  element length  */
     short alloced = 0;
 
     {
-	Process *proc = (Process *)FindTask(NULL);
-	if (proc->pr_Task.tc_Node.ln_Type == NT_TASK)
-	    return(NULL);
-	lock = DupLock(proc->pr_CurrentDir);
-	if (lock == NULL)
-	    return(NULL);
+        Process *proc = (Process *)FindTask(NULL);
+        if (proc->pr_Task.tc_Node.ln_Type == NT_TASK)
+            return(NULL);
+        lock = DupLock(proc->pr_CurrentDir);
+        if (lock == NULL)
+            return(NULL);
     }
     if (path == NULL) {
-	path = malloc(max);
-	if (path == NULL)
-	   max = 0;    /* Don't let the overwrite non-existent memory */
-	alloced = 1;
+        path = malloc(max);
+        if (path == NULL)
+           max = 0;    /* Don't let the overwrite non-existent memory */
+        alloced = 1;
     }
 
     if (fib = malloc(sizeof(FIB))) {
-	while (lock && Examine(lock, fib)) {
-	    BPTR newlock;
+        while (lock && Examine(lock, fib)) {
+            BPTR newlock;
 
-	    elen = strlen(fib->fib_FileName);
-	    if (len + elen + 2 > max)
-		break;
+            elen = strlen(fib->fib_FileName);
+            if (len + elen + 2 > max)
+                break;
 
-	    newlock = ParentDir(lock);
+            newlock = ParentDir(lock);
 
-	    if (len) {
-		if (newlock)
-		    strins(path, "/");
-		else
-		    strins(path, ":");
-		strins(path, fib->fib_FileName);
-		++len;
-	    } else {
-		strcpy(path, fib->fib_FileName);
-		if (newlock == NULL)
-		    strcat(path, ":");
-	    }
-	    len += elen;
+            if (len) {
+                if (newlock)
+                    strins(path, "/");
+                else
+                    strins(path, ":");
+                strins(path, fib->fib_FileName);
+                ++len;
+            } else {
+                strcpy(path, fib->fib_FileName);
+                if (newlock == NULL)
+                    strcat(path, ":");
+            }
+            len += elen;
 
-	    UnLock(lock);
-	    lock = newlock;
-	}
-	free(fib);
+            UnLock(lock);
+            lock = newlock;
+        }
+        free(fib);
     }
 
     if (lock) {
-	UnLock(lock);
-	if (alloced)
-	    free(path);
-	path = NULL;
+        UnLock(lock);
+        if (alloced)
+            free(path);
+        path = NULL;
     }
     return(path);
 }

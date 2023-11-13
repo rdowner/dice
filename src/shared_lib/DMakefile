@@ -46,7 +46,7 @@ $(RLIB) : $(OD)auto.o lib.fd
 #   TEST2   - compiled without registered args
 #
 #   note: cannot use $(CFLAGS) here since it is setup for the library
-#	  compilation.
+#         compilation.
 
 $(TEST1) : test.c
     dcc test.c -o %(left) -l$(OD)testr -mRR -DREGISTERED

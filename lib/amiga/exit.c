@@ -25,9 +25,9 @@ exit(code)
 int code;
 {
     {
-	AtExit *eb;
-	for (eb = _ExitBase; eb; eb = eb->Next)
-	    (*eb->Func)();
+        AtExit *eb;
+        for (eb = _ExitBase; eb; eb = eb->Next)
+            (*eb->Func)();
     }
 
     fclose(stdin);
@@ -35,20 +35,20 @@ int code;
     fclose(stderr);
 
     /*
-     *	stdio
+     *  stdio
      */
 
     while (_Iod)
-	fclose(_Iod);
+        fclose(_Iod);
 
     /*
-     *	file descriptors
+     *  file descriptors
      */
 
     __closeall();
 
     /*
-     *	low level exit (handles allocated memory & workbench)
+     *  low level exit (handles allocated memory & workbench)
      */
 
     _exit(code);

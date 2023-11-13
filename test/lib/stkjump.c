@@ -24,9 +24,9 @@ char *av[];
     onbreak(myexit);
 
     if (r = setjmp(x)) {
-	Execute("avail", 0, 0);
-	printf("exit code %d\n", r);
-	exit(10);
+        Execute("avail", 0, 0);
+        printf("exit code %d\n", r);
+        exit(10);
     }
     Execute("avail", 0, 0);
     subroutine(atoi(av[1]));
@@ -38,7 +38,7 @@ subroutine(n)
     char buf[256];
 
     if (n == 0)
-	return;
+        return;
     printf("Base = %08lx\n", _stack_base);
     subroutine(n - 1);
 }

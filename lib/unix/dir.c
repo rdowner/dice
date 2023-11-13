@@ -24,7 +24,7 @@ typedef struct FileInfoBlock FileInfoBlock;
 typedef struct {
     struct DHan     *dh_Next;
     FileInfoBlock   dh_Fib;
-    BPTR	    dh_Lock;
+    BPTR            dh_Lock;
     struct direct   dh_Direct;
 } DHan;
 
@@ -34,7 +34,7 @@ static __autoexit void
 dir_exit()
 {
     while (DHBase)
-	closedir((DIR *)DHBase);
+        closedir((DIR *)DHBase);
 }
 
 
@@ -46,17 +46,17 @@ const char *path;
     long lock;
 
     if (lock = Lock(UnixToAmigaPath(path), SHARED_LOCK)) {
-	if (dh = malloc(sizeof(DHan))) {
-	    dh->dh_Lock = lock;
-	    if (rewinddir((DIR *)dh) < 0) {
-		closedir((DIR  *)dh);
-		dh = NULL;
-	    }
-	    dh->dh_Next = (struct DHan *)DHBase;
-	    DHBase= dh;
-	} else {
-	    UnLock(lock);
-	}
+        if (dh = malloc(sizeof(DHan))) {
+            dh->dh_Lock = lock;
+            if (rewinddir((DIR *)dh) < 0) {
+                closedir((DIR  *)dh);
+                dh = NULL;
+            }
+            dh->dh_Next = (struct DHan *)DHBase;
+            DHBase= dh;
+        } else {
+            UnLock(lock);
+        }
     }
     return(dh);
 }
@@ -68,9 +68,9 @@ DIR *di;
     DHan *dh = (DHan *)di;
 
     if (ExNext(dh->dh_Lock, &dh->dh_Fib)) {
-	dh->dh_Direct.d_name = dh->dh_Fib.fib_FileName;
-	dh->dh_Direct.d_namlen = strlen(dh->dh_Fib.fib_FileName);
-	return(&dh->dh_Direct);
+        dh->dh_Direct.d_name = dh->dh_Fib.fib_FileName;
+        dh->dh_Direct.d_namlen = strlen(dh->dh_Fib.fib_FileName);
+        return(&dh->dh_Direct);
     }
     return(NULL);
 }
@@ -83,8 +83,8 @@ DIR *di;
     int r = -1;
 
     if (Examine(dh->dh_Lock, &dh->dh_Fib)) {
-	if (dh->dh_Fib.fib_DirEntryType > 0)
-	    r = 0;
+        if (dh->dh_Fib.fib_DirEntryType > 0)
+            r = 0;
     }
     return(r);
 }
@@ -99,14 +99,14 @@ DIR *di;
 
     for (dhp = &DHBase; dh = *dhp; dhp = (DHan**)&dh->dh_Next)
      {
-	if (dh == (DHan *)di) {
-	    *dhp = (DHan *)dh->dh_Next;
-	    if (dh->dh_Lock)
-		UnLock(dh->dh_Lock);
-	    free(dh);
-	    r = 0;
-	    break;
-	}
+        if (dh == (DHan *)di) {
+            *dhp = (DHan *)dh->dh_Next;
+            if (dh->dh_Lock)
+                UnLock(dh->dh_Lock);
+            free(dh);
+            r = 0;
+            break;
+        }
     }
     return(r);
 }
@@ -120,11 +120,11 @@ char *av[];
     DIR *dh;
 
     if (dh = opendir(av[1])) {
-	struct direct *en;
-	while (en = readdir(dh)) {
-	    printf("READ: %s\n", en->d_name);
-	}
-	closedir(dh);
+        struct direct *en;
+        while (en = readdir(dh)) {
+            printf("READ: %s\n", en->d_name);
+        }
+        closedir(dh);
     }
     return(0);
 }

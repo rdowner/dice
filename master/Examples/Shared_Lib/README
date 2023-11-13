@@ -1,5 +1,5 @@
 
-			SHARED_LIB EXAMPLE CODE
+                        SHARED_LIB EXAMPLE CODE
 
     This is a fully compilable shared library implemented for DICE
     demonstrating how one can write their very own shared library.  Some
@@ -8,13 +8,13 @@
     normal C program, and (2) the interface calls MUST be reentrant...
     i.e. multiple tasks can make a library call simultaniously.
 
-				SHARED LIBRARY
+                                SHARED LIBRARY
 
-    DEFS.H	contains header stuff
-    TAG.A	library independant basic code
-    LIB.C	library independant basic code
-    INIT.C	library dependant initialization routines
-    FUNCS.C	library dependant routines
+    DEFS.H      contains header stuff
+    TAG.A       library independant basic code
+    LIB.C       library independant basic code
+    INIT.C      library dependant initialization routines
+    FUNCS.C     library dependant routines
 
     TAG.A and LIB.C are almost self contained with only a few modifications
     required to use them for other library projects... basically the
@@ -34,14 +34,14 @@
     Also, TAG.A must be the FIRST source module specified, and it is in
     this example.
 
-				THE LINK LIB
+                                THE LINK LIB
 
     The Library template generates a link lib, in this case called TEST.LIB,
     which contains library tags and an autoinit module.  The result is
     that the MYTEST program does not need to explicitly open and close
     TEST.LIBRARY!
 
-			     COMPILING AND RUNNING
+                             COMPILING AND RUNNING
 
     Run the Test.DICE project and Make it under vmake.
 

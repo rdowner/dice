@@ -53,8 +53,8 @@ static char *get_cursel(void)
  *****************************************************************************/
 int GetPubScrName( struct Screen * scr, UBYTE * namebuff )
 {
-   struct List		* scrlist;
-   struct Node		* node;
+   struct List          * scrlist;
+   struct Node          * node;
 
    namebuff[0] = 0;
 

@@ -74,7 +74,7 @@ Align(int32_t bytes, int32_t align)
 {
     int32_t n = align - (bytes & (align - 1));
     if (n != align)
-	bytes += n;
+        bytes += n;
     return(bytes);
 }
 
@@ -85,12 +85,12 @@ uint32_t v;
     short i;
 
     for (i = 0; v; ++i) {
-	if (v & 1) {
-	    if (v == 1)
-		return((int)i);
-	    return(-1);
-	}
-	v >>= 1;
+        if (v & 1) {
+            if (v == 1)
+                return((int)i);
+            return(-1);
+        }
+        v >>= 1;
     }
     return(-1);
 }
@@ -132,12 +132,12 @@ int32_t bytes;
     }
     else /* bytes > 128 */
     {
-	void *ptr = malloc(bytes);
-	if (!ptr)
-	    NoMem();
-	setmem((char *)ptr, bytes, 0);
-	++ZAloneChunks;
-	return(ptr);
+        void *ptr = malloc(bytes);
+        if (!ptr)
+            NoMem();
+        setmem((char *)ptr, bytes, 0);
+        ++ZAloneChunks;
+        return(ptr);
     }
 }
 
@@ -172,14 +172,14 @@ int32_t bytes;
                 NoMem();
 
             if (TBuf) {
-		*TBuf = (void *)TBase;
-		TBase = (void *)TBuf;
+                *TBuf = (void *)TBase;
+                TBase = (void *)TBuf;
             }
-	    *ptr = NULL;
+            *ptr = NULL;
             TBuf = ptr;
-	    ++ptr;
-	    *(int32_t *)ptr = CHUNKSIZE;
-	    ++ptr;
+            ++ptr;
+            *(int32_t *)ptr = CHUNKSIZE;
+            ++ptr;
 
             ++TChunks;
             setmem((char *)ptr, CHUNKSIZE, 0);
@@ -190,20 +190,20 @@ int32_t bytes;
     }
     else /* bytes > 128 */
     {
-	void **ptr = malloc(bytes + sizeof(void *) + sizeof(void *));
+        void **ptr = malloc(bytes + sizeof(void *) + sizeof(void *));
 
-	if (!ptr)
-	    NoMem();
+        if (!ptr)
+            NoMem();
 
-	*ptr = (void *)TBase;
-	TBase = (void *)ptr;
-	++ptr;
-	*(int32_t *)ptr = bytes;
-	++ptr;
+        *ptr = (void *)TBase;
+        TBase = (void *)ptr;
+        ++ptr;
+        *(int32_t *)ptr = bytes;
+        ++ptr;
 
-	++TAloneChunks;
-	setmem((char *)ptr, bytes, 0);
-	return(ptr);
+        ++TAloneChunks;
+        setmem((char *)ptr, bytes, 0);
+        return(ptr);
     }
 }
 
@@ -214,9 +214,9 @@ tclear()
 
     /*TBytes = 0;*/
     while ((ptr = TBase) != NULL) {
-	TBase = (void **)*ptr;
-	/*setmem((char *)ptr + sizeof(ptr), ptr[1], 0x81);*/
-	free(ptr);
+        TBase = (void **)*ptr;
+        /*setmem((char *)ptr + sizeof(ptr), ptr[1], 0x81);*/
+        free(ptr);
     }
 }
 
@@ -230,12 +230,12 @@ int32_t newsize;
     void *new;
 
     if (oldsize > newsize)
-	return(ptr);
+        return(ptr);
     new = zalloc(newsize * objsize);
     if (oldsize)
-	movmem((char *)ptr, (char *)new, oldsize * objsize);
+        movmem((char *)ptr, (char *)new, oldsize * objsize);
     /*
-	if (ptr) zfree(ptr);
+        if (ptr) zfree(ptr);
      */
     return(new);
 }
@@ -248,14 +248,14 @@ Symbol *sym;
     static int32_t Len;
 
     if (sym == NULL)
-	return("<unnamed>");
+        return("<unnamed>");
     if (sym->Len + 1 > Len) {
-	if (Buf)
-	    free(Buf);
-	Buf = malloc(sym->Len + 16);
-	Len = sym->Len + 16;
-	if (!Buf)
-	    NoMem();
+        if (Buf)
+            free(Buf);
+        Buf = malloc(sym->Len + 16);
+        Len = sym->Len + 16;
+        if (!Buf)
+            NoMem();
     }
     movmem(sym->Name, Buf, sym->Len);
     Buf[sym->Len] = 0;
@@ -276,60 +276,60 @@ TypeToProtoStr(Type *type, short i)
 
     switch(type->Id) {
     case TID_INT:
-	if (type->Flags & TF_UNSIGNED)
-	    i += sprintf(ptr + i, "unsigned ");
-	if (type->Flags & TF_SIGNED)
-	    i += sprintf(ptr + i, "signed ");
-	if (type->Flags & TF_CONST)
-	    i += sprintf(ptr + i, "const ");
-	if (type->Flags & TF_VOLATILE)
-	    i += sprintf(ptr + i, "volatile ");
-	i += sprintf(ptr + i,
-	    (*type->Size == 0) ? "void" :
-	    (*type->Size == 1) ? "char" :
-	    (*type->Size == 2) ? "short" :
-	    (*type->Size == 4) ? "int" : "iunknown"
-	);
-	break;
+        if (type->Flags & TF_UNSIGNED)
+            i += sprintf(ptr + i, "unsigned ");
+        if (type->Flags & TF_SIGNED)
+            i += sprintf(ptr + i, "signed ");
+        if (type->Flags & TF_CONST)
+            i += sprintf(ptr + i, "const ");
+        if (type->Flags & TF_VOLATILE)
+            i += sprintf(ptr + i, "volatile ");
+        i += sprintf(ptr + i,
+            (*type->Size == 0) ? "void" :
+            (*type->Size == 1) ? "char" :
+            (*type->Size == 2) ? "short" :
+            (*type->Size == 4) ? "int" : "iunknown"
+        );
+        break;
     case TID_FLT:
-	i += sprintf(ptr + i,
-	    (*type->Size == 4) ? "float" :
-	    (*type->Size == 8) ? "double" :
-	    (*type->Size == 16) ? "long double" : "funknown"
-	);
-	break;
+        i += sprintf(ptr + i,
+            (*type->Size == 4) ? "float" :
+            (*type->Size == 8) ? "double" :
+            (*type->Size == 16) ? "long double" : "funknown"
+        );
+        break;
     case TID_PTR:
     case TID_ARY:
-	TypeToProtoStr(type->SubType, i);
-	i = strlen(ptr);
-	i += sprintf(ptr + i, " *");
-	break;
+        TypeToProtoStr(type->SubType, i);
+        i = strlen(ptr);
+        i += sprintf(ptr + i, " *");
+        break;
     case TID_PROC:
-	i += sprintf(ptr + i, "void");
-	break;
+        i += sprintf(ptr + i, "void");
+        break;
     case TID_STRUCT:
-	i += sprintf(ptr + i, "struct");
+        i += sprintf(ptr + i, "struct");
     case TID_UNION:
-	if (type->Id == TID_UNION)
-	    i += sprintf(ptr + i, "union");
+        if (type->Id == TID_UNION)
+            i += sprintf(ptr + i, "union");
 
-	/*
-	 *  find associated struct/union name
-	 */
+        /*
+         *  find associated struct/union name
+         */
 
-	{
-	    Symbol *sym;
+        {
+            Symbol *sym;
 
-	    if ((sym = FindStructUnionTag(type)) != NULL) {
-		i += sprintf(ptr + i, " %s", SymToString(sym));
-	    } else {
-		i += sprintf(ptr + i, " unknown ");
-	    }
-	}
-	break;
+            if ((sym = FindStructUnionTag(type)) != NULL) {
+                i += sprintf(ptr + i, " %s", SymToString(sym));
+            } else {
+                i += sprintf(ptr + i, " unknown ");
+            }
+        }
+        break;
     default:
-	i += sprintf(ptr + i, "badid%d", type->Id);
-	break;
+        i += sprintf(ptr + i, "badid%d", type->Id);
+        break;
     }
     return(ptr);
 }
@@ -341,14 +341,14 @@ veprintf(short asout, const char *str, va_list va)
 
     va_copy(tmp_va, va);
     if (asout) {
-	printf(";");
-	vprintf(str, tmp_va);
+        printf(";");
+        vprintf(str, tmp_va);
     }
     va_copy(tmp_va, va);
     vfprintf(stderr, str, tmp_va);
     if (ErrorFi) {
-	va_copy(tmp_va, va);
-	vfprintf(ErrorFi, str, tmp_va);
+        va_copy(tmp_va, va);
+        vfprintf(ErrorFi, str, tmp_va);
     }
 }
 
@@ -380,8 +380,8 @@ char *name;
     NameNode *nn;
 
     for (nn = ASBase; nn; nn = nn->Next) {
-	if (strcmp(name, nn->ASName) == 0)
-	    return;
+        if (strcmp(name, nn->ASName) == 0)
+            return;
     }
     nn = AllocStructure(NameNode);
     nn->ASName = name;
@@ -395,7 +395,7 @@ DumpAuxSubs()
     NameNode *nn;
 
     for (nn = ASBase; nn; nn = nn->Next)
-	printf("\txref\t__%s\n", nn->ASName);
+        printf("\txref\t__%s\n", nn->ASName);
 }
 
 /*
@@ -414,24 +414,24 @@ int len;
     int32_t x = FPrefix(exp, ptr, len, bp); /*  convert to prefix and exponent */
     int32_t v;
 
-    if (x <= 0) 	    /*	too small   */
-	return(0);
-    if (x > sizeof(Buf1))   /*	too large   */
-	yerror(exp->ex_LexIdx, EFATAL_FPINT_TOO_LARGE);
+    if (x <= 0)             /*  too small   */
+        return(0);
+    if (x > sizeof(Buf1))   /*  too large   */
+        yerror(exp->ex_LexIdx, EFATAL_FPINT_TOO_LARGE);
 
-    ++bp;		    /*	skip sign   */
-    while (*bp && x) {	    /*	skip to actual decimal pt   */
-	++bp;
-	--x;
+    ++bp;                   /*  skip sign   */
+    while (*bp && x) {      /*  skip to actual decimal pt   */
+        ++bp;
+        --x;
     }
-    while (x) { 	    /*	zero extend to actual dec pt*/
-	*bp++ = '0';
-	--x;
+    while (x) {             /*  zero extend to actual dec pt*/
+        *bp++ = '0';
+        --x;
     }
     *bp = 0;
     v = atol(Buf1+1);
     if (Buf1[0] != 1)
-	v = -v;
+        v = -v;
 
     return(v);
 }
@@ -443,9 +443,9 @@ int32_t isuns;
 int32_t *plen;
 {
     if (isuns)
-	sprintf(Buf1, "%u", v);
+        sprintf(Buf1, "%u", v);
     else
-	sprintf(Buf1, "%d", v);
+        sprintf(Buf1, "%d", v);
     *plen = strlen(Buf1);
     return(strdup(Buf1));
 }
@@ -460,11 +460,11 @@ int len;
 
     (void)FPrefix(exp, ptr, len, bp); /*  convert to prefix and exponent */
 
-    ++bp;	/* skip sign   */
+    ++bp;       /* skip sign   */
     while (*bp) {
-	if (*bp != '0')
-	    return(0);
-	++bp;
+        if (*bp != '0')
+            return(0);
+        ++bp;
     }
     return(1);
 }
@@ -475,14 +475,14 @@ char *ptr;
 int len;
 {
     if (len && *ptr == '-')
-	return(1);
+        return(1);
     return(0);
 }
 
 /*
  *  Convert an ascii fp representation to prefix form
  *
- *	[.]nnnnnnnnnnnnnnnnnnnnnnn and exponent
+ *      [.]nnnnnnnnnnnnnnnnnnnnnnn and exponent
  */
 
 
@@ -493,80 +493,80 @@ char *ptr;
 char *buf;
 int len;
 {
-    int32_t x = 0; 	    /*	exponent of .prefix */
-    short sgn = 1;	    /*	sign of prefix	*/
+    int32_t x = 0;          /*  exponent of .prefix */
+    short sgn = 1;          /*  sign of prefix  */
     short zero= 1;
     short blen = sizeof(Buf1) - 1;
 
     if (len && *ptr == '+') {
-	++ptr;
-	--len;
+        ++ptr;
+        --len;
     }
     if (len && *ptr == '-') {
-	++ptr;
-	--len;
-	sgn = -1;
+        ++ptr;
+        --len;
+        sgn = -1;
     }
 
-    *buf++ = sgn;	/*  first element is sign 1 = positive	*/
+    *buf++ = sgn;       /*  first element is sign 1 = positive  */
     --blen;
 
     while (len && blen && *ptr >= '0' && *ptr <= '9') {
-	if (zero && *ptr == '0') {
-	    ;
-	} else {
-	    zero = 0;
-	    *buf++ = *ptr;
-	    --blen;
-	    ++x;
-	}
-	++ptr;
-	--len;
+        if (zero && *ptr == '0') {
+            ;
+        } else {
+            zero = 0;
+            *buf++ = *ptr;
+            --blen;
+            ++x;
+        }
+        ++ptr;
+        --len;
     }
     if (len && *ptr == '.') {
-	++ptr;
-	--len;
+        ++ptr;
+        --len;
 
-	while (len && blen && *ptr >= '0' && *ptr <= '9') {
-	    if (zero && *ptr == '0') {
-		--x;
-	    } else {
-		zero = 0;
-		*buf++ = *ptr;
-		--blen;
-	    }
-	    ++ptr;
-	    --len;
-	}
+        while (len && blen && *ptr >= '0' && *ptr <= '9') {
+            if (zero && *ptr == '0') {
+                --x;
+            } else {
+                zero = 0;
+                *buf++ = *ptr;
+                --blen;
+            }
+            ++ptr;
+            --len;
+        }
     }
     if (blen == 0)
-	yerror(exp->ex_LexIdx, EFATAL_FPSTR_TOO_LONG);
+        yerror(exp->ex_LexIdx, EFATAL_FPSTR_TOO_LONG);
     *buf = 0;
 
     if (len && (*ptr == 'e' || *ptr == 'E')) {
-	int32_t n = 0;
-	short nsgn = 1;
-	++ptr;
-	--len;
+        int32_t n = 0;
+        short nsgn = 1;
+        ++ptr;
+        --len;
 
-	if (len && *ptr == '-') {
-	    nsgn = -1;
-	    ++ptr;
-	    --len;
-	}
-	if (len && *ptr == '+') {
-	    ++ptr;
-	    --len;
-	}
-	while (len) {
-	    n = n * 10 + *ptr - '0';
-	    ++ptr;
-	    --len;
-	}
-	if (nsgn < 0)
-	    x -= n;
-	else
-	    x += n;
+        if (len && *ptr == '-') {
+            nsgn = -1;
+            ++ptr;
+            --len;
+        }
+        if (len && *ptr == '+') {
+            ++ptr;
+            --len;
+        }
+        while (len) {
+            n = n * 10 + *ptr - '0';
+            ++ptr;
+            --len;
+        }
+        if (nsgn < 0)
+            x -= n;
+        else
+            x += n;
     }
     return(x);
 }
@@ -585,39 +585,39 @@ TmpFlt *f;
     char *bp = Buf1;
 
     /*
-     *	bp[0] == -1 if negative, else positive. bp[1..\0] holds digits (ascii)
-     *	x is exponent
+     *  bp[0] == -1 if negative, else positive. bp[1..\0] holds digits (ascii)
+     *  x is exponent
      */
 
     f->tf_Exponent = FPrefix(exp, s->st_FltConst, s->st_FltLen, bp);
     f->tf_Negative = (bp[0] == -1) ? 1 : 0;
     {
-	int32_t z = 0;
-	f->tf_LMantissa[0] = z;
-	f->tf_LMantissa[1] = z;
-	f->tf_LMantissa[2] = z;
-	f->tf_LMantissa[3] = z;
+        int32_t z = 0;
+        f->tf_LMantissa[0] = z;
+        f->tf_LMantissa[1] = z;
+        f->tf_LMantissa[2] = z;
+        f->tf_LMantissa[3] = z;
     }
 
     ++bp;
     while (*bp) {
-	int32_t n = *bp - '0';
-	if (f->tf_LMantissa[0] > (uint32_t)0xFFFFFFFF / 10 - 10)
-	    break;
-	TmpFltMantMul(f->tf_WMantissa, 8, 10);
-	--f->tf_Exponent;
-	f->tf_LMantissa[3] += n;
-	if (f->tf_LMantissa[3] < n) {
-	    if (++f->tf_LMantissa[2] == 0) {
-		if (++f->tf_LMantissa[1] == 0)
-		    ++f->tf_LMantissa[0];
-	    }
-	}
-	++bp;
+        int32_t n = *bp - '0';
+        if (f->tf_LMantissa[0] > (uint32_t)0xFFFFFFFF / 10 - 10)
+            break;
+        TmpFltMantMul(f->tf_WMantissa, 8, 10);
+        --f->tf_Exponent;
+        f->tf_LMantissa[3] += n;
+        if (f->tf_LMantissa[3] < n) {
+            if (++f->tf_LMantissa[2] == 0) {
+                if (++f->tf_LMantissa[1] == 0)
+                    ++f->tf_LMantissa[0];
+            }
+        }
+        ++bp;
     }
 
     /*
-     *	normalize
+     *  normalize
      */
 
     NormalizeTmpFlt(f);
@@ -640,18 +640,18 @@ Stor *s;
 
     sprintf(bp, "E%d", f->tf_Exponent);
 
-    for (i = 0; i < 40; ++i) {	    /*	cvt to 40 digit value	*/
-	*--bp = TmpFltMantDiv(f->tf_WMantissa, 8, 10) + '0';
+    for (i = 0; i < 40; ++i) {      /*  cvt to 40 digit value   */
+        *--bp = TmpFltMantDiv(f->tf_WMantissa, 8, 10) + '0';
     }
     if (f->tf_Negative)
-	*--bp = '-';
+        *--bp = '-';
 
     dbprintf(("result = %s\n", bp));
     {
-	short len = strlen(bp);
-	s->st_FltConst = zalloc(len + 1);
-	s->st_FltLen   = len;
-	strcpy(s->st_FltConst, bp);
+        short len = strlen(bp);
+        s->st_FltConst = zalloc(len + 1);
+        s->st_FltLen   = len;
+        strcpy(s->st_FltConst, bp);
     }
 }
 
@@ -665,39 +665,39 @@ TmpFlt *f1;
 TmpFlt *f2;
 {
     if ((f1->tf_LMantissa[0] | f1->tf_LMantissa[1] | f1->tf_LMantissa[2] | f1->tf_LMantissa[3]) == 0) {
-	f1->tf_Exponent = f2->tf_Exponent;
-	return;
+        f1->tf_Exponent = f2->tf_Exponent;
+        return;
     }
     if ((f2->tf_LMantissa[0] | f2->tf_LMantissa[1] | f2->tf_LMantissa[2] | f2->tf_LMantissa[3]) == 0) {
-	f2->tf_Exponent = f1->tf_Exponent;
-	return;
+        f2->tf_Exponent = f1->tf_Exponent;
+        return;
     }
     if (f1->tf_Exponent < f2->tf_Exponent - 40) {
-	int32_t z = 0;
-	f1->tf_Exponent = f2->tf_Exponent;
-	f1->tf_LMantissa[0] = z;
-	f1->tf_LMantissa[1] = z;
-	f1->tf_LMantissa[2] = z;
-	f1->tf_LMantissa[3] = z;
-	return;
+        int32_t z = 0;
+        f1->tf_Exponent = f2->tf_Exponent;
+        f1->tf_LMantissa[0] = z;
+        f1->tf_LMantissa[1] = z;
+        f1->tf_LMantissa[2] = z;
+        f1->tf_LMantissa[3] = z;
+        return;
     }
     if (f2->tf_Exponent < f1->tf_Exponent - 40) {
-	int32_t z = 0;
-	f2->tf_Exponent = f1->tf_Exponent;
-	f2->tf_LMantissa[0] = z;
-	f2->tf_LMantissa[1] = z;
-	f2->tf_LMantissa[2] = z;
-	f2->tf_LMantissa[3] = z;
-	return;
+        int32_t z = 0;
+        f2->tf_Exponent = f1->tf_Exponent;
+        f2->tf_LMantissa[0] = z;
+        f2->tf_LMantissa[1] = z;
+        f2->tf_LMantissa[2] = z;
+        f2->tf_LMantissa[3] = z;
+        return;
     }
 
     while (f1->tf_Exponent < f2->tf_Exponent) {   /*  10E1, 10E2 -> 1E2, 10E2  */
-	TmpFltMantDiv(f1->tf_WMantissa, 8, 10);
-	++f1->tf_Exponent;
+        TmpFltMantDiv(f1->tf_WMantissa, 8, 10);
+        ++f1->tf_Exponent;
     }
     while (f1->tf_Exponent > f2->tf_Exponent) {
-	TmpFltMantDiv(f2->tf_WMantissa, 8, 10);
-	++f2->tf_Exponent;
+        TmpFltMantDiv(f2->tf_WMantissa, 8, 10);
+        ++f2->tf_Exponent;
     }
 }
 
@@ -706,13 +706,13 @@ NormalizeTmpFlt(f)
 TmpFlt *f;
 {
     if ((f->tf_LMantissa[0] | f->tf_LMantissa[1] | f->tf_LMantissa[2] | f->tf_LMantissa[3]) == 0) {
-	f->tf_Exponent = 0;
-	f->tf_Negative = 0;
-	return;
+        f->tf_Exponent = 0;
+        f->tf_Negative = 0;
+        return;
     }
     while (f->tf_LMantissa[0] < 0x7FFFFFFF / 10) {
-	TmpFltMantMul(f->tf_WMantissa, 8, 10);
-	--f->tf_Exponent;
+        TmpFltMantMul(f->tf_WMantissa, 8, 10);
+        --f->tf_Exponent;
     }
 }
 
@@ -724,10 +724,10 @@ TmpFltMantDiv(uword *wp, short n, uword v)
     uint32_t r = 0;
 
     for (i = 0; i < n; ++i) {
-	r <<= 16;
-	c = (wp[i] + r) / v;
-	r = (wp[i] + r) % v;
-	wp[i] = c;
+        r <<= 16;
+        c = (wp[i] + r) / v;
+        r = (wp[i] + r) % v;
+        wp[i] = c;
     }
     return(r);
 }
@@ -739,9 +739,9 @@ TmpFltMantMul(uword *wp, short n, uword v)
     uint32_t c = 0;
 
     for (i = n - 1; i >= 0; --i) {
-	c += wp[i] * v;
-	wp[i] = c;
-	c >>= 16;
+        c += wp[i] * v;
+        wp[i] = c;
+        c >>= 16;
     }
     return(c);
 }
@@ -778,7 +778,7 @@ int32_t s, e;
 
     mn->mn_Next = NULL;
     if (MunTail != &MunBase)
-	mn->mn_Prev = (MunNode *)MunTail;
+        mn->mn_Prev = (MunNode *)MunTail;
     mn->mn_OffBeg = s;
     mn->mn_OffEnd = e;
     *MunTail = mn;
@@ -793,19 +793,19 @@ int32_t i;
     MunNode *mn;
 
     for (mn = MunCache; mn && i < mn->mn_OffBeg; mn = mn->mn_Prev) {
-	;
+        ;
     }
 
     if (mn == NULL)
-	mn = MunBase;
+        mn = MunBase;
 
     while (mn && i >= mn->mn_OffEnd)
-	mn = mn->mn_Next;
+        mn = mn->mn_Next;
 
     MunCache = mn;
 
     if (mn && (i >= mn->mn_OffBeg && i < mn->mn_OffEnd))
-	return(1);
+        return(1);
     return(0);
 }
 
@@ -817,13 +817,13 @@ int
 cmpmem(ubyte *s1, ubyte *s2, int32_t n)
 {
     while (n) {
-	if (*s1 < *s2)
-	    return(-1);
-	if (*s1 > *s2)
-	    return(1);
-	--n;
-	++s1;
-	++s2;
+        if (*s1 < *s2)
+            return(-1);
+        if (*s1 > *s2)
+            return(1);
+        --n;
+        ++s1;
+        ++s2;
     }
     return(0);
 }
@@ -834,9 +834,9 @@ cmpmem(ubyte *s1, ubyte *s2, int32_t n)
 
 typedef struct INatNode {
     struct INatNode *in_Next;
-    int32_t	in_Id;
-    short	in_Len;
-    char	in_Str[4];
+    int32_t     in_Id;
+    short       in_Len;
+    char        in_Str[4];
 } INatNode;
 
 INatNode *InBase;
@@ -853,16 +853,16 @@ Internationalize(char *str, int32_t size)
     INatNode *in;
 
     if (str[size-1] == 0)
-	--size;
+        --size;
 
     if (str[0]) {
-	/* fprintf(stderr, "string %s\n", str); */
-	for (iidx = 0, in = InBase; in; in = in->in_Next, ++iidx) {
-	    /* fprintf(
-		stderr, "sizes: %d %d %s\n", size, in->in_Len, in->in_Str); */
-	    if (size == in->in_Len && strcmp(str, in->in_Str) == 0)
-		return(in->in_Id);
-	}
+        /* fprintf(stderr, "string %s\n", str); */
+        for (iidx = 0, in = InBase; in; in = in->in_Next, ++iidx) {
+            /* fprintf(
+                stderr, "sizes: %d %d %s\n", size, in->in_Len, in->in_Str); */
+            if (size == in->in_Len && strcmp(str, in->in_Str) == 0)
+                return(in->in_Id);
+        }
     }
     return(-1);
 }
@@ -888,41 +888,41 @@ LoadLocaleDefs(char *file)
     char *buf = malloc(4096);
 
     if (buf && (fi = fopen(file, "r"))) {
-    	INatNode **pin = &InBase;
-    	INatNode *in;
+        INatNode **pin = &InBase;
+        INatNode *in;
 
-	r = 1;
-	while (fgets(buf, 4096, fi)) {
-	    int32_t id = strtol(buf, &ptr, 10);
-	    short len;
+        r = 1;
+        while (fgets(buf, 4096, fi)) {
+            int32_t id = strtol(buf, &ptr, 10);
+            short len;
 
-	    if (*ptr != ':')	/* ignore improperly formatted lines */
-		continue;
-	    ++ptr;
-	    len = strlen(ptr);
-	    if (len && ptr[len-1] == '\n')
-		--len;
-	    ptr[len] = 0;
+            if (*ptr != ':')    /* ignore improperly formatted lines */
+                continue;
+            ++ptr;
+            len = strlen(ptr);
+            if (len && ptr[len-1] == '\n')
+                --len;
+            ptr[len] = 0;
 
-	    /* note: space for terminating \0 already handled by in_Str field
-	     * in structure
-	     */
+            /* note: space for terminating \0 already handled by in_Str field
+             * in structure
+             */
 
-	    in = zalloc(sizeof(INatNode) + len);
-	    in->in_Len = len;
-	    in->in_Id = id;
-	    strcpy(in->in_Str, ptr);
-	    /* fprintf(
-		stderr,
-		"ADD %d %d '%s'\n", in->in_Len,in->in_Id, in->in_Str); */
-	    *pin = in;
-	    pin = &in->in_Next;
-	}
+            in = zalloc(sizeof(INatNode) + len);
+            in->in_Len = len;
+            in->in_Id = id;
+            strcpy(in->in_Str, ptr);
+            /* fprintf(
+                stderr,
+                "ADD %d %d '%s'\n", in->in_Len,in->in_Id, in->in_Str); */
+            *pin = in;
+            pin = &in->in_Next;
+        }
     }
     if (fi)
-	fclose(fi);
+        fclose(fi);
     if (buf)
-	free(buf);
+        free(buf);
     return(r);
 }
 

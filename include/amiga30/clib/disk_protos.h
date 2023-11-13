@@ -1,13 +1,13 @@
 #ifndef  CLIB_DISK_PROTOS_H
 #define  CLIB_DISK_PROTOS_H
 /*
-**	$VER: disk_protos.h 36.1 (19.02.91)
-**	Includes Release 39.108
+**      $VER: disk_protos.h 36.1 (19.02.91)
+**      Includes Release 39.108
 **
-**	C prototypes. For use with 32 bit integers only.
+**      C prototypes. For use with 32 bit integers only.
 **
-**	(C) Copyright 1990-1992 Commodore-Amiga, Inc.
-**	    All Rights Reserved
+**      (C) Copyright 1990-1992 Commodore-Amiga, Inc.
+**          All Rights Reserved
 */
 #ifndef  RESOURCES_DISK_H
 #include <resources/disk.h>
@@ -19,4 +19,4 @@ void GiveUnit( void );
 LONG GetUnitID( long unitNum );
 /*------ new for V37 ------*/
 LONG ReadUnitID( long unitNum );
-#endif	 /* CLIB_DISK_PROTOS_H */
+#endif   /* CLIB_DISK_PROTOS_H */

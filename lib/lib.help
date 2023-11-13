@@ -1,17 +1,17 @@
 
-    Library	Available models
+    Library     Available models
 
-    startup	<none> (generates startup objects c.o, c_pi.o, c_pr.o, x.o)
-    c		s l sp sr pl rl srp rpl
-    m		s l sp sr pl rl srp rpl
-    rom 	s l    sr    rl
-    amiga13	s l sp	  pl
-    amiga20	s l sp sr pl rl srp rpl
+    startup     <none> (generates startup objects c.o, c_pi.o, c_pr.o, x.o)
+    c           s l sp sr pl rl srp rpl
+    m           s l sp sr pl rl srp rpl
+    rom         s l    sr    rl
+    amiga13     s l sp    pl
+    amiga20     s l sp sr pl rl srp rpl
 
-    s	- small data
-    l	- large data
-    p	- profiled
-    r	- registered args
+    s   - small data
+    l   - large data
+    p   - profiled
+    r   - registered args
 
     Note due to a lack of prototypes no registerized version of the 1.3
     amiga.lib may be constructed.  Also, since generated amiga.lib's will
@@ -32,10 +32,10 @@
 
     You may use this DMakefile to generate any library you wish.  In fact,
     using this DMakefile will ensure you not run illegal flag combinations
-    to LBMAKE.	To create a library, simply specify the library you wish to
+    to LBMAKE.  To create a library, simply specify the library you wish to
     create as in:
 
-    1> dmake cs.lib	   ; make small-data model version of the C library
+    1> dmake cs.lib        ; make small-data model version of the C library
 
     All that need exist is a DTMP: assignment, normally to your HD, which
     will hold the object code LBMAKE creates.  DCCOPTS must contain the

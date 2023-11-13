@@ -23,16 +23,16 @@ short ac;
 char *av[];
 {
     if (ac == 1) {
-	char buf[256];
-	while (GetString(buf, sizeof(buf)) >= 0)
-	    printf("GET: %s\n", buf);
+        char buf[256];
+        while (GetString(buf, sizeof(buf)) >= 0)
+            printf("GET: %s\n", buf);
     } else {
-	short i;
+        short i;
 
-	for (i = 1; i < ac; ++i) {
-	    PostString(av[i]);
-	    printf("POSTED: %s\n", av[i]);
-	}
+        for (i = 1; i < ac; ++i) {
+            PostString(av[i]);
+            printf("POSTED: %s\n", av[i]);
+        }
     }
     return(0);
 }

@@ -1,22 +1,22 @@
 
-		;   BeginIO(ior)
+                ;   BeginIO(ior)
 
-		section text,code
+                section text,code
 
-		xdef	_hyper_BeginIO
-		xdef	_BeginIO
-		xdef	@BeginIO
+                xdef    _hyper_BeginIO
+                xdef    _BeginIO
+                xdef    @BeginIO
 
 _hyper_BeginIO:
 _BeginIO:
-		move.l	4(sp),A0
+                move.l  4(sp),A0
 @BeginIO:
-		move.l	A6,-(sp)
-		move.l	A0,A1
-		move.l	$14(A0),A6   ; io_Device
-		jsr	-30(A6)
-		move.l	(sp)+,A6
-		rts
+                move.l  A6,-(sp)
+                move.l  A0,A1
+                move.l  $14(A0),A6   ; io_Device
+                jsr     -30(A6)
+                move.l  (sp)+,A6
+                rts
 
-		END
+                END
 

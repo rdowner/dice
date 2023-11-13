@@ -1,18 +1,18 @@
-	section text,code
+        section text,code
 
-	ds.l 0
-	procstart
-	ds.w	0
-	xdef	_main
+        ds.l 0
+        procstart
+        ds.w    0
+        xdef    _main
 _main:
-	movem.l	l4,-(sp)
-	link	A5,#-l1
-	move.w	#$01,#$0100
+        movem.l l4,-(sp)
+        link    A5,#-l1
+        move.w  #$01,#$0100
 l2
-	unlk	A5
-	rts
-l4	reg	
-l3	equ	8
-l1	equ	0
-	procend
-	END
+        unlk    A5
+        rts
+l4      reg     
+l3      equ     8
+l1      equ     0
+        procend
+        END

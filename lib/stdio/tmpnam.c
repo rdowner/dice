@@ -18,7 +18,7 @@ char *buf;
     static long i;
 
     if (buf == NULL)
-	buf = Buf;
+        buf = Buf;
     sprintf(buf, "T:%08lx-%ld", FindTask(NULL), i++);
     return(buf);
 }

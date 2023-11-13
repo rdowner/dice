@@ -1,10 +1,10 @@
 /*
-**	$Id: ErrorClear.DME,v 30.0 1994/06/10 18:06:11 dice Exp $
+**      $Id: ErrorClear.DME,v 30.0 1994/06/10 18:06:11 dice Exp $
 **
-**	DICE Error Parsing system.  Script for DME
+**      DICE Error Parsing system.  Script for DME
 **
 **  Notes: This assumes that your DCC:Config/DCC.Config file contains the
-**	   following line:
+**         following line:
 **  cmd= rx DCC:Rexx/DME_ErrorParse.rexx %e "%c" "%f" "%0"
 */
 

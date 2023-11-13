@@ -25,800 +25,800 @@ c.lib/amiga/x.a
 c.lib/amiga/rega4
 
 
-amiga/alloca						amiga/alloca
+amiga/alloca                                            amiga/alloca
 
    NAME
-	alloca - allocate memory from the stack
+        alloca - allocate memory from the stack
 
    SYNOPSIS
-	void *ptr = alloca(long bytes);
+        void *ptr = alloca(long bytes);
 
    FUNCTION
-	alloca() comes from the UNIX world.  It allocates memory off the
-	stack for use within a procedure.  The allocated memory is
-	automatically freed when the subroutine returns.
+        alloca() comes from the UNIX world.  It allocates memory off the
+        stack for use within a procedure.  The allocated memory is
+        automatically freed when the subroutine returns.
 
-	DO NOT USE ALLOCA() IF YOU CAN HELP IT.  alloca() is not easily
-	portable across machines.
+        DO NOT USE ALLOCA() IF YOU CAN HELP IT.  alloca() is not easily
+        portable across machines.
 
    NOTE
-	When a low stack condition arises, alloca() will abort by printing
-	an error message and calling abort();  alloca() does NOT currently
-	try to allocate dynamic memory when it runs out of stack.
+        When a low stack condition arises, alloca() will abort by printing
+        an error message and calling abort();  alloca() does NOT currently
+        try to allocate dynamic memory when it runs out of stack.
 
-	Some implementations of alloca() use alloca(0) to free allocated
-	stack.	This feature is NOT currently implemented in DICE's
-	alloca() call.
+        Some implementations of alloca() use alloca(0) to free allocated
+        stack.  This feature is NOT currently implemented in DICE's
+        alloca() call.
 
    EXAMPLE
-	#include <alloca.h>
-	#include <stdio.h>
+        #include <alloca.h>
+        #include <stdio.h>
 
-	main(ac, av)
-	char *av[];
-	{
-	    char *ptr;
-	    if (ac == 1) {
-		puts("test string");
-		exit(1);
-	    }
-	    ptr = alloca(strlen(av[1]) + 8);
-	    sprintf(ptr, "FOO.%s", av[1]);
-	    puts(ptr);
-	    return(0);
-	}
+        main(ac, av)
+        char *av[];
+        {
+            char *ptr;
+            if (ac == 1) {
+                puts("test string");
+                exit(1);
+            }
+            ptr = alloca(strlen(av[1]) + 8);
+            sprintf(ptr, "FOO.%s", av[1]);
+            puts(ptr);
+            return(0);
+        }
 
    SEE ALSO
-	setjmp(), longjmp()
+        setjmp(), longjmp()
 
 
 
-amiga/c.a						amiga/c.a
+amiga/c.a                                               amiga/c.a
 
    NAME
-	c.a  - DICE startup module for all C programs
+        c.a  - DICE startup module for all C programs
 
    SYNOPSIS
-	c.a is entered when the program segment is run
+        c.a is entered when the program segment is run
 
    FUNCTION
-	DCC specifies DLIB:C.O first when linking objects into an
-	executable.  C.O also exists in C.LIB but is not normally pulled
-	since it is already included in the link line.
+        DCC specifies DLIB:C.O first when linking objects into an
+        executable.  C.O also exists in C.LIB but is not normally pulled
+        since it is already included in the link line.
 
-	C.O does the following:
+        C.O does the following:
 
-	    (1) save non-scratch registers
+            (1) save non-scratch registers
 
-	    (2) If Resident:
-		    Allocate space for both data & bss and copy the
-		    initialized data into the allocated space.	Clear
-		    the BSS portion of the data space
-		Else
-		    The BSS has already been allocated by the load module
-		    but not cleared, Clear the BSS portion of the data space
+            (2) If Resident:
+                    Allocate space for both data & bss and copy the
+                    initialized data into the allocated space.  Clear
+                    the BSS portion of the data space
+                Else
+                    The BSS has already been allocated by the load module
+                    but not cleared, Clear the BSS portion of the data space
 
-	    (3) Clear the ^C signal
+            (3) Clear the ^C signal
 
-	    (4) Setup _SysBase
+            (4) Setup _SysBase
 
-	    (5) Call all AUTOINIT subroutines (this usually results in at
-		least the dos.library being openned).
+            (5) Call all AUTOINIT subroutines (this usually results in at
+                least the dos.library being openned).
 
-	    (6) call _main()    (usually in c.lib as well)
+            (6) call _main()    (usually in c.lib as well)
 
-	    (7) fall through to _exit(0)
+            (7) fall through to _exit(0)
 
-	Note that while c.a falls through to _exit(0) after calling _main(),
-	_main itself calls main() with: exit(main(args...));  Thus, main()
-	is always expected to return a valid value (i.e. not void).
+        Note that while c.a falls through to _exit(0) after calling _main(),
+        _main itself calls main() with: exit(main(args...));  Thus, main()
+        is always expected to return a valid value (i.e. not void).
 
-	C.O also handles the low level exit _exit() (__exit:) in the
-	following sequence:
+        C.O also handles the low level exit _exit() (__exit:) in the
+        following sequence:
 
-	    (1) Call autoinit exit subroutines (this normally closes the
-		DOS library and other automatically openned libraries such
-		as floating point libraries).
+            (1) Call autoinit exit subroutines (this normally closes the
+                DOS library and other automatically openned libraries such
+                as floating point libraries).
 
-	    (2) Free all memory allocated by the task, including the small
-		data segment & BSS space.  Note that all variables that we
-		use after this have already been placed in registers since
-		the dataspace is no longer valid.
+            (2) Free all memory allocated by the task, including the small
+                data segment & BSS space.  Note that all variables that we
+                use after this have already been placed in registers since
+                the dataspace is no longer valid.
 
-	    (3) If the _WBMsg is not NULL then:
-		(a) Forbid()
-		(b) ReplyMsg(_WBMsg)
+            (3) If the _WBMsg is not NULL then:
+                (a) Forbid()
+                (b) ReplyMsg(_WBMsg)
 
-	    (4) restore original registers and rts (exit out of the process)
+            (4) restore original registers and rts (exit out of the process)
 
 
    NOTE
-	Normally the programmer does not overide the startup object file
-	(c.o) since this is the entry point into the program.  However, in
-	many cases a programmer will want to overide _main().  I.E.:
+        Normally the programmer does not overide the startup object file
+        (c.o) since this is the entry point into the program.  However, in
+        many cases a programmer will want to overide _main().  I.E.:
 
-	_main(len, arg)
-	int len;
-	char *arg;
-	{
-	    ...
-	}
+        _main(len, arg)
+        int len;
+        char *arg;
+        {
+            ...
+        }
 
-	In which case he is given the length and arg pointer passed to the
-	program on startup.  When you overide _main() you cannot call any
-	stdio (fopen, fclose, puts, etc...), low level IO (open, close,
-	read, write, etc...), or memory allocation routines.
+        In which case he is given the length and arg pointer passed to the
+        program on startup.  When you overide _main() you cannot call any
+        stdio (fopen, fclose, puts, etc...), low level IO (open, close,
+        read, write, etc...), or memory allocation routines.
 
-	Normally _main will be overriden if the program makes only system
-	calls (such as Open, Close, Read, Write, FindTask, etc...).
-	Overriding the c.lib generally makes executables much smaller as no
-	extranious stdio/low level IO routines are brought in from c.lib .
+        Normally _main will be overriden if the program makes only system
+        calls (such as Open, Close, Read, Write, FindTask, etc...).
+        Overriding the c.lib generally makes executables much smaller as no
+        extranious stdio/low level IO routines are brought in from c.lib .
 
-	Normally you exit out of _main by calling _exit(code) (note the
-	underscore).
+        Normally you exit out of _main by calling _exit(code) (note the
+        underscore).
 
    SEE ALSO
 
 
-amiga/chkabort						amiga/chkabort
+amiga/chkabort                                          amiga/chkabort
 
    NAME
-	chkabort - check for ^C and take the appropriate action
+        chkabort - check for ^C and take the appropriate action
 
    SYNOPSIS
-	(void) chkabort(void);
+        (void) chkabort(void);
 
    FUNCTION
-	Checks for a ^C and takes the appropriate action.  If the appropriate
-	action is to exit than this routine does not return.  stdio and other
-	routines will call chkabort() at various points.
+        Checks for a ^C and takes the appropriate action.  If the appropriate
+        action is to exit than this routine does not return.  stdio and other
+        routines will call chkabort() at various points.
 
-	The action taken by ^C may be set by the signal() or onbreak() calls.
+        The action taken by ^C may be set by the signal() or onbreak() calls.
 
    EXAMPLE
-	/*
-	 *  wait for somebody to hit ^C (note that this is very wasteful of
-	 *  CPU and thus isn't a real good example).
-	 */
+        /*
+         *  wait for somebody to hit ^C (note that this is very wasteful of
+         *  CPU and thus isn't a real good example).
+         */
 
-	main()
-	{
-	    int i;
+        main()
+        {
+            int i;
 
-	    for (i = 0; i < 10000000; ++i)
-		chkabort();
-	    return(0);
-	}
+            for (i = 0; i < 10000000; ++i)
+                chkabort();
+            return(0);
+        }
 
    SEE ALSO
-	onbreak, atexit, signal
+        onbreak, atexit, signal
 
 
-amiga/_divs						amiga/_divs
+amiga/_divs                                             amiga/_divs
 
    NAME
-	_divs - signed long divide 32/32->32 assembly tag
-		not callable from C
+        _divs - signed long divide 32/32->32 assembly tag
+                not callable from C
 
    ENTRY
-	D0 = 32 bit signed integer
-	D1 = 32 bit signed integer
+        D0 = 32 bit signed integer
+        D1 = 32 bit signed integer
 
    RETURN
-	D0 = D0 / D1
+        D0 = D0 / D1
 
    FUNCTION
-	This is an assembly function that DICE uses whenever it needs to
-	do a long division.  This function is not callable from C.
+        This is an assembly function that DICE uses whenever it needs to
+        do a long division.  This function is not callable from C.
 
    SEE ALSO
-	_divu, _mods, _modu, _muls, _mulu
+        _divu, _mods, _modu, _muls, _mulu
 
 
-amiga/_divu						amiga/_divu
+amiga/_divu                                             amiga/_divu
 
    NAME
-	_divu - unsigned long divide 32/32->32 assembly tag
-		not callable from C
+        _divu - unsigned long divide 32/32->32 assembly tag
+                not callable from C
 
    ENTRY
-	D0 = 32 bit unsigned integer
-	D1 = 32 bit unsigned integer
+        D0 = 32 bit unsigned integer
+        D1 = 32 bit unsigned integer
 
    RETURN
-	D0 = D0 / D1
+        D0 = D0 / D1
 
    FUNCTION
-	This is an assembly function that DICE uses whenever it needs to do
-	an unsigned long division.  This function is not callable from C.
+        This is an assembly function that DICE uses whenever it needs to do
+        an unsigned long division.  This function is not callable from C.
 
    SEE ALSO
-	_divs, _mods, _modu, _muls, _mulu
+        _divs, _mods, _modu, _muls, _mulu
 
 
 
-amiga/exec_dcc						amiga/exec_dcc
+amiga/exec_dcc                                          amiga/exec_dcc
 
    NAME
-	exec_dcc - call DICE executable
+        exec_dcc - call DICE executable
 
    FUNCTION
-	DO NOT EVER USE THIS FUNCTION.	This is an internal DICE function
-	used by DCC and is subject to change without notice.  This function
-	can easily break under new versions of the OS and special care is
-	taken by DCC when using it.
+        DO NOT EVER USE THIS FUNCTION.  This is an internal DICE function
+        used by DCC and is subject to change without notice.  This function
+        can easily break under new versions of the OS and special care is
+        taken by DCC when using it.
 
-	The 2.0 version of the Amiga operating system has calls that will
-	properly accomplish this operation.
+        The 2.0 version of the Amiga operating system has calls that will
+        properly accomplish this operation.
 
    SEE ALSO
-	_ExecSeg
+        _ExecSeg
 
 
-amiga/_ExecSeg						amiga/_ExecSeg
+amiga/_ExecSeg                                          amiga/_ExecSeg
 
    NAME
-	_ExecSeg - call a segment
+        _ExecSeg - call a segment
 
    FUNCTION
-	DO NOT EVER USE THIS FUNCTION.	This is an internal DICE function
-	used by DCC and is subject to change without notice.  This function
-	can easily break under new versions of the OS and special care is
-	taken by DCC when using it.
+        DO NOT EVER USE THIS FUNCTION.  This is an internal DICE function
+        used by DCC and is subject to change without notice.  This function
+        can easily break under new versions of the OS and special care is
+        taken by DCC when using it.
 
-	The 2.0 version of the Amiga operating system has calls that will
-	properly accomplish this operation.
+        The 2.0 version of the Amiga operating system has calls that will
+        properly accomplish this operation.
 
    SEE ALSO
-	exec_dcc
+        exec_dcc
 
 
-amiga/exit						amiga/exit
+amiga/exit                                              amiga/exit
 
    NAME
-	exit - exit from a program 'nicely'
+        exit - exit from a program 'nicely'
 
    SYNOPSIS
-	(void) exit(code)
+        (void) exit(code)
 
    FUNCTION
-	exits the program and returns the specified exit code.	Normally you
-	pass 0 to indicate no errors, a positive number to indicate a program
-	error to the parent.
+        exits the program and returns the specified exit code.  Normally you
+        pass 0 to indicate no errors, a positive number to indicate a program
+        error to the parent.
 
-	exit() closes all stdio file pointers, low level file descriptors,
-	perhaps other things, then finally calls _exit with the code.
+        exit() closes all stdio file pointers, low level file descriptors,
+        perhaps other things, then finally calls _exit with the code.
 
-	If you use main() you should call exit() to exit the program or
-	return an error code from main.  If you use the _main() entry
-	point (only for programmers dead set on optimizing executable
-	size and using only system library calls) you should use the _exit()
-	exit point.
+        If you use main() you should call exit() to exit the program or
+        return an error code from main.  If you use the _main() entry
+        point (only for programmers dead set on optimizing executable
+        size and using only system library calls) you should use the _exit()
+        exit point.
 
    EXAMPLE
-	main(ac, av)
-	char *av[];
-	{
-	    if (ac <= 1) {
-		puts("I expected an argument you idiot!");
-		exit(1);
-	    }
-	    puts("thanks for the argument!");
-	    exit(0);
-	}
+        main(ac, av)
+        char *av[];
+        {
+            if (ac <= 1) {
+                puts("I expected an argument you idiot!");
+                exit(1);
+            }
+            puts("thanks for the argument!");
+            exit(0);
+        }
 
    SEE ALSO
-	main, _main, _exit
+        main, _main, _exit
 
 
-amiga/_exit						 amiga/_exit
+amiga/_exit                                              amiga/_exit
 
    NAME
-	_exit - exit from a program without bother to release resources
+        _exit - exit from a program without bother to release resources
 
    SYNOPSIS
-	(void) _exit(code)
-	int code;
+        (void) _exit(code)
+        int code;
 
    FUNCTION
-	exits the program and returns the specified exit code.	Normally you
-	pass 0 to indicate no errors, a positive number to indicate a program
-	error to the parent.  Note that since auto-init openned libraries
-	are closed in the startup module (c.o), automatically openned
-	libraries WILL be automatically closed for you.  However, any
-	libraries you manually declare the library base variable for and
-	manually open must be closed by you.
+        exits the program and returns the specified exit code.  Normally you
+        pass 0 to indicate no errors, a positive number to indicate a program
+        error to the parent.  Note that since auto-init openned libraries
+        are closed in the startup module (c.o), automatically openned
+        libraries WILL be automatically closed for you.  However, any
+        libraries you manually declare the library base variable for and
+        manually open must be closed by you.
 
-	You should only call _exit() if you used the _main() entry point
-	(instead of the usual main()), and then only after releasing all
-	resources (such as file handles openned with Open()).
+        You should only call _exit() if you used the _main() entry point
+        (instead of the usual main()), and then only after releasing all
+        resources (such as file handles openned with Open()).
 
    EXAMPLE
-	/*
-	 *  This program comes to approximately a 552 byte executable
-	 */
+        /*
+         *  This program comes to approximately a 552 byte executable
+         */
 
-	_main()
-	{
-	    Write(Output(), "OW!\n", 4);
-	    _exit(1);
-	}
+        _main()
+        {
+            Write(Output(), "OW!\n", 4);
+            _exit(1);
+        }
 
    SEE ALSO
-	main, _main, exit
+        main, _main, exit
 
 
-amiga/main						 amiga/main
+amiga/main                                               amiga/main
 
    NAME
-	main - main program entry
+        main - main program entry
 
    SYNOPSIS
-	int
-	main(int argc, char **argv)
-	{
-	    /* your main routine goes here */
-	}
+        int
+        main(int argc, char **argv)
+        {
+            /* your main routine goes here */
+        }
 
    FUNCTION
-	The main() routine is the entry point called after normal
-	initialization of c.lib and the program enviroment is done
-	by the startup module (c.o) and _main() routine (in c.lib).
+        The main() routine is the entry point called after normal
+        initialization of c.lib and the program enviroment is done
+        by the startup module (c.o) and _main() routine (in c.lib).
 
-	under ANSI C main() is expected to return an integer exit code.
-	You can no longer simply fall through without returning any
-	value.	returning an exit code from your main routine is exactly
-	the same as exit()ing with it.
+        under ANSI C main() is expected to return an integer exit code.
+        You can no longer simply fall through without returning any
+        value.  returning an exit code from your main routine is exactly
+        the same as exit()ing with it.
 
    NOTE
-	Any program run from the WORKBENCH uses a different access point.
-	Specifically, a program run from the workbench will run wbmain()
-	instead of main().  Please refer to the manual page for wbmain()
-	for workbench operation.
+        Any program run from the WORKBENCH uses a different access point.
+        Specifically, a program run from the workbench will run wbmain()
+        instead of main().  Please refer to the manual page for wbmain()
+        for workbench operation.
 
-	If you do not supply a wbmain() a dummy wbmain() will be supplied
-	by the library which simply exits out of the program.
-
-   EXAMPLE
-	#include <stdio.h>
-
-	int
-	main(ac, av)
-	int ac;
-	char **av;
-	{
-	    int i;
-	    for (i = 0; i < ac; ++i) {
-		printf("Arg #%d = %s\n", i, av[i]);
-	    }
-	    return(0);
-	}
-
-	1> sampleprogram this is a test
-	Arg #0 = sampleprogram
-	Arg #1 = this
-	Arg #2 = is
-	Arg #3 = a
-	Arg #4 = test
-	1>
-
-   SEE ALSO
-	wbmain, _main, exit, _exit
-
-
-amiga/onbreak						 amiga/onbreak
-
-   NAME
-	onbreak - set special ^C handler    (not ANSI)
-
-   SYNOPSIS
-	typedef int (*fptr)();
-
-	fptr oldfunc = onbreak(newfunc);
-	fptr newfunc;
-
-   FUNCTION
-	onbreak() sets a special function to handle ^C.  It takes a pointer to
-	this function and returns a pointer to the previous onbreak function,
-	if any.  When ^C is hit, the special onbreak function is called before
-	any other action.
-
-	If the onbreak function returns a non-zero value, ^C aborts the program
-	like it usually does.  If the function returns 0, however, the ^C
-	is completely ignored.
+        If you do not supply a wbmain() a dummy wbmain() will be supplied
+        by the library which simply exits out of the program.
 
    EXAMPLE
-	/*
-	 *  note: The reentrancy check is needed because of both the puts
-	 *	  and the sleep() all.
-	 */
+        #include <stdio.h>
 
-	#include <stdio.h>
-	#include <stdlib.h>
+        int
+        main(ac, av)
+        int ac;
+        char **av;
+        {
+            int i;
+            for (i = 0; i < ac; ++i) {
+                printf("Arg #%d = %s\n", i, av[i]);
+            }
+            return(0);
+        }
 
-	int
-	brk()
-	{
-	    static short cnt = 0;   /*	check for reentrancy */
-
-	    if (cnt)                /*  if not 0 then reentered!    */
-		return(0);
-	    ++cnt;
-
-	    puts("Nah Nah, you can't break me!");
-	    sleep(1);
-	    --cnt;
-	    return(0);
-	}
-
-	int
-	main()
-	{
-	    short i;
-
-	    onbreak(brk);
-	    puts("Hit ^C while I loop from 1 to 100, as many times as you want");
-	    sleep(2);
-	    for (i = 1; i <= 100; ++i)
-		printf("Loop, counting, count = %d\n", i);
-	    return(0);
-	}
+        1> sampleprogram this is a test
+        Arg #0 = sampleprogram
+        Arg #1 = this
+        Arg #2 = is
+        Arg #3 = a
+        Arg #4 = test
+        1>
 
    SEE ALSO
-	atexit
+        wbmain, _main, exit, _exit
 
 
-amiga/_main						 amiga/_main
+amiga/onbreak                                            amiga/onbreak
 
    NAME
-	_main - main program entry, bypass standard c.lib initialization
+        onbreak - set special ^C handler    (not ANSI)
 
    SYNOPSIS
-	void _main(int arglen, char *argptr)
-	{
-	    /* your main routine goes here */
-	}
+        typedef int (*fptr)();
+
+        fptr oldfunc = onbreak(newfunc);
+        fptr newfunc;
 
    FUNCTION
-	The _main() entry point is called by the startup module (c.o).
-	Normally _main() is part of c.lib and does stdio and other
-	initialization before calling the user main() routine.  _main()
-	is responsible for openning the stderr channel as well.
+        onbreak() sets a special function to handle ^C.  It takes a pointer to
+        this function and returns a pointer to the previous onbreak function,
+        if any.  When ^C is hit, the special onbreak function is called before
+        any other action.
 
-	However, if you specify your own _main() you will overide the
-	c.lib version.	Normally you either fall through or _exit() from
-	_main.
+        If the onbreak function returns a non-zero value, ^C aborts the program
+        like it usually does.  If the function returns 0, however, the ^C
+        is completely ignored.
 
-	A programmable can use the _main entry point when the executable
-	uses nothing but system library routines.  That is, you make no
-	calls to stdio functions such as puts(), printf(), etc..., to low
-	level IO routines such as open(), close(), read(), etc..., or
-	malloc() or any routine that uses malloc().
+   EXAMPLE
+        /*
+         *  note: The reentrancy check is needed because of both the puts
+         *        and the sleep() all.
+         */
 
-	Self contained routines such as strcpy() may still be called, and, of
-	course, you may open any libraries you wish and make library calls.
+        #include <stdio.h>
+        #include <stdlib.h>
 
-	Since the auto-library openning and closing is done by the startup
-	module (c.o), "dos.library" will still be openned for you
-	automatically if you make any DOS calls.
+        int
+        brk()
+        {
+            static short cnt = 0;   /*  check for reentrancy */
 
-	Using the _main entry point usually results in a substantially
-	smaller executable because stdio and other library routines
-	referenced by the c.lib _main() and exit() are never referenced
-	and thus never become part of the executable.  It is NOT SUGGESTED
-	that beginning C programmers use the _main() entry point.
+            if (cnt)                /*  if not 0 then reentered!    */
+                return(0);
+            ++cnt;
+
+            puts("Nah Nah, you can't break me!");
+            sleep(1);
+            --cnt;
+            return(0);
+        }
+
+        int
+        main()
+        {
+            short i;
+
+            onbreak(brk);
+            puts("Hit ^C while I loop from 1 to 100, as many times as you want");
+            sleep(2);
+            for (i = 1; i <= 100; ++i)
+                printf("Loop, counting, count = %d\n", i);
+            return(0);
+        }
+
+   SEE ALSO
+        atexit
+
+
+amiga/_main                                              amiga/_main
+
+   NAME
+        _main - main program entry, bypass standard c.lib initialization
+
+   SYNOPSIS
+        void _main(int arglen, char *argptr)
+        {
+            /* your main routine goes here */
+        }
+
+   FUNCTION
+        The _main() entry point is called by the startup module (c.o).
+        Normally _main() is part of c.lib and does stdio and other
+        initialization before calling the user main() routine.  _main()
+        is responsible for openning the stderr channel as well.
+
+        However, if you specify your own _main() you will overide the
+        c.lib version.  Normally you either fall through or _exit() from
+        _main.
+
+        A programmable can use the _main entry point when the executable
+        uses nothing but system library routines.  That is, you make no
+        calls to stdio functions such as puts(), printf(), etc..., to low
+        level IO routines such as open(), close(), read(), etc..., or
+        malloc() or any routine that uses malloc().
+
+        Self contained routines such as strcpy() may still be called, and, of
+        course, you may open any libraries you wish and make library calls.
+
+        Since the auto-library openning and closing is done by the startup
+        module (c.o), "dos.library" will still be openned for you
+        automatically if you make any DOS calls.
+
+        Using the _main entry point usually results in a substantially
+        smaller executable because stdio and other library routines
+        referenced by the c.lib _main() and exit() are never referenced
+        and thus never become part of the executable.  It is NOT SUGGESTED
+        that beginning C programmers use the _main() entry point.
 
    NOTE
-	_main is called by the startup module whether the program was run
-	from the CLI or the WORKBENCH.	You must detect which yourself and
-	also deal with the workbench message yourself.
+        _main is called by the startup module whether the program was run
+        from the CLI or the WORKBENCH.  You must detect which yourself and
+        also deal with the workbench message yourself.
 
    EXAMPLE
-	/*
-	 *  This program comes to approximately a 552 byte executable
-	 */
+        /*
+         *  This program comes to approximately a 552 byte executable
+         */
 
-	_main()
-	{
-	    Write(Output(), "UG!\n", 4);
-	    _exit(1);
-	}
+        _main()
+        {
+            Write(Output(), "UG!\n", 4);
+            _exit(1);
+        }
 
    SEE ALSO
-	_exit, main, exit
+        _exit, main, exit
 
 
-amiga/_mods						amiga/_mods
+amiga/_mods                                             amiga/_mods
 
    NAME
-	_mods - signed long modulus 32%32->32 assembly tag
-		not callable from C
+        _mods - signed long modulus 32%32->32 assembly tag
+                not callable from C
 
    ENTRY
-	D0 = 32 bit signed integer
-	D1 = 32 bit signed integer
+        D0 = 32 bit signed integer
+        D1 = 32 bit signed integer
 
    RETURN
-	D0 = D0 % D1
+        D0 = D0 % D1
 
    FUNCTION
-	This is an assembly function that DICE uses whenever it needs to
-	do a long modulus.  This function is not callable from C.
+        This is an assembly function that DICE uses whenever it needs to
+        do a long modulus.  This function is not callable from C.
 
    SEE ALSO
-	_divs, _divu, _modu, _muls, _mulu
+        _divs, _divu, _modu, _muls, _mulu
 
 
-amiga/_modu						amiga/_modu
+amiga/_modu                                             amiga/_modu
 
    NAME
-	_modu - unsigned long modulus 32%32->32 assembly tag
-		not callable from C
+        _modu - unsigned long modulus 32%32->32 assembly tag
+                not callable from C
 
    ENTRY
-	D0 = 32 bit unsigned integer
-	D1 = 32 bit unsigned integer
+        D0 = 32 bit unsigned integer
+        D1 = 32 bit unsigned integer
 
    RETURN
-	D0 = D0 % D1
+        D0 = D0 % D1
 
    FUNCTION
-	This is an assembly function that DICE uses whenever it needs to do
-	an unsigned long modulus.  This function is not callable from C.
+        This is an assembly function that DICE uses whenever it needs to do
+        an unsigned long modulus.  This function is not callable from C.
 
    SEE ALSO
-	_divs, _divu, _mods, _muls, _mulu
+        _divs, _divu, _mods, _muls, _mulu
 
 
-amiga/_muls						amiga/_muls
+amiga/_muls                                             amiga/_muls
 
    NAME
-	_muls - signed long multiply 32*32->32 assembly tag
-		not callable from C
+        _muls - signed long multiply 32*32->32 assembly tag
+                not callable from C
 
    ENTRY
-	D0 = 32 bit signed integer
-	D1 = 32 bit signed integer
+        D0 = 32 bit signed integer
+        D1 = 32 bit signed integer
 
    RETURN
-	D0 = D0 * D1
+        D0 = D0 * D1
 
    FUNCTION
-	This is an assembly function that DICE uses whenever it needs to
-	do a long multiply.  This function is not callable from C.
+        This is an assembly function that DICE uses whenever it needs to
+        do a long multiply.  This function is not callable from C.
 
    SEE ALSO
-	_divs, _divu, _mods, _modu, _mulu
+        _divs, _divu, _mods, _modu, _mulu
 
 
-amiga/_mulu						amiga/_mulu
+amiga/_mulu                                             amiga/_mulu
 
    NAME
-	_mulu - unsigned long multiply 32/32->32 assembly tag
-		not callable from C
+        _mulu - unsigned long multiply 32/32->32 assembly tag
+                not callable from C
 
    ENTRY
-	D0 = 32 bit unsigned integer
-	D1 = 32 bit unsigned integer
+        D0 = 32 bit unsigned integer
+        D1 = 32 bit unsigned integer
 
    RETURN
-	D0 = D0 * D1
+        D0 = D0 * D1
 
    FUNCTION
-	This is an assembly function that DICE uses whenever it needs to do
-	an unsigned long multiply.  This function is not callable from C.
+        This is an assembly function that DICE uses whenever it needs to do
+        an unsigned long multiply.  This function is not callable from C.
 
    SEE ALSO
-	_divs, _divu, _mods, _modu, _muls
+        _divs, _divu, _mods, _modu, _muls
 
 
-amiga/_SearchPath					amiga/_SearchPath
+amiga/_SearchPath                                       amiga/_SearchPath
 
    NAME
-	_SearchPath - search the current Path for an executable file
+        _SearchPath - search the current Path for an executable file
 
    FUNCTION
-	DO NOT EVER USE THIS FUNCTION.	This is an internal DICE function
-	used by DCC and is subject to change without notice.  This function
-	can easily break under new versions of the OS and special care is
-	taken by DCC when using it.
+        DO NOT EVER USE THIS FUNCTION.  This is an internal DICE function
+        used by DCC and is subject to change without notice.  This function
+        can easily break under new versions of the OS and special care is
+        taken by DCC when using it.
 
-	The 2.0 version of the Amiga operating system has calls that will
-	properly accomplish this operation.
+        The 2.0 version of the Amiga operating system has calls that will
+        properly accomplish this operation.
 
    SEE ALSO
-	_SearchResident
+        _SearchResident
 
 
-amiga/_SearchResident					amiga/_SearchResident
+amiga/_SearchResident                                   amiga/_SearchResident
 
    NAME
-	_SearchResident - search the Resident list for an executable
+        _SearchResident - search the Resident list for an executable
 
    FUNCTION
-	DO NOT EVER EVER EVER USE THIS FUNCTION.  This is an internal DICE
-	function used by DCC and is subject to change without notice.  This
-	function can easily break under new versions of the OS and special
-	care is taken by DCC when using it.
+        DO NOT EVER EVER EVER USE THIS FUNCTION.  This is an internal DICE
+        function used by DCC and is subject to change without notice.  This
+        function can easily break under new versions of the OS and special
+        care is taken by DCC when using it.
 
-	The 2.0 version of the Amiga operating system has calls that will
-	properly accomplish this operation.
+        The 2.0 version of the Amiga operating system has calls that will
+        properly accomplish this operation.
 
    SEE ALSO
-	_SearchPath
+        _SearchPath
 
 
-amiga/stack_abort					  amiga/stack_abort
+amiga/stack_abort                                         amiga/stack_abort
 
    NAME
-	stack_abort - exit point when dynamic stack allocation fails
+        stack_abort - exit point when dynamic stack allocation fails
 
    SYNOPSIS
 
-	void
-	stack_abort(void)
-	{
-	    /* .. your exit code .. */
-	    abort();
-	}
+        void
+        stack_abort(void)
+        {
+            /* .. your exit code .. */
+            abort();
+        }
 
    FUNCTION
-	When dynamic stack allocation is enabled via the -gs option and
-	such an allocation fails, stack_abort() is called.  If you do
-	not specify a stack_abort() routine, the c.lib stack_abort()
-	will be used and simply call abort().
+        When dynamic stack allocation is enabled via the -gs option and
+        such an allocation fails, stack_abort() is called.  If you do
+        not specify a stack_abort() routine, the c.lib stack_abort()
+        will be used and simply call abort().
 
-	If you do specify a stack_abort() routine, you have two choices.
-	(1) You can exit out of the program, or (2) you can simply return
-	from the subroutine which RETRIES the allocation, and calls
-	stack_abort() again if it fails.
+        If you do specify a stack_abort() routine, you have two choices.
+        (1) You can exit out of the program, or (2) you can simply return
+        from the subroutine which RETRIES the allocation, and calls
+        stack_abort() again if it fails.
 
-	The program has about 2KB of stack left at the time this function
-	is called.
+        The program has about 2KB of stack left at the time this function
+        is called.
 
-	Since a low memory condition exists when this function is called
-	you should NOT do anything that might require additional
-	allocations!
+        Since a low memory condition exists when this function is called
+        you should NOT do anything that might require additional
+        allocations!
 
    EXAMPLE
-	none - anybody got a good example?
+        none - anybody got a good example?
 
    SEE ALSO
-	abort, exit
+        abort, exit
 
 
 
-amiga/x.a						 amiga/x.a
+amiga/x.a                                                amiga/x.a
 
    NAME
-	x.a - autoinit terminating tags
+        x.a - autoinit terminating tags
 
    SYNOPSIS
 
    FUNCTION
-	The x.o module is the last object module in the link line DCC
-	specifies to DLINK when linking an executable.	This module
-	terminates the autoinit and autoexit sections with an RTS allowing
-	the base of the section(s) to be called by the startup and exit
-	code.
+        The x.o module is the last object module in the link line DCC
+        specifies to DLINK when linking an executable.  This module
+        terminates the autoinit and autoexit sections with an RTS allowing
+        the base of the section(s) to be called by the startup and exit
+        code.
 
-	autoinit/exit sections work as follows: Any object module may
-	define a specially named section which will be linked, in sequence,
-	with other module's sections of the same name.  These sections
-	contain only code and NO RTS.  The terminating module X.O adds a
-	single RTS to each section allowing the base of the section to be
-	called by the startup/exit module (C.O), propogating through all
-	autoinit/exit routines before hitting the RTS placed in the section
-	by X.O
+        autoinit/exit sections work as follows: Any object module may
+        define a specially named section which will be linked, in sequence,
+        with other module's sections of the same name.  These sections
+        contain only code and NO RTS.  The terminating module X.O adds a
+        single RTS to each section allowing the base of the section to be
+        called by the startup/exit module (C.O), propogating through all
+        autoinit/exit routines before hitting the RTS placed in the section
+        by X.O
 
-	DICE uses autoinit/exit sections to handle the following things:
+        DICE uses autoinit/exit sections to handle the following things:
 
-	(1)     Code to initialize initialized data containing references to
-		other initialized data (i.e.  int a, *b = &a;)  when the code
-		must be made residentable.  This precludes the need for the
-		startup code to handle Data-Data Reloc32's for resident code.
+        (1)     Code to initialize initialized data containing references to
+                other initialized data (i.e.  int a, *b = &a;)  when the code
+                must be made residentable.  This precludes the need for the
+                startup code to handle Data-Data Reloc32's for resident code.
 
-	(2)     Code to open libraries whos base variables are referenced but
-		never declared.  _DOSBase and the various floating point
-		libraries are automatically openned in this way whenever
-		library calls to them are made.
+        (2)     Code to open libraries whos base variables are referenced but
+                never declared.  _DOSBase and the various floating point
+                libraries are automatically openned in this way whenever
+                library calls to them are made.
 
-		This precludes the need for DICE to have complex, room-
-		consuming, and many times unncessary code in c.lib to
-		handle these situations.
+                This precludes the need for DICE to have complex, room-
+                consuming, and many times unncessary code in c.lib to
+                handle these situations.
 
-	(3)     Code to close libraries that were openned by (2) on exit.
+        (3)     Code to close libraries that were openned by (2) on exit.
 
-	(4)     Entry points for the special __autoinit keyword (registered
-		versions of DICE only).
+        (4)     Entry points for the special __autoinit keyword (registered
+                versions of DICE only).
 
 
    SEE ALSO
-	c.a
+        c.a
 
 
-amiga/wbmain						 amiga/wbmain
+amiga/wbmain                                             amiga/wbmain
 
    NAME
-	wbmain - main program entry when run from workbench
+        wbmain - main program entry when run from workbench
 
    SYNOPSIS
 
-	int
-	wbmain(struct WBStartup *wbs)
-	{
-	    /*	your main code goes here */
-	    return(exitcode);
-	}
+        int
+        wbmain(struct WBStartup *wbs)
+        {
+            /*  your main code goes here */
+            return(exitcode);
+        }
 
    FUNCTION
-	The wbmain() routine is the entry point called after normal
-	initialization of c.lib and the program enviroment is done
-	by the startup module (c.o) and _main() routine (in c.lib).
+        The wbmain() routine is the entry point called after normal
+        initialization of c.lib and the program enviroment is done
+        by the startup module (c.o) and _main() routine (in c.lib).
 
-	wbmain() is called when the program is run from the workbench,
-	main() is called when the program is run from the CLI.  Currently
-	the exit code is ignored.
+        wbmain() is called when the program is run from the workbench,
+        main() is called when the program is run from the CLI.  Currently
+        the exit code is ignored.
 
-	The standard workbench startup message is passed to wbmain(), you
-	can process or ignore this message as you like but should NOT
-	ReplyMsg() it.  I repeat, do NOT ReplyMsg() it.  When you return
-	from wbmain() or exit() out of the program the exit code will
-	automatically deal with the message.
+        The standard workbench startup message is passed to wbmain(), you
+        can process or ignore this message as you like but should NOT
+        ReplyMsg() it.  I repeat, do NOT ReplyMsg() it.  When you return
+        from wbmain() or exit() out of the program the exit code will
+        automatically deal with the message.
 
    EXAMPLE
-	/*
-	 *  If run from the workbench this program will create a file
-	 *  T:XX instead of printing something on the console (since there
-	 *  is no console in that case).
-	 */
+        /*
+         *  If run from the workbench this program will create a file
+         *  T:XX instead of printing something on the console (since there
+         *  is no console in that case).
+         */
 
-	#include <stdio.h>
+        #include <stdio.h>
 
-	int
-	main(ac, av)
-	int ac;
-	char **av;
-	{
-	    puts("This was run from a CLI");
-	    return(0);
-	}
+        int
+        main(ac, av)
+        int ac;
+        char **av;
+        {
+            puts("This was run from a CLI");
+            return(0);
+        }
 
-	int
-	wbmain(msg)
-	void *msg;	/*  to make the example less complex */
-	{
-	    FILE *fi = fopen("T:xx", "w");
-	    fprintf(fi, "This was run from the WORKBENCH\n");
-	    fclose(fi);
-	}
+        int
+        wbmain(msg)
+        void *msg;      /*  to make the example less complex */
+        {
+            FILE *fi = fopen("T:xx", "w");
+            fprintf(fi, "This was run from the WORKBENCH\n");
+            fclose(fi);
+        }
 
    SEE ALSO
-	main
+        main
 
 
 
-amiga/rega4						 amiga/rega4
+amiga/rega4                                              amiga/rega4
 
    NAME
-	rega4 - return current contents of register A4
+        rega4 - return current contents of register A4
 
    SYNOPSIS
 
-	char *basePtr = rega4();
+        char *basePtr = rega4();
 
    FUNCTION
-	rega4() is NOT geta4() .. rega4() simply returns the current
-	contents of the A4 register when you need it.  Note that DICE
-	offsets the A4 register 32766 from the actuall small-data base
-	so as to be able to use the entire -32768 to 32767 range to
-	access 64KBytes of small-data
+        rega4() is NOT geta4() .. rega4() simply returns the current
+        contents of the A4 register when you need it.  Note that DICE
+        offsets the A4 register 32766 from the actuall small-data base
+        so as to be able to use the entire -32768 to 32767 range to
+        access 64KBytes of small-data
 
-	see also the __geta4 keyword in EXTENSIONS.DOC .. note that a
-	rega4() call inside a subroutine qualified with __geta4 is
-	guarenteed to return the data base pointer.  Also, a rega4() call
-	from any subroutine not called from an interrupt or a callback will
-	return the proper data base pointer.
+        see also the __geta4 keyword in EXTENSIONS.DOC .. note that a
+        rega4() call inside a subroutine qualified with __geta4 is
+        guarenteed to return the data base pointer.  Also, a rega4() call
+        from any subroutine not called from an interrupt or a callback will
+        return the proper data base pointer.
 
 
    EXAMPLE

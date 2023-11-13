@@ -1,150 +1,150 @@
 
-	    ;	TAG.ASM
-	    ;
-	    ;	Library tag.  This replaces the normal startup code, c.o,
-	    ;	but still must perform certain startup functions such as
-	    ;	the clearing of BSS and small-data model setup & auto
-	    ;	calls.	HOWEVER, we do not include any resident startup
-	    ;	code meaning you CANNOT compile the shared library -r
-	    ;	(which doesn't make sense to do anyway).
-	    ;
-	    ;	Further, no C startup or exit functions are included
-	    ;	since this is a library, not a normal program.	Refer
-	    ;	to the source code LIB/AMIGA/C.A for a fully operational
-	    ;	startup module.
+            ;   TAG.ASM
+            ;
+            ;   Library tag.  This replaces the normal startup code, c.o,
+            ;   but still must perform certain startup functions such as
+            ;   the clearing of BSS and small-data model setup & auto
+            ;   calls.  HOWEVER, we do not include any resident startup
+            ;   code meaning you CANNOT compile the shared library -r
+            ;   (which doesn't make sense to do anyway).
+            ;
+            ;   Further, no C startup or exit functions are included
+            ;   since this is a library, not a normal program.  Refer
+            ;   to the source code LIB/AMIGA/C.A for a fully operational
+            ;   startup module.
 
 ;Prototype ALibExpunge(), ALibClose(), ALibOpen(), ALibReserved();
 
-	    section text,code
+            section text,code
 
-	    xref    @LibInit
-	    xref    @LibOpen
-	    xref    @LibClose
-	    xref    @LibExpunge
+            xref    @LibInit
+            xref    @LibOpen
+            xref    @LibClose
+            xref    @LibExpunge
 
-	    xref    __BSS_LEN		; (dlink), length of BSS
-	    xref    __DATA_BAS		; (dlink), base of initialized data
-	    xref    __DATA_LEN		; (dlink), length of data
+            xref    __BSS_LEN           ; (dlink), length of BSS
+            xref    __DATA_BAS          ; (dlink), base of initialized data
+            xref    __DATA_LEN          ; (dlink), length of data
 
 
-	    xdef    _LibId
-	    xdef    _LibName
+            xdef    _LibId
+            xdef    _LibName
 
-	    xdef    _ALibOpen
-	    xdef    _ALibClose
-	    xdef    _ALibExpunge
-	    xdef    _ALibReserved
+            xdef    _ALibOpen
+            xdef    _ALibClose
+            xdef    _ALibExpunge
+            xdef    _ALibReserved
 
-	    clr.l   D0
-	    rts
+            clr.l   D0
+            rts
 
-InitDesc:   dc.w    $4AFC	;RTC_MATCHWORD
-	    dc.l    InitDesc	;Pointer to beginning
-	    dc.l    EndCode	;Note sure it matters
-	    dc.b    0		;flags (NO RTF_AUTOINIT)
-	    dc.b    1		;version
-	    dc.b    9		;NT_LIBRARY
-	    dc.b    0		;priority (doesn't matter)
-	    dc.l    _LibName	;Name of library
-	    dc.l    _LibId	;ID string (note CR-LF at end)
-	    dc.l    Init	;Pointer to init routine
+InitDesc:   dc.w    $4AFC       ;RTC_MATCHWORD
+            dc.l    InitDesc    ;Pointer to beginning
+            dc.l    EndCode     ;Note sure it matters
+            dc.b    0           ;flags (NO RTF_AUTOINIT)
+            dc.b    1           ;version
+            dc.b    9           ;NT_LIBRARY
+            dc.b    0           ;priority (doesn't matter)
+            dc.l    _LibName    ;Name of library
+            dc.l    _LibId      ;ID string (note CR-LF at end)
+            dc.l    Init        ;Pointer to init routine
 
 _LibName:   dc.b    'test.library',0
 _LibId:     dc.b    'test.library 1.0 (6 Apr 1991)',13,10,0
-	    ds.w    0
+            ds.w    0
 EndCode:
 
-Init:	    move.l  A0,-(sp)        ; save arg to Init
+Init:       move.l  A0,-(sp)        ; save arg to Init
 
-	    movem.l D2-D7/A2-A6,-(sp)   ; blanket save
-	    move.l  4,A6		; EXEC base
+            movem.l D2-D7/A2-A6,-(sp)   ; blanket save
+            move.l  4,A6                ; EXEC base
 
-	    ;	Not resident, BSS space has been allocated for us
-	    ;	beyond the specified data, just load the base ptr
+            ;   Not resident, BSS space has been allocated for us
+            ;   beyond the specified data, just load the base ptr
 
 snotres     lea     __DATA_BAS+32766,A4
-	    sub.l   A3,A3
+            sub.l   A3,A3
 
 clrbss
-	    ;	CLEAR BSS   &-32766(A4) + __DATA_LEN*4
+            ;   CLEAR BSS   &-32766(A4) + __DATA_LEN*4
 
-	    lea     -32766(A4),A0
-	    move.l  #__DATA_LEN,D0
-	    asl.l   #2,D0
-	    add.l   D0,A0
+            lea     -32766(A4),A0
+            move.l  #__DATA_LEN,D0
+            asl.l   #2,D0
+            add.l   D0,A0
 
-	    move.l  #__BSS_LEN,D0	; longwords of bss
-	    moveq.l #0,D1
-	    bra     clrent
-clrlop	    move.l  D1,(A0)+
-clrent	    dbf     D0,clrlop
-	    sub.l   #$10000,D0
-	    bcc     clrlop
+            move.l  #__BSS_LEN,D0       ; longwords of bss
+            moveq.l #0,D1
+            bra     clrent
+clrlop      move.l  D1,(A0)+
+clrent      dbf     D0,clrlop
+            sub.l   #$10000,D0
+            bcc     clrlop
 
-	    jsr     __AutoInit0 	; A6 has SYSBase
-	    bne     xfail
-	    jsr     __AutoInit1 	; A6 has SYSBase
-	    bne     xfail
+            jsr     __AutoInit0         ; A6 has SYSBase
+            bne     xfail
+            jsr     __AutoInit1         ; A6 has SYSBase
+            bne     xfail
 
-	    movem.l (sp)+,D2-D7/A2-A6   ; blanket restore
-	    move.l  (sp)+,D0            ; retrieve arg to Init to D0
-	    jmp     @LibInit(pc)
+            movem.l (sp)+,D2-D7/A2-A6   ; blanket restore
+            move.l  (sp)+,D0            ; retrieve arg to Init to D0
+            jmp     @LibInit(pc)
 
-	    ;	if failure occurs (auto library open failed), return NULL
+            ;   if failure occurs (auto library open failed), return NULL
 
-xfail	    movem.l (sp)+,D2-D7/A2-A6
-	    move.l  (sp)+,D0            ; pop/ignore arg
-	    moveq.l #0,D0
-	    rts
+xfail       movem.l (sp)+,D2-D7/A2-A6
+            move.l  (sp)+,D0            ; pop/ignore arg
+            moveq.l #0,D0
+            rts
 
-	    ;	Assembly tags for other functions, assume a registered
-	    ;	C entry point
+            ;   Assembly tags for other functions, assume a registered
+            ;   C entry point
 
 _ALibOpen
-	    move.l  A6,A0
-	    jmp     @LibOpen(pc)
+            move.l  A6,A0
+            jmp     @LibOpen(pc)
 
 _ALibReserved
-	    moveq.l #0,D0
-	    rts
+            moveq.l #0,D0
+            rts
 
 _ALibClose
-	    move.l  A6,A0
-	    jsr     @LibClose(pc)
-	    bra     xend
+            move.l  A6,A0
+            jsr     @LibClose(pc)
+            bra     xend
 
 _ALibExpunge
-	    move.l  A6,A0
-	    jsr     @LibExpunge(pc)
+            move.l  A6,A0
+            jsr     @LibExpunge(pc)
 
-	    ;	if CLOSE/EXPUNGE returns non-zero, the library is going
-	    ;	away.
+            ;   if CLOSE/EXPUNGE returns non-zero, the library is going
+            ;   away.
 
 xend
-	    tst.l   D0
-	    beq     xend2
+            tst.l   D0
+            beq     xend2
 
-	    movem.l D0/A4/A6,-(sp)
-	    move.l  4.W,A6
-	    lea     __DATA_BAS+32766,A4
-	    jsr     __AutoExit1
-	    jsr     __AutoExit0
-	    movem.l (sp)+,D0/A4/A6
-xend2	    rts
+            movem.l D0/A4/A6,-(sp)
+            move.l  4.W,A6
+            lea     __DATA_BAS+32766,A4
+            jsr     __AutoExit1
+            jsr     __AutoExit0
+            movem.l (sp)+,D0/A4/A6
+xend2       rts
 
-	    ;	These are special DICE sections that merge together special
-	    ;	code from other object modules and link libraries, the base
-	    ;	of which is defined here.
+            ;   These are special DICE sections that merge together special
+            ;   code from other object modules and link libraries, the base
+            ;   of which is defined here.
 
-		section autoinit0,code
+                section autoinit0,code
 __AutoInit0:
-		section autoinit1,code
+                section autoinit1,code
 __AutoInit1:
-		section autoexit0,code
+                section autoexit0,code
 __AutoExit0:
-		section autoexit1,code
+                section autoexit1,code
 __AutoExit1:
 
 
-	    END
+            END
 

@@ -17,8 +17,8 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	TagItem;
-typedef struct Screen	Screen;
+typedef struct TagItem  TagItem;
+typedef struct Screen   Screen;
 
 Screen *
 HYPER ## OpenScreenTags(ns, tag1, ...)

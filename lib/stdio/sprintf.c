@@ -25,11 +25,11 @@ const char **sst;
     size_t n;
 
     if (n1 == 1)
-	n = n2;
+        n = n2;
     else if (n2 == 1)
-	n = n1;
+        n = n1;
     else
-	n = n1 * n2;
+        n = n1 * n2;
 
     _slow_bcopy(buf, *sst, n);
     *sst += n;

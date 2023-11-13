@@ -1,6 +1,6 @@
 /***********************************************************************
 *
-*	Exec Support Function -- Extended IO Request
+*       Exec Support Function -- Extended IO Request
 *
 ***********************************************************************/
 
@@ -16,32 +16,32 @@
 ******* amiga.lib/CreateExtIO ************************************************
 *
 *   NAME
-*	CreateExtIO -- create an IORequest structure
+*       CreateExtIO -- create an IORequest structure
 *
 *   SYNOPSIS
-*	ioReq = CreateExtIO(port,ioSize);
+*       ioReq = CreateExtIO(port,ioSize);
 *
-*	struct IORequest *CreateExtIO(struct MsgPort *, ULONG);
+*       struct IORequest *CreateExtIO(struct MsgPort *, ULONG);
 *
 *   FUNCTION
-*	Allocates memory for and initializes a new IO request block
-*	of a user-specified number of bytes. The number of bytes
-*	MUST be the size of a legal IORequest (or extended IORequest)
-*	or very nasty things will happen.
+*       Allocates memory for and initializes a new IO request block
+*       of a user-specified number of bytes. The number of bytes
+*       MUST be the size of a legal IORequest (or extended IORequest)
+*       or very nasty things will happen.
 *
 *   INPUTS
-*	port - an already initialized message port to be used for this IO
-*	       request's reply port. If this is NULL this function fails.
-*	ioSize - the size of the IO request to be created.
+*       port - an already initialized message port to be used for this IO
+*              request's reply port. If this is NULL this function fails.
+*       ioSize - the size of the IO request to be created.
 *
 *   RESULT
-*	ioReq - a new IO Request block, or NULL if there was not enough memory
+*       ioReq - a new IO Request block, or NULL if there was not enough memory
 *
 *   EXAMPLE
-*	if (ioReq = CreateExtIO(CreatePort(NULL,0),sizeof(struct IOExtTD)))
+*       if (ioReq = CreateExtIO(CreatePort(NULL,0),sizeof(struct IOExtTD)))
 *
 *   SEE ALSO
-*	DeleteExtIO(), CreatePort(), exec.library/CreateMsgPort()
+*       DeleteExtIO(), CreatePort(), exec.library/CreateMsgPort()
 *
 **********************************************************************
 */
@@ -72,21 +72,21 @@ struct IORequest *ioReq;
 ******* amiga.lib/DeleteExtIO ************************************************
 *
 *   NAME
-*	DeleteExtIO - return memory allocated for extended IO request
+*       DeleteExtIO - return memory allocated for extended IO request
 *
 *   SYNOPSIS
-*	DeleteExtIO(ioReq);
+*       DeleteExtIO(ioReq);
 *
-*	VOID DeleteExtIO(struct IORequest *);
+*       VOID DeleteExtIO(struct IORequest *);
 *
 *   FUNCTION
-*	Frees up an IO request as allocated by CreateExtIO().
+*       Frees up an IO request as allocated by CreateExtIO().
 *
 *   INPUTS
-*	ioReq - the IORequest block to be freed, or NULL.
+*       ioReq - the IORequest block to be freed, or NULL.
 *
 *   SEE ALSO
-*	CreateExtIO()
+*       CreateExtIO()
 *
 ******************************************************************************
 */

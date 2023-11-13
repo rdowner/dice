@@ -8,10 +8,10 @@
 #define HYPER
 #endif
 
-typedef struct TagItem	 TagItem;
+typedef struct TagItem   TagItem;
 
 ULONG 
 HYPER ## DoGadgetMethod( struct Gadget *gad, struct Window *win,struct Requester *req, unsigned long MethodID, ... )
 {
-	return DoGadgetMethodA(gad, win, req, (Msg)&MethodID );
+        return DoGadgetMethodA(gad, win, req, (Msg)&MethodID );
 }

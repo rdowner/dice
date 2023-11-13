@@ -14,5 +14,5 @@ typedef struct TagItem TagItem;
 LONG 
 HYPER ## RemoveAmigaGuideHost( APTR hh, Tag tag1, ... )
 {
-	return RemoveAmigaGuideHostA(hh,(TagItem *)&tag1);
+        return RemoveAmigaGuideHostA(hh,(TagItem *)&tag1);
 }

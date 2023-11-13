@@ -15,7 +15,7 @@
 
 #define Prototype extern
 
-typedef struct PrtInfo	PrtInfo;
+typedef struct PrtInfo  PrtInfo;
 typedef struct PrinterData PrinterData;
 typedef struct PrinterExtendedData PrinterExtendedData;
 

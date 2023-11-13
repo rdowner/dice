@@ -17,28 +17,28 @@ const char *str;
     long v = 0;
 
     while (*str == ' ' || *str == '\t')
-	++str;
+        ++str;
     if (*str == '-') {
-	neg = 1;
-	++str;
+        neg = 1;
+        ++str;
     }
     if (*str == '+')
-	++str;
+        ++str;
 
     /*
-     *	while v < 65536 we setup the operation such that it is optimizable
-     *	by DICE.  This yields a huge efficiency increase.
+     *  while v < 65536 we setup the operation such that it is optimizable
+     *  by DICE.  This yields a huge efficiency increase.
      */
 
     while (*str >= '0' && *str <= '9') {
-	if (v <= (unsigned short)-1)
-	    v = (unsigned short)v * 10;
-	else
-	    v = v * 10;
-	v += *str++ - '0';
+        if (v <= (unsigned short)-1)
+            v = (unsigned short)v * 10;
+        else
+            v = v * 10;
+        v += *str++ - '0';
     }
     if (neg)
-	v = -v;
+        v = -v;
     return(v);
 }
 

@@ -95,7 +95,7 @@ char    c;
                         default:
                                 unless( c==13 )        // We force CR, LF
                                         fputc(c, out);
-			}
+                        }
                 }
         fprintf(out,"\r\n");
         fprintf(out,"\r\n");

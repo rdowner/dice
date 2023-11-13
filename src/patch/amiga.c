@@ -56,19 +56,19 @@ const char *id;
     fh = Open(buf, 1005);
     free(buf);
     if (fh) {
-	Seek(fh, 0L, 1);
-	len = Seek(fh, 0L, -1);
-	if (len < 0) {
-	    Close(fh);
-	    return(NULL);
-	}
-	if (res)
-	    free(res);
-	res = malloc(len + 1);
-	Read(fh, res, len);
-	Close(fh);
-	res[len] = 0;
-	return(res);
+        Seek(fh, 0L, 1);
+        len = Seek(fh, 0L, -1);
+        if (len < 0) {
+            Close(fh);
+            return(NULL);
+        }
+        if (res)
+            free(res);
+        res = malloc(len + 1);
+        Read(fh, res, len);
+        Close(fh);
+        res[len] = 0;
+        return(res);
     }
     return(NULL);
 }
@@ -81,7 +81,7 @@ const char *id;
     char *perm = NULL;
 
     if (res)
-	perm = strdup(res);
+        perm = strdup(res);
     return(perm);
 }
 
@@ -110,7 +110,7 @@ struct stat *stat;
 
     setmem(stat, sizeof(struct stat), 0);
     if (lock == NULL)
-	return(-1);
+        return(-1);
     Examine(lock, &fib);
     UnLock(lock);
     stat->st_size = fib.fib_Size;
@@ -136,15 +136,15 @@ char *modes;
 {
     tmpnam(pnam);
     {
-	char *ptr;
-	if (ptr = strrchr(cmd, '/')) {
-	    cmd = ptr + 1;
-	}
+        char *ptr;
+        if (ptr = strrchr(cmd, '/')) {
+            cmd = ptr + 1;
+        }
     }
     if (strnicmp(cmd, "ed", 2) == 0)
-	sprintf(Cmd, "u%s < %s", cmd, pnam);
+        sprintf(Cmd, "u%s < %s", cmd, pnam);
     else
-	sprintf(Cmd, "%s < %s", cmd, pnam);
+        sprintf(Cmd, "%s < %s", cmd, pnam);
     return(fopen(pnam, modes));
 }
 
