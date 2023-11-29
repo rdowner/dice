@@ -1286,7 +1286,15 @@ int32_t *plexIdxBeg;
     static char *CacheLexFile;
     static int32_t CacheLexFileNameLen;
 
-    printf("FINDLINE lexIdx %d %s\n", lexIdx, CacheLexFile);
+    if (CacheLexFile != NULL && CacheLexIdx >= 0) {
+        char *file = malloc(CacheLexFileNameLen + 1);
+        strncpy(file, CacheLexFile, CacheLexFileNameLen);
+        file[CacheLexFileNameLen] = 0;
+        printf("; FINDLINE lexIdx %d %s\n", lexIdx, file);
+        free(file);
+    } else {
+        printf("; FINDLINE lexIdx %d %s\n", lexIdx, "(null)");
+    }
 
     /*
      *  find start of line
