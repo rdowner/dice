@@ -98,6 +98,7 @@ void InitSyms(void);
 int ScanRelocations(int32_t, int32_t *, ubyte *, int32_t, char *, int);
 
 #define MAXHUNKS    32
+#define SKIP(x) x += ToMsbOrder(x[1]) + 2
 
 int
 main(int ac, char **av)
@@ -142,11 +143,11 @@ main(int ac, char **av)
         short htype;
 
         hunkno = 0;
-        if (*scan != 0x3E7) {
-            printf("Expected hunk_unit, got %08x\n", *scan);
+        if (ToMsbOrder(*scan) != 0x3E7) {
+            printf("Expected hunk_unit, got %08x\n",ToMsbOrder(*scan));
             exit(1);
         }
-        scan += scan[1] + 2;
+        SKIP(scan);
 
         /*
          *  scan the object module
@@ -156,18 +157,18 @@ main(int ac, char **av)
         dlen = 0;
         htype = 0;
 
-        while (scan < bend && *scan != 0x3E7) {
+        while (scan < bend && ToMsbOrder(*scan) != 0x3E7) {
             uint32_t len;
 
-            switch((uword)*scan) {
+            switch((uword)ToMsbOrder(*scan)) {
             case 0x3E8:             /*  HUNK_NAME       */
-                scan += scan[1] + 2;
+                SKIP(scan);
                 break;
             case 0x3E9:             /*  HUNK_CODE       */
             case 0x3EA:             /*  HUNK_DATA       */
                 data = (ubyte *)(scan + 2);
-                dlen = scan[1] << 2;
-                if (*scan == 0x3EA)
+                dlen = ToMsbOrder(scan[1]) << 2;
+                if (ToMsbOrder(*scan) == 0x3EA)
                     htype = 1;
                 else
                     htype = 2;
@@ -175,7 +176,7 @@ main(int ac, char **av)
                 {
                     ++hunkno;
                 }
-                scan += scan[1] + 2;
+                SKIP(scan);
                 break;
             case 0x3EB:             /*  HUNK_BSS        */
                 htype = 0;
@@ -186,14 +187,14 @@ main(int ac, char **av)
             case 0x3EE:             /*  HUNK_RELOC8     */
             case 0x3F8:             /*  HUNK_RELOC16-D  (special) */
                 ++scan;
-                while (*scan)
-                    scan += *scan + 2;
+                while (ToMsbOrder(*scan))
+                    scan += ToMsbOrder(*scan) + 2;
                 ++scan;
                 break;
             case 0x3EF:             /*  HUNK_EXT        */
             case 0x3F0:             /*  HUNK_SYMBOL     */
                 ++scan;
-                while ((len = *scan) != 0) {
+                while ((len = ToMsbOrder(*scan)) != 0) {
                     ubyte type = len >> 24;
                     int32_t *base = scan;
 
@@ -214,14 +215,14 @@ main(int ac, char **av)
                         /* fall through */
                     case 129:       /*  REF32   */
                         if (type == 129 && htype == 2) {
-                            if (ScanRelocations(scan[0], scan + 1, data, dlen, (char *)(base + 1), len*4))
-                                *base = (*base & 0x00FFFFFF) | (134 << 24);     /*  convert from ABS32 to DATA-REL16    */
+                            if (ScanRelocations(ToMsbOrder(scan[0]), scan + 1, data, dlen, (char *)(base + 1), len*4))
+                                *base = FromMsbOrder((ToMsbOrder(*base) & 0x00FFFFFF) | (134 << 24));     /*  convert from ABS32 to DATA-REL16    */
                         }
                     case 131:       /*  REF16   */
                     case 132:       /*  REF8    */
                     case 134:       /*  REF16D  */
                                     /*  skip relocation info */
-                        scan += scan[0] + 1;
+                        scan += ToMsbOrder(scan[0]) + 1;
                         break;
                     default:
                         printf("Symbol type %d unknown", type);
@@ -231,7 +232,7 @@ main(int ac, char **av)
                 ++scan;     /*  skip 0 terminator */
                 break;
             case 0x3F1:             /*  HUNK_DEBUG          */
-                scan += scan[1] + 2;
+                SKIP(scan);
                 break;
             case 0x3F2:             /*  HUNK_END            */
                 data = NULL;
@@ -302,17 +303,17 @@ int len;
     puts("(modifying)");
 
     while (entries) {
-        int32_t index = *scan;
+        int32_t index = ToMsbOrder(*scan);
         uword *tscan;
         uword opcode;
 
         if (index < 0 || index > dlen - 4) {
-            printf("relocation index out of range: %d/%d\n", index, dlen);
+            printf("ERROR: relocation index out of range: found %d, expected between 0 and %d\n", index, dlen);
             Error = 1;
         }
         tscan = (uword *)(data + index - 2);
 
-        opcode = *tscan;
+        opcode = ToMsbOrderShort(*tscan);
         printf("\topcode %04x\n", opcode);
 
         /*
@@ -321,22 +322,22 @@ int len;
 
         switch(opcode) {
         case 0x2079:    /*  move.l  abslong,A0  */
-            tscan[0] = 0x206C;
-            tscan[1] = tscan[2];
-            tscan[2] = 0x4E71;
+            tscan[0] = FromMsbOrderShort(0x206C);
+            tscan[1] = FromMsbOrderShort(tscan[2]);
+            tscan[2] = FromMsbOrderShort(0x4E71);
             break;
         case 0x2C79:    /*  move.l  abslong,A6  */
-            tscan[0] = 0x2C6C;
-            tscan[1] = tscan[2];
-            tscan[2] = 0x4E71;
+            tscan[0] = FromMsbOrderShort(0x2C6C);
+            tscan[1] = FromMsbOrderShort(tscan[2]);
+            tscan[2] = FromMsbOrderShort(0x4E71);
             break;
         case 0xD1F9:    /*  adda.l  abslong,A0  */
-            tscan[0] = 0xD1EC;
-            tscan[1] = tscan[2];
-            tscan[2] = 0x4E71;
+            tscan[0] = FromMsbOrderShort(0xD1EC);
+            tscan[1] = FromMsbOrderShort(tscan[2]);
+            tscan[2] = FromMsbOrderShort(0x4E71);
             break;
         default:
-            printf("\tWarning, opcode not understood, could not modify\n");
+            printf("\ERROR: opcode not understood, could not modify\n");
             Error = 1;
             break;
         }
