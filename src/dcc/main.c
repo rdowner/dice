@@ -11,10 +11,8 @@
  */
 
 #include "defs.h"
-#ifdef COMMERCIAL
 #ifndef unix
 #include <lib/rexx.h>
-#endif
 #endif
 
 #ifndef AZLAT_COMPAT
@@ -703,7 +701,6 @@ char *xav[];
                     }
                     break;
                 case 'R':
-#ifdef COMMERCIAL
 #ifndef unix
                     /* substitution variables */
 
@@ -728,7 +725,6 @@ char *xav[];
                     } else {
                         eprintf("DCC: Warning: could open rexxsyslib.library!\n");
                     }
-#endif
 #endif
                     break;
                 case 's':
@@ -1466,7 +1462,6 @@ top:
     }
     if (r)
         printf("Exit code %d\n", r);
-#ifdef COMMERCIAL
 #ifndef unix
     if (RexxOpt)
     {
@@ -1479,7 +1474,6 @@ top:
             FlushStoredErrors(cfile);
         }
     }
-#endif
 #endif
     if (ExitCode < r)
         ExitCode = r;
@@ -2079,7 +2073,6 @@ mergestr(const char *s1, const char *s2)
 }
 
 
-#ifdef COMMERCIAL
 #ifndef unix
 
 void
@@ -2392,7 +2385,6 @@ char *file;
     return(s1);
 }
 
-#endif
 #endif
 
 /*

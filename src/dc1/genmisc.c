@@ -578,16 +578,12 @@ Exp **pexp;
 
         exp->ex_Flags |= EF_CRES;
 
-#ifdef COMMERCIAL
         iidx = Internationalize(exp->ex_StrConst, exp->ex_StrLen);
-#endif
         AddStrList(exp->ex_StrConst, exp->ex_StrLen, l, iidx);
-#ifdef COMMERCIAL
         if (iidx >= 0) {
             l = -l;
             exp->ex_Type = &CharPtrType;
         } else
-#endif
         {
             exp->ex_Type = &CharAryType;
         }
@@ -598,14 +594,11 @@ Exp **pexp;
         exp->ex_Stor.st_Flags = SF_NOSA;
         exp->ex_Stor.st_Label = l;
     } else {
-#ifdef COMMERCIAL
         if (exp->ex_Stor.st_Label < 0) {
             exp->ex_Stor.st_Label = -exp->ex_Stor.st_Label;
             exp->ex_Stor.st_Flags= 0;
             exp->ex_Stor.st_Type = ST_RelLabel;
-        } else
-#endif
-        {
+        } else {
             exp->ex_Stor.st_Flags= SF_LEA;
             exp->ex_Stor.st_Type = ST_RelLabel;
 

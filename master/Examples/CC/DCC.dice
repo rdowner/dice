@@ -10,7 +10,7 @@ PRECOMP=
 TYPE= Normal
 RUN=
 CLIARGS= -S junk.a
-CFLAGS= -2.0 -mRR -proto -R -DCOMMERCIAL -ms1 -r -// 
+CFLAGS= -2.0 -mRR -proto -R -ms1 -r -// 
 CLI=
 
 #### AUTOMATICALLY GENERATED - DO NOT EDIT BELOW THIS LINE

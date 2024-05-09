@@ -17,17 +17,8 @@
 #define DCOPYRIGHT static char *DCopyright = "Copyright (c) 1992-2023 Obvious Implementations Corp., 2023- Open Source contributors. Redistribution & Use under BSD License."
 
 
-/*
- * Messages if commercial or open source.
- */
-
-#ifdef COMMERCIAL
-#define IDENT(file,subv)   static char *Ident = "$VER: " file " " DICE_VERSION subv "C (" __COMMODORE_DATE__ ")\n\r"
-#define VDISTRIBUTION " Commercial"
-#else
 #define IDENT(file,subv)   static char *Ident = "$VER: " file " " DICE_VERSION subv "Open Source  (" __COMMODORE_DATE__ ")\n\r"
 #define VDISTRIBUTION " Open Source"
-#endif
 
 #define _STRING(label)          #label
 #define _STRING_EVAL(label)     _STRING(label)

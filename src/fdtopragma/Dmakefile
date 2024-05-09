@@ -46,11 +46,11 @@ EXESN= $(SRCS:"*.c":"../bin/next/*")
 CFLAGS= -ms -r -mRR -I$(ODR) -proto
 
 CFLAGS1= -iinclude: -idinclude: -i$(OD1) -v -dDEBUG -dNO_ASM
-CFLAGS2= -ms -r -I$(OD2) -DDEBUG -DCOMMERCIAL
-CFLAGSC= -ms -r -mRR -I$(ODC) -proto -DCOMMERCIAL
+CFLAGS2= -ms -r -I$(OD2) -DDEBUG
+CFLAGSC= -ms -r -mRR -I$(ODC) -proto
 CFLAGSR= -ms -r -mRR -I$(ODR) -proto
 CFLAGSF= -ms -r -mRR -I$(ODF) -proto -DFREEWARE
-CFLAGSN= -O2 -I.. -I$(ODN) -L../suplib -DCOMMERCIAL -DNO_ASM
+CFLAGSN= -O2 -I.. -I$(ODN) -L../suplib -DNO_ASM
 
 OBJS = $(RSRCS:"*.c":"$(OD)*.o")
 OBJS1 = $(SRCS:"*.c":"$(OD1)*.o")

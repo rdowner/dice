@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   replacing three original README files and DICE-LICENSE.TXT. The new files are
   named and formatted according to current standard practice for GitHub-hosted
   projects.
+- "Registered" and "commercial" feature gates removed - all features are now
+  available in all builds.
 
 ### Changed
 

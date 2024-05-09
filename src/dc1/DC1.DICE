@@ -13,8 +13,7 @@ PRECOMP=
 TYPE= OI:Config/Self3.DMAKEFILE
 RUN= 
 CLIARGS= test.c -r
-CFLAGS= -ms -r -3.0 -mRR -proto -Idinclude:amiga20 \
--DCOMMERCIAL
+CFLAGS= -ms -r -3.0 -mRR -proto -Idinclude:amiga20
 LEVEL= 1
 CLI= 
 CFGNAME= vmake.config

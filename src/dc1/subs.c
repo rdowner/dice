@@ -830,8 +830,6 @@ cmpmem(ubyte *s1, ubyte *s2, int32_t n)
 
 #endif
 
-#ifdef COMMERCIAL
-
 typedef struct INatNode {
     struct INatNode *in_Next;
     int32_t     in_Id;
@@ -925,8 +923,6 @@ LoadLocaleDefs(char *file)
         free(buf);
     return(r);
 }
-
-#endif
 
 void
 filler_subs_c(void)

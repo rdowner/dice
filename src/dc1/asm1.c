@@ -903,7 +903,6 @@ int32_t iidx;
     char buf[128];
     char *p = buf;
 
-#ifdef COMMERCIAL
     if (iidx >= 0) {
         int32_t newLabel = AllocLabel();
 
@@ -912,7 +911,6 @@ int32_t iidx;
         puts(LastSectBuf);
         label = newLabel;
     }
-#endif
 
     if (flags & (TF_CONST | TF_SHARED))
         asm_segment(&DummyCodeVar);

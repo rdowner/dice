@@ -297,7 +297,6 @@ ParseOpts(short ac, char **av, short c1Only)
         }
         ptr += 2;
         switch(ptr[-1]) {
-#ifdef COMMERCIAL
         case 'i':       /* -int<catalog_def_file> */
             if (strncmp(ptr, "nt", 2) == 0) {
                 ptr += 2;
@@ -307,7 +306,6 @@ ParseOpts(short ac, char **av, short c1Only)
                     zerror(EERROR_BAD_LOCALE, ptr);
             }
             break;
-#endif
         case '0':
             MC68020Opt = 1;
             break;
