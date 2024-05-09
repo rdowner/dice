@@ -42,15 +42,9 @@ typedef struct LexFileNode {
     FILE    *lf_Fi;         /*  file handle, keeps cache valid                */
     char    *lf_Buf;        /*  buffer, offset negative!! invalid < BaseIndex */
     char    *lf_FileName;
-#ifdef MINIDICE2
-    uword   lf_BaseIndex;
-    uword   lf_Index;       /*  current index   */
-    uword   lf_Size;        /*  size of file    */
-#else
     int32_t    lf_BaseIndex;
     int32_t    lf_Index;            /*  current index   */
     int32_t    lf_Size;     /*  size of file    */
-#endif
 } LexFileNode;
 
 #define MINIMAXPROCS    5

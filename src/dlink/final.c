@@ -169,10 +169,6 @@ List *list;
             if (n != hl->FinalSize)
                 cerror(EFATAL_FINAL_SIZE_MISMATCH, n, hl->FinalSize);
         }
-#ifdef MINIDICE
-        if (ftell(fo) / 23 >= (40000 + 22) / 23)
-            cerror(EFATAL_EXECUTABLE_TOO_LARGE);
-#endif
 
         /*
          *  If there is any relocation information output that

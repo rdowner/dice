@@ -552,9 +552,6 @@ asm_procend(Var *var, short forceLink)
     BlockStmt *block = var->u.Block;
     short count;
     short dummy;
-#ifdef MINIDICE
-    static short Cntr = (MINIMAXPROCS + 2) * 3;
-#endif
 
     int32_t stack = Align(block->Frame.DownStackUsed + block->Frame.StackUsed, StackAlign);
     int32_t mask = GetUsedRegisters() & ~RegReserved;
@@ -570,20 +567,8 @@ asm_procend(Var *var, short forceLink)
     if (var->Flags & TF_GETA4)
         mask |= REGSDPTR;
 
-#ifdef MINIDICE
-    else
-        Cntr -= 3;
-#endif
-
     if (stack > 32767)
         yerror(var->LexIdx, EERROR_TOO_MANY_AUTOS);
-
-#ifdef MINIDICE
-    if (Cntr <= 0) {
-        GlobalRegReserved |= 1 << (var->LexIdx & 31);
-        dbprintf(("Holy shit batman!  I've been compromised %d\n", (var->LexIdx & 31)));
-    }
-#endif
 
     /*
      *  return, unlk, restore regs, rts.

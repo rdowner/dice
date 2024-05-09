@@ -14,12 +14,11 @@
 #define __COMMODORE_DATE__ __DATE__
 #endif
 
-#define DCOPYRIGHT static char *DCopyright = "Copyright (c) 1992,1993,1994 Obvious Implementations Corp., Redistribution & Use under DICE-LICENSE.TXT."
+#define DCOPYRIGHT static char *DCopyright = "Copyright (c) 1992-2023 Obvious Implementations Corp., 2023- Open Source contributors. Redistribution & Use under BSD License."
 
 
 /*
- * Messages if commercial, registerd, or neither.  Also set MINIDICE flag
- * if neither.
+ * Messages if commercial, registerd, or neither.
  */
 
 #ifdef COMMERCIAL
@@ -30,9 +29,8 @@
 #define IDENT(file,subv)   static char *Ident = "$VER: " file " " DICE_VERSION subv "R (" __COMMODORE_DATE__ ")\n\r"
 #define VDISTRIBUTION " Registered"
 #else
-#define IDENT(file,subv)   static char *Ident = "$VER: " file " " DICE_VERSION subv "MINIDICE  (" __COMMODORE_DATE__ ")\n\r"
-#define VDISTRIBUTION " MiniDice"
-#define MINIDICE
+#define IDENT(file,subv)   static char *Ident = "$VER: " file " " DICE_VERSION subv "Open Source  (" __COMMODORE_DATE__ ")\n\r"
+#define VDISTRIBUTION " Open Source"
 #endif
 #endif
 

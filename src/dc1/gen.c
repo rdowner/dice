@@ -69,9 +69,6 @@ int32_t SaveLastLexIdxBeg;      /*  place marker for retry pass     */
 int32_t SaveLastLexLine;
 int32_t LastLexIdxBeg;          /*  place marker for debug output   */
 int32_t LastLexLine;
-#ifdef MINIDICE
-int     Cnt = MINIMAXPROCS * 37;
-#endif
 
 
 Prototype int32_t AllocLabel(void);
@@ -185,14 +182,6 @@ Var *var;
 
             SaveLastLexIdxBeg = LastLexIdxBeg;
             SaveLastLexLine   = LastLexLine;
-
-#ifdef MINIDICE
-            {
-                if ((Cnt -= 37) == 0) {
-                    zerror(EFATAL_INPUT_TOO_LARGE);
-                }
-            }
-#endif
 
             do {
                 RefCmp = RefCmpNext;

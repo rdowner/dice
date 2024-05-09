@@ -224,11 +224,6 @@ PushLexFile(char *name, short nameLen, int32_t begPos, int32_t bytes)
     } else {
         fseek(lf->lf_Fi, begPos, 0);
     }
-#ifdef MINIDICE2
-    if (bytes > 65530) {
-        zerror(EFATAL_INPUT_TOO_LARGE, bytes);
-    }
-#endif
 #ifdef _DCC
     /*
      * HACK!  we should really add an IODOM_CACHE field and make ioctl()

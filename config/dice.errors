@@ -7,7 +7,6 @@ C1:003:__geta4 not in MINIDICE
 C1:004:__chip not in MINIDICE
 C1:005:registered args not in MINIDICE
 C1:006:floating point not in MINIDICE
-C1:007:MINIDICE Limited to 5 procedures/file
 C1:009:Unexpected EOF
 C1:010:Char Const Too Large!
 C1:011:NewLine in string constant
@@ -280,5 +279,4 @@ LK:055:-pi option: expected a code hunk!
 LK:056:-pi option: expected only one code hunk!
 LK:057:Cannot coagulate data/bss due to differing memory/resource types
 LK:058:32 bit relocations illegal for -pi/-pr
-LK:059:MINIDICE Limited to 40K executable
 
