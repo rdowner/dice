@@ -252,7 +252,6 @@ Var *var;
 IsRegCall(flags)
 int32_t flags;
 {
-#ifdef REGISTERED
     if (flags & TF_DOTDOTDOT)
         return(0);
     if (flags & TF_REGCALLOK) {
@@ -261,7 +260,6 @@ int32_t flags;
         if (RegCallOpt && !(flags & TF_STKCALL))
             return(1);
     }
-#endif
     return(0);
 }
 

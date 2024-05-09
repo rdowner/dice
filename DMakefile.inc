@@ -7,5 +7,5 @@ INCLUDE= $(TOPDIR)include/
 INSTDIR= /usr/local/dice/
 ENV= DERRORS=$(TOPDIR)config/dice.errors; DINCLUDE=$(INCLUDE); export DERRORS; export DINCLUDE;
 
-CFLAGS= -Wall -Wno-unused-result -Wstrict-prototypes -Werror -O2 -DREGISTERED -DCOMMERCIAL -DNO_ASM -DINTELBYTEORDER -D__STDC_WANT_LIB_EXT2__ -D_INSTDIR=$(INSTDIR) -I$(OD). -I$(TOPDIR). -L$(OD). -g
+CFLAGS= -Wall -Wno-unused-result -Wstrict-prototypes -Werror -O2 -DCOMMERCIAL -DNO_ASM -DINTELBYTEORDER -D__STDC_WANT_LIB_EXT2__ -D_INSTDIR=$(INSTDIR) -I$(OD). -I$(TOPDIR). -L$(OD). -g
 

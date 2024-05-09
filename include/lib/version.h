@@ -18,20 +18,15 @@
 
 
 /*
- * Messages if commercial, registerd, or neither.
+ * Messages if commercial or open source.
  */
 
 #ifdef COMMERCIAL
 #define IDENT(file,subv)   static char *Ident = "$VER: " file " " DICE_VERSION subv "C (" __COMMODORE_DATE__ ")\n\r"
 #define VDISTRIBUTION " Commercial"
 #else
-#ifdef REGISTERED
-#define IDENT(file,subv)   static char *Ident = "$VER: " file " " DICE_VERSION subv "R (" __COMMODORE_DATE__ ")\n\r"
-#define VDISTRIBUTION " Registered"
-#else
 #define IDENT(file,subv)   static char *Ident = "$VER: " file " " DICE_VERSION subv "Open Source  (" __COMMODORE_DATE__ ")\n\r"
 #define VDISTRIBUTION " Open Source"
-#endif
 #endif
 
 #define _STRING(label)          #label

@@ -3,15 +3,6 @@ knownbugs/knownbugs                                         knownbugs/knownbugs
 knownbugs/KnownBugs                                         knownbugs/KnownBugs
 
 
-    NOT IMPLEMENTED IN UNREGISTERED RELEASE BUT IMPLEMENTED IN REGISTERED
-    RELEASE:
-
-        * bit fields
-        * floating point
-        * manual pages for DICE libraries
-        * keywords:     __chip, __far, __near
-        * misc library routines
-
     PREPROCESSOR:
 
         token-pasting operator (##) resolves the paste last instead of

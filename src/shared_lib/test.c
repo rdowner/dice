@@ -8,15 +8,8 @@
  *  TEST.C
  */
 
-/*
- *  The #ifdef is to demonstrate what is required to compile this
- *  test program with registered args.
- */
-
-#ifdef REGISTERED
 #include "test-protos.h"
 #include <stdio.h>
-#endif
 
 main(ac, av)
 short ac;

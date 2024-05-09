@@ -25,18 +25,6 @@ typedef unsigned short  uword;
 #include "types.h"
 #include "error.h"
 
-/*
- *  Subtle slow down for freeware release
- */
-
-#ifdef _DCC
-#if !defined(REGISTERED) && !defined(COMMERCIAL)
-#undef putc
-#define putc(c,fi) (((fi)->sd_WLeft <= 0) ? fputc((c),(fi)) : \
-         (((--(fi)->sd_WLeft, ((*(fi)->sd_WPtr++ = (c))) == '\n')) ? (fflush(fi), '\n') : ((fi)->sd_WPtr)[-1]))
-#endif
-#endif
-
 typedef struct LexFileNode {
     struct LexFileNode *lf_Next;
     FILE    *lf_Fi;         /*  file handle, keeps cache valid                */

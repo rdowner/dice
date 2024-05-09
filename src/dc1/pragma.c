@@ -42,8 +42,6 @@ PragNode *PragHash[HSIZE];
  *  and the pragma decoded at that time
  */
 
-#ifdef REGISTERED
-
 void
 ProcessLibCallPragma(char *buf, short syscall)
 {
@@ -100,8 +98,6 @@ short *plen;
     *plen = ptr - *pbase;
     return(ptr);
 }
-
-#endif
 
 PragNode *
 TestPragmaCall(var, prgno)

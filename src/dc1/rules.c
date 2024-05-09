@@ -447,7 +447,6 @@ Exp *exp;
     Type *t1 = exp->ex_ExpL->ex_Type;
     Type *t2 = exp->ex_ExpR->ex_Type;
 
-#ifdef REGISTERED
     if (exp->ex_Flags & EF_ASSEQ) {
         if (t1 != t2)
             InsertCast(&exp->ex_ExpR, t1);
@@ -468,9 +467,6 @@ Exp *exp;
         t1 = t2;
     }
     exp->ex_Type = t1;
-#else
-    yerror(exp->ex_LexIdx, EUNREG_FLOATINGPT);
-#endif
 }
 
 /*

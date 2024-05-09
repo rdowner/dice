@@ -1616,8 +1616,6 @@ CallAsmSupport(Exp *exp,char *mop, Stor *s1, Stor *s2, Stor *d, short orderReq)
  *  BITFIELDS
  */
 
-#ifdef REGISTERED
-
 void
 asm_bfext(exp, s, d)
 Exp *exp;
@@ -1882,36 +1880,6 @@ Stor *d;
         }
     }
 }
-
-#else
-
-void
-asm_bfext(exp, s, d)
-Exp *exp;
-Stor *s;
-Stor *d;
-{
-    cerror(EUNREG, "bitfields");
-}
-
-void
-asm_bfsto(exp, s, d)
-Exp *exp;
-Stor *s;
-Stor *d;
-{
-    cerror(EUNREG, "bitfields");
-}
-
-void
-asm_bftst(exp, s)
-Exp *exp;
-Stor *s;
-{
-    cerror(EUNREG, "bitfields");
-}
-
-#endif
 
 void
 asm_illegal(void)

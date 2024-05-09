@@ -331,13 +331,11 @@ LexLineFeed(void)
                     ptr += 6;
                     while (*ptr == ' ' || *ptr == 9)
                         ++ptr;
-#ifdef REGISTERED
                     if (strncmp(ptr, "libcall", 7) == 0) {
                         ProcessLibCallPragma(ptr + 7, 0);
                     } else if (strncmp(ptr, "syscall", 7) == 0) {
                         ProcessLibCallPragma(ptr + 7, 1);
                     } else
-#endif
                     if (strncmp(ptr, "DCCOPTS", 7) == 0) {
                         /*
                          *  Process #pragma DCCOPTS.  Note that

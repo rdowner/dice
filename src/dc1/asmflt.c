@@ -432,8 +432,6 @@ int32_t *ary;
  *  done
  */
 
-#ifdef REGISTERED
-
 void
 CallFPSupport(
     Exp *exp,
@@ -607,16 +605,6 @@ CallFPSupport(
         FreeRegister(&ra1);
     }
 }
-
-#else
-
-void
-CallFPSupport(Exp *exp, int32_t prec, Stor *s1, Stor *s2, Stor *d, char *fnam, short orderReq)
-{
-    cerror(EUNREG, "asm_fp: floating point");
-}
-
-#endif
 
 void
 asm_layoutfpconst(exp, s, d)

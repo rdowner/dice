@@ -70,26 +70,10 @@ yerror(int32_t lexIdx, short errorId, ...)
 }
 
 
-#ifndef REGISTERED
-void
-cerror(short etype, const char *buf, ...)
-{
-    va_list va;
-
-    va_start(va, buf);
-    vcerror(((LFBase) ? LFBase->lf_Index : 0), etype, buf, va, 0);
-    va_end(va);
-}
-#endif
-
 void
 vcerror(int32_t lexIdx, short etype, const char *buf, va_list va, short eno)
 {
-    static const char *TNames[] = { "?","Warning","Error", "Fatal", "SoftError"
-#ifndef REGISTERED
-        , "Unimplemented"
-#endif
-    };
+    static const char *TNames[] = { "?","Warning","Error", "Fatal", "SoftError" };
     int32_t lexIdxBeg;
     int32_t lexFileNameLen;
     int32_t lexLine;

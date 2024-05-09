@@ -11,26 +11,13 @@
 #define EERROR  2
 #define EFATAL  3
 #define ESOFT   4
-#ifndef REGISTERED
-#define EUNREG  5
-#endif
 
 #define EF_FATAL    (EFATAL << 12)
 #define EF_WARN     (EWARN << 12)
 #define EF_SOFT     (ESOFT << 12)
 #define EF_ERROR    (EERROR << 12)
-#define EF_UNREG    (EUNREG << 12)
 
 #define EF_MASK     (0xF000)
-
-#define EUNREG_AUTOINIT                 (EF_UNREG| 1)
-#define EUNREG_AUTOEXIT                 (EF_UNREG| 2)
-#define EUNREG_GETA4                    (EF_UNREG| 3)
-#define EUNREG_CHIP                     (EF_UNREG| 4)
-#define EUNREG_REG_ARGS                 (EF_UNREG| 5)
-#define EUNREG_FLOATINGPT               (EF_UNREG| 6)
-#define EFATAL_INPUT_TOO_LARGE          (EF_FATAL| 7)
-#define EUNREG_RESERVED8                (EF_UNREG| 8)
 
 #define EFATAL_UNEXPECTED_EOF           (EF_FATAL| 9)
 #define EWARN_CHAR_CONST_TOO_LONG       (EF_WARN |10)

@@ -49,7 +49,7 @@ $(RLIB) : $(OD)auto.o lib.fd
 #         compilation.
 
 $(TEST1) : test.c
-    dcc test.c -o %(left) -l$(OD)testr -mRR -DREGISTERED
+    dcc test.c -o %(left) -l$(OD)testr -mRR
     -delete t:test.o
 
 $(TEST2) : test.c

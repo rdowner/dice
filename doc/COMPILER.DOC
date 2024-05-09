@@ -221,8 +221,8 @@ compiler/COMPILER                                           compiler/COMPILER
          automatically generates JMP tables when the small-code model is
          used in large executables.
 
-    (16) REGISTERED user's DICE supports __chip, __near, and __far keywords,
-         as well as many others.
+    (16) DICE supports __chip, __near, and __far keywords, as well as many
+         others.
 
     (17) Simplified library and startup module design.  There are no multiple
          versions of a single library for different memory models and the

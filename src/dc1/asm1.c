@@ -190,21 +190,13 @@ Var *var;
      */
 
     if (var->Flags & TF_AUTOINIT) {
-#ifdef REGISTERED
         printf("\tsection\tautoinit1,code\n");
         printf("\tjsr\t_%s\n", SymToString(var->Sym));
         puts(LastSectBuf);
-#else
-        yerror(var->LexIdx, EUNREG_AUTOINIT);
-#endif
     } else if (var->Flags & TF_AUTOEXIT) {
-#ifdef REGISTERED
         printf("\tsection\tautoexit1,code\n");
         printf("\tjsr\t_%s\n", SymToString(var->Sym));
         puts(LastSectBuf);
-#else
-        yerror(var->LexIdx, EUNREG_AUTOEXIT);
-#endif
     }
 
     /*
@@ -453,7 +445,6 @@ Var *var;
 {
     if (var->Flags & (TF_INTERRUPT|TF_GETA4)) {
         if (var->Flags & TF_GETA4) {
-#ifdef REGISTERED
             RegReserved |= REGSDPTR;    /*  XXX remove me   */
             AddAuxSub("ABSOLUTE_BAS");
             if (PIOpt) {
@@ -465,9 +456,6 @@ Var *var;
                 if (ResOpt)
                     yerror(var->LexIdx, EERROR_GETA4_ILLEGAL);
             }
-#else
-            yerror(var->LexIdx, EUNREG_GETA4);
-#endif
 
         }
         /* int code? */
@@ -809,16 +797,10 @@ Var *var;
     char *segType;
     char *sn;
 
-#ifdef REGISTERED
     if (var->Flags & TF_CHIP)
         mask = 0x40000000;
     else
         mask = 0;
-#else
-    mask = 0;
-    if (var->Flags & TF_CHIP)
-        yerror(var->LexIdx, EUNREG_CHIP);
-#endif
 
     if (var->var_Stor.st_Flags & SF_CODE) {
         if (var->Flags & TF_AUTOINIT) {     /*  __autoinit const only   */
