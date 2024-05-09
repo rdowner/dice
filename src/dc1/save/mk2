@@ -1,3 +1,0 @@
-
-lc_dcc -new -r -v -odcc:bin2/xc_dc1 -Odtmp:comp/c1/ stmt.c main.c lex.c toplevel.c types.c sym.c sem.c subs.c gen.c cexp.c block.c asm1.c asm2.c reg.c asubs.c genmisc.c genlogic.c genarith.c genbool.c genass.c asmaddr.c
-
