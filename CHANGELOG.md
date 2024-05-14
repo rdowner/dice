@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- All Amiga prototype, pragma, etc. header files removed. I couldn't be certain
+  that they are not derived from the Amiga NDKs. They should be unnecessary
+  anyway, instead provided externally at build time.
 - Tabs to spaces. I realise this may upset some people, but DICE source code is
   consistent that the indentation is 4 spaces - but that every 8 spaces gets
   collapsed into a single tab. This style of identation is uncommon these days
