@@ -7,14 +7,15 @@
 # PROTOS = (name of the header file for automatically-generated prototypes; optional)
 # include $(TOPDIR)/common.mk
 
+BUILDDIR = $(TOPDIR)/tmp-stage$(STAGE)/$(SUBDIR)
+PREFIX = $(TOPDIR)/stage$(STAGE)
+
 CFLAGS = -Wall -Wno-unused-result -Wstrict-prototypes -Werror
 # CFLAGS += -O2
 CFLAGS += -g
-CFLAGS += -DNO_ASM -DINTELBYTEORDER -D__STDC_WANT_LIB_EXT2__ -D_INSTDIR=$(realpath $(PREFIX))/
+CFLAGS += -DNO_ASM -DINTELBYTEORDER -D__STDC_WANT_LIB_EXT2__ -D_INSTDIR=$(abspath $(PREFIX))/
 CFLAGS += -I$(BUILDDIR) -I$(TOPDIR)
 
-BUILDDIR = $(TOPDIR)/tmp-stage$(STAGE)/$(SUBDIR)
-PREFIX = $(TOPDIR)/stage$(STAGE)
 OBJS = $(addprefix $(BUILDDIR)/, $(C_SRCS:.c=.o))
 
 ifeq ($(STAGE),1)
@@ -49,16 +50,11 @@ endif
 $(BUILDDIR) :
 	mkdir -p $@
 
-ifdef C_SRCS
 ifdef PROTOS
 $(PROTOS) : $(C_SRCS)
 	-fgrep -h Prototype $^ >$@.new
 	diff -q $@.new $@ || mv -f $@.new $@
 endif
-
-.depend : $(PROTOS)
-	mkdep $(CFLAGS) $(C_SRCS)
-include .depend
 
 $(BUILDDIR)/%.o: %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $^
@@ -73,4 +69,8 @@ $(LIB_WITH_PATH) : $(OBJS)
 	ar $(ARFLAGS) $@ $^
 endif
 
-endif # C_SRCS
+ifdef C_SRCS
+.depend : $(PROTOS)
+	mkdep $(CFLAGS) $(C_SRCS)
+include .depend
+endif

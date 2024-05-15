@@ -12,6 +12,9 @@ BINS = $(addprefix $(BUILDDIR)/, $(C_SRCS:.c=))
 
 all : $(BINS)
 
+%: %.o
+	$(CC) $(LDFLAGS) -o $@ $^ $(SUPLIB)
+
 clean :
 	-rm -f $(BINS) $(OBJS) .depend
 
@@ -21,6 +24,3 @@ install :
 
 uninstall :
 	rm -f $(addprefix $(DESTDIR)$(PREFIX)/bin/, $(C_SRCS:.c=))
-
-%: %.o
-	$(CC) $(LDFLAGS) -o $@ $^ $(SUPLIB)
