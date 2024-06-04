@@ -12,6 +12,8 @@
  *  Send an AREXX command according to arguments and RexxHostName
  */
 
+#include "defs.h"
+
 #ifdef AMIGA
 
 #include "rexx.h"

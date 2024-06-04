@@ -142,13 +142,13 @@ __dice_rexx_exit()
     }
 }
 
-long
+int32_t
 PlaceRexxCommandDirect(port, remoteName, arg, pres, pec)
 MsgPort *port;
 char *remoteName;
 char *arg;
 char **pres;
-long *pec;
+int32_t *pec;
 {
     char *rpn = RexxPortName;
     long r;
@@ -159,12 +159,12 @@ long *pec;
     return(r);
 }
 
-long
+int32_t
 PlaceRexxCommand(port, arg, pres, pec)
 MsgPort *port;
 char *arg;
 char **pres;
-long *pec;
+int32_t *pec;
 {
     RexxIPNode rip;
     long rc = -2;

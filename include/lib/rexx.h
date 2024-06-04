@@ -10,6 +10,8 @@
 #ifndef LIB_REXX_H
 #define LIB_REXX_H
 
+#include <stdint.h>
+
 #ifndef EXEC_TYPES_H
 #include <exec/types.h>
 #endif
@@ -17,8 +19,8 @@
 #include <exec/ports.h>
 #endif
 
-long PlaceRexxCommand(struct MsgPort *, char *, char **, long *);
-long PlaceRexxCommandDirect(struct MsgPort *, char *, char *, char **, long *);
+int32_t PlaceRexxCommand(struct MsgPort *, char *, char **, int32_t *);
+int32_t PlaceRexxCommandDirect(struct MsgPort *, char *, char *, char **, int32_t *);
 void ProcessRexxCommands(struct MsgPort *);
 short CreateGlobalDiceRexxPort(struct MsgPort *, char *);
 short CreateDiceRexxPort(struct MsgPort *, char *);
@@ -44,7 +46,7 @@ extern struct Library *RexxSysBase; /*  NULL if DICE was unable to open lib*/
  *  message ports) when applicable, -1 on error.
  */
 
-long DoRexxCommand(void *rexxmsg, struct MsgPort *port, char *arg0, char **resstr);
+int32_t DoRexxCommand(void *rexxmsg, struct MsgPort *port, char *arg0, char **resstr);
 
 extern char *RexxHostName;
 extern short RexxSigBit;

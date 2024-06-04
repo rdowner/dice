@@ -2225,6 +2225,7 @@ int rc;
     return(r);
 }
 
+int32_t
 DoRexxCommand(msg, port, arg0, pres)
 void *msg;
 struct MsgPort *port;
