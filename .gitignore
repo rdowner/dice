@@ -6,7 +6,9 @@ ubin/
 ulib/
 .depend
 stage1/
+stage2/
 tmp-stage1/
+tmp-stage2/
 
 # Amiga header files - not to be checked in
 include/amiga31

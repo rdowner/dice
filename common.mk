@@ -7,20 +7,27 @@
 # PROTOS = (name of the header file for automatically-generated prototypes; optional)
 # include $(TOPDIR)/common.mk
 
+STAGE1DIR = $(TOPDIR)/stage1
+
 BUILDDIR = $(TOPDIR)/tmp-stage$(STAGE)/$(SUBDIR)
 PREFIX = $(TOPDIR)/stage$(STAGE)
 
+OBJS = $(addprefix $(BUILDDIR)/, $(C_SRCS:.c=.o))
+
+ifeq ($(STAGE),1)
 CFLAGS = -Wall -Wno-unused-result -Wstrict-prototypes -Werror
 # CFLAGS += -O2
 CFLAGS += -g
 CFLAGS += -DNO_ASM -DINTELBYTEORDER -D__STDC_WANT_LIB_EXT2__ -D_INSTDIR=$(abspath $(PREFIX))/
 CFLAGS += -I$(BUILDDIR) -I$(TOPDIR)
 
-OBJS = $(addprefix $(BUILDDIR)/, $(C_SRCS:.c=.o))
-
-ifeq ($(STAGE),1)
 SUPLIB = -L $(TOPDIR)/tmp-stage$(STAGE)/suplib -lamiga
 else
+CC = $(STAGE1DIR)/bin/dcc
+CFLAGS = -2.0 -//
+CFLAGS += -DNO_ASM -DINTELBYTEORDER -DCROSS_COMPILE -D_INSTDIR=$(abspath $(PREFIX))/
+CFLAGS += -I$(TOPDIR)
+LDFLAGS = -2.0
 SUPLIB =
 endif
 
