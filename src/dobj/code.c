@@ -12,7 +12,7 @@
 
 #define DISOBJ_C
 
-#ifdef AMIGA
+#if defined(AMIGA) && !defined(CROSS_COMPILE)
 #include "/das/ops.c"
 #else
 #include "../das/ops.c"

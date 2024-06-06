@@ -47,7 +47,7 @@ typedef struct MinNode MinNode;
 typedef struct Node Node;
 typedef struct List List;
 
-#ifdef AMIGA
+#if defined(AMIGA) && !defined(CROSS_COMPILE)
 #include "/das/ops.h"
 #else
 #include "../das/ops.h"

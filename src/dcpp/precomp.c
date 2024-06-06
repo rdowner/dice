@@ -13,7 +13,7 @@
 
 #include "defs.h"
 
-#ifdef AMIGA
+#if defined(AMIGA) && !defined(CROSS_COMPILE)
 #include "/dc1/tokens.h"
 #else
 #include "../dc1/tokens.h"
