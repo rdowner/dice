@@ -262,7 +262,7 @@ CompType(short t, Type **ptype, int32_t *pflags, int32_t *rflags)
              */
             if ((Type *)LexData == &LongType && type == &LongType) {
                 t = GetToken();
-                type = &LongLongType;
+                type = &LongType;
             } else if ((Type *)LexData == &DoubleType && type == &LongType) {
                 type = &LongDoubleType;
                 t = GetToken();

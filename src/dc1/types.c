@@ -60,7 +60,9 @@ Prototype Type VoidType;
 Prototype Type CharType;
 Prototype Type ShortType;
 Prototype Type LongType;
+#ifdef SUPPORT_QUAD
 Prototype Type LongLongType;
+#endif
 Prototype Type CharPtrType;
 Prototype Type CharAryType;
 Prototype Type VoidPtrType;
@@ -69,7 +71,9 @@ Prototype Type LongPtrType;
 Prototype Type UCharType;
 Prototype Type UShortType;
 Prototype Type ULongType;
+#ifdef SUPPORT_QUAD
 Prototype Type ULongLongType;
+#endif
 
 Prototype Type FloatType;
 Prototype Type DoubleType;
@@ -100,7 +104,9 @@ int     CharAlign = 1;
 int     ShortAlign = 2;
 int     IntAlign = 2;
 int     LongAlign = 2;
+#ifdef SUPPORT_QUAD
 int     QuadAlign = 2;
+#endif
 int     FloatAlign = 2;
 int     DoubleAlign = 2;
 int     LongDoubleAlign = 2;
@@ -116,7 +122,9 @@ int     CharSize = 1;
 int     ShortSize = 2;
 int     IntSize = 4;
 int     LongSize = 4;
+#ifdef SUPPORT_QUAD
 int     QuadSize = 4;
+#endif
 int     FloatSize = 4;
 int     DoubleSize = 8;
 int     LongDoubleSize = 8;
@@ -128,7 +136,9 @@ Type VoidType       = { TID_INT,    &VoidAlign,         0,      &VoidSize };
 Type CharType       = { TID_INT,    &CharAlign,         0,      &CharSize };
 Type ShortType      = { TID_INT,    &ShortAlign,        0,      &ShortSize };
 Type LongType       = { TID_INT,    &IntAlign,          0,      &IntSize };
+#ifdef SUPPORT_QUAD
 Type LongLongType   = { TID_INT,    &QuadAlign,         0,      &QuadSize };
+#endif
 Type CharPtrType    = { TID_PTR,    &IntAlign,          TF_UNSIGNED, &IntSize };
 Type CharAryType    = { TID_ARY,    &CharAlign,         TF_UNSIGNED, &IntSize };
 Type VoidPtrType    = { TID_PTR,    &PointerAlign,      TF_UNSIGNED, &PointerSize };
@@ -137,7 +147,9 @@ Type LongPtrType    = { TID_PTR,    &PointerAlign,      TF_UNSIGNED, &LongSize }
 Type UCharType      = { TID_INT,    &CharAlign,         TF_UNSIGNED, &CharSize };
 Type UShortType     = { TID_INT,    &ShortAlign,        TF_UNSIGNED, &ShortSize };
 Type ULongType      = { TID_INT,    &LongAlign,         TF_UNSIGNED, &LongSize };
+#ifdef SUPPORT_QUAD
 Type ULongLongType  = { TID_INT,    &QuadAlign,         TF_UNSIGNED, &QuadSize };
+#endif
 
 Type FloatType      = { TID_FLT,    &FloatAlign,        0,      &FloatSize };
 Type DoubleType     = { TID_FLT,    &DoubleAlign,       0,      &DoubleSize };
@@ -196,14 +208,18 @@ InitTypes(int enab)
         PointerAlign = sizeof(void *);
         IntAlign = sizeof(int);
         LongAlign = sizeof(int);
+#ifdef SUPPORT_QUAD
         QuadAlign = sizeof(int);
+#endif
         FloatAlign = sizeof(int);
         DoubleAlign = sizeof(int);
         LongDoubleAlign = sizeof(int);
         PointerSize = sizeof(void *);
         IntSize = sizeof(int);
         LongSize = sizeof(long);        /* Rune ifc to machine native */
+#ifdef SUPPORT_QUAD
         QuadSize = sizeof(quad_t);      /* Rune ifc to machine native */
+#endif
         FloatSize = sizeof(float);
         DoubleSize = sizeof(double);
         LongDoubleSize = sizeof(long double);
@@ -219,7 +235,9 @@ InitTypes(int enab)
         LooseTypeLink(&CharType,  &UCharType);
         LooseTypeLink(&ShortType, &UShortType);
         LooseTypeLink(&LongType,  &ULongType);
+#ifdef SUPPORT_QUAD
         LooseTypeLink(&LongLongType,  &ULongLongType);
+#endif
     }
     if (enab == 0 && --Refs == 0) {
         ;

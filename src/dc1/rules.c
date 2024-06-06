@@ -777,9 +777,11 @@ int bigok;
         case 4:
             type = (doUnsigned) ? &ULongType : &LongType;
             break;
+#ifdef SUPPORT_QUAD
         case 8:
             type = (doUnsigned) ? &ULongLongType : &LongLongType;
             break;
+#endif
         default:
             yerror(exp->ex_LexIdx, ESOFT_ILLEGAL_COMPARE);
             break;
