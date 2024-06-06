@@ -8,6 +8,8 @@
  *    DICE-LICENSE.TXT.
  */
 
+#include <stdint.h>
+
 #define SECTBLKSIZE     8192    /*  allocation size */
 
 /*

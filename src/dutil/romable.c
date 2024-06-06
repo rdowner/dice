@@ -482,7 +482,11 @@ DumpHunks(fo1, fo2)
 FILE *fo1;
 FILE *fo2;
 {
+#ifdef unix
     int32_t endpc __attribute__((unused)) = CodeStart;
+#else
+    int32_t endpc = CodeStart;
+#endif
     short n;
     short nextIsEven = 1;
     Hunk *h;

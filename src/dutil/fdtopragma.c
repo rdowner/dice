@@ -37,12 +37,13 @@
 #endif
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <stdarg.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/file.h>
-#include <dirent.h>
+#include <sys/dir.h>
 #include <time.h>
 
 IDENT("FDTOPRAGMA", ".9");

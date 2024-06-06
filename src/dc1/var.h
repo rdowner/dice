@@ -16,6 +16,8 @@
  *  register variables as possible.
  */
 
+#include <sys/types.h>
+
 typedef struct Var {
     struct Var *Next;       /*  list of variables?           */
     struct Var *RegVar;     /*  if global placed in register */

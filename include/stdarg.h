@@ -15,5 +15,6 @@ typedef void *va_list;
 #define va_arg(valist,typename) ((valist = (void *)((char *)valist + sizeof(typename))), (*(typename *)((char *)(valist) - sizeof(typename))))
 #define va_start(valist,right)  (valist = (void*)((char *)&right + sizeof(right)))
 #define va_end(valist)
+#define va_copy(dest,src) (dest = src)
 
 #endif

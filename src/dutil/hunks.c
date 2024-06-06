@@ -77,7 +77,11 @@ char *fileName;
 
     if ((fi = fopen(fileName, "r")) != NULL) {
         uint32_t type;
+#ifdef unix
         uint32_t flags __attribute__((unused));
+#else
+        uint32_t flags;
+#endif
         uint32_t skip;
         uint32_t n;
 

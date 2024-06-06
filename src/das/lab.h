@@ -7,6 +7,8 @@
  *    DICE-LICENSE.TXT.
  */
 
+#include <stdint.h>
+
 #define LSIZE   1024
 #define LMASK   (LSIZE-1)
 

@@ -7,6 +7,8 @@
  *    DICE-LICENSE.TXT.
  */
 
+#include <stdint.h>
+
 #define OSIZE   128
 #define OMASK   (OSIZE-1)
 

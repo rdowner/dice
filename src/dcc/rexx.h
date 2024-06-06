@@ -25,8 +25,6 @@
 
 typedef struct MsgPort  MsgPort;
 typedef struct Message  Message;
-typedef struct List     List;
-typedef struct Node     Node;
 typedef struct RexxMsg  RexxMsg;
 
 typedef struct RexxIPNode {
