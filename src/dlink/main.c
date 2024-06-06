@@ -460,7 +460,7 @@ main(int ac, char **av)
                     Module *mod;
                     short i;
 
-                    while ((mod = RemHead(&LList)) != NULL) {
+                    while ((mod = (Module *)RemHead(&LList)) != NULL) {
                         for (i = 0; i < mod->NumHunks; ++i)
                             zfree(mod->Hunks[i], sizeof(Hunk));
                         if (mod->NumHunks)

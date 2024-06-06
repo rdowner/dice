@@ -36,7 +36,7 @@ ResetSymbol(void)
     if (SymList.lh_Head == NULL)
         cerror(EFATAL, "Software Error, ResetSymbolHash");
 
-    while ((s = RemHead(&SymList)) != NULL)
+    while ((s = (Symbol *)RemHead(&SymList)) != NULL)
         free(s);
     SymOffCache = NULL;
 }
@@ -63,7 +63,7 @@ AddSymbol(Symbol *sym)
     }
     if (sym->sm_Type > 2)
         sym->sm_DefHunk = -1;
-    for (s = GetTail(&SymList); s; s = GetPred((Node *)&s->sm_Node)) {
+    for (s = (Symbol *)GetTail(&SymList); s; s = (Symbol *)GetPred((Node *)&s->sm_Node)) {
         if (s->sm_Value < sym->sm_Value)
             break;
     }
@@ -76,7 +76,7 @@ FindSymbolName(char *name)
 {
     Symbol *s;
 
-    for (s = GetHead(&SymList); s; s = GetSucc((Node *)&s->sm_Node)) {
+    for (s = (Symbol *)GetHead(&SymList); s; s = (Symbol *)GetSucc((Node *)&s->sm_Node)) {
         if (strcmp(s->sm_Name, name) == 0)
             return(s);
     }
@@ -93,19 +93,19 @@ FindSymbolOffset(int32_t offset, short hunkNo)
     Symbol *s = SymOffCache;
 
     if (s == NULL)
-        s = GetHead(&SymList);
+        s = (Symbol *)GetHead(&SymList);
 
     while (s && s->sm_Value >= offset)
-        s = GetPred((Node *)&s->sm_Node);
+        s = (Symbol *)GetPred((Node *)&s->sm_Node);
 
     if (s == NULL)
-        s = GetHead(&SymList);
+        s = (Symbol *)GetHead(&SymList);
 
     while (s && s->sm_Value < offset)
-        s = GetSucc((Node *)&s->sm_Node);
+        s = (Symbol *)GetSucc((Node *)&s->sm_Node);
 
     while (s && s->sm_DefHunk != hunkNo)
-        s = GetSucc((Node *)&s->sm_Node);
+        s = (Symbol *)GetSucc((Node *)&s->sm_Node);
 
     if (s)
         SymOffCache = s;
@@ -118,7 +118,7 @@ FindSymbolNext(Symbol *sym)
 {
     Symbol *s;
 
-    for (s = GetSucc((Node *)&sym->sm_Node); s && s->sm_DefHunk != sym->sm_DefHunk; s = GetSucc((Node *)&s->sm_Node));
+    for (s = (Symbol *)GetSucc((Node *)&sym->sm_Node); s && s->sm_DefHunk != sym->sm_DefHunk; s = (Symbol *)GetSucc((Node *)&s->sm_Node));
     return(s);
 }
 
@@ -127,7 +127,7 @@ FindSymbolPrev(Symbol *sym)
 {
     Symbol *s;
 
-    for (s = GetPred((Node *)&sym->sm_Node); s && s->sm_DefHunk != sym->sm_DefHunk; s = GetPred((Node *)&s->sm_Node));
+    for (s = (Symbol *)GetPred((Node *)&sym->sm_Node); s && s->sm_DefHunk != sym->sm_DefHunk; s = (Symbol *)GetPred((Node *)&s->sm_Node));
     return(s);
 }
 

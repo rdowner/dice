@@ -660,19 +660,19 @@ List *list;
     HunkListNode *ht;
     Hunk *hunk;
 
-    hn = RemHead(list);
+    hn = (HunkListNode *)RemHead(list);
     if (hn == NULL)
         return;
     if (hn->Node.ln_Type != NT_CODE) {
         cerror(EERROR_PI_EXPECTED_CODE);
         return;
     }
-    while ((ht = RemHead(list)) != NULL) {
+    while ((ht = (HunkListNode *)RemHead(list)) != NULL) {
         if (ht->Node.ln_Type == NT_CODE) {
             cerror(EERROR_PI_EXPECTED_ONE_CODE);
             return;
         }
-        while ((hunk = RemHead(&ht->HunkList)) != NULL) {
+        while ((hunk = (Hunk *)RemHead(&ht->HunkList)) != NULL) {
             if (hunk->Flags & HF_DATABSS)
                 hn->AddSize += (hunk->TotalBytes + 3) & ~3;
             else

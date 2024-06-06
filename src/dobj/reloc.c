@@ -35,7 +35,7 @@ ResetReloc(void)
     if (RelList.lh_Head == NULL)
         cerror(EFATAL, "Software Error, ResetReloc");
 
-    while ((r = RemHead(&RelList)) != NULL)
+    while ((r = (RelocInfo *)RemHead(&RelList)) != NULL)
         free(r);
     RelOffCache = NULL;
 }
@@ -57,7 +57,7 @@ AddRelocInfo(short srcHunk, short dstHunk, int32_t size, short flags, int32_t of
     ri->ri_RelocFlags= flags;
     ri->ri_SrcOffset = offset;
 
-    for (r = GetTail(&RelList); r; r = GetPred((Node *)&r->ri_Node)) {
+    for (r = (RelocInfo *)GetTail(&RelList); r; r = (RelocInfo *)GetPred((Node *)&r->ri_Node)) {
         if (r->ri_SrcOffset < ri->ri_SrcOffset)
             break;
     }
@@ -70,19 +70,19 @@ FindRelocOffset(int32_t offset, short hunkNo)
     RelocInfo *r = RelOffCache;
 
     if (r == NULL)
-        r = GetHead(&RelList);
+        r = (RelocInfo *)GetHead(&RelList);
 
     while (r && r->ri_SrcOffset >= offset)
-        r = GetPred((Node *)&r->ri_Node);
+        r = (RelocInfo *)GetPred((Node *)&r->ri_Node);
 
     if (r == NULL)
-        r = GetHead(&RelList);
+        r = (RelocInfo *)GetHead(&RelList);
 
     while (r && r->ri_SrcOffset < offset)
-        r = GetSucc((Node *)&r->ri_Node);
+        r = (RelocInfo *)GetSucc((Node *)&r->ri_Node);
 
     while (r && r->ri_SrcHunk != hunkNo)
-        r = GetSucc((Node *)&r->ri_Node);
+        r = (RelocInfo *)GetSucc((Node *)&r->ri_Node);
 
     if (r)
         RelOffCache = r;
@@ -95,7 +95,7 @@ FindRelocNext(RelocInfo *rel)
 {
     RelocInfo *r;
 
-    for (r = GetSucc((Node *)&rel->ri_Node); r && r->ri_SrcHunk != rel->ri_SrcHunk; r = GetSucc((Node *)&r->ri_Node));
+    for (r = (RelocInfo *)GetSucc((Node *)&rel->ri_Node); r && r->ri_SrcHunk != rel->ri_SrcHunk; r = (RelocInfo *)GetSucc((Node *)&r->ri_Node));
     return(r);
 }
 
