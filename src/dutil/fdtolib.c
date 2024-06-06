@@ -206,20 +206,22 @@ main(int ac, char **av)
     if (RegOpt) {
         FILE *fi;
         char rs_tmp[L_tmpnam];
+        char *cmd;
 
-        snprintf(Buf, sizeof(Buf), "%sdcc -mRRX %s -a -o %s%s%s",
+        asprintf(&cmd, "%sdcc -mRRX %s -a -o %s%s%s",
             Prefix,
             HdrFile,
             tmpnam(rs_tmp),
             DccOptsBuf,
             (Symbols ? " -s -sym" : "")
         );
-        puts(Buf);
+        puts(cmd);
 #ifdef unix
-        system(Buf);
+        system(cmd);
 #else
-        Execute(Buf, NULL, NULL);
+        Execute(cmd, NULL, NULL);
 #endif
+        free(cmd);
 
         if ((fi = fopen(rs_tmp, "r")) == NULL) {
             puts("Unable to generate register specification file");

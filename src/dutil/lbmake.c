@@ -777,7 +777,7 @@ char *objFile;
 char *aux;
 {
     int32_t r;
-    char buf[1024];
+    char *cmd;
     char hfile[256];
 
     /*
@@ -792,18 +792,23 @@ char *aux;
     if (strreplace(hfile, "/fd/", "/clib/") < 0)
         strreplace(hfile, ":fd/", ":clib/");
 
-    r = snprintf(buf, sizeof(buf),
+    if (aux) {
+        asprintf(&cmd,
+                 "%s %s -h %s -o %s %s -auto %s",
+                 FDToLibName, srcFile, hfile, objFile, FlagsBuf, aux);
+    } else {
+        asprintf(&cmd,
                  "%s %s -h %s -o %s %s",
                  FDToLibName, srcFile, hfile, objFile, FlagsBuf);
-    if (aux)
-        sprintf(buf + r, " -auto %s", aux);
-    puts(buf);
+    }
+    puts(cmd);
     fflush(stdout);     /* SAS/C */
 
     r = 0;
     if (DoNotExecute == 0)
-        r = system(buf);
+        r = system(cmd);
 
+    free(cmd);
     return(r);
 }
 
@@ -813,17 +818,18 @@ char *srcFile;
 char *objFile;
 {
     int32_t r;
-    char buf[1024];
+    char *cmd;
 
-    snprintf(buf, sizeof(buf),
+    asprintf(&cmd,
              "%s %s -o %s %s -c", CompilerName, srcFile, objFile, FlagsBuf);
-    puts(buf);
+    puts(cmd);
     fflush(stdout);     /* SAS/C */
 
     r = 0;
     if (DoNotExecute == 0)
-        r = system(buf);
+        r = system(cmd);
 
+    free(cmd);
     return(r);
 }
 
