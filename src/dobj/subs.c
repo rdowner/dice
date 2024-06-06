@@ -11,6 +11,11 @@
 #include "defs.h"
 #include <stdarg.h>
 
+#ifdef INTELBYTEORDER
+/* to get FromMsbOrder() etc - strange place for it but oh well... */
+#include <include/lib/version.h>
+#endif
+
 Prototype int cprintf(const char *ctl, ...);
 Prototype int csprintf(char *buf, const char *ctl, ...);
 Prototype char * RelocToStr(RelocInfo *r, int offset, int ext, int size, int srcHunk);
@@ -199,13 +204,13 @@ freadl(void *buf, int elsize, int nel, FILE *fi)
         uword *bptr;
 
         for (bptr = buf, i = n; i > 0; --i, ++bptr) {
-            *bptr = ntohs(*bptr);
+            *bptr = FromMsbOrderShort(*bptr);
         }
     } else if (elsize == 4) {
         uint32_t *bptr;
 
         for (bptr = buf, i = n; i > 0; --i, ++bptr) {
-            *bptr = ntohl(*bptr);
+            *bptr = FromMsbOrder(*bptr);
         }
     }
 #endif

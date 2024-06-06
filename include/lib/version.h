@@ -33,10 +33,10 @@
 #endif
 
 #ifdef INTELBYTEORDER
-extern unsigned int FromMsbOrder(unsigned int);
-extern unsigned int ToMsbOrder(unsigned int);
-extern unsigned short FromMsbOrderShort(unsigned short);
-extern unsigned short ToMsbOrderShort(unsigned short);
+#define FromMsbOrder(n) ( (((n)&0xff000000)>>24) | (((n)&0x00ff0000)>>8) | (((n)&0x0000ff00)<<8) | (((n)&0x000000ff)<<24) )
+#define ToMsbOrder(n)   ( (((n)&0xff000000)>>24) | (((n)&0x00ff0000)>>8) | (((n)&0x0000ff00)<<8) | (((n)&0x000000ff)<<24) )
+#define FromMsbOrderShort(n) ((((n)&0x00ff)<<8) | (((n)&0xff00)>>8))
+#define ToMsbOrderShort(n)   ((((n)&0x00ff)<<8) | (((n)&0xff00)>>8))
 #else
 #define FromMsbOrder(n)         (n)
 #define ToMsbOrder(n)           (n)
