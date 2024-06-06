@@ -27,7 +27,8 @@ CC = $(STAGE1DIR)/bin/dcc
 CFLAGS = -2.0 -//
 CFLAGS += -DNO_ASM -DINTELBYTEORDER -DCROSS_COMPILE -D_INSTDIR=$(abspath $(PREFIX))/
 CFLAGS += -I$(TOPDIR)
-LDFLAGS = -2.0
+CFLAGS += -d1 -s
+LDFLAGS = -2.0 -d1 -s
 SUPLIB =
 endif
 
