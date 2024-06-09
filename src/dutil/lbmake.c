@@ -67,7 +67,7 @@ KeyNode *FindKeyNode(KeyNode *, char *);
 KeyNode *FindOptionNode(KeyNode *, char *);
 int     CompileStuff(KeyNode *);
 int     JoinStuff(KeyNode *, int);
-int     ScanLibDefFile(void);
+int     ScanLibDefFile(char *);
 int     ProcessCommandLine(int, char *, int32_t);
 int     ProcessFileLine(int, char *, int32_t);
 KeyNode* AllocKeyNode(char *, char *, char *, char *);
@@ -125,9 +125,10 @@ DCOPYRIGHT;
 int
 main(int ac, char **av)
 {
-    short i;
     short j;
     int r = 0;
+    char **arg = av;
+    char *libDefFilename = NULL;
 
     NewList(&KeyList);
     NewList(&FileList);
@@ -136,42 +137,59 @@ main(int ac, char **av)
     DicePrefix(&CompilerName, av[0], "dcc");
     DicePrefix(&FDToLibName, av[0], "fdtolib");
 
-    if (ac == 1)
-        help(0);
+    // Skip past the first argument, which is the program name
+    arg++; ac--;
 
-    if (ScanLibDefFile() < 0)
+    if(ac == 0) { // No arguments, so show help
+        help(0);
+        return 0;
+    }
+
+    if (strncmp(*arg, "-d", 2) == 0) { // name of the lib.def file
+        char *a = *arg;
+        if (a[2] == 0) { // filename is in the next element of argv
+            arg++; ac--;
+            libDefFilename = *arg;
+        } else { // filename is straight after the option
+            libDefFilename = &a[2];
+        }
+        arg++; ac--;
+    }
+
+    if (ScanLibDefFile(libDefFilename) < 0)
         help(10);
 
-    for (i = 1; i < ac; ++i) {
-        char *ptr = av[i];
+    while(ac > 0) {
         short option;
         KeyNode *kn;
 
-        switch(*ptr) {
+        switch(**arg) {
         case '-':
-            if (strcmp(ptr, "-n") == 0) {
+            if (strcmp(*arg, "-n") == 0) {
                 DoNotExecute = 1;
                 continue;
             }
             option = -1;
-            ++ptr;
+            ++*arg;
             break;
         case '+':
-            ++ptr;
+            ++*arg;
         default:
             option = 1;
             break;
         }
-        for (kn = NULL, j = 0; (kn = FindKeyNode(kn, ptr)) != NULL; ++j)
+        for (kn = NULL, j = 0; (kn = FindKeyNode(kn, *arg)) != NULL; ++j)
             kn->kn_Option = option;
-        for (kn = NULL; (kn = FindOptionNode(kn, ptr)) != NULL; ++j) {
+        for (kn = NULL; (kn = FindOptionNode(kn, *arg)) != NULL; ++j) {
             if (kn->kn_Option == 0)
                 kn->kn_Option = option;
         }
         if (j == 0) {
-            printf("Unable to find symbol %s\n", ptr);
+            printf("Unable to find symbol %s\n", *arg);
             r = 10;
         }
+
+        arg++; ac--;
     }
 
     /*
@@ -240,7 +258,7 @@ main(int ac, char **av)
 void
 help(int code)
 {
-    puts("LBMAKE [keywords types]");
+    puts("LBMAKE [-d LIBDEFFILENAME] [keywords types]");
     exit(code);
 }
 
@@ -477,18 +495,21 @@ int need;
 }
 
 int
-ScanLibDefFile()
+ScanLibDefFile(char *libDefName)
 {
     FILE *fi;
     char *ptr;
     char buf[256];
     int r = 0;
     short lineNo = 0;
+
+    if (libDefName == NULL) {
 #ifdef AMIGA
-    char *libDefName = getenv("LIBDEF") ? getenv("LIBDEF") : "lib.def";
+    libDefName = "lib.def";
 #else
-    char *libDefName = getenv("LIBDEF") ? getenv("LIBDEF") : "ulib.def";
+    libDefName = "ulib.def";
 #endif
+    }
 
     if ((fi = fopen(libDefName, "r")) != NULL) {
         while (fgets(buf, sizeof(buf), fi)) {
@@ -506,7 +527,7 @@ ScanLibDefFile()
         }
         fclose(fi);
     } else {
-        printf("Unable to open lib.def\n");
+        printf("Unable to open %s\n", libDefName);
         r = -1;
     }
     return(r);
