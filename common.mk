@@ -25,7 +25,7 @@ SUPLIB = -L $(TOPDIR)/tmp-stage$(STAGE)/suplib -lamiga
 else
 CC = $(STAGE1DIR)/bin/dcc
 CFLAGS = -2.0 -//
-CFLAGS += -DNO_ASM -DINTELBYTEORDER -DCROSS_COMPILE -D_INSTDIR=$(abspath $(PREFIX))/
+CFLAGS += -DNO_ASM -DCROSS_COMPILE -D_INSTDIR=$(abspath $(PREFIX))/
 CFLAGS += -I$(TOPDIR)
 CFLAGS += -d1 -s
 LDFLAGS = -2.0 -d1 -s

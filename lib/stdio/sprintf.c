@@ -7,6 +7,7 @@
  *    DICE-LICENSE.TXT.
  */
 
+#include <stdlib.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <lib/misc.h>
