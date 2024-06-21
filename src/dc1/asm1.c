@@ -224,7 +224,7 @@ Var *var;
         printf("\tdc.l\t0\n");      /*  next pointer    */
         printf("\tdc.l\t0\n");      /*  siblings        */
         printf("\tdc.l\t0\n");      /*  our parent      */
-        printf("\tdc.w\t%zd\n", (40 + strlen(prefix) + strlen(SymToString(var->Sym)) + (1 + 3)) & ~3);   /*  size of structure   */
+        printf("\tdc.w\t%lu\n", (40 + strlen(prefix) + strlen(SymToString(var->Sym)) + (1 + 3)) & ~3);   /*  size of structure   */
         printf("\tdc.w\t0\n");
         printf("\tdc.l\t0\n");      /*  time stamp      */
         printf("\tdc.l\t0\n");      /*  accum time      */

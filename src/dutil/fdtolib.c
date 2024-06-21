@@ -485,7 +485,7 @@ int bias;
                 fprintf(ft, "\tdc.l\t0\n");
                 fprintf(ft, "\tdc.l\t0\n");
                 fprintf(ft, "\tdc.l\t0\n");
-                fprintf(ft, "\tdc.w\t%zd\n",
+                fprintf(ft, "\tdc.w\t%lu\n",
                         (40 + strlen(FuncName) + (1 + 3)) & ~3);
                 fprintf(ft, "\tdc.w\t0\n");
                 fprintf(ft, "\tdc.l\t0\n");
