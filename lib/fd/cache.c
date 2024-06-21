@@ -10,6 +10,8 @@
  *
  */
 
+#ifdef ENABLE_DICECACHE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ioctl.h>
@@ -99,3 +101,4 @@ void *arg2;
     return(r);
 }
 
+#endif

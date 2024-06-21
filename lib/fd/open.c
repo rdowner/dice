@@ -16,14 +16,18 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <lib/misc.h>
+#ifdef ENABLE_DICECACHE
 #include <clib/dicecache_protos.h>
+#endif
 
 #ifndef UnixToAmigaPath
 #define UnixToAmigaPath(path)   path
 #endif
 
 extern struct DosLibrary *DOSBase;
+#ifdef ENABLE_DICECACHE
 extern struct Library *DiceCacheBase;
+#endif
 
 _IOFDS *
 _MakeFD(pfd)
@@ -74,6 +78,7 @@ int modes;
     if (d == NULL)
         return(-1);
 
+#ifdef ENABLE_DICECACHE
     /*
      *  If the cache is enabled attempt to open from the cache
      */
@@ -101,6 +106,7 @@ int modes;
             return(-1);
         }
     }
+#endif
 
     /*
      *  If we can't lock then be careful to call Open only once.  It
