@@ -113,7 +113,7 @@ romrl.lib:
 
 amiga13l.lib:   $(DLIB)amiga13l.lib
 
-$(DLIB)amiga13l.lib : $(DLIB)/dlib.orig/amiga13l.lib
+$(DLIB)amiga13l.lib : $(DLIB)dlib.orig/amiga13l.lib
     copy %(right) %(left)
 
 amiga13s.lib:   $(DLIB)amiga13s.lib
@@ -137,8 +137,8 @@ amiga13pl.lib:
 
 amiga20l.lib:   $(DLIB)amiga20l.lib
 
-$(DLIB)amiga20l.lib : $(DLIB)/dlib.orig/amiga20l.lib amiga20_func_l.lib
-    join $(DLIB)amiga20_func_l.lib $(DLIB)/dlib.orig/amiga20l.lib AS %(left)
+$(DLIB)amiga20l.lib : $(DLIB)dlib.orig/amiga20l.lib amiga20_func_l.lib
+    join $(DLIB)amiga20_func_l.lib $(DLIB)dlib.orig/amiga20l.lib AS %(left)
 
 amiga20s.lib:   $(DLIB)amiga20s.lib
 

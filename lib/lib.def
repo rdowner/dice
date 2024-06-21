@@ -59,6 +59,7 @@
 @Library    amiga20     dlib:amiga20%s.lib
 @Library    mlib        dlib:m%s.lib
 @Library    auto        dlib:auto%s.lib
+@Library    a20func     dlib:amiga20_func_%s.lib
 
 @DefTree    dtmp:comp3/lib_%s/
 
@@ -403,25 +404,25 @@ float/dpa_sqrt.a        +clib +uclib  -pass2 +lconvert
 float/dpa_modf.c        +clib +uclib  -pass2 +lconvert
 float/dpa_atan2.c       +clib +uclib  -pass2 +lconvert
 
-amigalib/systemtags.c                       +amiga20            +a20func20
-amigalib/aslreqtags.c                       +amiga20            +a20func20
-amigalib/allocasltags.c                     +amiga20            +a20func20
-amigalib/newloadsegtags.c                   +amiga20            +a20func20
-amigalib/openscreentags.c                   +amiga20            +a20func20
-amigalib/openwindowtags.c                   +amiga20            +a20func20
-amigalib/allocdosobjtags.c                  +amiga20            +a20func20
-amigalib/createnewproctags.c                +amiga20            +a20func20
-amigalib/easyreq.c                          +amiga20            +a20func20
-amigalib/printf.c                           +amiga20            +a20func20
-amigalib/createtask.c                       +amiga13 +amiga20   +a20func20
-amigalib/createextio.c                      +amiga13 +amiga20   +a20func20
-amigalib/createport.c                       +amiga13 +amiga20   +a20func20
-amigalib/createstdio.c                      +amiga13 +amiga20   +a20func20
-amigalib/newlist.c                          +amiga13 +amiga20   +a20func20
-amigalib/system.c                           +amiga13 +amiga20   +a20func20
-amigalib/beginio.a                          +amiga13 +amiga20   +a20func20
-amigalib/custom.a                           +amiga13 +amiga20   +a20func20
-amigalib/icrlvo.a                           +amiga13 +amiga20   +a20func20
+amigalib/systemtags.c                       +amiga20            +a20func
+amigalib/aslreqtags.c                       +amiga20            +a20func
+amigalib/allocasltags.c                     +amiga20            +a20func
+amigalib/newloadsegtags.c                   +amiga20            +a20func
+amigalib/openscreentags.c                   +amiga20            +a20func
+amigalib/openwindowtags.c                   +amiga20            +a20func
+amigalib/allocdosobjtags.c                  +amiga20            +a20func
+amigalib/createnewproctags.c                +amiga20            +a20func
+amigalib/easyreq.c                          +amiga20            +a20func
+amigalib/printf.c                           +amiga20            +a20func
+amigalib/createtask.c                       +amiga13 +amiga20   +a20func
+amigalib/createextio.c                      +amiga13 +amiga20   +a20func
+amigalib/createport.c                       +amiga13 +amiga20   +a20func
+amigalib/createstdio.c                      +amiga13 +amiga20   +a20func
+amigalib/newlist.c                          +amiga13 +amiga20   +a20func
+amigalib/system.c                           +amiga13 +amiga20   +a20func
+amigalib/beginio.a                          +amiga13 +amiga20   +a20func
+amigalib/custom.a                           +amiga13 +amiga20   +a20func
+amigalib/icrlvo.a                           +amiga13 +amiga20   +a20func
 
 [dinclude:]amiga13/fd/mathffp_lib.fd              +amiga13
 [dinclude:]amiga13/fd/mathtrans_lib.fd            +amiga13
@@ -442,39 +443,39 @@ amigalib/icrlvo.a                           +amiga13 +amiga20   +a20func20
 [dinclude:]amiga13/fd/icon_lib.fd                 +amiga13
 [dinclude:]amiga13/fd/romboot_lib.fd              +amiga13
 
-[dinclude:]amiga20/fd/asl_lib.fd                  +amiga2020
-[dinclude:]amiga20/fd/battclock_lib.fd            +amiga2020
-[dinclude:]amiga20/fd/battmem_lib.fd              +amiga2020
-[dinclude:]amiga20/fd/cia_lib.fd                  +amiga2020
-[dinclude:]amiga20/fd/commodities_lib.fd          +amiga2020
-[dinclude:]amiga20/fd/console_lib.fd              +amiga2020
-[dinclude:]amiga20/fd/diskfont_lib.fd             +amiga2020
-[dinclude:]amiga20/fd/dos_lib.fd                  +amiga2020
-[dinclude:]amiga20/fd/exec_lib.fd                 +amiga2020
-[dinclude:]amiga20/fd/expansion_lib.fd            +amiga2020
-[dinclude:]amiga20/fd/gadtools_lib.fd             +amiga2020
-[dinclude:]amiga20/fd/graphics_lib.fd             +amiga2020
-[dinclude:]amiga20/fd/icon_lib.fd                 +amiga2020
-[dinclude:]amiga20/fd/iffparse_lib.fd             +amiga2020
-[dinclude:]amiga20/fd/input_lib.fd                +amiga2020
-[dinclude:]amiga20/fd/misc_lib.fd                 +amiga2020
-[dinclude:]amiga20/fd/intuition_lib.fd            +amiga2020
-[dinclude:]amiga20/fd/keymap_lib.fd               +amiga2020
-[dinclude:]amiga20/fd/layers_lib.fd               +amiga2020
-[dinclude:]amiga20/fd/mathffp_lib.fd              +amiga2020
-[dinclude:]amiga20/fd/mathieeedoubbas_lib.fd      +amiga2020
-[dinclude:]amiga20/fd/mathieeedoubtrans_lib.fd    +amiga2020
-[dinclude:]amiga20/fd/mathieeesingbas_lib.fd      +amiga2020
-[dinclude:]amiga20/fd/mathieeesingtrans_lib.fd    +amiga2020
-[dinclude:]amiga20/fd/mathtrans_lib.fd            +amiga2020
-[dinclude:]amiga20/fd/potgo_lib.fd                +amiga2020
-[dinclude:]amiga20/fd/ramdrive_lib.fd             +amiga2020
-[dinclude:]amiga20/fd/timer_lib.fd                +amiga2020
-[dinclude:]amiga20/fd/translator_lib.fd           +amiga2020
-[dinclude:]amiga20/fd/utility_lib.fd              +amiga2020
-[dinclude:]amiga20/fd/wb_lib.fd                   +amiga2020
-[dinclude:]amiga20/fd/disk_lib.fd                 +amiga2020
-[dinclude:]amiga20/fd/rexxsyslib_lib.fd           +amiga20 +amiga1320
+[dinclude:]amiga20/fd/asl_lib.fd                  +amiga20
+[dinclude:]amiga20/fd/battclock_lib.fd            +amiga20
+[dinclude:]amiga20/fd/battmem_lib.fd              +amiga20
+[dinclude:]amiga20/fd/cia_lib.fd                  +amiga20
+[dinclude:]amiga20/fd/commodities_lib.fd          +amiga20
+[dinclude:]amiga20/fd/console_lib.fd              +amiga20
+[dinclude:]amiga20/fd/diskfont_lib.fd             +amiga20
+[dinclude:]amiga20/fd/dos_lib.fd                  +amiga20
+[dinclude:]amiga20/fd/exec_lib.fd                 +amiga20
+[dinclude:]amiga20/fd/expansion_lib.fd            +amiga20
+[dinclude:]amiga20/fd/gadtools_lib.fd             +amiga20
+[dinclude:]amiga20/fd/graphics_lib.fd             +amiga20
+[dinclude:]amiga20/fd/icon_lib.fd                 +amiga20
+[dinclude:]amiga20/fd/iffparse_lib.fd             +amiga20
+[dinclude:]amiga20/fd/input_lib.fd                +amiga20
+[dinclude:]amiga20/fd/misc_lib.fd                 +amiga20
+[dinclude:]amiga20/fd/intuition_lib.fd            +amiga20
+[dinclude:]amiga20/fd/keymap_lib.fd               +amiga20
+[dinclude:]amiga20/fd/layers_lib.fd               +amiga20
+[dinclude:]amiga20/fd/mathffp_lib.fd              +amiga20
+[dinclude:]amiga20/fd/mathieeedoubbas_lib.fd      +amiga20
+[dinclude:]amiga20/fd/mathieeedoubtrans_lib.fd    +amiga20
+[dinclude:]amiga20/fd/mathieeesingbas_lib.fd      +amiga20
+[dinclude:]amiga20/fd/mathieeesingtrans_lib.fd    +amiga20
+[dinclude:]amiga20/fd/mathtrans_lib.fd            +amiga20
+[dinclude:]amiga20/fd/potgo_lib.fd                +amiga20
+[dinclude:]amiga20/fd/ramdrive_lib.fd             +amiga20
+[dinclude:]amiga20/fd/timer_lib.fd                +amiga20
+[dinclude:]amiga20/fd/translator_lib.fd           +amiga20
+[dinclude:]amiga20/fd/utility_lib.fd              +amiga20
+[dinclude:]amiga20/fd/wb_lib.fd                   +amiga20
+[dinclude:]amiga20/fd/disk_lib.fd                 +amiga20
+[dinclude:]amiga20/fd/rexxsyslib_lib.fd           +amiga20 +amiga13
 
 [dinclude:fd/]dicecache_lib.fd       +clib +uclib
 

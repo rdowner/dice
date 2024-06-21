@@ -19,7 +19,6 @@ stage1clean :
 
 stage2 :
 	$(MAKE) -f compiler+tools.mk STAGE=2 all install
-	$(MAKE) -f libraries.mk STAGE=2 all install
 .PHONY : stage2
 
 stage2clean :
