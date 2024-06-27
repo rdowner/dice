@@ -8,7 +8,7 @@ endif
 # The main compiler parts
 DIRS += src/dcc src/dcpp src/dc1 src/das src/dlink
 # Additional, but highly useful, tools
-DIRS += src/dobj src/dutil
+DIRS += src/dxmake src/dobj src/dutil
 # The config - currently only the error messages file
 DIRS += config
 # Includes

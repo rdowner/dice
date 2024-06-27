@@ -1,0 +1,99 @@
+.\" (c) Copyright 1985-2002 by Matthew Dillon.
+.\" Copyright (c) 2003-2011,2023 The DragonFly Project.  All rights reserved.
+.\"
+.\" This code is derived from software contributed to The DragonFly Project
+.\" by Matthew Dillon <dillon@backplane.com>
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\"
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in
+.\"    the documentation and/or other materials provided with the
+.\"    distribution.
+.\" 3. Neither the name of The DragonFly Project nor the names of its
+.\"    contributors may be used to endorse or promote products derived
+.\"    from this software without specific, prior written permission.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+.\" ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+.\" LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+.\" FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE
+.\" COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+.\" INCIDENTAL, SPECIAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING,
+.\" BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+.\" LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+.\" AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+.\" OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+.\" OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.Dd December 2, 2002
+.Dt DXMAKE 1
+.Os BSD 4
+.Sh NAME
+.Nm dxmake
+.Nd simple but powerful wildcarding build system
+.Sh SYNOPSIS
+.Nm dxmake
+.Oo
+.Fl f
+.Ar file
+.Oc
+.Op Fl n
+.Oo
+.Fl D
+.Ar symbol[=data]
+.Oc
+.Op Fl d[N]
+.Op Fl a
+.Op Fl q
+.Op Fl h
+.Op Fl j[N]
+.Ar [targets...]
+.Sh DESCRIPTION
+The 
+.Nm
+utility manages project builds in a manner similar to the make utility.
+Unless otherwise specified, the build file is "DMakefile" (case sensitive!)
+and the target is "all".
+.Pp
+The following options are available:
+.Bl -tag -width flag
+.It Fl f
+Specifies an alternative to "DMakefile".
+.It Fl n
+Tell
+.Nm
+not to actually run any commands.
+.It Fl D
+Define a build symbol on the command line.
+.It Fl d[N]
+Set the debug level.  If no number is specified, a debug level of 1
+is used.
+.It Fl a
+Force all dependancies to be run as if they were out of date.
+.It Fl q
+Generate less verbose output.
+.It Fl j[N]
+(FUTURE, NOT YET IMPLEMENTED) - specify parallelism
+.It Fl h
+Summarize the version and available command line options.
+.Eel
+.Sh DIAGNOSTICS
+The
+.Nm
+utility exits 0 if the build succeeded.
+.Sh SEE ALSO
+(This section needs work)
+.Sh HISTORY
+The
+.Nm
+command was originally written by Matt Dillon in the mid 1980's as part
+of the DICE-Amiga shareware project.  DICE was a fully integrated C
+compiler, preprocessor, assembler, linker, and library set for the Amiga
+and is still used today for embedded work and other language development
+projects.

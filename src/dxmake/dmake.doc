@@ -1,0 +1,333 @@
+
+				DMAKE V 2.9
+
+			    dillon@backplane.com
+
+
+    DMake   -	Dillon's build utility (original name)
+    DXMake  -   Dillon's build utility (new name)
+
+    The idea with DXMake is to provide a powerful make utility through
+    general features rather than specialized hacks.  DXMake is governed
+    by a few simple rules that can be combined to produce complex and
+    powerful operations.
+
+    Generally you simply run 'dxmake' and you have a list of dependancies in
+    your 'DMakefile' which DMake then executes.  The DMakefile may contain
+    four different kinds of lines:
+
+    (1) COMMENTS -- Any line beginning with a '#' is a comment and ignored
+
+    # This DMakefile generates an executable for fubar, the compiler
+    # options are as follows ...
+
+    (2) ASSIGNMENTS -- Any line of the form <SYMBOL> = ...  is considered
+	an assignment.	Any variable references from within the assignment will
+	be resolved immediately.
+
+	There are a number of variations on assignments.  
+
+	SYMBOL= data		Normal assignment, overwrite any previous
+				assignment.
+
+	SYMBOL ?= data		Conditional assignment only if SYMBOL has
+				not already been defined.
+
+	Examples:
+
+	    CFLAGS= -r
+	    SRCS= x.c y.c z.c
+
+	Variables are typically referenced using $(SYMBOL) but there are
+	other combinations, including search-and-replace combos, which
+	are often used to shortcut mass dependancies like 'all these
+	object files depends on all these source files', which are
+	described later.
+
+    (3) DEPENDANCIES: -- A line containing a list of symbols, a colon, and
+    more symbols is assumed to be a dependency.  Note that you cannot
+    have a raw filename with a colon in it as that confuses DMake.
+    For weird filenames the solution is to use a variable to hold the
+    filename and then specify $(VARIABLE) in the dependancy.
+
+    Following the dependency line is zero or more command lines --
+    commands to run to resolve the dependency, terminated with a
+    blank line.
+
+    NOTE: Dependancies do not have to have commands associated with them,
+    and you can also specify a target several times.  So, for example,
+    you can have a 'a.o : defs.h' target that is empty and a 
+    'a.o : a.c' target which compiles the source file into an object
+    file.  If any dependancy is triggered, all commands associated
+    with that dependancy whether they are specified in that particular
+    section or not will be executed.
+
+    dst1 ... dstN : src1 ... srcN
+	command1
+	command2  ...
+
+    dst1 ... dstN : src1 ... srcN
+	command1
+	command2  ...
+
+    Finally, note that a dst* or src* symbol does not need to be a
+    filename.  It is perfectly valid to make up dummy names which are then
+    used as the lhs of a dependency whos purpose is to collect other
+    dependancies together.
+
+			      DEPENDANCIES
+
+    When declaring dependancies you may use four different forms.  The
+    first form is to have a single destination and several sources.  This
+    is interpreted to mean 'execute the command list to convert ALL the
+    specified sources to the specified target'.  The special variable,
+    %(left), is set to the target symbol and the special variable %(right)
+    is set to ALL of the source symbols.
+
+    For example, this form would be used to indicate that an executable
+    depends on all the objects being resolved before you can run the link.
+
+	(1) dst : src1 src2 src3 ... srcN
+
+    The second form is the most useful in that it allows you to specify
+    multiple 1 : 1 dependancies.  Thus, you can specify, for example, that
+    each object file depends on its source file counterpart for ALL the
+    files in your project on a single line and have a single command list
+    representing what to do (to compile a source file into an object, say).
+
+    In this case %(left) and %(right) are set to each dst* : src* pair
+    individually and the command list is run for any individual pair that
+    is out of date.
+
+	(2) dst1 dst2 dst3 ... dstN : src1 src2 src3 ... srcN
+
+    The next form may be used to specify that many target files depend
+    on one source file.  The command list will be run once with all
+    the targets specified in %(left) and the single source specified
+    in %(right).
+
+	(3) dst1 dst2 dst3 ... dstN : src
+
+    The last form is esoteric but sometimes useful.  EACH target on the left
+    hand side depends on the entire right hand side.  You can have an
+    arbitrary number of symbols on either side.  %(left) will be set to a
+    particular target while %(right) will be set to all of the sources.
+
+    for example, you could specify $(OBJS) :: $(HDRS)  -- make all objects
+    depend on all headers causing a recompile to occur if any header is
+    modified (ok, this isn't the best example but you get the idea).
+
+	(4) dst1 dst2 dst3 ... dstN :: src1 src2 ... srcI
+
+
+			WILDCARDED FILE LIST REPLACEMENT
+				VARIABLE ACCESS
+
+    DMake's most powerful feature is an easy to use file list replacement
+    through options in a variable specification.  You may insert the
+    contents of any variable using the form:
+
+	$(SYMBOL)
+
+    Furthermore, you can make modifications to the contents of the variable
+    on the fly using:
+
+	$(SYMBOL:wildcard)              only those files which match <wildcard>
+	$(SYMBOL:wildcard:wildcard)     matching files and also do a conversion
+
+    Or
+
+	$(SYMBOL:"wildcard")
+	$(SYMBOL:"wildcard":"wildcard")
+
+    Simple */? wildcarding is available.  A wildcard may contain a colon or
+    other punctuation but if it does you MUST surround it with quotes.  The
+    data represented by each '*' or '?' on the left hand side may be
+    inserted on the right hand side using %1, %2, %3, etc.  You can also
+    use "*" and "?" on the right hand side (both are interpreted the same way)
+    as an iterator for %1, %2, etc.  Here is a quick example:
+
+	SRCS= a.c b.c c.c d.c xx.a
+	OBJS= $(SRCS:*.c:"/tmp/%1.o")
+	# another way of saying the same thing:
+	OBJS= $(SRCS:*.c:"/tmp/*.o")
+
+	all:
+	    echo $(OBJS)
+
+	(the result is '/tmp/a.o /tmp/b.o /tmp/c.o /tmp/d.o')
+
+    The first wildcard specification restricts which files from the list
+    are to be taken -- 'xx.a' was ignored, as you can see.  Each '*' or '?'
+    in the first wildcard specification corresponds to %N specifications
+    or "*" or "?" specifications in the second wildcard.  You can prepend, 
+    delete, insert, or append text and freely mix or ignore items matched
+    to create your destination file list.
+
+    This capability allows you to specify your source files EXACTLY ONCE
+    in the DMakefile and then use the file munging capability to convert
+    them to the object file list, etc...
+
+    You can embed variables within variables as with the following example
+    (note that this time xx.a is included):
+
+	OD= obj/
+	SRCS= a.c b.c c.c d.c xx.a
+	OBJS= $(SRCS:*.?:"$(OD)%1.o")
+
+	all:
+	    echo $(OBJS)
+
+
+	(the result is: 'obj/a.o obj/b.o obj/c.o obj/d.o obj/xx.o')
+
+    You can use this capability anywhere in the DMakefile.  Another common
+    thing to do is restrict your link line to include only the object files
+    and skip the headers:
+
+	$(EXE) : $(PROTOS) $(OBJS) $(HDRS)
+	    cc %(right:*.o) -o %(left)
+
+			    ENVIROMENT VARIABLES
+
+    Shell environment variables are fully accessible via the $(SYMBOL)
+    syntax.
+
+			  LINE CONTINUATION AND ESCAPES
+
+    Any line may be continued by terminating it with a backslash '\'.  It
+    is possible to escape the special characters '$' and '%' by doubling
+    them though this is only necessary if an open-parenthesis follows the
+    '$' or '%' and you do not want it interpreted as a variable.
+
+    It is possible to escape ':' and other special characters by assigning
+    them (or a string containing them) to a variable and then using the
+    variable.
+
+				COMMAND SHELL
+
+    All commands except "cd" are run with /bin/sh.  A command line
+    starting with "cd" internally chdir dxmake.
+
+    Commands may be prefixed.  The "@" prefix tells dxmake not to echo
+    the command line before it executes it.  The "-" prefix tells dxmake
+    to ignore any error exit.
+
+	all :
+	    echo "You see this twice"
+	    @echo "You see this once"
+
+			     ADVANCED ISSUES
+
+    DMake implements a number of special cases for dependancies.
+
+    SPECIAL CASE #1 - DIRECTORY CREATION / FILE EXISTANCE
+
+	A target can depend on itself.  This is typically used to create
+	a directory.
+
+	obj : obj
+	    mkdir obj
+
+    SPECIAL CASE #2 - NO SOURCE SPECIFIED
+
+	A target can be supplied without any source dependancies.  Such
+	targets are executed unconditionally and if they are included as
+	a source to another target's dependancy that other target will
+	also be executed unconditionally.
+
+	all:	target
+	    echo "This will also run unconditionally"
+
+	target:
+	    echo "This will run unconditionally"
+
+    SPECIAL CASE #3 - COMMANDS EXECUTE BUT TARGET NOT UPDATED
+
+	This case is differentiated from Case #2 in that it occurs when
+	the target exists but is not updated by the commands that are
+	executed.  DMake will automatically touch the target when it
+	detects this case and then it will treat the target as having
+	been up-to-date, so items depending on the target do not execute
+	their own command lists.  Those items, if they are real files,
+	will also be touched.  This case is used to better handle 
+	generated files which wind up not being any different then what
+	was present before.
+
+	protos.h : $(SRCS)
+	    egrep '^Prototype' %(right) > %(left).new
+	    cmp %(left) %(left).new || mv -f %(left).new %(left)
+
+    SPECIAL CASE #4 - LEAF TARGETS
+
+	The dependancy chain terminates either at an unconditional target
+	(where no source is specified), or at an unspecified target.  A
+	good example of this is when you have an object file depending on
+	a source file and you do not specify the source file as a target
+	dependant on something else.
+
+	In this case DMake compares the timestamp of the source file(s)
+	against the target and executes the command list if the target
+	is out of date or does not exist.  In the below example 'fubar.c'
+	is a leaf target used as a source which fubar.o depends upon.
+
+	fubar.o : fubar.c
+	    cc -c fubar.c -o fubar.o
+
+			    DMAKEFILE SPECIAL VARIABLES
+
+    DMake has one special variable to make it easier for a DMakefile to
+    know where in the directory hierarchy it stands relative to the 
+    current directory (where the original dxmake was run).  $(TOPDIR) is
+    empty relative to the DMakefile in the current directory where 
+    the dxmake program is run.  If a DMakefile has an ".include"
+    directive the directory prefix specified in that directive becomes the
+    new $(TOPDIR) for processing of that include file.  Nested .include
+    directives (if not absolute) append their path prefix to the
+    existing $(TOPDIR).   DMake does not do any chdir()ing itself and
+    you must generally use $(TOPDIR) in your .include files to identify 
+    the directory path containing the include file currently being processed.
+    Since you know where this file resides in your source hierarchy you can
+    construct paths to things like object and bin directories.
+
+    For example, this allows you to create a master DMakefile.inc at the
+    top of your project hiearchy with all the targets and sophistication 
+    required to control your project.  Individual DMakefile's within the
+    project hierarchy would then set up a few VAR='s and .include the master.
+
+			      DMAKEFILE DIRECTIVES
+
+    .include filename
+
+	Include another DMakefile.  Note that the filename is not quoted
+
+    .ifdef varname
+
+	If the variable exists
+
+    .ifuser user
+
+	If the userid doing the compile is <user> (typically used to
+	detect whether a project is being installed as root or as a
+	user)
+
+    .ifhost systemname
+
+	Check systemname against 'hostname' output.  e.g. my machine
+	returns 'apollo.backplane.com'
+
+    .ifos osname
+
+	check osname against 'uname -s' output.  e.g. my machine
+	returns 'FreeBSD'
+
+    .ifarch architecture
+
+	check architecture against 'uname -m' output.  e.g. my machine
+	returns 'i386'
+
+    .else
+    .endif
+
+	These are supporting directives for conditionals.
+

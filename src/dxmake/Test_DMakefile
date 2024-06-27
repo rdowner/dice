@@ -1,0 +1,39 @@
+SYM = this is a test
+SYM1 =
+
+all:
+   @echo $(SYM) $(SYM1::Hello)
+
+.ifos freebsd
+
+all:
+   @echo "operating system is freebsd"
+
+.else
+
+all:
+   @echo "operating system is not freebsd"
+
+.endif
+
+.ifhost apollo.backplane.com
+
+all:
+   @echo "host is apollo.backplane.com"
+.else
+
+all:
+   @echo "host is not apollo.backplane.com"
+
+.endif
+
+.ifarch i386
+
+all:
+   @echo "architecture is i386"
+.else
+
+all:
+   @echo "architecture is not i386"
+
+.endif
