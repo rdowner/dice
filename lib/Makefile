@@ -9,15 +9,22 @@ CORE_LIBS=$(BUILDDIR)/c.o $(BUILDDIR)/c_pi.o $(BUILDDIR)/c_pr.o $(BUILDDIR)/x.o 
 export DCCOPTS = -2.0 -//
 export PATH := $(DESTDIR)$(PREFIX)/bin:$(PATH)
 
-all: core-build
+all: setup core-build
 
 install: core-install
 
 setup:
-	sed -E -e 's_^(@DefTree\s+).*$$_\1$(BUILDDIR)/_' -e 's_(\s)../dlib/_\1$(BUILDDIR)/_' ulib.def > ulib.def.new
-	diff -q ulib.def ulib.def.new || mv -f ulib.def.new ulib.def
+	mkdir -p $(DLIB)
 
-core-build: setup $(CORE_LIBS)
+ulib.def: lib.def
+	sed -E \
+		-e 's_^(@DefTree\s+).*$$_\1$(BUILDDIR)/_' \
+		-e 's_^(@AltTree\s+.+\s+).*$$_\1$(BUILDDIR)/_' \
+		-e 's_dlib:_$(DLIB)/_' \
+		-e 's_dinclude:_$(DESTDIR)$(abspath $(PREFIX))/include/_' \
+		$^ > $@
+
+core-build: $(CORE_LIBS)
 
 $(BUILDDIR)/autos.lib: ulib.def
 	$(LBMAKE) auto s
