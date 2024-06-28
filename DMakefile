@@ -4,41 +4,45 @@
 OUTDIRS= ulib ubin dlib obj
 ISUBDIRS= config include dlib lib bin
 
-all:    $(OUTDIRS)
-        ( cd suplib; dxmake; dxmake install )
+# all:    $(OUTDIRS)
+#         ( cd suplib; dxmake; dxmake install )
+#         ( cd src; dxmake )
+#         ( cd lib; dxmake all )
+#         ( cd include; dxmake )
+#         ( cd config; dxmake )
+all:
         ( cd src; dxmake )
-        ( cd lib; dxmake all )
-        ( cd include; dxmake )
-        ( cd config; dxmake )
 
 $(OUTDIRS) : $(OUTDIRS)
         mkdir %(left)
 
-install:        $(INSTDIR) $(ISUBDIRS:"*":"$(INSTDIR)/*") dummy
-        -mkdir $(INSTDIR)
-        -mkdir $(INSTDIR)/config
-        -mkdir $(INSTDIR)/include
-        -mkdir $(INSTDIR)/dlib
-        -mkdir $(INSTDIR)/lib
-        -mkdir $(INSTDIR)/bin
-        chmod 755 $(INSTDIR)
-        chmod 755 $(INSTDIR)/config
-        chmod 755 $(INSTDIR)/include
-        chmod 755 $(INSTDIR)/dlib
-        chmod 755 $(INSTDIR)/lib
-        chmod 755 $(INSTDIR)/bin
-        ( cd src; dxmake install )
-        ( cd lib; dxmake install )
-        ( cd include; dxmake install )
-        ( cd config; dxmake install )
+#install:        $(INSTDIR) $(ISUBDIRS:"*":"$(INSTDIR)/*") dummy
+install:
+       -mkdir $(INSTDIR)
+       -mkdir $(INSTDIR)/config
+       -mkdir $(INSTDIR)/include
+       -mkdir $(INSTDIR)/dlib
+       -mkdir $(INSTDIR)/lib
+       -mkdir $(INSTDIR)/bin
+       chmod 755 $(INSTDIR)
+       chmod 755 $(INSTDIR)/config
+       chmod 755 $(INSTDIR)/include
+       chmod 755 $(INSTDIR)/dlib
+       chmod 755 $(INSTDIR)/lib
+       chmod 755 $(INSTDIR)/bin
+       ( cd src; dxmake install )
+#        ( cd lib; dxmake install )
+#        ( cd include; dxmake install )
+#        ( cd config; dxmake install )
+
 
 dummy:
 
-$(ISUBDIRS:"*":"$(INSTDIR)/*"): $(INSTDIR)
-        mkdir %(left)
+#$(ISUBDIRS:"*":"$(INSTDIR)/*"): $(INSTDIR)
+#        mkdir %(left)
 
-$(INSTDIR): $(INSTDIR)
-        mkdir %(left)
+#$(INSTDIR): $(INSTDIR)
+#        mkdir %(left)
 
 clean:
         ( cd suplib; dxmake clean )

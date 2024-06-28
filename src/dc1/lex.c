@@ -224,7 +224,7 @@ PushLexFile(char *name, short nameLen, int32_t begPos, int32_t bytes)
     } else {
         fseek(lf->lf_Fi, begPos, 0);
     }
-#ifdef _DCC
+#if defined(_DCC) && defined(ENABLE_DICECACHE)
     /*
      * HACK!  we should really add an IODOM_CACHE field and make ioctl()
      *        return it for cached files.

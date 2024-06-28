@@ -1,21 +1,14 @@
 
-# DMakefile
-#
-# (c)Copyright 1992 Obvious Implementations Corp, All Rights Reserved
-# CONFIDENTIAL, This is unpublished proprietary source code owned by
-# Obvious Implementations Corp.  This material contains trade secrets of
-# Obvious Implementations Corp.
-
 .include ../DMakefile.inc
 
-SRCS= final.c jump.c main.c module.c reloc.c subs.c sym.c
+SRCS= buffer.c cmdlist.c cond.c convert.c depend.c lists.c main.c parse.c run.c subs.c var.c
 
-OBJS= $(SRCS:"*.c":"$(OD)dlink_*.o")
+OBJS= $(SRCS:"*.c":"$(OD)dxmake_*.o")
 
-EXE= $(OD)dlink
-EXED= $(BIN)dlink
+EXE= $(OD)dxmake
+EXED= $(BIN)dxmake
 
-PROTOS= $(OD)dlink-protos.h
+PROTOS= $(OD)dxmake-protos.h
 
 all: $(PROTOS) $(EXE)
 

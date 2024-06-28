@@ -219,7 +219,7 @@ Execute_Command(char *cmd, short ignore)
             static char OldCmd[128];
             char dt[4];
             struct TagItem *tags[] = {
-                NP_CopyVars, (void*)TRUE,
+                (struct TagItem *)NP_CopyVars, (void*)TRUE,
                 TAG_END, NULL};
 
             if (cli) {

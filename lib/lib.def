@@ -64,8 +64,8 @@
 @DefTree                dtmp:lib_%s/
 @AltTree    nofp        dtmp:lib_nofp_%s/
 
-[dinclude:amiga20/fd/]mathieeesingbas_lib.fd    +clib +uclib -nofp
-[dinclude:amiga20/fd/]mathieeesingtrans_lib.fd  +clib +uclib -nofp
+[dinclude:amiga20/fd/]mathieeesingbas_lib.fd    +clib +uclib
+[dinclude:amiga20/fd/]mathieeesingtrans_lib.fd  +clib +uclib
 
 assert/assert.c         +clib +uclib
 assert/abort.c          +clib +uclib
@@ -152,7 +152,7 @@ stdio/sprintf.c         +clib +uclib     +rom
 stdio/ungetc.c          +clib +uclib
 stdio/tmpnam.c          +clib +uclib
 stdio/tmpfile.c         +clib +uclib
-stdio/pfmt.c            +clib +uclib     +rom -nofp
+stdio/pfmt.c            +clib +uclib     +rom
 stdio/sfmt.c            +clib +uclib
 stdio/bufsiz.c          +clib +uclib
 stdio/unix_remove.c     +uclib

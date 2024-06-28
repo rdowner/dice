@@ -182,6 +182,8 @@ char *fileName;
                             sprintf(assBuf, "%s=%s", SymBuf, data);
                             putenv(assBuf);
                             free(assBuf);
+#elif defined(_DCC)
+                            setenv(SymBuf, data);
 #else
                             setenv(SymBuf, data, 1);
 #endif

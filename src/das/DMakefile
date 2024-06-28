@@ -13,18 +13,18 @@ SRCS= direct.c exp.c lab.c main.c ops.c passa.c passb.c passc.c passg.c \
 
 OBJS= $(SRCS:"*.c":"$(OD)das_*.o")
 
-EXE= $(UBIN)das
-EXED= $(INSTDIR)bin/das
+EXE= $(OD)das
+EXED= $(BIN)das
 
 PROTOS= $(OD)das-protos.h
 
 all: $(PROTOS) $(EXE)
 
 $(EXE) : $(OBJS)
-        cc $(CFLAGS) $(OBJS) -o $(EXE) -lamiga
+        $(CC) $(CFLAGS) $(OBJS) -o $(EXE)
 
 $(OBJS) : $(SRCS)
-        cc $(CFLAGS) %(right) -o %(left) -c
+        $(CC) $(CFLAGS) %(right) -o %(left) -c
 
 $(PROTOS) : $(SRCS)
         rm -f $(PROTOS) $(PROTOS).new

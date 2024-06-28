@@ -15,18 +15,18 @@ SRCS= main.c asm1.c asm2.c asmaddr.c asmflt.c asubs.c block.c cexp.c \
 
 OBJS= $(SRCS:"*.c":"$(OD)dc1_*.o")
 
-EXE= $(UBIN)dc1
-EXED= $(INSTDIR)bin/dc1
+EXE= $(OD)dc1
+EXED= $(BIN)dc1
 
 PROTOS= $(OD)dc1-protos.h
 
 all: $(PROTOS) $(EXE)
 
 $(EXE) : $(OBJS)
-        cc $(CFLAGS) $(OBJS) -o $(EXE) -lamiga
+        $(CC) $(CFLAGS) $(OBJS) -o $(EXE)
 
 $(OBJS) : $(SRCS)
-        cc $(CFLAGS) %(right) -o %(left) -c
+        $(CC) $(CFLAGS) %(right) -o %(left) -c
 
 $(PROTOS) : $(SRCS)
         rm -f $(PROTOS) $(PROTOS).new

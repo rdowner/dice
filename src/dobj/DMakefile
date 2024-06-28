@@ -12,18 +12,18 @@ SRCS= main.c subs.c reloc.c symbol.c data.c code.c
 
 OBJS= $(SRCS:"*.c":"$(OD)dobj_*.o")
 
-EXE= $(UBIN)dobj
-EXED= $(INSTDIR)bin/dobj
+EXE= $(OD)dobj
+EXED= $(BIN)dobj
 
 PROTOS= $(OD)dobj-protos.h
 
 all: $(PROTOS) $(EXE)
 
 $(EXE) : $(OBJS)
-        cc $(CFLAGS) $(OBJS) -o $(EXE) -lamiga
+        $(CC) $(CFLAGS) $(OBJS) -o $(EXE)
 
 $(OBJS) : $(SRCS)
-        cc $(CFLAGS) %(right) -o %(left) -c
+        $(CC) $(CFLAGS) %(right) -o %(left) -c
 
 $(PROTOS) : $(SRCS)
         rm -f $(PROTOS) $(PROTOS).new

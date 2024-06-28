@@ -11,13 +11,13 @@
 SRCS= bintohex.c fdtolib.c fdtopragma.c istrip.c lbmake.c \
         libtos.c makeproto.c romable.c hunks.c uprev.c
 
-EXES= $(SRCS:"*.c":"$(UBIN)*")
-#EXESD= $(SRCS:"*.c":"$(INSTDIR)bin/*")
+EXES= $(SRCS:"*.c":"$(OD)*")
+EXESD= $(SRCS:"*.c":"$(BIN)*")
 
 all: $(EXES)
 
 $(EXES) : $(SRCS)
-        cc $(CFLAGS) %(right) -o %(left) -lamiga
+        $(CC) $(CFLAGS) %(right) -o %(left)
 
 install:
         install -c -m 0755 $(EXES) $(INSTDIR)bin/

@@ -13,18 +13,18 @@ SRCS= main.c cexp.c cpp.c define.c direct.c include.c \
 
 OBJS= $(SRCS:"*.c":"$(OD)dcpp_*.o")
 
-EXE= $(UBIN)dcpp
-EXED= $(INSTDIR)bin/dcpp
+EXE= $(OD)dcpp
+EXED= $(BIN)dcpp
 
 PROTOS= $(OD)dcpp-protos.h
 
 all: $(PROTOS) $(EXE)
 
 $(EXE) : $(OBJS)
-        cc $(CFLAGS) $(OBJS) -o $(EXE) -lamiga
+        $(CC) $(CFLAGS) $(OBJS) -o $(EXE)
 
 $(OBJS) : $(SRCS)
-        cc $(CFLAGS) %(right) -o %(left) -c
+        $(CC) $(CFLAGS) %(right) -o %(left) -c
 
 $(PROTOS) : $(SRCS)
         rm -f $(PROTOS) $(PROTOS).new
