@@ -6,7 +6,7 @@ AMIGA20_LIB=$(HOME)/amiga-ndks/NDK_2.0/NDK2.0-2/Development/SupportFiles/lib/ami
 DLIB=$(DESTDIR)$(PREFIX)/dlib
 
 export DCCOPTS = -2.0 -//
-export PATH := $(DESTDIR)$(PREFIX)/bin:$(PATH)
+export PATH := $(DESTDIR)$(PREFIX)/ubin:$(PATH)
 
 ulib.def: lib.def
 	sed -E \

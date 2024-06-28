@@ -19,8 +19,8 @@ clean :
 	-rm -f $(BINS) $(OBJS) .depend
 
 install :
-	install -d $(DESTDIR)$(PREFIX)/bin
-	install -m 755 $(BINS) $(DESTDIR)$(PREFIX)/bin
+	install -d $(DESTDIR)$(PREFIX)/ubin
+	install -m 755 $(BINS) $(DESTDIR)$(PREFIX)/ubin
 
 uninstall :
-	rm -f $(addprefix $(DESTDIR)$(PREFIX)/bin/, $(C_SRCS:.c=))
+	rm -f $(addprefix $(DESTDIR)$(PREFIX)/ubin/, $(C_SRCS:.c=))

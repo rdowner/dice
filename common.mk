@@ -23,7 +23,7 @@ CFLAGS += -I$(BUILDDIR) -I$(TOPDIR)
 
 SUPLIB = -L $(TOPDIR)/tmp-stage$(STAGE)/suplib -lamiga
 else
-CC = $(STAGE1DIR)/bin/dcc
+CC = $(STAGE1DIR)/ubin/dcc
 CFLAGS = -2.0 -//
 CFLAGS += -DNO_ASM -DCROSS_COMPILE -D_INSTDIR=$(abspath $(PREFIX))/
 CFLAGS += -I$(TOPDIR)
@@ -46,13 +46,13 @@ clean :
 
 install :
 ifdef BIN
-	install -d $(DESTDIR)$(PREFIX)/bin
-	install -m 755 $(BIN_WITH_PATH) $(DESTDIR)$(PREFIX)/bin
+	install -d $(DESTDIR)$(PREFIX)/ubin
+	install -m 755 $(BIN_WITH_PATH) $(DESTDIR)$(PREFIX)/ubin
 endif
 
 uninstall :
 ifdef BIN
-	rm -f $(DESTDIR)$(PREFIX)/bin/$(BIN)
+	rm -f $(DESTDIR)$(PREFIX)/ubin/$(BIN)
 endif
 
 $(BUILDDIR) :
