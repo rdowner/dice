@@ -15,9 +15,6 @@ $(DIRS): $(BUILDDIRS)
 $(BUILDDIRS):
 	$(MAKE) -C $(@:build-%=%) SUBDIR=$(@:build-%=%)
 
-# the utils need the libraries in dev built first
-build-utils: build-dev
-
 install: $(INSTALLDIRS)
 $(INSTALLDIRS):
 	$(MAKE) -C $(@:install-%=%) SUBDIR=$(@:install-%=%) install
