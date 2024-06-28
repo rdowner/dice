@@ -2,65 +2,30 @@
 TOPDIR=..
 include $(TOPDIR)/common.mk
 
-LBMAKE=$(DESTDIR)$(PREFIX)/bin/lbmake
+AMIGA20_LIB=$(HOME)/amiga-ndks/NDK_2.0/NDK2.0-2/Development/SupportFiles/lib/amiga.lib
 DLIB=$(DESTDIR)$(PREFIX)/dlib
-CORE_LIBS=$(BUILDDIR)/c.o $(BUILDDIR)/c_pi.o $(BUILDDIR)/c_pr.o $(BUILDDIR)/x.o $(BUILDDIR)/autos.lib $(BUILDDIR)/amiga20l.lib $(BUILDDIR)/amiga20s.lib $(BUILDDIR)/cs.lib
 
 export DCCOPTS = -2.0 -//
 export PATH := $(DESTDIR)$(PREFIX)/bin:$(PATH)
 
-all: setup core-build
-
-install: core-install
-
-setup:
-	mkdir -p $(DLIB)
-
 ulib.def: lib.def
 	sed -E \
 		-e 's_^(@DefTree\s+).*$$_\1$(BUILDDIR)/_' \
-		-e 's_^(@AltTree\s+.+\s+).*$$_\1$(BUILDDIR)/_' \
+		-e 's_^(@AltTree\s+[^\s]+\s+).*$$_\1$(BUILDDIR)/_' \
 		-e 's_dlib:_$(DLIB)/_' \
 		-e 's_dinclude:_$(DESTDIR)$(abspath $(PREFIX))/include/_' \
 		$^ > $@
 
-core-build: $(CORE_LIBS)
+all: prep ulib.def core amiga20
 
-$(BUILDDIR)/autos.lib: ulib.def
-	$(LBMAKE) auto s
-
-#   startup
-$(BUILDDIR)/c.o $(BUILDDIR)/c_pi.o $(BUILDDIR)/c_pr.o $(BUILDDIR)/x.o : ulib.def
-	$(LBMAKE) startup
-
-#   C[model].lib
-$(BUILDDIR)/cs.lib : ulib.def
-	$(LBMAKE) clib s
-
-#   AMIGA20[model].lib
-ifdef BUILD_A20FUNC20
-#   The amiga20l.lib from commodore has some incorrect tags, this stuff
-#   here fixes that.  dlib.orig/amiga20l.lib contains the actual, original
-#   Commodore library.  The amiga20l.lib provided with DICE is exactly
-#   that plus bug fixes to the Commodore library.
-#
-# ...only, this build doesn't work - lbmake seems to do nothing. Leaving this out for now; FIXME later.
-$(BUILDDIR)/amiga20l.lib : $(BUILDDIR)/amiga20_func_l.lib $(HOME)/amiga-ndks/NDK_2.0/NDK2.0-2/Development/SupportFiles/lib/amiga.lib
-	cat $^ > $@
-$(BUILDDIR)/amiga20_func_l.lib :
-	$(LBMAKE) a20func20 l
-else
-$(BUILDDIR)/amiga20l.lib : $(HOME)/amiga-ndks/NDK_2.0/NDK2.0-2/Development/SupportFiles/lib/amiga.lib
-	cp $< $@
-endif
-$(BUILDDIR)/amiga20s.lib : $(BUILDDIR)/amiga20l.lib
-	$(DESTDIR)$(PREFIX)/bin/libtos $< $@
-
-core-install : $(CORE_LIBS)
+prep:
 	mkdir -p $(DLIB)
-	install $^ $(DLIB)
 
-#	$(LBMAKE) startup
-#	cp $(TOPDIR)/dlib/amiga20l.lib $(DLIB)/amiga20l.lib
-#	$(DESTDIR)$(PREFIX)/bin/libtos $(DLIB)/amiga20l.lib $(DLIB)/amiga20s.lib
-#	$(LBMAKE) 
+core:
+	LIBDEF=$< DLIB=$(DLIB)/ dxmake -f DMakefile.amiga all
+
+amiga20: $(DLIB)/dlib.orig/amiga20l.lib
+	LIBDEF=$< DLIB=$(DLIB)/ dxmake -f DMakefile.amiga amiga20
+$(DLIB)/dlib.orig/amiga20l.lib: $(AMIGA20_LIB)
+	mkdir $(dir $@)
+	cp $^ $@
