@@ -61,14 +61,11 @@
 @Library    auto        dlib:auto%s.lib
 @Library    a20func     dlib:amiga20_func_%s.lib
 
-@DefTree    dtmp:comp3/lib_%s/
+@DefTree                dtmp:lib_%s/
+@AltTree    nofp        dtmp:lib_nofp_%s/
 
-@AltTree    pass1       dtmp:comp1/lib_%s/
-@AltTree    pass2       dtmp:comp2/lib_%s/
-@AltTree    pass3       dtmp:comp3/lib_%s/
-
-[dinclude:amiga20/fd/]mathieeesingbas_lib.fd    +clib +uclib -pass2
-[dinclude:amiga20/fd/]mathieeesingtrans_lib.fd  +clib +uclib -pass2
+[dinclude:amiga20/fd/]mathieeesingbas_lib.fd    +clib +uclib -nofp
+[dinclude:amiga20/fd/]mathieeesingtrans_lib.fd  +clib +uclib -nofp
 
 assert/assert.c         +clib +uclib
 assert/abort.c          +clib +uclib
@@ -103,8 +100,8 @@ amiga/stack_abort.c     +clib +uclib
 amiga/alloca.a          +clib +uclib
 amiga/rega4.a           +clib +uclib
 #amiga/dynamic.c        +clib +uclib
-amiga/aprof.a           +clib +uclib     -pass2
-amiga/profile.c         +clib +uclib     -pass2
+amiga/aprof.a           +clib +uclib     -nofp
+amiga/profile.c         +clib +uclib     -nofp
 
 rexx/place.c            +clib +uclib
 
@@ -155,7 +152,7 @@ stdio/sprintf.c         +clib +uclib     +rom
 stdio/ungetc.c          +clib +uclib
 stdio/tmpnam.c          +clib +uclib
 stdio/tmpfile.c         +clib +uclib
-stdio/pfmt.c            +clib +uclib     +rom
+stdio/pfmt.c            +clib +uclib     +rom -nofp
 stdio/sfmt.c            +clib +uclib
 stdio/bufsiz.c          +clib +uclib
 stdio/unix_remove.c     +uclib
@@ -202,7 +199,7 @@ string/strncasecmp.c    +clib +uclib     +rom
 
 string/stricmp.c        +clib +uclib     +rom
 string/strnicmp.c       +clib +uclib     +rom
-string/strtod.c         +clib +uclib                           -pass2
+string/strtod.c         +clib +uclib                           -nofp
 string/strtol.c         +clib +uclib     +rom
 string/strtoul.c        +clib +uclib     +rom
 
@@ -322,87 +319,87 @@ time/time.c             +clib +uclib
 time/clock.c            +clib +uclib
 time/comp.c             +clib +uclib
 
-float/cva_dptoffp.a     +clib +uclib  -pass2 +lconvert
-float/cva_dptosp.a      +clib +uclib  -pass2 +lconvert
-float/cva_ffptodp.a     +clib +uclib  -pass2 +lconvert
-float/cva_sptodp.a      +clib +uclib  -pass2 +lconvert
+float/cva_dptoffp.a     +clib +uclib  -nofp +lconvert
+float/cva_dptosp.a      +clib +uclib  -nofp +lconvert
+float/cva_ffptodp.a     +clib +uclib  -nofp +lconvert
+float/cva_sptodp.a      +clib +uclib  -nofp +lconvert
 
-float/ffpa_add.a        +clib +uclib  -pass2 +lconvert
-float/ffpa_sub.a        +clib +uclib  -pass2 +lconvert
-float/ffpa_mul.a        +clib +uclib  -pass2 +lconvert
-float/ffpa_div.a        +clib +uclib  -pass2 +lconvert
-float/ffpa_cmp.a        +clib +uclib  -pass2 +lconvert
-float/ffpa_tst.a        +clib +uclib  -pass2 +lconvert
-float/ffpa_fix.a        +clib +uclib  -pass2 +lconvert
-float/ffpa_flt.a        +clib +uclib  -pass2 +lconvert
-float/ffpa_neg.a        +clib +uclib  -pass2 +lconvert
+float/ffpa_add.a        +clib +uclib  -nofp +lconvert
+float/ffpa_sub.a        +clib +uclib  -nofp +lconvert
+float/ffpa_mul.a        +clib +uclib  -nofp +lconvert
+float/ffpa_div.a        +clib +uclib  -nofp +lconvert
+float/ffpa_cmp.a        +clib +uclib  -nofp +lconvert
+float/ffpa_tst.a        +clib +uclib  -nofp +lconvert
+float/ffpa_fix.a        +clib +uclib  -nofp +lconvert
+float/ffpa_flt.a        +clib +uclib  -nofp +lconvert
+float/ffpa_neg.a        +clib +uclib  -nofp +lconvert
 
-float/ffpa_acos.a       +clib +uclib  -pass2 +lconvert
-float/ffpa_atan.a       +clib +uclib  -pass2 +lconvert
-float/ffpa_asin.a       +clib +uclib  -pass2 +lconvert
-float/ffpa_exp.a        +clib +uclib  -pass2 +lconvert
-float/ffpa_log.a        +clib +uclib  -pass2 +lconvert
-float/ffpa_pow.a        +clib +uclib  -pass2 +lconvert
-float/ffpa_sqrt.a       +clib +uclib  -pass2 +lconvert
-float/ffpa_cos.a        +clib +uclib  -pass2 +lconvert
-float/ffpa_abs.a        +clib +uclib  -pass2 +lconvert
-float/ffpa_log10.a      +clib +uclib  -pass2 +lconvert
-float/ffpa_sin.a        +clib +uclib  -pass2 +lconvert
-float/ffpa_tan.a        +clib +uclib  -pass2 +lconvert
-float/ffpa_modf.c       +clib +uclib  -pass2 +lconvert
+float/ffpa_acos.a       +clib +uclib  -nofp +lconvert
+float/ffpa_atan.a       +clib +uclib  -nofp +lconvert
+float/ffpa_asin.a       +clib +uclib  -nofp +lconvert
+float/ffpa_exp.a        +clib +uclib  -nofp +lconvert
+float/ffpa_log.a        +clib +uclib  -nofp +lconvert
+float/ffpa_pow.a        +clib +uclib  -nofp +lconvert
+float/ffpa_sqrt.a       +clib +uclib  -nofp +lconvert
+float/ffpa_cos.a        +clib +uclib  -nofp +lconvert
+float/ffpa_abs.a        +clib +uclib  -nofp +lconvert
+float/ffpa_log10.a      +clib +uclib  -nofp +lconvert
+float/ffpa_sin.a        +clib +uclib  -nofp +lconvert
+float/ffpa_tan.a        +clib +uclib  -nofp +lconvert
+float/ffpa_modf.c       +clib +uclib  -nofp +lconvert
 
-float/spa_add.a         +clib +uclib  -pass2 +lconvert
-float/spa_sub.a         +clib +uclib  -pass2 +lconvert
-float/spa_mul.a         +clib +uclib  -pass2 +lconvert
-float/spa_div.a         +clib +uclib  -pass2 +lconvert
-float/spa_cmp.a         +clib +uclib  -pass2 +lconvert
-float/spa_tst.a         +clib +uclib  -pass2 +lconvert
-float/spa_fix.a         +clib +uclib  -pass2 +lconvert
-float/spa_flt.a         +clib +uclib  -pass2 +lconvert
-float/spa_neg.a         +clib +uclib  -pass2 +lconvert
+float/spa_add.a         +clib +uclib  -nofp +lconvert
+float/spa_sub.a         +clib +uclib  -nofp +lconvert
+float/spa_mul.a         +clib +uclib  -nofp +lconvert
+float/spa_div.a         +clib +uclib  -nofp +lconvert
+float/spa_cmp.a         +clib +uclib  -nofp +lconvert
+float/spa_tst.a         +clib +uclib  -nofp +lconvert
+float/spa_fix.a         +clib +uclib  -nofp +lconvert
+float/spa_flt.a         +clib +uclib  -nofp +lconvert
+float/spa_neg.a         +clib +uclib  -nofp +lconvert
 
-float/spa_acos.a        +clib +uclib  -pass2 +lconvert
-float/spa_atan.a        +clib +uclib  -pass2 +lconvert
-float/spa_asin.a        +clib +uclib  -pass2 +lconvert
-float/spa_exp.a         +clib +uclib  -pass2 +lconvert
-float/spa_log.a         +clib +uclib  -pass2 +lconvert
-float/spa_pow.a         +clib +uclib  -pass2 +lconvert
-float/spa_sqrt.a        +clib +uclib  -pass2 +lconvert
-float/spa_cos.a         +clib +uclib  -pass2 +lconvert
-float/spa_abs.a         +clib +uclib   pass2 +lconvert
-float/spa_log10.a       +clib +uclib  -pass2 +lconvert
-float/spa_floor.a       +clib +uclib  -pass2 +lconvert
-float/spa_ceil.a        +clib +uclib  -pass2 +lconvert
-float/spa_sin.a         +clib +uclib  -pass2 +lconvert
-float/spa_tan.a         +clib +uclib  -pass2 +lconvert
-float/spa_modf.c        +clib +uclib  -pass2 +lconvert
+float/spa_acos.a        +clib +uclib  -nofp +lconvert
+float/spa_atan.a        +clib +uclib  -nofp +lconvert
+float/spa_asin.a        +clib +uclib  -nofp +lconvert
+float/spa_exp.a         +clib +uclib  -nofp +lconvert
+float/spa_log.a         +clib +uclib  -nofp +lconvert
+float/spa_pow.a         +clib +uclib  -nofp +lconvert
+float/spa_sqrt.a        +clib +uclib  -nofp +lconvert
+float/spa_cos.a         +clib +uclib  -nofp +lconvert
+float/spa_abs.a         +clib +uclib   nofp +lconvert
+float/spa_log10.a       +clib +uclib  -nofp +lconvert
+float/spa_floor.a       +clib +uclib  -nofp +lconvert
+float/spa_ceil.a        +clib +uclib  -nofp +lconvert
+float/spa_sin.a         +clib +uclib  -nofp +lconvert
+float/spa_tan.a         +clib +uclib  -nofp +lconvert
+float/spa_modf.c        +clib +uclib  -nofp +lconvert
 
-float/dpa_add.a         +clib +uclib  -pass2 +lconvert
-float/dpa_sub.a         +clib +uclib  -pass2 +lconvert
-float/dpa_mul.a         +clib +uclib  -pass2 +lconvert
-float/dpa_div.a         +clib +uclib  -pass2 +lconvert
-float/dpa_cmp.a         +clib +uclib  -pass2 +lconvert
-float/dpa_tst.a         +clib +uclib  -pass2 +lconvert
-float/dpa_fix.a         +clib +uclib  -pass2 +lconvert
-float/dpa_flt.a         +clib +uclib  -pass2 +lconvert
-float/dpa_neg.a         +clib +uclib  -pass2 +lconvert
+float/dpa_add.a         +clib +uclib  -nofp +lconvert
+float/dpa_sub.a         +clib +uclib  -nofp +lconvert
+float/dpa_mul.a         +clib +uclib  -nofp +lconvert
+float/dpa_div.a         +clib +uclib  -nofp +lconvert
+float/dpa_cmp.a         +clib +uclib  -nofp +lconvert
+float/dpa_tst.a         +clib +uclib  -nofp +lconvert
+float/dpa_fix.a         +clib +uclib  -nofp +lconvert
+float/dpa_flt.a         +clib +uclib  -nofp +lconvert
+float/dpa_neg.a         +clib +uclib  -nofp +lconvert
 
-float/dpa_acos.a        +clib +uclib  -pass2 +lconvert
-float/dpa_asin.a        +clib +uclib  -pass2 +lconvert
-float/dpa_atan.a        +clib +uclib  -pass2 +lconvert
-float/dpa_sin.a         +clib +uclib  -pass2 +lconvert
-float/dpa_exp.a         +clib +uclib  -pass2 +lconvert
-float/dpa_cos.a         +clib +uclib  -pass2 +lconvert
-float/dpa_tan.a         +clib +uclib  -pass2 +lconvert
-float/dpa_pow.a         +clib +uclib  -pass2 +lconvert
-float/dpa_log.a         +clib +uclib  -pass2 +lconvert
-float/dpa_log10.a       +clib +uclib  -pass2 +lconvert
-float/dpa_floor.a       +clib +uclib  -pass2 +lconvert
-float/dpa_ceil.a        +clib +uclib  -pass2 +lconvert
-float/dpa_abs.a         +clib +uclib  -pass2 +lconvert
-float/dpa_sqrt.a        +clib +uclib  -pass2 +lconvert
-float/dpa_modf.c        +clib +uclib  -pass2 +lconvert
-float/dpa_atan2.c       +clib +uclib  -pass2 +lconvert
+float/dpa_acos.a        +clib +uclib  -nofp +lconvert
+float/dpa_asin.a        +clib +uclib  -nofp +lconvert
+float/dpa_atan.a        +clib +uclib  -nofp +lconvert
+float/dpa_sin.a         +clib +uclib  -nofp +lconvert
+float/dpa_exp.a         +clib +uclib  -nofp +lconvert
+float/dpa_cos.a         +clib +uclib  -nofp +lconvert
+float/dpa_tan.a         +clib +uclib  -nofp +lconvert
+float/dpa_pow.a         +clib +uclib  -nofp +lconvert
+float/dpa_log.a         +clib +uclib  -nofp +lconvert
+float/dpa_log10.a       +clib +uclib  -nofp +lconvert
+float/dpa_floor.a       +clib +uclib  -nofp +lconvert
+float/dpa_ceil.a        +clib +uclib  -nofp +lconvert
+float/dpa_abs.a         +clib +uclib  -nofp +lconvert
+float/dpa_sqrt.a        +clib +uclib  -nofp +lconvert
+float/dpa_modf.c        +clib +uclib  -nofp +lconvert
+float/dpa_atan2.c       +clib +uclib  -nofp +lconvert
 
 amigalib/systemtags.c                       +amiga20            +a20func
 amigalib/aslreqtags.c                       +amiga20            +a20func
@@ -519,5 +516,5 @@ math/vsprintf.c         +mlib
 math/scanf.c            +mlib
 math/sscanf.c           +mlib
 math/fscanf.c           +mlib
-math/pfmt.c             +mlib
+math/pfmt.c             +mlib -nofp
 math/sfmt.c             +mlib
