@@ -6,10 +6,12 @@
 .ifos AmigaOS
 
 DLIB= dlib:
+NDK= NDK:
 ALT=
 
 .else
 
+NDK= $(AMIGA_NDK_HOME)/
 ALT=nofp
 
 .endif
@@ -17,7 +19,15 @@ ALT=nofp
 start:
         type lib.help
 
-all:    startup autos.lib c uc m rom
+
+# The core set of libraries needed to bootstrap DICE itself:
+# the startup code, and C, M, and Amiga 2.0 libraries in small-model, stack and registerised variants.
+core:       startup autos.lib cs.lib csr.lib ms.lib msr.lib amiga20l.lib amiga20s.lib amiga20sr.lib
+
+# The full set of libraries, include Amiga 2.0. Note that it does not build libraries for other
+# AmigaOS versions, because dxmake doesn't know what is available - 2.0 is mandatory for building
+# DICE, all others are optional.
+all:        startup autos.lib c uc m rom amiga20
 
 c:          cs.lib cl.lib csp.lib csr.lib cpl.lib crl.lib csrp.lib crpl.lib
 
@@ -122,7 +132,7 @@ romrl.lib:
 
 amiga13l.lib:   $(DLIB)amiga13l.lib
 
-$(DLIB)amiga13l.lib : $(DLIB)dlib.orig/amiga13l.lib
+$(DLIB)amiga13l.lib : $(NDK)1.3/linker_libs/amiga.lib
     copy %(right) %(left)
 
 amiga13s.lib:   $(DLIB)amiga13s.lib
@@ -148,13 +158,13 @@ amiga20l.lib:   $(DLIB)amiga20l.lib
 
 .ifos AmigaOS
 
-$(DLIB)amiga20l.lib : $(DLIB)dlib.orig/amiga20l.lib amiga20_func_l.lib
-    join $(DLIB)amiga20_func_l.lib $(DLIB)dlib.orig/amiga20l.lib AS %(left)
+$(DLIB)amiga20l.lib : $(NDK)2.0/linker_libs/amiga.lib $(DLIB)amiga20_func_l.lib
+    join %(right) AS %(left)
 
 .else
 
-$(DLIB)amiga20l.lib : $(DLIB)dlib.orig/amiga20l.lib amiga20_func_l.lib
-    cat $(DLIB)amiga20_func_l.lib $(DLIB)dlib.orig/amiga20l.lib > %(left)
+$(DLIB)amiga20l.lib : $(NDK)2.0/linker_libs/amiga.lib $(DLIB)amiga20_func_l.lib
+    cat %(right) > %(left)
 
 .endif
 
@@ -181,7 +191,7 @@ amiga20srp.lib:
 amiga20rpl.lib:
     lbmake amiga20 r p l $(ALT)
 
-amiga20_func_l.lib:
+$(DLIB)amiga20_func_l.lib:
     lbmake a20func l $(ALT)
 
 FD20FILES= asl battclock battmem cia commodities console diskfont \

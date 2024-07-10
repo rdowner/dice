@@ -11,26 +11,56 @@ ISUBDIRS= config include dlib lib bin
 #         ( cd include; dxmake )
 #         ( cd config; dxmake )
 all:
-        ( cd src; dxmake )
+        cd $(TOPDIR)src
+        dxmake
+        cd
+        cd $(TOPDIR)lib
+        dxmake -f DMakefile.amiga
+
+bin-core:
+        cd $(TOPDIR)src
+        dxmake bin-core
+        cd $(TOPDIR)
+
+bin-all:
+        cd $(TOPDIR)src
+        dxmake bin-all
+        cd $(TOPDIR)
+
+install-bin-core:
+        cd $(TOPDIR)src
+        dxmake install-bin-core
+        cd $(TOPDIR)
+
+install-bin-all:
+        cd $(TOPDIR)src
+        dxmake install-bin-all
+        cd $(TOPDIR)
+
+lib-core:
+        cd $(TOPDIR)lib
+        dxmake -f DMakefile.amiga core
 
 $(OUTDIRS) : $(OUTDIRS)
-        mkdir %(left)
+        $(MKDIR) %(left)
 
 #install:        $(INSTDIR) $(ISUBDIRS:"*":"$(INSTDIR)/*") dummy
 install:
-       -mkdir $(INSTDIR)
-       -mkdir $(INSTDIR)/config
-       -mkdir $(INSTDIR)/include
-       -mkdir $(INSTDIR)/dlib
-       -mkdir $(INSTDIR)/lib
-       -mkdir $(INSTDIR)/bin
-       chmod 755 $(INSTDIR)
-       chmod 755 $(INSTDIR)/config
-       chmod 755 $(INSTDIR)/include
-       chmod 755 $(INSTDIR)/dlib
-       chmod 755 $(INSTDIR)/lib
-       chmod 755 $(INSTDIR)/bin
-       ( cd src; dxmake install )
+       -$(MKDIR) $(INSTDIR)
+       -$(MKDIR) $(INSTDIR)/bin
+       -$(MKDIR) $(INSTDIR)/config
+       -$(MKDIR) $(INSTDIR)/include
+       -$(MKDIR) $(INSTDIR)/dlib
+       -$(MKDIR) $(INSTDIR)/lib
+       -$(MKDIR) $(INSTDIR)/bin
+       $(CHMOD) 755 $(INSTDIR)
+       $(CHMOD) 755 $(INSTDIR)/config
+       $(CHMOD) 755 $(INSTDIR)/include
+       $(CHMOD) 755 $(INSTDIR)/dlib
+       $(CHMOD) 755 $(INSTDIR)/lib
+       $(CHMOD) 755 $(INSTDIR)/bin
+       cd src
+       dxmake install
 #        ( cd lib; dxmake install )
 #        ( cd include; dxmake install )
 #        ( cd config; dxmake install )
@@ -39,33 +69,33 @@ install:
 dummy:
 
 #$(ISUBDIRS:"*":"$(INSTDIR)/*"): $(INSTDIR)
-#        mkdir %(left)
+#        $(MKDIR) %(left)
 
 #$(INSTDIR): $(INSTDIR)
-#        mkdir %(left)
+#        $(MKDIR) %(left)
 
 clean:
         ( cd suplib; dxmake clean )
         ( cd src; dxmake clean )
         ( cd lib; dxmake clean )
-        rm -f dlib/*.o dlib/*.lib
-        rm -rf $(OUTDIRS)
+        $(RM) -f dlib/*.o dlib/*.lib
+        $(RM) -rf $(OUTDIRS)
 
 zip:
-        -rm dice_binary.zip
-        -rm -rf binrel
-        mkdir binrel
+        -$(RM) dice_binary.zip
+        -$(RM) -rf binrel
+        $(MKDIR) binrel
         cp -r README.BINARY DICE-LICENSE.TXT suplib/ dlib/ doc/ ubin/ ulib/ lib/ binrel/
-        mkdir binrel/config
+        $(MKDIR) binrel/config
         cp config/dice.errors binrel/config
-        mkdir binrel/include
+        $(MKDIR) binrel/include
         cp include/*.h binrel/include
         cp -r include/lib binrel/include
-        -find binrel -name CVS -exec rm -rf {} \;
-        rm -rf binrel/include/amiga20
-        rm -rf binrel/include/amiga30
-        rm -rf binrel/lib/obj3
+        -find binrel -name CVS -exec $(RM) -rf {} \;
+        $(RM) -rf binrel/include/amiga20
+        $(RM) -rf binrel/include/amiga30
+        $(RM) -rf binrel/lib/obj3
         cd binrel; zip -r ../dice_binary.zip *
-        #rm -rf binrel
+        #$(RM) -rf binrel
 
 

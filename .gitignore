@@ -1,17 +1,18 @@
 # Output of the build
+bin1-bootstrap/
+bin1/
+dlib1/
+bin2-bootstrap/
+bin2/
+dlib2/
+bin/
 dlib/
-lib/obj3/
-obj/
-ubin/
-ulib/
 .depend
-stage1/
-stage2/
-tmp-stage1/
-tmp-stage2/
 
 # Amiga header files - not to be checked in
-include/amiga31
+include/amiga13
+include/amiga20
+include/amiga30
 
 # IDE metadata
 .vscode/

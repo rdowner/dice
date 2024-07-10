@@ -1,0 +1,109 @@
+; Stage 2 build on Amiga
+
+If Not Exists DCC:src
+    Echo "DCC: is not assigned correctly"
+    Quit 10
+EndIf
+
+Echo "Making directories"
+If Not Exists DCC:bin2-bootstrap
+    MakeDir DCC:bin2-bootstrap
+EndIf
+If Not Exists DCC:bin2
+    MakeDir DCC:bin2
+EndIf
+If Not Exists DCC:bin
+    MakeDir DCC:bin
+EndIf
+If Not Exists DCC:dlib2
+    MakeDir DCC:dlib2
+EndIf
+If Not Exists DCC:dlib
+    MakeDir DCC:dlib
+EndIf
+If Not Exists T:dtmp
+    MakeDir T:dtmp
+EndIf
+Assign DTMP: T:dtmp
+If Not Exists DTMP:obj2-bootstrap
+    MakeDir DTMP:obj2-bootstrap
+EndIf
+If Not Exists DTMP:obj2
+    MakeDir DTMP:obj2
+EndIf
+If Not Exists DTMP:obj3
+    MakeDir DTMP:obj3
+EndIf
+
+Set DCCOPTS "-2.0 -//"
+Assign DINCLUDE: DCC:include
+
+Echo "Checking/installing AmigaOS 2.0 support"
+If Not Exists NDK:2.0
+    Echo "NDK:2.0 is not available"
+    Quit 10
+EndIf
+If Not Exists DINCLUDE:amiga20
+    Copy NDK:2.0/include_h DINCLUDE:amiga20 CLONE ALL
+    Copy NDK:2.0/fd DINCLUDE:amiga20/fd CLONE ALL
+EndIf
+
+Echo "Stage 2 bootstrap build"
+Assign DLIB: DCC:dlib1
+Set OD DTMP:obj2-bootstrap/
+Set BIN DCC:bin2-bootstrap/
+Path DCC:bin1c ADD HEAD
+dxmake bin-core
+dxmake install-bin-core
+Path DCC:bin1c REMOVE
+
+Echo "Stage 2 libraries build"
+Assign DLIB: DCC:dlib2
+Path DCC:bin2-bootstrap ADD HEAD
+cd lib
+dxmake core
+cd /
+Path DCC:bin2-bootstrap REMOVE
+
+Echo "Stage 2 compiler/tools build"
+Set OD DTMP:obj2/
+Set BIN DCC:bin2/
+Path DCC:bin2-bootstrap ADD HEAD
+dxmake bin-core
+dxmake install-bin-core
+Path DCC:bin2-bootstrap REMOVE
+
+Echo "Stage 3 libraries build"
+Assign DLIB: DCC:dlib
+Path DCC:bin2 ADD HEAD
+cd lib
+dxmake all
+If Exists NDK:1.3
+    If Not Exists DINCLUDE:amiga13
+        Copy NDK:1.3/include_h DINCLUDE:amiga13 CLONE ALL
+        Copy NDK:1.3/fd DINCLUDE:amiga13/fd CLONE ALL
+    EndIf
+    dxmake amiga13
+EndIf
+If Exists NDK:3.0
+    If Not Exists DINCLUDE:amiga30
+        Copy NDK:3.0/include_h DINCLUDE:amiga30 CLONE ALL
+        Copy NDK:3.0/fd DINCLUDE:amiga30/fd CLONE ALL
+    EndIf
+    dxmake amiga30
+EndIf
+cd /
+Path DCC:bin2 REMOVE
+
+Echo "Stage 3 compiler/tools build"
+Set OD DTMP:obj3/
+Set BIN DCC:bin/
+Path DCC:bin2 ADD HEAD
+cd src
+dxmake bin-all
+dxmake install-bin-all
+cd /
+Path DCC:bin2 REMOVE
+
+Echo "Build completed! DICE is ready to use."
+Path DCC:bin ADD

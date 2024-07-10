@@ -6,7 +6,11 @@
 # Obvious Implementations Corp.  This material contains trade secrets of
 # Obvious Implementations Corp.
 
+.ifos AmigaOS
+.include /DMakefile.inc
+.else
 .include ../DMakefile.inc
+.endif
 
 SRCS= main.c subs.c reloc.c symbol.c data.c code.c
 
@@ -26,13 +30,12 @@ $(OBJS) : $(SRCS)
         $(CC) $(CFLAGS) %(right) -o %(left) -c
 
 $(PROTOS) : $(SRCS)
-        rm -f $(PROTOS) $(PROTOS).new
-        fgrep -h Prototype $(SRCS) >$(PROTOS).new
-        mv -f $(PROTOS).new $(PROTOS)
+        -$(RM) $(PROTOS) $(PROTOS).new
+        $(MAKEPROTO) $(SRCS) >$(PROTOS)
 
 install:
-        install -c -m 0755 $(EXE) $(EXED)
+        $(INSTALL) $(EXE) $(EXED)
 
 clean:
-        rm -f $(PROTOS) $(OBJS) $(EXE)
+        -$(RM) $(PROTOS) $(OBJS) $(EXE)
 

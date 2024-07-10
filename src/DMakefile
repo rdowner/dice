@@ -1,39 +1,68 @@
 
-all:    DCC DCPP DC1 DAS DLINK DXMAKE DOBJ DUTIL
+bin-core:   DCC DCPP DC1 DAS DLINK DXMAKE DOBJ DUTIL
+
+bin-all:    bin-core
 
 DCC:
-        (cd dcc; dxmake)
+        cd dcc
+        dxmake
+        cd /
 
 DCPP:
-        (cd dcpp; dxmake)
+        cd dcpp
+        dxmake
+        cd /
 
 DC1:
-        (cd dc1; dxmake)
+        cd dc1
+        dxmake
+        cd /
 
 DAS:
-        (cd das; dxmake)
+        cd das
+        dxmake
+        cd /
 
 DLINK:
-        (cd dlink; dxmake)
+        cd dlink
+        dxmake
+        cd /
 
 DXMAKE:
-        (cd dxmake; dxmake)
+        cd dxmake
+        dxmake
+        cd /
 
 DOBJ:
-        (cd dobj; dxmake)
+        cd dobj
+        dxmake
+        cd /
 
 DUTIL:
-        (cd dutil; dxmake)
+        cd dutil
+        dxmake
+        cd /
 
-install:
-        (cd dcc; dxmake install)
-        (cd dcpp; dxmake install)
-        (cd dc1; dxmake install)
-        (cd das; dxmake install)
-        (cd dlink; dxmake install)
-        (cd dxmake; dxmake install)
-        (cd dobj; dxmake install)
-        (cd dutil; dxmake install)
+install-bin-core:
+        cd dcc
+        dxmake install
+        cd /dcpp
+        dxmake install
+        cd /dc1
+        dxmake install
+        cd /das
+        dxmake install
+        cd /dlink
+        dxmake install
+        cd /dxmake
+        dxmake install
+        cd /dobj
+        dxmake install
+        cd /dutil
+        dxmake install
+        cd /
+
+install-bin-all: install-bin-core
 
 clean:
         (cd dcc; dxmake clean)

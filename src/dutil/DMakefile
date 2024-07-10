@@ -6,7 +6,11 @@
 # Obvious Implementations Corp.  This material contains trade secrets of
 # Obvious Implementations Corp.
 
+.ifos AmigaOS
+.include /DMakefile.inc
+.else
 .include ../DMakefile.inc
+.endif
 
 SRCS= bintohex.c fdtolib.c fdtopragma.c istrip.c lbmake.c \
         libtos.c makeproto.c romable.c hunks.c uprev.c
@@ -20,8 +24,8 @@ $(EXES) : $(SRCS)
         $(CC) $(CFLAGS) %(right) -o %(left)
 
 install:
-        install -c -m 0755 $(EXES) $(INSTDIR)bin/
+        $(INSTALL) $(EXES) $(BIN)
 
 clean:
-        rm -f $(EXES)
+        -$(RM) $(EXES)
 
