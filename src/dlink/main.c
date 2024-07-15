@@ -202,7 +202,12 @@ main(int ac, char **av)
 #ifdef AMIGA
         sprintf(DLib, "%.*sdlib:", p2 - ptr, ptr);
 #else
-        sprintf(DLib, INSTDIR "%.*sdlib/", (int)(p2 - ptr), ptr);
+        char *envVal = getenv("DLIB");
+        if (envVal != NULL) {
+            strcpy(DLib, envVal);
+        } else {
+            sprintf(DLib, INSTDIR "%.*sdlib/", (int)(p2 - ptr), ptr);
+        }
 #endif
     }
 

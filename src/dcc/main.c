@@ -280,8 +280,17 @@ char *xav[];
         sprintf(DC1  , "%s%s", prefix, "dc1");
         sprintf(DCPP , "%s%s", prefix, "dcpp");
 #endif
-        DLib = mergestr(DLIBPRE, prefix);
-        DLib = mergestr(DLib, DLIBPOS);
+#ifdef AMIGA
+        char *envVal = NULL;
+#else
+        char *envVal = getenv("DLIB");
+#endif
+        if (envVal != NULL) {
+            DLib = mergestr(envVal, "/");
+        } else {
+            DLib = mergestr(DLIBPRE, prefix);
+            DLib = mergestr(DLib, DLIBPOS);
+        }
     }
     AmigaLib = mergestr(DLib, "amiga");
     CLib = mergestr(DLib, "c");
