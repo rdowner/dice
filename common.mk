@@ -7,30 +7,16 @@
 # PROTOS = (name of the header file for automatically-generated prototypes; optional)
 # include $(TOPDIR)/common.mk
 
-STAGE1DIR = $(TOPDIR)/stage1
-
-BUILDDIR = $(TOPDIR)/tmp-stage$(STAGE)/$(SUBDIR)
-PREFIX = $(TOPDIR)/stage$(STAGE)
+BUILDDIR = /tmp/dtmp/obj1/$(SUBDIR)
 
 OBJS = $(addprefix $(BUILDDIR)/, $(C_SRCS:.c=.o))
 
-ifeq ($(STAGE),1)
 CFLAGS = -Wall -Wno-unused-result -Wstrict-prototypes -Werror
-# CFLAGS += -O2
 CFLAGS += -g
-CFLAGS += -DNO_ASM -DINTELBYTEORDER -D__STDC_WANT_LIB_EXT2__ -D_INSTDIR=$(abspath $(PREFIX))/
+CFLAGS += -DNO_ASM -DINTELBYTEORDER -D__STDC_WANT_LIB_EXT2__ -D_INSTDIR=$(abspath $(TOPDIR))/
 CFLAGS += -I$(BUILDDIR) -I$(TOPDIR)
 
-SUPLIB = -L $(TOPDIR)/tmp-stage$(STAGE)/suplib -lamiga
-else
-CC = $(STAGE1DIR)/ubin/dcc
-CFLAGS = -2.0 -//
-CFLAGS += -DNO_ASM -DCROSS_COMPILE -D_INSTDIR=$(abspath $(PREFIX))/
-CFLAGS += -I$(TOPDIR)
-CFLAGS += -d1 -s
-LDFLAGS = -2.0 -d1 -s
-SUPLIB =
-endif
+SUPLIB = -L /tmp/dtmp/obj1/suplib -lamiga
 
 ifdef BIN
 BIN_WITH_PATH = $(BUILDDIR)/$(BIN)
@@ -46,13 +32,13 @@ clean :
 
 install :
 ifdef BIN
-	install -d $(DESTDIR)$(PREFIX)/ubin
-	install -m 755 $(BIN_WITH_PATH) $(DESTDIR)$(PREFIX)/ubin
+	install -d $(TOPDIR)/bin1-bootstrap
+	install -m 755 $(BIN_WITH_PATH) $(TOPDIR)/bin1-bootstrap
 endif
 
 uninstall :
 ifdef BIN
-	rm -f $(DESTDIR)$(PREFIX)/ubin/$(BIN)
+	rm -f $(TOPDIR)/bin1-bootstrap/$(BIN)
 endif
 
 $(BUILDDIR) :

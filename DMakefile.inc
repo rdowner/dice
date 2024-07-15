@@ -1,9 +1,14 @@
 
 INSTDIR= DCC:
-;OD= $(TOPDIR)tmp-stage2/
-;BIN= $(INSTDIR)/bin/
+.ifdef OD
+.else
+OD= /tmp/dtmp/
+.endif
+.ifdef BIN
+.else
+BIN= $(TOPDIR)bin/
+.endif
 ULIB= $(TOPDIR)ulib/
-DLIB= $(TOPDIR)dlib/
 INCLUDE= $(TOPDIR)include/
 ENV= 
 # ENV= DERRORS=$(TOPDIR)config/dice.errors; DINCLUDE=$(INCLUDE); export DERRORS; export DINCLUDE;
@@ -21,6 +26,7 @@ MAKEPROTO=makeproto
 
 .else
 
+CFLAGS= $(CFLAGS) -DCROSS_COMPILE
 RM=rm -f
 MKDIR=mkdir
 INSTALL=install -c -m 0755

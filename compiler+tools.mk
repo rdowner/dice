@@ -9,10 +9,6 @@ endif
 DIRS += src/dcc src/dcpp src/dc1 src/das src/dlink
 # Additional, but highly useful, tools
 DIRS += src/dxmake src/dobj src/dutil
-# The config - currently only the error messages file
-DIRS += config
-# Includes
-DIRS += include
 
 # the sets of directories to do various things in
 BUILDDIRS = $(DIRS:%=build-%)

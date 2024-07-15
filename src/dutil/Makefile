@@ -19,8 +19,8 @@ clean :
 	-rm -f $(BINS) $(OBJS) .depend
 
 install :
-	install -d $(DESTDIR)$(PREFIX)/ubin
-	install -m 755 $(BINS) $(DESTDIR)$(PREFIX)/ubin
+	install -d $(TOPDIR)/bin1-bootstrap
+	install -m 755 $(BINS) $(TOPDIR)/bin1-bootstrap
 
 uninstall :
-	rm -f $(addprefix $(DESTDIR)$(PREFIX)/ubin/, $(C_SRCS:.c=))
+	rm -f $(addprefix $(TOPDIR)/bin1-bootstrap/, $(C_SRCS:.c=))

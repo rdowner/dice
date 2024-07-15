@@ -3,64 +3,70 @@ bin-core:   DCC DCPP DC1 DAS DLINK DXMAKE DOBJ DUTIL
 
 bin-all:    bin-core
 
+.ifos AmigaOS
+UP = /
+.else
+UP = ../
+.endif
+
 DCC:
         cd dcc
         dxmake
-        cd /
+        cd $(UP)
 
 DCPP:
         cd dcpp
         dxmake
-        cd /
+        cd $(UP)
 
 DC1:
         cd dc1
         dxmake
-        cd /
+        cd $(UP)
 
 DAS:
         cd das
         dxmake
-        cd /
+        cd $(UP)
 
 DLINK:
         cd dlink
         dxmake
-        cd /
+        cd $(UP)
 
 DXMAKE:
         cd dxmake
         dxmake
-        cd /
+        cd $(UP)
 
 DOBJ:
         cd dobj
         dxmake
-        cd /
+        cd $(UP)
 
 DUTIL:
         cd dutil
         dxmake
-        cd /
+        cd $(UP)
 
 install-bin-core:
         cd dcc
         dxmake install
-        cd /dcpp
+        cd $(UP)dcpp
         dxmake install
-        cd /dc1
+        cd $(UP)dc1
         dxmake install
-        cd /das
+        cd $(UP)das
         dxmake install
-        cd /dlink
+        cd $(UP)dlink
         dxmake install
-        cd /dxmake
+        cd $(UP)dxmake
         dxmake install
-        cd /dobj
+        cd $(UP)dobj
         dxmake install
-        cd /dutil
+        cd $(UP)dutil
         dxmake install
-        cd /
+        cd $(UP)
 
 install-bin-all: install-bin-core
 
