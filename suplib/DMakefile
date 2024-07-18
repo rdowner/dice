@@ -7,6 +7,7 @@ SRCS= addhead.c addtail.c newlist.c remhead.c \
         findname.c stricmp.c enqueue.c strins.c \
         locatepath.c insert.c order.c
 
+OD=$(OD)suplib/
 OBJS= $(SRCS:"*.c":"$(OD)suplib_*.o")
 
 LIBNAME= libamiga.a
@@ -26,11 +27,12 @@ $(OBJS) : $(SRCS)
 $(OBJS) : $(OD)
 
 $(OD) : $(OD)
-        mkdir %(left)
+        mkdir -p %(left)
 
 clean:
         rm -f $(OBJS) $(LIB) $(ULIB)$(LIBNAME)
 
 install:
-        cp $(LIB) $(ULIB)$(LIBNAME)
+        true
+        #cp $(LIB) $(ULIB)$(LIBNAME)
 
