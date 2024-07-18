@@ -5,7 +5,7 @@ default :
 
 stage1 : stage1a stage1b stage1c
 stage1a :
-	$(MAKE) -f compiler+tools.mk STAGE=1 all install
+	$(MAKE) -f compiler+tools.mk all install
 stage1b :
 	mkdir -p dlib1
 	cd lib && $(MAKE) lib-core
@@ -16,6 +16,6 @@ stage1c :
 .PHONY : stage1 stage1a stage1b stage1c
 
 clean :
-	$(MAKE) -f compiler+tools.mk STAGE=1 clean
+	$(MAKE) -f compiler+tools.mk clean
 	rm -rf dlib1 bin1 bin1-bootstrap /tmp/dtmp
 .PHONY : clean

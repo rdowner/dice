@@ -7,7 +7,7 @@
 # PROTOS = (name of the header file for automatically-generated prototypes; optional)
 # include $(TOPDIR)/common.mk
 
-BUILDDIR = /tmp/dtmp/obj1/$(SUBDIR)
+BUILDDIR = /tmp/dtmp/obj1-bootstrap/$(SUBDIR)
 
 OBJS = $(addprefix $(BUILDDIR)/, $(C_SRCS:.c=.o))
 
@@ -16,7 +16,7 @@ CFLAGS += -g
 CFLAGS += -DNO_ASM -DINTELBYTEORDER -D__STDC_WANT_LIB_EXT2__ -D_INSTDIR=$(abspath $(TOPDIR))/
 CFLAGS += -I$(BUILDDIR) -I$(TOPDIR)
 
-SUPLIB = -L /tmp/dtmp/obj1/suplib -lamiga
+SUPLIB = -L /tmp/dtmp/obj1-bootstrap/suplib -lamiga
 
 ifdef BIN
 BIN_WITH_PATH = $(BUILDDIR)/$(BIN)

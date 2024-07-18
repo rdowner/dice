@@ -10,8 +10,6 @@ BIN= $(TOPDIR)bin/
 .endif
 ULIB= $(TOPDIR)ulib/
 INCLUDE= $(TOPDIR)include/
-ENV= 
-# ENV= DERRORS=$(TOPDIR)config/dice.errors; DINCLUDE=$(INCLUDE); export DERRORS; export DINCLUDE;
 
 CC=dcc
 CFLAGS= -2.0 -// -DNO_ASM -I$(TOPDIR)

@@ -91,7 +91,11 @@ Assign NDK: DH1:AmigaNDK
 
 #### Procedure
 
-TBC
+Execute this command:
+
+```bash
+make stage1
+```
 
 
 ### Stage 2+3 build on an Amiga
@@ -154,6 +158,14 @@ This will be a slightly crippled build:
 
 What use is this? If you can live with the limitations, then this is a nice and simple
 cross-compiler for the Amiga, and 68k embedded targets (if you also build the ROM library set).
+
+To build like this, execute these commands:
+
+```bash
+make stage1a stage1b
+mv bin1-bootstrap bin
+mv dlib1 dlib
+```
 
 
 ### Bootstrap from a previous version of DICE on an Amiga
