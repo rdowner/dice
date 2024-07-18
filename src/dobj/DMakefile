@@ -24,7 +24,7 @@ PROTOS= $(OD)dobj-protos.h
 all: $(PROTOS) $(EXE)
 
 $(EXE) : $(OBJS)
-        $(CC) $(CFLAGS) $(OBJS) -o $(EXE)
+        $(CC) $(CFLAGS) $(OBJS) $(SUPLIB) -o $(EXE)
 
 $(OBJS) : $(SRCS)
         $(CC) $(CFLAGS) %(right) -o %(left) -c

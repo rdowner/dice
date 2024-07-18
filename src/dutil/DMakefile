@@ -21,7 +21,7 @@ EXESD= $(SRCS:"*.c":"$(BIN)*")
 all: $(EXES)
 
 $(EXES) : $(SRCS)
-        $(CC) $(CFLAGS) %(right) -o %(left)
+        $(CC) $(CFLAGS) %(right) $(SUPLIB) -o %(left)
 
 install:
         $(INSTALL) $(EXES) $(BIN)

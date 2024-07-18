@@ -1,12 +1,6 @@
 
 # Populate DIRS with the subdirectories containing the build components
-DIRS = 
-# suplib, provides substitutes for AmigaOS functions not present in UNIX-likes
-DIRS += suplib
-# The main compiler parts
-DIRS += src/dcc src/dcpp src/dc1 src/das src/dlink
-# Additional, but highly useful, tools
-DIRS += src/dxmake src/dobj src/dutil
+DIRS = suplib src/dxmake
 
 # the sets of directories to do various things in
 BUILDDIRS = $(DIRS:%=build-%)

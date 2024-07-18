@@ -25,7 +25,7 @@ PROTOS= $(OD)das-protos.h
 all: $(PROTOS) $(EXE)
 
 $(EXE) : $(OBJS)
-        $(CC) $(CFLAGS) $(OBJS) -o $(EXE)
+        $(CC) $(CFLAGS) $(OBJS) $(SUPLIB) -o $(EXE)
 
 $(OBJS) : $(SRCS)
         $(CC) $(CFLAGS) %(right) -o %(left) -c

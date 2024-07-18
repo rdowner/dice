@@ -6,6 +6,7 @@ default :
 stage1 : stage1a stage1b stage1c
 stage1a :
 	$(MAKE) -f compiler+tools.mk all install
+	PATH="$(abspath bin1-bootstrap):$(PATH)" OD="/tmp/dtmp/obj1-bootstrap/" INSTDIR="$(abspath .)/" BIN="$(abspath bin1-bootstrap)/" CROSS_COMPILE=1 DLIB="$(abspath dlib1)/" dxmake bin-core install-bin-core
 stage1b :
 	mkdir -p dlib1
 	cd lib && $(MAKE) lib-core
