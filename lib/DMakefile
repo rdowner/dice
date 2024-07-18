@@ -8,13 +8,25 @@
 DLIB= dlib:
 NDK= NDK:
 ALT=
+LIBDEF = lib.def
 
 .else
 
 NDK= $(AMIGA_NDK_HOME)/
 ALT=nofp
+LIBDEF = ulib.def
+
+$(LIBDEF): lib.def
+	sed -E \
+		-e 's_^(@DefTree\s+).*$$_\1$(DTMP)_' \
+		-e 's_^(@AltTree\s+[^\s]+\s+).*$$_\1$(DTMP)_' \
+		-e 's_dlib:_$(DLIB)_' \
+		-e 's_dinclude:_$(DINCLUDE)_' \
+		$^ > $@
 
 .endif
+
+LBMAKE = lbmake -d $(LIBDEF)
 
 start:
         type lib.help
@@ -42,91 +54,91 @@ amiga13:    amiga13l.lib amiga13s.lib amiga13sp.lib amiga13pl.lib
 amiga20:    amiga20l.lib amiga20s.lib amiga20sp.lib amiga20sr.lib amiga20pl.lib \
             amiga20rl.lib amiga20srp.lib amiga20rpl.lib
 
-startup:
-    lbmake startup $(ALT)
+startup: $(LIBDEF)
+    $(LBMAKE) startup $(ALT)
 
-autos.lib:
-    lbmake auto s $(ALT)
+autos.lib: $(LIBDEF)
+    $(LBMAKE) auto s $(ALT)
 
-autol.lib:
-    lbmake auto l $(ALT)
+autol.lib: $(LIBDEF)
+    $(LBMAKE) auto l $(ALT)
 
-cs.lib:
-    lbmake clib s $(ALT)
+cs.lib: $(LIBDEF)
+    $(LBMAKE) clib s $(ALT)
 
-cl.lib:
-    lbmake clib l $(ALT)
+cl.lib: $(LIBDEF)
+    $(LBMAKE) clib l $(ALT)
 
-csp.lib:
-    lbmake clib s p $(ALT)
+csp.lib: $(LIBDEF)
+    $(LBMAKE) clib s p $(ALT)
 
-csr.lib:
-    lbmake clib s r $(ALT)
+csr.lib: $(LIBDEF)
+    $(LBMAKE) clib s r $(ALT)
 
-cpl.lib:
-    lbmake clib p l $(ALT)
+cpl.lib: $(LIBDEF)
+    $(LBMAKE) clib p l $(ALT)
 
-crl.lib:
-    lbmake clib r l $(ALT)
+crl.lib: $(LIBDEF)
+    $(LBMAKE) clib r l $(ALT)
 
-csrp.lib:
-    lbmake clib s r p $(ALT)
+csrp.lib: $(LIBDEF)
+    $(LBMAKE) clib s r p $(ALT)
 
-crpl.lib:
-    lbmake clib r p l $(ALT)
+crpl.lib: $(LIBDEF)
+    $(LBMAKE) clib r p l $(ALT)
 
 #   UNIX compatible C library (automatically converts UNIX style paths to
 #        amiga style)
 
-ucs.lib:
-    lbmake uclib s $(ALT)
+ucs.lib: $(LIBDEF)
+    $(LBMAKE) uclib s $(ALT)
 
-ucsr.lib:
-    lbmake uclib s r $(ALT)
+ucsr.lib: $(LIBDEF)
+    $(LBMAKE) uclib s r $(ALT)
 
 
 #   M[model].LIB
 #
 
-ms.lib:
-    lbmake mlib s $(ALT)
+ms.lib: $(LIBDEF)
+    $(LBMAKE) mlib s $(ALT)
 
-ml.lib:
-    lbmake mlib l $(ALT)
+ml.lib: $(LIBDEF)
+    $(LBMAKE) mlib l $(ALT)
 
-msp.lib:
-    lbmake mlib s p $(ALT)
+msp.lib: $(LIBDEF)
+    $(LBMAKE) mlib s p $(ALT)
 
-msr.lib:
-    lbmake mlib s r $(ALT)
+msr.lib: $(LIBDEF)
+    $(LBMAKE) mlib s r $(ALT)
 
-mpl.lib:
-    lbmake mlib p l $(ALT)
+mpl.lib: $(LIBDEF)
+    $(LBMAKE) mlib p l $(ALT)
 
-mrl.lib:
-    lbmake mlib r l $(ALT)
+mrl.lib: $(LIBDEF)
+    $(LBMAKE) mlib r l $(ALT)
 
-msrp.lib:
-    lbmake mlib s r p $(ALT)
+msrp.lib: $(LIBDEF)
+    $(LBMAKE) mlib s r p $(ALT)
 
-mrpl.lib:
-    lbmake mlib r p l $(ALT)
+mrpl.lib: $(LIBDEF)
+    $(LBMAKE) mlib r p l $(ALT)
 
 
 #   ROM[model].LIB
 #
 
-roms.lib:
-    lbmake rom s $(ALT)
+roms.lib: $(LIBDEF)
+    $(LBMAKE) rom s $(ALT)
 
-romsr.lib:
-    lbmake rom s r $(ALT)
+romsr.lib: $(LIBDEF)
+    $(LBMAKE) rom s r $(ALT)
 
-roml.lib:
-    lbmake rom l $(ALT)
+roml.lib: $(LIBDEF)
+    $(LBMAKE) rom l $(ALT)
 
-romrl.lib:
-    lbmake rom r l $(ALT)
+romrl.lib: $(LIBDEF)
+    $(LBMAKE) rom r l $(ALT)
 
 #   AMIGA13[model].lib:
 
@@ -140,11 +152,11 @@ amiga13s.lib:   $(DLIB)amiga13s.lib
 $(DLIB)amiga13s.lib : $(DLIB)amiga13l.lib
     libtos $(DLIB)amiga13l.lib $(DLIB)amiga13s.lib
 
-amiga13sp.lib:
-    lbmake amiga13 s p $(ALT)
+amiga13sp.lib: $(LIBDEF)
+    $(LBMAKE) amiga13 s p $(ALT)
 
-amiga13pl.lib:
-    lbmake amiga13 p l $(ALT)
+amiga13pl.lib: $(LIBDEF)
+    $(LBMAKE) amiga13 p l $(ALT)
 
 
 #   AMIGA20[model].lib
@@ -173,26 +185,26 @@ amiga20s.lib:   $(DLIB)amiga20s.lib
 $(DLIB)amiga20s.lib : $(DLIB)amiga20l.lib
     libtos $(DLIB)amiga20l.lib $(DLIB)amiga20s.lib
 
-amiga20sp.lib:
-    lbmake amiga20 s p $(ALT)
+amiga20sp.lib: $(LIBDEF)
+    $(LBMAKE) amiga20 s p $(ALT)
 
-amiga20sr.lib:
-    lbmake amiga20 s r $(ALT)
+amiga20sr.lib: $(LIBDEF)
+    $(LBMAKE) amiga20 s r $(ALT)
 
-amiga20pl.lib:
-    lbmake amiga20 p l $(ALT)
+amiga20pl.lib: $(LIBDEF)
+    $(LBMAKE) amiga20 p l $(ALT)
 
-amiga20rl.lib:
-    lbmake amiga20 r l $(ALT)
+amiga20rl.lib: $(LIBDEF)
+    $(LBMAKE) amiga20 r l $(ALT)
 
-amiga20srp.lib:
-    lbmake amiga20 s r p $(ALT)
+amiga20srp.lib: $(LIBDEF)
+    $(LBMAKE) amiga20 s r p $(ALT)
 
-amiga20rpl.lib:
-    lbmake amiga20 r p l $(ALT)
+amiga20rpl.lib: $(LIBDEF)
+    $(LBMAKE) amiga20 r p l $(ALT)
 
-$(DLIB)amiga20_func_l.lib:
-    lbmake a20func l $(ALT)
+$(DLIB)amiga20_func_l.lib: $(LIBDEF)
+    $(LBMAKE) a20func l $(ALT)
 
 FD20FILES= asl battclock battmem cia commodities console diskfont \
          dos exec expansion gadtools graphics icon iffparse \
