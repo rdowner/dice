@@ -14,7 +14,7 @@ OBJS = $(addprefix $(BUILDDIR)/, $(C_SRCS:.c=.o))
 CFLAGS = -Wall -Wno-unused-result -Wstrict-prototypes -Werror
 CFLAGS += -g
 CFLAGS += -DNO_ASM -DINTELBYTEORDER -D__STDC_WANT_LIB_EXT2__ -D_INSTDIR=$(abspath $(TOPDIR))/
-CFLAGS += -I$(BUILDDIR) -I$(TOPDIR)
+CFLAGS += -I$(TOPDIR)
 
 SUPLIB = -L /tmp/dtmp/obj1-bootstrap/suplib -lamiga
 
