@@ -52,10 +52,10 @@ Echo "Stage 2 bootstrap build"
 Assign DLIB: DCC:dlib1
 Set OD DTMP:obj2-bootstrap/
 Set BIN DCC:bin2-bootstrap/
-Path DCC:bin1c ADD HEAD
+Path DCC:bin1 ADD HEAD
 dxmake bin-core
 dxmake install-bin-core
-Path DCC:bin1c REMOVE
+Path DCC:bin1 REMOVE
 
 Echo "Stage 2 libraries build"
 Assign DLIB: DCC:dlib2
