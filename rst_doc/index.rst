@@ -21,3 +21,4 @@ open-source contributors.
 
    about
    history
+   reference/index
