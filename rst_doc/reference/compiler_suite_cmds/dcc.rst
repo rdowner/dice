@@ -1,5 +1,5 @@
-dcc
-===
+dcc - the DICE compiler frontend
+================================
 
 .. note::
 

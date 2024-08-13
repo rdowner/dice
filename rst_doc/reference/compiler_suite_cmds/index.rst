@@ -9,3 +9,5 @@ This section describes the commands that make up the core compiler suite.
    :caption: Contents:
 
    dcc
+   dcpp
+   dc1
