@@ -6,4 +6,4 @@ Reference
    :maxdepth: 2
    :caption: Contents:
 
-   tools/index
+   compiler_suite_cmds/index
