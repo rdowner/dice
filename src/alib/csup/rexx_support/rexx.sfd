@@ -1,6 +1,0 @@
-*
-*  ARexx support functions in amiga.lib
-*
-BOOL CheckRexxMsg(struct Message *rexxmsg)      (a0)
-LONG GetRexxVar(struct Message *rexxmsg,UBYTE *name,UBYTE **result)  (a0,a1,d0)
-LONG SetRexxVar(struct Message *rexxmsg,UBYTE *name,UBYTE *value,LONG length) (a0,a1,d0,d1)

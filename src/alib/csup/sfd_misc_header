@@ -1,6 +1,0 @@
-==id $Id: sfd_misc_header,v 30.0 1994/06/10 18:10:50 dice Exp $
-==base _None
-==bias 30
-==public
-==include <exec/types.h>
-==version 36

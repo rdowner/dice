@@ -1,8 +1,0 @@
-*
-* math support functions in amiga.lib
-*
-FLOAT   afp(BYTE *string)                                       (A0)
-VOID    arnd(LONG place, LONG exp, BYTE *string)                (D0,D1,A0)
-FLOAT   dbf(UWORD exp, ULONG mant)                              (D0,D1)
-LONG    fpa(FLOAT fnum, BYTE *string)                           (D0,A0)
-VOID    fpbcd(FLOAT fnum, BYTE *string)                         (D0,A0)

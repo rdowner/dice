@@ -1,6 +1,0 @@
-*
-* Graphics support functions in amiga.lib
-*
-VOID    AddTOF(struct Isrvstr *i, LONG (*p)(), LONG a)          (A0,A1,D0)
-VOID    RemTOF(struct Isrvstr *i)                               (A0)
-VOID    waitbeam(LONG b)                                        (D0)

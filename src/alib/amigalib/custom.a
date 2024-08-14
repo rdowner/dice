@@ -1,9 +1,0 @@
-
-                        section text,abs
-
-                        xdef    _custom
-
-_custom                 equ     $DFF000
-
-                        end
-

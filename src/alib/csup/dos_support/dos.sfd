@@ -1,1 +1,0 @@
-LONG NameFromAnchor(struct AnchorPath *anchor, UBYTE *buffer, LONG buflen) (d1,d2,d3)
