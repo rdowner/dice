@@ -1,7 +1,7 @@
 
-bin-core:   DCC DCPP DC1 DAS DLINK DXMAKE DOBJ DUTIL
+bin-core:   DCC DCPP DC1 DAS DLINK DXMAKE DOBJ DUTILCORE
 
-bin-all:    bin-core
+bin-all:    bin-core DUTIL
 
 .ifos AmigaOS
 UP = /
@@ -49,6 +49,11 @@ DUTIL:
         dxmake
         cd $(UP)
 
+DUTILCORE:
+        cd dutil
+        dxmake core
+        cd $(UP)
+
 install-bin-core:
         cd dcc
         dxmake install
@@ -65,10 +70,13 @@ install-bin-core:
         cd $(UP)dobj
         dxmake install
         cd $(UP)dutil
-        dxmake install
+        dxmake install-core
         cd $(UP)
 
 install-bin-all: install-bin-core
+        cd $(UP)dutil
+        dxmake install
+        cd $(UP)
 
 clean:
         (cd dcc; dxmake clean)

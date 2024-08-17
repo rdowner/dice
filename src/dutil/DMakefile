@@ -12,19 +12,28 @@
 .include ../DMakefile.inc
 .endif
 
-SRCS= bintohex.c fdtolib.c fdtopragma.c istrip.c lbmake.c \
+CORE_SRCS= bintohex.c fdtolib.c fdtopragma.c istrip.c lbmake.c \
         libtos.c makeproto.c romable.c hunks.c uprev.c
+SRCS= $(CORE_SRCS) cat.c dprof.c dupdate.c expand.c flush.c head.c \
+        loadabs.c loadfile.c touch.c wc.c
 
 EXES= $(SRCS:"*.c":"$(OD)*")
+CORE_EXES= $(CORE_SRCS:"*.c":"$(OD)*")
 EXESD= $(SRCS:"*.c":"$(BIN)*")
+CORE_EXESD= $(CORE_SRCS:"*.c":"$(BIN)*")
 
 all: $(EXES)
+
+core: $(CORE_EXES)
 
 $(EXES) : $(SRCS)
         $(CC) $(CFLAGS) %(right) $(SUPLIB) -o %(left)
 
 install:
         $(INSTALL) $(EXES) $(BIN)
+
+install-core:
+        $(INSTALL) $(CORE_EXES) $(BIN)
 
 clean:
         -$(RM) $(EXES)

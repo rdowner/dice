@@ -12,6 +12,7 @@
 **
 */
 
+#include <stdint.h>
 #include <stdio.h>
 #include <exec/memory.h>
 #include <dos/dos.h>

@@ -22,6 +22,7 @@
 #include <clib/alib_protos.h>
 #include <lib/version.h>
 
+#include <stdint.h>s
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
