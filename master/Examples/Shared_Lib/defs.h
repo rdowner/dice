@@ -1,6 +1,10 @@
 
 /*
  *  DEFS.H
+ *
+ *    (c)Copyright 1992-1997 Obvious Implementations Corp.  Redistribution and
+ *    use is allowed under the terms of the DICE-LICENSE FILE,
+ *    DICE-LICENSE.TXT.
  */
 
 #define abs
@@ -33,7 +37,7 @@ typedef struct SignalSemaphore SignalSemaphore;
  *  this particular test case)
  */
 
-#include "test-protos.h"
+#include <lib-protos.h>
 
 extern const char LibName[];
 extern const char LibId[];

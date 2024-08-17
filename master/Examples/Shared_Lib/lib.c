@@ -1,3 +1,8 @@
+/*
+ *    (c)Copyright 1992-1997 Obvious Implementations Corp.  Redistribution and
+ *    use is allowed under the terms of the DICE-LICENSE FILE,
+ *    DICE-LICENSE.TXT.
+ */
 
 /*
  *  LIB.C
@@ -22,8 +27,8 @@ Prototype LibCall long LibExpunge(long, Library *);
 
 Library *LibBase = NULL;        /*  Library Base pointer    */
 long    SegList  = 0;
-Library *SysBase  = NULL;       /*  EXEC calls              */
-struct DosLibrary *DOSBase  = NULL;     /*  if we used it ...       */
+long    SysBase  = NULL;        /*  EXEC calls              */
+long    DOSBase  = NULL;        /*  if we used it ...       */
 
 /*
  *    The Initialization routine is given only a seglist pointer.  Since
@@ -53,7 +58,7 @@ long segment;
 
         -1
     };
-    SysBase = *(Library **)4;
+    SysBase = *(long *)4;
     DOSBase = OpenLibrary("dos.library", 0);
 
     LibBase = lib = MakeLibrary((APTR)Vectors,NULL,NULL,sizeof(Library),NULL);

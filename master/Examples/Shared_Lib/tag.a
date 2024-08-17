@@ -104,6 +104,10 @@ _ALibOpen
             move.l  A6,A0
             jmp     @LibOpen(pc)
 
+_ALibReserved
+            moveq.l #0,D0
+            rts
+
 _ALibClose
             move.l  A6,A0
             jsr     @LibClose(pc)
@@ -112,10 +116,6 @@ _ALibClose
 _ALibExpunge
             move.l  A6,A0
             jsr     @LibExpunge(pc)
-
-_ALibReserved
-            moveq.l #0,D0
-            rts
 
             ;   if CLOSE/EXPUNGE returns non-zero, the library is going
             ;   away.
