@@ -1,6 +1,0 @@
-
-/* MACHINE GENERATED */
-
-
-/* fdtolib.c            */
-
