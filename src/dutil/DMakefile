@@ -15,7 +15,7 @@
 CORE_SRCS= bintohex.c fdtolib.c fdtopragma.c istrip.c lbmake.c \
         libtos.c makeproto.c romable.c hunks.c uprev.c
 SRCS= $(CORE_SRCS) cat.c dprof.c dupdate.c expand.c flush.c head.c \
-        loadabs.c loadfile.c touch.c wc.c
+        loadabs.c loadfile.c touch.c wc.c dsearch.c du.c
 
 EXES= $(SRCS:"*.c":"$(OD)*")
 CORE_EXES= $(CORE_SRCS:"*.c":"$(OD)*")
