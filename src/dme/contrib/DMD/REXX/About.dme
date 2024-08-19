@@ -1,0 +1,9 @@
+/* About.dme */
+/* © 1992 Fergus Duniho */
+
+Copyright = "        DMD V2.01\   © 1992 Fergus Duniho\"
+Email = "fdnh@troi.cc.rochester.edu\GEnie Mail: F.DUNIHO\\"
+Message = "This Product is Tradeware.\\If you use it, please\send me something you have\found or written.\\Mail anything to:\"
+Address = "Fergus Duniho\1170 Genesee St. B3 A7\Rochester, NY 14611"
+Text = Copyright || Email || Message || Address
+Call Request 180, 15, Text

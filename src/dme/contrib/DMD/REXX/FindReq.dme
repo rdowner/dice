@@ -1,0 +1,76 @@
+/* FindReq.dme © 1992 Fergus Duniho */
+/* Requester for Find, Find & Replace, Set Find and Replace Strings */
+
+F = GetEnv('F')
+R = GetEnv('R')
+CASE = Overlay(Upper(GetEnv('CASE')),'     ',2)
+N = -1
+
+Address AREXX '"Call CreateHost CPORT, NOTPORT"'
+Do Until ShowList(P,CPORT)
+    Call Delay(10)
+End
+
+IDCMP = 'WINDOWDRAG+GADGETUP+CLOSEWINDOW'
+FLAGS = 'ACTIVATE+WINDOWDRAG+WINDOWCLOSE'
+
+Call OpenWindow CPORT, 50, 25, 500, 90, IDCMP, FLAGS, 'DMD Find Requester © 1992 Fergus Duniho'
+
+Call SetReqColor CPORT, OKAYPEN, 1
+Call SetDrMd CPORT, COMPLEMENT
+Call Move CPORT, 20, 22
+Call Text CPORT, 'Find String    : '
+Call AddGadget CPORT, 155, 14, 'F', F, 'F = "(%g)"; Call ActivateGadget CPORT, "R"', 300
+
+Call Move CPORT, 20, 42
+Call Text CPORT, 'Replace String : '
+Call AddGadget CPORT, 155, 34, 'R', R, 'R = "(%g)"; Call ActivateGadget CPORT, "N"', 300
+
+Call Move CPORT, 20, 62
+Call Text CPORT, 'Replacements   : '
+Call AddGadget CPORT, 155, 54, 'N', N, 'N = "%g"', 50
+
+Call Move CPORT, 230, 62
+Call Text CPORT, 'Ignore Case : '
+Call AddGadget CPORT, 350, 54, 'Case', Case, 'Call ICase'
+
+Call AddGadget CPORT, 50, 74, 'find', ' Find ', 'Call Set; next; Exit'
+Call AddGadget CPORT, 150, 74, 'replace', ' Replace ', 'Call Set; C="repeat" N "nextr"; C; Exit'
+Call AddGadget CPORT, 280, 74, 'set', ' Set ', 'Call Set; Exit'
+Call AddGadget CPORT, 380, 74, 'cancel', ' Cancel ', 'Call Quit CPORT; Exit'
+Call ModifyHost CPORT, CLOSEWINDOW, 'Call Quit CPORT; Exit'
+
+Call ActivateGadget CPORT, 'F'
+
+Call OpenPort MAINPORT
+Do Until ShowList(P, MAINPORT)
+    Call Delay(10)
+End
+
+Call SetNotify(CPORT, GADGETUP, MAINPORT)
+Call SetNotify(CPORT, CLOSEWINDOW, MAINPORT)
+
+Do Forever
+    Call WaitPkt(MAINPORT)
+    PACKET = GetPkt(MAINPORT)
+    If PACKET ~== Null() Then Interpret GetArg(packet, 0)
+End
+
+ICase:
+    Call SetGadget CPORT, 'Case', on
+    Call RefreshGadgets CPORT
+    Call RemoveGadget CPORT, 'Case'
+    If CASE = ' ON  ' Then CASE = ' OFF '
+                      Else CASE = ' ON  '
+    Call AddGadget CPORT, 350, 54, 'Case', CASE, 'Call ICase()'
+Return
+
+Set:
+    Call Quit CPORT
+    findstr F
+    repstr R
+    CASE = Compress(CASE)
+    ignorecase CASE
+    C = 'setenv Case' CASE 'setenv F' F 'setenv R' R
+    C
+Return

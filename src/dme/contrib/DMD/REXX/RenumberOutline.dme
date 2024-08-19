@@ -1,0 +1,82 @@
+/* RenumberOutline.dme © 1991 Fergus Duniho */
+/* Renumbers Blocked Portion of an Outline */
+
+'goto end if b downadd'
+bsave 'ram:text'
+'title `Renumbering -\Please Wait!'
+Call Open 'Old','RAM:TEXT','R'
+Call Open 'New','RAM:TEXT2','W'
+
+Do X = 1 to 8
+    H.X = ''
+End
+
+LINE = Readln('Old')
+Call Writeln 'New',LINE
+LN = 0
+POSITION = Verify(LINE,'.)',m)
+LV = (POSITION - 9)%4 + 1
+H.LV = Word(LINE,1)
+
+Do Forever
+    Do Until LINE = ''
+        LINE = Readln('Old')
+        Call Writeln 'New',LINE
+        LN = LN + 1
+    End
+
+    LINE = Readln('Old')
+    If EOF('Old') Then Leave
+    LN = LN + 1
+
+    PS = Verify(LINE,'.)',m)
+    If PS = 0 Then Leave
+
+    H.LV = Left(H.LV,Length(H.LV)-1)
+    LEVEL = LV
+
+    LV = (PS - 9)%4 + 1
+    HD = Word(LINE,1)
+
+    If LEVEL >= LV Then
+        If H.LV ~= '' Then Do
+            Select
+                When LV = 1 Then H.LV = UPPER(Roman(Arabic(H.LV) + 1))
+                When LV = 2 | LV = 4 | LV = 7 Then H.LV = d2c(c2d(H.LV) + 1)
+                When LV = 3 | LV = 6 Then H.LV = H.LV + 1
+                When LV = 5 | LV = 8 Then H.LV = (Roman(Arabic(H.LV) + 1))
+                Otherwise NOP
+            End
+            H.LV = H.LV || Right(HD,1)
+        End
+        Else H.LV = HD
+    Else If LEVEL = LV - 1 Then Do
+        Select
+            When LEVEL = 1 Then H.LV = 'A.'
+            When LEVEL = 2 Then H.LV = '1.'
+            When LEVEL = 3 Then H.LV = 'a.'
+            When LEVEL = 4 Then H.LV = 'i.'
+            When LEVEL = 5 Then H.LV = '1)'
+            When LEVEL = 6 Then H.LV = 'a)'
+            When LEVEL = 7 Then H.LV = 'i)'
+            Otherwise NOP
+        End
+    End
+    Else Do
+        goto block
+        Com = 'goto +'LN
+        Com
+        firstnb
+        'set RS `Error !!!'
+        Exit
+    End
+
+    LINE = Copies(' ',Ps - (Length(H.LV))) || H.LV " " Subword(LINE, 2)
+    Call Writeln 'New',LINE
+End
+
+Call Close ('Old')
+Call Close ('New')
+bdelete
+'set RS `Renumbering Successful'
+insfile 'ram:text2'

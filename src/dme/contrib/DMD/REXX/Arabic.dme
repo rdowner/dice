@@ -1,0 +1,27 @@
+/* Arabic.dme © 1992 Fergus Duniho */
+/* Converts a Roman numeral to an Arabic numeral */
+
+Arg ROMAN
+A = 0
+
+Do P = 1 to Length(ROMAN)
+    L = Substr(ROMAN,P,1)
+    R = Delstr(ROMAN,1,P)
+    Select
+        When L = 'M' Then A = A + 1000
+        When L = 'D' Then A = A + 500
+        When L = 'C' Then If Verify(R,'MD','M')>0
+            Then A = A - 100
+            Else A = A + 100
+        When L = 'L' Then A = A + 50
+        When L = 'X' Then If Verify(R,'CL','M')>0
+            Then A = A - 10
+            Else A = A + 10
+        When L = 'V' Then A = A + 5
+        When L = 'I' Then If Verify(R,'XV','M')>0
+            Then A = A - 1
+            Else A = A + 1
+        Otherwise NOP
+    End
+End
+Exit A

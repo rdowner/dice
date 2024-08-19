@@ -1,0 +1,13 @@
+/* WC.dme © 1992 Fergus Duniho */
+
+bsave 'T:TEXT'
+W = 0
+Call Open 'File', 'T:TEXT', 'R'
+Do Until EOF('File')
+    W = W + Words(Readln('File'))
+    Call PostMsg 200,80,' Counting - Please Wait ...\' W
+End
+Call Close 'File'
+Call Delete 'T:TEXT'
+Call PostMsg
+Call Request 200,70,' Counting Finished.\' W 'words.',,'Resume'

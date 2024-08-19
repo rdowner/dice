@@ -1,9 +1,0 @@
-
-dmake clean
-date >t:beg
-dmake
-date >t:end
-cat t:beg t:end
-delete t:defs.m
-
-

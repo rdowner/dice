@@ -1,0 +1,219 @@
+                      DMD Spell Checker Version 1.01
+                      Copyright © 1992 Fergus Duniho
+
+        The DMD Spell Checker consists of three ARexx macros
+(ListWords.dme, Spellchecker.dme, and LookUp.dme), the AlphaSpell program,
+and a dictionary. The dictionary is public domain, but the macros and
+program belong to me, Fergus Duniho. I took the dictionary from Jonathan
+Potter's SuperSpell, deleted some words from it, and added others to it
+while testing the "Add" feature of this Spell Checker.
+
+        DISTRIBUTION
+
+        The macros are subject to the same distribution requirements as the
+rest of DMD, and I have already outlined those in DMD.ReadMe. Since the
+dictionary is public domain, however, it is not subject to the same
+requirements. You may freely add to or subtract from it before you
+redistribute it. If you do change the dictionary, however, please add no
+misspelled or duplicate words to it, and please keep all the words in ASCII
+order. AlphaSpell may be distributed separately from DMD. See
+AlphaSpell.doc for further details.
+
+        DISCLAIMER
+
+        I am not responsible for any mishap or catastrophe that may result
+from the use of this product. You use it at your own peril. Should you
+encounter any bugs, however, please tell me about them, so that I can
+correct them.
+
+        Moreover, I do not guarantee the fitness of this product for any
+purpose. In fact, I make no guarantees whatsoever.
+
+        USING THE SPELL CHECKER
+
+        To spell check the document in the current window, first make sure
+that the disk with the dictionary is in one your disk drives. Then select
+"Check Spelling" from the "Misc." menu. DME will first call a macro called
+ListWords. This macro will create a capitalized list of all the words in
+your document. It counts as a word any string of letters, both English and
+foreign, whose length is greater than one. It also recognizes apostrophes
+as parts of words. So, it will recognize "DON'T" and "I'LL" as words. But
+it won't recognize an apostrophe-S as part of a word, and it won't
+recognize apostrophes that appear at the beginning or the end of a word.
+So, when such words as "'TIS" and "IT'S" appear in your document, it will
+recognize them as "TIS" and "IT". After ListWords creates a list of the
+words in your document, it will sort that list into alphabetical order.
+
+        DME then calls the Spellchecker macro. If you have not already
+selected a dictionary, it will pop up a file requester for you to choose
+which dictionary it will use. After it knows which dictionary to use, it
+will compare the alphabetized list of words in your document to the
+dictionary. Whenever it finds that a word from the list is not in the
+dictionary, it adds that word to another list. Once the Spell Checker has
+determined which words are not in the dictionary, it either tells you that
+there were no misspelled words, or it pops up a requester for going through
+the list of words that were not in the dictionary. It goes through this
+list in alphabetical order. It goes to the first line in the document where
+the word appears, highlights that line for your convenience, and displays
+the word in the requester.
+
+        The requester has a string gadget and twelve button gadgets. The
+button gadgets are "Skip," "Back," "Find," "Add," "Unadd," "Add All,"
+"Done," "Guess," "Forward," "Backward," "Replace," and "Replace All."
+
+        "Skip" moves you to the next word in the list of words not in the
+dictionary. If you were at the last word, it moves you to the first word.
+
+        "Back" moves you to the previous word in the list of words not in
+the dictionary. If you were at the first word, it moves you to the last
+word.
+
+        "Find" finds the next occurrence of the word and highlights the line
+it is on.
+
+        "Add" tells the Spell Checker to add the current word to the
+dictionary's '.new' file when you press "Done." It then works the
+same as "Skip." Whenever you go back to a word you chose to add, the
+requester will indicate this.
+
+        "Unadd" tells the Spell Checker that you have decided against
+adding a word that you had previously decided to add. It then works
+the same as "Skip." If you go back to the word, the requester will indicate
+that you have chosen not to add it.
+
+        "Add All" tells the Spell Checker to add every word in its list to
+the appropriate '.new' file. It does so immediately and exits. This gadget
+is useful when you are adding to the dictionary a list of words you already
+know to be correctly spelled. If, for instance, you want to combine two
+dictionaries, you can spell check one against the other, and then use this
+gadget to dump all the words that were in it but not in the other into the
+other.
+
+        "Done" adds to the dictionary's '.new' file all the words for which
+you clicked on the "Add" gadget. It then closes the requester and exits
+from the Spell Checker.
+
+        "Guess" displays the word that appears in the dictionary where the
+current word would be if it were in the dictionary. It displays this word
+underneath the current word.
+
+        "Forward" displays the next word in the dictionary.
+
+        "Backward" displays the previous word in the dictionary.
+
+        "Replace" tells the Spell Checker that you want to replace the
+current occurence of the word. It will replace it with whatever you have
+entered into the string gadget.
+
+        "Replace All" tells the Spell Checker to replace the current
+occurence of the word and every occurence after it with whatever you have
+entered into the string gadget. It then moves you to the next word in the
+list.
+
+        The CLOSEWINDOW button exits from the Spell Checker WITHOUT adding
+any words to the dictionary's '.new' file.
+
+        ADDING NEW WORDS TO THE DICTIONARY
+
+        The Spell Checker creates and appends to the '.new' file of
+whatever dictionary it is using. This file has the same name as the
+dictionary with a '.new' extension at the end. It contains words that are
+to be added to the dictionary. When you want to add these words to the
+dictionary, open a CLI window and type
+
+        > AlphaSpell >T:D ALL Dictionary Dictionary.new
+        > Move T:D Dictionary
+
+        or type
+
+        > AlphaSpell >Dictionary.n ALL Dictionary Dictionary.new
+        > Delete Dictionary
+        > Rename Dictionary.n Dictionary
+
+        Wherever "Dictionary" appears in the above lines, you should
+substitute the name of your dictionary with its full path.
+
+        You can use a similar procedure for adding the contents of another
+dictionary to your dictionary, and for adding your own lists of words to
+your dictionary. Merely substitute "Dictionary.new" with the name of the
+file you want to add. Before you add the contents of a file to your
+dictionary, you should make sure that its words are spelled correctly, that
+no words appear in it twice, and that all the words in it are alphabetized.
+
+        An effective way to do this is to spell check the document you want
+to add. ListWords.dme will eliminate redundancies and alphabetize your
+list. Then, if you already know that the words in your file are correctly
+spelled, you can click on "Add All" to dump them all into the '.new' file.
+
+        You do not have to worry about whether any file you add contains
+words that are already in your dictionary. AlphaSpell will not add to the
+dictionary any words that are not already in it. This makes it rather easy
+to add two dictionaries together.
+
+        And, of course, you can directly edit the dictionary with DME.
+
+        USING OTHER DICTIONARIES
+
+        You do not have to use the dictionary that comes with the Spell
+Checker. You may use any dictionary that contains a single word on each
+line, and which has all its words sorted in ASCII order. You may wish to
+delete from any other dictionary you use any words that ListWords will not
+recognize, such as hyphenated words and words that end with apostrophe-S.
+To select your dictionary, use "Select Dictionary" from the "Misc." menu.
+It pops up a requester for you to select a dictionary to use with the Spell
+Checker.
+
+        LOOKING UP A WORD
+
+        To look up a word, select "Look Up Word" from the "Misc." menu. A
+requester will appear for you to type in the word you want to look up. If
+the word is in the dictionary, it will tell you that no words were
+misspelled. Otherwise, it will present the AlphaSpell requester, which I
+have already described in this documentation.
+
+        FUTURE PROJECTS
+
+        I intend on writing a style checker for DME. This will point out
+such things as homonyms, commonly confused words, hackneyed words, weak
+words, and other misused words. AlphaSpell can already be used as a
+style checker. But I still have to write the dictionary it will use, as
+well as the ARexx interface for DME.
+
+        Over the summer, I hope to write the registered version of
+AlphaSpell, along with a modified requester. The registered version will
+skip through a compacted dictionary, which I already have. It will also
+include a program for compacting and decompacting dictionaries. As soon as
+I figure out how to write C code for the string operations I need, I will
+be able to write these programs. I currently have them coded in ARexx,
+which is slower. When I'm not at my summer job, I'll study C more closely
+and learn what I need to know.
+
+        MY ADDRESSES
+
+        Send all contributions to my mailing address:
+
+        Fergus Duniho
+        1170 Genesee St. B3 A7
+        Rochester, NY 14611
+
+        Send any comments, requests, or bug-reports to my mailing address,
+or preferably to one of my email addresses:
+
+        Internet: fdnh@troi.cc.rochester.edu
+
+        GEnie Mail: F.DUNIHO
+
+        CHANGES
+
+        V1.01:
+
+        I have replaced The "Keep" gadget with the "Find" gadget. Since it
+often took a long time to find the first occurrence of each word, "Skip"
+and "Back" no longer do this. Each merely goes to the beginning of the
+document. This allows you to go through the words much more quickly. If you
+want to see where the word occurs in the document, click on the "Find"
+gadget. It is prudent to always use the "Find" gadget before you use the
+"Replace" gadget. That way, you can make sure you are replacing what you
+want to replace. But this piece of advice does not apply to "Replace All,"
+for it should generally be used for replacing an obviously misspelled word
+thoughout your document.

@@ -1,0 +1,63 @@
+/* ARPFileReq.dme © 1992 Fergus Duniho */
+
+/* Various operations that use the ARP File Requester
+ * N.B.:  This macro requires ARP and RexxArpLib. */
+
+Parse Arg HAIL
+
+P = GetEnv('P')
+N = GetEnv('N')
+C = ''
+Q = GetF()
+Select
+    When HAIL = "Append Block to File" Then Do
+        bsave 'T:TEXT'
+        C = 'C:Type >>'Q 'T:TEXT'
+    End
+    When HAIL = "Copy Files" Then Do
+        HAIL = "Pick Destination"
+        C = 'C:Copy' Q GetF()
+    End
+    When HAIL = "Crunch Files" Then C = 'C:Runback C:Crunch' Q 'EFF 1 NOSUFF NOPER'
+    When HAIL = "Delete Files" Then Do Forever
+        A = FileList(F, D, , E)
+        Do X = 1 to A; Call Delete D.X; End
+        F = F || ".info"
+        A = FileList(F, D, , E)
+        Do X = 1 to A; Call Delete D.X; End
+        Call GetF
+    End
+    When HAIL = "Move or Rename Files" Then Do
+        HAIL = "Destination or New Name"
+        C = 'C:Move' Q GetF()
+    End
+    When HAIL = "PPMore" Then C = 'C:Runback C:PPMore' Q
+    When HAIL = "Print File" Then C = 'C:Runback C:Copy' Q 'PRT:'
+    When HAIL = "Run Program" Then C = 'C:Runback' Q
+    When HAIL = "Saveas & Crunch" Then Do
+        saveas 'T:TEXT'
+        'title `Crunching - Please Wait.'
+        C = 'C:Crunch T:TEXT' Q 'EFF 1 COL 0 NOSUFF NOPER'
+    End
+    When HAIL = "Set Font" Then Do
+        F = "setfont" Delstr(P, Length(P), 1) || ".font" N
+        F
+    End
+End
+If C ~= '' Then Address Command C
+Call Delete 'T:TEXT'
+Exit
+
+GetF:
+    If Index(P, ':') = 0 Then P = Pragma('D')
+    P = Strip(P,'T','/')
+    F = GetFile(22,19,Strip(P,'T','/'),N,HAIL)
+    If F = "" Then Exit
+    L=Pos('*',F)
+    Do While L>0
+        F = Insert('#?', Delstr(F,L,1), L-1)
+        L=Pos('*',F)
+    End
+    P = Left(F, 1 + Length(F) - Verify(Reverse(F), ':/', 'M'))
+    N = Delstr(F, 1, Length(P))
+Return '"' || F || '"'

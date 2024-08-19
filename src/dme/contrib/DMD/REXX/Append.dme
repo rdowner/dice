@@ -1,0 +1,14 @@
+/* Append.dme © 1992 Fergus Duniho */
+/* Appends blocked text to buffer */
+
+'if !cb `unblock block block'
+bsave 'T:B1'
+Call Open 'B', 'T:B0', 'A'
+Call Open 'T', 'T:B1', 'R'
+L = Readln('T')
+Do Until EOF('T')
+    Call Writeln 'B', L
+    L = Readln('T')
+End
+Call Close 'T'
+Call Delete 'T:B1'

@@ -1,0 +1,422 @@
+#DMD V2.01 Copyright © 1991-2 Fergus Duniho
+#This product is tradeware. If you use it, send me something you've done.
+#Send anything to the following address:
+#Fergus Duniho, 1170 Genesee St. B3 A7, Rochester, NY 14611
+
+hgpen 3
+set Phrase ()
+setenv Case `on'
+title (DMD V2.01 © 1991-2 Fergus Duniho, All Rights Reserved)
+
+set bline (unblock block block)
+set Check (if !t (up first ifelse r (down) (down insline down))
+set Marker1 (A-F1)
+set Marker2 (A-F2)
+set Marker3 (A-F3)
+set Marker4 (A-F4)
+set Marker5 (A-F5)
+set Marker6 (A-F6)
+set PrevBlank (up first while !r up)
+set NextBlank (return while !r downadd)
+set ParagraphTop (firstnb while l (up firstnb))
+set NextParagraph (down firstnb while l (down firstnb))
+set PrevParagraph ($ParagraphTop up $ParagraphTop)
+
+map bs (ifelse l (up last join if !l right) (bs))
+map del (ifelse r (if !b (last join)) del)
+map down (down if r (last left if !ca right right) set xc \$colno firstnb if x<\$xc (col \$xc))
+map f1 arpinsfile
+map f2 (as-f1 rx "F='('GetFile(,,Strip(GetEnv('P'),'T','/'),GetEnv('N'),'Replace File')')'; If F='()' Then Exit; newfile F")
+map f3 (as-f1 rx "F='('GetFile(,,Strip(GetEnv('P'),'T','/'),GetEnv('N'),'Open New File')')'; If F='()' Then Exit; newwindow; newfile F")
+map f4 (set (path) \$fpath ifelse 10 (ping 7) (ping 8) toggle 10 newwindow chfilename \$(path)unnamed)
+map f5 (ifelse 10 (ping 7 pong 8) (ping 8 pong 7) toggle 10)
+map f6 (if m arpsave iconify)
+map f7 (as-f1 rx "F='('GetFile(,,Strip(GetEnv('P'),'T','/'),,'Save Block')')'; If F='()' Then Exit; bsave F")
+map f8 (arpsave f2)
+map f9 (arpsave)
+map f10 (as-f1 rx "F='('GetFile(,,Strip(GetEnv('P'),'T','/'),GetEnv('N'),'Save File & Quit')')'; If F='()' Then Exit; saveas F; quit")
+map help (newwindow newfile S:.edrc wordwrap off)
+map left (ifelse l (up last) (left))
+map return (set x \$colno split return split up ifelse r (col \$x) firstnb down join)
+map right (ifelse r (down firstnb) (right))
+map R-rmb null
+unmap R-lmb
+map up (up if r (last left if !ca right right) set xc \$colno firstnb if x<\$xc (col \$xc))
+
+map a-0 (setparcol 0 title `Left Margin Set To 0')
+map (a- ) (firstnb insline)
+map a-a (ignorecase on)
+map a-A (ignorecase off)
+map a-bs (split deline first)
+map a-c (rx Append unblock)
+map a-del (split down ifelse b (deline) (deline up))
+map a-down (bottom last)
+map a-enter (rx "E='Calculator'; Do Until E=''; Interpret 'A='E; E=stringreq(A); End")
+map a-esc (rx "A='0'; E=A; Do Until E=''; Interpret 'A=A+'E; E=stringreq(A); End")
+map a-f (first while !r up down down firstnb up sa-f)
+map a-f (down firstnb ifelse r (a-= up) (a-[ up join) reformat)
+map a-f1 (setenv P (\$fpath) setenv N () rx "D=Makedir(GetFile(22,19,GetEnv('P'),GetEnv('N'),'Make Directory'))")
+map a-f2 (rx "Z=colourreq()")
+map a-f3 (WC)
+map a-f4 (setenv P (Fonts:) setenv N () rx1 ARPFileReq (Set Font))
+map a-f5 (execute SYS:Utilities/MuchMore)
+map a-f6 (as-f1 rx1 ARPFileReq (Copy Files))
+map a-f7 (as-f1 rx1 ARPFileReq (Print File))
+map a-f8 (as-f1 rx1 ARPFileReq PPMore)
+map a-f9 (as-f1 rx1 ARPFileReq (Saveas & Crunch))
+map a-f10 (as-f1 rx1 ARPFileReq (Crunch Files))
+map a-help (rx About)
+map a-i iconify
+map a-l (while ca (if cu (tlate +32) right) wright)
+map a-left  (firstnb)
+map a-m (if cl (tlate -32) right a-l)
+map a-n (scanf %s find \$scanf)
+map a-nk. (first deline)
+map a-nk+ (resize 77 23)
+map a-nk- (resize 77 11)
+map a-nk0 (split down undeline up join join)
+map a-nk2 (deline down undeline)
+map a-nk4 (a-t wleft)
+map a-nk6 (wright a-t)
+map a-nk8 (deline up undeline)
+map a-p (scanf %s findstr \$scanf prev)
+map a-r (repstr \$R c-r wright)
+map a-return (ifelse b (firstnb downadd) (down firstnb))
+map a-right (last)
+map a-s (if !cb \$bline bsave T:B1 bdelete insfile T:B0 execute (Move T:B1 T:B0))
+map a-t (scanf %s wleft repstr \$scanf c-r wright repstr \$scanf c-r wleft)
+map a-tab (ifelse cb (goto block while cb (firstnb c-tab down)) (firstnb c-tab))
+map a-u (while ca (if cl (tlate -32) right) wright)
+map a-up (first top)
+map a-x (rx Append bdelete)
+map a-z (undeline)
+map a-/ (first while !r (firstnb split first join ( ::> ) reformat return))
+map a-. (first while !r (firstnb split first join ( **> ) reformat return))
+map a-, (wordwrap off first c-tab (RE: ) wright wright remeol last ( by ) join find ( at ) remeol)
+map a-= (setparcol -1 title `Left Margin Set To -1')
+map a-[ (ifelse l a-0 sa-[)
+map a-] (margin \$colno title `Right Margin Set To \$margin')
+map a-| (top col 40 while !b (join down))
+map a-@ (set CMark \$colno title `Column Marker Set To \$CMark')
+map as-c (set Phrase (\$currentline))
+map as-w (set Buf (\$CMark))
+map as-b (col \$Buf)
+map as-nk. (ifelse c>\$CMark (split col \$CMark split down as-c deline up join) (set X \$colno col \$CMark split col \$X split down as-c deline up join))
+map as-e (as-w a-@ as-b)
+map as-f1 (setenv P (\$fpath) setenv N (\$fname))
+map as-nk. (split col (\$CMark) split down as-c deline up join)
+map as-nk0 (split (\$Phrase) join)
+map as-tab (ifelse cb (goto block while cb (firstnb cs-tab down)) (firstnb cs-tab))
+map as-down scrolldown
+map as-up scrollup
+
+map ca-] (goto start first while cb ((    ) return) goto start pushmark rx DownLevel popmark rx RenumberOutline title \$RS)
+
+map (A- ) (insline insline)
+map A-, (pushmark)
+map A-. (popmark)
+map A-= (rx2 Justify Center \$margin)
+map A-[ (ifelse cb (rx2 Justify Left 1) (firstnb split first join))
+map A-] (ifelse cb (rx2 Justify Right \$margin) (last while x<=\$margin (first ( ) last)))
+map A-] (ifelse cb (rx2 Justify Right \$margin) sc-])
+map A-{ (firstnb split up firstnb down join)
+map A-@ (ifelse cb (rx2 Justify Left \$colno) (ping 9 firstnb split pong 9 join))
+map A-1 (rx2 Space 0 1)
+map A-2 (rx2 Space 1 0)
+map A-3 (rx2 Space 0 0)
+map A-a (unblock bottom block top block)
+map A-b block
+map A-bs (split first while !r (deline up first))
+map A-bs (s-bs set Phrase (\$Phrase \$scanf))
+map A-c (if !cb \$bline bsave T:B0 unblock)
+map A-d bdelete
+map A-del (split return while !r (deline first) ifelse b deline up last)
+map A-del (s-del set Phrase (\$Phrase \$scanf))
+map A-e (-left findr \$F \$R)
+map A-f FindReq
+map A-F (scanf %s setenv F \$scanf findstr \$scanf)
+map A-f1 (pong 1)
+map A-f2 (pong 2)
+map A-f3 (pong 3)
+map A-f4 (pong 4)
+map A-f5 (pong 5)
+map A-f6 (pong 6)
+map A-f7 (pong 7)
+map A-f8 (pong 8)
+map A-f9 (pong 9)
+map A-f10 (pong 0)
+map A-g (escimm (goto ))
+map A-h ($Check firstnb ifelse cn (col 17) (ifelse cu (col 13) (col 21)) ping 9 firstnb while ca right if c=41 (pong 9 col +12 ping 9) firstnb split pong 9 join while ca (firstnb bs pong 9) tab sa-[ ca-o)
+map A-i (title (Complete the function call w/ the no. of spaces to indent.) escimm (rx2 Justify Indent ))
+map A-j (ifelse cb (goto end first while cb (justify full up if r (up up))) (justify full))
+map A-k (bcopy)
+map A-m (bmove)
+map A-n (find \$F title `A-e will replace \$F with \$R')
+map A-nk+ (rx2 IncHeading 1 \$currentline)
+map A-nk- (rx2 IncHeading -1 \$currentline)
+map A-nk0 (set X \$colno (\$Phrase) ( ) set Phrase () col \$X del)
+map A-nk1 (if cb (goto end first))
+map A-nk2 (settoggle 5 while 5 (down if ca (resettoggle 5) if b (resettoggle 5)))
+map A-nk3 ($NextBlank down firstnb)
+map A-nk4 ($PrevBlank down firstnb wright)
+map A-nk5 (unblock $NextBlank up block $PrevBlank block)
+map A-nk6 ($NextBlank up last)
+map A-nk7 ($PrevBlank down firstnb)
+map A-nk8 (settoggle 5 while 5 (up if ca (resettoggle 5) if t (resettoggle 5)))
+map A-nk9 ($PrevBlank $PrevBlank down firstnb)
+map A-o f3
+map A-p (findstr \$F prev title `A-e will replace \$F with \$R'))
+map A-r ($Check firstnb ifelse cl (while ca right ifelse c=41 (col 37) (col 25)) (col 9) ping 9 firstnb split pong 9 join while ca (firstnb bs pong 9) tab sa-[ ca-o)
+map A-R (scanf %s setenv R \$scanf repstr \$scanf)
+map A-return ($PrevBlank down firstnb set X \$colno $NextBlank downadd firstnb if !r (insline insline) col \$X)
+map A-s s-f9
+map A-t (deline bcopy goto block bdelete undeline)
+map A-tab (ifelse cb (goto start first while cb ((    ) return) goto start) (first (    ))
+map A-u unblock
+map A-v (insfile T:B0)
+map A-w (rx "C=textreq(Time() 'on' Date('W') Date(),'The Time is',,,,10)")
+map A-x (if !cb \$bline bsave T:B0 bdelete)
+map A-z undo
+map As-J (ifelse cb (goto start while cb (unjustify return)) unjustify)
+map As-Return (last wleft downadd insline)
+map As-tab (ifelse cb (goto start while cb (first repeat 4 del down) goto start) (firstnb repeat 4 bs down))
+
+map c-a (rx "C='('d2c(intreq('Enter ASCII value.',0,255))')'; C")
+map c-bs (block top block bdelete first)
+map c-c (rx "C='('stringreq('Type in text')')'; C")
+map c-del (block bottom block bdelete)
+map c-down (ifelse cb (down ping 0 ifelse cb (goto end) (goto start) unblock block pong 0 block) \$bline)
+map cs-down (ifelse cb (pagedown ping 0 ifelse cb (goto end) (goto start) unblock block pong 0 block)  (unblock block pagedown block))
+map ca-down (ping 0 if cb (goto start) unblock block pong 0 bottom block)
+map c-f1 (execute (C:Ashell "CON:0/0/640/200/DME_AShell"))
+map c-f2 arpload
+map c-f3 (set name \$filename newwindow chfilename \$name arpload)
+map c-f4 (setenv FN \$filename rx "F='('stringreq('Change Filename.',GetEnv('FN'),,50)')';If F='()' Then Exit; chfilename F")
+map c-f5 (as-f1 rx1 ARPFileReq (Delete Files))
+map c-f6 (as-f1 rx1 ARPFileReq (Move or Rename Files))
+map c-f7 (rx "GetFile(,,'Rexx:',,'Call ARexx Macro')")
+map c-f8 (setenv P (DF1:) setenv N () rx1 ARPFileReq (Run Program))
+map c-f9 (execute sys:PPrefs)
+map c-f10 (rx "F='('GetFile(,,'S:','.edrc','Source File')')'; If F='()' Then Exit; source F")
+map c-g (first if !t (while !r up down) sa-f)
+map c-h (if !t (first while !r up down) firstnb wright sa-f)
+map c-help (rx "K='$('stringreq('Command?',,,18)')'; C='setenv H' K; C; H=stringreq(K,GetEnv('H'),,75)")
+map c-k (rx "Z=SetClip('F', Request(100, 50, 'Select the Font for the Insert Literal Requester.', GetClip('F')))")
+map c-l (rx InsLit)
+map c-left (first)
+map c-nk. (rx "Z=Delete('T:B0')")
+map c-nk0 (firstnb repeat 3 insline down)
+map c-nk2 $NextParagraph
+map c-nk4 (prevr)
+map c-nk5 (unblock $ParagraphTop block $NextParagraph up block)
+map c-nk6 (nextr)
+map c-nk7 $ParagraphTop
+map c-nk8 $PrevParagraph
+map c-nk+ (tlate +1)
+map c-nk- (tlate -1)
+map c-r (scanf %s right findstr \$scanf prevr)
+map c-return (a-0 split ifelse l (resettoggle 1) (settoggle 1) return insline col 9 join if 1 (insline down) reformat)
+map c-right (col +\$margin)
+map c-s (if !cb (unblock block block) bsource)
+map c-t (scanf %1s set c1 \$scanf right scanf %1s left findr \$scanf \$c1 left left -left findr \$c1 \$scanf left)
+map c-tab (repeat tr (( )))
+map c-up (ifelse cb (up ping 0 ifelse cb (goto start) (goto end) unblock block pong 0 block) \$bline)
+map cs-tab (repeat tl bs)
+map cs-up (ifelse cb (pageup ping 0 ifelse cb (goto start) (goto end) unblock block pong 0 block)  (unblock block pageup block))
+map ca-up (ping 0 if cb (goto end) unblock block pong 0 top block)
+
+map ca-f (if !r (firstnb wright split last tab sa-[ join last reformat return while !r (up last join last reformat return)))
+map ca-o (if !r (ping 0 firstnb wright split return while !r (firstnb split first join return) pong 0 down while !r (insline join down) pong 0 down reformat firstnb split first join pong 0 join))
+map ca-o (if !r (firstnb wright split last tab ping 0 join last reformat return while !r (up last join last reformat return) pong 0))
+
+map L-lmb (set C \$colno set L \$lineno tomouse if x=\$C (if y=\$L (ifelse cb unblock block)))
+map AL-lmb (tomouse $(A-@))
+map cL-lmb (ping 0 tomouse ping 9 goto start ifelse cb (set L \$lineno pong 9 ifelse y<\$L (goto end) (goto start)) (pong 0) unblock block pong 9 block)
+map sL-lmb (tomouse (\$ch))
+
+map s-bs (if l (up last join) ( ) wleft repstr () c-r del if c=32 del)
+map s-del (if r (first ifelse r deline (if !b down)) repstr () c-r del)
+map s-f1 (menudel Goto (\$Marker1) set Marker1 (A-F1   \$filename \$colno/\$lineno) menuadd Goto (\$Marker1) (pong 1) ping 1)
+map s-f2 (menudel Goto (\$Marker2) set Marker2 (A-F2   \$filename \$colno/\$lineno) menuadd Goto (\$Marker2) (pong 2) ping 2)
+map s-f3 (menudel Goto (\$Marker3) set Marker3 (A-F3   \$filename \$colno/\$lineno) menuadd Goto (\$Marker3) (pong 3) ping 3)
+map s-f4 (menudel Goto (\$Marker4) set Marker4 (A-F4   \$filename \$colno/\$lineno) menuadd Goto (\$Marker4) (pong 4) ping 4)
+map s-f5 (menudel Goto (\$Marker5) set Marker5 (A-F5   \$filename \$colno/\$lineno) menuadd Goto (\$Marker5) (pong 5) ping 5)
+map s-f6 (menudel Goto (\$Marker6) set Marker6 (A-F6   \$filename \$colno/\$lineno) menuadd Goto (\$Marker6) (pong 6) ping 6)
+map s-f7 (title (Hit RETURN to Print, ESC to exit) escimm (saveas T:TEXT execute (Run <NIL: >NIL: Move T:TEXT PRT:)))
+map s-f8 (saveas T:\$fname execute (C:Run C:PPMore T:\$fname))
+map s-f9 (as-f1 rx "F='('GetFile(,,Strip(GetEnv('P'),'T','/'),GetEnv('N'),'Save & Rename File')')'; If F='()' Then Exit; chfilename F; saveold")
+map s-f10 (as-f1 rx1 ARPFileReq (Append Block to File))
+map s-return (split return)
+map s-up (pageup)
+map s-down (pagedown)
+map s-left (wleft)
+map s-right (set C \$colno wright if b (if x=\$C last))
+map s-nk. (wright wleft scanf %s ( ) left findr \$scanf () ifelse r (first ifelse r deline down) wright bs bs)
+map s-nk0 (-left ifelse c=32 (settoggle 1) (resettoggle 1) -right if !1 (( )) (\$scanf) if 1 (( )))
+map s-nk1 (screenbottom first)
+map s-nk2 (downadd)
+map s-nk3 (pagedown first)
+map s-nk4 (left)
+map s-nk6 (right)
+map s-nk7 (screentop first)
+map s-nk8 (up)
+map s-nk9 (pageup first)
+map s-help (newwindow newfile S:startup-sequence wordwrap off)
+map sa-f (ping 9 down firstnb while !r (split deline downadd firstnb) pong 9 a-0 reformat a-[ down insline join reformat)
+map sa-[ (left ifelse x<\$margin (setparcol \$colno title `Left Margin Set To \$colno') (title (Can't Set Left Margin To \$colno. The Right Margin is \$margin.)) right)
+
+map sc-] (firstnb split first join last set x (-\$colno) col \$margin col \$x right right ping 9 insline pong 9 join)
+
+title `DMD is Tradeware.'
+
+menuoff
+menuclear
+
+menuadd Project (Clear Window               ) (title (Hit RETURN to Clear Window, ESC to Exit) escimm (if m (title `File is Modified. Hit RETURN to Continue, ESC to Exit.' escimm (modified off ping 9 newwindow pong 9 quit)) ping 9 newwindow pong 9 quit)
+menuadd Project (Insert File              F1) f1
+menuadd Project (Replace File             F2) f2
+menuadd Project (Open New File            F3) f3
+menuadd Project (New Window               F4) f4
+menuadd Project (Print File             s-F7) s-f7
+menuadd Project (Print Preview          s-F8) s-f8
+menuadd Project (Rename File            c-F4) c-f4
+menuadd Project (Save File                F9) arpsave
+menuadd Project (Save & Rename File     s-F9) s-f9
+menuadd Project (Save & Crunch File     a-F9) a-f9
+menuadd Project (Save File & Quit        F10) f10
+menuadd Project (About                a-Help) a-help
+
+menuadd Format (Reformat ¶                     c-f) c-f
+menuadd Format (Reformat Entire Document          ) (top while !b (a-f $NextBlank down))
+menuadd Format (Indent & Reformat Each ¶          ) (top a-0 while !b (firstnb split col 9 join reformat $NextBlank down))
+menuadd Format (Paginate Document                 ) (rx1 Paginate \$margin)
+menuadd Format (Left Justify @ Column 1        A-[) $(A-[)
+menuadd Format (Left Justify @ Cursor          A-@) $(A-@)
+menuadd Format (Right Justify @ Margin         A-]) $(A-])
+menuadd Format (Justify Full                   A-j) $(A-j)
+menuadd Format (Center                         A-=) $(A-=)
+menuadd Format (Indent N Spaces                A-i) $(A-i)
+menuadd Format (Align Line with Previous Line  A-{) $(A-{)
+menuadd Format (Hanging Indent                 c-h) c-h
+menuadd Format (Single Space                   A-1) $(A-1)
+menuadd Format (Double Space                   A-2) $(A-2)
+menuadd Format (Margin Release                 a-0) a-0
+menuadd Format (Set Left Margin                a-[) a-[
+menuadd Format (Set Right Margin               a-]) a-]
+menuadd Format (No Left Margin                 a-=) a-=
+
+menuadd Outline (Position Roman Heading            A-r) $(A-r)
+menuadd Outline (Position Non-Roman Heading        A-h) $(A-h)
+menuadd Outline (Increment Heading               A-nk+) $(A-nk+)
+menuadd Outline (Decrement Heading               A-nk-) $(A-nk-)
+menuadd Outline (Align Section w/ Above Section       ) (rx AlignHeading sa-[ ca-o)
+menuadd Outline (Subordinate Section                  ) (rx DownLevel sa-[ ca-o)
+menuadd Outline (Reformat Entire Outline              ) (top while !b (ca-f downadd))
+menuadd Outline (Renumber Outline Block               ) (rx RenumberOutline title \$RS)
+
+menuadd Buffer (Cut              A-x) $(A-x)
+menuadd Buffer (Copy             A-c) $(A-c)
+menuadd Buffer (Paste            A-v) $(A-v)
+menuadd Buffer (Cut & Append     a-x) a-x
+menuadd Buffer (Append           a-c) a-c
+menuadd Buffer (Swap with Block  a-s) a-s
+menuadd Buffer (Sort                ) (execute (C:Sort T:B0 to T:B0))
+menuadd Buffer (Kill           c-nk.) c-nk.
+menuadd Buffer (Find & Collect) (title (Hit RETURN to collect all lines with \$F, ESC to exit) escimm (find \$F $(A-c) repeat -1 (up next $Append bdelete)))
+
+menuadd Block (Block             A-b) block
+menuadd Block (Block ¶         c-nk5) c-nk5
+menuadd Block (Block Section   A-nk5) $(A-nk5)
+menuadd Block (Block All         A-a) $(A-a)
+menuadd Block (Unblock           A-u) unblock
+menuadd Block (Delete            A-d) bdelete
+menuadd Block (Copy              A-k) bcopy
+menuadd Block (Move              A-m) bmove
+menuadd Block (Exchange w/ Line  A-t) $(A-t)
+menuadd Block (Sort                 ) (bsave T:TEXT execute (C:Sort T:TEXT to T:TEXT) goto block bdelete insfile T:TEXT rx "Z=Delete('T:TEXT')")
+menuadd Block (Source            c-s) c-s
+menuadd Block (Push              A-,) pushmark
+menuadd Block (Pop               A-.) popmark
+menuadd Block (Save               F7) f7
+menuadd Block (Append to File  s-F10) s-f10
+
+menuadd Goto (Goto Line #           A-g) (escimm (goto ))
+menuadd Goto (Goto Block            c-1) (goto block)
+menuadd Goto (Set Marker 1          s-F1) s-f1
+menuadd Goto (Set Marker 2          s-F2) s-f2
+menuadd Goto (Set Marker 3          s-F3) s-f3
+menuadd Goto (Set Marker 4          s-F4) s-f4
+menuadd Goto (Set Marker 5          s-F5) s-f5
+menuadd Goto (Set Marker 6          s-F6) s-f6
+menuadd Goto $Marker1 (pong 1)
+menuadd Goto $Marker2 (pong 2)
+menuadd Goto $Marker3 (pong 3)
+menuadd Goto $Marker4 (pong 4)
+menuadd Goto $Marker5 (pong 5)
+menuadd Goto $Marker6 (pong 6)
+
+menuadd Find (Find Requester      A-f) $(A-f)
+menuadd Find (Next F              A-n) $(A-n)
+menuadd Find (Prev F              A-p) $(A-p)
+menuadd Find (Next %s             a-n) a-n
+menuadd Find (Prev %s             a-p) a-p
+menuadd Find (Find                c-/) c-/
+menuadd Find (Next                c-n) next
+menuadd Find (Prev                c-p) prev
+menuadd Find (Replace F w/ R      A-e) $(A-e)
+menuadd Find (Replace %s w/ R     a-r) a-r
+menuadd Find (Replace %s          c-r) c-r
+menuadd Find (Replace Block          ) (goto block first set Y \$lineno right prev ifelse l (if y>\$Y next) next while cb (c-r next))
+menuadd Find (Replace Next      c-nk6) nextr
+menuadd Find (Replace Prev      c-nk4) prevr
+menudel Find (Set F To %s         a-f)
+menuadd Find (Set F To %s         A-F) $(A-F)
+menuadd Find (Set R To %s         A-R) $(A-R)
+menuadd Find (Ignore Case         a-a) a-a
+menuadd Find (Notice Case         a-A) $(a-A)
+
+menuadd Misc. (UPPER CASE          a-u) a-u
+menuadd Misc. (lower case          a-l) a-l
+menuadd Misc. (Mixed Case          a-m) a-m
+menuadd Misc. (Check Spelling         ) (bsave T:TEXT rx1 ListWords T:TEXT rx SpellChecker)
+menuadd Misc. (Select Dictionary      ) (rx "Z=SetClip('Dictionary',GetFile(,,'DF1:','Dictionary','Select Dictionary'))")
+menuadd Misc. (Look Up Word           ) (rx LookUp)
+menuadd Misc. (Iconify             a-i) a-i
+menuadd Misc. (Change Colors      a-F2) a-f2
+menuadd Misc. (Count Words        a-F3) a-f3
+menuadd Misc. (Set Font           a-F4) a-f4
+menuadd Misc. (Set InsLit Font     c-k) c-k
+menuadd Misc. (Insert Literal      c-l) c-l
+menuadd Misc. (Insert ASCII        c-a) c-a
+menuadd Misc. (Insertmode          c-i) c-i
+menuadd Misc. (Overstrike Mode     c-o) c-o
+menuadd Misc. (Toggle Wordwrap     c-w) c-w
+menuadd Misc. (Undo Current Line   A-z) undo
+menuadd Misc. (Find & Deline          ) (title (Hit RETURN to delete all lines with \$F, ESC to exit) escimm (findstr \$F repeat -1 (next deline up)))
+
+menuadd Disk (Make Directory    a-F1) a-f1
+menuadd Disk (Delete            c-F5) c-f5
+menuadd Disk (Copy              a-F6) a-f6
+menuadd Disk (Move              c-F6) c-f6
+menuadd Disk (Print             a-F7) a-f7
+menuadd Disk (Call ARexx Macro  c-F7) c-f7
+menuadd Disk (PPMore            a-F8) a-f8
+menuadd Disk (Run Program       c-F8) c-f8
+menuadd Disk (Preferences       c-F9) c-f9
+menuadd Disk (Crunch           a-F10) a-f10
+menuadd Disk (Source File      c-F10) c-f10
+
+menuadd ANSI (Plain) ((^[[0m))
+menuadd ANSI (Bold) ((^[[1m))
+menuadd ANSI (Italics) ((^[[3m))
+menuadd ANSI (Underline) ((^[[4m))
+menuadd ANSI (FG 0) ((^[[30m))
+menuadd ANSI (FG 1) ((^[[31m))
+menuadd ANSI (FG 2) ((^[[32m))
+menuadd ANSI (FG 3) ((^[[33m))
+menuadd ANSI (BG 0) ((^[[40m))
+menuadd ANSI (BG 1) ((^[[41m))
+menuadd ANSI (BG 2) ((^[[42m))
+menuadd ANSI (BG 3) ((^[[43m))
+
+menuon

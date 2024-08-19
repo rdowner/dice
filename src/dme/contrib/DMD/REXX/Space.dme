@@ -1,0 +1,29 @@
+/* Space.dme © 1991 Fergus Duniho */
+
+/* Double spaces the lines in a block if DOUBLE is true (=1) */
+/* Single spaces the lines in a block if DOUBLE is false (=0) */
+/* Puts a space between paragraphs if PSPACE is true (=1) */
+/* Each indented line begins a new paragraph */
+
+Arg DOUBLE PSPACE
+
+'if !cb `unblock block block'
+bsave 'T:TEXT'
+Call Open 'Old', 'T:TEXT', 'R'
+Call Open 'New', 'T:TEXT2', 'W'
+
+LINE = Readln('Old')
+Do Until EOF('Old')
+    If Words(LINE) > 0 Then Do
+        If PSPACE Then
+            If LINE ~== Strip(LINE,'L') Then Call Writeln 'New', ''
+        Call Writeln 'New', LINE
+        If DOUBLE Then Call Writeln 'New', ''
+    End
+    LINE = Readln('Old')
+End
+Call Close 'New'
+bdelete
+insfile 'T:TEXT2'
+first
+'if r deline'

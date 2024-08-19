@@ -1,0 +1,1052 @@
+  _____               _____
+ |  |  \   |\    /|  |  |  \
+ |  |   |  | \  / |  |  |   |
+ |  |   |  |\ \/  |  |  |   |
+ |  |   |  | \/|  |  |  |   |
+ |  |   |  |   |  |  |  |   |
+ |  |   |  |   |  |  |  |   |
+ |__|__/   |   |__|  |__|__/   V2.01 by
+
+  __ ___    __ ___    __ __       _ ___       __           __
+ |  |      |  |      |  |  \     / |   \     |  |   |     /  \
+ |  |___   |  |___   |  |   |   |  |    |    |  |   |    |\   |
+ |  |      |  |      |  |__/    |  |         |  |   |    | \
+ |  |      |  |      |  |\      |  |  __     |  |   |     \ \
+ |  |      |  |      |  | \     |  |    |    |  |   |      \ |
+ |  |      |  |      |  |  \    |  |    |    |  |   |   |   \|
+ |__|      |__|___   |__|   \    \_|___/      \_|__/     \__/
+
+            DMD V2.01 Copyright © 1992 Fergus Duniho
+            DMD stands for "Duniho's Macros for DME".
+            A Set of Native and ARexx Macros for DME.
+
+             ************************************************
+             *                                              *
+             * This product is Tradeware.                   *
+             *                                              *
+             * If you use it, send me a disk of freely      *
+             * distributable software that you find useful, *
+             * that you think I will find useful, or that   *
+             * you have written.                            *
+             *                                              *
+             * ST/NT/PT and MED Modules, ARexx libraries,   *
+             * ARexx hosts, and complimentary registered    *
+             * copies of your own shareware are             *
+             * particularly welcome. But no matter what     *
+             * you send me, I will appreciate the disk.     *
+             *                                              *
+             * Send all contributions to:                   *
+             *                                              *
+             * Fergus Duniho                                *
+             * 1170 Genesee St. B3 A7                       *
+             * Rochester, NY 14611                          *
+             *                                              *
+             ************************************************
+
+       I.   Documentation on a good number of the macros.
+
+           A.   The Return Key
+
+               1.   Unmodified:
+
+                    Splits the line at the cursor and aligns the split part
+                    with the beginning of the line. When there are no more
+                    characters in the line, it aligns the remainder with
+                    the cursor's current column position.
+
+               2.   Alt:
+
+                    Soft Return. Moves the cursor to the first non-blank of
+                    the next line. When there is no next line, it adds one.
+
+               3.   Amiga:
+
+                    Moves to the next blank line, inserts two new blank
+                    lines, and moves down one line, such that there are
+                    three blank lines between two sections of text, and the
+                    cursor is in the middle line between them, where you
+                    can begin typing in a new section of text. As of DMD
+                    V2.01, it also aligns the cursor with the firstnb of
+                    the previous paragraph.
+
+               4.   Control:
+
+                    The paragraphing macro. Splits the line, makes sure
+                    that there is a blank line between the line that was
+                    split and the part that was split off, indents the
+                    split part at column 9, sets the left margin to 0, and
+                    reformats the paragraph that the split part starts.
+
+           B.   The Tab Key
+
+               1.   Unmodified: Soft Tab
+
+               2.   Alt: Moves a line forward to the next tab.
+
+               3.   Amiga: Moves a line forward four spaces.
+
+               4.   Control: Hard Tab.
+
+               5.   Shift: Modifies any of the above combinations, such
+                    that the movement is backwards instead of forwards.
+
+           C.   The Cursor Keys
+
+               1.   Unmodified:
+
+                   a.   Up:
+
+                        Moves cursor up to the previous line. If the cursor
+                        finds itself before the first non-blank of its new
+                        line, it moves to the first non-blank. If it finds
+                        itself beyond the last non-blank in a line, it
+                        moves to the position after it if the last
+                        character is alphanumeric. If the last character is
+                        not alphanumeric, it moves to the next space,
+                        leaving a space between the cursor and the last
+                        character of the line.
+
+                   b.   Down:
+
+                        Same as Up, but moves down. If you are at the last
+                        line, the down key will not move you down further.
+
+                   c.   Left:
+
+                        Moves the cursor left. If it can't move left any
+                        further, the cursor will move to the end of the
+                        previous line.
+
+                   d.   Right:
+
+                        Moves the cursor right. If the cursor is at the end
+                        of a line or beyond, the cursor will move to the
+                        first non-blank of the next line.
+
+               2.   Alt:
+
+                   a.   Up: Moves to top of the document.
+
+                   b.   Down: Moves to the bottom and end of the document.
+
+                   c.   Left: Moves to the first non-blank.
+
+                   d.   Right: Moves to the end of the line.
+
+               3.   Amiga: Controls mouse movement.
+
+               4.   Control:
+
+                   a.   Up & Down: Combine with other cursor key
+                        combinations to block the lines that the cursor
+                        moves across.
+
+                   b.   Left: Move to column 1
+
+                   c.   Right: Move forward one margin length.
+
+               5.   Shift:
+
+                   a.   Up & Down: Move up or down one page.
+
+                   b.   Left & Right: Move to the previous or next word.
+
+           D.   Delete and Backspace
+
+               1.   Unmodified: Delete one character.
+
+               2.   Alt: Delete to end or beginning of line.
+
+               3.   Amiga: Delete to the next or previous non-blank.
+
+               4.   Control: Delete to the top or bottom of the document.
+
+               5.   Delete: "Del" deletes the remainder of the word; BS
+                    deletes the previous word, or the beginning of the
+                    current word if the cursor was not on the first
+                    character of the word.
+
+           E.   The Numeric Keypad
+
+               1.   Unmodified: What the keys say on top.
+
+               2.   Alt:
+
+                   a.   0 (Ins): Inserts at the current cursor location a
+                        copy of the last line that was deleted with the
+                        deline command.
+
+                   b.   . (Del): Deletes the current line with deline.
+                        (Note: a-z undeletes the last line you deleted with
+                        deline.)
+
+                   c.   1 (End): 1
+
+                   d.   2 (Down Arrow): Moves the current line to the next
+                        row.
+
+                   e.   3 (Pg Dn): 3
+
+                   f.   4 (Left Arrow): Moves the current word one word to
+                        the left.
+
+                   g.   5: 5
+
+                   h.   6 (Right Arrow): Moves the current word one word to
+                        the right.
+
+                   i.   7 (Home): 7
+
+                   j.   8 (Up Arrow): Moves the current line up to the
+                        previous row.
+
+                   k.   9 (Pg Up): 9
+
+                   l.   - : Makes the screen half size.
+
+                   m.   + : Makes the screen full size.
+
+                   n.   Enter: Lets you use the an ARexx calculator. You
+                        type in what you want calculated on the command
+                        line, and the answer appears in the title bar.
+
+               3.   Amiga:
+
+                   a.   0 (Ins): Toggles insertmode.
+
+                   b.   . (Del): .
+
+                   c.   1 (End): ?
+
+                   d.   2 (Down Arrow): Moves to the next outline section of
+                        the same level.
+
+                   e.   3 (Pg Dn): Moves to the beginning of the next
+                        section of text.
+
+                   f.   4 (Left Arrow): Moves to the beginning of text in
+                        an outline section.
+
+                   g.   5: Blocks a section of text.
+
+                   h.   6 (Right Arrow): Moves to the end of an outline
+                        section.
+
+                   i.   7 (Home): Moves to the beginning of an outline
+                        section.
+
+                   j.   8 (Up Arrow): Moves to the  previous outline
+                        section of the same level.
+
+                   k.   9 (Pg Up): Moves to the beginning of the previous
+                        section of text.
+
+                   l.   - : Decrements the outline heading by one.
+
+                   m.   + : Increments the outline heading by one.
+
+                   n.   Enter: Nothing
+
+               4.   Control:
+
+                   a.   0 (Ins): Inserts 3 lines, and places the cursor on
+                        the second.
+
+                   b.   . (Del): Kills the RAM Buffer.
+
+                   c.   1 (End): 1
+
+                   d.   2 (Down Arrow): Moves to the next paragraph.
+
+                   e.   3 (Pg Dn): 3
+
+                   f.   4 (Left Arrow): Replace Previous
+
+               5.   Shift:
+
+                   a.   0 (Ins): Insert the last word that was read by
+                        scanf. This will often be that last word that was
+                        deleted by Shift-nk., Shift-Del, or Shift-BS.
+
+                   b.   . (Del): Delete the word that the cursor is on.
+
+                   c.   1 (End): Move to the bottom left corner of the
+                        screen.
+
+                   d.   2 (Down Arrow): Down
+
+                   e.   3 (Pg Dn): Move down a page, and move the cursor to
+                        column 1.
+
+                   f.   4 (Left Arrow): Left
+
+                   g.   5: 5
+
+                   h.   6 (Right Arrow): Right
+
+                   i.   7 (Home): Move to the top left corner of the
+                        screen.
+
+                   j.   8 (Up Arrow): Up
+
+                   k.   9 (Pg Up): Move up one page, and move the cursor
+                        to column 1.
+
+           F.   Help:
+
+               1.   Unmodified: Opens S.edrc in a newwindow.
+
+               2.   Control: Shows what is mapped to the key combination
+                    that you specify in the requester.
+
+               3.   Shift: Opens S:startup-sequence in a newwindow.
+
+           G.   The Function Keys:
+
+               1.   Unmodified:
+
+                   a.   F1: Insert File
+
+                   b.   F2: Replace File
+
+                        An internal ARexx Macro which works like arpload
+                        except that it retains the path name of the file
+                        that it loads.
+
+                   c.   F3: Open New File
+
+                        An internal ARexx Macro that opens a new file in a
+                        new window. Like "Replace File," it retains the
+                        path name.
+
+                   d.   F4: New Window
+
+                   e.   F5: Mark current location and move to the last
+                        place that was marked with F5.
+
+                   f.   F6: Save File if Modified, then Iconify
+
+                   g.   F7: Save Block
+
+                        An internal ARexx Macro that calls the ARP File
+                        Requester and saves the block under the file name
+                        you indicate in the requester.
+
+                   h.   F8: Save File, then Replace File
+
+                   i.   F9: Save File
+
+                   j.   F10: Save File, then Quit (An internal ARexx Macro)
+
+               2.   Amiga: Pong to the location corresponding to the
+                    function key number. A-F10 = pong 0. A-F1 to A-F6 are
+                    the most useful. Various macros use ping and pong 7
+                    through 0.
+
+               3.   Control
+
+                   a.   c-F1: AShell
+
+                   b.   c-F2: Arpload
+
+                   c.   c-F3: Arpload in a new window
+
+                   d.   c-F4: Change File Name
+
+                   e.   c-F5: Delete Disk File
+
+                        This macro calls up a file requester and deletes
+                        each file that you request. After you request a
+                        file, it deletes the file, and comes back so that
+                        you can request another file to delete. When you
+                        are finished deleting files, you should hit
+                        "Cancel".
+
+                   f.   c-F6: Move or Rename Disk File
+
+                        This macro calls up a file requester for you to
+                        select a file you want to move or rename. It then
+                        brings up another requester for you to select the
+                        destination or new name.
+
+                   g.   c-F7: Call ARexx Macro
+
+                        An internal ARexx macro that brings up a file
+                        requester for you to select an ARexx macro, which
+                        it then calls.
+
+                   h.   c-F8: Run Program
+
+                        This macro brings up a file requester for you to
+                        select a program that you want to run. This macro
+                        requires that you have runback in C:.
+
+                   i.   c-F9: Preferences
+
+                        This macro runs Preferences. If you use PPrefs, as
+                        I do, then you should modify this macro.
+
+                   j.   c-F10: Source File
+
+                        An internal ARexx macro which brings up a file
+                        requester that is initially set to S:.edrc. It
+                        sources whatever file you select with the
+                        requester.
+
+               4.   Shift:
+
+                   a.   s-F1 - s-F6: Mark the current location with a ping
+                        that corresponds to the function key number, and
+                        record its location on the "Goto" menu.
+
+                   b.   s-F7: Print File
+
+                   c.   s-F8: Use PPMore to preview a file that contains
+                        ANSI codes.
+
+                   d.   s-F9: Save File and Change its Name (An internal
+                        ARexx Macro)
+
+                   e.   s-F10: Append Block to File
+
+           H.   Macros I use with GEnie:
+
+               1.   a-. sets off and reformats text. I use it when I quote
+                    bulletin board messages I am responding to on GEnie. It
+                    takes text that looks like this:
+
+        Indeed, every collectivist claim is a claim that someone or some
+group has a right. Both individualism and collectivism claim that rights
+exist. What distinguishes them is the sort of right each claims to exist or
+be most important. Collectivism prefers group rights. A group right is a
+right held by a group or a right held by an individual in virtue of her
+membership in a group. An individual right, which individualism prefers, is
+a right held by an individual in virtue of being an individual or a right
+that an individual has derived from a contractual relationship with other
+individuals.
+
+                    and makes it look like this:
+
+ **> Indeed, every collectivist claim is a claim that someone or some group
+ **> has a right. Both individualism and collectivism claim that rights
+ **> exist. What distinguishes them is the sort of right each claims to
+ **> exist or be most important. Collectivism prefers group rights. A group
+ **> right is a right held by a group or a right held by an individual in
+ **> virtue of her membership in a group. An individual right, which
+ **> individualism prefers, is a right held by an individual in virtue of
+ **> being an individual or a right that an individual has derived from a
+ **> contractual relationship with other individuals.
+
+               2.   a-/ works like a-., but uses colons instead of
+                    asterisks. I use it to set off text I am quoting from a
+                    source other than the person I am replying to. For
+                    instance, it can change something that looks like this:
+
+        A new commandment I give unto you, That ye love one another; as I
+        have loved you, that ye also love one another (John 13:34)
+
+                    to something that looks like this:
+
+ ::> A new commandment I give unto you, That ye love one another; as I
+ ::> have loved you, that ye also love one another (John 13:34)
+
+               3.   a-, takes the second two lines of the three-line
+                    identification heading that appears at the top of a
+                    message on GEnie, and it changes it to tell whose
+                    message I am responding to. For instance, it changes
+
+Message 1         Sat Aug 31, 1991
+F.DUNIHO [Fergus]            at 19:22 EDT
+
+                    to
+
+    RE: Message 1 by F.DUNIHO [Fergus]
+
+      II.   The Menus
+
+           A.   Project
+
+                This menu contains macros for opening and saving files, and
+                some other things. Many are ARexx macros that use the ARP
+                File Requester. See the appropriate keymap descriptions for
+                more details.
+
+           B.   Format
+
+               1.   Reformat Entire Document: This macro reformats every
+                    paragraph in a document, while preserving the
+                    appropriate left margin for each paragraph. At each
+                    paragraph, it checks for where the second line begins,
+                    and sets the left margin to that column value. It then
+                    reformats the paragraph. If a paragraph has only one
+                    line, it sets the left margin to -1. For this macro to
+                    work properly, each paragraph should be separated by a
+                    blank line.
+
+               2.   Indent & Reformat Each ¶: When you save a word
+                    processor file in TEXT format, it drops your
+                    formatting, leaving you with a document whose lines are
+                    all left aligned, and whose paragraphs are single
+                    spaced and separated by a blank line between each.
+                    This macro takes such a document, indents every
+                    paragraph in it, and reformats the paragraph.
+
+               3.   Justify Left & Right, Center, Indent: These can be used
+                    on either one line or a block. When they are used with
+                    a block, they use Justify.dme in REXX:. Center also
+                    uses it for a single line. Indent moves every line in a
+                    block N spaces. I use it to adjust the actual left
+                    margin of a document before I print it, since it gets
+                    printed at the edge otherwise.
+
+               4.   Single Space: This macro single spaces a block, and it
+                    puts a blank line between each paragraph. Since it
+                    considers any line that doesn't begin at column 1 as
+                    the start of a new paragraph, it will not single space
+                    indented text. You should use A-3 for that.
+
+           C.   Outline
+
+               1.   Position Roman Heading (A-r): Positions a Roman numeral
+                    outline heading, and reformats the text of the outline
+                    section.
+
+               2.   Position Non-Roman Heading (A-h): Same as above, but
+                    works with non-Roman headings. Both A-r and A-h are
+                    needed, for the computer cannot itself distinguish
+                    between Roman numerals and letters. For instance, it
+                    can't tell whether "V." should come after "IV." or
+                    after "U.".
+
+                    A-r and A-h give you the following outline structure:
+
+       I.   Capital Roman Numerals Followed by a Period
+
+           A.   Capital Letters Followed by a Period
+
+               1.   Arabic Numerals Followed by a Period
+
+                   a.   Lowercase Letters Followed by a Period
+
+                       i.   Lowercase Roman Numerals Followed by a Period.
+
+                           1)   Arabic Numerals Followed by a Right
+                                Parenthesis.
+
+                               a)   Lowercase Letters Followed by a Right
+                                    Parenthesis.
+
+                                   i)   Lowercase Roman Numerals Followed
+                                        by a Right Parenthesis.
+
+                    To write an outline section, type in your heading
+                    anywhere on the line, hit the appropriate macro key,
+                    then type in your text.  If you have wordwrap on, your
+                    text will automatically wrap underneath where your text
+                    began, rather than underneath your heading, where you
+                    would otherwise expect it to wrap.  When you finish an
+                    outline section, you should hit A-Return and begin your
+                    next section.  A-Return will assure that you have a
+                    blank line between each outline section.  It is very
+                    important that there be a blank line between each
+                    section, else they may flow into each other, and it
+                    would be impossible to use the macros that move you
+                    from one section to another, for they use the blank
+                    line as a delimiter.
+
+               3.   Increment Heading:
+
+                    This macro changes the outline heading on the line of
+                    the cursor to the heading that comes after it. For
+                    instance, it would change "III." to "IV.", the Roman
+                    numeral "I." to "II.", the letter "I." to "J.", the
+                    number "5." to "6.", etc. The heading must be properly
+                    positioned for this macro to work, for it uses the
+                    position to distinguish between Roman numerals and
+                    letters. This is an ARexx macro that makes use of the
+                    ARexx macros Roman.dme and Arabic.dme to convert
+                    between Roman and Arabic numerals for the purpose of
+                    incrementing Roman numerals by converting them to
+                    Arabic, adding 1, then switching back to Roman.
+
+               4.   Decrement Heading: Same as above, but decrements.
+
+               5.   Align Section w/ Above Section:
+
+                    This macro looks at the previous outline section, and
+                    makes the heading of the current outline section into
+                    what should come after the previous one. If the
+                    previous one was "IV.", for instance, then the current
+                    heading will become "V." no matter what it was before.
+
+               6.   Subordinate Section:
+
+                    This macro looks at the previous outline section, and
+                    makes the heading of the current outline section into
+                    what should be the first sub-section of the previous
+                    heading. If the previous one was "IV.", for instance,
+                    then the current heading will become "A." no matter
+                    what it was before.
+
+               7.   Reformat Entire Outline:
+
+                    This macro works best if your entire document is an
+                    outline. For the purpose of reformating an outline,
+                    "Reformat Entire Document" can be used, but I think
+                    that this macro is more reliable. But if your document
+                    is not purely an outline, it will be better to use
+                    "Reformat Entire Document."
+
+                    If you would really prefer to use this macro with an
+                    outline that is part of a larger document, cut your
+                    outline with A-x, paste it into another window with
+                    A-v, use this macro, then paste the changed version
+                    back into your original document. Alternately, you can
+                    use A-m (Move Block) instead of cut and paste.
+
+               8.   Renumber Outline Block:
+
+                    This macro renumbers the blocked portion of an outline.
+                    The outline section should be properly positioned for
+                    this macro to work properly. It uses the first outline
+                    section in the block as a standard for what all the
+                    other headings in the block should be. If the first one
+                    is "I.", then the next one will be "II." if it on the
+                    same level or "A." if it is on the next level. If a
+                    section is not on a higher level, the same level, or
+                    the next lower level as the previous section, the macro
+                    will stop and tell you that there is an error in your
+                    outline. Nothing will be renumbered if this happens.
+                    You must have no errors to successfully renumber an
+                    outline block. An example of an error would be "1)"
+                    coming after "B.".
+
+           D.   Buffer
+
+                These macros affect a buffer on the RAM DISK. Copy puts the
+                contents of the current line or block into the buffer. Cut
+                does the same as Copy and then deletes what it has copied
+                from the file. Paste inserts the contents of the buffer
+                into the file. Append copies the current line or block to
+                the end of the buffer without erasing what was previously
+                in the buffer. Cut & Append is the same as Append, but
+                deletes what it appends. Swap with Block exchanges the
+                contents of the buffer with the current block. Sort uses
+                C:Sort to sort the lines in the buffer. Kill deletes the
+                buffer. Find & Collect finds every line with the find
+                string, cuts the first one into the buffer, and cuts and
+                appends all the rest into the buffer.
+
+           E.   Block
+
+                These are mostly DME's own basic editing commands.
+                "Exchange w/ Line" exchanges the block with the current
+                line. "Append to File" appends the contents of the block to
+                a file that you select with the file requester.
+
+           F.   Goto
+
+                This menu keeps track of where (pong 1) through (pong 6)
+                will send you--as long as you use this menu or s-F1 through
+                s-F6 to set these markers.
+
+           G.   Find
+
+               1.   Find Requester
+
+                    This macro uses the RexxArpLib.library to call up a
+                    requester for the find and replace operations. The
+                    requester has string gadgets for the find string, the
+                    replace string, and the number of replacements. It has
+                    a button gadget for case sensitivity. It stores the
+                    find string, the replace string, and case sensitivity
+                    in the the environment variables F, R, and Case
+                    respectively. This allows the find requester to show
+                    the same strings you entered into it the last time you
+                    used it--in case you change DME's find and replace
+                    strings with findstr, repstr, find, or findr. This also
+                    allows you to use other macros that always use F and R
+                    instead of the current find and replace strings. This
+                    is especially important, since s-bs, s-del, and other
+                    macros change these values.
+
+               2.   Next F: Finds the next occurence of the string stored
+                    in the environment variable F.
+
+               3.   Prev F: Finds the previous occurrence of F.
+
+               4.   Next %s: Uses scanf to read the value of the string
+                    under the cursor into the variable $scanf. It then
+                    finds the next occurrence of that string.
+
+               5.   Prev %s: Uses scanf to read the value of the string
+                    under the cursor into the variable $scanf. It then
+                    finds the previous occurrence of that string.
+
+               6.   Replace F w/ R: If the word or phrase that begins at
+                    the cursor matches F, this macro replaces it with the
+                    value of the environment variable R. Otherwise, it
+                    finds the next occurrence of F and replaces it with R.
+
+               7.   Replace %s w/ R (a-r): Replaces the word which begins
+                    at the cursor with R.
+
+               8.   Replace %s (c-r): Replaces the word which begins at the
+                    cursor with the value of the replace string. The
+                    replace string is whatever value was last set by repstr
+                    or findr. It is not necessarily the same as R. S-BS and
+                    s-Del set the replace string to an empty string.
+
+               9.   Replace Block: Replaces every occurrence of the find
+                    string within the block.
+
+              10.   Set F to %s (A-F): Reads the string which begins at the
+                    cursor into $scanf and sets the environment variable F
+                    equal to $scanf.
+
+              11.   Set R to %s (A-R): Reads the string which begins at the
+                    cursor into $scanf and sets the environment variable R
+                    equal to $scanf.
+
+           H.   Misc.
+
+               1.   Change Colors (a-F2): This macro calls the colour
+                    requester in REQ.library.
+
+               2.   Count Words (a-F3): An ARexx Macro that counts the
+                    words in either a block of text (if some text is
+                    blocked) or the entire document (if no lines of text
+                    are blocked.) It uses the RexxArpLib.library to display
+                    its results.
+
+               3.   Set Font (a-F4): Lets you use the ARP File Requester to
+                    select a font for the window. In the requester, the
+                    font name should appear in the Drawer gadget, and the
+                    font size should appear in the File gadget.
+
+               4.   Set InsLit Font (c-k): Uses the RexxArpLib.library
+                    to call up a string requester, in which you may
+                    specify which font the "Insert Literal" macro
+                    should use. If you click on the close gadget, that will
+                    be the same as specifying "topaz.font 8". You should
+                    specify the font in the same format as you would using
+                    the DME command "setfont". Also, use the same case as
+                    the fontname uses. For instance, "topaz.font 8" works,
+                    but "Topaz.font 8" does not. (If your topaz directory
+                    is capitalized, that may be the other way around for
+                    you.)
+
+               5.   Insert Literal: This uses the RexxArpLib.library
+                    to call up a requester of all characters from ASCII 32
+                    to ASCII 255. Select which one you want with the mouse,
+                    and it will appear in your document.
+
+               6.   Insert ASCII: This macro calls up the integer requester
+                    from req.library, and asks for a value between 0 and
+                    255. It will insert the character whose ASCII value is
+                    the value you give.
+
+               7.   Paginate Document: This macro paginates your document
+                    to prepare it for printing.
+
+               8.   Find & Deline: This macro deletes every line from
+                    the cursor on that contains F in it.
+
+
+           I.   Disk
+
+                Except for "Preferences," every one of these is an ARexx
+                macro that calls the ARP File Requester. These macros
+                performs various disk operations, such as deleting,
+                copying, and moving files.
+
+           J.   ANSI:
+
+                These macros insert ANSI codes into your document. In DME,
+                these will just show up as ugly ANSI codes. In MuchMore,
+                PPMore, P-Reader, your printer, or the output of your
+                programs, they will show up as italics, boldface,
+                underlining, and different colored text. FG0 - FG3 insert
+                codes for changing the foreground color. BG0 - BG3 insert
+                codes for changing the background color.
+
+     III.   Software used by some of the macros.
+
+           A.   Freely distributable software
+
+               1.   From ARP: arp.library, Ares, AShell, Copy, Move, Run,
+                    Sort, Type.
+
+               2.   MuchMore (or MuchMorePoPa) © 1991 AMOK
+
+               3.   Runback
+
+               4.   RexxArpLib.library V2.52 © 1988, 1989, 1990 W.G.J.
+                    Langeveld
+
+               5.   ReqLibrary, release 2.5 © 1990 Colin Fox & Bruce Dawson
+
+               6.   Crunch by Nico François (Powerpeak)
+
+               7.   PPMore by Nico François (Powerpeak)
+
+               8.   PPrefs © 1989 by Jonathan Potter (If you don't have
+                    this program, open S:.edrc, replace PPrefs with
+                    Preferences, and save S:.edrc.)
+
+               9.   SpellCheck V1.01 © 1992 by me, Fergus Duniho. This
+                    program is included with DMD.
+
+           B.   Commercial Software
+
+               1.   ARexx © 1987 William S. Hawes
+
+       V.   Changes since "Fergus Duniho's DME 1.42 Macro Set V3.00"
+
+           A.   "Fergus Duniho's DME 1.42 Macro Set V3.10"
+
+               1.   More complete documentation on installation.
+
+               2.   Bug fix in "Clear Window".
+
+               3.   "Delete Disk File" now takes wild cards.
+
+               4.   The macros that use ARPFileReq.dme can now use file
+                    names with spaces in them.
+
+           B.   DMD V1.00
+
+               1.   s-nk0 is smarter. It checks whether the character to
+                    the left is a space. If it isn't, it inserts a space
+                    before it inserts scanf instead of after. So, if you
+                    want to insert scanf before some punctuation mark, such
+                    as a period or a parenthesis, it will not separate them
+                    with a space as it used to, and it will put the space
+                    where it belongs. If, for instance, scanf is "cat", and
+                    the cursor is on the period of
+
+                    The good boy gave tuna fish to the.
+
+                    You will get
+
+                    The good boy gave tuna fish to the cat.
+
+                    instead of
+
+                    The good boy gave tuna fish to thecat .
+
+               2.   A-bs and A-del now delete single words like s-bs and
+                    s-del do. And in addition, they add the value of the
+                    deleted word to the end of the variable Phrase. A-del
+                    should be used for cutting a phrase from a sentence, so
+                    as to reinsert it elsewhere with A-nk0. A-bs should be
+                    used to reverse the order of words. A-nk0 now inserts
+                    the value of Phrase and resets it to an empty string.
+
+               3.   "Delete Disk File" now deletes the corresponding .info
+                    files along with the files it is told to delete.
+
+               4.   The following new macros involve a column marker and/or
+                    the variable Phrase. The column marker is a variable
+                    that holds a column position. Phrase is a variable that
+                    holds a string of text.
+
+                   a.   a-@ sets the column marker to the current column
+                        position.
+
+                   b.   as-nk. does one of two things.
+
+                       i.   If the current column position is greater than
+                            the value of the column marker, it deletes the
+                            text between the cursor and the column marker,
+                            and it sets the variable Phrase equal to the
+                            text it deleted.
+
+                      ii.   If the current column position is less than the
+                            value of the column marker, it moves the text
+                            which begins at the current column position to
+                            the column marker.
+
+                   c.   as-nk0 inserts the value of the variable Phrase.
+
+                   d.   as-c sets the value of Phrase to the text of the
+                        currentline.
+
+                   e.   as-e exchanges the column marker and the current
+                        column position.
+
+                   f.   as-w sets the variable Buf to the value of the
+                        column marker. I have it for use in as-e. But you
+                        might find some use for it from the keyboard.
+
+                   g.   as-b moves the cursor to the column position in
+                        Buf. If you want to move to the column position,
+                        you can press as-w followed by as-b.
+
+               5.   The following two macros require Crunch, which comes
+                    with PowerPacker.
+
+                   a.   a-f9 saves the contents of the current window in
+                        powerpacked form.
+
+                   b.   a-f10 crunches whatever data file you specify.
+                        Crunch accepts wild cards.
+
+               6.   HT macros and menu removed, since I never use HT. Disk
+                    menu added. Some macros from the Project menu moved to
+                    the Disk menu.
+
+           C.   DMD V2.00
+
+                Nota Bene: Most of these changes involve ARexx. If you
+                don't have ARexx, you will be better off with the previous
+                version of DMD. All you need do if you don't have ARexx is
+                incorporate the bug fixes in this version into your .edrc
+                from the previous version.
+
+               1.   Many of the functions in ARPFileReq.dme have been
+                    replaced by internal ARexx Macros. Since internal ARexx
+                    Macros are defined in .edrc, they don't have to be
+                    loaded from disk, and so pop up as quickly as arpload
+                    and arpsave do.
+
+               2.   "Word Count" and "Lexical Analysis" have been replaced
+                    by "Count Words". This new ARexx macro merely counts
+                    the words and gives no other information.
+
+               3.   ARexx Macros that use req.library.
+
+                   a.   New Macros
+
+                       i.   "Change Colors" uses the colour requester.
+
+                      ii.   c-Help uses the string requester to request the
+                            name of a key combination. It then uses another
+                            string requester to display what is mapped to
+                            that key combination.
+
+                   b.   Modified Macros
+
+                       i.   "Insert ASCII" now uses the integer requester.
+
+                      ii.   A-w, which gives the time, now displays its
+                            information with the text requester.
+
+                     iii.   a-Enter, which calculated mathematical
+                            expressions, now calls up a string requester,
+                            which serves as a calculator. It will calculate
+                            any ARexx function. You leave it by clicking on
+                            the close gadget or enter a null string. You
+                            may use the variable "A" to refer to the value
+                            that appears in the title bar.
+
+                      iv.   "Rename File" (c-F4) now uses the string
+                            requester.
+
+                       v.   Paginate.dme now uses the integer requester and
+                            the text requester.
+
+               4.   "Insert Character" and ASCII.dme have been replaced by
+                    "Insert Literal" and InsLit.dme. InsLit.dme is much
+                    faster than ASCII.dme was, and you can select which
+                    font you want to use with it. This is useful when you
+                    are using a font with an IBM character set, for
+                    instance.
+
+               5.   The Find Requester now uses a button gadget for case
+                    sensitivity instead of the string gadget that it used
+                    to use.
+
+               6.   Many ARexx macros have been streamlined, so that they
+                    take up less disk space.
+
+               7.   Bugs were fixed in macros mapped to BS, A-r, A-h,
+                    s-right, and perhaps others I don't remember.
+
+               8.   "Make Directory" and "Set Font" macros added. Both use
+                    the ARP File Requester. For "Make Directory", the new
+                    directory name should appear in the File gadget.
+
+               9.   Appending blocked text to the buffer is now done by an
+                    ARexx macro instead of by C:Type. Also, "Append Block
+                    to File" (s-F10) no longer uses C:Type. It's now purely
+                    ARexx.
+
+              10.   Spell Checker. See separate documentation.
+
+           D.   DMD V2.01
+
+               1.   A-return now aligns the cursor with the beginning of
+                    the previous paragraph.
+
+               2.   a-Help (About on the Project Menu) now pops up a
+                    requester with information about DMD.
+
+               3.   c-r no longer moves to the next word. This is so I can
+                    use it in other macros. It now serves the general
+                    function of replacing the word at the cursor with
+                    whatever value repstr has set.
+
+                   a.   s-bs now uses c-r. I don't believe there is any
+                        change in functionality.
+
+                   b.   s-del now uses c-r, and, as a result, it can now
+                        delete the word that begins at the first column of
+                        line 1.
+
+                   c.   a-r now uses c-r, and it can now replace the word
+                        at the first column of line 1.
+
+                   d.   A new macro, "Replace Block", can be found on the
+                        Find menu. This macro uses c-r to replace every
+                        occurrence of the find string within a block with
+                        the replace string. N.B: These are the values set
+                        by find, findr, findstr, or repstr. They can be,
+                        but are not necessarily, the values set with the
+                        Find Requester (A-f). To use this macro with the
+                        requester, click the "Set" gadget, then select this
+                        macro from the menu.
+
+               4.   c-e (Replace on the Find menu) has been eliminated.
+                    This macro doesn't perform any task that isn't done by
+                    either a-r or nextr. It worked like nextr except that
+                    it went nowhere if the word at the cursor was the find
+                    string. If you want to replace the word at the cursor,
+                    use a-r. If you want to replace the next occurrence of
+                    the find string use nextr.
+
+               5.   A-F ("Set F to %s" on the Find menu) and A-R ("Set R to
+                    %s" on the Find menu) now also set the find string or
+                    replace string to the value acquired by scanf. This
+                    facilitates their use with "Replace Block".
+
+               6.   I eliminated the macro mapped to aL-lmb so that I could
+                    use this key combination with dmouse.
+
+               7.   New formatting macros:
+
+                   a.   c-g formats a paragraph into an indented and
+                        otherwise left justified paragraph.
+
+                   b.   c-h formats a paragraph so that it has a hanging
+                        indent. It aligns all lines from the second line on
+                        with the second word of the first line. This macro
+                        replaces the old "Hanging Indent" item on the
+                        format menu.
+
+               8.   Besides inserting the character you select into the
+                    document, "Insert Literal" now also places that
+                    character into the variable ch.
+
+               9.   sL-lmb moves the cursor to the pointer and inserts ch.
+                    This is useful for drawing graphic ASCII signatures.
+  _________________________________   __________   _        _    ________
+ |  _________   _________   _____  \ / _______  | | |      | |  / _______|
+ | |         | |         | |     \  / /       | | | |      | | | |
+ | |         | |         | |      >  /        |_| | |      | | | |
+ | |_____    | |_____    | |_____/  /  _          | |      | | | |_______
+ |  _____|   |  _____|   |  _____  /  | |_________| |      | |  \_______ \
+ | |         | |         |  |    \ \  |  ______     |      | |         | |
+ | |         | |         |  |     \ \ |_|      |  | |      |  \        | |
+ | |         | |_________|  |      \ \________/  /| \______/ | \_______| |
+ |_|         |______________|       \___________/ \__________/\__________/

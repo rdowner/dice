@@ -1,0 +1,9 @@
+/* Close.dme */
+
+Address AREXX '"Call CreateHost CPORT, NOTPORT"'
+Do Until ShowList(P,CPORT)
+    Call Delay(10)
+End
+
+Call CloseWindow CPORT
+Call Quit CPORT

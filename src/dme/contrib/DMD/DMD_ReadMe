@@ -1,0 +1,200 @@
+             DMD V2.01 © 1992 Fergus Duniho
+             DMD stands for "Duniho's Macros for DME"
+             A Set of Native and ARexx Macros for DME.
+
+             ************************************************
+             *                                              *
+             * This product is Tradeware.                   *
+             *                                              *
+             * If you use it, send me a disk of freely      *
+             * distributable software that you find useful, *
+             * that you think I will find useful, or that   *
+             * you have written.                            *
+             *                                              *
+             * ST/NT/PT and MED Modules, ARexx libraries,   *
+             * ARexx hosts, and complimentary registered    *
+             * copies of your own shareware are             *
+             * particularly welcome. But no matter what     *
+             * you send me, I will appreciate the disk.     *
+             *                                              *
+             * Send all contributions to:                   *
+             *                                              *
+             * Fergus Duniho                                *
+             * 1170 Genesee St. B3 A7                       *
+             * Rochester, NY 14611                          *
+             *                                              *
+             ************************************************
+
+       I.   Introduction:
+
+            This is a set of macros that greatly enhance the use of Matt
+            Dillon's text editor DME (© 1988-91 Matt Dillon). It includes
+            an extensive .edrc file, which includes 10 menus and many many
+            macros. It also includes 20 ARexx macros, which do such things
+            as renumber an outline, access the file requester for various
+            operations, single space and double space text, center text,
+            and more. And it includes a spelling checker and dictionary.
+
+            I released previous versions of this macro set under the title
+            "Fergus Duniho's DME 1.42 Macro Set." I have shortened the
+            title to DMD, which stands for Duniho's Macros for DME.
+            Consequently, I've started the numbering over.
+
+      II.   Disclaimer:
+
+            I am not responsible for any mishap or catastrophe that may
+            result from the use of this product. You use it at your own
+            peril. Should you encounter any bugs, however, please tell me
+            about them, so that I can correct them.
+
+     III.   Philosophy:
+
+            I have written these macros for two purposes: power and
+            user-friendliness. The more important of these is power. That
+            means you will have to read the documentation and study the
+            macros to get all the power they can give you. Nevertheless,
+            these macros will still give you a great deal of power even if
+            you use them without reading the documentation or studying the
+            macros. Many of the most important commands are accessible from
+            the menus, and the menus indicate the keystrokes for those
+            macros that are also accessible from the keyboard. Since I
+            could not fit every macro onto the menus, however, you cannot
+            get the full benefits of these macros unless you read what they
+            can do.
+
+      IV.   Contents--This Macro Set should contain the following files:
+
+            DMD.info
+            DMD/C/AlphaSpell
+            DMD/Dictionary
+            DMD/DMD_ReadMe
+            DMD/DMD_ReadMe.info
+            DMD/Doc.info
+            DMD/Doc/AlphaSpell.doc
+            DMD/Doc/AlphaSpell.doc.info
+            DMD/Doc/DMD.doc
+            DMD/Doc/DMD.doc.info
+            DMD/Doc/Spellchecker.doc
+            DMD/Doc/Spellchecker.doc.info
+            DMD/Install_DMD
+            DMD/Install_DMD.info
+            DMD/REXX/About.dme
+            DMD/REXX/AlignHeading.dme
+            DMD/REXX/Append.dme
+            DMD/REXX/Arabic.dme
+            DMD/REXX/ARPFileReq.dme
+            DMD/REXX/Close.dme
+            DMD/REXX/DownLevel.dme
+            DMD/REXX/Extract.dme
+            DMD/REXX/FindReq.dme
+            DMD/REXX/IncHeading.dme
+            DMD/REXX/InsLit.dme
+            DMD/REXX/Justify.dme
+            DMD/REXX/ListWords.dme
+            DMD/REXX/LookUp.dme
+            DMD/REXX/Paginate.dme
+            DMD/REXX/RenumberOutline.dme
+            DMD/REXX/Roman.dme
+            DMD/REXX/Space.dme
+            DMD/REXX/Spellchecker.dme
+            DMD/REXX/WC.dme
+            DMD/S/.EDRC
+
+       V.   Installation:
+
+            To install these macros, double click on Install_DMD. This
+            will copy DMD/S/.EDRC to S:, DMD/C/AlphaSpell to C:, and the
+            files in DMD/REXX/ to REXX:.
+
+            To use the ARexx macros, you should put the following lines in
+            your startup-sequence:
+
+            Rexxmast
+            rxlib rexxsupport.library 0 -30 0
+            rxlib rexxarplib.library 0 -30 0
+            rxlib req.library -5 -60 2
+
+            If you want to use the functions from rexxmathlib.library with
+            the calculator called by a-Enter, you should also add the
+            following line to your startup-sequence:
+
+            rxlib rexxmathlib.library 0 -30 0
+
+            Of course, these lines won't do you much good unless you have
+            the appropriate libraries in LIBS:. If they aren't there, copy
+            them there. And please note that you need arp.library in LIBS:
+            for rexxarplib.library to do you any good. If you don't have
+            arp.library, req.library, rexxarplib.library, or
+            rexxmathlib.library, you can download them off almost any good
+            bulletin board or anonymous ftp site for Amigas.
+
+            If you have Ares, which comes with ARP, you should add the
+            following line to your startup-sequence:
+
+            Ares C:move C:sort
+
+            This will speed up the macros that use these commands.
+
+       V.   Distribution information:
+
+           A.   You may freely distribute this macro set by modem or disk
+                as long as you meet the following conditions:
+
+               1.   You distribute it in its entirity, which means that
+                    everything I listed in the contents must be distributed
+                    together.
+
+               2.   You add nothing to it.
+
+               3.   You delete nothing from it.
+
+               4.   You change nothing in it (except the dictionary).
+
+               5.   You do not claim it as your own product or creation.
+
+               6.   You do not include it with any commercial product
+                    without my written permission.
+
+               7.   You do not include it on any disk of freely
+                    distributable software that costs more than what Fred
+                    Fish charges for disks of freely distributable
+                    software.
+
+               8.   You do not upload it to any BBS that claims ownership
+                    of everything on it.
+
+               9.   You do not sell it for profit.
+
+              10.   You retain the filenotes and file attributes if you
+                    rearchive it.
+
+           B.   You may distribute an archive of this macro set with your
+                own freely distributable software if it enhances the use of
+                that software. IOW, Matt Dillon is free to distribute an
+                archive of this with any future release of DME.
+
+      VI.   About the Author
+
+            I am a graduate student in the University of Rochester
+            philosophy department. I can be reached by regular mail at
+
+            Fergus Duniho
+            1170 Genesee St. B3 A7
+            Rochester, NY 14611
+
+            If you live in the Rochester calling area, you can reach me by
+            email on CUGOR, FileWorks, Outworld, or Graceful Boot. Although
+            I have accounts on other local boards, I frequent them much,
+            much less often than I do these four. If you live outside the
+            Rochester calling area, you can reach me at one of the
+            following email addresses:
+
+            GEnie: F.DUNIHO
+
+            fdnh@uhura.cc.rochester.edu   \
+                                           > These two are good between
+            fdnh@troi.cc.rochester.edu    /  September and June.
+
+            Fergus_Duniho@grace.bah.rochester.ny.us \
+                                                     > I have read-only
+            !uunet!amusing!grace!Fergus_Duniho      /  status with these.

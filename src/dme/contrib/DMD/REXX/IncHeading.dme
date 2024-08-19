@@ -1,0 +1,22 @@
+/* IncHeading.dme © 1991 Fergus Duniho */
+/* Increments Outline Heading (H) by the Amount (AM) in the Argument */
+
+Parse Arg AM LINE
+LINE = Substr(LINE, 2)
+POS = Verify(LINE,'.)',m)
+LEVEL = (POS - 9)%4 + 1
+H = Word(LINE,1)
+A = Left(H,Length(H)-1)
+
+Select
+    When LEVEL = 1 Then A = UPPER(Roman(Arabic(A) + AM))
+    When LEVEL = 2 | LEVEL = 4 | LEVEL = 7 Then A = d2c(c2d(A) + AM)
+    When LEVEL = 3 | LEVEL = 6 Then A = A + AM
+    When LEVEL = 5 | LEVEL = 8 Then A = (Roman(Arabic(A) + AM))
+    Otherwise NOP
+End
+
+LINE = "'" || Copies(' ',POS-(Length(A)+1)) || A || Right(H,1) " " Subword(LINE,2)
+first
+remeol
+LINE

@@ -1,0 +1,37 @@
+/* ListWords.dme © 1992 Fergus Duniho */
+
+Arg FILE WORDFREQ
+'title `Collecting Words ...'
+Call Open 'Old', FILE, 'R'
+Call Open 'New', 'T:B1', 'W'
+NA = XRange('', '&') || XRange('(', '@') || XRange('{', '¿') || "[\]^_`÷"
+Num. = 0
+LINE = Upper(Translate(Readln('Old'),,NA))
+Do Until EOF('Old')
+    Do X=1 to Words(LINE)
+        W = Strip(Word(LINE, X),,"'")
+        If Right(W,2) = "'S" Then W = Left(W, Length(W)-2)
+        If Length(W)>1 Then Do
+            If Num.W = 0 Then Call Writeln 'New', W
+            Num.W = Num.W+1
+        End
+    End
+    LINE = Upper(Translate(Readln('Old'),,NA))
+End
+Call Close 'Old'
+Call Close 'New'
+
+'title `Sorting Words ...'
+C = "execute (C:Sort T:B1 to" FILE || ")"
+C
+
+If WORDFREQ=1 Then Do
+    Call Open 'Old', 'T:TEXT', 'R'
+    Call Open 'New', 'T:B1', 'W'
+
+    W = Readln('Old')
+    Do Until EOF('Old')
+        Call Writeln 'New', W NUM.W
+        W = Readln('Old')
+    End
+End

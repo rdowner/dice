@@ -1,0 +1,30 @@
+/* DownLevel.dme © 1991 Fergus Duniho */
+/* Makes an outline section into the first sub-section of the outline */
+/* section above it */
+
+'first while !r up up while !r up if !t down'
+LINE = Extract()
+POSITION = Verify(LINE,'.)',m)
+LEVEL = (POSITION - 9)%4 + 1
+HEADING = Word(LINE,1)
+ALPHANUM = Left(HEADING,Length(HEADING)-1)
+
+Select
+    When LEVEL = 1 Then ALPHANUM = 'A.'
+    When LEVEL = 2 Then ALPHANUM = '1.'
+    When LEVEL = 3 Then ALPHANUM = 'a.'
+    When LEVEL = 4 Then ALPHANUM = 'i.'
+    When LEVEL = 5 Then ALPHANUM = '1)'
+    When LEVEL = 6 Then ALPHANUM = 'a)'
+    When LEVEL = 7 Then ALPHANUM = 'i)'
+    Otherwise NOP
+End
+
+'while !r down'
+wright
+LINE = "'" Copies(' ',POSITION-(Length(ALPHANUM)-2)) ALPHANUM || ' ' Strip(Delword(Strip(Extract()),1,1))
+first
+remeol
+LINE
+C = 'col' POSITION+4
+C

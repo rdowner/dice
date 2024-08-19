@@ -1,0 +1,26 @@
+/* AlignHeading.dme © 1991 Fergus Duniho */
+/* Aligns the current outline heading under the present heading */
+
+'first while !r up up while !r up if !t down'
+LINE = Extract()
+POSITION = Verify(LINE,'.)',m)
+LEVEL = (POSITION - 9)%4 + 1
+HEADING = Word(LINE,1)
+ALPHANUM = Left(HEADING,Length(HEADING)-1)
+
+Select
+    When LEVEL = 1 Then ALPHANUM = UPPER(Roman(Arabic(ALPHANUM) + 1))
+    When LEVEL = 2 | LEVEL = 4 | LEVEL = 7 Then ALPHANUM = d2c(c2d(ALPHANUM) + 1)
+    When LEVEL = 3 | LEVEL = 6 Then ALPHANUM = ALPHANUM + 1
+    When LEVEL = 5 | LEVEL = 8 Then ALPHANUM = (Roman(Arabic(ALPHANUM) + 1))
+    Otherwise NOP
+End
+
+'while !r down'
+wright
+LINE = "'" Copies(' ',POSITION-(Length(ALPHANUM)+3)) ALPHANUM || Right(HEADING,1) ' ' Strip(Delword(Strip(Extract()),1,1))
+first
+remeol
+LINE
+C = 'col' POSITION+4
+C

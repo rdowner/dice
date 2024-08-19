@@ -1,0 +1,34 @@
+/* Paginate.dme © 1991 by Fergus Duniho */
+/* Paginates Document */
+
+Arg MARGIN
+
+PAGENO = intreq('1st Page Number?',0,9999,1)
+LINES = intreq('Lines per Page?',1,60,50)
+If textreq('                 ','Paginate?','Cancel','Okay')=0 Then Exit
+BLANK = ' '
+FF = d2c(12)
+
+saveas 'ram:text'
+Call Open 'Old', 'RAM:TEXT', 'R'
+Call Open 'New', 'RAM:TEXT2', 'W'
+
+Do Until EOF('Old')
+    Do 4
+        Call Writeln 'New', BLANK
+    End
+    Do LINES
+        If EOF('Old') Then Call Writeln 'New', BLANK
+                      Else Call Writeln 'New', Readln('Old')
+    End
+    If PAGENO = 0 Then Call Writeln 'New', FF
+    Else Do
+        Call Writeln 'New', BLANK
+        Call Writeln 'New', BLANK
+        Call Writeln 'New', Center(PAGENO, MARGIN) || FF
+    End
+    PAGENO = PAGENO + 1
+End
+
+Call Close 'New'
+'unblock top block bottom block bdelete insfile RAM:TEXT2'

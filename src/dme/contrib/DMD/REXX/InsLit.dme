@@ -1,0 +1,77 @@
+/* InsLit.dme © 1992 Fergus Duniho */
+/* Requester for picking and inserting any character */
+
+F = GetClip('F')
+If F = '' Then F = 'topaz.font 8'
+FONT = Word(F,1)
+SIZE = Word(F,2)
+H = Size+4
+If SIZE=9 Then W = 20
+          Else W = 16
+
+Address AREXX "'Call CreateHost CPORT, NOTPORT'"
+Do Until ShowList(P,CPORT)
+    Call Delay(10)
+End
+
+IDCMP = 'CLOSEWINDOW+WINDOWDRAG+MOUSEBUTTONS'
+FLAGS = 'ACTIVATE+WINDOWCLOSE+WINDOWDRAG'
+
+Call OpenWindow CPORT, 70, 50, 1+W*28, 10+8*H, IDCMP, FLAGS, 'Pick a Character'
+Call ModifyHost CPORT, CLOSEWINDOW, 'Call Quit CPORT; Exit'
+Call ModifyHost CPORT, MOUSEBUTTONS, 'X = %x; Y = %y; Call ReadHost CPORT, MAINPORT, "X = %x; Y = %y; Call Insert()"'
+
+Call SetAPen CPORT, 1
+Call SetFont CPORT, FONT, SIZE
+Call Move CPORT, 4, 6+H
+Call Text CPORT, "  ! "" # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ;"
+Call Move CPORT, 4, 6+2*H
+Call Text CPORT, "< = > ? @ A B C D E F G H I J K L M N O P Q R S T U V W"
+Call Move CPORT, 4, 6+3*H
+Call Text CPORT, "X Y Z [ \ ] ^ _ ` a b c d e f g h i j k l m n o p q r s"
+Call Move CPORT, 4, 6+4*H
+Call Text CPORT, "t u v w x y z { | } ~  Ä Å Ç É Ñ Ö Ü á à â ä ã å ç é è"
+Call Move CPORT, 4, 6+5*H
+Call Text CPORT, "ê ë í ì î ï ñ ó ô ò ö õ ú ù û ü † ° ¢ £ § • ¶ ß ® © ™ ´"
+Call Move CPORT, 4, 6+6*H
+Call Text CPORT, "¨ ≠ Æ Ø ∞ ± ≤ ≥ ¥ µ ∂ ∑ ∏ π ∫ ª º Ω æ ø ¿ ¡ ¬ √ ƒ ≈ ∆ «"
+Call Move CPORT, 4, 6+7*H
+Call Text CPORT, "» …   À Ã Õ Œ œ – — “ ” ‘ ’ ÷ ◊ ÿ Ÿ ⁄ € ‹ › ﬁ ﬂ ‡ · ‚ „"
+Call Move CPORT, 4, 6+8*H
+Call Text CPORT, "‰ Â Ê Á Ë È Í Î Ï Ì Ó Ô  Ò Ú Û Ù ı ˆ ˜ ¯ ˘ ˙ ˚ ¸ ˝ ˛ ˇ"
+Call SetAPen CPORT, 3
+Do Y = 10+H to 10+7*H by H
+    Call Move CPORT, 0, Y
+    Call Draw CPORT, 28*W, Y
+End
+Do X = W to 27*W by W
+    Call Move CPORT, X, 10
+    Call Draw CPORT, X, 20+8*H
+End
+
+Call OpenPort MAINPORT
+Do Until ShowList(P, MAINPORT)
+    Call Delay(10)
+End
+
+Call SetNotify(CPORT, CLOSEWINDOW, MAINPORT)
+Call SetNotify(CPORT, MOUSEBUTTONS, MAINPORT)
+
+Do Forever
+    Call WaitPkt(MAINPORT)
+    PACKET = GetPkt(MAINPORT)
+    If PACKET ~== Null() Then Do
+        ID = GetArg(PACKET, 0)
+        Call Reply PACKET, 0
+        Interpret ID
+    End
+End
+
+Insert:
+    Call Quit CPORT
+    CH = d2c(((Y-10)%H)*28+X%W+32)
+    C = "'" || CH
+    C
+    C = "set ch" CH
+    C
+Exit

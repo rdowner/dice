@@ -1,0 +1,33 @@
+/* Justify.dme © 1991 Fergus Duniho */
+/* Multi-macro for Left & Right Justification, Centering, and Indenting */
+
+Arg COMM COLUMN
+
+Select
+    When COMM = 'LEFT' Then TASK = "Call Writeln 'New', Copies(' ', COLUMN) || Strip(LINE)"
+    When COMM = 'RIGHT' Then TASK = "DIFFERENCE = COLUMN - Length(LINE); Call Writeln 'New', Copies(' ', DIFFERENCE) || LINE"
+    When COMM = 'CENTER' Then TASK = "Call Writeln 'New', Center(Strip(LINE), COLUMN)"
+    When COMM = 'INDENT' & COLUMN > 0 Then TASK = "Call Writeln 'New', Copies(' ', COLUMN) || LINE"
+    When COMM = 'INDENT' & COLUMN < 0 Then Do
+        COLUMN = ABS(COLUMN)
+        TASK = "Call Writeln 'New', Delstr(LINE, 1, COLUMN)"
+    End
+    Otherwise Exit
+End
+
+If COMM = 'LEFT' Then COLUMN = COLUMN - 1
+'if !cb `unblock block block'
+bsave 'ram:text'
+'title (Please Wait ...)'
+Call Open 'Old', 'RAM:TEXT', 'R'
+Call Open 'New', 'RAM:TEXT2', 'W'
+
+LINE = Readln('Old')
+Do Until EOF('Old')
+    Interpret TASK
+    LINE = Readln('Old')
+End
+
+Call Close 'New'
+bdelete
+insfile 'RAM:TEXT2'

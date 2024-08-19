@@ -1,0 +1,8 @@
+/* Extract.dme © 1991 Fergus Duniho */
+
+/* Extracts a line from the text.
+ * To be used as a function in other ARexx macros for DME.
+ * Usage:  StringVariable = Extract() */
+
+'setenv C $currentline'
+exit GetEnv('C')

@@ -1,0 +1,153 @@
+/* SpellChecker.dme © 1992 Fergus Duniho */
+/* DME interface for AlphaSpell */
+
+D = GetClip('Dictionary')
+If D='' Then D = GetFile(,,'DF1:','Dictionary','Select Dictionary')
+Call SetClip 'Dictionary', D
+
+'title `Spell Checking ...'
+C = "execute (C:AlphaSpell >T:B1 O" D "T:TEXT)"
+C
+
+Call Open 'List', 'T:B1', 'R'
+W.=''; L.=0; X=0
+Do Until EOF('List')
+    X = X + 1
+    W.X = Readln('List')
+    L = Readln('List')
+    L.X = Value('L')
+End
+X = X - 1
+Call Close 'List'
+If X = 0 Then Do
+    Call textreq("No words are misspelled.")
+    Exit
+End
+
+/* Requester */
+
+'ignorecase on'
+top
+insline
+TRUE = (A = A); FALSE = ~(A = A); YES.TRUE = 'Yes'; YES.FALSE = 'No '
+A. = FALSE; X=X-1; Y=1; Z=0; O=0; G=''; NW=''; NL=d2c(10)
+Lft = "if l (if !t up last) left"
+Call Open 'Dict', D
+
+Address AREXX '"Call CreateHost CPORT, NOTPORT"'
+Do Until ShowList(P,CPORT)
+    Call Delay(10)
+End
+
+IDCMP = 'WINDOWDRAG+GADGETUP+CLOSEWINDOW'
+FLAGS = 'ACTIVATE+WINDOWDRAG+WINDOWCLOSE'
+
+Call OpenWindow CPORT, 50, 25, 500, 90, IDCMP, FLAGS, 'DMD SpellChecker V1.01 © 1992 Fergus Duniho'
+Call SetReqColor CPORT, OKAYPEN, 1
+Call Move CPORT, 10, 20
+Call Text CPORT, "Word    :" W.Y
+Call Move CPORT, 400, 20
+Call Text CPORT, "Add : No"
+Call Move CPORT, 10, 30
+Call Text CPORT, "Guess   :"
+Call Move CPORT, 10, 44
+Call Text CPORT, "Replace :"
+Call AddGadget CPORT, 90, 36, 'newword', NW, 'NW = "(%g)"', 310
+Call AddGadget CPORT, 10, 54, 'skip', ' Skip ', 'Call Skip(1)'
+Call AddGadget CPORT, 75, 54, 'back', ' Back ', 'Call Skip(-1)'
+Call AddGadget CPORT, 140, 54, 'find',' Find ', 'Call FindW'
+Call AddGadget CPORT, 205, 54, 'add', ' Add ', 'If ~A.Y Then Z=Z+1; A.Y=TRUE; Call Skip(1)'
+Call AddGadget CPORT, 260, 54, 'unadd', ' Unadd ', 'If A.Y Then Z=Z-1; A.Y=FALSE; Call Skip(1)'
+Call AddGadget CPORT, 332, 54, 'addall', ' Add All ', 'A. = TRUE; Z=1; Call Done'
+Call AddGadget CPORT, 420, 54, 'done', ' Done ', 'Call Done'
+Call AddGadget CPORT, 10, 72, 'guess', ' Guess ', 'Call Seek "Dict", L.Y, "B"; Call Guess'
+Call AddGadget CPORT, 85, 72, 'forward', ' Forward ', 'Call Guess'
+Call AddGadget CPORT, 175, 72, 'backward', ' Backward ', 'Call Backward'
+Call AddGadget CPORT, 275, 72, 'replace', ' Replace ', 'Call Replace'
+Call AddGadget CPORT, 365, 72, 'repall', ' Replace All ', 'Call RepAll'
+Call ModifyHost CPORT, CLOSEWINDOW, 'Z=0; Call Done'
+
+Call OpenPort MAINPORT
+Do Until ShowList(P, MAINPORT)
+    Call Delay(10)
+End
+
+Call SetNotify(CPORT, GADGETUP, MAINPORT)
+Call SetNotify(CPORT, CLOSEWINDOW, MAINPORT)
+
+Do Forever
+    Call WaitPkt(MAINPORT)
+    PACKET = GetPkt(MAINPORT)
+    If PACKET ~== Null() Then Interpret GetArg(packet, 0)
+End
+
+Skip:
+    Arg I
+    Call Move CPORT, 90, 20
+    Call Text CPORT, Copies(' ',Length(W.Y))
+    Y=Y+I
+    If Y=0 Then Y=X-1
+    If Y=X Then Y=1
+    top
+    Call AddGadget CPORT, 90, 36, 'newword', NW, 'NW = "(%g)"', 310
+    Call ActivateGadget CPORT, 'newword'
+    Call Move CPORT, 90, 20
+    Call Text CPORT, W.Y
+    Call Move CPORT, 448, 20
+    Q = A.Y
+    Call Text CPORT, YES.Q
+Return
+
+FindW:
+    unblock
+    find W.Y
+    block
+    block
+Return
+
+Replace:
+    Lft
+    findr W.Y NW
+    Call FindW
+Return
+
+Repall:
+    wleft
+    C = "repeat -1 (findr" W.Y NW || ")"
+    C
+    Call Skip 1
+Return
+
+Backward:
+    Call Seek 'Dict', -(Length(G)+2), 'C'
+    Do Until Readch('Dict')=NL
+        Call Seek 'Dict', -2, 'C'
+    End
+    Call Guess
+Return
+
+Guess:
+    Call Move CPORT, 90, 30
+    Call Text CPORT, Copies(' ', Length(G))
+    G = Readln('Dict')
+    Call Move CPORT, 90, 30
+    Call Text CPORT, G
+Return
+
+Done:
+    top
+    unblock
+    deline
+    Call Close 'Dict'
+    If Z>0 Then Do
+        'title `Adding New Words ...'
+        N = D'.new'
+        If Exists(N) Then Call Open 'New', N, 'A'
+                     Else Call Open 'New', N, 'W'
+        Do Y = 1 to X-1
+            If A.Y Then Call Writeln 'New', W.Y
+        End
+        Call Close 'New'
+    End
+    Call Quit CPORT
+Exit

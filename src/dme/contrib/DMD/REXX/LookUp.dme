@@ -1,0 +1,7 @@
+/* LookUp.dme © 1992 Fergus Duniho */
+/* Gets a single word and calls the Spell Checker */
+
+Call Open 'Word', 'T:TEXT', 'W'
+Call Writeln 'Word', stringreq('Enter Word')
+Call Close 'Word'
+Call SpellChecker

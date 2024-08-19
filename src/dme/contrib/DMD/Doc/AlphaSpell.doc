@@ -1,0 +1,132 @@
+                             AlphaSpell V1.01
+                          (Previously SpellCheck)
+            Copyright © 1992 Fergus Duniho, All Rights Reserved
+
+        DISTRIBUTION
+
+        You may freely distribute AlphaSpell V1.01 without DMD as long as
+you meet the following conditions:
+
+       1.   You include this documentation file with it.
+
+       2.   You include an AlphaSpell readable dictionary with it.
+
+       3.   You do not include it in any commercial product without my
+            written permission.
+
+       4.   You do not pass it off as your own property or creation.
+
+       5.   You leave both this file and the program unchanged.
+
+       6.   You do not include it on any disk of freely distributable
+            software that costs more than what Fred Fish charges for disks
+            of freely distributable software.
+
+       7.   You do not upload it to any BBS that claims ownership of
+            everything on it.
+
+       8.   You do not sell it for profit.
+
+        DISCLAIMER
+
+        I am not responsible for any mishap or catastrophe that may result
+from the use of this product. You use it at your own peril. Should you
+encounter any bugs, however, please tell me about them, so that I can
+correct them.
+
+        Moreover, I do not guarantee the fitness of this product for any
+purpose. In fact, I make no guarantees whatsoever.
+
+        USING AlphaSpell
+
+        AlphaSpell is a command line spelling checker. It compares an
+alphabetized list of words with a dictionary. The dictionary must be an
+alphabetized list of words with a single word on each line. To get a brief
+rundown on how to use AlphaSpell, you should type "AlphaSpell" at the CLI
+prompt. It will display the following:
+
+[33mAlphaSpell[31m V1.01 - A Command Line Spelling Checker.
+Copyright © 1992 Fergus Duniho, All Rights Reserved.
+
+Usage: AlphaSpell <Command> <Dictionary> <Words>
+<Command> = IN, OUT, or ALL. Only the first letter is necessary.
+<Dictionary> and <Words> are both alphabetized lists of words.
+IN prints each word from <Words> that is also in <Dictionary>.
+OUT prints each word from <Words> that isn't in <Dictionary>.
+ALL prints a single alphabetized list of all words in both.
+IN and OUT also print the location where each word is or would be.
+
+This product is Tradeware. Send all contributions to:
+Fergus Duniho, 1170 Genesee St. B3 A7, Rochester, NY 14611
+
+Internet: fdnh@troi.cc.rochester.edu
+GEnie   : F.DUNIHO
+
+        Although AlphaSpell is a command line spelling checker, it's
+primarily meant to be used with ARexx macros for text editors and word
+processors. When it's RUN from an ARexx macro, its output should be
+redirected to a file with ">". Its default mode, OUT, is meant to be used
+for generating a list of words that might be misspelled. The IN mode should
+be used with a dictionary of words that you are looking out for, such as a
+list of homonyms and over-used words. I intend to write such a dictionary
+in the near future, along with an ARexx macro for using it with DME. The
+ALL mode is used for adding a list of words to the dictionary.
+
+        ADDING WORDS TO YOUR DICTIONARY
+
+        To add a list of words to your dictionary, you should type
+something like this at the CLI prompt:
+
+        > AlphaSpell >T:D ALL <Dictionary> <Words>
+
+        This command will combine the contents of <Dictionary> and <Words>
+into a new file called T:D. To replace the old dictionary with T:D, you
+should then type
+
+        > Move T:D <Dictionary>
+
+        If you don't have "Move", which comes with ARP, you should type the
+following lines instead:
+
+        > Copy T:D <Dictionary>
+        > Delete T:D
+
+        Instead of redirecting the output of AlphaSpell to T:, you can also
+choose to redirect it to a new file in the same directory as your
+dictionary. You might type something like this:
+
+        > AlphaSpell >New ALL <Dictionary> <Words>
+        > Delete <Dictionary>
+        > Rename New Dictionary
+
+        It doesn't matter whether <Words> contains the same word more than
+once, and it doesn't matter whether it contains words in <Dictionary>.
+The combined list will not include any repetitions as long as both lists
+are alphabetized.
+
+        MY ADDRESSES
+
+        Send all contributions to my mailing address:
+
+        Fergus Duniho
+        1170 Genesee St. B3 A7
+        Rochester, NY 14611
+
+        Send any comments, requests, or bug-reports to my mailing address,
+or preferably to one of my email addresses:
+
+        Internet: fdnh@troi.cc.rochester.edu
+
+        GEnie Mail: F.DUNIHO
+
+        Changes since SpellCheck V1.00:
+
+       I.   AlphaSpell V1.01
+
+           A.   The command is now the first argument instead of the last.
+
+           B.   The command can be upper or lower case.
+
+           C.   "ALL" now skips over repetitions in <Words>.
+
+           D.   The default behavior is now to print the usage.
