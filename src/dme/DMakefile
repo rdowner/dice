@@ -8,14 +8,14 @@
 #   NOTE!! can only use -mRR with the 2.0 includes due to lack of
 #   prototypes in the 1.3 includes.
 
-EXE = ram:dme
-OD  = dtmp:dme/
+PRECOMP= DTMP:dme-defs.m
+EXE = DTMP:dme/dme
+OD  = DTMP:dme/
 DCC = dcc
-CFLAGS= -r -ms -mi -I$(OD) -mRR -proto -Ht:defs.m=defs.h
-#CFLAGS= -r -ms -I$(OD) -Ht:defs.m=defs.h -mRR
-#CFLAGS= -r -ms -I$(OD)
+#CFLAGS= -r -ms -mi -I$(OD) -mRR -proto -H$(PRECOMP)=defs.h
+#CFLAGS= -r -ms -I$(OD) -H$(PRECOMP)=defs.h -mRR
+CFLAGS= -r -ms -I$(OD)
 PROTOS= $(OD)prog-protos.h
-PRECOMP= t:defs.m
 
 
 SRCS= command.c filereq.c globals.c main.c keyboard.c menu.c mods.c refs.c \
@@ -33,8 +33,9 @@ $(EXE): $(OBJS)
     cd $(OD)
     $(DCC) $(CFLAGS) $(OBJS:"$(OD)*.o":"*.o") -o %(left)
     cd
-    copy $(EXE) dcc:bin/amiga/bin
-    copy $(EXE) srcc:
+
+install:
+    copy $(EXE) dcc:bin
 
 $(OBJS) : $(SRCS)
     $(DCC) %(right) -o %(left) -c $(CFLAGS)

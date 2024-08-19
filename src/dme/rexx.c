@@ -147,7 +147,7 @@ char *macstr;
  *  Process a received ARexx command
  */
 
-long
+int32_t
 DoRexxCommand(msg, port, arg0, pres)
 void *msg;
 PORT *port;
