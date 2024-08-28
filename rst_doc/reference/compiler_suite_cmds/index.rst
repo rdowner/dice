@@ -11,3 +11,5 @@ This section describes the commands that make up the core compiler suite.
    dcc
    dcpp
    dc1
+   das
+   dlink
