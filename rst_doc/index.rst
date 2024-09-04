@@ -3,9 +3,6 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-DICE: a C compiler suite for Commodore Amiga computers and 68000-based embedded systems
-=======================================================================================
-
 .. toctree::
    :maxdepth: 3
 
