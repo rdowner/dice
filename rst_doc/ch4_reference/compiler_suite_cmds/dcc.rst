@@ -334,53 +334,27 @@ must be duplicated for each running instance of the program).
     it must be ``extern``'d as ``const`` in other modules or incorrect code
     will be generated.  This is true whether you use ``-ms`` / ``--mS`` or not.
 
--mr, -mR, -mRR
-^^^^^^^^^^^^^^
+-mr - use registers instead of the stack for function calls
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. tip::
+Enable generation of registered functions and function calls.
 
-    Beginner's note: either do not use these options or use only ``-mr``.
+When enabled, and as long as the conditions for registerization are met, DICE
+will:
 
-See also: REGARGS.DOC
+* Generate functions that accept their parameters through registers instead of
+  the stack.
+* Call functions by passing arguments through registers instead of the stack.
 
-These options control the automatic registerization of procedure
-arguments.  Only those prototyped procedures declaring 4 or fewer
-arguments will be registered.  Values are passed in D0/D1/A0/A1
-according to the type of variable and availabilty of registers.
+See the chapter ":ref:`ch2_using/registered-args:Registered Arguments`"
+for full information on registerization.
 
-+------+-----------------------------------------------------------+
-| -mr  | This option is obsolete                                   |
-+------+-----------------------------------------------------------+
-| -mR  | generates only a single, registered entry point           |
-+------+-----------------------------------------------------------+
-| -mRR | is similar to -mR but extends registerization to indirect |
-|      | function calls (that are fully prototyped).  This is the  |
-|      | most dangerous option.                                    |
-+------+-----------------------------------------------------------+
+.. note::
 
-Note that ``-mr`` and ``-mR`` assign the normal, nonregistered entry point
-of a function to any indirect function pointers whether they are
-fully prototyped or not (e.g. ``void (*func)()`` or ``void (*func)(int)`` )
-
-``-mRR`` assigns either the registered or normal entry point to
-function pointers depending on whether they are prototyped or not
-(and any calls made through these function pointers will use the
-registered args method).
-
-.. warning::
-
-    ``-mR`` cannot be used if you make ``c.lib`` calls that take
-    call-back functions as arguments.  ``-mr`` and ``-mRR`` **can** be used,
-    however with ``-mRR`` you must be careful to supply the registered
-    entry point.
-
-.. warning::
-
-    ``amiga.lib`` routines that take call-back functions as
-    arguments must be given non-registered entry points.  Thus if
-    you use ``-mRR`` you *must* qualify the procedure or function pointer
-    type specification with ``__stkargs`` to entire it has a normal
-    entry point.
+    Previous versions of DICE would also accept ``-mR`` and ``-mRR`` options,
+    to alter some behaviour of registerization. These options now behave the
+    identically to ``-mr``. They exist for backward compatibility only; please
+    use only ``-mr`` instead.
 
 -mi - Inline library calls
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
