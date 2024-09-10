@@ -649,6 +649,8 @@ char *xav[];
                         }
                         break;
                     case 'r':
+                        AddLibApp(CLibApp, 'r');
+                        AddLibApp(ALibApp, 'r');
                         RegCallOpt = 1;
                         break;
                     case 'R':
