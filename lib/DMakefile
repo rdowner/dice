@@ -18,12 +18,10 @@ LIBDEF = ulib.def
 
 $(LIBDEF): lib.def
 	sed -E \
-		-e 's_^(@DefTree\s+).*$$_\1$(DTMP)_' \
-		-e 's_^(@AltTree\s+[^\s]+\s+).*$$_\1$(DTMP)_' \
+        -e 's_dtmp:_$(DTMP)_' \
 		-e 's_dlib:_$(DLIB)_' \
 		-e 's_dinclude:_$(DINCLUDE)_' \
-		$^ > $@
-
+        %(right) > %(left)
 .endif
 
 LBMAKE = lbmake -d $(LIBDEF)
@@ -240,6 +238,8 @@ $(INLINE30PRAGMAS) : $(INLINE30FD)
 #    fdtopragma %(right) %(right:"*/fd/*_lib.fd":"amiga20/clib/%2_protos.h") -o %(left)
 #    cd
 
+.ifos AmigaOS
+
 clean:
     -delete $(DLIB)#?.lib
     -delete $(DLIB)#?.o
@@ -247,3 +247,14 @@ clean:
 cleaninline:
     -delete $(INLINE20PROTOS)
 
+.else
+
+clean:
+    -rm $(DLIB)*.lib
+    -rm $(DLIB)*.o
+    -rm $(LIBDEF)
+
+cleaninline:
+    -rm $(INLINE20PROTOS)
+
+.endif
