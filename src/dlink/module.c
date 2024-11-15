@@ -89,7 +89,9 @@ FileNode *fn;
                 case 0x3EC:             /*  HUNK_RELOC32    */
                 case 0x3ED:             /*  HUNK_RELOC16-PC */
                 case 0x3EE:             /*  HUNK_RELOC8     */
+                case 0x3F7:             /*  HUNK_RELOC32-D  (special) */
                 case 0x3F8:             /*  HUNK_RELOC16-D  (special) */
+                case 0x3F9:             /*  HUNK_RELOC8-D   (special) */
                     ++scan;
                     while (FromMsbOrder(*scan))
                         scan += FromMsbOrder(*scan) + 2;
@@ -230,6 +232,14 @@ FileNode *fn;
                     break;
                 case 0x3F8:             /*  HUNK_RELOC16-D  */
                     hunk->Reloc16D = scan + 1;
+                    /* fall through */
+                case 0x3F7:             /*  HUNK_RELOC32-D  */
+                    if (FromMsbOrder(*scan) == 0x3F7)
+                        hunk->Reloc32D = scan + 1;
+                    /* fall through */
+                case 0x3F9:             /*  HUNK_RELOC8-D   */
+                    if (FromMsbOrder(*scan) == 0x3F9)
+                        hunk->Reloc8D = scan + 1;
                     /* fall through */
                 case 0x3EC:             /*  HUNK_RELOC32    */
                     if (FromMsbOrder(*scan) == 0x3EC)

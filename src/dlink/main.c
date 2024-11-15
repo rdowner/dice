@@ -616,7 +616,9 @@ main(int ac, char **av)
 
                 ScanHunkReloc8(hunk);
                 ScanHunkReloc16(hunk);
+                ScanHunkRelocD8(hunk);
                 ScanHunkRelocD16(hunk);
+                ScanHunkRelocD32(hunk);
 
                 /*
                  *  scan hunk->Ext symbols and take into account imported

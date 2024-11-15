@@ -270,27 +270,23 @@ ScanObjectFile(FILE *fi, int32_t endPos)
             case 0x3EC:     /*  hunk_reloc32    */
             case 0x3ED:     /*  hunk_reloc16    */
             case 0x3EE:     /*  hunk_reloc8     */
+            case 0x3F7:     /*  hunk_reloc32D   */
             case 0x3F8:     /*  hunk_reloc16D   */
+            case 0x3F9:     /*  hunk_reloc8D    */
                 {
-                    short size = 4;
-                    short flags= 0;
+                    short size;
+                    short flags;
                     int32_t numOffsets;
                     int32_t hunkNo;
                     int32_t offset;
 
                     switch((uword)unitData[0]) {
-                    case 0x3ED:
-                        size = 2;
-                        flags |= RF_PCREL;
-                        break;
-                    case 0x3F8:
-                        size = 2;
-                        flags |= RF_A4REL;
-                        break;
-                    case 0x3EE:
-                        size = 1;
-                        flags |= RF_PCREL;
-                        break;
+                    case 0x3EC: /*  hunk_reloc32    */ size = 4; flags = 0; break;
+                    case 0x3ED: /*  hunk_reloc16    */ size = 2; flags |= RF_PCREL; break;
+                    case 0x3EE: /*  hunk_reloc8     */ size = 1; flags |= RF_PCREL; break;
+                    case 0x3F7: /*  hunk_reloc32D   */ size = 4; flags |= RF_A4REL; break;
+                    case 0x3F8: /*  hunk_reloc16D   */ size = 2; flags |= RF_A4REL; break;
+                    case 0x3F9: /*  hunk_reloc8D    */ size = 1; flags |= RF_A4REL; break;
                     }
                     while (freadl(&numOffsets, 4, 1, fi) == 1 && numOffsets) {
                         if (freadl(&hunkNo, 4, 1, fi) == 1) {

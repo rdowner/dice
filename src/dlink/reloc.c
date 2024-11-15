@@ -45,7 +45,9 @@ Prototype void  ScanHunkReloc32(Hunk *, int32_t);
 Prototype void  ScanHunkReloc8_16(uint32_t *, Hunk *, int32_t);
 Prototype void  ScanHunkReloc8(Hunk *);
 Prototype void  ScanHunkReloc16(Hunk *);
+Prototype void  ScanHunkRelocD8(Hunk *);
 Prototype void  ScanHunkRelocD16(Hunk *);
+Prototype void  ScanHunkRelocD32(Hunk *);
 Prototype int   ScanHunkExt(Hunk *, int32_t);
 Prototype int   HunkExtSymCK(Hunk *, ubyte, uint32_t, uint32_t *);
 Prototype int   HunkExtSymIN(Hunk *, ubyte, uint32_t, uint32_t *);
@@ -255,6 +257,13 @@ int32_t bits;
                     cerror(EERROR_RELOC8_RANGE, pcrel, HunkToStr(hunk));
                 *(ubyte *)(dbase + doff) = pcrel;
                 break;
+            case -8:       /*  8 bit data relative    */
+                dbprintf(2, ("mod --- reloD08 %s@%ld(%ld) to %s\n", HunkToStr(hunk), doff, *(ubyte *)(dbase + doff) - 32766, HunkToStr(destHunk)));
+                pcrel = (destOff + *(char *)(dbase + doff)) - 32766;
+                if (pcrel < -128 || pcrel > 127)
+                    cerror(EERROR_RELOC8_RANGE, pcrel, HunkToStr(hunk));
+                *(ubyte *)(dbase + doff) = pcrel;
+                break;
             case 16:
                 dbprintf(2, ("mod --- reloc16 %s@%ld(%ld) to %s\n", HunkToStr(hunk), doff, FromMsbOrderShort(*(short *)(dbase + doff)), HunkToStr(destHunk)));
                 if (absWord)
@@ -271,6 +280,11 @@ int32_t bits;
                 if (pcrel < -32768 || pcrel > 32767)
                     cerror(EERROR_RELOC16_RANGE, pcrel, HunkToStr(hunk));
                 *(short *)(dbase + doff) = ToMsbOrderShort(pcrel);
+                break;
+            case -32:       /*  32 bit data relative    */
+                dbprintf(2, ("mod --- reloD32 %s@%ld(%ld) to %s\n", HunkToStr(hunk), doff, FromMsbOrder(*(int32_t *)(dbase + doff)) - 32766, HunkToStr(destHunk)));
+                pcrel = (destOff + FromMsbOrder(*(int32_t *)(dbase + doff))) - 32766;
+                *(int32_t *)(dbase + doff) = ToMsbOrder(pcrel);
                 break;
             }
             ++scan;
@@ -293,10 +307,24 @@ Hunk *hunk;
 }
 
 void
+ScanHunkRelocD8(hunk)
+Hunk *hunk;
+{
+    ScanHunkReloc8_16(hunk->Reloc8D, hunk, -8);
+}
+
+void
 ScanHunkRelocD16(hunk)
 Hunk *hunk;
 {
     ScanHunkReloc8_16(hunk->Reloc16D, hunk, -16);
+}
+
+void
+ScanHunkRelocD32(hunk)
+Hunk *hunk;
+{
+    ScanHunkReloc8_16(hunk->Reloc32D, hunk, -32);
 }
 
 

@@ -119,9 +119,11 @@ typedef struct Hunk {
     uint32_t   *Data;       /*  CODE, DATA                  */
     uint32_t   *JmpData;            /*  more data... for jmp table  */
     uint32_t   *Reloc32;            /*  other object file stuff     */
+    uint32_t   *Reloc32D;           /*  DATA relative               */
     uint32_t   *Reloc16;            /*  PC   relative               */
     uint32_t   *Reloc16D;           /*  DATA relative               */
     uint32_t   *Reloc8;
+    uint32_t   *Reloc8D;            /*  DATA relative               */
     uint32_t   *Ext;
     uint32_t   *Sym;
     DBInfo  *DbInfo;        /*  debug info                  */

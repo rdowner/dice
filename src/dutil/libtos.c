@@ -185,7 +185,9 @@ main(int ac, char **av)
             case 0x3EC:             /*  HUNK_RELOC32    */
             case 0x3ED:             /*  HUNK_RELOC16-PC */
             case 0x3EE:             /*  HUNK_RELOC8     */
+            case 0x3F7:             /*  HUNK_RELOC32-D  (special) */
             case 0x3F8:             /*  HUNK_RELOC16-D  (special) */
+            case 0x3F9:             /*  HUNK_RELOC8-D   (special) */
                 ++scan;
                 while (ToMsbOrder(*scan))
                     scan += ToMsbOrder(*scan) + 2;
@@ -241,7 +243,7 @@ main(int ac, char **av)
                 ++scan;
                 break;
             default:
-                printf("Unknown hunk type $%08x", *scan);
+                printf("Unknown hunk type $%08x", ToMsbOrder(*scan));
                 exit(1);
             }
         }
