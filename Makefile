@@ -10,8 +10,8 @@ DINCLUDE=$(abspath include)
 ENV_COMMON = PATH="$(BIN):$(PATH)" INSTDIR="$(abspath .)/" DLIB="$(abspath dlib1)/"
 
 ENV1A = $(ENV_COMMON) OD="$(DTMP)/obj1-bootstrap/" BIN="$(BIN)/"          CROSS_COMPILE=1
-ENV1B = $(ENV_COMMON) OD="$(DTMP)/obj1/"           BIN="$(BIN)/"          DCCOPTS="-2.0 -//" DTMP=$(DTMP)/ DINCLUDE=$(DINCLUDE)/
-ENV1C = $(ENV_COMMON) OD="$(DTMP)/obj1/"           BIN="$(abspath bin1)/" DCCOPTS="-2.0 -//"
+ENV1B = $(ENV_COMMON) OD="$(DTMP)/obj1/"           BIN="$(BIN)/"          DCCOPTS="-3.2 -//" DTMP=$(DTMP)/ DINCLUDE=$(DINCLUDE)/
+ENV1C = $(ENV_COMMON) OD="$(DTMP)/obj1/"           BIN="$(abspath bin1)/" DCCOPTS="-3.2 -//"
 
 stage1 : stage1a stage1b stage1c
 stage1a : $(BIN)/dxmake
@@ -19,9 +19,9 @@ stage1a : $(BIN)/dxmake
 	$(ENV1A) dxmake bin-core install-bin-core
 stage1b :
 	mkdir -p dlib1
-	[ -d include/amiga20 ] || cp -a $(AMIGA_NDK_HOME)/2.0/include_h include/amiga20
-	[ -d include/amiga20/fd ] || cp -a $(AMIGA_NDK_HOME)/2.0/fd include/amiga20/fd
-	( cd lib && $(ENV1B) dxmake all )
+	cp dlib/amiga32l.lib dlib1/amiga32l.lib
+	libtos dlib/amiga32l.lib dlib1/amiga32s.lib
+	( cd lib && $(ENV1B) dxmake core )
 stage1c :
 	mkdir -p bin1 $(DTMP)/obj1
 	$(ENV1C) dxmake bin-core install-bin-core

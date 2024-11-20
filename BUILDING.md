@@ -37,49 +37,12 @@ this time using AmigaOS and DICE itself to build another basic version of DICE C
 the documentation, examples, etc. to make a full Amiga binary distribution of DICE C.
 
 
-### Getting the Amiga NDKs
+### Getting the Amiga NDK
 
-You will require, at a minimum, the NDK (Native Developer Kit) for AmigaOS 2.0.
+You will require, at a minimum, the Amiga NDK (Native Developer Kit) 3.2.
 
-The NDKs still remain under copyright, so they cannot be included in DICE. You must source the NDKs
-yourself. They have been published by Commodore and Amiga Technologies in various forms over the
-years. In the later days of the Amiga, they were published on the "Amiga Developer CD" which went
-through several different iterations, and earlier to that they were available on floppy disk sets.
-
-Generally each different version of the NDK organised and presented the files differently, so it's
-very difficult for the DICE build system to adapt to each known version. Instead, you will be
-required to find the files yourself and organise them into a consistent form that DICE's build will
-use.
-
-Create a directory to hold the NDKs - for example, `/usr/local/share/amiga-ndk` on UNIX-like OSes,
-or `DH1:AmigaNDK` on Amiga.
-
-Within this directory, create directories for each AmigaOS version that you have the NDK for. For
-example, `1.3`, `2.0`, `3.1`, etc.
-
-Within each of those directories, create the following directories and fill with the files from the
-NDK:
-
-* `include_h` - the Amiga include/header files ending in `.h` (omit the `.i` files - or if you want
-  to be thorough, place them into an `include_i` folder)
-* `fd` - the AmigaOS "function definition" files - these are named like `LIBNAME_lib.fd`
-* `linker_libs` - should contain at least file `amiga.lib`
-
-Remember, you must include at least the 2.0 NDK. You can add additional versions too.
-
-On your UNIX-like OS, set an environment variable called AMIGA_NDK_HOME that points to your
-directory of NDKs. For example:
-
-```bash
-export AMIGA_NDK_HOME=/usr/local/share/amiga-ndk
-```
-
-On your Amiga, create an assign NDK: that points to your directory of NDKs. For example:
-
-```
-Assign NDK: DH1:AmigaNDK
-```
-
+The NDKs still remain under copyright, so they cannot be included in DICE. You must source the NDK
+yourself. NDK 3.2 is available with the purchase of AmigaOS 3.2 from Hyperion Entertainment.
 
 ### Stage 1 build on a UNIX-like OS on Intel x86/x86-64
 
@@ -88,8 +51,17 @@ Assign NDK: DH1:AmigaNDK
 * A working C compiler
 * GNU make
 * The `mkdep` command (see: https://command-not-found.com/mkdep)
+* AmigaOS NDK 3.2
 
-#### Procedure
+#### Install essential files from the NDK
+
+Execute this command:
+
+```bash
+./bootstrap/install-ndk.sh <LOCATION OF NDK3.2>
+```
+
+#### Build procedure
 
 Execute this command:
 

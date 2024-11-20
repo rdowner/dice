@@ -31,8 +31,9 @@ start:
 
 
 # The core set of libraries needed to bootstrap DICE itself:
-# the startup code, and C, M, and Amiga 2.0 libraries in small-model, stack and registerised variants.
-core:       startup autos.lib cs.lib csr.lib ms.lib msr.lib amiga20l.lib amiga20s.lib amiga20sr.lib
+# the startup code, and C and M libraries in small-model stack variants.
+# In this stage we use the NDK-supplied large-model amiga.lib and the libtos-adapted small model.
+core:       startup autos.lib cs.lib ms.lib
 
 # The full set of libraries, include Amiga 2.0. Note that it does not build libraries for other
 # AmigaOS versions, because dxmake doesn't know what is available - 2.0 is mandatory for building

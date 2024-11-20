@@ -38,10 +38,7 @@ typedef struct DateStamp      DATESTAMP;
 typedef struct FileLock       LOCK;
 typedef struct Message        MSG;
 
-int
-SetFileDate(file, date)
-UBYTE *file;
-DATESTAMP *date;
+LONG SetFileDate( CONST_STRPTR file, CONST struct DateStamp *date )
 {
     STDPKT *packet;
     char   *buf;
