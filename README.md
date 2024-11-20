@@ -1,28 +1,42 @@
-DICE - a C compiler for Commodore Amiga computers and embedded 68k systems
-==========================================================================
+DICE-nx - a C compiler for Commodore Amiga computers and embedded 68k systems
+=============================================================================
 
-This is DICE - a C compiler for Commodore Amiga computers and embedded 68k
-systems. It was developed primarily by Matt Dillon for the Amiga range of
-computers in the 1990s. It included all the tools needed to build Amiga
-executables - the C compiler itself, as well as an assembler, linker and
-numerous other support tools. It also had several Amiga-specific features,
-such as automatic opening of the common Amiga OS libraries, easy support for
-ARexx, and more.
+This is DICE-nx - a C compiler for Commodore Amiga computers and embedded 68k
+systems. DICE-nx includes all the tools needed to build Amiga executables - the
+C compiler itself, as well as an assembler, linker and numerous other support
+tools. It also has several Amiga-specific features, such as automatic opening
+of the common Amiga OS libraries, easy support for ARexx, and more. DICE can
+also target embedded systems using 68000 processors.
 
-In the late 1990s, Matt released the source code under a "non-commercial use
-only" license. In 2023, Matt re-licensed it under the standard 3-clause BSD
-license, meaning for the first time ever DICE is available under a true
-open-source license.
+DICE-nx is a fork of DICE, which was originally a commercial product written by
+Matt Dillon in the 1990s. In the late 1990s, Matt largely ceased development of
+DICE and released the source code under a "non-commercial use only" license. A
+small amount of development continued on DICE in the 2000s, largely around
+porting to 64-bit UNIX hosts and targetting embedded 68000 systems. In 2023,
+Matt re-licensed it under the standard 3-clause BSD license, meaning for the
+first time ever DICE was available under a true open-source license.
 
-Below is the original README content (now translated into Markdown) produced by
-Matt. Please note that this GitHub repository is a fork by Richard Downer, and
-I intend to make incremental improvements to it over the coming months.
-Therefore please do not contact Matt if you have any questions about the code
-in *this* repository - instead contact me at [dice@richard.downer.tech](mailto:dice@richard.downer.tech).
-I will offer my improvements to Matt if he wishes to continue maintaining the
-DICE source code.
+DICE-nx aims to re-start development of DICE, and focusing on its original aim
+of providing a fully-featured C compiler for Amiga computers. At this time, the
+original 68000-based Amiga series is seeing increased support from
+retro-computing enthusiasts, including the restarting of AmigaOS development
+with the release of AmigaOS 3.2. DICE-nx aims to provide for this audience,
+fully supporting AmigaOS 3.2 and native development on real Amiga hardware, and
+a secondary aim of supporting those who want to cross-compile for the Amiga
+from cheap and powerful Linux systems.
+
+DICE-nx is currently maintained by Richard Downer, who can be emailed at
+[dice@richard.downer.tech](mailto:dice@richard.downer.tech). DICE-nx is not
+associated with Matt Dillon or the original DICE project. I have been in
+contact with Matt and although he is encouraging of this effort, it is not
+endorsed by Matt and bears a slightly different name at Matt's request. Matt's
+name appears extensively throughout this repository, but he is not involved in
+DICE-nx development or support. Therefore, please direct any questions or
+discussions to the above email address or the GitHub repository for DICE-nx.
 
 ---
+
+*Following is the original README from the original DICE project.*
 
 So here it is, BSD licensed.  The DICE compiler from my Amiga days.
 I have sinced made it compile under bsd/linux on hopefully 32 or 64
