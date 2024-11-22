@@ -1,29 +1,11 @@
 Building DICE
 =============
 
-**NOTE: build system currently undergoing repair/replacement - work in progress**
-
-There's several possible ways of building DICE, depending on what computer you are starting on and
-what computer you want to finish on!
-
-DICE can only generate Motorola 68000 machine code, and it can generate either Amiga object or
-executable files, or binary code suitable to burning onto ROM for a 68k embedded system.
-
-DICE can be hosted on either a UNIX-like operating system on an Intel x86 or x86-64 CPU, or on a
-real Amiga. (Hosting it on UNIX-like operating systems with a CPU architecture other than
-x86/x86-64 is not currently supported but should not be difficult to add.)
-
-There is an important limitation when NOT building DICE on an Amiga: the DICE produced will not
-support floating point data. If you need floating point, you need to build DICE on an Amiga (real
-or emulated, as long as it runs AmigaOS).
-
-
 Recommended build path
 ----------------------
 
-Here we describe the recommended build path. At the end of the document you can find some
-suggestions of alternative supported ways to build DICE. (There are still other ways too, but they
-are not supported.)
+Here we describe the recommended build path. There are other ways to build DICE, but this is
+path that is most likely to work. (Some of those other ways may be supported paths in future.)
 
 This build path has three stages:
 
@@ -39,7 +21,7 @@ the documentation, examples, etc. to make a full Amiga binary distribution of DI
 
 ### Getting the Amiga NDK
 
-You will require, at a minimum, the Amiga NDK (Native Developer Kit) 3.2.
+You will require the Amiga NDK (Native Developer Kit) 3.2.
 
 The NDKs still remain under copyright, so they cannot be included in DICE. You must source the NDK
 yourself. NDK 3.2 is available with the purchase of AmigaOS 3.2 from Hyperion Entertainment.
@@ -58,7 +40,7 @@ yourself. NDK 3.2 is available with the purchase of AmigaOS 3.2 from Hyperion En
 Execute this command:
 
 ```bash
-./bootstrap/install-ndk.sh <LOCATION OF NDK3.2>
+./bootstrap/install-ndk.sh <LOCATION OF NDK3.2 FILES>
 ```
 
 #### Build procedure
@@ -105,50 +87,6 @@ This script will do the following:
 1. Build the compiler and tools again, but this time build all the supported tools instead of just
    the core set. This will be stage 3 complete, and a fully supported compiler, tools and
    libraries.
-
-
-Other supported builds
-----------------------
-
-There are many potential ways to build DICE. The process above is the recommended one, but there
-are some alternatives that will also be supported. Any build process not described above or in this
-section is not officially supported - feel free to try it out, but beware of problems and note that
-issues reported (that do not also affect the supported builds) may go unanswered.
-
-
-### Bootstrap build on PC only
-
-You can simply start the build process as described above, but stop it after the compiler and tools
-have been built for PC and the libraries have been built (i.e. before it starts building Amiga
-native executables).
-
-This will be a slightly crippled build:
-
-1. It will lack floating point support. (This can only exist when built on an Amiga.)
-1. The library and tools will be the core set only, although you can proceed to manually build
-   more of the library variants and tools.
-
-What use is this? If you can live with the limitations, then this is a nice and simple
-cross-compiler for the Amiga, and 68k embedded targets (if you also build the ROM library set).
-
-To build like this, execute these commands:
-
-```bash
-make stage1a stage1b
-mv bin1-bootstrap bin
-mv dlib1 dlib
-```
-
-
-### Bootstrap from a previous version of DICE on an Amiga
-
-You may already have an Amiga with a version of DICE installed on it. That can be used as a
-ready-to-go stage 1 build, and you can begin your DICE build from stage 2.
-
-To do this, get the DICE source repository onto your Amiga, and assign `DCC:` to it. Create a
-directory called `bin1` and copy your existing DICE `bin` directory contents into it. Repeat with a
-new directory `dlib1` and existing DICE `dlib` directory. Then begin the build from the stage 2
-section above.
 
 
 Known limitations and future improvements

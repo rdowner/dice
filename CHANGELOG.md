@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   replacing three original README files and DICE-LICENSE.TXT. The new files are
   named and formatted according to current standard practice for GitHub-hosted
   projects.
+- Support for AmigaOS 3.2.
 - "Registered" and "commercial" feature gates removed - all features are now
   available in all builds.
 
@@ -32,6 +33,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Compiles on Linux, specifically Ubuntu 20.04 and gcc 9.4.0 - also still
   compiles on DragonFly BSD.
 - Adds .gitignore files
+
+
+### Removed
+
+- Support for the NDKs for prior versions of AmigaOS. Only 3.2 is supported at
+  this time.
 
 
 ## [1.15] - 2023-10-17
