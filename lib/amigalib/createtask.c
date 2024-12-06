@@ -19,11 +19,7 @@ typedef struct MemList MemList;
 typedef struct Task    Task;
 
 Task *
-CreateTask(name, pri, initPC, stackSize)
-unsigned char *name;
-long pri;
-APTR initPC;
-unsigned long stackSize;
+CreateTask( CONST_STRPTR name, LONG pri, APTR initPC, ULONG stackSize )
 {
     MemList *memList;
     Task    *task = NULL;

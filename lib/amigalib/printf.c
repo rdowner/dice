@@ -14,7 +14,7 @@
 #include <clib/dos_protos.h>
 
 LONG
-Printf(unsigned char *ctl, ...)
+Printf( CONST_STRPTR ctl, ... )
 {
     va_list va;
     int n;

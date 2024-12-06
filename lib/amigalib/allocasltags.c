@@ -10,18 +10,19 @@
 
 #include <exec/types.h>
 #include <clib/asl_protos.h>
+#include <stdarg.h>
 
 #ifndef HYPER
 #define HYPER
 #endif
 
-typedef struct TagItem   TagItem;
-
 APTR
-HYPER ## AllocAslRequestTags(type, tag1, ...)
-unsigned long type;
-Tag tag1;
+HYPER ## AllocAslRequestTags(ULONG type, ...)
 {
-    return(AllocAslRequest(type, (TagItem *)&tag1));
+    va_list va;
+    va_start(va, type);
+    APTR ret = AllocAslRequest(type, (CONST struct TagItem *)va);
+    va_end(va);
+    return ret;
 }
 

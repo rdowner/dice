@@ -10,6 +10,7 @@
 
 #include <exec/types.h>
 #include <clib/asl_protos.h>
+#include <stdarg.h>
 
 #ifndef HYPER
 #define HYPER
@@ -18,10 +19,12 @@
 typedef struct TagItem   TagItem;
 
 BOOL
-HYPER ## AslRequestTags(req, tag1, ...)
-APTR req;
-Tag tag1;
+HYPER ## AslRequestTags( APTR requester, ... )
 {
-    return(AslRequest(req, (TagItem *)&tag1));
+    va_list va;
+    va_start(va, requester);
+    BOOL ret = AslRequest(requester, (TagItem *)va);
+    va_end(va);
+    return ret;
 }
 

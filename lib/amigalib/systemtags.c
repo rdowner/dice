@@ -20,9 +20,7 @@
 typedef struct TagItem   TagItem;
 
 LONG
-HYPER ## SystemTags(cmd, tag1, ...)
-UBYTE *cmd;
-unsigned long tag1;
+HYPER ## SystemTags( CONST_STRPTR cmd, ULONG tag1, ... )
 {
     return(SystemTagList(cmd, (TagItem *)&tag1));
 }

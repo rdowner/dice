@@ -32,14 +32,14 @@
 #    uclib      generate DLIB:uc[model].lib (UNIX C compat library)
 #    rom        generate DLIB:rom[model].lib
 #    amiga13    generate DLIB:amiga13[model].lib
-#    amiga20    generate DLIB:amiga20[model].lib
+#    amiga32    generate DLIB:amiga32[model].lib
 #
 #   EXAMPLE:
 #
 #   1> LbMake clib l                generate a large-data cl.lib
 #
-#   1> LbMake amiga20 s p           generate a small-data profiled 2.0 amiga
-#                                   library (amigasp20.lib)
+#   1> LbMake amiga32 s p           generate a small-data profiled 3.2 amiga
+#                                   library (amigasp32.lib)
 #
 
 @Type   s    -ms -r -pr
@@ -55,17 +55,15 @@
 @Library    clib        dlib:c%s.lib
 @Library    uclib       dlib:uc%s.lib
 @Library    rom         dlib:rom%s.lib
-@Library    amiga13     dlib:amiga13%s.lib
-@Library    amiga20     dlib:amiga20%s.lib
+@Library    amiga32     dlib:amiga32%s.lib
 @Library    mlib        dlib:m%s.lib
 @Library    auto        dlib:auto%s.lib
-@Library    a20func     dlib:amiga20_func_%s.lib
 
 @DefTree                dtmp:lib_%s/
 @AltTree    nofp        dtmp:lib_nofp_%s/
 
-[dinclude:amiga20/fd/]mathieeesingbas_lib.fd    +clib +uclib
-[dinclude:amiga20/fd/]mathieeesingtrans_lib.fd  +clib +uclib
+[dinclude:amiga32/fd/]mathieeesingbas_lib.fd    +clib +uclib
+[dinclude:amiga32/fd/]mathieeesingtrans_lib.fd  +clib +uclib
 
 assert/assert.c         +clib +uclib
 assert/abort.c          +clib +uclib
@@ -401,78 +399,101 @@ float/dpa_sqrt.a        +clib +uclib  -nofp +lconvert
 float/dpa_modf.c        +clib +uclib  -nofp +lconvert
 float/dpa_atan2.c       +clib +uclib  -nofp +lconvert
 
-amigalib/systemtags.c                       +amiga20            +a20func
-amigalib/aslreqtags.c                       +amiga20            +a20func
-amigalib/allocasltags.c                     +amiga20            +a20func
-amigalib/newloadsegtags.c                   +amiga20            +a20func
-amigalib/openscreentags.c                   +amiga20            +a20func
-amigalib/openwindowtags.c                   +amiga20            +a20func
-amigalib/allocdosobjtags.c                  +amiga20            +a20func
-amigalib/createnewproctags.c                +amiga20            +a20func
-amigalib/easyreq.c                          +amiga20            +a20func
-amigalib/printf.c                           +amiga20            +a20func
-amigalib/createtask.c                       +amiga13 +amiga20   +a20func
-amigalib/createextio.c                      +amiga13 +amiga20   +a20func
-amigalib/createport.c                       +amiga13 +amiga20   +a20func
-amigalib/createstdio.c                      +amiga13 +amiga20   +a20func
-amigalib/newlist.c                          +amiga13 +amiga20   +a20func
-amigalib/system.c                           +amiga13 +amiga20   +a20func
-amigalib/beginio.a                          +amiga13 +amiga20   +a20func
-amigalib/custom.a                           +amiga13 +amiga20   +a20func
-amigalib/icrlvo.a                           +amiga13 +amiga20   +a20func
+amigalib/allocasltags.c                 +amiga32
+amigalib/allocdosobjtags.c              +amiga32
+amigalib/aslreqtags.c                   +amiga32
+amigalib/beginio.a                      +amiga32
+amigalib/createextio.c                  +amiga32
+amigalib/createnewproctags.c            +amiga32
+amigalib/createport.c                   +amiga32
+amigalib/createstdio.c                  +amiga32
+amigalib/createtask.c                   +amiga32
+amigalib/custom.a                       +amiga32
+amigalib/easyreq.c                      +amiga32
+amigalib/icrlvo.a                       +amiga32
+amigalib/newlist.c                      +amiga32
+amigalib/openscreentags.c               +amiga32
+amigalib/openwindowtags.c               +amiga32
+amigalib/printf.c                       +amiga32
+amigalib/system.c                       +amiga32
+amigalib/systemtags.c                   +amiga32
 
-[dinclude:]amiga13/fd/mathffp_lib.fd              +amiga13
-[dinclude:]amiga13/fd/mathtrans_lib.fd            +amiga13
-[dinclude:]amiga13/fd/mathieeedoubbas_lib.fd      +amiga13
-[dinclude:]amiga13/fd/clist_lib.fd                +amiga13
-[dinclude:]amiga13/fd/dos_lib.fd                  +amiga13
-[dinclude:]amiga13/fd/expansion_lib.fd            +amiga13
-[dinclude:]amiga13/fd/potgo_lib.fd                +amiga13
-[dinclude:]amiga13/fd/diskfont_lib.fd             +amiga13
-[dinclude:]amiga13/fd/timer_lib.fd                +amiga13
-[dinclude:]amiga13/fd/intuition_lib.fd            +amiga13
-[dinclude:]amiga13/fd/console_lib.fd              +amiga13
-[dinclude:]amiga13/fd/translator_lib.fd           +amiga13
-[dinclude:]amiga13/fd/graphics_lib.fd             +amiga13
-[dinclude:]amiga13/fd/exec_lib.fd                 +amiga13
-[dinclude:]amiga13/fd/layers_lib.fd               +amiga13
-[dinclude:]amiga13/fd/mathieeedoubtrans_lib.fd    +amiga13
-[dinclude:]amiga13/fd/icon_lib.fd                 +amiga13
-[dinclude:]amiga13/fd/romboot_lib.fd              +amiga13
-
-[dinclude:]amiga20/fd/asl_lib.fd                  +amiga20
-[dinclude:]amiga20/fd/battclock_lib.fd            +amiga20
-[dinclude:]amiga20/fd/battmem_lib.fd              +amiga20
-[dinclude:]amiga20/fd/cia_lib.fd                  +amiga20
-[dinclude:]amiga20/fd/commodities_lib.fd          +amiga20
-[dinclude:]amiga20/fd/console_lib.fd              +amiga20
-[dinclude:]amiga20/fd/diskfont_lib.fd             +amiga20
-[dinclude:]amiga20/fd/dos_lib.fd                  +amiga20
-[dinclude:]amiga20/fd/exec_lib.fd                 +amiga20
-[dinclude:]amiga20/fd/expansion_lib.fd            +amiga20
-[dinclude:]amiga20/fd/gadtools_lib.fd             +amiga20
-[dinclude:]amiga20/fd/graphics_lib.fd             +amiga20
-[dinclude:]amiga20/fd/icon_lib.fd                 +amiga20
-[dinclude:]amiga20/fd/iffparse_lib.fd             +amiga20
-[dinclude:]amiga20/fd/input_lib.fd                +amiga20
-[dinclude:]amiga20/fd/misc_lib.fd                 +amiga20
-[dinclude:]amiga20/fd/intuition_lib.fd            +amiga20
-[dinclude:]amiga20/fd/keymap_lib.fd               +amiga20
-[dinclude:]amiga20/fd/layers_lib.fd               +amiga20
-[dinclude:]amiga20/fd/mathffp_lib.fd              +amiga20
-[dinclude:]amiga20/fd/mathieeedoubbas_lib.fd      +amiga20
-[dinclude:]amiga20/fd/mathieeedoubtrans_lib.fd    +amiga20
-[dinclude:]amiga20/fd/mathieeesingbas_lib.fd      +amiga20
-[dinclude:]amiga20/fd/mathieeesingtrans_lib.fd    +amiga20
-[dinclude:]amiga20/fd/mathtrans_lib.fd            +amiga20
-[dinclude:]amiga20/fd/potgo_lib.fd                +amiga20
-[dinclude:]amiga20/fd/ramdrive_lib.fd             +amiga20
-[dinclude:]amiga20/fd/timer_lib.fd                +amiga20
-[dinclude:]amiga20/fd/translator_lib.fd           +amiga20
-[dinclude:]amiga20/fd/utility_lib.fd              +amiga20
-[dinclude:]amiga20/fd/wb_lib.fd                   +amiga20
-[dinclude:]amiga20/fd/disk_lib.fd                 +amiga20
-[dinclude:]amiga20/fd/rexxsyslib_lib.fd           +amiga20 +amiga13
+[dinclude:]amiga32/fd/amigaguide_lib.fd         +amiga32
+[dinclude:]amiga32/fd/arexx_lib.fd              +amiga32
+[dinclude:]amiga32/fd/asl_lib.fd                +amiga32
+[dinclude:]amiga32/fd/battclock_lib.fd          +amiga32
+[dinclude:]amiga32/fd/battmem_lib.fd            +amiga32
+[dinclude:]amiga32/fd/bevel_lib.fd              +amiga32
+[dinclude:]amiga32/fd/bitmap_lib.fd             +amiga32
+[dinclude:]amiga32/fd/bullet_lib.fd             +amiga32
+[dinclude:]amiga32/fd/button_lib.fd             +amiga32
+[dinclude:]amiga32/fd/cardres_lib.fd            +amiga32
+[dinclude:]amiga32/fd/checkbox_lib.fd           +amiga32
+[dinclude:]amiga32/fd/chooser_lib.fd            +amiga32
+[dinclude:]amiga32/fd/cia_lib.fd                +amiga32
+[dinclude:]amiga32/fd/clicktab_lib.fd           +amiga32
+[dinclude:]amiga32/fd/colorwheel_lib.fd         +amiga32
+[dinclude:]amiga32/fd/commodities_lib.fd        +amiga32
+[dinclude:]amiga32/fd/console_lib.fd            +amiga32
+[dinclude:]amiga32/fd/datatypes_lib.fd          +amiga32
+[dinclude:]amiga32/fd/datebrowser_lib.fd        +amiga32
+[dinclude:]amiga32/fd/disk_lib.fd               +amiga32
+[dinclude:]amiga32/fd/diskfont_lib.fd           +amiga32
+[dinclude:]amiga32/fd/dos_lib.fd                +amiga32
+[dinclude:]amiga32/fd/drawlist_lib.fd           +amiga32
+#[dinclude:]amiga32/fd/dtclass_lib.fd            +amiga32
+[dinclude:]amiga32/fd/exec_lib.fd               +amiga32
+[dinclude:]amiga32/fd/expansion_lib.fd          +amiga32
+[dinclude:]amiga32/fd/fuelgauge_lib.fd          +amiga32
+[dinclude:]amiga32/fd/gadtools_lib.fd           +amiga32
+[dinclude:]amiga32/fd/getcolor_lib.fd           +amiga32
+[dinclude:]amiga32/fd/getfile_lib.fd            +amiga32
+[dinclude:]amiga32/fd/getfont_lib.fd            +amiga32
+[dinclude:]amiga32/fd/getscreenmode_lib.fd      +amiga32
+[dinclude:]amiga32/fd/glyph_lib.fd              +amiga32
+[dinclude:]amiga32/fd/graphics_lib.fd           +amiga32
+[dinclude:]amiga32/fd/icon_lib.fd               +amiga32
+[dinclude:]amiga32/fd/iffparse_lib.fd           +amiga32
+[dinclude:]amiga32/fd/input_lib.fd              +amiga32
+[dinclude:]amiga32/fd/integer_lib.fd            +amiga32
+[dinclude:]amiga32/fd/intuition_lib.fd          +amiga32
+[dinclude:]amiga32/fd/keymap_lib.fd             +amiga32
+[dinclude:]amiga32/fd/label_lib.fd              +amiga32
+[dinclude:]amiga32/fd/layers_lib.fd             +amiga32
+[dinclude:]amiga32/fd/layout_lib.fd             +amiga32
+[dinclude:]amiga32/fd/listbrowser_lib.fd        +amiga32
+[dinclude:]amiga32/fd/locale_lib.fd             +amiga32
+[dinclude:]amiga32/fd/lowlevel_lib.fd           +amiga32
+[dinclude:]amiga32/fd/mathffp_lib.fd            +amiga32
+[dinclude:]amiga32/fd/mathieeedoubbas_lib.fd    +amiga32
+[dinclude:]amiga32/fd/mathieeedoubtrans_lib.fd  +amiga32
+[dinclude:]amiga32/fd/mathieeesingbas_lib.fd    +amiga32
+[dinclude:]amiga32/fd/mathieeesingtrans_lib.fd  +amiga32
+[dinclude:]amiga32/fd/mathtrans_lib.fd          +amiga32
+[dinclude:]amiga32/fd/misc_lib.fd               +amiga32
+[dinclude:]amiga32/fd/nonvolatile_lib.fd        +amiga32
+[dinclude:]amiga32/fd/palette_lib.fd            +amiga32
+[dinclude:]amiga32/fd/penmap_lib.fd             +amiga32
+[dinclude:]amiga32/fd/potgo_lib.fd              +amiga32
+[dinclude:]amiga32/fd/radiobutton_lib.fd        +amiga32
+[dinclude:]amiga32/fd/ramdrive_lib.fd           +amiga32
+[dinclude:]amiga32/fd/realtime_lib.fd           +amiga32
+[dinclude:]amiga32/fd/requester_lib.fd          +amiga32
+[dinclude:]amiga32/fd/rexxsyslib_lib.fd         +amiga32
+[dinclude:]amiga32/fd/scroller_lib.fd           +amiga32
+[dinclude:]amiga32/fd/sketchboard_lib.fd        +amiga32
+[dinclude:]amiga32/fd/slider_lib.fd             +amiga32
+[dinclude:]amiga32/fd/space_lib.fd              +amiga32
+[dinclude:]amiga32/fd/speedbar_lib.fd           +amiga32
+[dinclude:]amiga32/fd/string_lib.fd             +amiga32
+[dinclude:]amiga32/fd/texteditor_lib.fd         +amiga32
+[dinclude:]amiga32/fd/timer_lib.fd              +amiga32
+[dinclude:]amiga32/fd/trackfile_lib.fd          +amiga32
+[dinclude:]amiga32/fd/translator_lib.fd         +amiga32
+[dinclude:]amiga32/fd/utility_lib.fd            +amiga32
+[dinclude:]amiga32/fd/virtual_lib.fd            +amiga32
+[dinclude:]amiga32/fd/wb_lib.fd                 +amiga32
+[dinclude:]amiga32/fd/window_lib.fd             +amiga32
 
 [dinclude:fd/]dicecache_lib.fd       +clib +uclib
 

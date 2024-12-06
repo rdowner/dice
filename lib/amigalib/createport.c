@@ -32,9 +32,7 @@ extern void *FindTask(char *);
 typedef struct MsgPort  MsgPort;
 
 MsgPort *
-HYPER ## CreatePort(name, pri)
-UBYTE *name;
-long pri;
+HYPER ## CreatePort( CONST_STRPTR name, LONG pri )
 {
     MsgPort *port;
 

@@ -45,11 +45,11 @@ rsync \
 
 rsync \
   --verbose --archive \
-  "${NDK_DIR}/FD/" "${DINCLUDE}/fd"
+  "${NDK_DIR}/FD/" "${DINCLUDE}/amiga32/fd"
 
 rsync \
   --verbose --archive \
-  "${NDK_DIR}/SFD/" "${DINCLUDE}/sfd"
+  "${NDK_DIR}/SFD/" "${DINCLUDE}/amiga32/sfd"
 
 mkdir -p "${DLIB}"
 rsync \
