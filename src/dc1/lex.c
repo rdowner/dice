@@ -1286,7 +1286,7 @@ int32_t *plexIdxBeg;
     static char *CacheLexFile;
     static int32_t CacheLexFileNameLen;
 
-    printf("FINDLINE lexIdx %d %s\n", lexIdx, CacheLexFile);
+    /*fprintf(stderr,"FINDLINE lexIdx %d %s\n", lexIdx, CacheLexFile);*/
 
     /*
      *  find start of line
@@ -1305,7 +1305,7 @@ int32_t *plexIdxBeg;
         }
         --ptr;
     }
-    /*printf(";i %d/%d:%c\n", i, LFBase->lf_Buf[i], LFBase->lf_Buf[i]);*/
+    /*fprintf(stderr, ";i %d/%d:%c\n", i, LFBase->lf_Buf[i], LFBase->lf_Buf[i]);*/
 
     if (i == CacheLexIdx) {
         *plexFile       = CacheLexFile;
