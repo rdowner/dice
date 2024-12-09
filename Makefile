@@ -20,7 +20,6 @@ stage1a : $(BIN)/dxmake
 stage1b :
 	mkdir -p dlib1
 	cp dlib/amiga32l.lib dlib1/amiga32l.lib
-	$(BIN)/libtos dlib/amiga32l.lib dlib1/amiga32s.lib
 	( cd lib && $(ENV1B) dxmake core )
 stage1c :
 	mkdir -p bin1 $(DTMP)/obj1

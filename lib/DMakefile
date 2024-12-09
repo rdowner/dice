@@ -6,13 +6,11 @@
 .ifos AmigaOS
 
 DLIB= dlib:
-NDK= NDK:
 ALT=
 LIBDEF = lib.def
 
 .else
 
-NDK= $(AMIGA_NDK_HOME)/
 ALT=nofp
 LIBDEF = ulib.def
 
@@ -32,13 +30,10 @@ start:
 
 # The core set of libraries needed to bootstrap DICE itself:
 # the startup code, and C and M libraries in small-model stack variants.
-# In this stage we use the NDK-supplied large-model amiga.lib and the libtos-adapted small model.
-core:       startup autos.lib cs.lib ms.lib
+core:       startup autos.lib cs.lib ms.lib amiga32s.lib
 
-# The full set of libraries, include Amiga 2.0. Note that it does not build libraries for other
-# AmigaOS versions, because dxmake doesn't know what is available - 2.0 is mandatory for building
-# DICE, all others are optional.
-all:        startup autos.lib c uc m rom amiga20
+# The full set of libraries, including amiga32X.lib all variants.
+all:        startup autos.lib c uc m rom amiga32
 
 c:          cs.lib cl.lib csp.lib csr.lib cpl.lib crl.lib csrp.lib crpl.lib
 
@@ -48,10 +43,9 @@ m:          ms.lib ml.lib msp.lib msr.lib mpl.lib mrl.lib msrp.lib mrpl.lib
 
 rom:        roms.lib romsr.lib roml.lib romrl.lib
 
-amiga13:    amiga13l.lib amiga13s.lib amiga13sp.lib amiga13pl.lib
-
-amiga20:    amiga20l.lib amiga20s.lib amiga20sp.lib amiga20sr.lib amiga20pl.lib \
-            amiga20rl.lib amiga20srp.lib amiga20rpl.lib
+amiga32:    \
+            amiga32s.lib amiga32sp.lib amiga32sr.lib amiga32srp.lib \
+            amiga32l.lib amiga32pl.lib amiga32rl.lib amiga32rpl.lib
 
 startup: $(LIBDEF)
     $(LBMAKE) startup $(ALT)
@@ -139,105 +133,46 @@ roml.lib: $(LIBDEF)
 romrl.lib: $(LIBDEF)
     $(LBMAKE) rom r l $(ALT)
 
-#   AMIGA13[model].lib:
-
-amiga13l.lib:   $(DLIB)amiga13l.lib
-
-$(DLIB)amiga13l.lib : $(NDK)1.3/linker_libs/amiga.lib
-    copy %(right) %(left)
-
-amiga13s.lib:   $(DLIB)amiga13s.lib
-
-$(DLIB)amiga13s.lib : $(DLIB)amiga13l.lib
-    libtos $(DLIB)amiga13l.lib $(DLIB)amiga13s.lib
-
-amiga13sp.lib: $(LIBDEF)
-    $(LBMAKE) amiga13 s p $(ALT)
-
-amiga13pl.lib: $(LIBDEF)
-    $(LBMAKE) amiga13 p l $(ALT)
-
-
-#   AMIGA20[model].lib
+#   AMIGA32[model].lib
 #
-#   The amiga20l.lib from commodore has some incorrect tags, this stuff
-#   here fixes that.  dlib.orig/amiga20l.lib contains the actual, original
-#   Commodore library.  The amiga20l.lib provided with DICE is exactly
-#   that plus bug fixes to the Commodore library.
 
-amiga20l.lib:   $(DLIB)amiga20l.lib
+# The "small model" amiga32.lib is derived from the NDK "large model" amiga.lib using libtos.
+amiga32s.lib: $(DLIB)amiga32s.lib
+
+$(DLIB)amiga32s.lib: $(DLIB)amiga32l.lib
+    libtos %(right) %(left)
+
+amiga32sp.lib: $(LIBDEF)
+    $(LBMAKE) amiga32 s p $(ALT)
+
+amiga32sr.lib: $(LIBDEF)
+    $(LBMAKE) amiga32 s r $(ALT)
+
+amiga32srp.lib: $(LIBDEF)
+    $(LBMAKE) amiga32 s r p $(ALT)
+
+# The "large model" amiga.lib is taken straight from the NDK and is expected to
+# be pre-installed. If it is not present, show an error.
+amiga32l.lib: $(DLIB)amiga32l.lib
 
 .ifos AmigaOS
-
-$(DLIB)amiga20l.lib : $(NDK)2.0/linker_libs/amiga.lib $(DLIB)amiga20_func_l.lib
-    join %(right) AS %(left)
-
+$(DLIB)amiga32l.lib: $(DLIB)amiga32l.lib
+    echo "Error: expected $(DLIB)amiga32l.lib to be present. Copy amiga.lib from the NDK to this location."
+    Quit 20
 .else
-
-$(DLIB)amiga20l.lib : $(NDK)2.0/linker_libs/amiga.lib $(DLIB)amiga20_func_l.lib
-    cat %(right) > %(left)
-
+$(DLIB)amiga32l.lib: $(DLIB)amiga32l.lib
+    echo "Error: expected $(DLIB)amiga32l.lib to be present. Copy amiga.lib from the NDK to this location."
+    exit 1
 .endif
 
-amiga20s.lib:   $(DLIB)amiga20s.lib
+amiga32pl.lib: $(LIBDEF)
+    $(LBMAKE) amiga32 p l $(ALT)
 
-$(DLIB)amiga20s.lib : $(DLIB)amiga20l.lib
-    libtos $(DLIB)amiga20l.lib $(DLIB)amiga20s.lib
+amiga32rl.lib: $(LIBDEF)
+    $(LBMAKE) amiga32 r l $(ALT)
 
-amiga20sp.lib: $(LIBDEF)
-    $(LBMAKE) amiga20 s p $(ALT)
-
-amiga20sr.lib: $(LIBDEF)
-    $(LBMAKE) amiga20 s r $(ALT)
-
-amiga20pl.lib: $(LIBDEF)
-    $(LBMAKE) amiga20 p l $(ALT)
-
-amiga20rl.lib: $(LIBDEF)
-    $(LBMAKE) amiga20 r l $(ALT)
-
-amiga20srp.lib: $(LIBDEF)
-    $(LBMAKE) amiga20 s r p $(ALT)
-
-amiga20rpl.lib: $(LIBDEF)
-    $(LBMAKE) amiga20 r p l $(ALT)
-
-$(DLIB)amiga20_func_l.lib: $(LIBDEF)
-    $(LBMAKE) a20func l $(ALT)
-
-FD20FILES= asl battclock battmem cia commodities console diskfont \
-         dos exec expansion gadtools graphics icon iffparse \
-        input misc intuition keymap layers mathffp mathieeedoubbas \
-        mathieeedoubtrans mathieeesingbas mathieeesingtrans mathtrans \
-        potgo ramdrive timer translator utility wb disk rexxsyslib
-
-FD30FILES= asl battclock battmem cia commodities console diskfont \
-         dos exec expansion gadtools graphics icon iffparse \
-        input misc intuition keymap layers mathffp mathieeedoubbas \
-        mathieeedoubtrans mathieeesingbas mathieeesingtrans mathtrans \
-        potgo ramdrive timer utility wb disk rexxsyslib
-
-INLINE20FD=     $(FD20FILES:"*":"dinclude:amiga20/fd/*_lib.fd")
-INLINE30FD=     $(FD30FILES:"*":"dinclude:amiga30/fd/*_lib.fd")
-INLINE20PROTOS= $(FD20FILES:"*":"dinclude:xclib/*_protos.h")
-INLINE30PRAGMAS= $(FD30FILES:"*":"dinclude:pragmas/*_pragmas.h")
-
-inline20:  $(INLINE20PROTOS)
-
-$(INLINE20PROTOS) : $(INLINE20FD)
-    cd dinclude:
-    fdtopragma %(right) -o %(left)
-    cd
-
-pragma30:  $(INLINE30PRAGMAS)
-
-$(INLINE30PRAGMAS) : $(INLINE30FD)
-    cd dinclude:
-    fdtopragma %(right) -o %(left)
-    cd
-
-#    fdtopragma %(right) %(right:"*/fd/*_lib.fd":"amiga20/clib/%2_protos.h") -o %(left)
-#    cd
+amiga32rpl.lib: $(LIBDEF)
+    $(LBMAKE) amiga32 r p l $(ALT)
 
 .ifos AmigaOS
 
@@ -245,17 +180,11 @@ clean:
     -delete $(DLIB)#?.lib
     -delete $(DLIB)#?.o
 
-cleaninline:
-    -delete $(INLINE20PROTOS)
-
 .else
 
 clean:
     -rm $(DLIB)*.lib
     -rm $(DLIB)*.o
     -rm $(LIBDEF)
-
-cleaninline:
-    -rm $(INLINE20PROTOS)
 
 .endif

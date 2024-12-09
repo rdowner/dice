@@ -56,7 +56,7 @@ DUTILCORE:
 
 DME:
         cd dme
-        dxmake core
+        dxmake
         cd $(UP)
 
 install-bin-core:

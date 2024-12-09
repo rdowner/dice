@@ -10,9 +10,7 @@ dlib/
 .depend
 
 # Amiga header files - not to be checked in
-include/amiga13
-include/amiga20
-include/amiga30
+include/amiga*
 
 # IDE metadata
 .vscode/

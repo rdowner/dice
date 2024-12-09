@@ -43,6 +43,7 @@ Assign DLIB: DCC:dlib1
 Set OD DTMP:obj2-bootstrap/
 Set BIN DCC:bin2-bootstrap/
 Path DCC:bin1 ADD HEAD
+CD DCC:
 dxmake bin-core
 dxmake install-bin-core
 Path DCC:bin1 REMOVE
@@ -51,7 +52,6 @@ Echo "Stage 2 libraries build"
 Assign DLIB: DCC:dlib2
 Path DCC:bin2-bootstrap ADD HEAD
 Copy DCC:dlib1/amiga32l.lib DCC:dlib2/amiga32l.lib
-libtos DCC:dlib1/amiga32l.lib DCC:dlib2/amiga32s.lib >NIL:
 cd lib
 dxmake core
 cd /
@@ -68,6 +68,7 @@ Path DCC:bin2-bootstrap REMOVE
 Echo "Stage 3 libraries build"
 Assign DLIB: DCC:dlib
 Path DCC:bin2 ADD HEAD
+Copy DCC:dlib2/amiga32l.lib DCC:dlib/amiga32l.lib
 cd lib
 dxmake all
 cd /
